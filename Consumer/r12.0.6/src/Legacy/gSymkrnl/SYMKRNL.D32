@@ -1,0 +1,565 @@
+;************************************************************************
+;*                                                                      *
+;* $Header:   S:/SYMKRNL/VCS/SYMKRNL.D3v   1.7   18 Nov 1997 14:48:38   TSmith  $  *
+;*                                                                      *
+;* Description:                                                         *
+;*                                                                      *
+;************************************************************************
+;* $Log:   S:/SYMKRNL/VCS/SYMKRNL.D3v  $  *
+;  
+;     Rev 1.7   18 Nov 1997 14:48:38   TSmith
+;  Added DBCS font handling functions.
+;  
+;     Rev 1.6   14 May 1997 14:56:54   MBROWN
+;  Added FAT32 FAT mirroring API functions.
+;
+;     Rev 1.5   26 Oct 1996 11:20:08   JBRENNA
+;  Export ConfigParamToUpperNonDbcs().
+;
+;     Rev 1.4   25 Sep 1996 10:28:48   JALLEE
+;  Removed NIMMCreate() and NIMMDestroy().
+;
+;     Rev 1.3   20 Sep 1996 18:06:48   JALLEE
+;  Added exports for NIMMCreate and NIMMDestroy.
+;
+;     Rev 1.2   29 Aug 1996 18:02:36   DHERTEL
+;  Copied changed from Quake E:
+;  Added FileCopySecurityInformation
+;
+;     Rev 1.1   16 Apr 1996 15:29:24   PMARTIN
+;  Added DiskGetBootDriveEx(), which is a cover for DiskGetBootDrive()
+;
+;     Rev 1.0   26 Jan 1996 20:22:56   JREARDON
+;  Initial revision.
+;
+;     Rev 1.21   06 Dec 1995 11:36:28   BILL
+;  Removed LibraryLoad
+;
+;     Rev 1.20   02 Aug 1995 12:42:18   SCOTTP
+;  removed library entry so link will take
+;  the name from the target
+;
+;     Rev 1.19   28 Jun 1995 00:56:02   JREARDON
+;  Bumped number to 9
+;
+;************************************************************************
+
+LIBRARY
+
+DESCRIPTION     'Kernel API, Copyright 1992, 1993, Symantec Corporation'
+
+EXETYPE         WINDOWS
+
+STUB            'WINSTUB.EXE'
+
+CODE            MOVEABLE DISCARDABLE LOADONCALL
+
+DATA            PRELOAD MOVEABLE SINGLE
+
+HEAPSIZE        4096
+
+SEGMENTS
+                _TEXTPRELOAD MOVEABLE
+                INIT_TEXTPRELOAD MOVEABLE
+                _INT13WINPRELOAD FIXED
+
+IMPORTS
+                _DebugOutput=KERNEL.328
+
+EXPORTS
+        WEP                                     @1      RESIDENTNAME PRIVATE
+        ConvertTimeToEncoded                    @2      NONAME
+        ConvertEncodedTimeToNormal              @3      NONAME
+        DateGetCurrentDateTime                  @4      NONAME
+        ConvertDateToEncoded                    @5      NONAME
+        ConvertEncodedDateToNormal              @6      NONAME
+        DOSGetInternalVariables                 @7      NONAME
+        DOSGetEnvironment                       @8      NONAME
+        DiskEraseProtect                        @9      NONAME
+        DOSGetDate                              @10     NONAME
+        DOSGetPCMOSVersion                      @11     NONAME
+        DOSGetTime                              @12     NONAME
+        DOSGetVersion                           @13     NONAME
+        DOSOEMNumber                            @14     NONAME
+        DOSSetBreakStatus                       @15     NONAME
+        DOSGetBreakStatus                       @16     NONAME
+        DOSGetIntHandler                        @17     NONAME
+        DOSSetIntHandler                        @18     NONAME
+        DOSGetExtendedError                     @19     NONAME
+        DiskCache                               @20     NONAME
+        CMOSRead                                @21     NONAME
+        CMOSWrite                               @22     NONAME
+        HWIsEISA                                @23     NONAME
+        HWIsMicroChannel                        @24     NONAME
+        DiskMonitor                             @25     NONAME
+        MemorySearch                            @26     NONAME
+        MemoryHugeMove                          @27     NONAME
+        MemReAlloc                              @28     NONAME
+        QuickSort                               @29     NONAME
+        MathIsPower2                            @30     NONAME
+        MathDiff                                @31     NONAME
+        MathLongDiff                            @32     NONAME
+        NDosSetError                            @33     NONAME
+        NDosGetError                            @34     NONAME
+        MemoryNormalizeAddress                  @35     NONAME
+        StringCompress                          @36     NONAME
+        StringUnCompress                        @37     NONAME
+        StringSkipWhite                         @38     NONAME
+        StringSkipToWhite                       @39     NONAME
+        StringRemoveTrailingSpaces              @40     NONAME
+        StringGetEnd                            @41     NONAME
+        CriticalSectionBegin                    @42     NONAME
+        CriticalSectionEnd                      @43     NONAME
+        DPMISegmentToDescriptor                 @44     NONAME
+        DPMISimulateInt                         @45     NONAME
+        IntWin                                  @46     NONAME
+        SelectorAlloc                           @47     NONAME
+        SelectorFree                            @48     NONAME
+        SelectorSetDosAddress                   @49     NONAME
+        SelectorGetDosAddress                   @50     NONAME
+        DiskEnableCache                         @51     NONAME
+        DiskDisableCache                        @52     NONAME
+        DiskCacheInstalled                      @53     NONAME
+        DiskCacheDumpWrites                     @54     NONAME
+        DiskGetCacheSize                        @55     NONAME
+        HWHasCMOS                               @56     NONAME
+        DOSSetTime                              @57     NONAME
+        DOSSetDate                              @58     NONAME
+        lstrncmp                                @59     NONAME
+        lstrncmpi                               @60     NONAME
+        StringMaxLength                         @61     NONAME
+        DosGetErrorInfo                         @62     NONAME
+        ConvertWordToString                     @63     NONAME
+        ConvertLongToString                     @64     NONAME
+        _ConvertWordToString                    @65     NONAME
+        _ConvertLongToString                    @66     NONAME
+        ConvertStringToWord                     @67     NONAME
+        ConvertStringToLong                     @68     NONAME
+        CharToUpper                             @69     NONAME
+        CharToLower                             @70     NONAME
+        CharIsHexNumeric                        @71     NONAME
+        CharIsNumeric                           @72     NONAME
+        CharIsWhite                             @73     NONAME
+        StringMaxCopy                           @74     NONAME
+        FileCheckError                          @75     NONAME
+        FileSetError                            @76     NONAME
+        FileGetReturnCode                       @77     NONAME
+        DOSGetProgramName                       @78     NONAME
+        DiskCacheResume                         @79     NONAME
+        DiskCacheSuspend                        @80     NONAME
+        ConvertLongToAbbreviation               @81     NONAME
+        _ConvertLongToAbbreviation              @82     NONAME
+        DOSGetProcessFileHandleCount            @83     NONAME
+        DOSGetSystemFileHandleCount             @84     NONAME
+        DOSGetOpenFileCount                     @85     NONAME
+        DOSGetOpenFileName                      @86     NONAME
+        DOSIsFileOpen                           @87     NONAME
+        DOSGetSystemFileHandle                  @88     NONAME
+        DOSGetOpenFileInfo                      @89     NONAME
+        DOSGetInfoOnAllOpenFiles                @90     NONAME
+        DOSGetSystemFileTableEntry              @91     NONAME
+        MemAvail                                @92     NONAME
+        StringSeparate                          @93     NONAME
+        BufferEncrypt                           @94     NONAME
+        MemoryHugeCopy                          @95     NONAME
+        DOSGetOpenFilesOnDrive                  @96     NONAME
+        StringRemoveCRLF                        @97     NONAME
+        FileExists                              @98     NONAME
+        GetProtModePtr                          @99     NONAME
+        DOSGetEnvironmentCase                   @100    NONAME
+        ConvertSizeToFullString                 @101    NONAME
+        _ConvertStringToLong                    @102    NONAME
+        ConvertSizeToShortString                @103    NONAME
+        hstrcmp                                 @104    NONAME
+        hstrcpy                                 @105    NONAME
+        hstrlen                                 @106    NONAME
+        hstrcat                                 @107    NONAME
+        hGetWord                                @108    NONAME
+        TSRIsEnabled                            @109    NONAME
+        TSRGetDataPtr                           @111    NONAME
+        TSRGetPSP                               @112    NONAME
+        TSRGetCtrlPtr                           @113    NONAME
+        TSRCommand                              @114    NONAME
+        TSRUpdateConfig                         @115    NONAME
+        StringStripSpaces                       @116    NONAME
+        StringAppendChar                        @117    NONAME
+        SzzStripMatches                         @118    NONAME
+        SzzStripDuplicates                      @119    NONAME
+        SzzRemoveEntry                          @120    NONAME
+        SzzFindNext                             @121    NONAME
+        SzzFindEnd                              @122    NONAME
+        HWGetMachineID                          @123    NONAME
+        MemCopyPhysical                         @124    NONAME
+        DOSGETDRDOSVERSION                      @125    NONAME
+        DOSINTLSTRINGCOMPARE                    @126    NONAME
+        VERSIONDLG                              @127    NONAME
+        HWGetROMSamplesSize                     @128    NONAME
+        HWGetROMSamples                         @129    NONAME
+        StringSkipIniDelim                      @130    NONAME
+        StringSkipToIniDelim                    @131    NONAME
+        DOSConvertSFTToOurFormat                @133    NONAME
+        DOSGetFirstSFT                          @134    NONAME
+        DOSSFTEntrySize                         @135    NONAME
+        DOSGetPSP                               @136    NONAME
+
+        DiskAbsBufferRegister                   @180    NONAME
+        DiskAbsBufferUnregister                 @181    NONAME
+        DiskAbsBufferGet                        @182    NONAME
+        DiskReadMBR                             @190    NONAME
+        DiskWriteMBR                            @191    NONAME
+        DiskGetPartitionTableEntry              @192    NONAME
+        DiskAbsOperation                        @201    NONAME
+        ConvertPhySectorToLong                  @202    NONAME
+        ConvertLongToPhySector                  @203    NONAME
+        DiskGetSectorStartOffset                @204    NONAME
+        DiskGetSectorEndOffset                  @205    NONAME
+        DiskRecToFloppyAbsDiskRec               @206    NONAME
+        DiskGetPhysicalInfo                     @207    NONAME
+        DiskUnscrambleBIOSCoding                @208    NONAME
+        DiskScrambleBIOSCoding                  @209    NONAME
+        DiskResetAccessFlag                     @210    NONAME
+        DiskAccessFlagAddr                      @211    NONAME
+        DiskBlockDevice                         @212    NONAME
+        _DiskBlockDevice                        @213    NONAME
+        DiskBPBToDiskRec                        @214    NONAME
+        DiskBPBToAbsDiskRec                     @215    NONAME
+        DiskGetBPBVersion                       @216    NONAME
+        DiskDiskRecToBPB                        @217    NONAME
+        DiskBPBTable                            @218    NONAME
+        DiskBPBFromIndex                        @220    NONAME
+        DiskGetHDParams                         @221    NONAME
+        DiskFillInBPB                           @222    NONAME
+        DiskIsValidBPB                          @223    NONAME
+        DiskCalcPhysicalSectors                 @224    NONAME
+        DiskGetDriverTable                      @225    NONAME
+        DiskGetDriverTablePtr                   @226    NONAME
+        DiskIsBigTable                          @227    NONAME
+        DiskGenericIOCTL                        @228    NONAME
+        DiskGenericIOCTLError                   @230    NONAME
+        DiskTestFormat                          @234    NONAME
+        DiskMapLogToPhyParams                   @235    NONAME
+        DiskResetDOS                            @236    NONAME
+        DiskComputeDriveSize                    @237    NONAME
+        _DiskGetBootDrive                       @238    NONAME
+        DiskGetMaxDrive                         @239    NONAME
+        DiskReset                               @240    NONAME
+        DiskGetSerialNumber                     @242    NONAME
+        DiskGetAccessFlag                       @243    NONAME
+        DiskSetAccessFlag                       @248    NONAME
+        DiskGetLockedTable                      @249    NONAME
+        DiskSetLockedTable                      @250    NONAME
+        ConvertClusterToSector                  @251    NONAME
+        DiskIsValidDiskRec                      @254    NONAME
+        DiskGetInfo                             @255    NONAME
+        ConvertSectorToCluster                  @256    NONAME
+        ConvertSizeToCluster                    @257    NONAME
+        DiskSetFormatType                       @258    NONAME
+        DiskGetDASDType                         @259    NONAME
+        DiskExists                              @260    NONAME
+        DiskIsPhantom                           @261    NONAME
+        _DiskIsPhantom                          @262    NONAME
+        DiskIsBlockDevice                       @263    NONAME
+        DiskIsAssigned                          @264    NONAME
+        _DiskIsAssigned                         @265    NONAME
+        DiskIsSubst                             @266    NONAME
+        DiskIsEncrypted                         @267    NONAME
+        DiskIsNetwork                           @268    NONAME
+        DiskIsFixed                             @269    NONAME
+        DiskIsRAM                               @270    NONAME
+        DiskIsSuperStor                         @271    NONAME
+        DiskGetType                             @272    NONAME
+        DiskGetFloppyType                       @273    NONAME
+        DiskGetPhysicalType                     @274    NONAME
+        DiskGetMask                             @277    NONAME
+        DiskIsCDRom                             @278    NONAME
+        VolumeLabelGet                          @279    NONAME
+        VolumeLabelSet                          @280    NONAME
+        DiskIsStacker                           @281    NONAME
+        DiskSetDASDType                         @282    NONAME
+        DiskGetBlockDeviceError                 @283    NONAME
+        DiskFreeAccessFlagAddr                  @284    NONAME
+        DiskIsStackerLoaded                     @286    NONAME
+        NetworkInstalled                        @287    NONAME
+        NetDirectIOOK                           @288    NONAME
+        DiskCacheUpdate                         @293    NONAME
+        DiskCacheGetInfo                        @294    NONAME
+        DiskCacheGetDrivesByMask                @295    NONAME
+        DiskCacheReconcileChanges               @296    NONAME
+        BIOSInstallInt13Handler                 @297    NONAME
+        BIOSUninstallInt13Handler               @298    NONAME
+        DiskLogSectorToPhySector                @299    NONAME
+        _DiskIsDoubleSpace                      @300    NONAME
+        DiskIsDoubleSpace                       @301    NONAME
+        DiskIsCompressed                        @302    NONAME
+        DiskGetUnderSmartDrive                  @303    NONAME
+        _DiskGetPhysicalInfo                    @304    NONAME
+        DiskIsInterLink                         @305    NONAME
+        DiskFindDPB                             @306    NONAME
+        DiskIOCTL                               @307    NONAME
+        DiskBlockSetProc                        @308    NONAME
+        DiskBlockClearProc                      @309    NONAME
+        DiskIOCTLError                          @310    NONAME
+        DiskGetSuperStorSwapDrive               @311    NONAME
+        DiskGetSuperStorHostDrive               @312    NONAME
+        DiskGetDriveList                        @313    NONAME
+        DISKCACHETERMINATE                      @314    NONAME
+        DiskGetBootDrive                        @315    NONAME
+        DiskBlockAllocateBuffer                 @316    NONAME
+        DiskBlockDeAllocateBuffer               @317    NONAME
+        DiskHasBootRecord                       @318    NONAME
+        DiskIsHPFS                              @319    NONAME
+        DiskCacheSetWriteThru                   @320    NONAME
+        DiskCacheResetWriteThru                 @321    NONAME
+        DirMake                                 @400    NONAME
+        DirRemove                               @401    NONAME
+        DirGet                                  @402    NONAME
+        DirSet                                  @403    NONAME
+        DirParsePath                            @404    NONAME
+        DirMakePath                             @405    NONAME
+        DirIsRemoveable                         @406    NONAME
+        DirHasChildren                          @407    NONAME
+        DirParentfromPath                       @408    NONAME
+        PathRevTok                              @409    NONAME
+        PathTok                                 @410    NONAME
+        DiskGet                                 @411    NONAME
+        DiskSet                                 @412    NONAME
+        DTASet                                  @413    NONAME
+        DTAGet                                  @414    NONAME
+        DiskGetAllocInfo                        @415    NONAME
+        DiskGetEquipmentDrives                  @416    NONAME
+        DiskSetToSingleDisk                     @417    NONAME
+        DiskSetLogical                          @418    NONAME
+        FileInUseByWindows                      @419    NONAME
+        FileCreate                              @420    NONAME
+        FileDelete                              @422    NONAME
+        FileRename                              @423    NONAME
+        FileLength                              @424    NONAME
+        FileFindFirst                           @425    NONAME
+        FileFindNext                            @426    NONAME
+        FileGetAttr                             @427    NONAME
+        FileSetAttr                             @428    NONAME
+        FileGetTime                             @429    NONAME
+        FileSetTime                             @430    NONAME
+        FileFlush                               @431    NONAME
+        FileCommit                              @432    NONAME
+        FileDup                                 @433    NONAME
+        FileOpen                                @434    NONAME
+        FileSetSize                             @435    NONAME
+        DiskGetFreeSpace                        @436    NONAME
+        DiskFreeAvailGet                        @437    NONAME
+        DiskGetClusterSize                      @438    NONAME
+        DOSEnvSearchPathForFile                 @439    NONAME
+        ;SYMKRNLGetVer                           @440    NONAME
+        FileCopy                                @441    NONAME
+        FileAppend                              @442    NONAME
+        FileCopyWithProgress                    @443    NONAME
+        DirMakePathNotify                       @444    NONAME
+        FileMove                                @445    NONAME
+        FileHugeRead                            @446    NONAME
+        FileHugeWrite                           @447    NONAME
+        FileCreateTemporary                     @448    NONAME
+        DirGetCurrent                           @449    NONAME
+        FileKill                                @450    NONAME
+        HugeOemToAnsiBuff                       @451    NONAME
+        HugeAnsiToOemBuff                       @452    NONAME
+        FileCmpTime                             @453    NONAME
+        FileBufferedOpen                        @454    NONAME
+        FileBufferedClose                       @455    NONAME
+        FileBufferedGetChar                     @456    NONAME
+        FileBufferedReverseGetChar              @457    NONAME
+        FileBufferedUngetChar                   @458    NONAME
+        FileBufferedSetPtr                      @459    NONAME
+        FileBufferedGetPtr                      @460    NONAME
+        FileBufferedLength                      @461    NONAME
+        FileBufferedGetLine                     @462    NONAME
+        DiskIsVFAT                              @463    NONAME
+        FileFindClose                           @470    NONAME
+        FileFindFirstAttr                       @471    NONAME
+        FileTimeToDosTime                       @472    NONAME
+        DosTimeToFileTime                       @473    NONAME
+        FileTimeCompare                         @474    NONAME
+        DiskIsVFATClient                        @475    NONAME
+        FileCopySecurityInformation             @476    NONAME
+
+        NIntlFormatInteger                      @500    NONAME
+        NGetIntlDate                            @501    NONAME
+        NIntlFormatCurrency                     @502    NONAME
+        NGetIntlTime                            @503    NONAME
+        NSetIntlDate                            @504    NONAME
+        NSetIntlTime                            @505    NONAME
+        NIntlFormatFloat                        @506    NONAME
+        NGetDlgIntlDate                         @507    NONAME
+        NGetDlgIntlTime                         @508    NONAME
+        NSetDlgIntlDate                         @509    NONAME
+        NSetDlgIntlTime                         @510    NONAME
+        NSetIntlLongDate                        @511    NONAME
+        NIntlGetString                          @512    NONAME
+        NIntlInit                               @513    NONAME
+        NIsAmericanDate                         @514    NONAME
+        NIntlDateIsLegal                        @515    NONAME
+        NIntlTimeIsLegal                        @516    NONAME
+        NIntlGetValidTime                       @517    NONAME
+        NIntlGetValidDate                       @518    NONAME
+        NIntlTimeToLongString                   @519    NONAME
+        NameToFull                              @600    NONAME
+        NameReturnExtension                     @601    NONAME
+        NameReturnFile                          @602    NONAME
+        NameStripFile                           @603    NONAME
+        NameReturnPath                          @604    NONAME
+        NameReturnStartDir                      @605    NONAME
+        NameSeparatePath                        @606    NONAME
+        NameAppendFile                          @607    NONAME
+        NameParsePath                           @608    NONAME
+        NameValidatePath                        @609    NONAME
+        NameToUnpacked                          @610    NONAME
+        NameToPacked                            @611    NONAME
+        NameConvertPath                         @612    NONAME
+        NameCompact                             @613    NONAME
+        NameUnWildcard                          @614    NONAME
+        NameWildtoName                          @615    NONAME
+        NameIsDevice                            @616    NONAME
+        NameReplacePathChar                     @617    NONAME
+        NameIsValidFileChar                     @618    NONAME
+        NameTitleFromCmdLine                    @619    NONAME
+        NameShortenFileName                     @620    NONAME
+        NameTruncate                            @621    NONAME
+        NamePathToEnvironment                   @622    NONAME
+        NameGetIllegalChars                     @623    NONAME
+        TrueNameGet                             @624    NONAME
+        NameIsExecutable                        @625    NONAME
+        NameIsExecutableInitDir                 @626    NONAME
+        NameLooksLikeExecutable                 @627    NONAME
+        NameFindExecutable                      @628    NONAME
+        NameReturnAssociate                     @629    NONAME
+        NameGetType                             @630    NONAME
+        NameConvertFwdSlashes                   @631    NONAME
+        NameIsWildcard                          @632    NONAME
+        NameStripExtension                      @633    NONAME
+        NameMakeUnique                          @634    NONAME
+        NameDerivePath                          @635    NONAME
+        NameIsRoot                              @636    NONAME
+        NameReturnIllegalChars                  @637    NONAME
+        PackedNameIsDevice                      @638    NONAME
+        ConfigInit                              @700    NONAME
+        ConfigTerminate                         @701    NONAME
+        ConfigSearchVarPath                     @702    NONAME
+        ConfigNewVarPath                        @703    NONAME
+        ConfigSearchPath                        @704    NONAME
+        ConfigGetSymantecDir                    @705    NONAME
+        ConfigGetCRC                            @706    NONAME
+        ConfigBlockGet                          @707    NONAME
+        ConfigBlockSet                          @708    NONAME
+        ConfigGetBlockInfo                      @709    NONAME
+        ConfigProcessCmdLine                    @710    NONAME
+        ConfigParamCount                        @711    NONAME
+        ConfigSwitchCount                       @712    NONAME
+        ConfigParamGet                          @713    NONAME
+        ConfigParamToUpper                      @714    NONAME
+        ConfigSwitchSet                         @715    NONAME
+        ConfigSwitchGetValue                    @716    NONAME
+        ConfigSwitchGetText                     @717    NONAME
+        ConfigTextInit                          @718    NONAME
+        ConfigIniGet                            @719    NONAME
+        ConfigIniSet                            @720    NONAME
+        ConfigReadValue                         @721    NONAME
+        ConfigReadString                        @722    NONAME
+        ConfigWriteString                       @723    NONAME
+        ConfigWriteValue                        @724    NONAME
+        ConfigSetState                          @725    NONAME
+        ConfigBlockFileGet                      @726    NONAME
+        ConfigBlockFileSet                      @727    NONAME
+        ConfigFileInit                          @728    NONAME
+        ConfigFileTerminate                     @729    NONAME
+        ConfigGetBlockFileInfo                  @730    NONAME
+        ConfigIniFileGet                        @731    NONAME
+        ConfigIniFileSet                        @732    NONAME
+        ConfigSearchSymantecPath                @733    NONAME
+        ConfigNewSymantecPath                   @734    NONAME
+        ConfigFileFlush                         @735    NONAME
+        ConfigFlush                             @736    NONAME
+        ConfigBlockFileIdChange                 @737    NONAME
+        BufferDecrypt                           @738    NONAME
+        ConfigMinimizeText                      @739    NONAME
+        ConfigIniQuerySection                   @740    NONAME
+        ConfigIniFileQuerySection               @741    NONAME
+        ConfigIniGetEx                          @742    NONAME
+        ConfigIniFileGetEx                      @743    NONAME
+        ConfigIniSetEx                          @744    NONAME
+        ConfigIniFileSetEx                      @745    NONAME
+        ConfigFileReadValue                     @746    NONAME
+        ConfigFileReadString                    @747    NONAME
+        ConfigFileWriteValue                    @748    NONAME
+        ConfigFileWriteString                   @749    NONAME
+        ConfigFileSetState                      @750    NONAME
+        ConfigProcessCmdLineEx                  @751    NONAME
+        ConfigParamCountEx                      @752    NONAME
+        ConfigSwitchCountEx                     @753    NONAME
+        ConfigParamGetEx                        @754    NONAME
+        ConfigParamToUpperEx                    @755    NONAME
+        ConfigSwitchSetEx                       @756    NONAME
+        ConfigSwitchGetValueEx                  @757    NONAME
+        ConfigSwitchGetTextEx                   @758    NONAME
+        ConfigLocalEnumBlocks                   @759    NONAME
+        ConfigGlobalEnumBlocks                  @760    NONAME
+        ConfigFileEnumBlocks                    @761    NONAME
+        CONFIGFILEREADVALUEARRAY                @762    NONAME
+        CONFIGFILEWRITEVALUEARRAY               @763    NONAME
+        CONFIGREADVALUEARRAY                    @764    NONAME
+        CONFIGWRITEVALUEARRAY                   @765    NONAME
+        ConfigRegEnumValue                      @766    NONAME
+
+        CheckVersion                            @2000
+        SYMCheckVersions                        @2001   NONAME
+        SYMKRNLCheckVersion                     @2002   NONAME
+        CheckVersionCallBack                    @2003   NONAME
+        SYMIsWin310or311                        @2004   NONAME
+        CONFIGDISABLECRC                        @3003   NONAME
+        CONFIGENABLECRC                         @3004   NONAME
+        DISKISVFATINSTALLED                     @3005   NONAME
+        ___ExportedStub                         @3006   NONAME
+        DiskCheckForVFAT                        @3008   NONAME
+        DiskGetCacheHits                        @3009   NONAME
+        RealModeFarCall                         @3010   NONAME
+        DPMISimulateFarCall                     @3011   NONAME
+        DiskBlockUseOldWinCode                  @3012   NONAME
+        DiskIsStacker2                          @3013   NONAME
+        DiskGetUnderSymEvent                    @3014   NONAME
+        DiskIsDriveSpace                        @3016   NONAME
+        EISACMOSRead                            @3017   NONAME
+        EISACMOSWrite                           @3018   NONAME
+        DiskLockLogicalVolume                   @3019   NONAME
+        DiskLockPhysicalVolume                  @3020   NONAME
+        DiskUnlockLogicalVolume                 @3021   NONAME
+        DiskUnlockPhysicalVolume                @3022   NONAME
+        DiskIsMDF                               @3023   NONAME
+        FileGetDateTimeString                   @3024   NONAME
+        FileGetDateString                       @3025   NONAME
+        FileGetTimeString                       @3026   NONAME
+        DiskPollWrites                          @3027   NONAME
+        DiskEnumerateMemoryFiles                @3028   NONAME
+        NameReturnLongName                      @3029   NONAME
+        NameReturnShortName                     @3030   NONAME
+        SymGetFreeSystemResources               @3031   NONAME
+        SymSystemHeapInfo                       @3032   NONAME
+        DiskGetCurrentLockState                 @3033   NONAME
+        DiskIsDriveSpace3                       @3034   NONAME
+        DiskGetDriveSpaceVersion                @3035   NONAME
+        HWIsPCI                                 @3036   NONAME
+        DiskGetBootDriveEx                      @3037   NONAME
+        ConfigParamToUpperNonDbcs               @3038   NONAME
+
+        WIN_FileRead                            @4001   NONAME
+        WIN_FileWrite                           @4002   NONAME
+        WIN_FileClose                           @4003   NONAME
+        WIN_FileSeek                            @4004   NONAME
+        IsJapString                             @4005   NONAME
+        DBCS_iskana                             @4006   NONAME
+        DiskGetActiveFAT                        @4007   NONAME
+        DiskNoFATMirrAndSetActiveFAT            @4008   NONAME
+        DiskGetFATMirrStatus                    @4009   NONAME
+        DiskEnableFATMirr                       @4010   NONAME
+        DiskGetSetActFATandMirr                 @4011   NONAME
+        DBCSGetFontFace                         @4012   NONAME
+        DBCSFreeFontFaceMemory                  @4013   NONAME
+        DBCSGetFontSize                         @4014   NONAME
+        

@@ -1,0 +1,24 @@
+HKCR
+{
+	AvisConsole.AvisConAbout.1 = s 'AvisCon About Class'
+	{
+		CLSID = s '{6A0B6708-FE02-11D2-9798-00C04F688464}'
+	}
+	AvisConsole.AvisConAbout = s 'AvisCon About Class'
+	{
+		CLSID = s '{6A0B6708-FE02-11D2-9798-00C04F688464}'
+		CurVer = s 'AvisConsole.AvisConAbout.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6A0B6708-FE02-11D2-9798-00C04F688464} = s 'AvisCon About Class'
+		{
+			ProgID = s 'AvisConsole.AvisConAbout.1'
+			VersionIndependentProgID = s 'AvisConsole.AvisConAbout'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

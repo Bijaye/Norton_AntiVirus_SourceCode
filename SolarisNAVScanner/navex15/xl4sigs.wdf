@@ -1,0 +1,176 @@
+;****************************************************************************
+; Copyright 1998 Symantec, Peter Norton Product Group
+;****************************************************************************
+; XL4SIGS.WDF
+;
+; $Header:   S:/NAVEX/VCS/XL4SIGS.WDv   1.6   05 Nov 1998 13:55:32   CFORMUL  $
+;
+; This source file contains definitions for the Excel 4 viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/XL4SIGS.WDv  $
+   
+      Rev 1.6   05 Nov 1998 13:55:32   CFORMUL
+   Added XF.Paix Damaged
+   
+      Rev 1.5   21 Oct 1998 12:37:52   relniti
+   FIX typo
+   
+      Rev 1.4   21 Oct 1998 12:34:36   relniti
+   VMacro: ADD XF.Sic.A 648D
+   
+      Rev 1.3   09 Sep 1998 14:31:16   relniti
+   ADD/SPLIT O97M.Shiver(63f0) to .A(63f0), .B(63f1) , .C(63f2) as named in VMacro
+   
+      Rev 1.2   08 Sep 1998 17:02:00   relniti
+   ADD 097M.Shiver XL4 signature
+   
+      Rev 1.1   07 Aug 1998 14:14:04   RELNITI
+   VMacro: 63b1 VID_PAIXB for XF.Paix.B
+   
+      Rev 1.0   15 Apr 1998 16:46:08   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+[NameSigStart]
+[Comment]       Only "!!!GO"
+[ID]            NAME_ONLY_IIIGO
+[Signature]     SeekSet(0) "!!!GO" AtEnd()
+[NameSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XF.Paix Excel 95
+[ID]            CRC_IIIGO_PAIX_95
+[CRCXL4]        0xCA9A2901
+[Signature]     NameSig(NAME_ONLY_IIIGO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XF.Paix Excel 97
+[ID]            CRC_IIIGO_PAIX_97
+[CRCXL4]        0x83647BA2
+[Signature]     NameSig(NAME_ONLY_IIIGO)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XF.Paix
+[Type]          XL4
+[QAStatus]      PASSED
+[ID]            VID_PAIX
+[Signature]     NamedCRCSig(CRC_IIIGO_PAIX_95) or
+[Signature]     NamedCRCSig(CRC_IIIGO_PAIX_97)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XF.Paix Damaged
+[ID]            CRC_IIIGO_PAIX_DAM
+[CRCXL4]        0x1159B49E
+[Signature]     NameSig(NAME_ONLY_IIIGO)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XF.Paix Damaged
+[Type]          XL4
+[QAStatus]      PASSED
+[ID]            VID_PAIXDAM
+[Signature]     NamedCRCSig(CRC_IIIGO_PAIX_DAM)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NameSigStart]
+[Comment]       Only "!!!GA"
+[ID]            NAME_ONLY_IIIGA
+[Signature]     SeekSet(0) "!!!GA" AtEnd()
+[NameSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XF.Paix.B Excel 95
+[ID]            CRC_IIIGA_PAIXB_95
+[CRCXL4]        0x52B7C62C
+[Signature]     NameSig(NAME_ONLY_IIIGA)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XF.Paix.B
+[Type]          XL4
+[QAStatus]      PASSED
+[ID]            VID_PAIXB
+[Signature]     NamedCRCSig(CRC_IIIGA_PAIXB_95)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NameSigStart]
+[Comment]       Only "MACRO1"
+[ID]            NAME_ONLY_MACRO1
+[Signature]     SeekSet(0) "MACRO1" AtEnd()
+[NameSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       O97M.Shiver.A: MACRO1
+[ID]            CRC_MACRO1_SHIVERA
+[CRCXL4]        0xEF143F35
+[Signature]     NameSig(NAME_ONLY_MACRO1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       O97M.Shiver.A
+[Type]          XL4
+[QAStatus]      PASSED
+[ID]            VID_SHIVERA
+[Signature]     NamedCRCSig(CRC_MACRO1_SHIVERA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# B variant has the same XL4 macro as A variant
+
+[NamedCRCSigStart]
+[Comment]       O97M.Shiver.C: MACRO1
+[ID]            CRC_MACRO1_SHIVERC
+[CRCXL4]        0x41C2D6DC
+[Signature]     NameSig(NAME_ONLY_MACRO1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       O97M.Shiver.C
+[Type]          XL4
+[QAStatus]      PASSED
+[ID]            VID_SHIVERC
+[Signature]     NamedCRCSig(CRC_MACRO1_SHIVERC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NameSigStart]
+[Comment]       Only XL4POPPY
+[ID]            NAME_ONLY_XL4POPPY
+[Signature]     SeekSet(0) "XL4POPPY" AtEnd()
+[NameSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       W97M.Sic.A: XL4POPPY
+[ID]            CRC_XL4POPPY_SICA_97
+[CRCXL4]        0xBFAF4EB9
+[Signature]     NameSig(NAME_ONLY_XL4POPPY)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       W97M.Sic.A: XL4POPPY
+[ID]            CRC_XL4POPPY_SICA
+[CRCXL4]        0x0F18AF76
+[Signature]     NameSig(NAME_ONLY_XL4POPPY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XF.Sic.A
+[Type]          XL4
+[QAStatus]      PASSED
+[ID]            VID_SICA
+[Signature]     NamedCRCSig(CRC_XL4POPPY_SICA_97) OR
+[Signature]     NamedCRCSig(CRC_XL4POPPY_SICA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+

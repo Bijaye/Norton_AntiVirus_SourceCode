@@ -1,0 +1,630 @@
+/*//////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////*/
+
+@media screen,contrast-screen
+{
+	h1, h2, h3, h4, h5, h6, div, span, html, table, td, tr, a, body, img, button
+	{
+		padding:0px;
+		margin:0px;
+	}
+
+	body
+	{
+		font-family:Arial,Tahoma,verdana,sans-serif;
+		background-color:#FFFFFF;
+		font-size:10px;
+		width:100%;
+		height:100%;
+	}
+
+	button
+	{
+		background-image: url(cnsl-btn-norm-tall.png);
+		background-repeat: stretch;
+		font-family:arial,Tahoma,verdana,sans-serif;
+		font-size:11px;
+		color: #3C3C3C;
+		padding: 0;
+		padding-left: 8px;
+		padding-right: 8px;
+		min-width: 91px;
+		min-height: 24px;
+		width: max-instrinsic;
+		height: max-instrinsic;
+		text-align:center;
+		vertical-align:middle;
+		transition:blend;
+	}
+	button[role="default-button"]
+	{
+		background-image: url(cnsl-btn-dflt-tall.png);
+	}
+	*[hide="1"]
+	{
+		display:none;
+	}
+	button:hover
+	{
+		background-image: url(cnsl-btn-hvr-tall.png);
+	}
+	button:active
+	{
+		background-image: url(cnsl-btn-prss-tall.png);
+	}
+	button:disabled
+	{
+		background-image: url(cnsl-btn-disbl-tall.png);
+		color: #8C8C8C;
+	}
+	button:focus
+	{
+		background-image: url(cnsl-btn-dflt-tall.png);
+	}
+	button:focus:active
+	{
+		outline:none;
+	}
+
+	.VCenter
+	{
+		width:max-intrinsic;
+		padding-top:50%%;
+		padding-bottom:50%%;
+	}
+
+	.HSpace
+	{
+		width:100%%;
+	}
+
+	.ellipse
+	{
+		overflow:hidden;        /* three line below - ellipsis */
+		white-space:nowrap;
+		text-overflow:ellipsis;
+	}
+
+	.RedText { color: #BC191A; }
+	.BlueText { color: #5E94C2; }
+	.GreenText { color: #09870A; }
+	.GrayText { color: #C8C8C8; }
+	.OrangeText { color: #FF8702; }
+
+	.ULink
+	{
+		font-size:11px;
+		font-weight:bold;
+		color:#338ADB;
+		cursor:hand;
+		text-decoration:none;
+	}
+
+	.ULink:hover
+	{
+		text-decoration:underline;
+	}
+
+	.ULink:focus
+	{
+		color:orange;
+		text-decoration:underline;
+	}
+
+	.HorzInt
+	{
+		flow:horizontal;
+		width:max-intrinsic;
+		height:max-intrinsic;
+		padding-top:50%%;
+		padding-bottom:50%%;
+		white-space:nowrap;
+	}
+
+	.instructionsouter
+	{
+		padding:1px;
+		border-bottom:1px solid #bdbccc;
+	}
+
+	.instructions
+	{
+		background-color:#DAEBFF;
+		padding-left:23px;
+		padding-top:3px;
+		padding-bottom:3px;
+		font-size:11px;
+		min-height:30px;
+		vertical-align:middle;
+	}
+
+	.CProgressBar
+	{
+		width:374px;
+		height:13px;
+		padding:4px;
+		margin-top:8px;
+		margin-bottom:8px;
+		behavior:progress;
+		background-repeat:expand;
+		background-image:url(progress-back.png);
+		background-position:8px 8px 8px 8px; /*ltrb offsets*/
+		foreground-repeat:expand;
+		foreground-position:5px 5px 5px 5px; /*ltrb offsets*/
+		foreground-image:url(progress-body.png);
+	}
+
+	.TLImg
+	{
+		margin-left: 4px;
+		margin-right: 4px;
+		margin-top:50%%;
+		margin-bottom:50%%;
+		vertical-align:middle;
+	}
+
+	/***********************************/
+	/* dropdown button of the combobox */
+	/***********************************/
+	widget[type="select-dropdown"] > button,
+	select[type="select-dropdown"] > button
+	{
+		width: system-scrollbar-width;
+		min-width:0;
+		min-height:0;
+		margin: system-border-width; /*1px 1px 1px 0px;*/
+		padding:0;
+		height:100%%;
+		background-repeat:stretch;
+		background-image:url(theme:combobox-button-normal);
+		transition:none;
+	}
+	widget[type="select-dropdown"] > button:hover,
+	select[type="select-dropdown"] > button:hover
+	{
+		background-image:url(theme:combobox-button-hover);
+	}
+
+	widget[type="select-dropdown"] > button:active,
+	select[type="select-dropdown"] > button:active
+	{
+		background-image:url(theme:combobox-button-pressed);
+	}
+
+	widget[type="select-dropdown"] > button:disabled,
+	select[type="select-dropdown"] > button:disabled
+	{
+		background-image:url(theme:combobox-button-disabled);
+	}
+
+	/***************/
+	/* Tab madness */
+	/***************/
+	.tabs
+	{
+		margin:0px;
+		font-family:system;
+		behavior:tabs;
+		height:100%%;
+		width:100%%;
+		overflow:hidden;
+	}
+
+	.tabs > .strip /* tab strip */
+	{
+		flow: horizontal;
+		margin-bottom:-1px;
+		margin-top:1px;
+		padding: 0 5px 0 5px;
+	}
+
+	/*passive tabs (all by default)*/
+	.tabs .strip [panel]
+	{
+		height: 31px;
+		max-height: 31px;
+		min-width: 191px;
+		width: max-intrinsic;
+		margin-bottom:0px;
+		background-image:url(tab_inactive_blue_gold.png);
+		background-position:bottom left;
+		background-repeat:stretch;
+	}
+	.tabs .strip [panel] > [tabtitle] /* tab text */
+	{
+		width:100%%;
+		height:100%%;
+		text-align:left;
+		padding-top:12px;
+		padding-left:8px;
+		padding-right:8px;
+		font-family:arial,Tahoma,verdana,sans-serif;
+		font-size:12px;
+		font-weight:bold;
+	}
+	.tabs .strip [panel][state="alert"]
+	{
+		background-image:url(tab_inactive_red_gold.png);
+	}
+
+	/*passive tab hover*/
+	.tabs .strip [panel]:hover,
+	.tabs .strip [panel][state="alert"]:hover
+	{
+		cursor:pointer;
+	}
+
+	/*active tab*/
+	.tabs .strip [panel][selected]
+	{
+	   position:relative;
+	   background-image:url(tab_active_gold.png);
+	}
+	.tabs .strip [panel][selected] > [tabtitle] /* tab text, active tab */
+	{
+		padding-top:9px;
+	}
+	.tabs .strip [panel][selected][state="alert"]
+	{
+		background-image:url(tab_active_red.png);
+	}
+
+	/*active tab hover*/
+	.tabs .strip [panel][selected]:hover,
+	.tabs .strip [panel][selected][state="alert"]:hover
+	{
+		cursor:default;
+	}
+
+	.tabs > [name] { display:none; }
+	.tabs > [name][selected]
+	{
+		padding:0px;
+		display:block;
+		height:100%%;
+		width:100%%;
+		border:0;
+		border-bottom:1px solid #AAAAAA;
+		border-top:1px solid #FFC700;
+	}
+	.tabs > [name][selected][state="alert"]
+	{
+		border-top:1px solid #DD1110;
+	}
+
+	.tabs .strip:focus [panel][selected]
+	{
+		text-decoration:underline;
+	}
+
+	/**************************/
+	/* checkbox button button */
+	/**************************/
+	button[type="checkbox"]
+	{
+		color:black;
+		padding:4px;
+		behavior:check;
+		background-repeat:no-repeat;
+		background-position:5px 50%;
+		background-image:url(theme:check-normal);
+		padding-left:system-small-icon-width;
+		text-decoration:none;
+	}
+	button[type="checkbox"]:hover
+	{
+		background-image:url(theme:check-hover);
+		color:orange;
+		text-decoration:underline;
+	}
+	button[type="checkbox"]:hover:active
+	{
+		background-image:url(theme:check-pressed);
+	}
+	button[type="checkbox"]:disabled
+	{
+		background-image:url(theme:check-disabled);
+	}
+	button[type="checkbox"]:checked
+	{
+		background-image:url(theme:check-checked-normal);
+	}
+	button[type="checkbox"]:checked:hover
+	{
+		background-image:url(theme:check-checked-hover);
+	}
+	button[type="checkbox"]:checked:hover:active
+	{
+		background-image:url(theme:check-checked-pressed);
+	}
+	button[type="checkbox"]:checked:disabled
+	{
+		background-image:url(theme:check-checked-disabled);
+	}
+	button[type="checkbox"][mixed],
+	button[type="checkbox"][mixed]:checked
+	{
+		background-image:url(theme:check-mixed-normal);
+	}
+	button[type="checkbox"][mixed]:hover,
+	button[type="checkbox"][mixed]:checked:hover
+	{
+		background-image:url(theme:check-mixed-hover);
+		color:orange;
+	}
+	button[type="checkbox"][mixed]:hover:active,
+	button[type="checkbox"][mixed]:checked:hover:active
+	{
+		background-image:url(theme:check-mixed-pressed);
+	}
+	button[type="checkbox"][mixed]:disabled,
+	button[type="checkbox"][mixed]:checked:disabled
+	{
+		background-image:url(theme:check-mixed-disabled);
+	}
+
+	/******************************/
+	/*grid for attn & details tabs*/
+	/******************************/
+	table[type="grid"]
+	{
+		border-bottom:1px solid #bdbccc;
+		overflow: auto;
+		width:100%%;
+		height:100%%;
+		behavior:grid;
+	}
+	table[type="grid"] th
+	{
+		color: black;
+		font-size:12px;
+		font-weight:bold;
+		text-align:left;
+		padding-left:15px;
+		height:19px;
+		background-color:#DDDDDD;
+		background-image:none;
+	}
+
+	table[type="grid"] th:hover
+	{
+		background-color:#CACACA;
+		transition:blend;
+	}
+
+	table[type="grid"] th[order="asc"]
+	{
+		background-image:url(asc.png);
+		background-position:5px 0px 0px 2px; /* t,r,b,l */
+		background-repeat:no-repeat;
+	}
+
+	table[type="grid"] th[order="desc"]
+	{
+		background-image:url(desc.png);
+		background-position:4px 0px 0px 2px; /* t,r,b,l */
+		background-repeat:no-repeat;
+	}
+
+	table[type="grid"] tr { height: 23px; }
+
+	table[type="grid"] tr:nth-child(odd) { background-color:#F5F5FF; } /* each odd row */
+	table[type="grid"] tr:nth-child(even) { background-color:#F5F5FF; } /* each even row */
+
+	table[type="grid"] tr:current /* current row */
+	{
+		background-color:#A4A1C4;
+		color:white;
+	}
+
+	table[type="grid"] td
+	{
+		padding:2px;
+		font-size:11px;
+		font-weight:medium;
+		min-width:69px;
+	}
+
+	table[type="grid"] td:nth-child(1) /* first column */
+	{
+		text-align:left;
+	}
+	table[type="grid"] td:nth-child(2) /* second column */
+	{
+		text-align:left;
+		width:100%%;
+		height:max-intrinsic;
+		padding-left:15px;
+	}
+	table[type="grid"] td:nth-child(3) /* third column */
+	{
+		text-align:center;
+		white-space:normal;
+		min-width:max-intrinsic;
+		max-width:max-intrinsic;
+	}
+	table[type="grid"] td:nth-child(4) /* last column */
+	{
+		text-align:center;
+		white-space:nowrap;
+		width:max-intrinsic;
+		padding-right:21px;
+		flow:horizontal;
+	}
+	table[type="grid"] th:nth-child(3) /* third header */
+	{
+		padding-right:7px;
+		min-width:max-intrinsic;
+	}
+}
+
+@media contrast-screen
+{
+	body
+	{
+		background-color:window;
+		color:windowtext;
+	}
+	a:link,
+	a:visited
+	{
+		color:inactivecaption;
+	}
+	a:hover,
+	a:active,
+	a:focus
+	{
+		color:activecaption;
+	}
+	.ULink
+	{
+		color:inactivecaption;
+	}
+	.ULink:focus
+	{
+		color:activecaption;
+	}
+
+	.instructionsouter
+	{
+		border-bottom:1px solid highlight;
+	}
+
+	.instructions
+	{
+		background-color:window;
+		color:windowtext;
+	}
+
+	.RedText { color:highlighttext; }
+	.BlueText { color:windowtext; }
+	.GreenText { color:windowtext; }
+	.GrayText { color:windowtext; }
+	.OrangeText { color:highlighttext; }
+
+	/***************/
+	/* Buttons     */
+	/***************/
+	button
+	{
+		background-repeat:stretch;
+		background-image:url(theme:button-normal);
+		color:windowtext;
+	}
+	button[role="default-button"]
+	{
+		background-image:url(theme:button-defaulted);
+	}
+	button:hover
+	{
+		background-image:url(theme:button-hover);
+	}
+	button:active
+	{
+		background-image:url(theme:button-pressed);
+	}
+	button:disabled
+	{
+		background-image:url(theme:button-disabled);
+		color:graytext;
+	}
+	button:focus
+	{
+		background-image:url(theme:button-hover);
+		outline:1px dotted windowtext -4px;
+	}
+
+	/***************/
+	/* Tab madness */
+	/***************/
+	/*passive tabs (all by default)*/
+	.tabs .strip [panel]
+	{
+		background-image:none;
+		background-color:window;
+		color:windowtext;
+		border:1px solid highlight;
+	}
+	.tabs .strip [panel][state="alert"]
+	{
+		background-image:none;
+		background-color:infotext;
+		color:infobackground;
+	}
+
+	/*active tab*/
+	.tabs .strip [panel][selected]
+	{
+		background-image:none;
+		background-color:highlight;
+		color:highlighttext;
+	}
+	.tabs .strip [panel][selected][state="alert"]
+	{
+		background-image:none;
+		background-color:highlight;
+		color:highlighttext;
+	}
+
+	/*active tab hover*/
+	.tabs > [name][selected]
+	{
+		border-bottom:1px solid highlight;
+		border-top:1px solid highlight;
+	}
+	.tabs > [name][selected][state="alert"]
+	{
+		border-top:1px solid infotext;
+	}
+
+	/**************************/
+	/* checkbox button button */
+	/**************************/
+	button[type="checkbox"]
+	{
+		color:windowtext;
+		padding:4px;
+		background-image:url(theme:check-normal);
+		padding-left:45px;
+	}
+	button[type="checkbox"]:hover
+	{
+		background-image:url(theme:check-hover);
+		color:windowtext;
+		text-decoration:underline;
+	}
+
+	/******************************/
+	/*grid for attn & details tabs*/
+	/******************************/
+	table[type="grid"]
+	{
+		border-bottom:1px solid highlight;
+	}
+	table[type="grid"] th
+	{
+		color: window;
+		background-color:windowtext;
+	}
+
+	table[type="grid"] th:hover
+	{
+		background-color:windowtext;
+		text-decoration:underline;
+	}
+
+	table[type="grid"] tr:nth-child(odd) { background-color:window; } /* each odd row */
+	table[type="grid"] tr:nth-child(even) { background-color:window; } /* each even row */
+
+	table[type="grid"] tr:current /* current row */
+	{
+		background-color:highlight;
+		color:highlighttext;
+	}
+}

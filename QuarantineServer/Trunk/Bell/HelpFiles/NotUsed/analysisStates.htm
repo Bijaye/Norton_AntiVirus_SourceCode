@@ -1,0 +1,125 @@
+<HTML>
+ <HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<TITLE>Avis OverView</TITLE>
+</HEAD>
+<BODY >
+<H1> Analysis States</H1>
+The AntiVirus Immune System network reports the status of samples that have been submitted as they progress through the analysis process with the X-Analysis-State attribute. 
+    The state may indicate where in the network hierarchy a sample is located, 
+    or what stage of the analysis pipeline is currently working on the sample, 
+    or its final disposition.
+<blockquote>
+<P>
+    <a href="#final"><b>Final States</b></a><BR>
+    <a href="#transit"><b>Transit States</b></a><BR>
+    <a href="#pending"><b>Pending States</b></a><BR>
+    <a href="#active"><b>Active States</b></a><BR>
+  </p>
+</blockquote>
+<P> <a name="final"></a> <B>Final States</B><BR>
+  Samples that have been finished are in one of the final states. All nodes in 
+  the Immune System use the terminal states. After a sample has been placed in 
+  a terminal state, its state will not change again. The X-Date-Analyzed attribute 
+  is set when a sample is placed into a terminalstate; its presence means that 
+  the value of X-Analysis-State is terminal. 
+<UL>
+  <LI><b>uninfectable</b>: The sample contains no executable code, and therefore 
+    cannot be infected with any virus. The sample may be too small to contain 
+    any executable code, or may contain data only, such as a graphic image or 
+    an audio clip.</LI>
+  <LI><b>unsubmitable</b>: The sample contains known malicious software which 
+    is not a virus, such as a trojan horse.</LI>
+  <LI><b>declined</b>: The sample is not acceptable, and has been politely but 
+    firmly refused.</LI>
+  <LI><b>nodetect</b>: The sample has not been analyzed, but does not contain 
+    any apparent suspicious code.</LI>
+  <LI><b>infected</b>: The sample is infected with a virus, and can be repaired 
+    with available virus definition files.</LI>
+  <LI><b>uninfected</b>: The sample has been analyzed and no virus was found.</LI>
+  <LI><b>misfired</b>: The sample has been analyzed and no virus was found, in 
+    spite of a detected infection. The incorrectly detected infection was caused 
+    by a mistake in previous virus definition files, and the mistake is corrected 
+    in newer virus definition files.</LI>
+  <LI><b>abort</b>: An internal programming error has derailed transport or analysis 
+    of the sample.</LI>
+  <LI><b>broken</b>: The sample is infected with a virus, but the definition generation 
+    service in the back office reported an error, and no virus definition files 
+    are available. </LI>
+</UL>
+<P> <a name="transit"></a> <B>Transit States</B><BR>
+  Samples that have not yet reached the analysis center are in one of the transit states. Only components outside 
+  the analysis center use the transit states. A sample may remain in a pending 
+  state indefinitely before moving to another state. 
+<UL>
+  <LI><b>receiving</b>: The sample is being received by a gateway.</LI>
+  <LI><b>accepted</b>: The sample has been accepted by a gateway, but not yet 
+    imported into the analysis center.</LI>
+  <LI><b>importing</b>: The sample is being imported into the analysis center.</LI>
+</UL>
+<P> <a name="pending"></a> <B>Pending States</B><BR>
+  Samples that are awaiting analysis within the analysis center are in one of 
+  the pending states. Only components within the analysis center use the pending 
+  states. A sample may remain in a pending state indefinitely before moving to 
+  another state. 
+<UL>
+  <LI><b>defer</b>: The sample cannot be analyzed automatically, and will be deferred 
+    for analysis by experts.</LI>
+  <LI><b>deferred</b>: The sample cannot be analyzed automatically, and has been 
+    deferred for analysis by experts.</LI>
+  <LI><b>deferring</b>: The sample cannot be analyzed automatically, and is being 
+    deferred for analysis by experts.</LI>
+  <LI><b>imported</b>: The sample has been imported into the analysis center, 
+    but has not yet been analyzed.</LI>
+  <LI><b>rescan</b>: The sample must be re-scanned because newer virus definition 
+    files have become available within the analysis center.</LI>
+</UL>
+<P> <a name="active"></a> <B>Active States</B><BR>
+  Samples that are being analyzed within the analysis center are in one of the 
+  active states. Only the dataflow component within the analysis center uses the 
+  active states. A sample may remain in an active state for only a few seconds 
+  or for many minutes before moving to another state. 
+<UL>
+  <LI><b>classifying</b>: The sample is being classified to determine its datatype.</LI>
+  <LI><b>binary</b>: The sample has been classified as a binary program, and is 
+    waiting for the binary controller.</LI>
+  <LI><b>binaryControlling</b>: The binary controller is determining starting 
+    conditions for binary replication.</LI>
+  <LI><b>binaryWait</b>: The sample is waiting for a binary replication engine 
+    to become available.</LI>
+  <LI><b>binaryReplicating</b>: The sample is being executed by a binary replication 
+    engine.</LI>
+  <LI><b>binaryScoring</b>: The sample infected other binary programs, and the 
+    binary scoring engine is selecting signatures for detecting and repairing 
+    the virus.</LI>
+  <LI><b>macro</b>: The sample has been classified as a document or spreadsheet 
+    containing executable macros, and is waiting for the macro controller.</LI>
+  <LI><b>macroControlling</b>: The macro controller is determining starting conditions 
+    for macro replication.</LI>
+  <LI><b>macroWait</b>: The sample is waiting for a macro replication engine to 
+    become available.</LI>
+  <LI><b>macroReplicating</b>: The sample is being executed by a macro replication 
+    engine.</LI>
+  <LI><b>macroScoring</b>: The sample infected other documents or spreadsheets, 
+    and the macro scoring engine is selecting signatures for detecting and repairing 
+    the virus.</LI>
+  <LI><b>signatures</b>: The sample is infected with a new virus, signatures for 
+    detecting and repairing it have been selected, and the sample is waiting for 
+    the build process to become available.</LI>
+  <LI><b>locking</b>: Exclusive access to the definition generation service in 
+    the back office is being acquired.</LI>
+  <LI><b>incrBuilding</b>: The signatures selected for the new virus are being 
+    added to the current virus definition files.</LI>
+  <LI><b>incrUnitTesting</b>: The incremental virus definition files are being 
+    unit-tested.</LI>
+  <LI><b>fullBuilding</b>: A new set of virus definition files incorporating the 
+    signatures selected for the new virus are being built.</LI>
+  <LI><b>fullUnitTesting</b>: The full virus definition files are being unit-tested.</LI>
+  <LI><b>unlocking</b>: Exclusive access to the definition generation service 
+    is being released.</LI>
+  <LI><b>archive</b>: The sample is waiting to archive the automated analysis 
+    files.</LI>
+  <LI><b>archiving</b>: The sample is archiving the automated analysis files.</LI>
+</UL>
+</BODY>
+</HTML>

@@ -1,0 +1,4378 @@
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/CPU.CPP#1 - d:/work\EMULATOR\SRC\CPU.CPP ====
+@@ -142,6 +142,7 @@
+ //************************************************************************
+ 
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ 
+ /* code */
+@@ -666,7 +667,13 @@
+     while (wDepth < MAX_COM_JUMP_DEPTH)
+     {
+         if (lpbyBuffer[0] == 0xE8 || lpbyBuffer[0] == 0xE9)
++        {
++#ifdef BIG_ENDIAN
++	    wIP += ((WORD)lpbyBuffer[2] << 8) + lpbyBuffer[1] + 3;
++#else
+             wIP += *((LPWORD)(lpbyBuffer+1)) + 3;
++#endif
++        }
+         else if (lpbyBuffer[0] == 0xEB)
+             wIP += (WORD)(signed short)
+                     (signed char)*((LPBYTE)(lpbyBuffer+1)) + 2;
+@@ -881,11 +888,11 @@
+ {
+ 	DWORD dwOffset, dwReloc, dwCSIP;
+ 
+-	if (0 == h->reloc_table_items)
++	if (0 == WENDIAN(h->reloc_table_items))
+ 		return;
+ 
+-	dwOffset = h->first_rel_offset +
+-			   (h->reloc_table_items - 1) * sizeof(DWORD);
++	dwOffset = WENDIAN(h->first_rel_offset) +
++			   (WENDIAN(h->reloc_table_items) - 1) * sizeof(DWORD);
+ 
+     if (PAMFileSeek(hLocal->CPU.stream,dwOffset,SEEK_SET) != dwOffset)
+ 	{
+@@ -898,9 +905,11 @@
+ 		hLocal->dwFlags |= LOCAL_FLAG_FILE_ERROR;
+ 		return;
+ 	}
++
++	dwReloc = DWENDIAN(dwReloc);
+ 
+ 	dwReloc = (dwReloc >> 12) + (dwReloc & 0xFFFFU);
+-	dwCSIP = ((DWORD)h->cs << 4) + h->ip;
++	dwCSIP = ((DWORD)WENDIAN(h->cs) << 4) + WENDIAN(h->ip);
+ 
+ 	if (dwReloc > dwCSIP)
+ 		exclude_item(hLocal,RELOC_AFTER_CSIP);
+@@ -984,9 +993,9 @@
+ 
+     hLocal->CPU.ireg.D.EBP = 0x0000091CL;
+ 
+-    hLocal->CPU.ireg.D.ESI = (DWORD)h->ip;      // starting IP
++    hLocal->CPU.ireg.D.ESI = (DWORD)WENDIAN(h->ip);  // starting IP
+ 
+-    hLocal->CPU.ireg.D.EDI = (DWORD)h->sp;      // starting SP
++    hLocal->CPU.ireg.D.EDI = (DWORD)WENDIAN(h->sp);  // starting SP
+ 
+ 
+     hLocal->CPU.FLAGS.O = hLocal->CPU.FLAGS.D =
+@@ -997,7 +1006,7 @@
+ 
+ 	// right after header/reloc. data = start of image
+ 
+-    hLocal->CPU.image_start_offset = ((DWORD)h->header_size * PARAGRAPH);
++    hLocal->CPU.image_start_offset = ((DWORD)WENDIAN(h->header_size) * PARAGRAPH);
+ 
+ 	/* this is the linear address of the start of the program in memory.  it
+ 	   can be added to any address to determine the offset from the start of
+@@ -1007,11 +1016,11 @@
+ 
+ 	/* set up CS:IP */
+ 
+-    hLocal->CPU.CS = h->cs + EXE_START_SEG;
+-    hLocal->CPU.IP = h->ip;
++    hLocal->CPU.CS = WENDIAN(h->cs) + EXE_START_SEG;
++    hLocal->CPU.IP = WENDIAN(h->ip);
+ 
+-    hLocal->CPU.SS = h->ss + EXE_START_SEG;
+-    hLocal->CPU.ireg.D.ESP = (DWORD)h->sp;
++    hLocal->CPU.SS = WENDIAN(h->ss) + EXE_START_SEG;
++    hLocal->CPU.ireg.D.ESP = (DWORD)WENDIAN(h->sp);
+ 
+     hLocal->CPU.DS = hLocal->CPU.ES = EXE_START_SEG - 0x10;
+ 
+@@ -1022,10 +1031,10 @@
+     exclude_item(hLocal,BAD_EXE);
+ 	exclude_exe_entry_point(hLocal,h);
+ 
+-    hLocal->CPU.ulImageSize = (h->page_size * 512L) +
+-                       h->len_mod_512 - (long)h->header_size * PARAGRAPH;
++    hLocal->CPU.ulImageSize = (WENDIAN(h->page_size) * 512L) +
++                       WENDIAN(h->len_mod_512) - (long)WENDIAN(h->header_size) * PARAGRAPH;
+ 
+-	if (h->len_mod_512 != 0)
++	if (WENDIAN(h->len_mod_512) != 0)
+ 	{
+ 		if (hLocal->CPU.ulImageSize >= 512L)
+ 			hLocal->CPU.ulImageSize -= 512L;
+@@ -1041,7 +1050,7 @@
+     if (dwTemp == (DWORD)-1)
+         hLocal->dwFlags |= LOCAL_FLAG_FILE_ERROR;   // error on seek...
+ 
+-    dwDiskImageSize = dwTemp - (DWORD)h->header_size * PARAGRAPH;
++    dwDiskImageSize = dwTemp - (DWORD)WENDIAN(h->header_size) * PARAGRAPH;
+ 
+     if (hLocal->CPU.ulImageSize > dwDiskImageSize)
+         hLocal->CPU.ulImageSize = dwDiskImageSize;
+@@ -1159,9 +1168,9 @@
+     hLocal->CPU.offset_modifier  = -(long)SYS_START_SEG * (long)PARAGRAPH;
+ 
+     if (wEntryNum == 0)
+-        hLocal->CPU.IP = h->strategy_ip;
++        hLocal->CPU.IP = WENDIAN(h->strategy_ip);
+ 	else
+-        hLocal->CPU.IP = h->int_ip;
++        hLocal->CPU.IP = WENDIAN(h->int_ip);
+ 
+ 	// make sure we perform exclusions.
+ 
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/DATAFILE.CPP#1 - d:/work\EMULATOR\SRC\DATAFILE.CPP ====
+@@ -41,6 +41,7 @@
+ //************************************************************************
+ 
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ 
+ 
+@@ -106,6 +107,19 @@
+         return(DFSTATUS_FILE_ERROR);
+     }
+ 
++#ifdef BIG_ENDIAN
++    lpTempInfo->sHeader.dwTableOffset = 
++	DWENDIAN(lpTempInfo->sHeader.dwTableOffset);
++    lpTempInfo->sHeader.dwSignature = 
++	DWENDIAN(lpTempInfo->sHeader.dwSignature);
++    lpTempInfo->sHeader.dwVersionNumber = 
++	DWENDIAN(lpTempInfo->sHeader.dwVersionNumber);
++    lpTempInfo->sHeader.wNumSections =
++	WENDIAN(lpTempInfo->sHeader.wNumSections);
++    lpTempInfo->sHeader.dwCRC =
++	DWENDIAN(lpTempInfo->sHeader.dwCRC);
++#endif
++
+     // the DEADBEEF below is legacy code to support QA tools, etc...
+ 
+     if (SIG_VALUE != lpTempInfo->sHeader.dwSignature &&
+@@ -241,6 +255,13 @@
+         if (sTABLETYPE != uBytes)
+ 			return(DFSTATUS_FILE_ERROR);
+ 
++
++#ifdef BIG_ENDIAN
++        sTableEntry.dwIdent = DWENDIAN(sTableEntry.dwIdent);
++        sTableEntry.dwVersionNumber = DWENDIAN(sTableEntry.dwVersionNumber);
++        sTableEntry.dwStartOffset = DWENDIAN(sTableEntry.dwStartOffset);
++        sTableEntry.dwLength = DWENDIAN(sTableEntry.dwLength);
++#endif
+ 
+         /* found the specified table entry.  report to the user */
+ 
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/EXCLUDE.CPP#1 - d:/work\EMULATOR\SRC\EXCLUDE.CPP ====
+@@ -64,6 +64,7 @@
+ //************************************************************************
+ 
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+@@ -956,7 +957,9 @@
+     if (PAMFileRead(hStream,&wNumProfiles,sizeof(wNumProfiles)) !=
+         sizeof(wNumProfiles))
+         return(PAMSTATUS_FILE_ERROR);
++
++    wNumProfiles = WENDIAN(wNumProfiles);
+ 
+     // and allocate appropriate memory
+ 
+ 	wNumVirusWords = wNumProfiles >> 0x4;
+@@ -1018,7 +1021,34 @@
+                 PAMMemoryFree(exclude_info->emask[j].bitmap);
+ 
+             return(PAMSTATUS_FILE_ERROR);
++        }
++
++#ifdef BIG_ENDIAN
++
++	////////////////////////
++	// endian stuff: convert decrypt_rec to big endian if necessary
++
++	{
++            WORD        wTemp;
++
++            decrypt_rec.flags = DWENDIAN(decrypt_rec.flags);
++            decrypt_rec.min_file_size = DWENDIAN(decrypt_rec.min_file_size);
++            decrypt_rec.max_exe_eof_dist = DWENDIAN(decrypt_rec.max_exe_eof_dist);
++            decrypt_rec.min_exe_eof_dist = DWENDIAN(decrypt_rec.min_exe_eof_dist);
++            decrypt_rec.bad_int_set = WENDIAN(decrypt_rec.bad_int_set);
++    
++            for (wTemp = 0;wTemp < INSTR_WORDS;wTemp++)
++                decrypt_rec.opcode_set[wTemp] =
++                    WENDIAN(decrypt_rec.opcode_set[wTemp]);
++    
++            for (wTemp = 0;wTemp < DOS_FUNC_WORDS;wTemp++)
++                decrypt_rec.good_dos_set[wTemp] =
++                    WENDIAN(decrypt_rec.good_dos_set[wTemp]);
++    
+         }
++        // endian stuff
++        ////////////////////////
++										#endif
+ 
+ #if defined(IN_AUTOPROTECT)
+ 
+@@ -1730,11 +1760,11 @@
+     // CS entrypoints which are negative in some cases.  If a DWORD is used
+ 	// when multiplying CS * PARAGRAPH, then the result will be > 1MB!
+ 
+-	seg_mult = h->cs + h->header_size;
++	seg_mult = WENDIAN(h->cs) + WENDIAN(h->header_size);
+ 
+-    entry = ((DWORD)seg_mult*PARAGRAPH + h->ip) & EFFECTIVE_ADDRESS_MASK;
+-    header_eof = ((h->page_size) * 512L) + h->len_mod_512;
+-    if (h->len_mod_512)
++    entry = ((DWORD)seg_mult*PARAGRAPH + WENDIAN(h->ip)) & EFFECTIVE_ADDRESS_MASK;
++    header_eof = ((WENDIAN(h->page_size)) * 512L) + WENDIAN(h->len_mod_512);
++    if (WENDIAN(h->len_mod_512))
+         header_eof -= 512L;
+ 
+ 	/* what is the distance of the entry code from the EOF, as defined in
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/EXEC.CPP#1 - d:/work\EMULATOR\SRC\EXEC.CPP ====
+@@ -106,6 +106,7 @@
+ //************************************************************************
+ 
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ 
+ //#define BUILD_SET
+@@ -386,16 +387,30 @@
+ 
+ void prefetch_queue_to_vm(PAMLHANDLE hLocal)
+ {
+-    int     i;
+-    BYTE    *byPtr;
++    int             i;
++    BYTE            *byPtr;
++    prefetch_type   stLocalCopy;
++
++    stLocalCopy = hLocal->CPU.prefetch;
+ 
+-    byPtr = (BYTE *)&hLocal->CPU.prefetch;
++#ifdef BIG_ENDIAN
++    stLocalCopy.wCurrentRequest = WENDIAN(stLocalCopy.wCurrentRequest);
++    stLocalCopy.wNextRequest = WENDIAN(stLocalCopy.wNextRequest);
++    stLocalCopy.wFlags = WENDIAN(stLocalCopy.wFlags);
++    stLocalCopy.wHead = WENDIAN(stLocalCopy.wHead);
++    stLocalCopy.wTail = WENDIAN(stLocalCopy.wTail);
++    stLocalCopy.wSize = WENDIAN(stLocalCopy.wSize);
++    
++    for (i=0;i<MAX_PREFETCH_QUEUE_SIZE;i++)
++        stLocalCopy.wQueue[i] = WENDIAN(stLocalCopy.wQueue[i]);
++#endif
+ 
+-	for (i=0;i<sizeof(prefetch_type);i++)
+-		put_byte(hLocal,hLocal->CPU.ES,
+-				 (WORD)(hLocal->CPU.ireg.X.DI + i),
+-				 byPtr[i]);
++    byPtr = (BYTE *)&stLocalCopy;
+ 
++    for (i=0;i<sizeof(prefetch_type);i++)
++        put_byte(hLocal,hLocal->CPU.ES,
++            (WORD)(hLocal->CPU.ireg.X.DI + i),
++            byPtr[i]);
+ }
+ 
+ 
+@@ -427,59 +442,74 @@
+ 
+ void vm_to_prefetch_queue(PAMLHANDLE hLocal)
+ {
+-	int     i;
+-	BYTE    *byPtr;
+-	WORD    wSize, wCurrentRequest, wNextRequest;
++    int             i;
++    BYTE            *byPtr;
++    WORD            wSize, wCurrentRequest, wNextRequest;
++    prefetch_type   stLocalCopy;
++
++    wSize           = hLocal->CPU.prefetch.wSize;
++    wCurrentRequest = hLocal->CPU.prefetch.wCurrentRequest;
++    wNextRequest    = hLocal->CPU.prefetch.wNextRequest;
++
++    byPtr = (BYTE*)&stLocalCopy;
++
++    for (i=0;i<sizeof(prefetch_type);i++)
++    	*byPtr++ = get_byte(hLocal,
++            hLocal->CPU.ES,
++            (WORD)(hLocal->CPU.ireg.X.DI + i));
+ 
+-	wSize           = hLocal->CPU.prefetch.wSize;
+-	wCurrentRequest = hLocal->CPU.prefetch.wCurrentRequest;
+-	wNextRequest    = hLocal->CPU.prefetch.wNextRequest;
++#ifdef BIG_ENDIAN
++    stLocalCopy.wCurrentRequest = WENDIAN(stLocalCopy.wCurrentRequest);
++    stLocalCopy.wNextRequest = WENDIAN(stLocalCopy.wNextRequest);
++    stLocalCopy.wFlags = WENDIAN(stLocalCopy.wFlags);
++    stLocalCopy.wHead = WENDIAN(stLocalCopy.wHead);
++    stLocalCopy.wTail = WENDIAN(stLocalCopy.wTail);
++    stLocalCopy.wSize = WENDIAN(stLocalCopy.wSize);
+ 
+-	byPtr = (BYTE *)&hLocal->CPU.prefetch;
++    for (i=0;i<MAX_PREFETCH_QUEUE_SIZE;i++)
++        stLocalCopy.wQueue[i] = WENDIAN(stLocalCopy.wQueue[i]);
++#endif
+ 
+-	for (i=0;i<sizeof(prefetch_type);i++)
+-		*byPtr++ = get_byte(hLocal,
+-							hLocal->CPU.ES,
+-							(WORD)(hLocal->CPU.ireg.X.DI + i));
++    hLocal->CPU.prefetch = stLocalCopy;
+ 
+-	// verify that the prefetch queue was not trashed...
++    // verify that the prefetch queue was not trashed...
+ 
+-	if (hLocal->CPU.prefetch.wHead > MAX_PREFETCH_QUEUE_SIZE)
+-	{
+-		hLocal->CPU.prefetch.wHead = 0;
+-		hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
+-	}
++    if (hLocal->CPU.prefetch.wHead > MAX_PREFETCH_QUEUE_SIZE)
++    {
++        hLocal->CPU.prefetch.wHead = 0;
++        hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
++    }
+ 
+-	if (hLocal->CPU.prefetch.wTail >= MAX_PREFETCH_QUEUE_SIZE)
+-	{
+-		hLocal->CPU.prefetch.wTail = 0;
+-		hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
+-	}
++    if (hLocal->CPU.prefetch.wTail >= MAX_PREFETCH_QUEUE_SIZE)
++    {
++        hLocal->CPU.prefetch.wTail = 0;
++        hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
++    }
+ 
+-	if (wSize != hLocal->CPU.prefetch.wSize)
+-	{
+-		hLocal->CPU.prefetch.wSize = wSize;
+-		hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
+-	}
++    if (wSize != hLocal->CPU.prefetch.wSize)
++    {
++        hLocal->CPU.prefetch.wSize = wSize;
++        hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
++    }
+ 
+-	if (wCurrentRequest != hLocal->CPU.prefetch.wCurrentRequest)
+-	{
+-		hLocal->CPU.prefetch.wCurrentRequest = wCurrentRequest;
+-		hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
+-	}
++    if (wCurrentRequest != hLocal->CPU.prefetch.wCurrentRequest)
++    {
++        hLocal->CPU.prefetch.wCurrentRequest = wCurrentRequest;
++        hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
++    }
+ 
+-	if (wNextRequest != hLocal->CPU.prefetch.wNextRequest)
+-	{
+-		hLocal->CPU.prefetch.wNextRequest = wNextRequest;
+-		hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
+-	}
++    if (wNextRequest != hLocal->CPU.prefetch.wNextRequest)
++    {
++        hLocal->CPU.prefetch.wNextRequest = wNextRequest;
++        hLocal->CPU.prefetch.wFlags |= PREFETCH_FLAG_RELOAD;
++    }
+ 
+-	// make sure flags are OK.
++    // make sure flags are OK.
+ 
+-	if (hLocal->CPU.prefetch.wFlags &
+-		(WORD)~(PREFETCH_FLAG_RELOAD | PREFETCH_FLAG_FAULT))
+-		hLocal->CPU.prefetch.wFlags &=
+-			(PREFETCH_FLAG_RELOAD | PREFETCH_FLAG_FAULT);
++    if (hLocal->CPU.prefetch.wFlags &
++            (WORD)~(PREFETCH_FLAG_RELOAD | PREFETCH_FLAG_FAULT))
++        hLocal->CPU.prefetch.wFlags &=
++	    (PREFETCH_FLAG_RELOAD | PREFETCH_FLAG_FAULT);
+ }
+ 
+ 
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/PAMAPI.CPP#1 - d:/work\EMULATOR\SRC\PAMAPI.CPP ====
+@@ -137,6 +137,7 @@
+ 
+ /* this file contains the PAM interface code for allocating context handles */
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ 
+ #include "ident.h"
+@@ -174,6 +175,10 @@
+     DATAFILEHANDLE      hDataFile;
+     HFILE               hFile;
+     ExcludeContext      hExclude;
++#ifdef BIG_ENDIAN
++    PAMConfigType*      pConfig;
++    int                 i;
++#endif
+ 
+     /* point our hPtr to NULL so if we return an error its taken care of */
+ 
+@@ -262,8 +267,29 @@
+         PAMMemoryFree(pTemp);
+ 
+         return(PAMSTATUS_FILE_ERROR);
++    }
++
++
++#ifdef BIG_ENDIAN
++
++    pConfig = &pTemp->config_info;
++    pConfig->wFillWord = WENDIAN(pConfig->wFillWord);
++    pConfig->dwMaxIter = DWENDIAN(pConfig->dwMaxIter);
++    pConfig->wMinWritesForScan = WENDIAN(pConfig->wMinWritesForScan);
++    pConfig->wFaultSS = WENDIAN(pConfig->wFaultSS);
++    pConfig->wFaultSP = WENDIAN(pConfig->wFaultSP);
++    pConfig->ulMaxImmuneIter = DWENDIAN(pConfig->ulMaxImmuneIter);
++    pConfig->ulMinNoExcludeCount = DWENDIAN(pConfig->ulMinNoExcludeCount);
++    for (i = 0; i < NUM_FAULTS; i++)
++    {
++        pConfig->dwFaultSegOffArray[i] = DWENDIAN(pConfig->dwFaultSegOffArray[i]);
++        pConfig->dwFaultIterArray[i] = DWENDIAN(pConfig->dwFaultIterArray[i]);
+     }
++    pConfig->dwCacheCheckIter = DWENDIAN(pConfig->dwCacheCheckIter);
++    pConfig->dwCacheStoreIter = DWENDIAN(pConfig->dwCacheStoreIter);
++    pConfig->dwAPMaxIter = DWENDIAN(pConfig->dwAPMaxIter);
+ 
++#endif
+ 
+     /* we now have our config options loaded up!  now its time to load the
+         global exclusion data */
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/SEARCH.CPP#1 - d:/work\EMULATOR\SRC\SEARCH.CPP ====
+@@ -31,6 +31,7 @@
+ //************************************************************************
+ 
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ 
+ 
+@@ -59,7 +60,8 @@
+ 			if (pPAMG->sig_ptr_array[j]->sig[0] == pPAMG->top_set[i])
+ 			{
+ 				ptr = (WORD *)(pPAMG->sig_ptr_array[j]->sig+1);
+-				val = (*ptr) >> BIT_TABLE_SHIFT;
++				val = (*((LPBYTE)ptr) << 8) + *(((LPBYTE)ptr)+1);
++				val >>= BIT_TABLE_SHIFT;
+ 
+ 				byte_num = val >> 3;
+ 				bit_num  = val & 7;
+@@ -147,7 +149,7 @@
+ 		{
+ 			/* yes.  now check the next two bytes to see if they are OK */
+ 
+-			val = *((WORD *)(buffer+1)) >> BIT_TABLE_SHIFT;
++			val = (((WORD)(*(buffer+1)) << 8) + *(buffer+2)) >> BIT_TABLE_SHIFT;
+ 
+ 			byte_num = val >> 3;
+ 			bit_num  = val & 7;
+@@ -220,6 +222,8 @@
+         sizeof(pPAMG->num_sigs))
+         return(PAMSTATUS_FILE_ERROR);
+ 
++    pPAMG->num_sigs = WENDIAN(pPAMG->num_sigs);
++
+     wClusterSize = 0;
+ 
+     // allocate memory for our pointer table now...
+@@ -245,6 +249,9 @@
+ 
+ 			return(PAMSTATUS_FILE_ERROR);
+ 		}
++
++        sig.length = WENDIAN(sig.length);
++        sig.virus_index = DWENDIAN(sig.virus_index);
+ 
+ 		// check to see if we need to allocate a cluster of memory for
+ 		// more signatures
+==== //depot/AVCore/Trunk/SOURCE/EMULATOR/SRC/SIGEX.CPP#1 - d:/work\EMULATOR\SRC\SIGEX.CPP ====
+@@ -30,6 +30,7 @@
+ // 
+ //************************************************************************
+ 
++#include "avendian.h"
+ #include "pamapi.h"
+ #include "ident.h"
+ 
+@@ -111,6 +112,8 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
++    pTemp->wNumSigs = WENDIAN(pTemp->wNumSigs);
+ 
+     /* if pTemp->wNumSigs * sizeof(SigType) > 64K-1 then this will fail on
+        DOS platforms which aren't running extenders */
+@@ -136,7 +139,20 @@
+             PAMMemoryFree(pTemp);
+             DFCloseDataFile(hData);
+             return(PAMSTATUS_MEM_ERROR);
++        }
++
++#ifdef BIG_ENDIAN
++        {
++        WORD            wTemp;
++
++        pTemp->lpSigPtr[wCurSig].wSigLen =
++            WENDIAN(pTemp->lpSigPtr[wCurSig].wSigLen);
++
++        for (wTemp=0;wTemp<SIG_EXCLUDE_LEN;wTemp++)
++            pTemp->lpSigPtr[wCurSig].wSig[wTemp] =
++                WENDIAN(pTemp->lpSigPtr[wCurSig].wSig[wTemp]);
+         }
++#endif
+     }
+ 
+     DFCloseDataFile(hData);
+==== //depot/AVCore/Trunk/SOURCE/INCLUDE/SRC/AVCB.H#1 - d:/work\INCLUDE\SRC\AVCB.H ====
+@@ -56,8 +56,11 @@
+ 
+ typedef struct
+ {
++#if defined(VC20) || defined(SYM_WIN32) || defined(SYM_UNIX)
+     HFILE   hFile;
+-
++#else
++    FILE *  hFile;
++#endif
+     TCHAR   lpstrPathName[SYM_MAX_PATH+1];
+ } FILEINFO_T, FAR *LPFILEINFORMATION;
+ 
+==== //depot/AVCore/Trunk/SOURCE/INCLUDE/SRC/AVTYPES.H#2 - d:/work\INCLUDE\SRC\AVTYPES.H ====
+@@ -1,7 +1,7 @@
+ // Copyright 1996 Symantec, Peter Norton Product Group
+ //************************************************************************
+ //
+-// $Header:   S:/INCLUDE/VCS/avtypes.h_v   1.13   08 Oct 1998 18:31:30   ksackin  $
++// $Header:   S:/INCLUDE/VCS/AVTYPES.H_v   1.11   15 Oct 1998 14:43:58   AOONWAL  $
+ //
+ // Description:
+ //  AVAPI 2.0 essential constant and type definitions.
+@@ -11,35 +11,35 @@
+ // See Also:
+ //
+ //************************************************************************
+-// $Log:   S:/INCLUDE/VCS/avtypes.h_v  $
++// $Log:   S:/INCLUDE/VCS/AVTYPES.H_v  $
++// 
++//    Rev 1.11   15 Oct 1998 14:43:58   AOONWAL
++// Changed #ifdef (SYM_UNIX) to #ifdef SYM_UNIX
++// 
++//    Rev 1.10   28 Sep 1998 18:12:26   ddrew
++// Changes so that we can sync up Solaris port
+ // 
+-//    Rev 1.13   08 Oct 1998 18:31:30   ksackin
+-// Fixed erronious parenthesis around an #ifdef (UNIX).
+-//
+-//    Rev 1.12   28 Sep 1998 18:04:16   ddrew
+-// Sync up with Solaris port both here and in Newvir
+-//
+ //    Rev 1.11   28 Sep 1998 17:03:06   ddrew
+ // Original back in for now
+-//
++// 
+ //    Rev 1.7   20 Jul 1998 15:54:42   MKEATIN
+ // Changed more *'s to far *'s.
+-//
++// 
+ //    Rev 1.6   20 Jul 1998 15:49:08   MKEATIN
+ // declared some *'s to far *'s.
+-//
++// 
+ //    Rev 1.5   02 May 1997 16:40:20   MKEATIN
+ // Added defines for SEEK_CUR, SEEK_SET, and SEEK_END if not defined.
+-//
++// 
+ //    Rev 1.4   18 Apr 1997 13:43:46   MKEATIN
+ // Latest header from NEWVIR/INCLUDE
+-//
++// 
+ //    Rev 1.7   20 Nov 1996 15:23:48   AOONWAL
+ // No change.
+-//
++// 
+ //    Rev 1.6   28 Oct 1996 14:31:28   CNACHEN
+ // Added LPLPSTR defintion.
+-//
++// 
+ //    Rev 1.5   28 Oct 1996 14:25:14   DJesch
+ // Resolved some redefinition problems when including PLATFORM.H
+ //
+@@ -59,12 +59,13 @@
+ // Initial revision.
+ //
+ //************************************************************************
++
+ 
+ #ifndef _AVTYPES_H
+ 
+ #define _AVTYPES_H
+ 
+-#if defined(VC20)
++#if defined(VC20) && !defined(SYM_UNIX)
+     #include <windows.h>
+ #endif
+ 
+@@ -74,64 +75,99 @@
+ 
+     #include <stdio.h>
+     #include <memory.h>
++    #include <string.h>
+ 
+     #if defined(SYM_MAX_PATH)
+-        #undef SYM_MAX_PATH         // force our definition of this constant
++	    #undef SYM_MAX_PATH         // force our definition of this constant
+     #endif
++
++    #define SYM_MAX_PATH        512
+ 
+-    #define SYM_MAX_PATH	512
++    #if defined(SYM_UNIX)
++        #define FAR 
++        #define HUGE
++    #else
++        #if !defined(FAR)
++            #define FAR far
++        #endif
++        #if !defined(HUGE)
++            #define HUGE huge
++        #endif
++    #endif
+ 
+     typedef unsigned char   BYTE;
+     typedef unsigned short  WORD;
+     typedef unsigned int    UINT;
+-    typedef unsigned long	DWORD;
++    typedef unsigned long   DWORD;
+     typedef int             BOOL;
+-    typedef WORD            far *LPWORD;
+-    typedef int             far *LPINT;
++    typedef WORD            FAR *LPWORD;
++    typedef int             FAR *LPINT;
+     typedef long            LONG;
+-    typedef char            far *LPSTR;
+-    typedef char            far *LPTSTR;
+-    typedef BYTE            far *LPBYTE;
+-    typedef void            far *LPVOID;
+-    typedef DWORD           far *LPDWORD;
+-    typedef BOOL            far *LPBOOL;
+-    typedef long            far *LPLONG;
+-    typedef LPSTR           far *LPLPSTR;
++    typedef char            FAR *LPSTR;
++    typedef char            FAR *LPTSTR;
++    typedef BYTE            FAR *LPBYTE;
++    typedef void            FAR *LPVOID;
++    typedef DWORD           FAR *LPDWORD;
++    typedef BOOL            FAR *LPBOOL;
++    typedef long            FAR *LPLONG;
++    typedef LPSTR           FAR *LPLPSTR;
+ 
+-    #ifdef SYM_UNIX
+-        typedef int     HFILE
++    #if defined(SYM_UNIX)
++        typedef FILE            *HFILE;
+     #endif
+ 
+-    #if !defined(VC20)
+-        #if !defined(SYM_UNIX)
+-            typedef FILE *          HFILE;
+-            typedef char            *LPWSTR;
+-            typedef void            VOID;
+-        #endif
++    #if !defined(VC20) && !defined(SYM_UNIX)
++        typedef FILE            *HFILE;
++        typedef char            *LPWSTR;
++        typedef void            VOID;
++    #endif
+ 
+-        #if defined (SYM_UNIX)
+-            #define FAR
+-        #else
+-            #define FAR             far
+-        #endif  // (SYM_UNIX)
++    #if defined(SYM_UNIX)
++        typedef WORD            *PWORD;             
++        typedef signed short    SWORD;
++        typedef signed long     SDWORD;
++        typedef unsigned int    *LPUINT;
++        typedef const char      *LPCSTR;
++        typedef const char      *LPCTSTR;
++        typedef char            WCHAR;
++        typedef char            TCHAR;
++        typedef char            *LPWSTR;
++        typedef char            **LPLPWSTR;
++        #define VOID            void
++        #define WINAPI
++        #define _T(x)           x
++    #endif
+ 
+-    #endif  // (VC20)
++#endif // !defined(BORLAND) && !defined(VC20) && !defined(SYM_UNIX)
+ 
+-    #if !defined(MEMSET)
+-        #define MEMSET          memset
+-    #endif
+-    #if !defined(MEMCPY)
+-        #define MEMCPY          memcpy
+-    #endif
+-    #if !defined(MEMCMP)
+-        #define MEMCMP          memcmp
+-    #endif
+ 
++#if !defined(MEMSET)
++    #define MEMSET          memset
++#endif
++#if !defined(MEMCPY)
++    #define MEMCPY          memcpy
++#endif
++#if !defined(MEMCMP)
++    #define MEMCMP          memcmp
++#endif
++#if !defined(STRCPY)
++    #define STRCPY          strcpy
++#endif
++#if !defined(STRCAT)
++    #define STRCAT          strcat
++#endif
++#if !defined(STRLEN)
++    #define STRLEN          strlen
++#endif
++#if !defined(STRNCPY)
++    #define STRNCPY         strncpy
++#endif
++    
++#if !defined(TRUE)
+     #define TRUE            1
+     #define FALSE           0
++#endif
+ 
+-#endif // !defined(BORLAND) && !defined(VC20) && !defined(SYM_UNIX)
+-
+ #if !defined(SEEK_SET)
+     #define SEEK_SET        0
+ #endif
+@@ -143,29 +179,32 @@
+ #endif
+ 
+ typedef long            MUTEX_T;
+-typedef MUTEX_T         far *LPMUTEX;
++typedef MUTEX_T         *LPMUTEX;
+ 
+ #define MEM_FIXME       0
+ #define DATE_TIME_FIXME 0
+ 
+ #ifndef FILE_OPEN_READ_ONLY
+-#define FILE_OPEN_READ_ONLY     0       // read only (file must exist)
+-#define FILE_OPEN_WRITE_ONLY    1       // truncate/create
+-#define FILE_OPEN_READ_WRITE    2       // read/write (file must exist)
++    #define FILE_OPEN_READ_ONLY     0       // read only (file must exist)
++    #define FILE_OPEN_WRITE_ONLY    1       // truncate/create
++    #define FILE_OPEN_READ_WRITE    2       // read/write (file must exist)
+ #endif
+ 
+ #ifndef LINEAR_OPEN_READ_ONLY
+-#define LINEAR_OPEN_READ_ONLY   0       // read only  (for scanning)
+-#define LINEAR_OPEN_READ_WRITE  2       // read/write (for repair)
++    #define LINEAR_OPEN_READ_ONLY   0       // read only  (for scanning)
++    #define LINEAR_OPEN_READ_WRITE  2       // read/write (for repair)
+ #endif
+ 
+-#if !defined (SYM_UNIX)
+-    typedef LPBYTE  far *LPLPBYTE;
+-    typedef LPVOID  far *LPLPVOID;
+-    typedef LPWSTR  far *LPLPWSTR;
++#if !defined(SYM_UNIX)
+     typedef HANDLE FILEHANDLE;
+-    #define INVALID_FILEHANDLE_VALUE INVALID_HANDLE_VALUE;
+-#endif  // (SYM_UNIX)
++#endif
++#define INVALID_FILEHANDLE_VALUE INVALID_HANDLE_VALUE;
++
++typedef LPBYTE  FAR *LPLPBYTE;
++typedef LPVOID  FAR *LPLPVOID;
++typedef LPWSTR  FAR *LPLPWSTR;
+ 
+ #endif  // _AVTYPES_H (from the top)
++
++
+ 
+==== //depot/AVCore/Trunk/SOURCE/INCLUDE/SRC/CTSN.H#1 - d:/work\INCLUDE\SRC\CTSN.H ====
+@@ -1,7 +1,7 @@
+ // Copyright 1993-1994 Symantec Corporation
+ //===========================================================================
+ //
+-// $Header:   S:/INCLUDE/VCS/ctsn.h_v   1.77   10 Jun 1997 11:06:20   DBUCHES  $
++// $Header:   S:/INCLUDE/VCS/ctsn.h_v   1.76   21 Jun 1997 17:22:40   JBELDEN  $
+ //
+ // Description:  Declares function prototypes, macros, equates and types
+ //               for the CERTLIBN project.
+@@ -11,18 +11,15 @@
+ //---------------------------------------------------------------------------
+ // $Log:   S:/INCLUDE/VCS/ctsn.h_v  $
+ // 
+-//    Rev 1.77   10 Jun 1997 11:06:20   DBUCHES
+-// Added 1 byte packing for EXCLUDEITEM struct.
++//    Rev 1.76   21 Jun 1997 17:22:40   JBELDEN
++// added prototype for CreateInWildScan
+ // 
+-//    Rev 1.76   10 Jun 1997 11:03:28   DBUCHES
+-// Added 1 byte packing for EXCLUDEITEM struct.
++//    Rev 1.75   20 Nov 1996 15:22:20   AOONWAL
++// No change.
+ // 
+-//    Rev 1.75   10 Jun 1997 11:00:52   DBUCHES
+-// Added 1 byte packing for EXCLUDEITEM struct.
+-// 
+-//    Rev 1.74   28 Apr 1997 18:20:16   MKEATIN
+-// Included n30type.h and removed redudant defines.
++//    Rev 1.74   22 Oct 1996 12:05:14   AOONWAL
++// No change.
+ // 
+ //    Rev 1.73   12 Aug 1996 17:04:40   RPULINT
+ // Added macro, windows and agent virus types
+ // 
+@@ -267,7 +264,7 @@
+ #define _CTS4_H
+ 
+ #include "callback.h"
+-#include "n30type.h"
++
+ 
+ //------------------------------------------------------------------------------
+ // CTSN.H - Protos, equates, and structures for 'C'
+@@ -385,6 +382,11 @@
+ //------------------------------------------------------------------------------
+ // Virus detection equates
+ //------------------------------------------------------------------------------
++
++#define CRCtype         0
++#define ALGtype         1
++#define BOOtype         2
++#define MACtype         3
+ 
+ // one based since they're encrypted in memory
+ #define MEMORY_413      1
+@@ -395,9 +397,46 @@
+ 
+ #define SIZE_MEM        15              // size of memory signature
+ #define SIZE_MEM_OLAP   16              // paragraph align memorysig this value
++                                        // should be change if SIZE_MEM does
++
++#define SIZE_SIG        17
++#define SIZE_FIXED      64
++#define SIZE_BOOTSIG    14
++#define SIZE_COMMENT    ((5 * 60) + 1) //5 lines of 60 chars per line + EOS
++#define SIZE_ALIAS      40
++#define SIZE_CRC        (sizeof(WORD))
++#define SIZE_CHECK_DATA (sizeof(CHECKDATA)) // Check + control word
+ 
+ #define uSizeVirscanHeader  256
+ 
++#define bitINFO_COMFILE     0x0001
++#define bitINFO_EXEFILE     0x0002
++#define bitINFO_SYSFILE     0x0004
++#define bitINFO_COMCOM      0x0008
++#define bitINFO_FLOPBOOT    0x0010
++#define bitINFO_HDISKBOOT   0x0020
++#define bitINFO_MBOOTREC    0x0040
++#define bitINFO_DIR2        0x0080
++#define bitINFO_RESIDENT    0x0100
++#define bitINFO_SIZESTLTH   0x0200
++#define bitINFO_FULLSTLTH   0x0400
++#define bitINFO_ENCRYPT     0x0800
++#define bitINFO_POLYMORPH   0x1000
++#define bitINFO_TRIGGERED   0x2000
++#define bitINFO_INTHEWILD   0x4000
++#define bitINFO_MULTIPARTY  0x8000
++
++// These are compared with wControl2 flag in n30 unlike others
++// which are compared with wInfo
++#define bitINFO_MACRO       0x4000
++#define bitINFO_WINDOWS     0x8000
++#define bitINFO_AGENT       0xC000
++// This is to mask the above three types
++#define bitINFO_MASKEXT     0xC000
++
++#define bitCTRL_BOOT_REPAIR 0x2000
++#define bitCTRL_NOTCLEAN    0x8000
++
+ #define bitDSSI         0x0001     // File name located in DS:SI not DS:DX
+ #define bitINT13                0x0002     // If use an INT 13 directly use this flag
+ #define bitTSR          0x8000     // If set TSR doing work else UI
+@@ -762,7 +801,12 @@
+     WORD   RM_SS;
+     } REALMODE;
+ #define sREALMODE   sizeof(REALMODE)
+ 
++// NEW_UNIX below
++
++#ifndef EXEHEADER_DEFINED
++#define EXEHEADER_DEFINED
++
+ //------------------------------------------------------------------------------
+ // Structure for EXE header
+ //------------------------------------------------------------------------------
+@@ -787,6 +831,10 @@
+     } EXEHEADER;
+ #define sEXEHEADER  (sizeof(EXEHEADER)-34)
+ #define sEXELARGE   sizeof(EXEHEADER)
++
++#endif // #ifndef EXEHEADER_DEFINED
++
++// NEW_UNIX above
+ 
+ //------------------------------------------------------------------------------
+ // NE Header structure
+@@ -1009,6 +1057,7 @@
+     } BINHEADER;
+ #define sBINHEADER      sizeof(BINHEADER)
+ 
++#ifndef SYM_UNIX // NEW_UNIX
+ //-----------------------------------------------------------------------------
+ // Event Verify Structure
+ //-----------------------------------------------------------------------------
+@@ -1020,6 +1069,7 @@
+ 	TSR_STRUCT FAR *evTSR_STRUCT;        // Pointer to TSR_STRUCT for routine
+     } EV;
+ #define sEV         sizeof(EV)
++#endif // SYM_UNIX
+ 
+ //------------------------------------------------------------------------------
+ // Structure for callbacks in OVL file
+@@ -1147,6 +1197,39 @@
+     DWORD   CL_STORE;        // Where to store value
+     } COMMANDLINE;
+ #define sCOMMANDLINE    sizeof(COMMANDLINE)
++
++//------------------------------------------------------------------------------
++// Virus database structes
++//------------------------------------------------------------------------------
++typedef struct
++    {
++    WORD    wVirID;          // Virus ID Number
++    WORD    wType;           // Type
++    WORD    wCrc;            // CRC
++    WORD    wControl;        // Control word for Cleaning
++    WORD    wInfo;           // Information Word
++    WORD    wFixedID;        // Fixed algo virus ID number
++
++    char    lpVName[SIZE_VIRUSNAME]; // Virus Name
++    BYTE    lpMem[SIZE_MEM];  // Memory Signature
++    BYTE    lpSig[SIZE_SIG];  // Regular Signature
++
++    WORD    wInfSize;
++    WORD    wTagSize;
++    WORD    wHostJmp;
++    WORD    wJmpLen;
++    WORD    wSS_reg;
++    WORD    wSP_reg;
++    WORD    wCS_reg;
++    WORD    wIP_reg;
++    WORD    wHeader;
++    WORD    wHeadLen;
++    WORD    wBookLocation;
++    WORD    wBookMark;
++    DWORD   dwReserved;
++    WORD    wControl2;
++    } N30, FAR *LPN30, HUGE *HPN30;
++#define sN30    sizeof(N30)
+ 
+ typedef struct
+    {
+@@ -1173,6 +1256,17 @@
+ 
+ typedef CHECKDATA FAR *LPCHECKDATA;
+ typedef VIRUSNAME FAR *LPVIRUSNAME;
++
++typedef struct
++    {
++    char    lpVirName[SIZE_VIRUSNAME];
++    WORD    wVirID;
++    WORD    wType;
++    WORD    wControl2;
++    WORD    wInfo;
++    WORD    wSize;
++    } N30NOTES, FAR *LPN30NOTES, HUGE *HPN30NOTES;
++#define sN30NOTES   sizeof(N30NOTES)
+ 
+ //------------------------------------------------------------------------------
+ // SDA Information block
+@@ -1272,9 +1366,6 @@
+                                         // -----------------------------------
+                                         // Use this structure when needed.
+                                         // -----------------------------------
+-#ifdef SYM_WIN
+-#pragma pack(push, 1)
+-#endif
+ typedef struct tagEXCLUDEITEM
+ {
+     TCHAR   szText[SYM_MAX_PATH+1];     // Can handle LFNs.
+@@ -1282,11 +1373,10 @@
+     WORD    wBits;
+ 
+ } EXCLUDEITEM, FAR * LPEXCLUDEITEM;
+-#ifdef SYM_WIN
+-#pragma pack(pop)
+-#endif
++#define sEXCLUDEITEM sizeof(EXCLUDEITEM)
+ 
+-#define sEXCLUDEITEM sizeof(EXCLUDEITEM)
++// No prototypes needs for Unix ... yet
++#ifndef SYM_UNIX
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -1315,6 +1405,7 @@
+ 
+ 
+ BOOL  WINAPI CreateInScan       (LPTSTR lpVirScanPath);
++BOOL  WINAPI CreateInWildScan       (LPTSTR lpVirScanPath);
+ UINT  WINAPI SCN4_ME            (UINT,LPTSTR,LPBYTE,UINT,LPBYTE,LPTSTR,LPVOID,WORD);
+ UINT  WINAPI SCN4_BOOT          (LPBYTE,LPBYTE,BOOL);
+ 
+@@ -1406,3 +1497,5 @@
+ #endif
+ 
+ #endif
++
++#endif // SYM_UNIX
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/AVAPI.CPP#1 - d:/work\NAVAPI\SRC\AVAPI.CPP ====
+@@ -236,7 +236,9 @@
+ #endif
+ #include "file.h"
+ #include "xapi.h"
++#if !defined(SYM_UNIX)
+ #include "disk.h"
++#endif
+ #include "repair.h"
+ #include "avapi_l.h"
+ #include "avcb.h"
+@@ -559,6 +561,11 @@
+     {
+         SYM_ASSERT (FALSE);
+     }
++#elif defined(SYM_UNIX)
++    if (EXTCloseUnix(hContext) != EXTSTATUS_OK)
++    {
++        SYM_ASSERT (FALSE);
++    }
+ #endif
+ 
+     //////////////////////////////////////////////////////////////////////////
+@@ -594,7 +601,7 @@
+     if (hContext->hGEng != NULL)
+         EngGlobalFileClose(hContext->hGEng);
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+     if (hContext->hGEng != NULL)
+         EngGlobalBootClose(hContext->hGEng);
+ 
+@@ -705,8 +712,12 @@
+     if (AreDefsWild())
+         NameAppendFile(szPAMFile, _T("VIRWILD2.DAT"));
+     else                                // Belongs to clause outside of endif
++        NameAppendFile (szPAMFile, _T("VIRSCAN2.DAT") );
++#elif defined(SYM_UNIX)
++        NameAppendFile (szPAMFile, _T("virscan2.dat") );
++#else
++        NameAppendFile (szPAMFile, _T("VIRSCAN2.DAT") );
+ #endif
+-        NameAppendFile (szPAMFile, _T("VIRSCAN2.DAT") );
+ 
+     STRCPY(hContext->szPAMScanDataFile, szPAMFile);
+ 
+@@ -725,7 +736,7 @@
+         return(VS_FILE_ERROR);
+     }
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+     if (EngGlobalMemoryInit(hContext->hGEng) == ENGSTATUS_ERROR)
+     {
+         return(VS_FILE_ERROR);
+@@ -800,6 +811,11 @@
+     {
+         return(VS_FILE_ERROR);
+     }
++#elif defined(SYM_UNIX)
++    if (EXTInitUnix(hContext) != EXTSTATUS_OK)
++    {
++        return(VS_FILE_ERROR);
++    }
+ #endif
+ 
+     return(VS_OK);
+@@ -1867,6 +1883,15 @@
+ 
+         VLFileSeek (hFile, SIZE_COPYRIGHT, SEEK_SET);
+         VLFileRead (hFile, &inf, sizeof(INF_HEADER));
++
++#if defined(BIG_ENDIAN)
++        inf._i_version = WENDIAN(inf._i_version);
++        inf._i_highest_vid = WENDIAN(inf._i_highest_vid);
++        inf._i_no_info = DWENDIAN(inf._i_no_info);
++        inf._i_multiplier = WENDIAN(inf._i_multiplier);
++        inf._i_size = WENDIAN(inf._i_size);
++        // inf._i_reserved unchanged
++#endif
+ 
+         if (inf._i_version != 0)
+         {
+@@ -2558,7 +2583,7 @@
+     }
+     else if (hVirus->dwFlags & VIT_BOOTPART)
+     {
+-#ifdef SYM_NLM
++#if defined(SYM_NLM) || defined(SYM_UNIX)
+         return(VS_CANT_REPAIR);
+ #else
+         return(VLRepairBootPart(hVirus, lpvCookie));
+@@ -3597,7 +3622,8 @@
+     }
+ }
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
++// This might be OK for Unix, I'm but unsure
+ 
+ /*@API:*************************************************************************
+ @Declaration: VSTATUS WINAPI VLOverrideDIR2RepairProtection (HVLVIRUS hVirus)
+@@ -3642,10 +3668,11 @@
+     return(VS_OK);
+     }
+ 
+-#endif      // #ifndef SYM_NLM
++#endif      // #if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
++// This might be OK for Unix, I'm but unsure
+ 
+ /*@API:*************************************************************************
+ @Declaration: VSTATUS WINAPI VLOverrideDIR2DeleteProtection (HVLVIRUS hVirus)
+@@ -3690,7 +3717,7 @@
+     return(VS_OK);
+     }
+ 
+-#endif      // #ifndef SYM_NLM
++#endif      // #if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ 
+ /*@API:*************************************************************************
+@@ -3731,7 +3758,7 @@
+ }
+ 
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ /*@API:*************************************************************************
+ @Declaration: VSTATUS WINAPI VLRepairBootPart(HVLVIRUS hVirus, LPVOID lpvCookie)
+@@ -3945,10 +3972,10 @@
+     return(VS_CANT_REPAIR);
+ }
+ 
+-#endif      // #ifndef SYM_NLM
++#endif // !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ /*@API:*************************************************************************
+ @Declaration:
+@@ -4544,7 +4571,7 @@
+     return(VS_OK);
+ }
+ 
+-#endif      // #ifndef SYM_NLM
++#endif  // !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ /*@API:*************************************************************************
+ @Declaration:  VSTATUS WINAPI VLReleaseEntry(HVLVIRUSENTRY hInfo)
+@@ -5159,6 +5186,16 @@
+     ///////////////////////////////////////////////////////////////////////////
+ 
+     uResult = VLFileRead(hFile,&stHeader,sizeof(stHeader));
++
++#if defined(BIG_ENDIAN)
++    stHeader.dwSignature = DWENDIAN(stHeader.dwSignature);
++    stHeader.dwVersionNumber = DWENDIAN(stHeader.dwVersionNumber);
++    // stHeader.byMon, byDay, byYear, byFiller unchanged
++    stHeader.wNumSections = WENDIAN(stHeader.wNumSections);
++    stHeader.dwTableOffset = DWENDIAN(stHeader.dwTableOffset);
++    stHeader.dwCRC = DWENDIAN(stHeader.dwCRC);
++    // stHeader.byPadding unchanged
++#endif
+ 
+     VLFileClose(hFile);
+ 
+@@ -5361,7 +5398,7 @@
+ #endif // #ifndef SYM_NLM
+ 
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+ // Returns TRUE if O.K., FALSE otherwise
+@@ -5421,7 +5458,7 @@
+     *lpbType        = lpLocalPartEntry->system;
+ }
+ 
+-#endif // #ifndef SYM_NLM
++#endif // !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ 
+ 
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/AVAPI_L.H#1 - d:/work\NAVAPI\SRC\AVAPI_L.H ====
+@@ -403,17 +403,22 @@
+ #endif
+ 
+         LPVOID  prExportTable;              // NAVEX function pointers.
+-        LPVOID  prEngineTable;              // NAVEX function pointers.
++        LPVOID  prEngineTable;              // NAVENG function pointers.
+ 
+ #if defined(SYM_WIN) || defined(SYM_NLM)
+ 
+         HINSTANCE  hExportLib;              // NAVEX library handle.
+-        HINSTANCE  hEngineLib;              // NAVEX library handle.
++        HINSTANCE  hEngineLib;              // NAVENG library handle.
+ 
+ #elif defined(SYM_DOSX)
+ 
+         LPSTR  lpstNavexMemoryHandle;
+         LPSTR  lpstEngineMemoryHandle;
++
++#elif defined(SYM_UNIX)
++
++        void* hExportLib;                  // NAVEX library handle
++        void* hEngineLib;                  // NAVENG library handle
+ 
+ #endif
+ 
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/BOOT.CPP#1 - d:/work\NAVAPI\SRC\BOOT.CPP ====
+@@ -62,7 +62,9 @@
+ 
+ #include "platform.h"
+ #include "xapi.h"
++#if !defined(SYM_UNIX)
+ #include "disk.h"
++#endif
+ #include "ctype.h"
+ #include "avapi_l.h"
+ #include "navcb_l.h"
+@@ -124,7 +126,7 @@
+     HNAVVIRUS*       lphVirus      // [out] valid HNAVVIRUS if infected
+ )
+ {
+-#if defined(SYM_NLM)
++#if defined(SYM_NLM) || defined(SYM_UNIX)
+ 
+     return NAV_ERROR;
+ 
+@@ -244,7 +246,7 @@
+ 
+     return ( nStatus );
+ 
+-#endif  // #if defined(SYM_NLM) #else
++#endif  // #if defined(SYM_NLM) || defined(SYM_UNIX) #else
+ }
+ 
+ 
+@@ -279,7 +281,7 @@
+     HNAVVIRUS*         lphVirus      // [in/out] HNAVVIRUS* allocate in or NULL
+ )
+ {
+-#if defined(SYM_NLM)
++#if defined(SYM_NLM) || defined(SYM_UNIX)
+ 
+     return NAV_ERROR;
+ 
+@@ -331,7 +333,7 @@
+         return NAV_ERROR;
+     }
+ 
+-#endif  // #if defined(SYM_NLM) #else
++#endif  // #if defined(SYM_NLM) || defined(SYM_UNIX) #else
+ }
+ 
+ 
+@@ -363,7 +365,7 @@
+     char             cDriveLetter  // [in] logical drive letter (A, C, etc.)
+ )
+ {
+-#if defined(SYM_NLM)
++#if defined(SYM_NLM) || defined(SYM_UNIX)
+ 
+     return NAV_ERROR;
+ 
+@@ -456,7 +458,7 @@
+ 
+     return ( nStatus );
+ 
+-#endif  // #if defined(SYM_NLM) #else
++#endif  // #if defined(SYM_NLM) || defined(SYM_UNIX) #else
+ }
+ 
+ 
+@@ -482,7 +484,7 @@
+     UINT             uPhysDriveNum // [in] physical drive number (0x80, 0x81, etc.)
+ )
+ {
+-#if defined(SYM_NLM)
++#if defined(SYM_NLM) || defined(SYM_UNIX)
+ 
+     return NAV_ERROR;
+ 
+@@ -560,7 +562,7 @@
+ 
+     return ( nStatus );
+ 
+-#endif  // #if defined(SYM_NLM) #else
++#endif  // #if defined(SYM_NLM) || defined(SYM_UNIX) #else
+ }
+ 
+ 
+@@ -581,7 +583,7 @@
+ // 04/24/97 Created by MKEATIN
+ //************************************************************************
+ 
+-#if !defined(SYM_NLM)
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ STATUS LOCAL MapDriveLetter
+ (
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/CPU.CPP#1 - d:/work\NAVAPI\SRC\CPU.CPP ====
+@@ -150,7 +150,7 @@
+ //
+ //************************************************************************
+ 
+-
++#include "avendian.h"
+ #include "pamapi_l.h"
+ 
+ /* code */
+@@ -675,7 +675,13 @@
+     while (wDepth < MAX_COM_JUMP_DEPTH)
+     {
+         if (lpbyBuffer[0] == 0xE8 || lpbyBuffer[0] == 0xE9)
++        {
++#ifdef BIG_ENDIAN
++	        wIP += ((WORD)lpbyBuffer[2] << 8) + lpbyBuffer[1] + 3;            
++#else
+             wIP += *((LPWORD)(lpbyBuffer+1)) + 3;
++#endif
++        }
+         else if (lpbyBuffer[0] == 0xEB)
+             wIP += (WORD)(signed short)
+                     (signed char)*((LPBYTE)(lpbyBuffer+1)) + 2;
+@@ -890,11 +896,11 @@
+ {
+ 	DWORD dwOffset, dwReloc, dwCSIP;
+ 
+-	if (0 == h->reloc_table_items)
++	if (0 == WENDIAN(h->reloc_table_items))
+ 		return;
+ 
+-	dwOffset = h->first_rel_offset +
+-			   (h->reloc_table_items - 1) * sizeof(DWORD);
++	dwOffset = WENDIAN(h->first_rel_offset) +
++			   (WENDIAN(h->reloc_table_items) - 1) * sizeof(DWORD);
+ 
+     if (PAMFileSeek(hLocal->CPU.stream,dwOffset,SEEK_SET) != dwOffset)
+ 	{
+@@ -907,9 +913,11 @@
+ 		hLocal->dwFlags |= LOCAL_FLAG_FILE_ERROR;
+ 		return;
+ 	}
+ 
++    dwReloc = DWENDIAN(dwReloc);
++
+ 	dwReloc = (dwReloc >> 12) + (dwReloc & 0xFFFFU);
+-	dwCSIP = ((DWORD)h->cs << 4) + h->ip;
++	dwCSIP = ((DWORD)WENDIAN(h->cs) << 4) + WENDIAN(h->ip);
+ 
+ 	if (dwReloc > dwCSIP)
+ 		exclude_item(hLocal,RELOC_AFTER_CSIP);
+@@ -993,9 +1001,9 @@
+ 
+     hLocal->CPU.ireg.D.EBP = 0x0000091CL;
+ 
+-    hLocal->CPU.ireg.D.ESI = (DWORD)h->ip;      // starting IP
++    hLocal->CPU.ireg.D.ESI = (DWORD)WENDIAN(h->ip);  // starting IP
+ 
+-    hLocal->CPU.ireg.D.EDI = (DWORD)h->sp;      // starting SP
++    hLocal->CPU.ireg.D.EDI = (DWORD)WENDIAN(h->sp);  // starting SP
+ 
+ 
+     hLocal->CPU.FLAGS.O = hLocal->CPU.FLAGS.D =
+@@ -1006,7 +1014,7 @@
+ 
+ 	// right after header/reloc. data = start of image
+ 
+-    hLocal->CPU.image_start_offset = ((DWORD)h->header_size * PARAGRAPH);
++    hLocal->CPU.image_start_offset = ((DWORD)WENDIAN(h->header_size) * PARAGRAPH);
+ 
+ 	/* this is the linear address of the start of the program in memory.  it
+ 	   can be added to any address to determine the offset from the start of
+@@ -1016,11 +1024,11 @@
+ 
+ 	/* set up CS:IP */
+ 
+-    hLocal->CPU.CS = h->cs + EXE_START_SEG;
+-    hLocal->CPU.IP = h->ip;
++    hLocal->CPU.CS = WENDIAN(h->cs) + EXE_START_SEG;
++    hLocal->CPU.IP = WENDIAN(h->ip);
+ 
+-    hLocal->CPU.SS = h->ss + EXE_START_SEG;
+-    hLocal->CPU.ireg.D.ESP = (DWORD)h->sp;
++    hLocal->CPU.SS = WENDIAN(h->ss) + EXE_START_SEG;
++    hLocal->CPU.ireg.D.ESP = (DWORD)WENDIAN(h->sp);
+ 
+     hLocal->CPU.DS = hLocal->CPU.ES = EXE_START_SEG - 0x10;
+ 
+@@ -1031,10 +1039,10 @@
+     exclude_item(hLocal,BAD_EXE);
+ 	exclude_exe_entry_point(hLocal,h);
+ 
+-    hLocal->CPU.ulImageSize = (h->page_size * 512L) +
+-                       h->len_mod_512 - (long)h->header_size * PARAGRAPH;
++    hLocal->CPU.ulImageSize = (WENDIAN(h->page_size) * 512L) +
++                       WENDIAN(h->len_mod_512) - (long)WENDIAN(h->header_size) * PARAGRAPH;
+ 
+-	if (h->len_mod_512 != 0)
++	if (WENDIAN(h->len_mod_512) != 0)
+ 	{
+ 		if (hLocal->CPU.ulImageSize >= 512L)
+ 			hLocal->CPU.ulImageSize -= 512L;
+@@ -1050,7 +1058,7 @@
+     if (dwTemp == (DWORD)-1)
+         hLocal->dwFlags |= LOCAL_FLAG_FILE_ERROR;   // error on seek...
+ 
+-    dwDiskImageSize = dwTemp - (DWORD)h->header_size * PARAGRAPH;
++    dwDiskImageSize = dwTemp - (DWORD)WENDIAN(h->header_size) * PARAGRAPH;
+ 
+     if (hLocal->CPU.ulImageSize > dwDiskImageSize)
+         hLocal->CPU.ulImageSize = dwDiskImageSize;
+@@ -1168,9 +1176,9 @@
+     hLocal->CPU.offset_modifier  = -(long)SYS_START_SEG * (long)PARAGRAPH;
+ 
+     if (wEntryNum == 0)
+-        hLocal->CPU.IP = h->strategy_ip;
++        hLocal->CPU.IP = WENDIAN(h->strategy_ip);
+ 	else
+-        hLocal->CPU.IP = h->int_ip;
++        hLocal->CPU.IP = WENDIAN(h->int_ip);
+ 
+ 	// make sure we perform exclusions.
+ 
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/DATAFILE.CPP#1 - d:/work\NAVAPI\SRC\DATAFILE.CPP ====
+@@ -52,7 +52,7 @@
+ //
+ //************************************************************************
+ 
+-
++#include "avendian.h"
+ #include "pamapi_l.h"
+ 
+ 
+@@ -118,6 +118,19 @@
+         return(DFSTATUS_FILE_ERROR);
+     }
+ 
++#ifdef BIG_ENDIAN
++    lpTempInfo->sHeader.dwTableOffset = 
++        DWENDIAN(lpTempInfo->sHeader.dwTableOffset);
++    lpTempInfo->sHeader.dwSignature = 
++        DWENDIAN(lpTempInfo->sHeader.dwSignature);
++    lpTempInfo->sHeader.dwVersionNumber = 
++        DWENDIAN(lpTempInfo->sHeader.dwVersionNumber);
++    lpTempInfo->sHeader.wNumSections =
++        WENDIAN(lpTempInfo->sHeader.wNumSections);
++    lpTempInfo->sHeader.dwCRC =
++        DWENDIAN(lpTempInfo->sHeader.dwCRC);
++#endif
++
+     // the DEADBEEF below is legacy code to support QA tools, etc...
+ 
+     if (SIG_VALUE != lpTempInfo->sHeader.dwSignature &&
+@@ -253,6 +266,12 @@
+         if (sTABLETYPE != uBytes)
+ 			return(DFSTATUS_FILE_ERROR);
+ 
++#ifdef BIG_ENDIAN
++        sTableEntry.dwIdent = DWENDIAN(sTableEntry.dwIdent);
++        sTableEntry.dwVersionNumber = DWENDIAN(sTableEntry.dwVersionNumber);
++        sTableEntry.dwStartOffset = DWENDIAN(sTableEntry.dwStartOffset);
++        sTableEntry.dwLength = DWENDIAN(sTableEntry.dwLength);
++#endif
+ 
+         /* found the specified table entry.  report to the user */
+ 
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/EXCLUDE.CPP#1 - d:/work\NAVAPI\SRC\EXCLUDE.CPP ====
+@@ -75,7 +75,7 @@
+ //
+ //************************************************************************
+ 
+-
++#include "avendian.h"
+ #include "pamapi_l.h"
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+@@ -969,6 +969,8 @@
+         sizeof(wNumProfiles))
+         return(PAMSTATUS_FILE_ERROR);
+ 
++    wNumProfiles = WENDIAN(wNumProfiles);
++
+     // and allocate appropriate memory
+ 
+ 	wNumVirusWords = wNumProfiles >> 0x4;
+@@ -1030,8 +1032,36 @@
+                 PMemoryFree(exclude_info->emask[j].bitmap);
+ 
+             return(PAMSTATUS_FILE_ERROR);
++        }
++
++#ifdef BIG_ENDIAN
++
++	////////////////////////
++	// endian stuff: convert decrypt_rec to big endian if necessary
++
++	{
++            WORD        wTemp;
++
++            decrypt_rec.flags = DWENDIAN(decrypt_rec.flags);
++            decrypt_rec.min_file_size = DWENDIAN(decrypt_rec.min_file_size);
++            decrypt_rec.max_exe_eof_dist = DWENDIAN(decrypt_rec.max_exe_eof_dist);
++            decrypt_rec.min_exe_eof_dist = DWENDIAN(decrypt_rec.min_exe_eof_dist);
++            decrypt_rec.bad_int_set = WENDIAN(decrypt_rec.bad_int_set);
++    
++            for (wTemp = 0;wTemp < INSTR_WORDS;wTemp++)
++                decrypt_rec.opcode_set[wTemp] =
++                    WENDIAN(decrypt_rec.opcode_set[wTemp]);
++    
++            for (wTemp = 0;wTemp < DOS_FUNC_WORDS;wTemp++)
++                decrypt_rec.good_dos_set[wTemp] =
++                    WENDIAN(decrypt_rec.good_dos_set[wTemp]);
++    
+         }
++        // endian stuff
++        ////////////////////////
+ 
++#endif
++
+ #if defined(IN_AUTOPROTECT)
+ 
+         // Immediately exclude NOT_IN_TSR profiles from all AUTOPROTECT
+@@ -1742,11 +1772,11 @@
+     // CS entrypoints which are negative in some cases.  If a DWORD is used
+ 	// when multiplying CS * PARAGRAPH, then the result will be > 1MB!
+ 
+-	seg_mult = h->cs + h->header_size;
++	seg_mult = WENDIAN(h->cs) + WENDIAN(h->header_size);
+ 
+-    entry = ((DWORD)seg_mult*PARAGRAPH + h->ip) & EFFECTIVE_ADDRESS_MASK;
+-    header_eof = ((h->page_size) * 512L) + h->len_mod_512;
+-    if (h->len_mod_512)
++    entry = ((DWORD)seg_mult*PARAGRAPH + WENDIAN(h->ip)) & EFFECTIVE_ADDRESS_MASK;
++    header_eof = ((WENDIAN(h->page_size)) * 512L) + WENDIAN(h->len_mod_512);
++    if (WENDIAN(h->len_mod_512))
+         header_eof -= 512L;
+ 
+ 	/* what is the distance of the entry code from the EOF, as defined in
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/EXEC.CPP#1 - d:/work\NAVAPI\SRC\EXEC.CPP ====
+@@ -111,7 +111,7 @@
+ //
+ //************************************************************************
+ 
+-
++#include "avendian.h"
+ #include "pamapi_l.h"
+ 
+ //#define BUILD_SET
+@@ -392,16 +392,30 @@
+ 
+ void prefetch_queue_to_vm(PAMLHANDLE hLocal)
+ {
+-    int     i;
+-    BYTE    *byPtr;
++    int             i;
++    BYTE            *byPtr;
++    prefetch_type   stLocalCopy;
++
++    stLocalCopy = hLocal->CPU.prefetch;
+ 
+-    byPtr = (BYTE *)&hLocal->CPU.prefetch;
++#ifdef BIG_ENDIAN
++    stLocalCopy.wCurrentRequest = WENDIAN(stLocalCopy.wCurrentRequest);
++    stLocalCopy.wNextRequest = WENDIAN(stLocalCopy.wNextRequest);
++    stLocalCopy.wFlags = WENDIAN(stLocalCopy.wFlags);
++    stLocalCopy.wHead = WENDIAN(stLocalCopy.wHead);
++    stLocalCopy.wTail = WENDIAN(stLocalCopy.wTail);
++    stLocalCopy.wSize = WENDIAN(stLocalCopy.wSize);
++    
++    for (i=0;i<MAX_PREFETCH_QUEUE_SIZE;i++)
++        stLocalCopy.wQueue[i] = WENDIAN(stLocalCopy.wQueue[i]);
++#endif
+ 
+-	for (i=0;i<sizeof(prefetch_type);i++)
+-		put_byte(hLocal,hLocal->CPU.ES,
+-				 (WORD)(hLocal->CPU.ireg.X.DI + i),
+-				 byPtr[i]);
++    byPtr = (BYTE *)&stLocalCopy;
+ 
++    for (i=0;i<sizeof(prefetch_type);i++)
++        put_byte(hLocal,hLocal->CPU.ES,
++            (WORD)(hLocal->CPU.ireg.X.DI + i),
++            byPtr[i]);
+ }
+ 
+ 
+@@ -433,20 +447,35 @@
+ 
+ void vm_to_prefetch_queue(PAMLHANDLE hLocal)
+ {
+-	int     i;
+-	BYTE    *byPtr;
+-	WORD    wSize, wCurrentRequest, wNextRequest;
++    int             i;
++    BYTE            *byPtr;
++    WORD            wSize, wCurrentRequest, wNextRequest;
++    prefetch_type   stLocalCopy;
++
++    wSize           = hLocal->CPU.prefetch.wSize;
++    wCurrentRequest = hLocal->CPU.prefetch.wCurrentRequest;
++    wNextRequest    = hLocal->CPU.prefetch.wNextRequest;
++
++    byPtr = (BYTE*)&stLocalCopy;
++
++    for (i=0;i<sizeof(prefetch_type);i++)
++    	*byPtr++ = get_byte(hLocal,
++            hLocal->CPU.ES,
++            (WORD)(hLocal->CPU.ireg.X.DI + i));
+ 
+-	wSize           = hLocal->CPU.prefetch.wSize;
+-	wCurrentRequest = hLocal->CPU.prefetch.wCurrentRequest;
+-	wNextRequest    = hLocal->CPU.prefetch.wNextRequest;
++#ifdef BIG_ENDIAN
++    stLocalCopy.wCurrentRequest = WENDIAN(stLocalCopy.wCurrentRequest);
++    stLocalCopy.wNextRequest = WENDIAN(stLocalCopy.wNextRequest);
++    stLocalCopy.wFlags = WENDIAN(stLocalCopy.wFlags);
++    stLocalCopy.wHead = WENDIAN(stLocalCopy.wHead);
++    stLocalCopy.wTail = WENDIAN(stLocalCopy.wTail);
++    stLocalCopy.wSize = WENDIAN(stLocalCopy.wSize);
+ 
+-	byPtr = (BYTE *)&hLocal->CPU.prefetch;
++    for (i=0;i<MAX_PREFETCH_QUEUE_SIZE;i++)
++        stLocalCopy.wQueue[i] = WENDIAN(stLocalCopy.wQueue[i]);
++#endif
+ 
+-	for (i=0;i<sizeof(prefetch_type);i++)
+-		*byPtr++ = get_byte(hLocal,
+-							hLocal->CPU.ES,
+-							(WORD)(hLocal->CPU.ireg.X.DI + i));
++    hLocal->CPU.prefetch = stLocalCopy;
+ 
+ 	// verify that the prefetch queue was not trashed...
+ 
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/INIT.CPP#1 - d:/work\NAVAPI\SRC\INIT.CPP ====
+@@ -197,8 +197,13 @@
+ 
+     STRCPY(szVirscanDatPath, lpszDefsPath);
+     STRCPY(szVirscanInfPath, lpszDefsPath);
++#if defined(SYM_UNIX)
++    NameAppendFile(szVirscanDatPath, _T("virscan1.dat"));
++    NameAppendFile(szVirscanInfPath, _T("virscan.inf"));
++#else
+     NameAppendFile(szVirscanDatPath, _T("VIRSCAN1.DAT"));
+     NameAppendFile(szVirscanInfPath, _T("VIRSCAN.INF"));
++#endif
+ 
+     nStatus = VLRegisterVirusDB(hContext,
+                                 szVirscanDatPath,
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/NAVCB.CPP#1 - d:/work\NAVAPI\SRC\NAVCB.CPP ====
+@@ -77,14 +77,20 @@
+ 
+ #include "platform.h"
+ #include "file.h"
++#if !defined(SYM_UNIX)
+ #include "disk.h"
++#endif
+ #include "xapi.h"
+ #include "symsync.h"
++#if !defined(SYM_UNIX)
+ #include "symcfg.h"
++#endif
+ 
+ #include "stdio.h"
+ #include "stdlib.h"
++#if !defined(SYM_UNIX)
+ #include "conio.h"
++#endif
+ 
+ #include "avtypes.h"
+ #include "avcb.h"
+@@ -103,8 +109,12 @@
+ #include "symserve.h"
+ #endif
+ 
++#if defined(SYM_UNIX)
++#include <pthread.h>
++#include <ctype.h>
++#endif
+ 
+-#if defined(SYM_WIN32) && !defined(SYM_VXD) && !defined(SYM_NTK)
++#if defined(SYM_WIN32) && !defined(SYM_VXD) && !defined(SYM_NTK) && !defined(SYM_UNIX)
+   #include "winioctl.h"
+   #include "NAVEX_NT.h"
+ #elif defined (SYM_VXD)
+@@ -137,7 +147,7 @@
+     BYTE    byDrive,                    // [in] drive to lock/unlock
+     UINT    uRequestedAccess            // [in] requested access right
+ );
+-                                        // local defines
++					// local defines
+ #define LOCK_DRIVE          0
+ #define UNLOCK_DRIVE        1
+ 
+@@ -230,7 +240,7 @@
+     hFile = VirtFileOpen( lpFileInfo->lpstrPathName, wOpenMode );
+ 
+     if ( HFILE_ERROR == hFile )
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+ 
+     lpFileInfo->hFile = hFile;
+ 
+@@ -249,7 +259,7 @@
+     hFile = VirtFileClose( lpFileInfo->hFile );
+ 
+     if (hFile == HFILE_ERROR)
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+ 
+     return ( CBSTATUS_OK );
+ }
+@@ -268,7 +278,7 @@
+     *lpdwNewOffset = VirtFileSeek( lpFileInfo->hFile, lOffset, wWhence );
+ 
+     if ( (DWORD) -1 == *lpdwNewOffset )
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+ 
+     return ( CBSTATUS_OK );
+ }
+@@ -289,18 +299,18 @@
+ 
+     if ( 0 != dwNumBytes )
+     {
+-        uBytesRead = VirtFileRead( lpFileInfo->hFile,
+-                                   lpvBuffer,
+-                                   (UINT) dwNumBytes );
++	uBytesRead = VirtFileRead( lpFileInfo->hFile,
++				   lpvBuffer,
++				   (UINT) dwNumBytes );
+ 
+-        if ( (UINT) -1 == uBytesRead )
+-            return( CBSTATUS_ERROR );
++	if ( (UINT) -1 == uBytesRead )
++	    return( CBSTATUS_ERROR );
+ 
+-        *lpdwNumActualBytes = uBytesRead;
++	*lpdwNumActualBytes = uBytesRead;
+     }
+     else
+     {
+-        *lpdwNumActualBytes = 0;
++	*lpdwNumActualBytes = 0;
+     }
+ 
+     return ( CBSTATUS_OK );
+@@ -322,18 +332,18 @@
+ 
+     if ( 0 != dwNumBytes )
+     {
+-        uBytesWritten = VirtFileWrite( lpFileInfo->hFile,
+-                                       lpvBuffer,
+-                                       (UINT) dwNumBytes );
++	uBytesWritten = VirtFileWrite( lpFileInfo->hFile,
++				       lpvBuffer,
++				       (UINT) dwNumBytes );
+ 
+-        if ( (UINT) -1 == uBytesWritten )
+-            return( CBSTATUS_ERROR );
++	if ( (UINT) -1 == uBytesWritten )
++	    return( CBSTATUS_ERROR );
+ 
+-        *lpdwNumActualBytes = uBytesWritten;
++	*lpdwNumActualBytes = uBytesWritten;
+     }
+     else
+     {
+-        *lpdwNumActualBytes = 0;
++	*lpdwNumActualBytes = 0;
+     }
+ 
+     return ( CBSTATUS_OK );
+@@ -352,7 +362,7 @@
+     dwOffset = VirtFileSeek( lpFileInfo->hFile, 0, SEEK_CUR );
+ 
+     if ( -1 == dwOffset )
+-        return( CBSTATUS_ERROR );
++	return( CBSTATUS_ERROR );
+ 
+     *lpdwOffset = dwOffset;
+ 
+@@ -369,7 +379,7 @@
+ 
+     if ( (UINT) -1 == VirtFileWrite( lpFileInfo->hFile, "", 0 ) )
+     {
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+     }
+     
+     return ( CBSTATUS_OK );
+@@ -479,7 +489,7 @@
+     dwLength = VirtFileLength( lpFileInfo->hFile );
+ 
+     if ( (DWORD) -1 == dwLength )
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+ 
+     *lpdwFileLength = dwLength;
+ 
+@@ -515,7 +525,7 @@
+ CBSTATUS NAVFileExists
+ (
+     LPVOID  lpvFileInfo,
+-    LPBOOL	lpbExists
++    LPBOOL      lpbExists
+ )
+ {
+     return ( CBSTATUS_ERROR );
+@@ -542,14 +552,14 @@
+     LPLPVOID     lplpvBuffer
+ )
+ {
+-    LPVOID	lpvData;
++    LPVOID      lpvData;
+ 
+     (void)wMemType;
+ 
+     lpvData = MemAllocPtr(GHND, dwSize);
+ 
+     if (lpvData == NULL)
+-    	return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+ 
+     *lplpvBuffer = lpvData;
+ 
+@@ -578,6 +588,11 @@
+ {
+     LPFILEINFORMATION   lpFileInfo;
+     BOOL                bWildDefs = FALSE;
++    LPTSTR              lpFileName = NULL;
++#if defined(SYM_UNIX)
++    int                 i;
++    TCHAR               szFileName[13];
++#endif
+ 
+ #ifdef SYM_DOS
+     bWildDefs = AreDefsWild();
+@@ -585,7 +600,7 @@
+ 
+     lpFileInfo = (LPFILEINFORMATION)MemAllocPtr(GHND,sizeof(FILEINFO_T));
+     if (lpFileInfo == NULL)
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+ 
+     lpFileInfo->hFile = NULL;
+ 
+@@ -593,33 +608,43 @@
+ 
+     switch (wDataFileNum)
+     {
+-        case DATA_FILE_ID_VIRSCAN1DAT:
+-            if (bWildDefs)
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRWILD1.DAT"));
+-            else
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRSCAN1.DAT"));
+-            break;
+-        case DATA_FILE_ID_VIRSCAN2DAT:
+-            if (bWildDefs)
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRWILD2.DAT"));
+-            else
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRSCAN2.DAT"));
+-            break;
+-        case DATA_FILE_ID_VIRSCAN3DAT:
+-            if (bWildDefs)
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRWILD3.DAT"));
+-            else
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRSCAN3.DAT"));
+-            break;
+-        case DATA_FILE_ID_VIRSCAN4DAT:
+-            if (bWildDefs)
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRWILD4.DAT"));
+-            else
+-                NameAppendFile(lpFileInfo->lpstrPathName,_T("VIRSCAN4.DAT"));
+-            break;
+-        default:
+-            return ( CBSTATUS_ERROR );
++	case DATA_FILE_ID_VIRSCAN1DAT:
++	    if (bWildDefs)
++		lpFileName = _T("VIRWILD1.DAT");
++	    else
++		lpFileName = _T("VIRSCAN1.DAT");
++	    break;
++	case DATA_FILE_ID_VIRSCAN2DAT:
++	    if (bWildDefs)
++		lpFileName = _T("VIRWILD2.DAT");
++	    else
++		lpFileName = _T("VIRSCAN2.DAT");
++	    break;
++	case DATA_FILE_ID_VIRSCAN3DAT:
++	    if (bWildDefs)
++		lpFileName = _T("VIRWILD3.DAT");
++	    else
++		lpFileName = _T("VIRSCAN3.DAT");
++	    break;
++	case DATA_FILE_ID_VIRSCAN4DAT:
++	    if (bWildDefs)
++		lpFileName = _T("VIRWILD4.DAT");
++	    else
++		lpFileName = _T("VIRSCAN4.DAT");
++	    break;
++	default:
++	    return ( CBSTATUS_ERROR );
+     }
++
++#if defined(SYM_UNIX)
++	// Make the data file name lowercase.
++	for (i = 0; lpFileName[i] != '\0'; i++)
++	    szFileName[i] = tolower(lpFileName[i]);
++	szFileName[i] = '\0';
++	lpFileName = szFileName;
++#endif
++
++    NameAppendFile(lpFileInfo->lpstrPathName, lpFileName);
+ 
+     *lplpvFileInfo = (LPVOID)lpFileInfo;
+     return ( CBSTATUS_OK );
+@@ -793,7 +818,7 @@
+ }
+ 
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ CBSTATUS NAVLinearOpen
+ (
+@@ -832,42 +857,42 @@
+     ABSDISKREC absDisk;
+ 
+     if (NAVLinearConvertToPhysical (lpvInfo,
+-                                    dwSectorLow,
+-                                    &bySide,
+-                                    &wCylinder,
+-                                    &bySector ) == CBSTATUS_ERROR)
++				    dwSectorLow,
++				    &bySide,
++				    &wCylinder,
++				    &bySector ) == CBSTATUS_ERROR)
+     {
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+     }
+ 
+     for (i = 0; i < 2; i++)             // two attempts
+     {
+-        MEMSET(&absDisk, 0, sizeof(absDisk));
+-        absDisk.dn = (BYTE)lpvInfo;
++	MEMSET(&absDisk, 0, sizeof(absDisk));
++	absDisk.dn = (BYTE)lpvInfo;
+ 
+-        if ( !HWIsNEC() )
+-            {
+-            uResult = DiskGetPhysicalInfo (&absDisk);
++	if ( !HWIsNEC() )
++	    {
++	    uResult = DiskGetPhysicalInfo (&absDisk);
+ 
+-            if (uResult)                // Failed - try again
+-                {
+-                continue;
+-                }
+-            }
++	    if (uResult)                // Failed - try again
++		{
++		continue;
++		}
++	    }
+ 
+-        absDisk.dwHead       = bySide;
+-        absDisk.dwTrack      = wCylinder;
+-        absDisk.dwSector     = bySector;
+-        absDisk.numSectors = (BYTE)dwLength;
+-        absDisk.buffer     = (HPBYTE) lpbyBuffer;
++	absDisk.dwHead       = bySide;
++	absDisk.dwTrack      = wCylinder;
++	absDisk.dwSector     = bySector;
++	absDisk.numSectors = (BYTE)dwLength;
++	absDisk.buffer     = (HPBYTE) lpbyBuffer;
+ 
+-        uResult = DiskAbsOperation (READ_COMMAND, &absDisk);
++	uResult = DiskAbsOperation (READ_COMMAND, &absDisk);
+ 
+-        if (!uResult)                   // Success
+-        {
+-            *lpdwActualLength = absDisk.numSectors;
+-            break;
+-        }
++	if (!uResult)                   // Success
++	{
++	    *lpdwActualLength = absDisk.numSectors;
++	    break;
++	}
+     }
+ 
+     return (!uResult ? CBSTATUS_OK : CBSTATUS_ERROR);
+@@ -891,42 +916,42 @@
+     ABSDISKREC absDisk;
+ 
+     if (NAVLinearConvertToPhysical (lpvInfo,
+-                                    dwSectorLow,
+-                                    &bySide,
+-                                    &wCylinder,
+-                                    &bySector ) == CBSTATUS_ERROR)
++				    dwSectorLow,
++				    &bySide,
++				    &wCylinder,
++				    &bySector ) == CBSTATUS_ERROR)
+     {
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+     }
+ 
+     for (i = 0; i < 2; i++)             // two attempts
+     {
+-        MEMSET(&absDisk, 0, sizeof(absDisk));
+-        absDisk.dn = (BYTE)lpvInfo;
++	MEMSET(&absDisk, 0, sizeof(absDisk));
++	absDisk.dn = (BYTE)lpvInfo;
+ 
+-        if ( !HWIsNEC() )
+-            {
+-            uResult = DiskGetPhysicalInfo (&absDisk);
++	if ( !HWIsNEC() )
++	    {
++	    uResult = DiskGetPhysicalInfo (&absDisk);
+ 
+-            if (uResult)                // Failed - try again
+-                {
+-                continue;
+-                }
+-            }
++	    if (uResult)                // Failed - try again
++		{
++		continue;
++		}
++	    }
+ 
+-        absDisk.dwHead       = bySide;
+-        absDisk.dwTrack      = wCylinder;
+-        absDisk.dwSector     = bySector;
+-        absDisk.numSectors = (BYTE)dwLength;
+-        absDisk.buffer     = (HPBYTE)lpbyBuffer;
++	absDisk.dwHead       = bySide;
++	absDisk.dwTrack      = wCylinder;
++	absDisk.dwSector     = bySector;
++	absDisk.numSectors = (BYTE)dwLength;
++	absDisk.buffer     = (HPBYTE)lpbyBuffer;
+ 
+-        uResult = DiskAbsOperation (WRITE_COMMAND, &absDisk);
++	uResult = DiskAbsOperation (WRITE_COMMAND, &absDisk);
+ 
+-        if (!uResult)                   // Success
+-        {
+-            *lpdwActualLength = absDisk.numSectors;
+-            break;
+-        }
++	if (!uResult)                   // Success
++	{
++	    *lpdwActualLength = absDisk.numSectors;
++	    break;
++	}
+     }
+ 
+     return (!uResult ? CBSTATUS_OK : CBSTATUS_ERROR);
+@@ -945,101 +970,101 @@
+     stDiskRec.dn = (BYTE)lpvInfo;
+ 
+     if ( !HWIsNEC() )
+-        {
+-        if (DiskGetPhysicalInfo (&stDiskRec))
+-            {
+-            return ( CBSTATUS_ERROR );
+-            }
++	{
++	if (DiskGetPhysicalInfo (&stDiskRec))
++	    {
++	    return ( CBSTATUS_ERROR );
++	    }
+ 
+-        *lpbySides    = (BYTE)stDiskRec.dwTotalHeads;
+-        *lpwCylinders = (WORD)stDiskRec.dwTotalTracks;
+-        *lpbySectors  = (BYTE)stDiskRec.dwSectorsPerTrack;
+-        }
++	*lpbySides    = (BYTE)stDiskRec.dwTotalHeads;
++	*lpwCylinders = (WORD)stDiskRec.dwTotalTracks;
++	*lpbySectors  = (BYTE)stDiskRec.dwSectorsPerTrack;
++	}
+     else                                // this IS a NEC PC98xx
+     {                                   // NOTE: floppy disk is assumed!
+-        BPBBootRec *lpBPBBootRec;
+-        BYTE       BootSector[SECTOR_SIZE];
++	BPBBootRec *lpBPBBootRec;
++	BYTE       BootSector[SECTOR_SIZE];
+ 
+-        stDiskRec.dwHead     = 0;
+-        stDiskRec.dwTrack    = 0;
+-        stDiskRec.dwSector   = 1;
+-        stDiskRec.numSectors = 1;
+-        stDiskRec.buffer     = (HPBYTE)&BootSector;
++	stDiskRec.dwHead     = 0;
++	stDiskRec.dwTrack    = 0;
++	stDiskRec.dwSector   = 1;
++	stDiskRec.numSectors = 1;
++	stDiskRec.buffer     = (HPBYTE)&BootSector;
+ 
+-                                        // Read the Boot record
++					// Read the Boot record
+ 
+-        if (DiskAbsOperation (READ_COMMAND, &stDiskRec))
+-        {
+-            return ( CBSTATUS_ERROR );
+-        }
++	if (DiskAbsOperation (READ_COMMAND, &stDiskRec))
++	{
++	    return ( CBSTATUS_ERROR );
++	}
+ 
+-        lpBPBBootRec = (BPBBootRec *)&BootSector;
++	lpBPBBootRec = (BPBBootRec *)&BootSector;
+ 
+-                                        // Determine the disk dimensions
+-                                        // from the floppy type
++					// Determine the disk dimensions
++					// from the floppy type
+ 
+-        switch (lpBPBBootRec->BPB.mediaDescriptor)
+-        {
+-            case 0xFD:
+-                                        // 360k diskette
+-                *lpwCylinders = 40;
+-                *lpbySectors  = 9;
+-                *lpbySides    = 2;
++	switch (lpBPBBootRec->BPB.mediaDescriptor)
++	{
++	    case 0xFD:
++					// 360k diskette
++		*lpwCylinders = 40;
++		*lpbySectors  = 9;
++		*lpbySides    = 2;
+ 
+-                break;
++		break;
+ 
+-            case 0xF9:
+-                                        // 720k or 1.2M diskette
+-                *lpwCylinders = 80;
+-                *lpbySectors  = (BYTE)lpBPBBootRec->BPB.sectorsPerTrack;
+-                *lpbySides    = 2;
++	    case 0xF9:
++					// 720k or 1.2M diskette
++		*lpwCylinders = 80;
++		*lpbySectors  = (BYTE)lpBPBBootRec->BPB.sectorsPerTrack;
++		*lpbySides    = 2;
+ 
+-                break;
++		break;
+ 
+-            case 0xF0:
+-                                        // 1.44M or 2.88M diskette
+-                *lpwCylinders = 80;
+-                *lpbySectors  = (BYTE)lpBPBBootRec->BPB.sectorsPerTrack;
+-                *lpbySides    = 2;
++	    case 0xF0:
++					// 1.44M or 2.88M diskette
++		*lpwCylinders = 80;
++		*lpbySectors  = (BYTE)lpBPBBootRec->BPB.sectorsPerTrack;
++		*lpbySides    = 2;
+ 
+-                break;
++		break;
+ 
+-            case 0xFE:
+-                                        // 1.2M (1k/sector) diskette
+-                *lpwCylinders = 80;
+-                *lpbySectors  = 8;
+-                *lpbySides    = 2;
++	    case 0xFE:
++					// 1.2M (1k/sector) diskette
++		*lpwCylinders = 80;
++		*lpbySectors  = 8;
++		*lpbySides    = 2;
+ 
+-                break;
++		break;
+ 
+-            case 0xFC:
+-                                        // 180K diskette
+-                *lpwCylinders = 40;
+-                *lpbySectors  = 9;
+-                *lpbySides    = 1;
++	    case 0xFC:
++					// 180K diskette
++		*lpwCylinders = 40;
++		*lpbySectors  = 9;
++		*lpbySides    = 1;
+ 
+-                break;
++		break;
+ 
+-            case 0xFF:
+-                                        // 320K diskette
+-                *lpwCylinders = 40;
+-                *lpbySectors  = 8;
+-                *lpbySides    = 2;
++	    case 0xFF:
++					// 320K diskette
++		*lpwCylinders = 40;
++		*lpbySectors  = 8;
++		*lpbySides    = 2;
+ 
+-                break;
++		break;
+ 
+-            case 0xFB:
+-                                        // 640K diskette
+-                *lpwCylinders = 80;
+-                *lpbySectors  = 8;
+-                *lpbySides    = 2;
++	    case 0xFB:
++					// 640K diskette
++		*lpwCylinders = 80;
++		*lpbySectors  = 8;
++		*lpbySides    = 2;
+ 
+-                break;
++		break;
+ 
+-            default:
++	    default:
+ 
+-                return ( CBSTATUS_ERROR );
+-        }
++		return ( CBSTATUS_ERROR );
++	}
+     }
+ 
+     return (CBSTATUS_OK);
+@@ -1061,15 +1086,15 @@
+     CBSTATUS cbResult;
+ 
+     cbResult = NAVLinearGetDimensions (lpvInfo,
+-                                       &bySides,
+-                                       &wCylinders,
+-                                       &bySectors);
++				       &bySides,
++				       &wCylinders,
++				       &bySectors);
+ 
+     if (CBSTATUS_OK == cbResult)
+     {
+-        *lpdwSectorLow = ((DWORD) wCylinder * bySectors * bySides ) +
+-                         ((DWORD) bySide * bySectors ) +
+-                         ((DWORD) bySector - 1 );
++	*lpdwSectorLow = ((DWORD) wCylinder * bySectors * bySides ) +
++			 ((DWORD) bySide * bySectors ) +
++			 ((DWORD) bySector - 1 );
+     }
+ 
+     return(cbResult);
+@@ -1094,10 +1119,10 @@
+ 
+     if (CBSTATUS_OK == cbResult)
+     {
+-        *lpwCylinder = (WORD) (dwSectorLow / ( (WORD) bySectors * (WORD) bySides ));
+-        dwSectorLow -= (DWORD) *lpwCylinder * ( (WORD) bySectors * (WORD) bySides );
+-        *lpbySide    = (BYTE) (dwSectorLow / bySectors);
+-        *lpbySector  = (BYTE) (dwSectorLow % bySectors) + 1;
++	*lpwCylinder = (WORD) (dwSectorLow / ( (WORD) bySectors * (WORD) bySides ));
++	dwSectorLow -= (DWORD) *lpwCylinder * ( (WORD) bySectors * (WORD) bySides );
++	*lpbySide    = (BYTE) (dwSectorLow / bySectors);
++	*lpbySector  = (BYTE) (dwSectorLow % bySectors) + 1;
+     }
+ 
+     return(cbResult);
+@@ -1114,7 +1139,7 @@
+     return ( CBSTATUS_OK );
+ }
+ 
+-#endif    // #ifndef SYM_NLM
++#endif    // #if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ 
+ // Mutex
+@@ -1130,7 +1155,11 @@
+ #elif defined(SYM_VXD) || defined(SYM_NTK)
+ 
+     SYMMUTEX        stMutex;
++
++#elif defined(SYM_UNIX)
+ 
++    pthread_mutex_t mutex;
++
+ #endif
+ 
+ } MUTEX_INFO_T, FAR *LPMUTEX_INFO;
+@@ -1144,30 +1173,34 @@
+     LPMUTEX_INFO    lpstMutexInfo;
+ 
+     lpstMutexInfo = (LPMUTEX_INFO)MemAllocPtr(GMEM_ZEROINIT | GMEM_FIXED,
+-                                              sizeof(MUTEX_INFO_T));
++					      sizeof(MUTEX_INFO_T));
+     if (lpstMutexInfo == NULL)
+-        return ( CBSTATUS_OK );
++	return ( CBSTATUS_OK );
+ 
+ #if defined(SYM_WIN32)
+ 
+     lpstMutexInfo->hMutex = CreateMutex(NULL,   // Default security attributes
+-                                        FALSE,  // No initial owner
+-                                        NULL);  // Don't care about its name
++					FALSE,  // No initial owner
++					NULL);  // Don't care about its name
+ 
+     if (lpstMutexInfo->hMutex == NULL)
+     {
+-        MemFreePtr(lpstMutexInfo);
+-        return ( CBSTATUS_ERROR );
++	MemFreePtr(lpstMutexInfo);
++	return ( CBSTATUS_ERROR );
+     }
+ 
+ #elif defined(SYM_VXD) || defined(SYM_NTK)
+ 
+     if (!SymCreateMutex(&lpstMutexInfo->stMutex))
+     {
+-        MemFreePtr(lpstMutexInfo);
+-        return ( CBSTATUS_ERROR );
++	MemFreePtr(lpstMutexInfo);
++	return ( CBSTATUS_ERROR );
+     }
+ 
++#elif defined(SYM_UNIX)
++
++    pthread_mutex_init(&lpstMutexInfo->mutex, NULL);
++
+ #endif
+ 
+     *lplpvMutexInfo = (LPVOID)lpstMutexInfo;
+@@ -1181,20 +1214,27 @@
+ )
+ {
+     CBSTATUS        cbStatus;
++    LPMUTEX_INFO    lpstMutexInfo;
++
+     cbStatus = CBSTATUS_OK;
++    lpstMutexInfo = (LPMUTEX_INFO)lpvMutexInfo;
+ 
+ #if defined(SYM_WIN32)
+ 
+-    if (CloseHandle(((LPMUTEX_INFO)lpvMutexInfo)->hMutex) == FALSE)
++    if (CloseHandle(lpstMutexInfo->hMutex) == FALSE)
+     {
+-        // Failed to close mutex
++	// Failed to close mutex
+ 
+-        cbStatus = CBSTATUS_ERROR;
++	cbStatus = CBSTATUS_ERROR;
+     }
+ 
+ #elif defined(SYM_VXD) || defined(SYM_NTK)
+ 
+-    SymDestroyMutex (&(((LPMUTEX_INFO)lpvMutexInfo)->stMutex));
++    SymDestroyMutex (&lpstMutexInfo->stMutex);
++
++#elif defined(SYM_UNIX)
++
++    pthread_mutex_destroy(&lpstMutexInfo->mutex);
+ 
+ #endif
+ 
+@@ -1208,24 +1248,32 @@
+     DWORD           dwTimeoutMS
+ )
+ {
++    LPMUTEX_INFO    lpstMutexInfo;
++
++    lpstMutexInfo = (LPMUTEX_INFO)lpvMutexInfo;
++
+ #if defined(SYM_WIN32)
+ 
+-    if (WaitForSingleObject(((LPMUTEX_INFO)lpvMutexInfo)->hMutex,
+-                            dwTimeoutMS) != WAIT_OBJECT_0)
++    if (WaitForSingleObject(lpstMutexInfo->hMutex,
++			    dwTimeoutMS) != WAIT_OBJECT_0)
+     {
+-        // Failure getting mutex
++	// Failure getting mutex
+ 
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+     }
+ 
+ #elif defined(SYM_VXD) || defined(SYM_NTK)
+ 
+-    SymWaitForMutex (&(((LPMUTEX_INFO)lpvMutexInfo)->stMutex));
++    SymWaitForMutex (&lpstMutexInfo->stMutex);
+ 
+ #elif defined(SYM_NLM)
+ 
+     EnterCritSec();
++
++#elif defined(SYM_UNIX)
++
++    pthread_mutex_lock(&lpstMutexInfo->mutex);
+ 
+ #endif
+ 
+     return ( CBSTATUS_OK );
+@@ -1236,23 +1284,31 @@
+     LPVOID          lpvMutexInfo
+ )
+ {
++    LPMUTEX_INFO    lpstMutexInfo;
++
++    lpstMutexInfo = (LPMUTEX_INFO)lpvMutexInfo;
++
+ #if defined(SYM_WIN32)
+ 
+-    if (ReleaseMutex(((LPMUTEX_INFO)lpvMutexInfo)->hMutex) == FALSE)
++    if (ReleaseMutex(lpstMutexInfo->hMutex) == FALSE)
+     {
+-        // Failure releasing mutex
++	// Failure releasing mutex
+ 
+-        return ( CBSTATUS_ERROR );
++	return ( CBSTATUS_ERROR );
+     }
+ 
+ #elif defined(SYM_VXD) || defined(SYM_NTK)
+ 
+-    SymReleaseMutex (&(((LPMUTEX_INFO)lpvMutexInfo)->stMutex));
++    SymReleaseMutex (&pstMutexInfo->stMutex);
+ 
+ #elif defined(SYM_NLM)
+ 
+     ExitCritSec();
++
++#elif defined(SYM_UNIX)
+ 
++    pthread_mutex_unlock(&lpstMutexInfo->mutex);
++
+ #endif
+ 
+     return ( CBSTATUS_OK );
+@@ -1322,7 +1378,7 @@
+ 
+ LINEARCALLBACKS gstNAVLinearCallBacks =
+ {
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+     NAVLinearOpen,
+     NAVLinearClose,
+     NAVLinearRead,
+@@ -1398,7 +1454,7 @@
+ //                                                                         //
+ //=========================================================================//
+ 
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ /*@API:*************************************************************************
+ @Declaration:
+@@ -1416,16 +1472,16 @@
+ 
+ @Parameters:
+ $uOperation$ This parameter should contain 0 or 1.  If 0, the function will
+-             lock the drive, if 1, the function will unlock the drive.
++	     lock the drive, if 1, the function will unlock the drive.
+ $byDrive$ Should be an int-13 drive ID
+ $uRequestedAccess$ The possible settings can be:
+-        DISK_READ_WRITE If the code should lock/unlock write access
+-        DISK_READ_ONLY  If the code should lock/unlock read only access
++	DISK_READ_WRITE If the code should lock/unlock write access
++	DISK_READ_ONLY  If the code should lock/unlock read only access
+ 
+ @Returns:
+     TRUE    if the operation was successful
+     FALSE   if somebody has a lock on the drive for the requested access, or
+-            error.
++	    error.
+ 
+ @Include: virscan.h
+ 
+@@ -1450,78 +1506,78 @@
+     )
+ {
+     if (SystemGetWindowsType() != SYM_SYSTEM_WIN_95)
+-        return(TRUE);
++	return(TRUE);
+ 
+     switch ( uRequestedAccess )
+-        {
+-        case DISK_READ_ONLY:
++	{
++	case DISK_READ_ONLY:
+ 
+-            switch ( uOperation )
+-                {
+-                case 0:
++	    switch ( uOperation )
++		{
++		case 0:
+ 
+-                    if ( DiskLockPhysicalVolume ( byDrive, 1, 1 ) )
+-                        {
+-                        return ( FALSE );
+-                        }
++		    if ( DiskLockPhysicalVolume ( byDrive, 1, 1 ) )
++			{
++			return ( FALSE );
++			}
+ 
+-                    if ( DiskLockPhysicalVolume ( byDrive, 2, 1 ) )
+-                        {
+-                        DiskUnlockPhysicalVolume ( byDrive );
+-                        return ( FALSE );
+-                        }
++		    if ( DiskLockPhysicalVolume ( byDrive, 2, 1 ) )
++			{
++			DiskUnlockPhysicalVolume ( byDrive );
++			return ( FALSE );
++			}
+ 
+-                    break;
++		    break;
+ 
+-                case 1:
++		case 1:
+ 
+-                    DiskUnlockPhysicalVolume ( byDrive );
+-                    DiskUnlockPhysicalVolume ( byDrive );
++		    DiskUnlockPhysicalVolume ( byDrive );
++		    DiskUnlockPhysicalVolume ( byDrive );
+ 
+-                    break;
++		    break;
+ 
+-                default:
+-                    return(FALSE);
+-                }
++		default:
++		    return(FALSE);
++		}
+ 
+-            break;
++	    break;
+ 
+-        case DISK_READ_WRITE:
++	case DISK_READ_WRITE:
+ 
+-            switch ( uOperation )
+-                {
+-                case 0:
++	    switch ( uOperation )
++		{
++		case 0:
+ 
+-                    if ( !ScanLockUnlockDiskP ( 0, byDrive, DISK_READ_ONLY ) )
+-                        {
+-                        return ( FALSE );
+-                        }
++		    if ( !ScanLockUnlockDiskP ( 0, byDrive, DISK_READ_ONLY ) )
++			{
++			return ( FALSE );
++			}
+ 
+-                    if ( DiskLockPhysicalVolume ( byDrive, 3, 1 ) )
+-                        {
+-                        ScanLockUnlockDiskP ( 1, byDrive, DISK_READ_ONLY );
+-                        return ( FALSE );
+-                        }
++		    if ( DiskLockPhysicalVolume ( byDrive, 3, 1 ) )
++			{
++			ScanLockUnlockDiskP ( 1, byDrive, DISK_READ_ONLY );
++			return ( FALSE );
++			}
+ 
+-                    break;
++		    break;
+ 
+-                case 1:
++		case 1:
+ 
+-                    DiskUnlockPhysicalVolume ( byDrive );
++		    DiskUnlockPhysicalVolume ( byDrive );
+ 
+-                    ScanLockUnlockDiskP ( 1, byDrive, DISK_READ_ONLY );
++		    ScanLockUnlockDiskP ( 1, byDrive, DISK_READ_ONLY );
+ 
+-                    break;
++		    break;
+ 
+-                default:
+-                    return(FALSE);
+-                }
++		default:
++		    return(FALSE);
++		}
+ 
+-            break;
++	    break;
+ 
+-        default:
+-            return ( FALSE );
+-        }
++	default:
++	    return ( FALSE );
++	}
+ 
+     return ( TRUE );
+ }
+@@ -1543,16 +1599,16 @@
+ 
+ @Parameters:
+ $uOperation$ This parameter should contain 0 or 1.  If 0, the function will
+-             lock the drive, if 1, the function will unlock the drive.
++	     lock the drive, if 1, the function will unlock the drive.
+ $byDrive$ Should be a drive ID - A, B, C, etc
+ $uRequestedAccess$ The possible settings can be:
+-        DISK_READ_WRITE If the code should lock/unlock write access
+-        DISK_READ_ONLY  If the code should lock/unlock read only access
++	DISK_READ_WRITE If the code should lock/unlock write access
++	DISK_READ_ONLY  If the code should lock/unlock read only access
+ 
+ @Returns:
+     TRUE    if the operation was successful
+     FALSE   if somebody has a lock on the drive for the requested access, or
+-            error.
++	    error.
+ 
+ @Include: virscan.h
+ 
+@@ -1577,78 +1633,78 @@
+     )
+ {
+     if (SystemGetWindowsType() != SYM_SYSTEM_WIN_95)
+-        return(TRUE);
++	return(TRUE);
+ 
+     switch ( uRequestedAccess )
+-        {
+-        case DISK_READ_ONLY:
++	{
++	case DISK_READ_ONLY:
+ 
+-            switch ( uOperation )
+-                {
+-                case 0:
++	    switch ( uOperation )
++		{
++		case 0:
+ 
+-                    if ( DiskLockLogicalVolume ( byDrive, 1, 1 ) )
+-                        {
+-                        return ( FALSE );
+-                        }
++		    if ( DiskLockLogicalVolume ( byDrive, 1, 1 ) )
++			{
++			return ( FALSE );
++			}
+ 
+-                    if ( DiskLockLogicalVolume ( byDrive, 2, 1 ) )
+-                        {
+-                        DiskUnlockLogicalVolume ( byDrive );
+-                        return ( FALSE );
+-                        }
++		    if ( DiskLockLogicalVolume ( byDrive, 2, 1 ) )
++			{
++			DiskUnlockLogicalVolume ( byDrive );
++			return ( FALSE );
++			}
+ 
+-                    break;
++		    break;
+ 
+-                case 1:
++		case 1:
+ 
+-                    DiskUnlockLogicalVolume ( byDrive );
+-                    DiskUnlockLogicalVolume ( byDrive );
++		    DiskUnlockLogicalVolume ( byDrive );
++		    DiskUnlockLogicalVolume ( byDrive );
+ 
+-                    break;
++		    break;
+ 
+-                default:
+-                    return(FALSE);
+-                }
++		default:
++		    return(FALSE);
++		}
+ 
+-            break;
++	    break;
+ 
+-        case DISK_READ_WRITE:
++	case DISK_READ_WRITE:
+ 
+-            switch ( uOperation )
+-                {
+-                case 0:
++	    switch ( uOperation )
++		{
++		case 0:
+ 
+-                    if ( !ScanLockUnlockDiskL ( 0, byDrive, DISK_READ_ONLY ) )
+-                        {
+-                        return ( FALSE );
+-                        }
++		    if ( !ScanLockUnlockDiskL ( 0, byDrive, DISK_READ_ONLY ) )
++			{
++			return ( FALSE );
++			}
+ 
+-                    if ( DiskLockLogicalVolume ( byDrive, 3, 1 ) )
+-                        {
+-                        ScanLockUnlockDiskL ( 1, byDrive, DISK_READ_ONLY );
+-                        return ( FALSE );
+-                        }
++		    if ( DiskLockLogicalVolume ( byDrive, 3, 1 ) )
++			{
++			ScanLockUnlockDiskL ( 1, byDrive, DISK_READ_ONLY );
++			return ( FALSE );
++			}
+ 
+-                    break;
++		    break;
+ 
+-                case 1:
++		case 1:
+ 
+-                    DiskUnlockLogicalVolume ( byDrive );
++		    DiskUnlockLogicalVolume ( byDrive );
+ 
+-                    ScanLockUnlockDiskL ( 1, byDrive, DISK_READ_ONLY );
++		    ScanLockUnlockDiskL ( 1, byDrive, DISK_READ_ONLY );
+ 
+-                    break;
++		    break;
+ 
+-                default:
+-                    return(FALSE);
+-                }
++		default:
++		    return(FALSE);
++		}
+ 
+-            break;
++	    break;
+ 
+-        default:
+-            return ( FALSE );
+-        }
++	default:
++	    return ( FALSE );
++	}
+ 
+     return ( TRUE );
+ }
+@@ -1675,35 +1731,35 @@
+ #if defined(SYM_DOS) || defined(SYM_WIN)
+ 
+     if ( !HWIsNEC() )
+-        {
+-        // DiskGetPhysicalInfo() does Bad Things to the NEC floppy
+-        // drive, so skip it if we're on a NEC.  This doesn't have any
+-        // readily apparent side-effects (but NAV is only scanning the
+-        // boot record, which is always in the same location).
++	{
++	// DiskGetPhysicalInfo() does Bad Things to the NEC floppy
++	// drive, so skip it if we're on a NEC.  This doesn't have any
++	// readily apparent side-effects (but NAV is only scanning the
++	// boot record, which is always in the same location).
+ 
+-        byResult = DiskGetPhysicalInfo(&stDiskRec);
+-                                        // These MUST be filled in for
+-                                        // W32 DiskAbsOperation() to calculate
+-                                        // the correct offset.
+-        if (    (0 == stDiskRec.dwSectorsPerTrack)
+-             || (0 == stDiskRec.dwTotalTracks)
+-             || (0 == stDiskRec.dwTotalHeads) )
+-            {
+-            return ( 1 );
+-            }
+-        }
++	byResult = DiskGetPhysicalInfo(&stDiskRec);
++					// These MUST be filled in for
++					// W32 DiskAbsOperation() to calculate
++					// the correct offset.
++	if (    (0 == stDiskRec.dwSectorsPerTrack)
++	     || (0 == stDiskRec.dwTotalTracks)
++	     || (0 == stDiskRec.dwTotalHeads) )
++	    {
++	    return ( 1 );
++	    }
++	}
+ #endif
+ 
+ #if defined(SYM_WIN32) && !defined(SYM_VXD)
+     if (!(wCylinder == 0 && bHead == 0))  // don't lock first partition table
+-        {
+-        if ( ScanLockUnlockDiskP ( LOCK_DRIVE,
+-                                        bDrive,
+-                                        DISK_READ_ONLY ) == FALSE)
+-            {
+-            return(1);                  // error!
+-            }
+-        }
++	{
++	if ( ScanLockUnlockDiskP ( LOCK_DRIVE,
++					bDrive,
++					DISK_READ_ONLY ) == FALSE)
++	    {
++	    return(1);                  // error!
++	    }
++	}
+ #endif
+ 
+ #ifdef SYM_WIN32
+@@ -1714,38 +1770,38 @@
+     byResult = SYM_ERROR_INVALID_FUNCTION;  // assume failure.
+ 
+     if (bCount * PHYSICAL_SECTOR_SIZE <= 4096)
+-        {
+-        auto    LPBYTE  lpLocalBuffer;
++	{
++	auto    LPBYTE  lpLocalBuffer;
+ 
+-        lpLocalBuffer = (LPBYTE)MemAllocPtr(GHND, 4096 * 2);
++	lpLocalBuffer = (LPBYTE)MemAllocPtr(GHND, 4096 * 2);
+ 
+-        if (NULL != lpLocalBuffer)
+-            {
+-                                        // Get 4K aligned buffer.
+-            stDiskRec.buffer = (LPBYTE)((DWORD)lpLocalBuffer + 4096
+-                                        - ((DWORD)lpLocalBuffer % 4096));
++	if (NULL != lpLocalBuffer)
++	    {
++					// Get 4K aligned buffer.
++	    stDiskRec.buffer = (LPBYTE)((DWORD)lpLocalBuffer + 4096
++					- ((DWORD)lpLocalBuffer % 4096));
+ 
+-            stDiskRec.dwHead      = bHead;
+-            stDiskRec.dwTrack     = wCylinder;
+-            stDiskRec.dwSector    = bSector;
+-            stDiskRec.numSectors  = bCount;
++	    stDiskRec.dwHead      = bHead;
++	    stDiskRec.dwTrack     = wCylinder;
++	    stDiskRec.dwSector    = bSector;
++	    stDiskRec.numSectors  = bCount;
+ 
+-            do
+-                {
+-                byResult = DiskAbsOperation(READ_COMMAND, &stDiskRec);
+-                byCounter++;
+-                }
+-            while ( (byResult != SYM_ERROR_NO_ERROR) && (byCounter < 3) );
++	    do
++		{
++		byResult = DiskAbsOperation(READ_COMMAND, &stDiskRec);
++		byCounter++;
++		}
++	    while ( (byResult != SYM_ERROR_NO_ERROR) && (byCounter < 3) );
+ 
+-                                    // On success, copy these sectors over.
+-            if (byResult == SYM_ERROR_NO_ERROR)
+-                {
+-                MEMCPY(lpBuffer, stDiskRec.buffer, bCount * PHYSICAL_SECTOR_SIZE);
+-                }
++				    // On success, copy these sectors over.
++	    if (byResult == SYM_ERROR_NO_ERROR)
++		{
++		MEMCPY(lpBuffer, stDiskRec.buffer, bCount * PHYSICAL_SECTOR_SIZE);
++		}
+ 
+-            MemFreePtr(lpLocalBuffer);
+-            }
+-         }
++	    MemFreePtr(lpLocalBuffer);
++	    }
++	 }
+ #else
+     stDiskRec.dwHead        = bHead;
+     stDiskRec.dwTrack       = wCylinder;
+@@ -1754,20 +1810,20 @@
+     stDiskRec.buffer        = (BYTE huge *) lpBuffer;
+ 
+     do
+-        {
+-        byResult = DiskAbsOperation(READ_COMMAND, &stDiskRec);
+-        byCounter++;
+-        }
++	{
++	byResult = DiskAbsOperation(READ_COMMAND, &stDiskRec);
++	byCounter++;
++	}
+     while ( (byResult != SYM_ERROR_NO_ERROR) && (byCounter < 3) );
+ #endif
+ 
+ #if defined(SYM_WIN32) && !defined(SYM_VXD)
+     if (!(wCylinder == 0 && bHead == 0))
+-        {
+-        ScanLockUnlockDiskP ( UNLOCK_DRIVE,
+-                                   bDrive,
+-                                   DISK_READ_ONLY );
+-        }
++	{
++	ScanLockUnlockDiskP ( UNLOCK_DRIVE,
++				   bDrive,
++				   DISK_READ_ONLY );
++	}
+ #endif
+ 
+     return( (byResult == SYM_ERROR_NO_ERROR) ? 0 : 1 );
+@@ -1784,42 +1840,42 @@
+ 
+ #if defined(SYM_WIN32) && !defined(SYM_VXD) && !defined(SYM_NTK)
+ 
+-                                        // The following block fixes the
+-                                        // overwrites that were happening
+-                                        // on NT FAT partitions.
++					// The following block fixes the
++					// overwrites that were happening
++					// on NT FAT partitions.
+     if ( SystemGetWindowsType() == SYM_SYSTEM_WIN_NT &&
+-         bDrive >= FIRST_HD )
+-        {
+-        BYTE    byDriveLetter;
+-        BYTE    byPartNum;
+-        DWORD   dwLinearOffset;
+-        DWORD   dwBytes;
++	 bDrive >= FIRST_HD )
++	{
++	BYTE    byDriveLetter;
++	BYTE    byPartNum;
++	DWORD   dwLinearOffset;
++	DWORD   dwBytes;
+ 
+-                                        // Do these sectors lie within a
+-                                        // valid partition?
+-        byPartNum = NAVEX_NTDeterminePartNum( bDrive,
+-                                             bHead,
+-                                             wCylinder,
+-                                             bSector,
+-                                             bCount,
+-                                             &dwLinearOffset );
++					// Do these sectors lie within a
++					// valid partition?
++	byPartNum = NAVEX_NTDeterminePartNum( bDrive,
++					     bHead,
++					     wCylinder,
++					     bSector,
++					     bCount,
++					     &dwLinearOffset );
+ 
+-                                        // Is this partition currently mapped
+-                                        // to a drive letter?
+-         if ( MAX_PARTITIONS != byPartNum &&
+-              0 != ( byDriveLetter = NAVEX_NTDetermineDriveLetter( bDrive,
+-                                                                  byPartNum )))
+-            {
+-                dwBytes = bCount * SECTOR_SIZE;
++					// Is this partition currently mapped
++					// to a drive letter?
++	 if ( MAX_PARTITIONS != byPartNum &&
++	      0 != ( byDriveLetter = NAVEX_NTDetermineDriveLetter( bDrive,
++								  byPartNum )))
++	    {
++		dwBytes = bCount * SECTOR_SIZE;
+ 
+-                                        // Write to the logical drive
+-                return ( NAVEX_NTDiskWriteLogical ( byDriveLetter,
+-                                                   dwLinearOffset,
+-                                                   lpBuffer,
+-                                                   &dwBytes ));
+-            }
+-        }
+-                                        // Otherwise, continue as before...
++					// Write to the logical drive
++		return ( NAVEX_NTDiskWriteLogical ( byDriveLetter,
++						   dwLinearOffset,
++						   lpBuffer,
++						   &dwBytes ));
++	    }
++	}
++					// Otherwise, continue as before...
+ #endif  // SYM_WIN32 && !SYM_VXD && !SYM_NTK
+ 
+ 
+@@ -1833,36 +1889,36 @@
+ #if defined(SYM_DOS) || defined(SYM_WIN)
+ 
+     if ( !HWIsNEC() )
+-        {
+-        // DiskGetPhysicalInfo() does Bad Things to the NEC floppy
+-        // drive, so skip it if we're on a NEC.  This doesn't have any
+-        // readily apparent side-effects (but NAV is only scanning the
+-        // boot record, which is always in the same location).
++	{
++	// DiskGetPhysicalInfo() does Bad Things to the NEC floppy
++	// drive, so skip it if we're on a NEC.  This doesn't have any
++	// readily apparent side-effects (but NAV is only scanning the
++	// boot record, which is always in the same location).
+ 
+-        byResult = DiskGetPhysicalInfo(&stDiskRec);
++	byResult = DiskGetPhysicalInfo(&stDiskRec);
+ 
+-                                        // These MUST be filled in for
+-                                        // W32 DiskAbsOperation() to calculate
+-                                        // the correct offset.
+-        if (   (0 == stDiskRec.dwSectorsPerTrack)
+-            || (0 == stDiskRec.dwTotalTracks)
+-            || (0 == stDiskRec.dwTotalHeads) )
+-            {
+-            return ( 1 );
+-            }
+-        }
++					// These MUST be filled in for
++					// W32 DiskAbsOperation() to calculate
++					// the correct offset.
++	if (   (0 == stDiskRec.dwSectorsPerTrack)
++	    || (0 == stDiskRec.dwTotalTracks)
++	    || (0 == stDiskRec.dwTotalHeads) )
++	    {
++	    return ( 1 );
++	    }
++	}
+ #endif
+ 
+ #if defined(SYM_WIN32) && !defined(SYM_VXD)
+     if (!(wCylinder == 0 && bHead == 0 && bSector == 1))  // don't lock MBR
+-        {
+-        if ( ScanLockUnlockDiskP ( LOCK_DRIVE,
+-                                        bDrive,
+-                                        DISK_READ_WRITE ) == FALSE)
+-            {
+-            return(1);                  // error!
+-            }
+-        }
++	{
++	if ( ScanLockUnlockDiskP ( LOCK_DRIVE,
++					bDrive,
++					DISK_READ_WRITE ) == FALSE)
++	    {
++	    return(1);                  // error!
++	    }
++	}
+ #endif
+ 
+     stDiskRec.dwHead       = bHead;
+@@ -1872,19 +1928,19 @@
+     stDiskRec.buffer       = (BYTE huge *) lpBuffer;
+ 
+     do
+-        {
+-        byResult = DiskAbsOperation(WRITE_COMMAND, &stDiskRec);
+-        byCounter++;
+-        }
++	{
++	byResult = DiskAbsOperation(WRITE_COMMAND, &stDiskRec);
++	byCounter++;
++	}
+     while ( (byResult != SYM_ERROR_NO_ERROR) && (byCounter < 3) );
+ 
+ #if defined(SYM_WIN32) && !defined(SYM_VXD)
+     if (!(wCylinder == 0 && bHead == 0 && bSector == 1))  // don't lock MBR
+-        {
+-        ScanLockUnlockDiskP ( UNLOCK_DRIVE,
+-                                   bDrive,
+-                                   DISK_READ_WRITE );
+-        }
++	{
++	ScanLockUnlockDiskP ( UNLOCK_DRIVE,
++				   bDrive,
++				   DISK_READ_WRITE );
++	}
+ #endif
+ 
+     return( (byResult == SYM_ERROR_NO_ERROR) ? 0 : 1 );
+@@ -1893,8 +1949,8 @@
+ 
+ 
+ #if defined(SYM_WIN32) && !defined(SYM_VXD) && !defined(SYM_NTK)
+-                                        // These functions are helpers for
+-                                        // LocalDiskWritePhysical under NT
++					// These functions are helpers for
++					// LocalDiskWritePhysical under NT
+ 
+ //--------------------------------------------------------------------
+ // NAVEX_NTDeterminePartNum()
+@@ -1931,17 +1987,17 @@
+     byResult = DiskGetPhysicalInfo(&stDiskRec);
+ 
+     if (    (0 == stDiskRec.dwSectorsPerTrack)
+-         || (0 == stDiskRec.dwTotalTracks)
+-         || (0 == stDiskRec.dwTotalHeads) )
+-        {
+-        return ( MAX_PARTITIONS );
+-        }
++	 || (0 == stDiskRec.dwTotalTracks)
++	 || (0 == stDiskRec.dwTotalHeads) )
++	{
++	return ( MAX_PARTITIONS );
++	}
+ 
+     dwLinearOffset = (((DWORD) wCylinder *
+-                       stDiskRec.dwTotalHeads *
+-                       stDiskRec.dwSectorsPerTrack ) +
+-                      ((DWORD) byHead * stDiskRec.dwSectorsPerTrack ) +
+-                      (bySector - 1));
++		       stDiskRec.dwTotalHeads *
++		       stDiskRec.dwSectorsPerTrack ) +
++		      ((DWORD) byHead * stDiskRec.dwSectorsPerTrack ) +
++		      (bySector - 1));
+ 
+     // Read MBR for this physical disk
+ 
+@@ -1952,38 +2008,38 @@
+     stDiskRec.buffer      = (BYTE huge *) abyMBR;
+ 
+     do
+-        {
+-        byResult = DiskAbsOperation( READ_COMMAND, &stDiskRec );
+-        byCounter++;
+-        }
++	{
++	byResult = DiskAbsOperation( READ_COMMAND, &stDiskRec );
++	byCounter++;
++	}
+     while ( (byResult != SYM_ERROR_NO_ERROR) && (byCounter < 3) );
+ 
+     if ( byResult != SYM_ERROR_NO_ERROR )
+-        return ( MAX_PARTITIONS );
++	return ( MAX_PARTITIONS );
+ 
+     for ( byPartNum = 0, wMBROffset = 0x1BE;
+-          byPartNum < MAX_PARTITIONS;
+-          ++byPartNum, wMBROffset += 0x10 )
+-        {
+-        if ( 0 != *((LPBYTE) abyMBR + wMBROffset + 4 ) &&
+-             dwLinearOffset >= *((LPDWORD) ( abyMBR + wMBROffset + 8 )) &&
+-             ( dwLinearOffset + bySectors ) <= *((LPDWORD) ( abyMBR + wMBROffset + 8 ))
+-                               + *((LPDWORD) ( abyMBR + wMBROffset + 12 )))
+-            {
+-            // byPartNum now indicates the first partition entry with a
+-            // valid non-zero filesystem byte which contains (inclusively)
+-            // the sector to be written.
++	  byPartNum < MAX_PARTITIONS;
++	  ++byPartNum, wMBROffset += 0x10 )
++	{
++	if ( 0 != *((LPBYTE) abyMBR + wMBROffset + 4 ) &&
++	     dwLinearOffset >= *((LPDWORD) ( abyMBR + wMBROffset + 8 )) &&
++	     ( dwLinearOffset + bySectors ) <= *((LPDWORD) ( abyMBR + wMBROffset + 8 ))
++			       + *((LPDWORD) ( abyMBR + wMBROffset + 12 )))
++	    {
++	    // byPartNum now indicates the first partition entry with a
++	    // valid non-zero filesystem byte which contains (inclusively)
++	    // the sector to be written.
+ 
+-            break;
+-            }
+-        }
++	    break;
++	    }
++	}
+ 
+     if ( NULL != lpdwLinearOffset )
+-        {
+-        dwLinearOffset -= *((LPDWORD) ( abyMBR + wMBROffset + 8 ));
+-        dwLinearOffset *= SECTOR_SIZE;
+-        *lpdwLinearOffset = dwLinearOffset;
+-        }
++	{
++	dwLinearOffset -= *((LPDWORD) ( abyMBR + wMBROffset + 8 ));
++	dwLinearOffset *= SECTOR_SIZE;
++	*lpdwLinearOffset = dwLinearOffset;
++	}
+ 
+     return ( byPartNum );
+ }
+@@ -2018,28 +2074,28 @@
+ 
+     // get a list of devices
+     if ( 0 == QueryDosDevice( NULL, (char *) abyDevices, SYM_MAX_PATH * 2 ))
+-        {
+-        return( 0 );
+-        }
++	{
++	return( 0 );
++	}
+ 
+     lptstrDevice = (LPTSTR) abyDevices;
+ 
+     while( lptstrDevice[0] != 0 )
+-        {
+-        if( lptstrDevice[1] == ':' &&
+-            0 != QueryDosDevice( lptstrDevice, (char *) abyDIOCBuffer, SYM_MAX_PATH * 2 ) &&
+-            !STRICMP( (char *) abyDIOCBuffer, tszThisDevice ))
+-            {
+-            bDriveLetterFound = TRUE;
+-            break;
+-            }
+-        lptstrDevice += STRLEN( lptstrDevice ) + 1;
+-        }
++	{
++	if( lptstrDevice[1] == ':' &&
++	    0 != QueryDosDevice( lptstrDevice, (char *) abyDIOCBuffer, SYM_MAX_PATH * 2 ) &&
++	    !STRICMP( (char *) abyDIOCBuffer, tszThisDevice ))
++	    {
++	    bDriveLetterFound = TRUE;
++	    break;
++	    }
++	lptstrDevice += STRLEN( lptstrDevice ) + 1;
++	}
+ 
+     if( TRUE == bDriveLetterFound )
+-        {
+-        byResult =(BYTE) lptstrDevice[0];
+-        }
++	{
++	byResult =(BYTE) lptstrDevice[0];
++	}
+ 
+     return( byResult );
+ }
+@@ -2074,71 +2130,71 @@
+     tszThisLogicalDrive[4] =(TCHAR) byDriveLetter;
+ 
+     hLogicalDrive = CreateFile( tszThisLogicalDrive,
+-                                GENERIC_READ | GENERIC_WRITE,
+-                                FILE_SHARE_READ | FILE_SHARE_WRITE,
+-                                NULL,
+-                                OPEN_EXISTING,
+-                                FILE_ATTRIBUTE_NORMAL,
+-                                NULL );
++				GENERIC_READ | GENERIC_WRITE,
++				FILE_SHARE_READ | FILE_SHARE_WRITE,
++				NULL,
++				OPEN_EXISTING,
++				FILE_ATTRIBUTE_NORMAL,
++				NULL );
+ 
+     if( INVALID_HANDLE_VALUE == hLogicalDrive )
+-        {
+-        return( 1 );
+-        }
++	{
++	return( 1 );
++	}
+ 
+     dwDummy = SetFilePointer( hLogicalDrive, dwLinearOffset, NULL, FILE_BEGIN );
+ 
+     if( dwDummy != dwLinearOffset )
+-        {
+-        CloseHandle( hLogicalDrive );
+-        return( 1 );
+-        }
++	{
++	CloseHandle( hLogicalDrive );
++	return( 1 );
++	}
+ 
+     bLocked = DeviceIoControl ( hLogicalDrive,
+-                                FSCTL_LOCK_VOLUME,
+-                                NULL,
+-                                0,
+-                                NULL,
+-                                0,
+-                                &dwDummy,
+-                                NULL );
++				FSCTL_LOCK_VOLUME,
++				NULL,
++				0,
++				NULL,
++				0,
++				&dwDummy,
++				NULL );
+ 
+     bWritten = WriteFile( hLogicalDrive, lpvBuffer, *lpdwSectors, lpdwSectors, NULL );
+ 
+     if( bLocked )
+-        {
+-        bDismounted = DeviceIoControl ( hLogicalDrive,
+-                                        FSCTL_DISMOUNT_VOLUME,
+-                                        NULL,
+-                                        0,
+-                                        NULL,
+-                                        0,
+-                                        &dwDummy,
+-                                        NULL );
++	{
++	bDismounted = DeviceIoControl ( hLogicalDrive,
++					FSCTL_DISMOUNT_VOLUME,
++					NULL,
++					0,
++					NULL,
++					0,
++					&dwDummy,
++					NULL );
+ 
+-        bLocked = !DeviceIoControl ( hLogicalDrive,
+-                                     FSCTL_UNLOCK_VOLUME,
+-                                     NULL,
+-                                     0,
+-                                     NULL,
+-                                     0,
+-                                     &dwDummy,
+-                                     NULL );
+-        }
++	bLocked = !DeviceIoControl ( hLogicalDrive,
++				     FSCTL_UNLOCK_VOLUME,
++				     NULL,
++				     0,
++				     NULL,
++				     0,
++				     &dwDummy,
++				     NULL );
++	}
+ 
+     CloseHandle( hLogicalDrive );
+ 
+     if ( !bWritten )
+-        {
+-        return( 1 );
+-        }
++	{
++	return( 1 );
++	}
+ 
+     return( 0 );
+ }
+ 
+ #endif // SYM_WIN32 && !SYM_VXD && !SYM_NTK
+ 
+-#endif // ifndef SYM_NLM
++#endif // if !defined(SYM_NLM) && !defined(SYM_UNIX)
+ 
+ 
+ HFILE DOS_LOADDS WINAPI NAVEXFileOpen
+@@ -2308,7 +2364,7 @@
+     // MemAllocPtr() with the GHND flags.
+     LPVOID p = malloc(dwSize);
+     if (p != NULL)
+-        MEMSET(p, 0, dwSize);
++	MEMSET(p, 0, dwSize);
+     return p;
+ #else
+     return ( MemAllocPtr( GHND, dwSize ) );
+@@ -2341,7 +2397,7 @@
+     // MemAllocPtr() with the GHND flags.
+     LPVOID p = malloc(dwSize);
+     if (p != NULL)
+-        MEMSET(p, 0, dwSize);
++	MEMSET(p, 0, dwSize);
+     return p;
+ #else
+     return ( MemAllocPtr( GHND, dwSize ) );
+@@ -2492,13 +2548,13 @@
+ 
+     if (ConfigSwitchSet(&rSwitch, NULL))
+     {
+-        ConfigSwitchGetText(&rSwitch, (LPSTR)lpvResult, uMaxResultLen);
++	ConfigSwitchGetText(&rSwitch, (LPSTR)lpvResult, uMaxResultLen);
+     }
+     else
+     {
+-        szLevel[0] = (TCHAR) (s_wHeuristicLevel + '0');
+-        szLevel[1] = EOS;
+-        STRNCPY((LPTSTR)lpvResult, szLevel, uMaxResultLen);
++	szLevel[0] = (TCHAR) (s_wHeuristicLevel + '0');
++	szLevel[1] = EOS;
++	STRNCPY((LPTSTR)lpvResult, szLevel, uMaxResultLen);
+     }
+ 
+ #elif defined (SYM_NLM)
+@@ -2508,15 +2564,15 @@
+     // ##IPE Do Not translate
+     if( !(STRCMP( lpszID, "heur" )) )
+     {
+-        szLevel[0] = s_wHeuristicLevel + '0';
+-        szLevel[1] = EOS;
+-        STRNCPY(lpvResult, szLevel, uMaxResultLen);
+-        *lpbImplemented = TRUE;
++	szLevel[0] = s_wHeuristicLevel + '0';
++	szLevel[1] = EOS;
++	STRNCPY(lpvResult, szLevel, uMaxResultLen);
++	*lpbImplemented = TRUE;
+     }
+     else
+     {
+-        *lpbImplemented = FALSE;
+-        lpvResult = NULL;
++	*lpbImplemented = FALSE;
++	lpvResult = NULL;
+     }
+ 
+ #elif 0 // OLD NLM CODE
+@@ -2525,15 +2581,15 @@
+ 
+     // ##IPE Do Not translate
+     if( !(STRCMP( lpszID, "heur" )) )
+-        {
+-        *lpbImplemented = TRUE;
+-        STRCPY( lpvResult, &byHeuristicLevel );
+-        }
++	{
++	*lpbImplemented = TRUE;
++	STRCPY( lpvResult, &byHeuristicLevel );
++	}
+     else
+-        {
+-        *lpbImplemented = FALSE;
+-        lpvResult = NULL;
+-        }
++	{
++	*lpbImplemented = FALSE;
++	lpvResult = NULL;
++	}
+ #else
+ 
+     *lpbImplemented = FALSE;
+@@ -2570,7 +2626,7 @@
+     NULL,           // BOOL   (WINAPI FAR *FileLock)(HFILE hHandle, DWORD dwStart, DWORD dwLength);
+     NULL,           // BOOL   (WINAPI FAR *FileUnlock)(HFILE hHandle, DWORD dwStart, DWORD dwLength);
+     NAVEXProgress,  // BOOL   (WINAPI FAR *Progress)(WORD wProgress, DWORD dwCookie);
+-#ifndef SYM_NLM
++#if !defined(SYM_NLM) && !defined(SYM_UNIX)
+     NAVEXSDiskReadPhysical, // UINT   (WINAPI FAR *SDiskReadPhysical)(LPVOID lpBuffer, BYTE bCount, WORD wCylinder, BYTE  bSector, BYTE bHead,  BYTE bDrive);
+     NAVEXSDiskWritePhysical,// UINT   (WINAPI FAR *SDiskWritePhysical)(LPVOID lpBuffer, BYTE bCount, WORD wCylinder, BYTE  bSector, BYTE bHead,  BYTE bDrive);
+ #else
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/PAMAPI.CPP#1 - d:/work\NAVAPI\SRC\PAMAPI.CPP ====
+@@ -153,6 +153,7 @@
+ 
+ /* this file contains the PAM interface code for allocating context handles */
+ 
++#include "avendian.h"
+ #include "pamapi_l.h"
+ 
+ #include "ident.h"
+@@ -196,6 +197,10 @@
+     DATAFILEHANDLE      hDataFile;
+     HFILE               hFile;
+     ExcludeContext      hExclude;
++#ifdef BIG_ENDIAN
++    PAMConfigType*      pConfig;
++    int                 i;
++#endif
+ 
+     /* point our hPtr to NULL so if we return an error its taken care of */
+ 
+@@ -289,7 +294,27 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
++#ifdef BIG_ENDIAN
+ 
++    pConfig = &pTemp->config_info;
++    pConfig->wFillWord = WENDIAN(pConfig->wFillWord);
++    pConfig->dwMaxIter = DWENDIAN(pConfig->dwMaxIter);
++    pConfig->wMinWritesForScan = WENDIAN(pConfig->wMinWritesForScan);
++    pConfig->wFaultSS = WENDIAN(pConfig->wFaultSS);
++    pConfig->wFaultSP = WENDIAN(pConfig->wFaultSP);
++    pConfig->ulMaxImmuneIter = DWENDIAN(pConfig->ulMaxImmuneIter);
++    pConfig->ulMinNoExcludeCount = DWENDIAN(pConfig->ulMinNoExcludeCount);
++    for (i = 0; i < NUM_FAULTS; i++)
++    {
++	    pConfig->dwFaultSegOffArray[i] = DWENDIAN(pConfig->dwFaultSegOffArray[i]);
++        pConfig->dwFaultIterArray[i] = DWENDIAN(pConfig->dwFaultIterArray[i]);
++    }
++    pConfig->dwCacheCheckIter = DWENDIAN(pConfig->dwCacheCheckIter);
++    pConfig->dwCacheStoreIter = DWENDIAN(pConfig->dwCacheStoreIter);
++    pConfig->dwAPMaxIter = DWENDIAN(pConfig->dwAPMaxIter);
++
++#endif
+ 
+     /* we now have our config options loaded up!  now its time to load the
+         global exclusion data */
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/PAMAPI_L.H#1 - d:/work\NAVAPI\SRC\PAMAPI_L.H ====
+@@ -165,7 +165,7 @@
+ 
+ #if defined(SYM_WIN32) || defined(SYM_NTK)
+ #pragma pack(push,1)
+-#else
++#elif !defined(SYM_UNIX)
+ #pragma pack(1)
+ #endif
+ 
+@@ -330,7 +330,7 @@
+ 
+ #if defined(SYM_WIN32) || defined(SYM_NTK)
+ #pragma pack(pop)
+-#else
++#elif !defined(SYM_UNIX)
+ #pragma pack()
+ #endif
+ 
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/SEARCH.CPP#1 - d:/work\NAVAPI\SRC\SEARCH.CPP ====
+@@ -42,7 +42,7 @@
+ //
+ //************************************************************************
+ 
+-
++#include "avendian.h"
+ #include "pamapi_l.h"
+ 
+ 
+@@ -71,7 +71,8 @@
+ 			if (pPAMG->sig_ptr_array[j]->sig[0] == pPAMG->top_set[i])
+ 			{
+ 				ptr = (WORD *)(pPAMG->sig_ptr_array[j]->sig+1);
+-				val = (*ptr) >> BIT_TABLE_SHIFT;
++				val = (*((LPBYTE)ptr) << 8) + *(((LPBYTE)ptr)+1);
++				val >>= BIT_TABLE_SHIFT;
+ 
+ 				byte_num = val >> 3;
+ 				bit_num  = val & 7;
+@@ -158,9 +159,8 @@
+ 		if (set != 0xFF)
+ 		{
+ 			/* yes.  now check the next two bytes to see if they are OK */
++			val = (((WORD)(*(buffer+1)) << 8) + *(buffer+2)) >> BIT_TABLE_SHIFT;
+ 
+-			val = *((WORD *)(buffer+1)) >> BIT_TABLE_SHIFT;
+-
+ 			byte_num = val >> 3;
+ 			bit_num  = val & 7;
+ 
+@@ -231,6 +231,8 @@
+     if (PAMFileRead(hFile,&(pPAMG->num_sigs),sizeof(pPAMG->num_sigs)) !=
+         sizeof(pPAMG->num_sigs))
+         return(PAMSTATUS_FILE_ERROR);
++
++    pPAMG->num_sigs = WENDIAN(pPAMG->num_sigs);
+ 
+     wClusterSize = 0;
+ 
+@@ -257,6 +259,9 @@
+ 
+ 			return(PAMSTATUS_FILE_ERROR);
+ 		}
++
++        sig.length = WENDIAN(sig.length);
++        sig.virus_index = DWENDIAN(sig.virus_index);
+ 
+ 		// check to see if we need to allocate a cluster of memory for
+ 		// more signatures
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/SIGEX.CPP#1 - d:/work\NAVAPI\SRC\SIGEX.CPP ====
+@@ -42,6 +42,7 @@
+ //
+ //************************************************************************
+ 
++#include "avendian.h"
+ #include "pamapi_l.h"
+ #include "ident.h"
+ 
+@@ -123,7 +124,9 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
++    pTemp->wNumSigs = WENDIAN(pTemp->wNumSigs);
+ 
+     /* if pTemp->wNumSigs * sizeof(SigType) > 64K-1 then this will fail on
+        DOS platforms which aren't running extenders */
+ 
+@@ -149,6 +152,20 @@
+             DFCloseDataFile(hData);
+             return(PAMSTATUS_MEM_ERROR);
+         }
++
++#ifdef BIG_ENDIAN
++        {
++        WORD            wTemp;
++
++        pTemp->lpSigPtr[wCurSig].wSigLen =
++            WENDIAN(pTemp->lpSigPtr[wCurSig].wSigLen);
++
++        for (wTemp=0;wTemp<SIG_EXCLUDE_LEN;wTemp++)
++            pTemp->lpSigPtr[wCurSig].wSig[wTemp] =
++                WENDIAN(pTemp->lpSigPtr[wCurSig].wSig[wTemp]);
++        }
++#endif
++
+     }
+ 
+     DFCloseDataFile(hData);
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/STATIC.CPP#1 - d:/work\NAVAPI\SRC\STATIC.CPP ====
+@@ -1428,5 +1428,235 @@
+     return (EXTSTATUS_OK);
+ }
+ 
++#elif defined(SYM_UNIX)
++
++#include <dlfcn.h>
++
++/*@API:**********************************************************************
++@Declaration:
++EXTSTATUS WINAPI EXTInitUnix (HVCONTEXT hContext)
++
++@Description:
++This routine dynamically loads libnavex.so and sets up hContext's
++NAVEX function pointers.
++
++This function has been NAVEX 1.5 enabled.
++
++EXTCloseUnix() should be called to free the library.
++
++@Parameters:
++None.
++
++@Returns:
++EXTSTATUS_OK            if successful.
++EXTSTATUS_INIT_ERROR    if failed loading library or function pointers.
++EXTSTATUS_MEM_ERROR     if unable to allocate mem for export table.
++
++@See:
++@Include:   navex.h
++@Compatibility: Unix
++****************************************************************************/
++
++EXTSTATUS WINAPI EXTInitUnix
++(
++    HVCONTEXT hContext
++)
++{
++    PEXPORT15_TABLE_TYPE  prExportTable, prEngineTable;
++    void*                 hExportLib;
++    void*                 hEngineLib;
++    TCHAR                 szExportFile[SYM_MAX_PATH + 1];
++    TCHAR                 szEngineFile[SYM_MAX_PATH + 1];
++    TCHAR                 szNavexDataDir[SYM_MAX_PATH + 1];
++    LPFUNC_QUERYINTERFACE fpQueryExportInterface, fpQueryEngineInterface;
++
++    char szExportFileName[]  = "libnavex15.so";  // NAVEX file name
++    char szEngineFileName[]  = "libnaveng.so";   // NAVENGE file name
++
++                                        // Validate the function arguments.
++    SYM_ASSERT(NULL != hContext);
++
++                                        // If NAVEX is already initialized, 
++                                        // just return success.
++    if (hContext->prExportTable != NULL)
++        return (EXTSTATUS_OK);
++
++                                        // Get the full pathnames for:
++                                        //   NAVEX (szExportFile)
++                                        //   NAVENG (szEngineFile)
++                                        //   NAVEX dir (szNavexDataDir)
++    STRCPY(szExportFile, hContext->szVirScanDataFile);
++    NameStripFile(szExportFile);
++    STRCPY(szEngineFile,    szExportFile);
++    STRCPY(szNavexDataDir,  szExportFile);
++    NameAppendFile(szExportFile, szExportFileName);
++    NameAppendFile(szEngineFile, szEngineFileName);
++
++
++                                        // Try to load NAVEX and NAVENG.
++    hExportLib = dlopen(szExportFile, RTLD_NOW);
++
++#if defined(SYM_DEBUG)
++    if (hExportLib == NULL)
++        fprintf(stderr, "EXTInitUnix: dlopen(%s, RTLD_NOW) failed: %s\n", szExportFile, dlerror());
++#endif
++
++    hEngineLib = dlopen(szEngineFile, RTLD_NOW);
++
++#if defined(SYM_DEBUG)
++    if (hEngineLib == NULL)
++        fprintf(stderr, "EXTInitUnix: dlopen(%s, RTLD_NOW) failed: %s\n", szEngineFile, dlerror());
++#endif
++
++                                        // If NAVEX is not available, 
++                                        // unload NAVENG and return failure.
++    if (hExportLib == NULL)
++    {
++        if (hEngineLib != NULL)
++            dlclose(hEngineLib);
++        return (EXTSTATUS_INIT_ERROR);
++    }
++                                        // If we can find and call the NAVEX
++                                        // EXTQueryInterface() function...
++    fpQueryExportInterface = (LPFUNC_QUERYINTERFACE)
++        (dlsym(hExportLib, "EXTQueryInterface"));
++
++#if defined(SYM_DEBUG)
++    if (fpQueryExportInterface == NULL)
++        fprintf(stderr, "EXTInitUnix: dlsym(hExportLib, \"EXTQueryInterface\") failed: %s\n", dlerror());
++#endif
++
++    if (fpQueryExportInterface &&
++        (*fpQueryExportInterface)(NAVEX15_INTERFACE,
++                                  (LPLPVOID)&prExportTable) == EXTSTATUS_OK)
++    {
++                                        // If NAVENG is available...
++        if (hEngineLib != NULL)
++        {
++                                        // If we can find and call the NAVENG
++                                        // EXTQueryInterface() function...
++            fpQueryEngineInterface = (LPFUNC_QUERYINTERFACE)
++                (dlsym(hEngineLib, "EXTQueryInterface"));
++
++#if defined(SYM_DEBUG)
++            if (fpQueryEngineInterface == NULL)
++                fprintf(stderr, "EXTInitUnix: dlsym(hEngineLib, \"EXTQueryInterface\") failed: %s\n", dlerror());
++#endif
++
++            if (fpQueryEngineInterface &&
++                (*fpQueryEngineInterface)(NAVEX15_INTERFACE,
++                                          (LPLPVOID)&prEngineTable) == EXTSTATUS_OK)
++            {
++                                        // Both libraries are linked & queried.
++                                        // Call NAVEX EXTStartUp()
++                                        // with the NAVENG table.
++                                        // If successful, set up the context.
++                if (prExportTable->EXTStartUp(hContext->lpstCallBack,
++                                              0,
++                                              prEngineTable,
++                                              szNavexDataDir,
++                                              hContext->szNavexInfFile,
++                                              NULL) == EXTSTATUS_OK)
++                {
++                    hContext->prExportTable = prExportTable;
++                    hContext->hExportLib    = hExportLib;
++                    hContext->prEngineTable = prEngineTable;
++                    hContext->hEngineLib    = hEngineLib;
++                    return (EXTSTATUS_OK);
++                }
++                                        // Else NAVEX/NAVENG EXTStartUp failed.
++                                        // Unload both and return failure.
++                else
++                {
++                    dlclose(hExportLib);
++                    dlclose(hEngineLib);
++                    return (EXTSTATUS_INIT_ERROR);
++                }
++            }
++                                       // Else NAVENG QueryInterface() failed.
++                                       // Unload NAVENG and proceed with NAVEX.
++            else                       
++                dlclose(hEngineLib);
++        }
++                                        // NAVENG is not available.
++                                        // Execute the NAVEX EXTStartUp()
++                                        // without the NAVENG table.
++                                        // If successful, set up the context.
++        if (prExportTable->EXTStartUp(hContext->lpstCallBack,
++                                      0,
++                                      NULL,
++                                      szNavexDataDir,
++                                      hContext->szNavexInfFile,
++                                      NULL) == EXTSTATUS_OK)
++        {
++            hContext->prExportTable = prExportTable;
++            hContext->hExportLib    = hExportLib;
++            return (EXTSTATUS_OK);
++        }
++    }
++
++                                        // NAVEX QueryInterface() failed, or
++                                        // NAVEX EXTStartUp() failed.
++                                        // Unload both NAVEX and NAVENG and
++                                        // return failure.
++    dlclose(hExportLib);
++    if (hEngineLib != NULL)
++        dlclose(hEngineLib);
++    return (EXTSTATUS_INIT_ERROR);
++}
++
++
++/*@API:**********************************************************************
++@Declaration:
++EXTSTATUS WINAPI EXTCloseUnix (HVCONTEXT hContext)
++
++@Description:
++This routine unloads libnavex.so and zeros hContext's NAVEX
++function pointers.
++
++@Parameters:
++None.
++
++@Returns:
++EXTSTATUS_OK    if successful.
++
++@See:
++@Include:   navex.h
++@Compatibility: Unix
++****************************************************************************/
++
++EXTSTATUS WINAPI EXTCloseUnix
++(
++    HVCONTEXT hContext
++)
++{
++    SYM_ASSERT(hContext);
++
++                                        // If NAVEX is initialized,
++                                        // call NAVEX EXTShutDown().
++    if (hContext->prExportTable != NULL)
++        EXTShutDown(hContext);
++
++                                        // If NAVEX is loaded, unload it
++                                        // and zero the NAVEX context info.
++    if (hContext->hExportLib != NULL)
++    {
++        dlclose(hContext->hExportLib);
++        hContext->hExportLib = NULL;
++        hContext->prExportTable = NULL;
++    }
++
++                                        // If NAVENG is loaded, unload it
++                                        // and zero the NAVENG context info.
++    if (hContext->hEngineLib != NULL)
++    {
++        dlclose(hContext->hEngineLib);
++        hContext->hEngineLib = NULL;
++        hContext->prEngineTable = NULL;
++    }
++
++    return (EXTSTATUS_OK);
++}
++
+ 
+ #endif
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/TEST.CPP#1 - d:/work\NAVAPI\SRC\TEST.CPP ====
+@@ -40,7 +40,9 @@
+ // Standard library headers
+ 
+ #include <stdio.h>
++#if !defined(SYM_UNIX)
+ #include <io.h>
++#endif
+ #if defined(SYM_NLM)
+ #include <process.h>
+ #include <conio.h>
+@@ -58,29 +60,32 @@
+ 
+ /////////////////////////////////////////////////////////////////////////////
+ // Test Parameters
+-
+-#if defined(SYM_NLM)
+-#define TEST_DEFS               "SYS:\\DAVID\\"
+-#elif defined(SYM_DOS) || defined(SYM_WIN16)
+-#define TEST_DEFS               "C:\\PROGRA~1\\COMMON~1\\SYMANT~1\\VIRUSD~1\\19980826.001\\"
+-#elif defined(SYM_WIN)
+-#define TEST_DEFS               "C:\\Program Files\\Common Files\\Symantec Shared\\VirusDefs\\19980826.001\\"
+-#endif
+ 
+ #define TEST_PHYSICAL_DRIVE     0x80
+ 
+ #define TEST_LOGICAL_DRIVE      'C'
+ 
+-#if defined(SYM_NLM)
+-#define TEST_FILE               "SYS:\\DAVID\\dir2.com"
+-#else
+-#define TEST_FILE               "D:\\DumbVirs\\dir2.com"
++#if defined(SYM_WIN)
++#define TEST_CALLBACKS_WINDOWS
++#else 
++#define TEST_CALLBACKS_QUAKE
+ #endif
+ 
+-// Define ONE of the following:
+-//#define TEST_CALLBACKS_EMPTY
+-//#define TEST_CALLBACKS_WINDOWS
+-#define TEST_CALLBACKS_QUAKE
++
++/////////////////////////////////////////////////////////////////////////////
++// Options
++
++BOOL gbHelp = FALSE;        // Show help (-h, -?)
++BOOL gbVersion = FALSE;     // Show API version string (-v)
++BOOL gbInfo = FALSE;        // Show virus database info (-i)
++BOOL gbDefInfo = FALSE;     // Show info for last virus def (-l)
++BOOL gbTableInfo = FALSE;   // Show info from virus table (-t) 
++BOOL gbMemory = FALSE;      // Scan memory (-m)
++BOOL gbMasterBoot = FALSE;  // Scan master boot record on disk 1 (-p)
++BOOL gbBoot = FALSE;        // Scan boot record on C: (-b)
++BOOL gbRepair = FALSE;      // Repair viruses (-r)
++BOOL gbDefDir = FALSE;      // Set virus database directory (-d defsdir)
++char gszDefDir[256];
+ 
+ 
+ /////////////////////////////////////////////////////////////////////////////
+@@ -88,7 +93,8 @@
+ 
+ // Test related functions
+ 
+-int Test();
++int main2(int argc, char* argv[]);
++int Test(int argc, char* argv[]);
+ void TestMessage(LPSTR szMsg, LPSTR szTitle);
+ 
+ // NAVAPI file i/o callback functions
+@@ -113,7 +119,20 @@
+ 
+ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int nCmdShow)
+ {
+-    return Test();
++    char* argv[100];
++    int argc = 0; 
++    char* token;
++
++    argv[argc++] = "apitest";
++
++    token = strtok(lpszCmdLine, " ");
++    while (argc < 100 && token != NULL)
++    {
++        argv[argc++] = token;
++        token = strtok(NULL, " ");
++    }
++
++    return main2(argc, argv);
+ }
+ 
+ #endif
+@@ -121,23 +140,138 @@
+ 
+ /////////////////////////////////////////////////////////////////////////////
+ // main()
++
++#if defined(SYM_DOS) || defined(SYM_UNIX)
++
++int main(int argc, char* argv[])
++{
++    return main2(argc, argv);
++}
+ 
+-#if defined(SYM_DOS) || defined(SYM_NLM)
++#elif defined(SYM_NLM)
+ 
+ int main(int argc, char* argv[])
+ {
+-    return Test();
++    char* argv[10];
++    int argc; 
++
++    argv[0] = "test";
++    argv[1] = "-d";
++    argv[2] = "SYS:\\DAVID\\";
++    argv[3] = "-viltr";
++    argv[4] = "SYS:\\DAVID\\dir2.com"
++    argc = 5;
++
++    return main2(argc, argv);
+ }
+ 
+ #endif
+ 
+ 
+ /////////////////////////////////////////////////////////////////////////////
++// main2()
++
++int main2(int argc, char* argv[])
++{
++    int c;
++
++    if (argc == 1)
++        gbHelp = TRUE;
++
++    // While there are aguments beginning with '-'...
++    while (--argc > 0 && (*++argv)[0] == '-')
++    {
++        // If the argument is -d followed by a defsdir name...
++        if (argv[0][1] == 'd' && argc > 1)
++        {
++            // Skip past -d
++            --argc;
++            ++argv;
++            // Copy the name argument
++            strcpy(gszDefDir, argv[0]);
++            gbDefDir = TRUE;
++            continue;
++        }
++
++        // While there are letters after the '-'...
++        while ((c = *++(argv[0])) != 0)
++        {
++            switch (c)
++            {
++                case 'h':
++                case '?':
++                    gbHelp = TRUE;
++                    break;
++                case 'v':
++                    gbVersion = TRUE;
++                    break;
++                case 'i':
++                    gbInfo = TRUE;
++                    break;
++                case 'l':
++                    gbDefInfo = TRUE;
++                    break;
++                case 't':
++                    gbTableInfo = TRUE;
++                    break;
++                case 'm':
++                    gbMemory = TRUE;
++                    break;
++                case 'p':
++                    gbMasterBoot = TRUE;
++                    break;
++                case 'b':
++                    gbBoot = TRUE;
++                    break;
++                case 'r':
++                    gbRepair = TRUE;
++                    break;
++                default:
++                    printf("illegal option %c\n", c);
++                    gbHelp = TRUE;
++                    break;
++            }
++        }
++    }
++
++    if (!gbDefDir)
++    {
++        strcpy(gszDefDir, ".");
++        gbDefDir = TRUE;
++    }
++
++    if (gbHelp)
++    {
++        char* szMsg = 
++        "Usage: apitest [-d dir] [-hviltmpbr] [file...]\n"
++        "-d Set virus database directory\n"
++        "-h Show help\n"
++        "-v Show API version string\n"
++        "-i Show virus database info\n"
++        "-l Show info for last virus def\n"
++        "-t Show info from virus table\n"
++        "-m Scan memory\n"
++        "-p Scan master boot record on disk 1\n"
++        "-b Scan boot record on C:\n"
++        "-r Repair viruses\n";
++#if defined(SYM_WIN)
++        MessageBox(NULL, szMsg, "apitest", MB_OK);
++#else
++        printf(szMsg);
++#endif
++        return 0;
++    }
++
++    return Test(argc, argv);
++}
++
++
++/////////////////////////////////////////////////////////////////////////////
+ // Test()
+ //
+ // Test some NAVAPI calls
+ 
+-int Test()
++int Test(int argc, char** argv)
+ {
+     HNAVENGINE hEngine = NULL;
+     VIRUSDBINFO dbinfo;
+@@ -150,119 +284,149 @@
+     DWORD dwVirusCount = 0;
+ 
+ 
+-    status = NAVGetNavapiVersionString(szInfo, sizeof(szInfo));
+-    if (status == NAV_OK)
+-        TestMessage(szInfo, "Version String");
++    if (gbVersion)
++    {
++        status = NAVGetNavapiVersionString(szInfo, sizeof(szInfo));
++        if (status == NAV_OK)
++            TestMessage(szInfo, "Version String");
++    }
+ 
+-
+-    hEngine = NAVEngineInit(TEST_DEFS, NULL, &gstFileIOCallbacks, 2, 0, &status);
++    hEngine = NAVEngineInit(gszDefDir, NULL, &gstFileIOCallbacks, 2, 0, &status);
+     if (status != NAV_OK || hEngine == NULL)
+     {
+         TestMessage("NAVEngineInit Failed", "Engine Test");
+         return 0;
+     }
+ 
+-
+-    status = NAVGetVirusDBInfo(hEngine, &dbinfo);
+-    if (status == NAV_OK)
++    if (gbInfo)
+     {
+-        sprintf(szInfo, 
+-            "%d/%d/%d %ld", 
+-            (int) dbinfo.wYear, 
+-            (int) dbinfo.wMonth, 
+-            (int) dbinfo.wDay, 
+-            dbinfo.dwVersion);
+-        TestMessage(szInfo, "DB Info Test");
++        status = NAVGetVirusDBInfo(hEngine, &dbinfo);
++        if (status == NAV_OK)
++        {
++            sprintf(szInfo, 
++                "%d/%d/%d %ld", 
++                (int) dbinfo.wYear, 
++                (int) dbinfo.wMonth, 
++                (int) dbinfo.wDay, 
++                dbinfo.dwVersion);
++            TestMessage(szInfo, "DB Info Test");
++        }
+     }
+ 
+-
+-    status = NAVScanMemory(hEngine, &hVirus);
+-    if (status == NAV_OK && hVirus != NULL)
++    if (gbDefInfo)
+     {
+-        TestMessage("Virus Found!", "Memory Test");
+-        NAVFreeVirusHandle(hVirus);
++        if (NAVGetVirusDefCount(hEngine, &dwVirusCount) == NAV_OK)
++        {
++            hDef = NAVLoadVirusDef(hEngine, dwVirusCount-1);
++            if (hDef != NULL)
++            {
++                dwInfoSize = sizeof(szInfo);
++                if (NAVGetVirusDefInfo(hDef, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize) == NAV_OK)
++                    TestMessage(szInfo, "Last Virus Info Test");
++                NAVReleaseVirusDef(hDef);
++            }
++        }
+     }
+ 
+-
+-    status = NAVScanMasterBoot(hEngine, TEST_PHYSICAL_DRIVE, &hVirus);
+-    if (status == NAV_OK && hVirus != NULL)
++    if (gbTableInfo)
+     {
+-        TestMessage("Virus Found!", "Master Boot Test");
++        hDefTable = NAVLoadVirusDefTable(hEngine);
++        if (hDefTable != NULL)
++        {
++            if (NAVGetVirusDefTableCount(hDefTable, &dwVirusCount) == NAV_OK)
++            {
++                sprintf(szInfo, "Virus Count is %lu", dwVirusCount);
++                TestMessage(szInfo, "Virus Table Info Test");
+ 
+-        status = NAVRepairMasterBoot(hEngine, TEST_PHYSICAL_DRIVE);
+-        if (status == NAV_OK)
+-            TestMessage("Virus Repaired!", "Master Boot Test");
++                dwInfoSize = sizeof(szInfo);
++                if (NAVGetVirusDefTableInfo(hDefTable, 7000, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize) == NAV_OK)
++                    TestMessage(szInfo, "First Virus Table Info Test");
+ 
+-        NAVFreeVirusHandle(hVirus);
++                dwInfoSize = sizeof(szInfo);
++                if (NAVGetVirusDefTableInfo(hDefTable, dwVirusCount-1, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize) == NAV_OK)
++                    TestMessage(szInfo, "Last Virus Table Info Test");
++            }
++            NAVReleaseVirusDefTable(hDefTable);
++        }
+     }
+ 
+-
+-    status = NAVScanBoot(hEngine, TEST_LOGICAL_DRIVE, &hVirus);
+-    if (status == NAV_OK && hVirus != NULL)
++    if (gbMemory)
+     {
+-        TestMessage("Virus Found!", "Boot Test");
+-
+-        status = NAVRepairBoot(hEngine, TEST_LOGICAL_DRIVE);
+-        if (status == NAV_OK)
+-            TestMessage("Virus Repaired!", "Boot Test");
+-
+-        NAVFreeVirusHandle(hVirus);
++        status = NAVScanMemory(hEngine, &hVirus);
++        if (status == NAV_OK && hVirus != NULL)
++        {
++            TestMessage("Virus Found!", "Memory Test");
++            NAVFreeVirusHandle(hVirus);
++        }
+     }
+ 
+-
+-    status = NAVScanFile(hEngine, TEST_FILE, TRUE, TRUE, &hVirus);
+-    if (status == NAV_OK && hVirus != NULL)
++    if (gbMasterBoot)
+     {
+-        TestMessage("Virus Found!", "File Test");
++        status = NAVScanMasterBoot(hEngine, TEST_PHYSICAL_DRIVE, &hVirus);
++        if (status == NAV_OK && hVirus != NULL)
++        {
++            TestMessage("Virus Found!", "Master Boot Test");
+ 
+-        dwInfoSize = sizeof(szInfo);
+-        status = NAVGetVirusInfo(hVirus, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize);
+-        TestMessage(szInfo, "File Test");
++            if (gbRepair)
++            {
++                status = NAVRepairMasterBoot(hEngine, TEST_PHYSICAL_DRIVE);
++                if (status == NAV_OK)
++                    TestMessage("Virus Repaired!", "Master Boot Test");
++            }
+ 
+-        status = NAVRepairFile(hEngine, TEST_FILE, TRUE);
+-        if (status == NAV_OK)
+-            TestMessage("Virus Repaired!", "File Test");
+-
+-        NAVFreeVirusHandle(hVirus);
++            NAVFreeVirusHandle(hVirus);
++        }
+     }
+ 
+-
+-    if (NAVGetVirusDefCount(hEngine, &dwVirusCount) == NAV_OK)
++    if (gbBoot)
+     {
+-        hDef = NAVLoadVirusDef(hEngine, dwVirusCount-1);
+-        if (hDef != NULL)
++        status = NAVScanBoot(hEngine, TEST_LOGICAL_DRIVE, &hVirus);
++        if (status == NAV_OK && hVirus != NULL)
+         {
+-            dwInfoSize = sizeof(szInfo);
+-            if (NAVGetVirusDefInfo(hDef, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize) == NAV_OK)
+-                TestMessage(szInfo, "Last Virus Info Test");
+-            NAVReleaseVirusDef(hDef);
++            TestMessage("Virus Found!", "Boot Test");
++
++            if (gbRepair)
++            {
++                status = NAVRepairBoot(hEngine, TEST_LOGICAL_DRIVE);
++                if (status == NAV_OK)
++                    TestMessage("Virus Repaired!", "Boot Test");
++
++                NAVFreeVirusHandle(hVirus);
++            }
+         }
+     }
+- 
+ 
+-    hDefTable = NAVLoadVirusDefTable(hEngine);
+-    if (hDefTable != NULL)
++    while (argc-- > 0)
+     {
+-        if (NAVGetVirusDefTableCount(hDefTable, &dwVirusCount) == NAV_OK)
++        char* pszFile = *argv;
++        char* pszExtension = strrchr(pszFile, '.');
++        argv++;
++
++        sprintf(szInfo, "Scanning %s...", pszFile);
++        TestMessage(szInfo, "File Test");
++
++        status = NAVScanFile(hEngine, pszFile, pszExtension, TRUE, &hVirus);
++        if (status == NAV_OK && hVirus != NULL)
+         {
+-            sprintf(szInfo, "Virus Count is %lu", dwVirusCount);
+-            TestMessage(szInfo, "Virus Table Info Test");
++            TestMessage("Virus Found!", "File Test");
+ 
+             dwInfoSize = sizeof(szInfo);
+-            if (NAVGetVirusDefTableInfo(hDefTable, 7000, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize) == NAV_OK)
+-                TestMessage(szInfo, "First Virus Table Info Test");
++            status = NAVGetVirusInfo(hVirus, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize);
++            TestMessage(szInfo, "File Test");
++
++            if (gbRepair)
++            {
++                status = NAVRepairFile(hEngine, pszFile, pszExtension);
++                if (status == NAV_OK)
++                    TestMessage("Virus Repaired!", "File Test");
++            }
+ 
+-            dwInfoSize = sizeof(szInfo);
+-            if (NAVGetVirusDefTableInfo(hDefTable, dwVirusCount-1, NAV_VI_VIRUS_NAME, szInfo, &dwInfoSize) == NAV_OK)
+-                TestMessage(szInfo, "Last Virus Table Info Test");
++            NAVFreeVirusHandle(hVirus);
+         }
+-        NAVReleaseVirusDefTable(hDefTable);
+     }
+ 
+-   
+     NAVEngineClose(hEngine);
+ 
+-
+     return 0;
+ }
+ 
+@@ -274,7 +438,7 @@
+ 
+ void TestMessage(LPSTR szMsg, LPSTR szTitle)
+ {
+-#if defined(SYM_DOS)
++#if defined(SYM_DOS) || defined(SYM_UNIX)
+     printf("%s: %s\n", szTitle, szMsg);
+ #elif defined(SYM_NLM)
+     ConsolePrintf("%s: %s\n", szTitle, szMsg);
+@@ -421,7 +585,7 @@
+ {
+     DWORD dwHandle;
+ 
+-    dwHandle = FileOpen((LPCSTR)lpvFileInfo, (UINT)dwOpenMode);
++    dwHandle = (DWORD) FileOpen((LPCSTR)lpvFileInfo, (UINT)dwOpenMode);
+ 
+ #if defined(SYM_NLM)
+ //  ConsolePrintf("TestFileOpenTest(%s) returns %ld\n", lpvFileInfo, dwHandle);
+==== //depot/AVCore/Trunk/SOURCE/NAVAPI/SRC/VIRTCB.CPP#1 - d:/work\NAVAPI\SRC\VIRTCB.CPP ====
+@@ -134,7 +134,11 @@
+ //      <s_szVirtFilenameTag> + "\" +
+ //      <8 character uppercase ASCII hex representation of file ID pointer> + "." +
+ 
++#if defined(SYM_UNIX)
++static TCHAR s_szVirtFilenameTag [] = _T("/18328BE0-FF99-11D1-803F-00104B252EE6");
++#else
+ static TCHAR s_szVirtFilenameTag [] = _T("0:\\18328BE0-FF99-11D1-803F-00104B252EE6");
++#endif
+ 
+ #define STRLEN_VIRTFILENAMETAG ((sizeof(s_szVirtFilenameTag)/sizeof(*s_szVirtFilenameTag))-1)
+ 
+@@ -681,7 +685,7 @@
+         return ( HFILE_ERROR );
+     }
+ 
+-#if defined(SYM_DOS) || defined(SYM_WIN)
++#if defined(SYM_DOS) || defined(SYM_WIN) || defined(SYM_UNIX)
+ 
+     lpOpenFileInfo->dwHandle = (DWORD) FileCreateTemporary( lpszFileName, FA_NORMAL );
+ 

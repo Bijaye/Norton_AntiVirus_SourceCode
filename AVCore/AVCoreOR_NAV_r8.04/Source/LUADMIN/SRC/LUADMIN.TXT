@@ -1,0 +1,374 @@
+**********************************************************************
+LiveUpdate Administration Utility                          LUADMIN.TXT
+Copyright (c) 1998 Symantec Corporation                       May 1998
+
+**********************************************************************
+                        HOW TO USE THIS DOCUMENT
+**********************************************************************
+
+To view LUADMIN.TXT on screen in Notepad or WordPad, maximize the
+Notepad or WordPad window.
+
+To print LUADMIN.TXT in Notepad or WordPad, choose Print from the File
+menu.  If you use another word processor, select the entire document
+and format the text in 10-point Courier before printing to ensure
+proper spacing.
+
+To print LUADMIN.TXT from the DOS prompt, type COPY LUADMIN.TXT PRN:
+
+
+**********************************************************************
+                              CONTENTS
+**********************************************************************
+
+This LUADMIN.TXT file describes the LiveUpdate Administration 
+Utility from Symantec.  The following topics are discussed:
+
+ * About LiveUpdate Administrator
+ * Installing the LiveUpdate Administrator
+ * LiveUpdate UNC Support
+ * Creating a LiveUpdate host file for workstations
+ * Creating a LiveUpdate UNC host file for workstations
+ * Implementing UNC Support
+ * Updating the LiveUpdate Administrator Utility
+ * Retrieving packages
+ * Automatic package retrieval
+ * Rolling out an updated version of LiveUpdate
+ * Use of the Custom tab in LiveUpdate Administrator
+
+
+**********************************************************************
+                   ABOUT LIVEUPDATE ADMINISTRATOR
+**********************************************************************
+
+LiveUpdate is the Symantec technology that permits an installed
+Symantec product to connect to a Symantec server automatically for
+program and virus definitions updates.  The connection is made through
+either a preset telephone number or FTP site.  For corporate sites,
+two problems have arisen:
+
+ * Network traffic: Administrators want to reduce external traffic
+   by having users download from an internal site. 
+
+ * Security: LiveUpdate establishes an FTP connection to a Symantec
+   server.  This implementation, in some cases, requires modification
+   to firewall software. 
+
+Symantec developed the LiveUpdate Administration Utility, LUADMIN.EXE,
+to address these issues.  You can set up an Intranet FTP server or
+simply a directory on a standard file server to handle all LiveUpdate
+operations for your network.  Users connect to an internal server to
+retrieve updates instead of connecting to external Symantec servers.
+
+To set up a LiveUpdate Intranet server, you must do the following:
+
+ * Install the LiveUpdate Administration Utility.
+
+ * Create a custom host file (LIVEUPDT.HST) that points client
+   machines to the internal server using the LiveUpdate Administration
+   Utility (LUADMIN.EXE).
+
+ * Distribute the host file (LIVEUPDT.HST) to all workstations that
+   use the LiveUpdate feature.
+
+ * Download update packages from Symantec to the internal server 
+   using the LiveUpdate Administration Utility (LUADMIN.EXE). 
+
+
+**********************************************************************
+              INSTALLING THE LIVEUPDATE ADMINISTRATOR
+**********************************************************************
+
+The LiveUpdate Administrator is distributed as a self-extracting,
+compressed archive (LUAU.EXE).
+
+To install the LiveUpdate Administrator:
+
+ 1 Run LUAU.EXE.
+
+ 2 This is a self-extracting installation program. Wizards will lead
+   you through the entire installation process.
+
+ 3 The LiveUpdate Administrator also has an uninstaller. This can be
+   accessed through Add/Remove Programs in the Control Panel.
+
+
+**********************************************************************
+                        LIVEUPDATE UNC SUPPORT
+**********************************************************************
+
+The current version of LiveUpdate supports the download of packages
+from an internal server via UNC support without the need for an FTP
+server. The support consists of 2 components:
+
+ 1 A new LiveUpdate DLL which supports UNC download (S32LUHL1.DLL).
+
+ 2 A customized host file created by the LiveUpdate Administration
+   Utility which points to the internal server.
+
+By default, the UNC DLL becomes the exclusive transport when it is
+present. The intent is to prevent users from using FTP or modem when
+the administrator has determined that it is better for them to use
+a UNC path.
+
+Under Windows 95 and Windows NT 4.0 it is possible for LiveUpdate 1.4
+to have "Network" available as one of the connection options in the
+LiveUpdate wizard. The following registry entry needs to be made under
+HKEY_LOCAL_MACHINE\Software\Symantec\LiveUpdate\Preferences:
+
+Name: All Transports Available
+Type: DWORD
+
+If this entry is non-zero and S32LUHL1.DLL is present in the
+LiveUpdate directory then Network will be an available connection
+option.
+
+One possible use of this feature is that a host file could contain
+an entry for an internal UNC location as well as the Symantec FTP
+and modem servers. This would be an ideal setup for mobile
+professionals who use laptops.
+
+NOTE: UNC support is only available with the 32 bit version of
+LiveUpdate.
+
+
+**********************************************************************
+           CREATING A LIVEUPDATE HOST FILE FOR WORKSTATIONS
+**********************************************************************
+
+LIVEUPDT.HST is the host file that controls LiveUpdate operation on 
+workstations.  You must create a new file that points to an internal 
+server to replace the existing LIVEUPDT.HST on workstations.
+
+To create a custom host file:
+
+ 1 Run LUADMIN.EXE.
+
+ 2 Click the Host Editor tab.
+
+ 3 Click Open.
+
+ 4 Select SAMPLE.HST, located in the current directory.
+
+ 5 Enter the following information:
+
+   Description group box
+   ---------------------
+   Name:     Displayed when users connect to the internal server.
+   Country:  Country where your server is located.
+
+   Login group box
+   ---------------
+   Name:     Username for the FTP server. All users use the same name.
+   Password: Password for the specified username.
+
+   Connection group box
+   --------------------
+   Number:   Either the IP address of the server or an Internet-style
+             name (URL) for the server.
+   Area:     The telephone dialing code for the server's location.
+   Country:  The international telephone dialing code for the country
+             where the server is located.  "1" is the United States.
+
+   Type
+   ----
+   Choose FTP if you are creating an internal FTP server. If you are
+   intending to use a UNC directory please see the next section of
+   this document.
+
+   16 bit/32 bit
+   -------------
+   The 32 bit radio button will normally be selected. If you are
+   creating a host file for 16 bit LiveUpdate clients please select
+   the 16 bit radio button. If the 16 bit version of LiveUpdate is
+   installed then the DLLs in the LiveUpdate directory will have
+   names starting with S16... If the 32 bit version is installed, the
+   file names will start with S32... Note that the 16 bit and 32 bit
+   host files are not compatible with each other.
+
+   The other text boxes displayed in this group are for information
+   only.  They are not editable.
+
+ 6 Click Save to access the Save As dialog box.
+
+ 7 Save the customized file as LIVEUPDT.HST. 
+
+   Do not use any other name. The file must be named LIVEUPDT.HST.
+
+LIVEUPDT.HST is ready for distribution.  Copy LIVEUPDT.HST to the 
+"C:\Program Files\Symantec\LiveUpdate" folder on user workstations. 
+Typically, you modify your network login scripts to perform the copy 
+automatically. 
+
+
+**********************************************************************
+        CREATING A LIVEUPDATE UNC HOST FILE FOR WORKSTATIONS
+**********************************************************************
+
+The UNC host is created in a similar way to other host files using
+the Host Editor tab of the LiveUpdate Administration Utility.
+The following fields should be set:
+
+ 1 Description: a descriptive name for the server which is displayed
+   to the user when running LiveUpdate.
+
+ 2 User name: a user name with access rights to the server. If this
+   field is left blank, LiveUpdate will attempt to connect using the
+   current user name logged into the system.
+
+ 3 Password: the password which corresponds to the user name. If this
+   field is left blank, LiveUpdate will use the password for the
+   current user logged into the system.
+
+ 4 Connection number: the UNC path to the server directory containing
+   the packages.
+
+ 5 Type: this should be set to LAN.
+
+ NOTE: Windows 95 systems connecting to a Windows NT server creates a
+ special issue. Windows 95 users need to have access rights to the
+ resource - if a user name and password are supplied in the host file
+ they will be ignored. The solution is to create a shared resource on
+ the NT server which all users are authorized to access.
+
+
+**********************************************************************
+                      IMPLEMENTING UNC SUPPORT
+**********************************************************************
+
+After the host file is created, simply copy it along with the new UNC DLL
+(S32LUHL1.DLL) to the LiveUpdate directory on the client machines. 
+The default directories are:
+
+\Program Files\Symantec\LiveUpdate    for Windows 95 and Windows NT 4.0
+\Win32app\Symantec\LiveUpdate         for Windows NT 3.51
+
+
+**********************************************************************
+            UPDATING THE LIVEUPDATE ADMINISTRATION UTILITY
+**********************************************************************
+
+The LiveUpdate Administration Utility can update itself.  To check for
+updates, click Update on the Update tab.  If an update is
+available, it will appear in the Select Updates panel.  Check the 
+package and it will be installed automatically.
+
+
+**********************************************************************
+                        RETRIEVING PACKAGES
+**********************************************************************
+
+LiveUpdate packages should be placed in the root of the FTP server or
+in the UNC directory specified in the host file. In addition to the
+downloaded packages, LUADMIN retrieves index files called SYMTRI.ZIP,
+LIVETRI.ZIP and SYMTRI16.ZIP. These files are required by different
+versions of LiveUpdate.
+
+To retrieve update packages: 
+
+ 1 Run LUADMIN.EXE.
+
+ 2 Click the Retrieve Packages tab.
+
+ 3 Select the desired language for download packages.
+
+ 4 Check the Symantec products that will be supported. 
+
+   Because all installed Symantec products that use LiveUpdate now
+   point to your Intranet server, always check all products that are
+   used in your organization. If you don't select all products, you
+   may miss an available update.
+
+ 5 Specify the Download Directory. This is the location where the
+   update packages and support files will be stored when downloaded
+   from Symantec. It can be a temporary "holding" area or it can be
+   the FTP or UNC location specified in the host file.
+
+ 6 Click Retrieve to begin the administrator LiveUpdate. 
+
+   Follow the instructions in each succeeding panel to retrieve
+   the packages.
+
+ 7 Copy the entire contents of the download directory to the root of
+   your FTP server or to the UNC directory.
+
+The next time users click LiveUpdate from their workstations, they
+will receive the packages from your internal server, not Symantec's
+external server. 
+
+
+**********************************************************************
+                     AUTOMATIC PACKAGE RETRIEVAL
+**********************************************************************
+
+A new feature called Silent LiveUpdate Administrator allows scheduled
+liveupdates to retrieve all the packages you need. If you run the
+program SilntLUA.exe (normally installed to
+\program files\liveupdate administrator\) then packages will be
+retrieved without any user intervention required.  The only indication
+that this program is running is the task bar icon (labeled "Silent LU
+Admin") which remains until the program exits.
+
+Please note that you first need to run LiveUpdate Administrator
+to select the products to support, the language and the download
+location.  Once LiveUpdate Administrator exits, the settings are saved
+and Silent LiveUpdate Administrator will use them every time it runs.
+
+
+**********************************************************************
+             ROLLING OUT AN UPDATED VERSION OF LIVEUPDATE
+**********************************************************************
+
+You can download the latest lusetup file from the Symantec web site at
+
+ftp://ftp/public/english_us_canada/liveupdate/updates/lusetup.exe
+
+The installer can be run silently. Use a command line switch /s to use
+this functionality.
+
+You can check the version of LiveUpdate contained in the installer by
+checking the properties of the installer. The installer has the same
+version number as the version of LiveUpdate it will install.
+
+NOTE: If you have created a custom host file, installing a LiveUpdate
+upgrade using LUSETUP.EXE should not replace the host file. However,
+if the first host in your custom HST file is Symantec's BBS in Eugene
+then the file will be replaced and you should roll out your custom host
+file again. If not, The custom host file will be left on the user's
+system unchanged and the Symantec host file will be placed in the
+directory using the filename LIVEUPDT.HST.DEFAULT.
+
+
+**********************************************************************
+           USE OF THE CUSTOM TAB IN LIVEUPDATE ADMINISTRATOR
+**********************************************************************
+
+The Custom tab in LiveUpdate Administrator version 1.4 is for use by
+customers who receive packages directly from Symantec that are not yet
+released on the LiveUpdate production servers.  These packages can be
+used to address unique situations such as virus definitions that
+detect and remove a brand new virus or other specific needs for our
+customers.
+
+These packages can be rolled out to client systems along with any
+production packages that are available from Symantec.
+
+The "Custom update location" specifies where the packages you received
+from Symantec are located on your system.  You can use the browse
+button to locate the files.
+
+The "Active custom updates" box lists any current custom updates that
+are being applied by LiveUpdate Administrator.  The custom updates can
+be deleted manually using the delete button or if the "Automatically
+delete obsolete custom updates" box is checked, the packages will be
+deleted once all the date information in the packages indicate they
+are older than the production LiveUpdate packages.
+
+You will be informed by SARC or Platinum support if you need to use
+this option and how to proceed further.
+
+
+**********************************************************************
+                            END OF FILE
+**********************************************************************
+

@@ -1,0 +1,191 @@
+@echo off
+    on break cancel
+    setlocal
+    echo Command line - %0 %&
+    echo.
+    
+    ::
+    :: Clear out evidence of a previous run.
+    ::
+    unset /Q DEVBLD
+    set cm_dir=%@full[%@path[%_batchname]]
+    set filelist=@%cm_dir%files_to_sign.txt
+    set ret=0
+    set ira_dir=%@full["%cm_dir%..\Bin.ira\"]
+    set ida_dir=%@full["%cm_dir%..\Bin.ida\"]
+    set log_file=%cm_dir%\signlog.txt
+    set signtool=%cm_dir%dev_codesigner\signtool.exe
+    
+    ::
+    :: Parse command-line parameters.
+    ::
+
+    do param = 1 to 127
+        shift 1
+        iff "%0"=="" then
+             shift -%param%
+             goto continue
+        endiff
+        
+        set this_param=%@upper[%0]
+    
+        iff "%this_param"=="/DEVBLD" then
+            set DEVBLD=Yes
+        elseiff "%this_param"=="/DBG_BTM" then
+            set DBG_BTM=/DBG_BTM
+            echo on
+        elseiff "%this_param"=="/HELP" .OR. "%this_param"=="/H" .OR. "%this_param"=="/?" then
+            goto usage
+        elseiff "%@instr[0,10,%this_param]"=="/FILELIST:" then
+            set filelist=%@instr[10,%@len[%0],%0]
+            set UsingFileList=Yes
+            set ira_dir=
+            set ida_dir=
+        elseiff "%@instr[0,5,%this_param]"=="/KEY" then
+            shift 1
+            set key=%0
+        endiff
+    enddo
+    shift -127
+   
+::
+:: Initialize variables
+::
+:continue   
+    @if "%DBG_BTM" NE "" echo on
+    echo Signing Common Client files
+
+    >%log_file%
+    set cmdir=%cm_dir
+    set chktrust=%@full["%cm_dir%dev_codesigner\chktrust.exe"]
+    iff "%DEVBLD" == "Yes" then
+        set sign=%@full["%cm_dir%dev_codesigner\signcode.exe"]
+        set dev_pfx=%@full["%cm_dir%dev_codesigner\DragonflySymantecDev.pfx"]
+        set commercial=
+    else
+	  set sign=c:\depot\tools\cm\verisign\dopswd_sign.bat
+        set cert=c:\depot\tools\cm\verisign\Authenticode\MyCredentials.spc
+        set pvk=c:\depot\tools\cm\verisign\Authenticode\MyPrivateKey.pvk
+        set commercial=
+    endiff
+    set URLVerisign="http://timestamp.verisign.com/scripts/timstamp.dll"
+    set URLmain="http://www.symantec.com"
+    set nicename="Norton Antivirus"
+
+::
+::      Sign the files
+::
+:signFiles
+
+    ::
+    :: Loop through each file in files_to_sign.txt and sign for bin.ira.
+    :: This code is optimized for speed. Since signcode uses the Verisign
+    :: timestamp server, it is VERY slow. So we use START to spawn many
+    :: processes. We come back around later to see if the file is still
+    :: locked by signcode. When released, we use the Authenticode SDK
+    :: chktrust to verify the file was properly signed.
+    :: Pretty cool eh? :P
+    ::
+    set curr_dir=%ira_dir
+    for %file in (%filelist) gosub signFile
+    for %file in (%filelist) gosub checkFile
+
+    ::
+    :: Loop through each file in files_to_sign.txt and sign for bin.ida.
+    :: Only do this for devbuilds.
+    ::
+    ::iff "%DEVBLD" == "Yes" .AND. "%UsingFileList" != "Yes" then
+    ::    set curr_dir=%ida_dir
+    ::    for %file in (%filelist) gosub signFile
+    ::    for %file in (%filelist) gosub checkFile
+    ::endiff
+    
+    :: temporarily removing return code as it is returning failure when it actually succeeded.
+    ::quit %ret
+    echo DigiSign would have returned: %ret% >> %log_file
+    quit 0
+
+::
+::      Sign a file
+::
+:signFile
+
+    echo Signing %file
+    
+    ::
+    :: Since the CM cert requires a password be manually entered and runs on 9x platforms 
+    :: that don't seem to handle the spawned processes well, we're reverting to synchronise
+    :: behavior.
+    ::
+    iff "%DEVBLD" != "Yes" then
+        set backupDir=%@full[%@path[%curr_dir%%file%]]UNSIGNED
+        set fileName=%@filename[%curr_dir%%file]
+        if not exist %backupDir md %backupDir
+        if not exist %backupDir%\%file% copy %curr_dir%%file %backupDir%\%filename%
+        call %sign% %curr_dir%%file %nicename
+    else
+        %signtool% sign /f %dev_pfx% /p ccdev /t %URLVerisign /d %nicename %curr_dir%%file
+    endiff
+    iff %? != 0 then 
+       set ret=%?
+       echo Signing FAILED: %file% , Returned: %ret% >> %log_file
+    else
+       echo Signing Succeeded: %file% >> %log_file
+    endiff
+    
+    return
+
+::
+::      Check that a file was signed
+::
+:checkFile
+
+    echo Checking %file
+    iff NOT EXIST %curr_dir%%file then
+        set ret=1
+        echo Check FAILED: %file%, File not found. >> %log_file
+        return
+    endiff
+:retry
+    set hfile=%@fileopen[%curr_dir%%file,read,b]
+    if %hfile==-1 goto retry
+    set hfile=%@fileclose[%hfile]
+    
+    %chktrust% -Q %curr_dir%%file
+    iff %? != 0 then 
+       set ret=%?
+       echo Check FAILED: %file%, Returned: %ret% >> %log_file
+    else
+       echo Check Succeeded: %file% >> %log_file
+    endiff
+    
+    return
+
+::
+::        Info on how to use this batch file.
+::
+:usage
+echo Usage: %@NAME[%_batchname] [/DEVBLD] [/DBG_BTM] [/FILELIST:files] [/KEY:key]
+echo        %@NAME[%_batchname] /HELP or /? or /H
+echo.
+echo        The first version will sign files. The later displays this usage 
+echo        information.
+echo.        
+echo        /DEVBLD     Signifies that %@NAME[%_batchname] is being run as part of a 
+echo                    development build.  This causes a different, internal 
+echo                    Symantec certificate to be used.  If you don't have access
+echo                    to the official Symantec certificate (normally the case),
+echo                    you should be using this option.
+echo.                    
+echo        /DBG_BTM    Turns "echo on" so you can view everything the batchfile 
+echo                    is doing for debugging purposes.
+echo.                    
+echo        /FILELIST:files
+echo                    Allows specific files to be signed. If not in the current 
+echo                    working directory, provide the full path.  When this 
+echo                    option isn't specified, the files in files_to_sign.txt 
+echo                    are signed instead.
+echo.                    
+echo        /KEY:key    Used by CM as parameter to "MTRUN r:\cm\vt_sign.pcd /c 
+echo                    key".
+quit 0

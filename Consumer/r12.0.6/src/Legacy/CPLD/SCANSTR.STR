@@ -1,0 +1,417 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/scanstr.stv   1.0   06 Feb 1997 20:50:32   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV scanner options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE *          lpszOptScannerStrings[],
+//      LPVOID          lpOptScannerArgs[],
+//
+//      CheckBoxRec     cbScannerMemory,
+//      CheckBoxRec     cbScannerMBR,
+//      CheckBoxRec     cbScannerBootRecords,
+//      ComboBoxRec     cxScannerVirusFound,
+//      CheckBoxRec     cbScannerRepair,
+//      CheckBoxRec     cbScannerContinue,
+//      CheckBoxRec     cbScannerDelete,
+//      CheckBoxRec     cbScannerExclude,
+//      RadioButtonsRec rbScannerWhatFiles,
+//      ButtonsRec      buScannerButtons,
+//
+//      CheckBoxRec     cbScannerAdvancedAllowNetwor
+//      CheckBoxRec     cbScannerAdvancedAllowStop
+//      CheckBoxRec     cbScannerAdvancedNotify
+//      CheckBoxRec     cbScannerAdvancedAllFloppy
+//      CheckBoxRec     cbScannerAdvancedAllHard
+//      CheckBoxRec     cbScannerAdvancedAllNetwork
+//
+//      DIALOG          dlAdvanced
+//
+// See Also:
+//************************************************************************
+// $Log:   N:/cpld/VCS/scanstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:32   RFULLER
+// Initial revision
+// 
+//    Rev 1.1   07 Aug 1996 17:02:00   JBRENNA
+// Port DOSNAV changes
+// 
+// 
+//    Rev 1.12   17 Jul 1996 11:57:56   MZAREMB
+// Updated strings to remove the default "NAVBOOT" personality.
+// 
+//    Rev 1.11   05 May 1996 12:16:26   MZAREMB
+// Initial Pegasus update: added new dialogs to differentiate between
+// startup scanner and full-featured scanner.
+// 
+//    Rev 1.10   20 Jan 1995 18:52:40   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.9   28 Dec 1994 12:07:10   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.2   12 Dec 1994 13:59:52   DALLEE
+    // Removed controls no longer present in NAVBOOT.EXE
+    //
+    //    Rev 1.1   30 Nov 1994 17:28:24   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.8   28 Dec 1994 11:54:40   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:50   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.6   03 Jul 1993 19:00:50   BRAD
+    // Moved compressed file from general to Scan.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define CX_VIRUS_FOUND_WIDTH    (28)
+#define CX_VIRUS_FOUND_LENGTH    (5)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char         DIALOG_GROUP_END [];
+extern char         szOKButton [];
+extern char         szCancelButton [];
+extern char         szAdvancedButton [];
+extern char         szHelpButton [];
+extern ButtonsRec   buProgramFiles;
+extern ButtonsRec   buOkCancelHelp;
+
+//------------------------------------------------------------------------
+// Scanner Settings CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszNavOptScannerStrings [] =     // Control strings for scanner CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %38gWhat to scan",                // BEGIN GROUP
+    "   %C1",                           // cbScannerMemory
+    "   %C2",                           // cbScannerMBR
+    "   %C3",                           // cbScannerBootRecords
+    DIALOG_EMPTY_LINE,
+    "   %R4",                           // rbScannerWhatFiles
+    "       %B5",                       // buProgramFiles
+    "   %C6",                           // cbScannerCompressed
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B7",                              // buScannerButtons
+
+    DIALOG_1COL,
+    DIALOG_LEFT,
+    " %43gHow to respond",              // BEGIN GROUP
+    "   ^When a virus is found:",
+    "   %X8",                           // cxScannerVirusFound
+    DIALOG_EMPTY_LINE,
+                                        // Next line is bold
+    "   %3aButtons to display if prompted%1a",
+    "      %C9            %C10",        // cbScannerRepair, cbScannerContinue
+    "      %C11            %C12",       // cbScannerDelete, cbScannerExclude
+    DIALOG_GROUP_END,
+
+    DIALOG_END,
+    };
+
+char *lpszNavBootOptScannerStrings [] = // Control strings for scanner CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %38gWhat to scan",                // BEGIN GROUP
+    "   %C1",                           // cbScannerMemory
+    "   %C2",                           // cbScannerMBR
+    "   %C3",                           // cbScannerBootRecords
+    DIALOG_EMPTY_LINE,
+    "   %R4",                           // rbScannerWhatFiles
+    "       %B5",                       // buProgramFiles
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B6",                              // buScannerButtons
+
+    DIALOG_1COL,
+    DIALOG_LEFT,
+    " %43gHow to respond",              // BEGIN GROUP
+    "   ^When a virus is found:",
+    "   %X7",                           // cxScannerVirusFound
+    DIALOG_EMPTY_LINE,
+                                        // Next line is bold
+    "   %3aButtons to display if prompted%1a",
+    "      %C8            %C9",         // cbScannerRepair, cbScannerContinue
+    "      %C10            %C11",       // cbScannerDelete, cbScannerExclude
+    DIALOG_GROUP_END,
+
+    DIALOG_END,
+    };
+
+
+//------------------------------------------------------------------------
+// Scanner Setting CP Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbScannerMemory =
+    {
+    "^Memory",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerMBR =
+    {
+    "Ma^ster boot record",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerBootRecords =
+    {
+    "^Boot records",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerRepair =
+    {
+    "^Repair",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerContinue =
+    {
+    "Co^ntinue",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerDelete =
+    {
+    "^Delete",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerExclude =
+    {
+    "E^xclude",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+static char *lpszVirusFoundLabels [] =
+    {
+    "Prompt",
+    "Notify only",
+    "Repair automatically",
+    "Delete automatically",
+    "Halt computer",
+    NULL,
+    };
+
+ComboBoxRec cxScannerVirusFound =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszVirusFoundLabels,
+    NULL,                               // Not needed for CBS_NOEDIT
+    CX_VIRUS_FOUND_WIDTH,               // Max width of entries
+    CX_VIRUS_FOUND_LENGTH,              // Number of entries
+    };
+
+char *lpszScannerWhatFilesLabels [] =
+    {
+    "All ^files",
+    "^Program files only",
+    NULL,
+    };
+
+char *lpszNavbootScannerWhatFilesLabels [] =
+    {
+    "All ^files",
+    "^Program files",
+    NULL,
+    };
+
+RadioButtonsRec rbScannerWhatFiles =
+    {
+    lpszScannerWhatFilesLabels,         // Button text
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,0,                                // Pad, gap
+    };
+
+CheckBoxRec cbScannerCompressed =
+    {
+    "Wi^thin compressed files",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+static char *lpszScannerButtonsLabels [] =
+    {
+    szOKButton,
+    szCancelButton,
+    szAdvancedButton,
+    szHelpButton,
+    NULL,
+    };
+
+ButtonsRec buScannerButtons =
+    {
+    lpszScannerButtonsLabels,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD,
+    0,                                  // Value - not used
+    0,0,                                // Row, col
+    0,0,                                // Pad, gap
+    };
+
+LPVOID lpNavOptScannerArgs [] =            // Arguments to pass to control panel
+    {
+    &cbScannerMemory,
+    &cbScannerMBR,
+    &cbScannerBootRecords,
+    &rbScannerWhatFiles,
+    &buProgramFiles,
+    &cbScannerCompressed,
+    &buScannerButtons,
+    &cxScannerVirusFound,
+    &cbScannerRepair,
+    &cbScannerContinue,
+    &cbScannerDelete,
+    &cbScannerExclude,
+    };
+
+LPVOID lpNavBootOptScannerArgs [] =            // Arguments to pass to control panel
+    {
+    &cbScannerMemory,
+    &cbScannerMBR,
+    &cbScannerBootRecords,
+    &rbScannerWhatFiles,
+    &buProgramFiles,
+    &buScannerButtons,
+    &cxScannerVirusFound,
+    &cbScannerRepair,
+    &cbScannerContinue,
+    &cbScannerDelete,
+    &cbScannerExclude,
+    };
+
+
+//------------------------------------------------------------------------
+// Scanner Advanced Settings Dialog Strings
+//------------------------------------------------------------------------
+
+static char *lpszScannerAdvancedStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %40gAdvanced settings",           // BEGIN GROUP
+    "   %C1",                           //
+    "   %C2",                           //
+    "   %C3",                           //
+    DIALOG_GROUP_END,
+
+    " %40gPreselect at start",          //
+    "   %C4",                           //
+    "   %C5",                           //
+    "   %C6",                           //
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_END
+    };
+
+
+//------------------------------------------------------------------------
+// Scanner Advanced Settings Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbScannerAdvancedAllowNetwork =
+    {
+    "^Allow network scanning",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerAdvancedAllowStop =
+    {
+    "Allow scanning to be ^stopped",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerAdvancedNotify =
+    {
+    "^Immediate notification",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerAdvancedAllFloppy =
+    {
+    "All ^floppy drives",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerAdvancedAllHard =
+    {
+    "All hard ^drives",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScannerAdvancedAllNetwork =
+    {
+    "All ^network drives",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+DIALOG dlScannerAdvanced =
+    {
+    0, 0,                               // Row, col
+    NORMAL_DIALOG_FLAGS,
+    "Scanner Advanced Settings",
+    lpszScannerAdvancedStrings,
+    &buOkCancelHelp,
+    };
+

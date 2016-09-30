@@ -1,0 +1,743 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "#include ""VirusListViewRes.rc""\r\n"
+    "#include <winver.h>\r\n"
+    "#include ""nav.ver""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\WProtect32.ico"
+IDI_LDVPWARNING         ICON                    "res\\MessageBoxWarning.ico"
+IDI_SCHEDULE_ICON       ICON                    "schdevnt.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_OBJECTS             BITMAP                  "res\\ldvproot.bmp"
+IDB_MAINSCRN            BITMAP                  "res\\Mainscrn.BMP"
+IDB_NEWSCAN             BITMAP                  "res\\NewScan.BMP"
+IDB_LOCKS               BITMAP                  "res\\locks.bmp"
+IDB_NONE                BITMAP                  "..\\..\\..\\..\\..\\Core_Technology\\LDVP_Shared\\src\\Common\\Controls\\CListCtrlEx\\none.bmp"
+IDB_ASCENDING           BITMAP                  "..\\..\\..\\..\\..\\Core_Technology\\LDVP_Shared\\src\\Common\\Controls\\CListCtrlEx\\ascend.bmp"
+IDB_DESCENDING          BITMAP                  "..\\..\\..\\..\\..\\Core_Technology\\LDVP_Shared\\src\\Common\\Controls\\CListCtrlEx\\descendi.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Configure Histories...",     IDM_CONFIG_HISTORY
+        MENUITEM "&Schedule Updates...",        IDC_SCHEDULE_UPDATES
+        MENUITEM "&LiveUpdate...",              IDC_UPDATE_PATTERNFILE
+        MENUITEM "&Risk List...",               IDM_VIRUSLIST
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Cut\tCtrl-X",                ID_CUT
+        MENUITEM "&Paste\tCtrl-V",              ID_PASTE
+        MENUITEM "&Delete\tDel",                IDM_TASK_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "New S&tartup Scan",           ID_RECORD_STARTUP
+        MENUITEM "New &User-defined Scan",      ID_RECORD_NEW
+        MENUITEM "New Sc&heduled Scan",         ID_NEW_SCHEDULED
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Help Topics",                IDM_CONTENTS
+        MENUITEM SEPARATOR
+        MENUITEM "&About Symantec AntiVirus...", ID_APP_ABOUT
+    END
+END
+
+IDM_POPUP MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&Cut",                        ID_CUT
+        MENUITEM "&Paste",                      ID_PASTE
+        MENUITEM "&Delete",                     IDM_TASK_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "New S&tartup Scan",           ID_RECORD_STARTUP
+        MENUITEM "New &User-defined Scan",      ID_RECORD_NEW
+        MENUITEM "New Sc&heduled Scan",         ID_NEW_SCHEDULED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "E",            IDM_EDIT,               VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_PASTE,               VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      IDM_TASK_DELETE,        VIRTKEY, NOINVERT
+    "X",            ID_CUT,                 VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DEFAULT DIALOGEX 0, 0, 280, 257
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         157,IDC_IMAGE,"Static",SS_BITMAP | SS_REALSIZEIMAGE | 
+                    SS_SUNKEN,7,21,68,161
+    GROUPBOX        "Virus Definitions File",IDC_STATIC,83,145,190,42
+    LTEXT           "Version:",IDC_STATIC,90,156,70,8
+    LTEXT           "Unknown",IDC_PATTERN_FILE_VERSION,161,156,105,8
+    PUSHBUTTON      "&LiveUpdate...",IDC_UPDATE_PATTERNFILE,161,168,72,14
+    GROUPBOX        "General Information",IDC_STATIC,83,53,190,48
+    LTEXT           "Client group:",IDC_CLIGROUP_TEXT,89,76,70,8
+    LTEXT           "",IDC_CLIENT_GROUP,161,76,105,8
+    LTEXT           "Symantec AntiVirus",IDC_WELCOME,7,3,266,16
+    LTEXT           "Symantec AntiVirus can help keep your computer protected from viruses and security risks. Select an item to the left to perform an action.",
+                    IDC_STATIC,83,21,190,32
+    PUSHBUTTON      "E&xit",IDC_EXIT,223,236,50,14
+    LTEXT           "Scan engine:",IDC_STATIC,89,128,70,8
+    LTEXT           "Unknown",IDC_SCAN_ENGINE_VERSION,161,128,105,8
+    GROUPBOX        "Program Versions",IDC_STATIC,83,105,190,36
+    LTEXT           "Program:",IDC_STATIC,89,116,70,8
+    LTEXT           "Unknown",IDC_PRODUCT_VERSION,161,116,105,8
+    LTEXT           "Server Group:",IDC_DOMAIN_TEXT,89,76,70,8,NOT 
+                    WS_VISIBLE
+    EDITTEXT        IDC_DOMAIN,161,76,105,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_VISIBLE | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Quarantine:",IDC_STATIC,89,88,70,8
+    LTEXT           "Counting Items in Quarantine",IDC_QUARANTINE_ITEMS,161,
+                    88,105,8
+    LTEXT           "Parent server:",IDC_PARENT_TEXT,89,64,70,8
+    EDITTEXT        IDC_PARENT_SERVER,161,64,105,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_UNLOAD DIALOGEX 0, 0, 280, 83
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Symantec AntiVirus"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "&Unload",IDOK,82,64,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,136,64,50,14
+    LTEXT           "Unloading Symantec AntiVirus Services will disable the following:\n- Configuration and virus definition file updates from the parent server\n- Scheduled scans\n- Auto-Protect (if current settings allow this action)\n\nDo you want to unload the service?",
+                    IDC_STATIC,35,7,227,54
+    ICON            IDI_LDVPWARNING,IDC_STATIC,7,7,21,20
+END
+
+IDD_CONFIGURE_SNAPIN DIALOGEX 0, 0, 280, 218
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,7,3,236,16
+    PUSHBUTTON      "OK",IDC_CLOSE,217,196,50,14
+    LTEXT           "",IDC_PLACE_HOLDER,7,25,261,168,NOT WS_VISIBLE
+    PUSHBUTTON      "Help",IDC_HELP_BUTTON,163,196,50,14
+END
+
+IDD_PASSWORD DIALOGEX 0, 0, 231, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Symantec AntiVirus"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Enter a Symantec AntiVirus Server Group user name and password to run Symantec AntiVirus on this computer.",
+                    IDC_STATIC,7,7,152,25
+    LTEXT           "Server Group:",IDC_STATIC,7,38,55,8
+    EDITTEXT        IDC_DOMAIN,65,38,94,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "&Username:",IDC_STATIC,7,55,55,8
+    EDITTEXT        IDC_USERNAME,65,55,93,12,ES_AUTOHSCROLL
+    LTEXT           "&Password:",IDC_STATIC,7,72,55,8
+    EDITTEXT        IDC_PASSWORD,65,72,94,12,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,172,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,172,24,50,14
+END
+
+IDD_SCHEDULE_DIALOG DIALOGEX 0, 0, 271, 143
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "Virus Definitions Update Schedule"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDI_SCHEDULE_ICON,ID_STATIC,7,7,20,20
+    LTEXT           "Select how often and when you want the definitions update to occur.",
+                    IDC_STATIC,35,7,171,20
+    DEFPUSHBUTTON   "OK",IDOK,214,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,214,24,50,14
+    CTEXT           "Virus Definitions Update Schedule",IDC_STATIC,7,29,200,
+                    12,SS_NOPREFIX | SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CONTROL         "",IDC_SCHEDULE,"{2E76B2C3-C603-11D1-826C-00A0C95C0756}",
+                    WS_TABSTOP,7,46,240,89
+    CONTROL         "",IDC_STORAGE_VIEW,
+                    "{40C57BF5-CA86-11D1-B782-00A0C99C7131}",WS_TABSTOP,260,
+                    124,6,7
+END
+
+IDD_SCHEDULE_ENABLE_DIALOG DIALOGEX 0, 0, 302, 110
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "Schedule Virus Definitions Updates"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDI_SCHEDULE_ICON,ID_STATIC,7,7,20,20
+    LTEXT           "Set up the schedule for automatic virus definitions updates.",
+                    IDC_STATIC,36,7,188,20
+    GROUPBOX        "Automatic Updates",IDC_STATIC,7,33,232,69
+    CONTROL         "&Enable scheduled automatic updates",
+                    IDC_ENABLE_SCHEDULING,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,46,209,10
+    PUSHBUTTON      "&Schedule...",IDC_SCHEDULE,174,59,59,14
+    EDITTEXT        IDC_SCHEDULE_DESCRIPTION,25,59,144,33,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | WS_DISABLED | NOT 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,245,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,245,24,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SCHEDULE_DIALOG DLGINIT
+BEGIN
+    IDC_SCHEDULE, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x2535, 0x0000, 0x0efc, 0x0000, 0x0000, 
+0x0000, 
+    IDC_STORAGE_VIEW, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x00ee, 0x0000, 0x0123, 0x0000, 0x0000, 
+0x0000, 0x0100, 0x0101, 0x0101, 0x0101, 0x0000, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DEFAULT, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 234
+    END
+
+    IDD_UNLOAD, DIALOG
+    BEGIN
+        RIGHTMARGIN, 267
+        BOTTOMMARGIN, 78
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RT_MANIFEST
+//
+
+MANIFEST_RESOURCE_ID    RT_MANIFEST             "res\\vpc32.exe.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "\n\nVPC\n\n\nVPC32.Document\nVPC Document"
+    IDS_STAT_BAR_SCANNING   "Scanning: "
+    IDS_WARNING_DIR_NOT_ADDED 
+                            "Symantec AntiVirus could not add folder '%1'. It will not be scanned."
+    IDS_SCAN_COMPLETE       "Scan complete"
+    IDS_INVALID_SETTINGS    "Some of the scan options are invalid or locked by the administrator. See your network administrator for details."
+    IDS_ERROR_TASK_EXISTS   "'%1' already exists. Name changed to '%2'."
+    IDS_CUSTOM_TASK_SAVE_ERROR "Symantec AntiVirus could not save the scan."
+    IDS_LOADING_TASK        "Please wait. Loading page..."
+    IDS_VIRUS_ENCYCLOPEDIA  "Virus Encyclopedia"
+    IDS_GROUP_SCHEDULED_TASKS "Scheduled Scans"
+    IDS_STOP_CURRENT_SCAN   "Do you want to stop the current scan?"
+    IDS_LOCKED_OPTION       "The administrator has locked this option."
+    IDS_SERVICE_CANT_START  "The Symantec AntiVirus Service cannot be started."
+    IDS_PATTERN_PROMPT_RUNSILENT_LICENSED 
+                            "LiveUpdate will update available products and components silently.\nIf you are unlicensed or have an expired license, virus definitions will not be updated.\nDo you wish to continue?"
+    IDS_COUNTING_NUM_QUARANTINE_ITEMS "Counting Items in Quarantine"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_VIRUSES_SEARCH      "Search for a virus"
+    IDS_VIRUSES_SEARCH_DESCRIPT "Search for a virus by name"
+    IDS_VIRUSES_0           "0 - 9"
+    IDS_VIRUSES_0_DESCRIPT  "Display the viruses that start with numbers"
+    IDS_VIRUSES_A           "A"
+    IDS_VIRUSES_A_DESCRIPT  "Display the viruses that start with A"
+    IDS_VIRUSES_B           "B"
+    IDS_VIRUSES_B_DESCRIPT  "Display the viruses that start with B"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_VIRUSES_C           "C"
+    IDS_VIRUSES_C_DESCRIPTION "Display the viruses that start with C"
+    IDS_VIRUSES_D           "D"
+    IDS_VIRUSES_D_DESCRIPT  "Display the viruses that start with D"
+    IDS_VIRUSES_E           "E"
+    IDS_VIRUSES_E_DESCRIPTION "Display the viruses that start with E"
+    IDS_VIRUSES_F           "F"
+    IDS_VIRUSES_F_DESCRIPT  "Display the viruses that start with F"
+    IDS_VIRUSES_G           "G"
+    IDS_VIRUSES_G_DESCRIPTION "Display the viruses that start with G"
+    IDS_VIRUSES_H           "H"
+    IDS_VIRUSES_H_DESCRIPT  "Display the viruses that start with H"
+    IDS_VIRUSES_I           "I"
+    IDS_VIRUSES_I_DESCRIPTION "Display the viruses that start with I"
+    IDS_VIRUSES_J           "J"
+    IDS_VIRUSES_J_DESCRIPT  "Display the viruses that start with J"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_VIRUSES_K           "K"
+    IDS_VIRUSES_K_DESCRIPTION "Display the viruses that start with G"
+    IDS_VIRUSES_L           "L"
+    IDS_VIRUSES_L_DESCRIPT  "Display the viruses that start with L"
+    IDS_VIRUSES_M           "M"
+    IDS_VIRUSES_M_DESCRIPT  "Display the viruses that start with M"
+    IDS_VIRUSES_N           "N"
+    IDS_VIRUSES_N_DESCRIPT  "Display the viruses that start with N"
+    IDS_VIRUSES_O           "O"
+    IDS_VIRUSES_O_DESCRIPT  "Display the viruses that start with O"
+    IDS_VIRUSES_P           "P"
+    IDS_VIRUSES_P_DESCRIPTION "Display the viruses that start with P"
+    IDS_VIRUSES_Q           "Q"
+    IDS_VIRUSES_Q_DESCRIPT  "Display the viruses that start with Q"
+    IDS_VIRUSES_R           "R"
+    IDS_VIRUSES_R_DESCRIPTION "Display the viruses that start with R"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_VIRUSES_S           "S"
+    IDS_VIRUSES_S_DESCRIPTION "Display the viruses that start with S"
+    IDS_VIRUSES_T           "T"
+    IDS_VIRUSES_T_DESCRIPT  "Display the viruses that start with T"
+    IDS_VIRUSES_U           "U"
+    IDS_VIRUSES_U_DESCRIPTION "Display the viruses that start with U"
+    IDS_VIRUSES_V           "V"
+    IDS_VIRUSES_V_DESCRIPT  "Display the viruses that start with V"
+    IDS_VIRUSES_W           "W"
+    IDS_VIRUSES_W_DESCRIPTION "Display the viruses that start with W"
+    IDS_VIRUSES_X           "X"
+    IDS_VIRUSES_X_DESCRIPT  "Display the viruses that start with X"
+    IDS_VIRUSES_Y           "Y"
+    IDS_VIRUSES_Y_DESCRIPTION "Display the viruses that start with Y"
+    IDS_VIRUSES_Z           "Z"
+    IDS_VIRUSES_Z_DESCRIPTION "Display the viruses that start with Z"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NEW_SCRIPTED        "Create a new scan."
+    IDS_NEW_SCHEDULED       "Create a new scheduled scan."
+    IDS_SCHEDULE_TAB_HOURLY "Hourly"
+    IDS_SCHEDULE_TAB_DAILY  "Daily"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Symantec AntiVirus Corporate Edition"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number, and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application and prompts to save the documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and move it to the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and move it to the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle Toolbar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle Status Bar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompt to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TRANSLATION_NOTE1   "NOTE TO TRANSLATORS Strings with '----' embedded in them are actually two seperate strings. "
+    IDS_TRANSLATION_NOTE2   "NOTE TO TRANSLATORS (continued) The one with '&' is for the menu the second is for display in the taskpad.  Both need to be translated."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ENGINE_FAILER       "Symantec AntiVirus was unable to start the scan engine."
+    IDS_ERR_CREATE_TASKPAD  "Symantec AntiVirus is unable to create all the windows. Verify that the application is configured and installed correctly."
+    IDS_DEFTASK_FAVORITES   "My favorite scans"
+    IDS_DEFTASK_STARTUP     "Startup Scans"
+    IDS_DEFTASK_HELP        "Look for Help"
+    IDS_DEFTASK_SCRIPTED    "User-defined Scans"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_GROUP_CONFIGURE     "Confi&gure----Configure"
+    IDS_SCAN_FAILED         "Unable to start the scan"
+    IDS_SCANNING_MEMORY     "Scanning memory..."
+    IDS_SCANNING_BOOT       "Scanning boot sector..."
+    IDS_INIT_SCANNING       "Counting files to scan..."
+    IDS_AC_MOVE             "Moved"
+    IDS_AC_RENAME           "Renamed"
+    IDS_AC_DELETE           "Deleted"
+    IDS_AC_NOTHING          "None"
+    IDS_AC_BAD              "Unknown"
+    IDS_AC_CLEAN            "Cleaned"
+    IDS_ENGINE_WRONG_VERSION 
+                            "Symantec AntiVirus could not find the correct engine version. Please reinstall Symantec AntiVirus."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    IDS_ERROR_NO_OPEN_SCHEDULE 
+                            "Symantec AntiVirus could not create schedule dialog."
+    IDS_UPDATE_DAILY        "Update virus definitions every day at %s"
+    IDS_UPDATE_WEEKLY       "Update virus definitions every %s at %s"
+    IDS_UPDATE_MONTHLY      "Update virus definitions on day %ld of every month at %s"
+    IDS_NUM_QUARANTINE_ITEMS "%d Items"
+    IDS_ONE_QUARANTINE_ITEM "1 Item"
+    IDS_QUARANTINE_REPAIR   "Recommend repair"
+    IDS_QUARANTINE_RESTORE  "Files were repaired."
+    IDS_UPDATE_DAILY_RANDOM "Update virus definitions every day within %lu minutes of %s"
+END
+
+STRINGTABLE 
+BEGIN
+    IDM_TASK_DELETE         "Delete scan\nDelete the selected scan"
+    ID_NEW_SCHEDULED        "New scheduled scan\nRecord a new scheduled scan"
+    IDM_CONTENTS            "Contents"
+    IDM_SEARCH              "Search"
+    IDM_VIRUS_ENCYCLOPEDIA  "Virus Encyclopedia"
+    ID_NEW_STARTUP          "New startup scan\nRecord a new startup scan"
+    ID_CUT                  "Cut\nCut the selected scan"
+    ID_PASTE                "Paste\nPaste a scan into the current group"
+    IDM_EDIT                "Edit scan\nEdit the scan name and/or description"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SCHEDULE_TAB_WEEKLY "Weekly"
+    IDS_SCHEDULE_TAB_MONTHLY "Monthly"
+    IDS_LDVP_TITLE          "Symantec AntiVirus"
+    IDS_ACTION_CLEANED      "Cleaned"
+    IDS_HELP_CONTENTS       "Contents"
+    IDS_HELP_CONTENTS_DESCRIPTION 
+                            "This will show the available topics for the Help system."
+    IDS_HELP_INDEX          "Search for help on"
+    IDS_HELP_INDEX_DESCRIPTION "Search for help on a specific topic"
+    IDS_NEW_STARTUP         "Create a new startup scan. This scan will be run each time Windows starts."
+    IDS_NEW_STARTUP_TITLE   "Create a new startup scan"
+    IDS_TIME_STRING         "%m/%d/%y"
+    IDS_CANCEL_RECORD       "You are currently creating a new scan. Do you want to cancel?"
+    IDS_NO_WHATS_THIS_HELP  """Couldn't initialize What's This? Help"""
+    IDS_ERROR_EMPTY_TASKNAME 
+                            "You must specify a task name in order to save a task."
+    IDS_NO_LOAD_OCX         "Symantec AntiVirus could not load ""^1"". This module is required for proper operation. Please reinstall Symantec AntiVirus or contact your network administrator."
+    IDS_NO_LDVPTASK         "Symantec AntiVirus could not find LDVPTASK.OCX. The program may not function properly. Please reinstall Symantec AntiVirus or contact your network administrator."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_RECORD_NEW           "New scan\nRecord a new scan"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NOT_READY           "Symantec AntiVirus cannot access drive '%1'."
+    IDS_ERROR_DOWNLOAD_PATTERN 
+                            "Symantec AntiVirus could not launch LiveUpdate ( vpdn_lu.exe )."
+    IDS_ENGINE_MEMORY_ERROR "Symantec AntiVirus had a memory error while loading the scan engine."
+    IDS_ENGINE_NO_PATTERN_FILE 
+                            "Symantec AntiVirus could not find a valid virus definition file."
+    IDS_ENGINE_NO_ENGINE    "Symantec AntiVirus could not load the scan engine or one of its components."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ENABLED             "Enabled"
+    IDS_DISABLED            "Disabled"
+    IDS_GROUP_VIEW          "&View----View"
+    IDS_NEW_STARTUP_TASK    "New Startup Scan"
+    IDS_NEW_SCRIPTED_TASK   "New User-defined Scan"
+    IDS_NEW_SCHEDULED_TASK  "New Scheduled Scan"
+    IDS_CONFIG_TASK_DESCRIPTION "Set the options for %1."
+    IDS_REALTIME_PROTECTION "Auto-Protect"
+    IDS_IDLE_PROTECTION     "&Idle Scan----Idle Scan"
+    IDS_GROUP_SCAN          "&Scan----Scan"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_REG_FAIL      "Symantec AntiVirus could not read its settings from the Windows Registry. You may need to reinstall Symantec AntiVirus."
+    IDS_ERROR_SERVICE_HUNG  "Symantec AntiVirus service is not responding. You may need to restart your computer."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_UNKNOWN       "Symantec AntiVirus service is not responding. If you are trying to unload Symantec AntiVirus services, you need to have Administrator rights to unload a Windows NT Service."
+    IDS_DELETE_TASK         "Are you sure you want to permanently delete the task '%1'?"
+    IDS_WRONG_PASSWORD      "Wrong username and/or password.  Please try again."
+    IDS_SCAN_DIALOGS_ERROR  "Symantec AntiVirus could not find ScanDlgs.dll. You may need to reinstall the application."
+    IDS_ERROR_NO_OPEN       "Symantec AntiVirus could not communicate with the storage system. Auto-Protect Options will not be saved."
+    IDS_ERROR_STARTUP_SCANS "Symantec AntiVirus is unable to unload services. \nYou need to stop all the scans that are in progress and \nclose the scan progress windows before unloading services."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_UPDATE_WEEKLY_RANDOM 
+                            "Update virus definitions every %s within %lu minutes of %s"
+    IDS_UPDATE_MONTHLY_RANDOM 
+                            "Update virus definitions on day %lu of every month within %lu minutes of %s"
+    IDS_INVALID_DEFINITION_SET 
+                            "Symantec Antivirus could not initialize the virus definition set."
+    IDS_INVALID_APP_PATH    "Symantec Antivirus could not initialize the application path."
+    IDS_TUESDAY             "Tuesday"
+    IDS_WEDNESDAY           "Wednesday"
+    IDS_THURSDAY            "Thursday"
+    IDS_FRIDAY              "Friday"
+    IDS_SATURDAY            "Saturday"
+    IDS_SUNDAY              "Sunday"
+    IDS_PATTERN_PROMPT_WEEK_AND_DAY_RANDOM 
+                            "Update virus definitions on a random day between %s and %s within %lu minutes of %s"
+    IDS_PATTERN_PROMPT_MONTH_AND_DAY_RANDOM 
+                            "Update virus definitions within %lu days of day %lu within %lu minutes of %s"
+    IDS_PATTERN_PROMPT_RANDOM_WEEKDAY 
+                            "Upate virus definitions at %s on a random day between %s and %s"
+    IDS_PATTERN_PROMPT_RANDOM_MONTHDAY 
+                            "Update virus definitions every month within %lu days of day %lu at %s"
+    IDS_MONDAY              "Monday"
+    IDS_ERROR_CANT_START_LIVEUPDATE 
+                            "LiveUpdate could not start. Please verify Symantec AntiVirus service is running."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_UNLOAD_SERVICE      "&Unload Service"
+    IDS_LOAD_SERVICE        "L&oad Service"
+    IDS_INSTALL_REBOOT_REQUIRED 
+                            "You must restart your computer before using Symantec AntiVirus Corporate Edition."
+    IDS_SAVRT32_DLL         "An error occured while loading savrt32.dll."
+    IDS_NO_ADMIN_PRIVS      "This user does not have permission to configure Symantec AntiVirus."
+    IDS_PATTERN_PROMPT_RUNSILENT 
+                            "LiveUpdate will update available products and components silently. Do you wish to continue?"
+    IDS_LIVEUPDATE          "LiveUpdate"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+#include "VirusListViewRes.rc"
+#include <winver.h>
+#include "nav.ver"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

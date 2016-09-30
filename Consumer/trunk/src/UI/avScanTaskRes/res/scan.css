@@ -1,0 +1,276 @@
+/*//////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////*/
+
+@media screen,contrast-screen
+{ 
+	body
+	{
+		font-family:Arial, Tahoma;
+		font-size:10pt;
+		background-color:white;
+		background-repeat:expand;
+		width:100%%;
+		height:100%%;				
+		margin:0px; 
+		overflow:visible;
+	}
+
+	ul:disabled a
+	{
+		color:grey;
+	}
+
+	body > div
+	{
+		height:min-intrinsic;
+		overflow:visible;
+	}
+
+	h1, h2, h3, h4, h5, h6, div, span, body, html, img
+	{
+		padding:0px;
+		margin:0px;
+	}
+						
+	ul
+	{
+		background-color:white;
+		border:thin solid #7F9DB9;
+		margin:0px;
+		list-style-type:none;
+		vertical-align:middle;
+		overflow-x:visible; 
+		overflow-y:auto; 
+		padding-left:5px;
+		height:100%%;
+		max-height:min-intrinsic;
+		vertical-align:top;
+		margin-left:5px;
+		margin-right:5px;
+	}
+
+	li
+	{
+		text-flow:horizontal;
+		flow:horizontal;
+		width:100%%;
+		padding:5px;
+		padding-bottom:5px;
+		list-style:none;
+		border-top:1px solid silver;
+		margin-right:15px;
+		background-color:#DEebff;
+	}
+
+	li:nth-child(1)
+	{
+		border:none;
+		background-color:white;
+	}
+
+	li:nth-child(2)
+	{
+		background-color:white;
+	}
+
+	li:nth-child(3)
+	{
+		background-color:white;
+	}
+		
+	li > div:nth-child(1)
+	{
+		width:260px;
+		background:no-repeat;
+		background-position:0px 0px;
+		padding-left: 30px;
+		overflow:hidden;
+		text-overflow:ellipsis;
+		white-space:nowrap;
+		margin-top:4px;
+	}
+
+	li > div:nth-child(2)
+	{
+		flow:horizontal;
+		text-align:right; 
+		width:160px;
+	}
+
+	li > text > a
+	{
+		font-size:12px; 
+		font-weight:normal;
+		horizontal-align:left;	
+		display:block;
+	}
+
+	a
+	{
+		color:#4673aa;
+	}
+
+	.title
+	{ 
+		font-size:16px; 
+		font-weight:bold;
+		vertical-align:bottom; 
+		padding:3px;
+		padding-left:8px;
+		border-bottom:1px solid #999999; 
+		color:black;
+		background-color:#eeeeee;
+		height:max-intrinsic;
+	}
+
+	.heading
+	{
+		font-size: 12px; 
+		font-weight: normal;
+		vertical-align: bottom; 
+		padding:8px; 
+	}
+
+	.action
+	{
+		font-size: 11px; 
+		margin:5px;
+		vertical-align:middle;
+	}
+
+	.new-task-section
+	{
+		text-align:right;
+		padding-top:8px;
+		padding-bottom:8px;
+		background-color:#eeeeee;
+	}
+
+	button
+	{
+		flow:horizontal;				
+		font-size: 12px; 
+		font-weight:normal;
+		color:#3c3c3c;
+		display:block;	
+		width:max-intrinsic;
+		margin-right:5px;
+		background-image: url(cnsl-btn-norm-tall.png);
+		background-repeat:stretch;
+		background-position:center;
+		text-align:center;
+		text-decoration:none;
+		transition:blend;
+	}		
+
+	button:hover
+	{
+		background-image: url(cnsl-btn-hvr-tall.png);
+	}
+
+	button:active
+	{
+		background-image: url(cnsl-btn-prss-tall.png);
+	}
+
+	button:focus	
+	{
+		background-image: url(cnsl-btn-dflt-tall.png);        
+	}
+
+	button:focus:active
+	{
+		background-image: url(cnsl-btn-prss-tall.png);
+	}
+
+	button:disabled
+	{
+		background-image: url(cnsl-btn-disbl-tall.png);
+		color: #8c8c8c;
+	}
+
+	.button-finish
+	{
+		width:85px;
+		margin-right:8px;
+	}		
+}
+
+@media contrast-screen 
+{ 
+	body, ul, li, li:nth-child(1), li:nth-child(2), li:nth-child(3), .new-task-section, .title
+	{
+		background-color: window;
+		color: windowtext;
+	}
+		
+	ul
+	{
+		border:1px solid windowtext;
+	}
+	
+	li
+	{
+		border: none;
+	}
+		
+	.title
+	{
+		border-bottom:1px solid windowtext; 
+	}
+	
+	ul:disabled a
+	{
+		color:greytext; 
+	}	
+
+	a
+	{
+		color:windowtext;
+	}
+	
+	button		
+	{	
+		background-image:url(theme:button-normal); 
+		color:windowtext;
+	}
+					
+	button:hover
+	{ 
+		background-image:url(theme:button-normal);  
+	}
+
+	button[role="default-button"] 
+	{
+		background-image:url(theme:button-normal);
+	}
+	
+	button:focus 
+	{
+	    outline:1px dotted windowtext -4px; /* inside */
+		background-image:url(theme:button-normal);
+	}
+
+	button:active
+	{ 
+		background-image:url(theme:button-pressed);  
+	}
+	
+	button:focus:active
+	{
+		background-image:url(theme:button-pressed);  
+	}
+
+	button:disabled 
+	{
+		background-image:url(theme:button-disabled);  
+		color:greytext; 
+	}
+}
+	

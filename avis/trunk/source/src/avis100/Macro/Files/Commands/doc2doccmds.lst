@@ -1,0 +1,50 @@
+#the aim of this command file is to infect one or more global templates
+#by using an infected document
+
+#restauration of the files that need to be here, from their backup copy
+[RESTORE]virus
+
+#these instructions are aimed at satisfying some viruses that infect
+#previously used documents and do not infect global templates
+[RESTORE]normal1
+[RESTORE]main
+[RESTORE]JanaInt
+[RESTORE]Moving
+[RESTORE]Party
+[STARTAPP]
+[ADDGOAT]normal1
+   [MOPEN]main
+   [MOPEN]JanaInt
+   [MOPEN]Moving
+   [MOPEN]Party
+   [MOPEN]virus
+   [MCLOSE]virus
+   [MCLOSE]Party
+   [MCLOSE]Moving
+   [MCLOSE]JanaInt
+   [MCLOSE]main
+ [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+ [DELETEFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+
+#the same for viruses which forget to save the documents as templates
+[RESTORE]normal1
+[RESTORE]tmain
+[RESTORE]tJanaInt
+[RESTORE]tMoving
+[RESTORE]tParty
+[STARTAPP]
+[ADDGOAT]normal1
+   [MOPEN]tmain
+   [MOPEN]tJanaInt
+   [MOPEN]tMoving
+   [MOPEN]tParty
+   [MOPEN]virus
+   [MCLOSE]virus
+   [MCLOSE]tParty
+   [MCLOSE]tMoving
+   [MCLOSE]tJanaInt
+   [MCLOSE]tmain
+[PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]

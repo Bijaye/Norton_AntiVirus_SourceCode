@@ -1,0 +1,304 @@
+#ifndef lzh_p
+#define lzh_p
+
+/*
+ *==========================================================================
+ *
+ * $Workfile:   lzh.p  $
+ * $Revision:   1.0  $
+ * $Modtime :$
+ *
+ * Private header file for LZH-4 and LZH-5.
+ *
+ * Copyright (c) 1993 by Central Point Software.  All rights reserved
+ *
+ * Author      : Jon J. Sorensen
+ * Language    : Microsoft C8.00
+ * Model       : Large
+ * Environment : Microsoft Windows 3.1 SDK
+ *
+ * This is a pprivate header file that contains functions that support
+ * (compress and expand) the LZH-4 and LZH-5 compression method.
+ *
+ * Date:
+ * Log:
+ *
+ *==========================================================================
+*/
+
+
+//-----------------------------------------------------------
+//   I N C L U D E   F I L E S
+//-----------------------------------------------------------
+
+// C RunTime include files.
+#include <limits.h>
+#include <setjmp.h>
+
+//-----------------------------------------------------------
+//   S P E C I A L   A L I A S E S
+//-----------------------------------------------------------
+
+#define INLINE __inline
+
+
+//-----------------------------------------------------------
+//   C O N S T A N T S
+//-----------------------------------------------------------
+
+#define LZH_JUMP_COUNT  10
+extern jmp_buf gnJmp[];
+extern int  gnJmpErr;
+extern int  gcnJmp;
+
+// ?????.
+#define LZHUTIL_BITBUFSIZ     ( CHAR_BIT * sizeof( WORD ) )
+#define LZHUTIL_BITS_PER_WORD ( CHAR_BIT * sizeof( WORD ) )
+
+// LZH encode/decode constants.
+#define LZH_DICBIT    13                // 12(-lh4-) or 13(-lh5-).
+#define LZH_DICSIZ   ((WORD)(1U << LZH_DICBIT))
+#define LZH_MATCHBIT   8                // bits for MAXMATCH - THRESHOLD
+#define LZH_MAXMATCH 256                // formerly F (not more than UCHAR_MAX + 1)
+#define LZH_THRESHOLD  3                // choose optimal value
+#define LZH_PERC_FLAG 0x8000U
+
+/* huf.c */
+
+#define LZH_NC ( UCHAR_MAX + LZH_MAXMATCH + 2 - LZH_THRESHOLD )
+	/* alphabet = {0, 1, 2, ..., NC - 1} */
+#define LZH_CBIT 9          // $\lfloor \log_2 NC \rfloor + 1$.
+#define LZH_CODE_BIT  16    // codeword length.
+
+// ?????.
+#define LZH_NP (LZH_DICBIT + 1)
+#define LZH_NT (LZH_CODE_BIT + 3)
+#define LZH_PBIT 4  /* smallest integer such that (1U << LZH_PBIT) > LZH_NP */
+#define LZH_TBIT 5  /* smallest integer such that (1U << LZH_TBIT) > LZH_NT */
+
+#if LZH_NT > LZH_NP
+    #define LZH_NPT LZH_NT
+#else
+    #define LZH_NPT LZH_NP
+#endif
+
+// ?????.
+#define LZH_LEN_COUNT_SIZ 16
+
+//
+// Size of the "CATCH BUFFER".  Why doesn't Windows provide this??
+//
+#define LZH_CATCH_BUF_SIZ 100
+
+// The various exception states that can be passed to the Throw()
+// function.
+#define LZH_FATAL_ERROR       1
+#define LZH_END_OF_INPUT_BUF  2
+#define LZH_EOF               3
+#define LZH_END_OF_OUTPUT_BUF 4
+
+
+//-----------------------------------------------------------
+//   T Y P E   D E F I N I T I O N S
+//-----------------------------------------------------------
+
+// Structure used to buffer bit oriented i/o.
+typedef struct tag_LZHUTIL_BITINFO
+{
+   LPBYTE lpBuffr;    // Base buffer address.
+   LPBYTE lpCurByt;   // Pointer to current byte in the buffer.
+   WORD   wByts;      // Number of bytes remaining in the input or output
+                      //  buffer.
+   BOOL   fEOF;       // This flag is set to TRUE if this is the last
+                      //  buffer of data.
+
+   WORD   wBitBuf;    // A word used to contain the bits that correspond
+                      //  to the current word in the input buffer (this value
+                      //   can contain a "fraction" of a word).
+   WORD   wSubBitBuf; // ?????.
+   WORD   wBitCnt;    // Bit offset in bit buffer.
+}
+LZHUTIL_BITINFO, FAR* LPLZHUTIL_BITINFO;
+
+// ????.
+//typedef WORD              LZH_NODEINDX;
+//typedef LZH_NODEINDX*     PLZH_NODEINDX;
+//typedef LZH_NODEINDX FAR* LPLZH_NODEINDX;
+
+// Structure used to contain all of state info needed to compress
+// a file using the LZH-4 or the LZH-5 compression method.
+typedef struct tag_LZH_ENCODEINFOLZH45
+{
+   WORD            wEncodeState;  // ?????.
+   WORD            wSendBlkState; // ?????.
+   LZHUTIL_BITINFO biBitInfo;     // Stucture was to process an array of bytes
+                                  //  as a bit stream.
+   LZHUTIL_BITINFO biMarkBitInfo; // ?????.
+
+   LPBYTE          lpbText;
+   WORD            wInptByts;
+   WORD            wCurInByt;
+   __int16             nMatchPostn;
+   WORD            wMatchLen;
+   WORD            wAvail;
+   WORD            wRemainder;
+   WORD            wLastMatchLen;
+   __int16             nLastMatchPos;
+
+   LPBYTE          lpbOutBuf;
+   WORD            wOutptIndx;
+   WORD            wOutptMask;
+   WORD            wChIndx;
+   WORD            wBytsNeeded;
+   WORD            wStrtIndx;
+   BOOL            fFrstBuf;
+
+   // State info for the SendBlock() function.
+   WORD            wFlags;
+   WORD            wIndx;
+   WORD            wPos;
+   WORD            wSize;
+   WORD            wRoot;
+
+   LPBYTE          lpbChildCount;
+
+   WORD            wHeapSize;
+   WORD            wDepth;
+   WORD            wNumNodes;
+   LPBYTE          lpbLen;
+   LPWORD          lpwFreq;
+// LPWORD          lpwSrtPtr;
+
+   // Tables and arrays.
+   WORD            wLenCnt[ LZH_LEN_COUNT_SIZ + 1 ];
+   BYTE            bChLen[ LZH_NC ];
+   WORD            wChFreq[ 2 * LZH_NC - 1];
+   WORD            wChCode[ LZH_NC ];
+   BYTE            bPtLen[ LZH_NPT ];
+   WORD            wPtFreq[ 2 * LZH_NP - 1 ];
+   WORD            wPtCode[ LZH_NPT ];
+   WORD            wTFreq[ 2 * LZH_NT - 1 ];
+   WORD            wHeap[ LZH_NC + 1 ];
+   WORD            wLeft[ 2 * LZH_NC - 1 ];
+   WORD            wRight[ 2 * LZH_NC - 1 ];
+
+   // Additional tables and arrays that have to dynamically allocated.
+   __int16         *lpnPostn;
+   LPWORD          lpwParent;
+   LPWORD          lpwPrev;
+   LPWORD          lpwNext;
+   LPWORD          lpwLevel;
+
+   int             nCatchBuf[ LZH_CATCH_BUF_SIZ / 2 ];
+}
+LZH_ENCODEINFOLZH45, FAR* LPLZH_ENCODEINFOLZH45;
+
+// Structure used to contain all of state info needed to decompress
+// an LZH-4 or LZH-5 compressed file.
+typedef struct tag_LZH_DECODEINFOLZH45
+{
+   WORD            wDecodeState; // ?????.
+   WORD            wBlockSize;   // ?????.
+
+   LZHUTIL_BITINFO biBitInfo;    // Stucture was to process an array of bytes
+                                 //  as a bit stream.
+   LZHUTIL_BITINFO biMarkBitInfo;// Stucture used to mark the state of the
+                                 //  input buffer when the decoding process
+                                 //   was in a stable state.
+
+   WORD            wRepIndx;     // The position in the output buffer of a
+                                 //  "repeated pattern" that was only copied.
+   WORD            wRepByts;     // The number of bytes remaining to copy
+                                 //  of the "repeated pattern".
+
+   BYTE            bDict[ LZH_DICSIZ ];
+                                 // Buffer used to contain the sliding
+                                 //  dictionary.  I can no longer use the
+                                 //   output buffer since it may not have
+                                 //    been completely "filled up".
+   LPBYTE          lpbDict;      // Pointer to current byte in the sliding
+                                 //  dictionary.
+   WORD            wDictIndx;    // Index of the current byte in the sliding
+                                 //  dictionary.
+
+   BYTE            bPtLen[ LZH_NPT ];
+   BYTE            bChLen[ LZH_NC ];
+   WORD            wChFreq[ 2 * LZH_NC - 1];
+   WORD            wChTable[ 4096 ];
+   WORD            wChCode[ LZH_NC ];
+   WORD            wPtFreq[ 2 * LZH_NP - 1 ];
+   WORD            wPtTable[ 256 ];
+   WORD            wPtCode[ LZH_NPT ];
+   WORD            wTFreq[ 2 * LZH_NT - 1 ];
+   WORD            wLeft[ 2 * LZH_NC - 1 ];
+   WORD            wRight[ 2 * LZH_NC - 1 ];
+
+   int             nCatchBuf[ LZH_CATCH_BUF_SIZ / 2 ];
+}
+LZH_DECODEINFOLZH45, FAR* LPLZH_DECODEINFOLZH45;
+
+
+//-----------------------------------------------------------
+//   M A C R O S
+//-----------------------------------------------------------
+
+//
+// Has all of the data in the input file been processed?
+//
+#define LZHUtil_InputFileExhausted(lpInfo) ( BOOL ) ( ( *lpInfo ).biBitInfo.fEOF && ( *lpInfo ).biBitInfo.wByts == 0 )
+
+// Return the number of bytes that were extracted from the input buffer.
+#define LZHUtil_NumBitBufBytsUsed(lpBitInfo) ( WORD ) ( ( *lpBitInfo ).lpCurByt - ( *lpBitInfo ).lpBuffr )
+
+
+//-----------------------------------------------------------
+//   P R O T O T Y P E S
+//-----------------------------------------------------------
+
+//
+// LZHUTIL.C
+//
+VOID WINAPI LZHUtil_FillBuf( LPLZH_DECODEINFOLZH45, WORD );
+VOID WINAPI LZHUtil_InitGetBits( LPLZHUTIL_BITINFO );
+VOID WINAPI LZHUtil_SetupGetBits( LPLZH_DECODEINFOLZH45, LPBYTE, WORD, BOOL );
+WORD WINAPI LZHUtil_GetBits( LPLZH_DECODEINFOLZH45, WORD );
+VOID WINAPI LZHUtil_SetupPutBits( LPLZHUTIL_BITINFO, LPBYTE, WORD );
+VOID WINAPI LZHUtil_InitPutBits( LPLZHUTIL_BITINFO );
+VOID WINAPI LZHUtil_PutBits( LPLZH_ENCODEINFOLZH45, WORD, WORD );
+
+//
+// DCLZH45.C
+//
+VOID INLINE LZH_PutDictChar( LPLZH_DECODEINFOLZH45, BYTE );
+VOID WINAPI LZH_MakeTable( LPLZH_DECODEINFOLZH45, WORD, LPBYTE, WORD, LPWORD );
+VOID WINAPI LZH_ReadPtLen( LPLZH_DECODEINFOLZH45, WORD, WORD, WORD );
+VOID WINAPI LZH_ReadChLen( LPLZH_DECODEINFOLZH45 );
+//WORD WINAPI LZH_DecodeCh( LPLZH_DECODEINFOLZH45, char );
+//WORD WINAPI LZH_DecodeP( LPLZH_DECODEINFOLZH45 );
+
+//
+// ENLZH45.C
+//
+//LONG WINAPI LZH_EncodeLZH45Init( LPLZH_ENCODEINFOLZH45, WORD ); ==>LZH.H
+VOID WINAPI LZH_InitSlide( LPLZH_ENCODEINFOLZH45 );
+WORD WINAPI LZH_Child( LPLZH_ENCODEINFOLZH45, WORD, BYTE );
+VOID WINAPI LZH_MakeChild( LPLZH_ENCODEINFOLZH45, WORD, BYTE, WORD );
+VOID WINAPI LZH_Split( LPLZH_ENCODEINFOLZH45, WORD );
+VOID WINAPI LZH_InsertNode( LPLZH_ENCODEINFOLZH45 );
+VOID WINAPI LZH_DeleteNode( LPLZH_ENCODEINFOLZH45 );
+VOID WINAPI LZH_GetNextMatch( LPLZH_ENCODEINFOLZH45 );
+VOID WINAPI LZH_CountTFreq( LPLZH_ENCODEINFOLZH45 );
+VOID WINAPI LZH_WritePtLen( LPLZH_ENCODEINFOLZH45, WORD, WORD, WORD );
+VOID WINAPI LZH_WriteChLen( LPLZH_ENCODEINFOLZH45 );
+VOID WINAPI LZH_EncodeCh( LPLZH_ENCODEINFOLZH45, WORD );
+VOID WINAPI LZH_EncodePostn( LPLZH_ENCODEINFOLZH45, WORD );
+VOID WINAPI LZH_CountLen( LPLZH_ENCODEINFOLZH45, WORD );
+VOID WINAPI LZH_MakeLen( LPLZH_ENCODEINFOLZH45, WORD, LPWORD );
+VOID WINAPI LZH_DownHeap( LPLZH_ENCODEINFOLZH45, WORD );
+VOID WINAPI LZH_MakeCode( LPLZH_ENCODEINFOLZH45, WORD, BYTE lpbLen[], WORD lpwCode[] );
+WORD WINAPI LZH_MakeTree( LPLZH_ENCODEINFOLZH45, WORD, WORD lpwFreq[], BYTE lpbLen[], WORD lpwCode[] );
+VOID WINAPI LZH_SendBlock( LPLZH_ENCODEINFOLZH45, BOOL );
+VOID WINAPI LZH_Output( LPLZH_ENCODEINFOLZH45, WORD, WORD );
+
+
+#endif

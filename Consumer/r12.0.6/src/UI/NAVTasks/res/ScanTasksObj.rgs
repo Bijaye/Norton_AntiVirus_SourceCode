@@ -1,0 +1,26 @@
+HKCR
+{
+	Symantec.Norton.AntiVirus.ScanTasks.1 = s 'Symantec.Norton.AntiVirus.ScanTasks Class'
+	{
+		CLSID = s '{C52E6FB0-C980-47E3-A4C9-CA34981758E7}'
+	}
+	Symantec.Norton.AntiVirus.ScanTasks = s 'Symantec.Norton.AntiVirus.ScanTasks Class'
+	{
+		CLSID = s '{C52E6FB0-C980-47E3-A4C9-CA34981758E7}'
+		CurVer = s 'Symantec.Norton.AntiVirus.ScanTasks.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C52E6FB0-C980-47E3-A4C9-CA34981758E7} = s 'Symantec.Norton.AntiVirus.ScanTasks Class'
+		{
+			ProgID = s 'Symantec.Norton.AntiVirus.ScanTasks.1'
+			VersionIndependentProgID = s 'Symantec.Norton.AntiVirus.ScanTasks'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{7C1B9D8B-2B5F-41B2-95F7-DE2C5BD594EC}'
+		}
+	}
+}

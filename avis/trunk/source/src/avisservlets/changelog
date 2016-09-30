@@ -1,0 +1,224 @@
+2000-02-03  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* agetsamp.h (loadSampleContent): Modified loadSampleContent
+	method to take checksum string instead of sample cookie
+
+	* agetsamp.cpp (loadSampleContent): Retrieving content file based on
+	checksum calculated filename
+
+	* asubsamp.cpp (saveContent): Saving content file by checksum
+	instead of by local cookie.
+
+2000-01-31  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* agetstat.cpp (fulfillRequest): Modified mistyped
+	"X-Analysis-Checksum" to read "X-Sample-Checksum"
+
+2000-01-27  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* agetstat.cpp (fulfillRequest): Check sample status requests
+	based on checksum if possible (i.e. if X-Sample-Checksum is
+	provided by the client)
+
+2000-01-26  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (AvisSubmitSample): Removed X-Sample-Extension from 
+	required header list
+
+2000-01-21  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (liveProcessing): Added configurable
+	X-Analysis-Gateway attribute to the avisservlets.prf configuration 
+	file. (The Submit Sample transaction will return this value if it
+	is specified, otherwise it will use the value of HTTP_HOST as
+	specified by the Lotus Go webserver api)
+
+2000-01-20  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* gwapiprx.cpp (GwapiProxy): Removed "stack tracing" messages from 
+	the GwapiProxy class (as an internal default.) The rest of them
+	still exist.
+
+	* apstsig.cpp (should_i_install_package): Removed full declaration 
+	of exception type from catch block, replaced with
+	(AVISDBException&) to remove "unreferenced local variable" warning
+	
+2000-01-04  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (retrieve_status): Returning "accepted" on
+	"export_for_analysis"
+	
+	(liveProcessing): Changed "Scan_Error" to an "accepted" state.
+
+	* agetstat.cpp (fulfillRequest): Added mappings between
+	X-Analysis-States and X-Error response attributes
+	
+	(fulfillRequest): Returning "accepted" on "export_for_analysis"
+
+	* asubsamp.cpp (retrieve_status): Added mappings to new "X-Error"
+	codes from error analysis states
+
+2000-01-03  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (retrieve_status): Modifed status retrieval to add
+	the X-Error attribute from the attributes table if the
+	X-Analysis-State attribute in the AnalysisRequest table ==
+	"error".(Deja vu)
+
+	* agetstat.cpp (fulfillRequest): Modified status retrieval to add
+	the X-Error attribute from the attributes table if the
+	X-Analysis-State attribute in the AnalysisRequest table ==
+	"error".
+
+1999-12-28  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* goservletclient.cpp: Added a #pragma directve to eliminate the
+	C4786 warnings.
+	
+
+1999-12-15  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (liveProcessing): Added the X-Analysis-Gateway
+	attribute both to the sample attributes upon submission, and to
+	the response of the PostSuspectSample transaction.
+
+1999-12-03  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* project workspaces: With the introduction of the VDB package
+	handling, references to the new dll were introduced into the
+	project workspace.
+
+	* agetsig.cpp (getSignatureFilePath): Modified method to check for 
+	both a FatAlbert package and a VDB package (by using the _stat
+	call on sequence.exe and sequence.vdb respectively)
+
+	* apstsig.cpp (explodeSignatureFile): Added support for
+	Content-Type: "application/x-NAV-VDB"
+	
+	(unpackVDB): Added "AvisPostSignature::unpackVDB()" prototype
+	(currently takes no arguments because the VDB unpacker isn't yet
+	ready.  This will be modified again once that API is in place)
+
+1999-11-18  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (executeFilter): Added delete[] _buffer statement
+	that was missing from the normal case (it was included in all the
+	exception handlers, which is perhaps why it was not caught by
+	lint).  This was a careless mistake on my part at best...
+	
+	(liveProcessing):   I've removed the catch(...) handler from this
+	block, as it is handled appropriately at a higher stack level.
+	There is no cause for this kind of redundancy.  In addition, the
+	default exception was returning a bad error message
+	"filterException" when in fact, that was not always the case...
+
+	NOTE:  This change marks the first divergence from avis100 in the
+	servlets.
+	
+1999-11-12  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (liveProcessing): Added Done_BadScan handler to the 
+	Filter return code switch statement.  It is handled the same way
+	as a Done_BadRepair, with an export action.
+
+1999-11-11  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* gosession.cpp (getEnvironment): I had forgotten to NULL the
+	_buffer string on the second instantiation.  This change adds the
+	memset call in an obsessively generic way...  It's a one-line add.
+
+1999-10-19  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* apstsig.cpp (should_i_install_package): Ok, the method name is
+	the product of a strange mood.  Shoot me.  This adds the criteria
+	for validating duplicate signature set submissions.
+	
+	(initialize_state): I had forgotten to set the _date_produced
+	internal from the incoming headers.  The result being that new
+	signatures could never be inserted into the database.  It's in
+	there now.
+
+	* agetstat.cpp (fulfillRequest): Modified to retrieve only the
+	Signature Sequence Number from an AnalysisResults record, not a
+	Signature object.  (This is because the internals of the Signature
+	object throw an exception if the sequence number is zero, or
+	nonexistant in the database.)
+
+1999-09-22  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* apststat.cpp (fulfillRequest): Strangely, an attempt to post
+	status on an unavailable cookie has been returning an
+	infrastructureException in response to an AnalysisRequest IsNull
+	check.  A trap was added to convert that to a ServletRecoverable
+	exception with an X-Error response of "crumbled"
+
+	- I mistakenly spelled IsNull "isNull"
+
+	* agetsig.cpp (loadAndDispatchFile): Corrected really foolish
+	memory leak in the GetSignature transaction.  I never released the
+	file buffer for the loaded signatures.  This led to a leak of
+	approx. 4meg per GetSignature transaction.  Duh.. ;)
+
+1999-09-20  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* agetstat.cpp (fulfillRequest): Changed access of sequence number
+	to use AnalysisResults::GetSignatureSequenceNumber instead of
+	using an explicit Signature object as an intermediary.
+
+
+1999-09-17  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* goservlethost.cpp (initialize_avis_logging):  Added calls to
+	SeverityFilter and SourceFilter to initialize AvisDB, AvisFilter,
+	and other logging. I had previously only added the "send_to" call,
+	which produced no results because the default mask was to log nothing.
+	
+
+1999-09-10  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* apststat.cpp: Added logging of signature sequence number being
+	posted in the case of a final status transaction
+
+1999-09-09  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (action_declined): Changed set of "X-Date-Finished"
+	to "X-Date-Analyzed"
+
+	* apststat.cpp (fulfillRequest): Changed check for
+	"X-Date-Finished" to AttributeKeys::DateAnalyzed().  
+
+	* gosession.cpp (GoSession): Added method calls in constructor to
+	turn off stack tracing for this module by default. (this should
+	reduce the log file sizes by approximately %85)
+
+1999-09-08  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* agetstat.cpp (fulfillRequest): Remove call to StateTag which have
+	mysteriously disappeared from the attributes class prototype.
+
+	* gosession.cpp (setSystemHeader): Dumping header assignment to
+	logfile through stack tracer.
+	 
+	(setDebugResponseHeader): Enabled this method.  a header
+	assignment exported through this method has the string
+	"X-Gateway-Debug-" prepended to it.  This will be a switchable
+	feature through the configuration file
+
+	(setResponseHeader): Dumping header assignment to logfile through
+	stack tracer.
+
+	* asubsamp.cpp: removed references to Filter::UnScrambleFailure
+	and Filter::UncompressFailure
+
+1999-08-30  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* asubsamp.cpp (action_finished): Converted bad catch statement
+	from catch by pointer to catch by reference to accomodate change
+	in throw scheme.
+
+	* goservlethost.h (virtual): Added initialize_avis_logging to hook
+	MTrace into the back end of Andy's new logging from avisCommon.
+
+	* avisservlets.cpp:  Added ChangeLog file (no source change,
+	sentinel message)
+

@@ -1,0 +1,6069 @@
+==== //depot/SARC/VIRLIB/SOURCE/CMDLINE/SRC/CLNAVEX.CPP#1 - d:\worknewvir\CMDLINE\SRC\CLNAVEX.CPP ====
+@@ -25,8 +25,8 @@
+ 
+ #ifdef SYM_UNIX
+ 
+-#include <dlfcn.h>
+-#include <unistd.h>
++//#include <dlfcn.h>
++//#include <unistd.h>
+ 
+ #endif // SYM_UNIX
+ 
+@@ -45,8 +45,11 @@
+ //////////////////////////////////////////////////////////////////////
+ 
+ #ifdef SYM_UNIX
+ 
+-HFILE FileOpen
++// Note: The Unix version of SYMKRNL now has new & improved
++// versions of most of these functions.
++
++HFILE NavexFileOpen
+ (
+     LPSTR       lpName,
+     UINT        uOpenMode
+@@ -69,7 +72,7 @@
+ 	return(temp);
+ }
+ 
+-HFILE FileClose
++HFILE NavexFileClose
+ (
+     HFILE       hHandle
+ )
+@@ -78,7 +81,7 @@
+     return(hHandle);
+ }
+ 
+-UINT FileRead
++UINT NavexFileRead
+ (
+     HFILE       hHandle,
+     LPVOID      lpBuffer,
+@@ -92,7 +95,7 @@
+     return(uRead);
+ }
+ 
+-UINT FileWrite
++UINT NavexFileWrite
+ (
+     HFILE       hHandle,
+     LPVOID      lpBuffer,
+@@ -141,7 +144,7 @@
+ 
+ #ifdef SYM_UNIX
+         int result;
+-        if (ftruncate(wValue),ftell((FILE *)hHandle) != 0)
++        if (ftruncate(wValue,ftell((FILE *)hHandle)) != 0)
+             return((UINT)-1);
+ #endif SYM_UNIX
+ 
+@@ -157,7 +160,7 @@
+     return(uWrite);
+ }
+ 
+-DWORD FileSeek
++DWORD NavexFileSeek
+ (
+     HFILE       hHandle,
+     LONG        dwOffset,
+@@ -170,7 +173,7 @@
+     return((DWORD)-1);
+ }
+ 
+-BOOL FileGetDateTime
++BOOL NavexFileGetDateTime
+ (
+     HFILE       hHandle,
+     UINT        uType,
+@@ -183,7 +186,7 @@
+     return(TRUE);
+ }
+ 
+-BOOL FileSetDateTime
++BOOL NavexFileSetDateTime
+ (
+     HFILE       hHandle,
+     UINT        uType,
+@@ -196,7 +199,7 @@
+     return(TRUE);
+ }
+ 
+-DWORD FileSize(HFILE hHandle)
++DWORD NavexFileSize(HFILE hHandle)
+ {
+ 	DWORD dwOrigOffset, dwNewOffset;
+ 
+@@ -207,7 +210,7 @@
+ 	return(dwNewOffset);
+ }
+ 
+-BOOL FileDelete
++BOOL NavexFileDelete
+ (
+     LPSTR       lpFileName
+ )
+@@ -215,7 +218,7 @@
+     return(!remove((const char *)lpFileName));        /* 1 on success, 0 on failure */
+ }
+ 
+-HFILE FileCreate
++HFILE NavexFileCreate
+ (
+     LPSTR       lpFileName,
+     UINT        uAttr
+@@ -236,7 +239,7 @@
+ 		return(temp);
+ }
+ 
+-UINT FileGetAttr
++UINT NavexFileGetAttr
+ (
+     LPTSTR      lpFilename,
+     UINT FAR *  lpuAttr
+@@ -247,7 +250,7 @@
+     return(TRUE);
+ }
+ 
+-UINT FileSetAttr
++UINT NavexFileSetAttr
+ (
+     LPTSTR      lpFilename,
+     UINT        uAttr
+@@ -257,21 +260,22 @@
+ 
+     return(TRUE);
+ }
+ 
++
+ CALLBACKREV1 gstNAVEXCallBacks =
+ {
+-    FileOpen,
+-    FileClose,
+-    FileRead,
+-    FileWrite,
+-    FileSeek,
+-    FileSize,
+-    FileGetDateTime,
+-    FileSetDateTime,
+-    FileDelete,
+-    FileGetAttr,
+-    FileSetAttr,
+-    FileCreate,
++    NavexFileOpen,
++    NavexFileClose,
++    NavexFileRead,
++    NavexFileWrite,
++    NavexFileSeek,
++    NavexFileSize,
++    NavexFileGetDateTime,
++    NavexFileSetDateTime,
++    NavexFileDelete,
++    NavexFileGetAttr,
++    NavexFileSetAttr,
++    NavexFileCreate,
+ /*
+     NULL,               // FileLock,
+     NULL,               // FileUnlock,
+@@ -311,7 +315,7 @@
+ 	LPSCANGLOBAL	lpScanGlobal
+ )
+ {
+-#ifdef SYM_UNIX
++#if 0 // was: #ifdef SYM_UNIX
+ 
+     void *hNAVEXSharedObject;
+     char szPathName[SYM_MAX_PATH+1];
+@@ -409,7 +413,7 @@
+ 	LPSCANGLOBAL	lpScanGlobal
+ )
+ {
+-#ifdef SYM_UNIX
++#if 0 // was: #ifdef SYM_UNIX
+ 
+     if (lpScanGlobal->hNAVEXSharedObject != NULL)
+     {
+==== //depot/SARC/VIRLIB/SOURCE/CMDLINE/SRC/FILEINFO.H#1 - d:\worknewvir\CMDLINE\SRC\FILEINFO.H ====
+@@ -35,15 +35,24 @@
+ 
+ #include "avtypes.h"
+ 
++#if defined(SYM_UNIX)
++
++// use the FILEINFO_T type from avcb.h
++typedef FILEINFO_T* LPFILEINFO;
++
++#else
++
+ typedef struct
+ {
+-#if defined(VC20) || defined(SYM_WIN32)
+-    HANDLE  hFile;
++#if defined(VC20) || defined(SYM_WIN32) || defined(SYM_UNIX)
++    HFILE   hFile;
+ #else
+     FILE *  hFile;
+ #endif
+ 
+     char    lpstrPathName[SYM_MAX_PATH+1];
+ } FILEINFO_T, FAR *LPFILEINFO;
++
++#endif
+ 
+ #endif  // _FILEINFO_H
+==== //depot/SARC/VIRLIB/SOURCE/CMDLINE/SRC/REPORT.CPP#1 - d:\worknewvir\CMDLINE\SRC\REPORT.CPP ====
+@@ -38,6 +38,8 @@
+ 
+ #include "avtypes.h"
+ 
++#include "clcb.h"
++
+ #include "fileinfo.h"
+ #include "scanglob.h"
+ #include "report.h"
+==== //depot/SARC/VIRLIB/SOURCE/CMDLINE/SRC/SCANFILE.CPP#1 - d:\worknewvir\CMDLINE\SRC\SCANFILE.CPP ====
+@@ -96,6 +96,37 @@
+ 
+     if (*lpbVirusFound == 0)
+     {
++	PAMSTATUS pamResult;
++	WORD wVirusID;
++
++	pamResult = PAMScanFile(lpScanGlobal->hLPAM, lpFileInfo->hFile, 0, &wVirusID);
++	if (pamResult == PAMSTATUS_VIRUS_FOUND)
++	{
++            BOOL bFound;
++
++            *lpbVirusFound = TRUE;
++
++            // Get the hVirus
++
++            if (EngVIDToHVIRUS(lpScanGlobal->hGEng,
++                               wVirusID,
++                               lphVirus,
++                               &bFound) != ENGSTATUS_OK ||
++                bFound == FALSE)
++            {
++                // Failed to get the HVIRUS
++                return(FALSE);
++	    }
++
++	}
++    }
++
++#endif
++
++#if 0  // was: #ifdef SYM_UNIX
++
++    if (*lpbVirusFound == 0)
++    {
+         EXTSTATUS           extResult;
+         WORD                wVirusID;
+ 
+@@ -340,7 +371,7 @@
+ 
+     for (i=0;i<MAX_SCAN_REPAIR_TRIES;i++)
+     {
+-#ifdef SYM_UNIX
++#if 0 // was: #ifdef SYM_UNIX
+ 
+         EXTSTATUS   extResult;
+         N30         stN30;
+@@ -373,6 +404,28 @@
+         else
+ 
+ #endif // SYM_UNIX
++
++#if 0 // #ifdef SYM_UNIX
++        {
++            // Try PAM repair
++
++	    char szPAMFile[SYM_MAX_PATH + 1];
++	    PAMSTATUS pamResult;
++
++	    strcpy(szPAMFile, lpScanGlobal->szHomeDir);
++	    strcat(szPAMFile, "virscan2.dat");
++
++	    pamResult = PAMRepairFile(lpScanGlobal->hLPAM,
++		szPAMFile,
++		lpFileInfo->lpstrPathName,
++		stBackUpFileInfo.lpstrPathName,
++		wVirusID,  // No way to get this from HVIRUS???
++		FALSE);
++
++	    if (pamResult != PAMSTATUS_OK)
++		break;
++	}
++#endif
+ 
+         {
+             // Try AVENGE repair
+==== //depot/SARC/VIRLIB/SOURCE/CMDLINE/SRC/SCANGLOB.H#1 - d:\worknewvir\CMDLINE\SRC\SCANGLOB.H ====
+@@ -31,6 +31,9 @@
+ #include <time.h>
+ 
+ #include "avenge.h"
++#ifdef SYM_UNIX
++#include "pamapi.h"
++#endif
+ 
+ #include "cmdparse.h"
+ 
+@@ -57,6 +60,11 @@
+ 
+     HLENG               hLEng;
+     HGENG               hGEng;
++
++#ifdef SYM_UNIX
++    PAMGHANDLE          hGPAM;
++    PAMLHANDLE          hLPAM;
++#endif
+ 
+     DWORD				dwFilesInfected;
+     DWORD				dwFilesScanned;
+==== //depot/SARC/VIRLIB/SOURCE/CMDLINE/SRC/SCANINIT.CPP#1 - d:\worknewvir\CMDLINE\SRC\SCANINIT.CPP ====
+@@ -36,6 +36,10 @@
+ #include "msgstr.h"
+ 
+ #include "avenge.h"
++#ifdef SYM_UNIX
++#include "pamapi.h"
++#include <strings.h>
++#endif
+ 
+ #include "clnavex.h"
+ 
+@@ -61,7 +65,11 @@
+ 	LPSCANGLOBAL	lpScanGlobal
+ )
+ {
+-    // global init
++    char szPAMFile[SYM_MAX_PATH + 1];
++    strcpy(szPAMFile, lpScanGlobal->szHomeDir);
++    strcat(szPAMFile, "virscan2.dat");
++
++    // AVENGE global init
+ 
+     if (EngGlobalInit(&(lpScanGlobal->hGEng),
+                       &gstCLCBGeneralCallBacks,
+@@ -77,7 +85,7 @@
+         return(FALSE);
+     }
+ 
+-    // local init
++    // AVENGE local init
+ 
+     if (EngLocalInit(lpScanGlobal->hGEng,
+                      &(lpScanGlobal->hLEng),
+@@ -86,10 +94,32 @@
+         ReportError(lpScanGlobal,
+                     gszMsgStrLocalInit,
+                     REPORT_ERROR_INIT);
++
++        return(FALSE);
++    }
++
++#if SYM_UNIX
+ 
++    // PAM (EMULATOR) global init
++
++    if (PAMGlobalInit(szPAMFile, &lpScanGlobal->hGPAM) != PAMSTATUS_OK)
++    {
++	fprintf(stderr, "PAMGlobalInit failed\n");
+         return(FALSE);
+     }
+ 
++    // PAM (EMULATOR) local init
++
++    if (PAMLocalInit(szPAMFile, NULL, lpScanGlobal->hGPAM, &(lpScanGlobal->hLPAM)) != PAMSTATUS_OK)
++     {
++	fprintf(stderr, "PAMLocalInit failed\n");
++	 return(FALSE);
++     }
++
++#endif
++
++    // NAVEX init
++
+     if (CMDLineNAVEXInit(lpScanGlobal) == FALSE)
+     {
+         // Failed to initialize NAVEX system
+@@ -140,6 +170,16 @@
+ 
+         return(FALSE);
+     }
++
++#if SYM_UNIX
++
++    if (PAMLocalClose(lpScanGlobal->hLPAM) != 0)
++	return(FALSE);
++
++    if (PAMGlobalClose(lpScanGlobal->hGPAM) != PAMSTATUS_OK)
++	return(FALSE);
++
++#endif
+ 
+     if (CMDLineNAVEXClose(lpScanGlobal) == FALSE)
+     {
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/CALLFAKE.CPP#1 - d:\worknewvir\ENGINE15\SRC\CALLFAKE.CPP ====
+@@ -34,8 +34,10 @@
+ // 
+ //************************************************************************
+ 
+-#include "platform.h"
+-#include "ctsn.h"
++//#include "platform.h"			// NEW_UNIX
++#include "avtypes.h"			// NEW_UNIX
++//#include "ctsn.h"			// NEW_UNIX
++#include "n30type.h"			// NEW_UNIX
+ #include "callback.h"
+ #include "navex.h"
+ #include "heurapi.h"
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/DATADIR.CPP#1 - d:\worknewvir\ENGINE15\SRC\DATADIR.CPP ====
+@@ -14,6 +14,8 @@
+ // 
+ //************************************************************************
+ 
++#include <string.h> 		// NEW_UNIX
++
+ #include "platform.h"
+ #include "callback.h"
+ 
+@@ -67,12 +69,18 @@
+     // If the string is empty or if the last character is not \,
+     // then add a backslash
+ 
++#ifdef SYM_UNIX							// NEW_UNIX
++    if (lptstrPrevChar == NULL || *lptstrPrevChar != '/')	// NEW_UNIX
++#else								// NEW_UNIX
+     if (lptstrPrevChar == NULL || *lptstrPrevChar != '\\')
++#endif								// NEW_UNIX
+     {
+         // Append a backslash
+ 
+ #if defined(SYM_NTK)
+         STRCAT(lptstrResult,L"\\");
++#elif defined(SYM_UNIX)						// NEW_UNIX
++	STRCAT(lptstrResult,"/");				// NEW_UNIX
+ #else
+         STRCAT(lptstrResult,"\\");
+ #endif
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/DATAFILE.CPP#1 - d:\worknewvir\ENGINE15\SRC\DATAFILE.CPP ====
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/INIFILE.CPP#1 - d:\worknewvir\ENGINE15\SRC\INIFILE.CPP ====
+@@ -25,7 +25,8 @@
+ // 
+ //************************************************************************
+ 
+-#include "platform.h"
++// #include "platform.h"	// NEW_UNIX
++#include "avtypes.h" 		// NEW_UNIX
+ #include "inifile.h"
+ #include "callfake.h"
+ #include "flimflam.h"
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/NAVEXENT.CPP#1 - d:\worknewvir\ENGINE15\SRC\NAVEXENT.CPP ====
+@@ -97,7 +97,8 @@
+ //
+ //************************************************************************
+ 
+-#include "platform.h"
++//#include "platform.h"                 // NEW_UNIX
++#include "avtypes.h"                    // NEW_UNIX
+ #include "n30type.h"
+ #include "callbk15.h"
+ #include "navex15.h"
+@@ -144,6 +145,8 @@
+ #define APP_STRING "NAVNTK"
+ #elif defined(SYM_OS2)
+ #define APP_STRING "NAVOS2"
++#elif defined(SYM_UNIX)                      // NEW_UNIX
++#define APP_STRING "NAVUNIX"                 // NEW_UNIX
+ #endif
+ 
+ #define TECH_DISABLED           0
+@@ -168,10 +171,10 @@
+ 
+     while (lpstNode != NULL)
+     {
+-        lpstNext = lpstNode->lpstNext;
++	lpstNext = lpstNode->lpstNext;
+ 
+-        lpstCallBacks->PermMemoryFree(lpstNode);
+-        lpstNode = lpstNext;
++	lpstCallBacks->PermMemoryFree(lpstNode);
++	lpstNode = lpstNext;
+     }
+ 
+     return(EXTSTATUS_OK);
+@@ -194,57 +197,57 @@
+ 
+     for (i=0;lpszExtList[i];i++)
+     {
+-        if (lpszExtList[i] == ' ' ||
+-            lpszExtList[i] == '\t')
+-            continue;
++	if (lpszExtList[i] == ' ' ||
++	    lpszExtList[i] == '\t')
++	    continue;
+ 
+-        if (lpszExtList[i] == ',')
+-        {
+-            szCurExt[nExtIndex] = 0;
+-            nExtIndex = 0;
++	if (lpszExtList[i] == ',')
++	{
++	    szCurExt[nExtIndex] = 0;
++	    nExtIndex = 0;
+ 
+-            lpstNode = (LPEXT_NODE)lpstCallBacks->
+-                                    PermMemoryAlloc(sizeof(EXT_NODE_T));
+-            if (lpstNode == NULL)
+-            {
+-                FreeHeurExtensions(lpstCallBacks,lpstHeur);
++	    lpstNode = (LPEXT_NODE)lpstCallBacks->
++				    PermMemoryAlloc(sizeof(EXT_NODE_T));
++	    if (lpstNode == NULL)
++	    {
++		FreeHeurExtensions(lpstCallBacks,lpstHeur);
+ 
+-                return(EXTSTATUS_MEM_ERROR);
+-            }
++		return(EXTSTATUS_MEM_ERROR);
++	    }
+ 
+-            lpstNode->szExt[0] = (TCHAR)szCurExt[0];
+-            lpstNode->szExt[1] = (TCHAR)szCurExt[1];
+-            lpstNode->szExt[2] = (TCHAR)szCurExt[2];
+-            lpstNode->szExt[3] = (TCHAR)szCurExt[3];
++	    lpstNode->szExt[0] = (TCHAR)szCurExt[0];
++	    lpstNode->szExt[1] = (TCHAR)szCurExt[1];
++	    lpstNode->szExt[2] = (TCHAR)szCurExt[2];
++	    lpstNode->szExt[3] = (TCHAR)szCurExt[3];
+ 
+-            lpstNode->lpstNext = lpstHeur->lpstExtList;
+-            lpstHeur->lpstExtList = lpstNode;
+-            continue;
+-        }
++	    lpstNode->lpstNext = lpstHeur->lpstExtList;
++	    lpstHeur->lpstExtList = lpstNode;
++	    continue;
++	}
+ 
+-        szCurExt[nExtIndex++] = mytoupper(lpszExtList[i]);
++	szCurExt[nExtIndex++] = mytoupper(lpszExtList[i]);
+     }
+ 
+     if (nExtIndex)
+     {
+-        szCurExt[nExtIndex] = 0;
++	szCurExt[nExtIndex] = 0;
+ 
+-        lpstNode = (LPEXT_NODE)lpstCallBacks->
+-                                PermMemoryAlloc(sizeof(EXT_NODE_T));
+-        if (lpstNode == NULL)
+-        {
+-            FreeHeurExtensions(lpstCallBacks,lpstHeur);
++	lpstNode = (LPEXT_NODE)lpstCallBacks->
++				PermMemoryAlloc(sizeof(EXT_NODE_T));
++	if (lpstNode == NULL)
++	{
++	    FreeHeurExtensions(lpstCallBacks,lpstHeur);
+ 
+-            return(EXTSTATUS_MEM_ERROR);
+-        }
++	    return(EXTSTATUS_MEM_ERROR);
++	}
+ 
+-        lpstNode->szExt[0] = (TCHAR)szCurExt[0];
+-        lpstNode->szExt[1] = (TCHAR)szCurExt[1];
+-        lpstNode->szExt[2] = (TCHAR)szCurExt[2];
+-        lpstNode->szExt[3] = (TCHAR)szCurExt[3];
++	lpstNode->szExt[0] = (TCHAR)szCurExt[0];
++	lpstNode->szExt[1] = (TCHAR)szCurExt[1];
++	lpstNode->szExt[2] = (TCHAR)szCurExt[2];
++	lpstNode->szExt[3] = (TCHAR)szCurExt[3];
+ 
+-        lpstNode->lpstNext = lpstHeur->lpstExtList;
+-        lpstHeur->lpstExtList = lpstNode;
++	lpstNode->lpstNext = lpstHeur->lpstExtList;
++	lpstHeur->lpstExtList = lpstNode;
+     }
+ 
+     return(EXTSTATUS_OK);
+@@ -271,9 +274,9 @@
+     LPSTR       lpszNoSpace;
+ 
+     gbDisableInfestationMode = FALSE;       // go to high if we get lots
+-                                            // of BH viruses - by default
++					    // of BH viruses - by default
+ 
+-    DataDirAppendName(lpszNAVEXDataDir,_T("VIRSCAN5.DAT"),szDatFileName);
++    DataDirAppendName(lpszNAVEXDataDir,_T("virscan5.dat"),szDatFileName); // NEW_UNIX
+ 
+     // only enable after we've successfully loaded
+ 
+@@ -286,28 +289,28 @@
+     // check our config callbacks to see if we want to use heuristics
+ 
+     lpstCallBacks->GetConfigInfo("heur",
+-                                 (LPVOID)szOptionValue,
+-                                 sizeof(szOptionValue)-1,
+-                                 &bImplemented,
+-                                 NULL);
++				 (LPVOID)szOptionValue,
++				 sizeof(szOptionValue)-1,
++				 &bImplemented,
++				 NULL);
+ 
+     if (bImplemented == TRUE)
+     {
+-        // "/heur" was definitely on the command line or an option; get the
+-        // string.
++	// "/heur" was definitely on the command line or an option; get the
++	// string.
+ 
+-        if (szOptionValue[0] >= '0' && szOptionValue[0] <= '3')
+-            nOut = szOptionValue[0] - '0';
+-        else
+-            nOut = 2;           // default is level 2: "/heur"
++	if (szOptionValue[0] >= '0' && szOptionValue[0] <= '3')
++	    nOut = szOptionValue[0] - '0';
++	else
++	    nOut = 2;           // default is level 2: "/heur"
+ 
+-        gstHeur.nHeurLevel = nOut;
++	gstHeur.nHeurLevel = nOut;
+     }
+     else
+     {
+-        // this should never happen!
++	// this should never happen!
+ 
+-        return(EXTSTATUS_INIT_ERROR);
++	return(EXTSTATUS_INIT_ERROR);
+     }
+ 
+     // now check our ini file to see if we want to use heur and/or ext. list
+@@ -315,85 +318,85 @@
+     hFile = lpstCallBacks->FileOpen(lpszNAVEXINIFile,0);
+     if (hFile == (HFILE)-1)
+     {
+-        // defaults: address all defaults
++	// defaults: address all defaults
+ 
+-        if (AddHeurExtensions(lpstCallBacks,
+-                              &gstHeur,
+-                              "com,exe") != EXTSTATUS_OK)
+-        {
+-            return(EXTSTATUS_INIT_ERROR);
+-        }
++	if (AddHeurExtensions(lpstCallBacks,
++			      &gstHeur,
++			      "com,exe") != EXTSTATUS_OK)
++	{
++	    return(EXTSTATUS_INIT_ERROR);
++	}
+     }
+     else
+     {
+-        // see if there's a heuristics extensions list; default is COM,EXE
++	// see if there's a heuristics extensions list; default is COM,EXE
+ 
+-        GetProfileString(hFile,
+-                        APP_STRING,
+-                        "heurextlist",
+-                        "com,exe",
+-                        szExtList,
+-                        512);
++	GetProfileString(hFile,
++			APP_STRING,
++			"heurextlist",
++			"com,exe",
++			szExtList,
++			512);
+ 
+-        if (AddHeurExtensions(lpstCallBacks,
+-                              &gstHeur,
+-                              szExtList) != EXTSTATUS_OK)
+-        {
+-            if (hFile != (HFILE)-1)
+-                lpstCallBacks->FileClose(hFile);
++	if (AddHeurExtensions(lpstCallBacks,
++			      &gstHeur,
++			      szExtList) != EXTSTATUS_OK)
++	{
++	    if (hFile != (HFILE)-1)
++		lpstCallBacks->FileClose(hFile);
+ 
+-            return(EXTSTATUS_INIT_ERROR);
+-        }
++	    return(EXTSTATUS_INIT_ERROR);
++	}
+ 
+-        //////////////////////////////////////////////////////////////////////
+-        // infestation mode inf check
+-        //////////////////////////////////////////////////////////////////////
++	//////////////////////////////////////////////////////////////////////
++	// infestation mode inf check
++	//////////////////////////////////////////////////////////////////////
+ 
+-        GetProfileString(hFile,
+-                         APP_STRING,
+-                         "infestmode",
+-                         "1",
+-                         szInfestMode,
+-                         32);
++	GetProfileString(hFile,
++			 APP_STRING,
++			 "infestmode",
++			 "1",
++			 szInfestMode,
++			 32);
+ 
+-        lpszNoSpace = szInfestMode;
++	lpszNoSpace = szInfestMode;
+ 
+-        while (*lpszNoSpace == ' ' || *lpszNoSpace == '\t')
+-            lpszNoSpace++;
++	while (*lpszNoSpace == ' ' || *lpszNoSpace == '\t')
++	    lpszNoSpace++;
+ 
+-        if (*lpszNoSpace != '0')
+-            gbDisableInfestationMode = FALSE;
+-        else
+-            gbDisableInfestationMode = TRUE;
++	if (*lpszNoSpace != '0')
++	    gbDisableInfestationMode = FALSE;
++	else
++	    gbDisableInfestationMode = TRUE;
+ 
+-        //////////////////////////////////////////////////////////////////////
+-        // infestation mode inf check
+-        //////////////////////////////////////////////////////////////////////
++	//////////////////////////////////////////////////////////////////////
++	// infestation mode inf check
++	//////////////////////////////////////////////////////////////////////
+ 
+-        if (hFile != (HFILE)-1)
+-            lpstCallBacks->FileClose(hFile);
++	if (hFile != (HFILE)-1)
++	    lpstCallBacks->FileClose(hFile);
+     }
+ 
+     // perform heur global init
+ 
+     if (PAMGlobalInit(szDatFileName, &gstHeur.hGHeur) != PAMSTATUS_OK)
+     {
+-        FreeHeurExtensions(lpstCallBacks, &gstHeur);
++	FreeHeurExtensions(lpstCallBacks, &gstHeur);
+ 
+-        return(EXTSTATUS_INIT_ERROR);
++	return(EXTSTATUS_INIT_ERROR);
+     }
+ 
+     // perform the heur local init (only for NLM!!!)
+ 
+     if (PAMLocalInit(gstHeur.hGHeur,&gstHeur.hLHeur) != PAMSTATUS_OK)
+     {
+-        // error initializing local; free global!
++	// error initializing local; free global!
+ 
+-        FreeHeurExtensions(lpstCallBacks, &gstHeur);
++	FreeHeurExtensions(lpstCallBacks, &gstHeur);
+ 
+-        PAMGlobalClose(gstHeur.hGHeur);
++	PAMGlobalClose(gstHeur.hGHeur);
+ 
+-        return(EXTSTATUS_MEM_ERROR);
++	return(EXTSTATUS_MEM_ERROR);
+     }
+ 
+     // now indicate that we're enabled
+@@ -436,9 +439,9 @@
+     LPSTR       lpszNoSpace;
+ 
+     gbDisableInfestationMode = FALSE;       // go to high if we get lots
+-                                            // of BH viruses - by default
++					    // of BH viruses - by default
+ 
+-    DataDirAppendName(lpszNAVEXDataDir,_T("VIRSCAN5.DAT"),szDatFileName);
++    DataDirAppendName(lpszNAVEXDataDir,_T("virscan5.dat"),szDatFileName); // NEW_UNIX
+ 
+     // only enable after we've successfully loaded
+ 
+@@ -456,34 +459,34 @@
+     // 3. default is on
+ 
+     lpstCallBacks->GetConfigInfo(_T("heur"),
+-                                 (LPVOID)szOptionValue,
+-                                 sizeof(szOptionValue)-1,
+-                                 &bImplemented,
+-                                 NULL);
++				 (LPVOID)szOptionValue,
++				 sizeof(szOptionValue)-1,
++				 &bImplemented,
++				 NULL);
+ 
+     if (bImplemented == TRUE)
+     {
+-        // "/heur" was definitely on the command line or an option; get the
+-        // string.
++	// "/heur" was definitely on the command line or an option; get the
++	// string.
+ 
+-        if (szOptionValue[0] >= '0' && szOptionValue[0] <= '3')
+-            nOut = szOptionValue[0] - '0';
+-        else
+-            nOut = 2;           // default is level 2: "/heur"
++	if (szOptionValue[0] >= '0' && szOptionValue[0] <= '3')
++	    nOut = szOptionValue[0] - '0';
++	else
++	    nOut = 2;           // default is level 2: "/heur"
+ 
+-        gstHeur.nHeurLevel = nOut;
++	gstHeur.nHeurLevel = nOut;
+ 
+-        if (nOut != 0)
+-            nUseHeur = TECH_ENABLED;
+-        else
+-            nUseHeur = TECH_DISABLED;
++	if (nOut != 0)
++	    nUseHeur = TECH_ENABLED;
++	else
++	    nUseHeur = TECH_DISABLED;
+     }
+     else
+     {
+-        // default: heur was not known by the app; check our ini file or
+-        // use defaults
++	// default: heur was not known by the app; check our ini file or
++	// use defaults
+ 
+-        nUseHeur = TECH_UNKNOWN;
++	nUseHeur = TECH_UNKNOWN;
+     }
+ 
+     // now check our ini file to see if we want to use heur and/or ext. list
+@@ -491,26 +494,26 @@
+     hFile = lpstCallBacks->FileOpen(lpszNAVEXINIFile,0);
+     if (hFile == (HFILE)-1)
+     {
+-        // defaults: address all defaults
++	// defaults: address all defaults
+ 
+-        if (nUseHeur == TECH_ENABLED || nUseHeur == TECH_DISABLED)
+-        {
+-            // OK. just add extensions and continue
+-        }
+-        else
+-        {
+-            // fow now: assume Heuristics are on by default!
++	if (nUseHeur == TECH_ENABLED || nUseHeur == TECH_DISABLED)
++	{
++	    // OK. just add extensions and continue
++	}
++	else
++	{
++	    // fow now: assume Heuristics are on by default!
+ 
+-            nUseHeur = TECH_ENABLED;
+-            gstHeur.nHeurLevel = 2;
+-        }
++	    nUseHeur = TECH_ENABLED;
++	    gstHeur.nHeurLevel = 2;
++	}
+ 
+-        if (AddHeurExtensions(lpstCallBacks,
+-                              &gstHeur,
+-                              "com,exe") != EXTSTATUS_OK)
+-        {
+-            return(EXTSTATUS_INIT_ERROR);
+-        }
++	if (AddHeurExtensions(lpstCallBacks,
++			      &gstHeur,
++			      "com,exe") != EXTSTATUS_OK)
++	{
++	    return(EXTSTATUS_INIT_ERROR);
++	}
+     }
+ 
+     // now that we've opened the file, see if heuristics are on
+@@ -518,118 +521,118 @@
+ 
+     if (hFile != (HFILE)-1 && nUseHeur == TECH_UNKNOWN)
+     {
+-        GetProfileInt(hFile,
+-                      APP_STRING,
+-                      "heuristics",
+-                      2,            // 3=on by default
+-                      &nOut);
++	GetProfileInt(hFile,
++		      APP_STRING,
++		      "heuristics",
++		      2,            // 3=on by default
++		      &nOut);
+ 
+-        if (nOut != 0)
+-        {
+-            gstHeur.nHeurLevel = nOut;
++	if (nOut != 0)
++	{
++	    gstHeur.nHeurLevel = nOut;
+ 
+-            nUseHeur = TECH_ENABLED;
+-        }
+-        else
+-            nUseHeur = TECH_DISABLED;
++	    nUseHeur = TECH_ENABLED;
++	}
++	else
++	    nUseHeur = TECH_DISABLED;
+     }
+ 
+     if (hFile != (HFILE)-1 && nUseHeur == TECH_ENABLED)
+     {
+-        // see if there's a heuristics extensions list; default is COM,EXE
++	// see if there's a heuristics extensions list; default is COM,EXE
+ 
+-        GetProfileString(hFile,
+-                        APP_STRING,
+-                        "heurextlist",
+-                        "com,exe",
+-                        szExtList,
+-                        512);
++	GetProfileString(hFile,
++			APP_STRING,
++			"heurextlist",
++			"com,exe",
++			szExtList,
++			512);
+ 
+-        if (AddHeurExtensions(lpstCallBacks,
+-                              &gstHeur,
+-                              szExtList) != EXTSTATUS_OK)
+-        {
+-            nUseHeur = TECH_DISABLED;
+-        }
++	if (AddHeurExtensions(lpstCallBacks,
++			      &gstHeur,
++			      szExtList) != EXTSTATUS_OK)
++	{
++	    nUseHeur = TECH_DISABLED;
++	}
+ 
+-        //////////////////////////////////////////////////////////////////////
+-        // infestation mode inf check
+-        //////////////////////////////////////////////////////////////////////
++	//////////////////////////////////////////////////////////////////////
++	// infestation mode inf check
++	//////////////////////////////////////////////////////////////////////
+ 
+-        GetProfileString(hFile,
+-                         APP_STRING,
+-                         "infestmode",
+-                         "1",
+-                         szInfestMode,
+-                         32);
++	GetProfileString(hFile,
++			 APP_STRING,
++			 "infestmode",
++			 "1",
++			 szInfestMode,
++			 32);
+ 
+-        lpszNoSpace = szInfestMode;
++	lpszNoSpace = szInfestMode;
+ 
+-        while (*lpszNoSpace == ' ' || *lpszNoSpace == '\t')
+-            lpszNoSpace++;
++	while (*lpszNoSpace == ' ' || *lpszNoSpace == '\t')
++	    lpszNoSpace++;
+ 
+-        if (*lpszNoSpace != '0')
+-            gbDisableInfestationMode = FALSE;
+-        else
+-            gbDisableInfestationMode = TRUE;
++	if (*lpszNoSpace != '0')
++	    gbDisableInfestationMode = FALSE;
++	else
++	    gbDisableInfestationMode = TRUE;
+ 
+-        //////////////////////////////////////////////////////////////////////
+-        // infestation mode inf check
+-        //////////////////////////////////////////////////////////////////////
++	//////////////////////////////////////////////////////////////////////
++	// infestation mode inf check
++	//////////////////////////////////////////////////////////////////////
+ 
+     }
+ 
+     if (nUseHeur == TECH_ENABLED)
+     {
+-        // perform heur global init
++	// perform heur global init
+ 
+-        if (PAMGlobalInit(szDatFileName, &gstHeur.hGHeur) != PAMSTATUS_OK)
+-        {
+-            if (hFile != (HFILE)-1)
+-                lpstCallBacks->FileClose(hFile);
++	if (PAMGlobalInit(szDatFileName, &gstHeur.hGHeur) != PAMSTATUS_OK)
++	{
++	    if (hFile != (HFILE)-1)
++		lpstCallBacks->FileClose(hFile);
+ 
+-            FreeHeurExtensions(lpstCallBacks, &gstHeur);
++	    FreeHeurExtensions(lpstCallBacks, &gstHeur);
+ 
+-            return(EXTSTATUS_INIT_ERROR);
+-        }
++	    return(EXTSTATUS_INIT_ERROR);
++	}
+ 
+-        // now indicate that we're enabled
++	// now indicate that we're enabled
+ 
+-        gstHeur.bEnabled = TRUE;
++	gstHeur.bEnabled = TRUE;
+ 
+ #ifdef BUILD_HEAVY_HITTER
+ 
+-        glpstHeavy = fopen("c:\\navheavy.dat","at");
+-        if (glpstHeavy != NULL)
+-        {
+-            long t;
++	glpstHeavy = fopen("c:\\navheavy.dat","at");
++	if (glpstHeavy != NULL)
++	{
++	    long t;
+ 
+-            time(&t);
++	    time(&t);
+ 
+-            fprintf(glpstHeavy,"\n\nHeavy hitter list created %s\n\n",ctime(&t));
+-        }
++	    fprintf(glpstHeavy,"\n\nHeavy hitter list created %s\n\n",ctime(&t));
++	}
+ 
+-        glpstFalse = fopen("c:\\navfalse.dat","at");
+-        if (glpstFalse != NULL)
+-        {
+-            time_t t;
++	glpstFalse = fopen("c:\\navfalse.dat","at");
++	if (glpstFalse != NULL)
++	{
++	    time_t t;
+ 
+-            time(&t);
++	    time(&t);
+ 
+-            fprintf(glpstFalse,"\n\nFalse ID list created %s\n\n",ctime(&t));
+-        }
++	    fprintf(glpstFalse,"\n\nFalse ID list created %s\n\n",ctime(&t));
++	}
+ #endif
+ 
+     }
+     else
+     {
+-        // this won't be done later because bloodhound is not enabled...
++	// this won't be done later because bloodhound is not enabled...
+ 
+-        FreeHeurExtensions(lpstCallBacks, &gstHeur);
++	FreeHeurExtensions(lpstCallBacks, &gstHeur);
+     }
+ 
+     if (hFile != (HFILE)-1)
+-        lpstCallBacks->FileClose(hFile);
++	lpstCallBacks->FileClose(hFile);
+ 
+     return ( EXTSTATUS_OK );
+ }
+@@ -649,21 +652,21 @@
+     {
+ #ifdef BUILD_HEAVY_HITTER
+ 
+-        if (glpstHeavy != NULL)
+-            fclose(glpstHeavy);
++	if (glpstHeavy != NULL)
++	    fclose(glpstHeavy);
+ 
+-        if (glpstFalse != NULL)
+-            fclose(glpstFalse);
++	if (glpstFalse != NULL)
++	    fclose(glpstFalse);
+ #endif
+ 
+     // only free local PAM information for NLM!
+ 
+ #ifdef SYM_NLM
+-        PAMLocalClose(gstHeur.hLHeur);
++	PAMLocalClose(gstHeur.hLHeur);
+ #endif
+ 
+-        PAMGlobalClose(gstHeur.hGHeur);
+-        FreeHeurExtensions(lpstCallBacks, &gstHeur);
++	PAMGlobalClose(gstHeur.hGHeur);
++	FreeHeurExtensions(lpstCallBacks, &gstHeur);
+     }
+ 
+     return(EXTSTATUS_OK);
+@@ -705,11 +708,12 @@
+ )
+ {
+     TCHAR       szDatFileName[SYM_MAX_PATH];
++
+ 
+     if (gnUsageCount > 0)
+     {
+-        gnUsageCount++;
+-        return(EXTSTATUS_OK);
++	gnUsageCount++;
++	return(EXTSTATUS_OK);
+     }
+ 
+     gnUsageCount++;
+@@ -717,47 +721,48 @@
+     // init file heuristics (bloodhound)
+ 
+ #if defined(USE_HEUR)
+ 
++
+     if (InitHeur(lpstCallBacks,
+-                 wClientVersion,
+-                 lpstChain,
+-                 lpszNAVEXDataDir,
+-                 lpszNAVEXINIFile,
+-                 lpwServerVersion) != EXTSTATUS_OK)
+-        return(EXTSTATUS_FILE_ERROR);
++		 wClientVersion,
++		 lpstChain,
++		 lpszNAVEXDataDir,
++		 lpszNAVEXINIFile,
++		 lpwServerVersion) != EXTSTATUS_OK)
++	return(EXTSTATUS_FILE_ERROR);
+ 
+ #endif // #if defined(USE_HEUR)
+ 
+     // always load string scanning data
+ 
+-    DataDirAppendName(lpszNAVEXDataDir,_T("VIRSCAN8.DAT"),szDatFileName);
++
++    DataDirAppendName(lpszNAVEXDataDir,_T("virscan8.dat"),szDatFileName);
+ 
+     if (LoadAllStringData(lpstCallBacks,
+-                          szDatFileName,
+-                          IBM_FILE_BASE,
+-                          &gstIBMFile) != STRING_LOAD_OK)
++			  szDatFileName,
++			  IBM_FILE_BASE,
++			  &gstIBMFile) != STRING_LOAD_OK)
+     {
+-        CloseHeur(lpstCallBacks);
++	CloseHeur(lpstCallBacks);
+ 
+-        return(EXTSTATUS_FILE_ERROR);
++	return(EXTSTATUS_FILE_ERROR);
+     }
+ 
+     // always load the boot scanning data if we're not on NLM
+ 
+     if (LoadAllStringData(lpstCallBacks,
+-                          szDatFileName,
+-                          IBM_BOOT_BASE,
+-                          &gstIBMBoot) != STRING_LOAD_OK)
++			  szDatFileName,
++			  IBM_BOOT_BASE,
++			  &gstIBMBoot) != STRING_LOAD_OK)
+     {
+-        // its ok to free if we did not load - the data will be zeroed anyway
++	// its ok to free if we did not load - the data will be zeroed anyway
+ 
+-        FreeAllStringData(lpstCallBacks,&gstIBMFile);
+-        CloseHeur(lpstCallBacks);
++	FreeAllStringData(lpstCallBacks,&gstIBMFile);
++	CloseHeur(lpstCallBacks);
+ 
+-        return(EXTSTATUS_FILE_ERROR);
++	return(EXTSTATUS_FILE_ERROR);
+     }
+ 
+-
+     return ( EXTSTATUS_OK );
+ }
+ 
+@@ -790,7 +795,7 @@
+     gnUsageCount--;
+ 
+     if (gnUsageCount > 0)
+-        return(EXTSTATUS_OK);
++	return(EXTSTATUS_OK);
+ 
+ #if defined(USE_HEUR)
+ 
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/NAVEXRF.CPP#1 - d:\worknewvir\ENGINE15\SRC\NAVEXRF.CPP ====
+@@ -25,7 +25,8 @@
+ #ifdef WIN16        // VIRSCAN QUAKE 2
+ #include "cts4.h"
+ #else
+-#include "ctsn.h"
++//#include "ctsn.h"	// NEW_UNIX
++#include "n30type.h"	// NEX_UNIX
+ #include "callback.h"
+ #endif
+ 
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/NAVEXSF.CPP#1 - d:\worknewvir\ENGINE15\SRC\NAVEXSF.CPP ====
+@@ -80,13 +80,15 @@
+ 
+ #include "stdio.h"
+ #include "stdlib.h"
++#include "ctype.h"
+ 
+ #include "platform.h"
+ 
+ #ifdef WIN16        // VIRSCAN QUAKE 2
+ #include "cts4.h"
+ #else
+-#include "ctsn.h"
++//#include "ctsn.h"	// NEW_UNIX
++#include "n30type.h"	// NEW_UNIX
+ #include "callback.h"
+ #endif
+ 
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/NAVEXSHR.CPP#1 - d:\worknewvir\ENGINE15\SRC\NAVEXSHR.CPP ====
+@@ -19,7 +19,8 @@
+ #ifdef WIN16        // VIRSCAN QUAKE 2
+ #include "cts4.h"
+ #else
+-#include "ctsn.h"
++//#include "ctsn.h"		// NEW_UNIX
++#include "n30type.h"		// NEW_UNIX
+ #include "callback.h"
+ #endif
+ 
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/NAVEXSHR.H#1 - d:\worknewvir\ENGINE15\SRC\NAVEXSHR.H ====
+@@ -46,7 +46,7 @@
+ #define PART_TAB_OFF        0x1be   // Offset of partition table
+ #define MAX_PART_ENTS       4       // Maximum partition table entries
+ #define CHECK_VAL_OFF       0x1fe   // Offset of 0xaa55 for validity checking
+-                                    // Also used in boot sectors
++				    // Also used in boot sectors
+ #define GOODSEC             0xaa55  // Good boot and MBRs end with this
+ 
+ typedef struct {
+@@ -123,77 +123,77 @@
+ // BPB used by NavexGetFloppyType() and EXTRepairBootDMFGeneric()
+ // ----------------------------------------------------------------
+ 
+-                                        // -------------
+-                                        // 360k Floppies
+-                                        // -------------
++					// -------------
++					// 360k Floppies
++					// -------------
+ #define BPB_360K    { 0x00, 0x02, 0x02, 0x01, 0x00, 0x02, 0x70, 0x00, \
+-                      0xD0, 0x02, 0xFD, 0x02, 0x00, 0x09, 0x00, 0x02 }
++		      0xD0, 0x02, 0xFD, 0x02, 0x00, 0x09, 0x00, 0x02 }
+ 
+-                                        // -------------
+-                                        // 720k Floppies
+-                                        // -------------
++					// -------------
++					// 720k Floppies
++					// -------------
+ #define BPB_720K    { 0x00, 0x02, 0x02, 0x01, 0x00, 0x02, 0x70, 0x00, \
+-                      0xA0, 0x05, 0xF9, 0x03, 0x00, 0x09, 0x00, 0x02 }
++		      0xA0, 0x05, 0xF9, 0x03, 0x00, 0x09, 0x00, 0x02 }
+ 
+-                                        // -------------
+-                                        // 1.2M Floppies
+-                                        // -------------
++					// -------------
++					// 1.2M Floppies
++					// -------------
+ #define BPB_12M     { 0x00, 0x02, 0x01, 0x01, 0x00, 0x02, 0xE0, 0x00, \
+-                      0x60, 0x09, 0xF9, 0x07, 0x00, 0x0F, 0x00, 0x02 }
++		      0x60, 0x09, 0xF9, 0x07, 0x00, 0x0F, 0x00, 0x02 }
+ 
+-                                        // --------------
+-                                        // 1.44M Floppies
+-                                        // --------------
++					// --------------
++					// 1.44M Floppies
++					// --------------
+ #define BPB_144M    { 0x00, 0x02, 0x01, 0x01, 0x00, 0x02, 0xE0, 0x00, \
+-                      0x40, 0x0B, 0xF0, 0x09, 0x00, 0x12, 0x00, 0x02 }
++		      0x40, 0x0B, 0xF0, 0x09, 0x00, 0x12, 0x00, 0x02 }
+ 
+-                                        // --------------
+-                                        // 2.88M Floppies
+-                                        // --------------
++					// --------------
++					// 2.88M Floppies
++					// --------------
+ #define BPB_288M    { 0x00, 0x02, 0x02, 0x01, 0x00, 0x02, 0xF0, 0x00, \
+-                      0x80, 0x16, 0xF0, 0x09, 0x00, 0x24, 0x00, 0x02 }
++		      0x80, 0x16, 0xF0, 0x09, 0x00, 0x24, 0x00, 0x02 }
+ 
+-                                        // -------------
+-                                        // 160k Floppies
+-                                        // -------------
++					// -------------
++					// 160k Floppies
++					// -------------
+ #define BPB_160K    { 0x00, 0x02, 0x01, 0x01, 0x00, 0x02, 0x40, 0x00, \
+-                      0x40, 0x01, 0xFE, 0x01, 0x00, 0x08, 0x00, 0x01 }
++		      0x40, 0x01, 0xFE, 0x01, 0x00, 0x08, 0x00, 0x01 }
+ 
+-                                        // -------------
+-                                        // 180k Floppies
+-                                        // -------------
++					// -------------
++					// 180k Floppies
++					// -------------
+ #define BPB_180K    { 0x00, 0x02, 0x01, 0x01, 0x00, 0x02, 0x40, 0x00, \
+-                      0x68, 0x01, 0xFC, 0x02, 0x00, 0x09, 0x00, 0x01 }
++		      0x68, 0x01, 0xFC, 0x02, 0x00, 0x09, 0x00, 0x01 }
+ 
+-                                        // -------------
+-                                        // 320k Floppies
+-                                        // -------------
++					// -------------
++					// 320k Floppies
++					// -------------
+ #define BPB_320K    { 0x00, 0x02, 0x02, 0x01, 0x00, 0x02, 0x70, 0x00, \
+-                      0x80, 0x02, 0xFF, 0x01, 0x00, 0x08, 0x00, 0x02 }
++		      0x80, 0x02, 0xFF, 0x01, 0x00, 0x08, 0x00, 0x02 }
+ 
+-                                        // -------------
+-                                        // 640k Floppies
+-                                        // -------------
++					// -------------
++					// 640k Floppies
++					// -------------
+ #define BPB_640K    { 0x00, 0x02, 0x02, 0x01, 0x00, 0x02, 0x70, 0x00, \
+-                      0x00, 0x05, 0xFB, 0x02, 0x00, 0x08, 0x00, 0x02 }
++		      0x00, 0x05, 0xFB, 0x02, 0x00, 0x08, 0x00, 0x02 }
+ 
+-                                        // --------------------------
+-                                        // 1.2M Floppies (1k sectors)
+-                                        // --------------------------
++					// --------------------------
++					// 1.2M Floppies (1k sectors)
++					// --------------------------
+ #define BPB_12M_2   { 0x00, 0x04, 0x01, 0x01, 0x00, 0x02, 0xC0, 0x00, \
+-                      0xD0, 0x04, 0xFE, 0x02, 0x00, 0x08, 0x00, 0x02 }
++		      0xD0, 0x04, 0xFE, 0x02, 0x00, 0x08, 0x00, 0x02 }
+ 
+-                                        // --------------------------------
+-                                        // 1.68M DMF Floppies (1k clusters)
+-                                        // --------------------------------
++					// --------------------------------
++					// 1.68M DMF Floppies (1k clusters)
++					// --------------------------------
+ #define BPB_1KDMF   { 0x00, 0x02, 0x02, 0x01, 0x00, 0x02, 0x10, 0x00, \
+-                      0x20, 0x0D, 0xF0, 0x05, 0x00, 0x15, 0x00, 0x02 }
++		      0x20, 0x0D, 0xF0, 0x05, 0x00, 0x15, 0x00, 0x02 }
+ 
+-                                        // --------------------------------
+-                                        // 1.68M DMF Floppies (2k clusters)
+-                                        // --------------------------------
++					// --------------------------------
++					// 1.68M DMF Floppies (2k clusters)
++					// --------------------------------
+ #define BPB_2KDMF   { 0x00, 0x02, 0x04, 0x01, 0x00, 0x02, 0x10, 0x00, \
+-                      0x20, 0x0D, 0xF0, 0x03, 0x00, 0x15, 0x00, 0x02 }
++		      0x20, 0x0D, 0xF0, 0x03, 0x00, 0x15, 0x00, 0x02 }
+ 
+ 
+ #define BPB_INDEX_360K      0x00
+@@ -212,65 +212,65 @@
+ #define NUM_BPBs            0x0C
+ 
+ #define sBPB                0x10
+-                                        // -----------------------------
++					// -----------------------------
+ #define BPB_MATCH_THRESHOLD     7       // out of 10 fields causes match
+-                                        // -----------------------------
++					// -----------------------------
+ 
+ 
+ // -------------------------------------
+ // Miscellaneous defines for Boot Repair
+ // -------------------------------------
+ 
+-                                        // --------------
+-                                        // JMP 0040 & NOP
+-                                        // --------------
++					// --------------
++					// JMP 0040 & NOP
++					// --------------
+ #define JMP_AND_NOP { 0xEB, 0x3E, 0x90 }
+ #define sJMP_AND_NOP 0x03
+ 
+-                                        // -------------------
+-                                        // OEM ID = "SYMANTEC"
+-                                        // -------------------
++					// -------------------
++					// OEM ID = "SYMANTEC"
++					// -------------------
+ #define OEM_ID { "SYMANTEC" }
+ #define sOEM_ID 0x08
+ 
+-                                        // ----------------------------
+-                                        // Volume Label = "GENERICBOOT"
+-                                        // ----------------------------
++					// ----------------------------
++					// Volume Label = "GENERICBOOT"
++					// ----------------------------
+ #define VOLUME_LABEL { "GENERICBOOT" }
+ #define sVOLUME_LABEL 0x0B
+ 
+ 
+ 
+ #define NON_BOOTABLE_CODE { 0xFA, 0x33, 0xC0, 0x8E, 0xD0, 0xBC, 0x00, 0x7C, \
+-                            0x8E, 0xD8, 0x8E, 0xC0, 0xFB, 0xBE, 0x80, 0x7C, \
+-                            0xE8, 0x06, 0x00, 0x30, 0xE4, 0xCD, 0x16, 0xCD, \
+-                            0x19, 0xAC, 0x08, 0xC0, 0x74, 0x09, 0xB4, 0x0E, \
+-                            0xBB, 0x07, 0x00, 0xCD, 0x10, 0xEB, 0xF2, 0xC3 }
++			    0x8E, 0xD8, 0x8E, 0xC0, 0xFB, 0xBE, 0x80, 0x7C, \
++			    0xE8, 0x06, 0x00, 0x30, 0xE4, 0xCD, 0x16, 0xCD, \
++			    0x19, 0xAC, 0x08, 0xC0, 0x74, 0x09, 0xB4, 0x0E, \
++			    0xBB, 0x07, 0x00, 0xCD, 0x10, 0xEB, 0xF2, 0xC3 }
+ 
+ #define sNON_BOOTABLE_CODE 0x28
+ 
+-                                        // ----------------------------------
+-                                        // 0140 FA            CLI
+-                                        // 0141 33C0          XOR     AX,AX
+-                                        // 0143 8ED0          MOV     SS,AX
+-                                        // 0145 BC007C        MOV     SP,7C00
+-                                        // 0148 8ED8          MOV     DS,AX
+-                                        // 014A 8EC0          MOV     ES,AX
+-                                        // 014C FB            STI
+-                                        // 014D BE807C        MOV     SI,7C80
+-                                        // 0150 E80600        CALL    0159
+-                                        // 0153 30E4          XOR     AH,AH
+-                                        // 0155 CD16          INT     16
+-                                        // 0157 CD19          INT     19
+-                                        // 0159 AC            LODSB
+-                                        // 015A 08C0          OR      AL,AL
+-                                        // 015C 7409          JZ      0167
+-                                        // 015E B40E          MOV     AH,0E
+-                                        // 0160 BB0700        MOV     BX,0007
+-                                        // 0163 CD10          INT     10
+-                                        // 0165 EBF2          JMP     0159
+-                                        // 0167 C3            RET
+-                                        // ----------------------------------
++					// ----------------------------------
++					// 0140 FA            CLI
++					// 0141 33C0          XOR     AX,AX
++					// 0143 8ED0          MOV     SS,AX
++					// 0145 BC007C        MOV     SP,7C00
++					// 0148 8ED8          MOV     DS,AX
++					// 014A 8EC0          MOV     ES,AX
++					// 014C FB            STI
++					// 014D BE807C        MOV     SI,7C80
++					// 0150 E80600        CALL    0159
++					// 0153 30E4          XOR     AH,AH
++					// 0155 CD16          INT     16
++					// 0157 CD19          INT     19
++					// 0159 AC            LODSB
++					// 015A 08C0          OR      AL,AL
++					// 015C 7409          JZ      0167
++					// 015E B40E          MOV     AH,0E
++					// 0160 BB0700        MOV     BX,0007
++					// 0163 CD10          INT     10
++					// 0165 EBF2          JMP     0159
++					// 0167 C3            RET
++					// ----------------------------------
+ 
+ 
+ #define NON_BOOTABLE_TEXT { "\0x13\0x10This is not a bootable diskette.\0x13\0x10Remove it and press a key to restart...\0x13\0x10" }
+@@ -317,8 +317,8 @@
+ // maintainable.
+ 
+ WORD EXTScanDanish(LPCALLBACKREV1 lpcallback,
+-                    LPBYTE scanbuffer,
+-                    LPWORD lpwVID);
++		    LPBYTE scanbuffer,
++		    LPWORD lpwVID);
+ 
+ // ScanString arguments:
+ //
+@@ -335,9 +335,9 @@
+ //                        n >= 0        offset of buffer2 in buffer1.
+ 
+ WORD ScanString (LPBYTE lpbyBuffer1,
+-                 WORD cwBuffer1,
+-                 LPBYTE lpbyBuffer2,
+-                 WORD cwBuffer2);
++		 WORD cwBuffer1,
++		 LPBYTE lpbyBuffer2,
++		 WORD cwBuffer2);
+ 
+ // ****************************
+ //
+@@ -358,9 +358,9 @@
+ //                      : non-zero     on failure
+ 
+ WORD RepairFileOpen (LPCALLBACKREV1 lpCallBack,
+-                     LPTSTR lpszFileName,
+-                     HFILE FAR *lphFile,
+-                     UINT FAR *lpuAttr);
++		     LPTSTR lpszFileName,
++		     HFILE FAR *lphFile,
++		     UINT FAR *lpuAttr);
+ 
+ // RepairFileClose
+ //
+@@ -375,9 +375,9 @@
+ //                      : non-zero     on failure
+ 
+ WORD RepairFileClose (LPCALLBACKREV1 lpCallBack,
+-                     LPTSTR lpszFileName,
+-                     HFILE hFile,
+-                     UINT  uAttr);
++		     LPTSTR lpszFileName,
++		     HFILE hFile,
++		     UINT  uAttr);
+ 
+ // RepairFileTruncate
+ //
+@@ -392,8 +392,8 @@
+ //                      : non-zero     on failure
+ 
+ WORD RepairFileTruncate (LPCALLBACKREV1 lpCallBack,
+-                         HFILE          hFile,
+-                         long           lOffset);
++			 HFILE          hFile,
++			 long           lOffset);
+ 
+ // GetEntryPtOffset
+ //
+@@ -452,18 +452,49 @@
+ 
+ #define EXEHDRSIG   0x4d5a
+ #define RDHEXESIG   0x5a4d
++
++// NEW_UNIX follows
++
++#ifndef EXEHEADER_DEFINED
++#define EXEHEADER_DEFINED
+ 
++typedef struct
++    {
++    WORD    exSignature;     // Sig of .EXE
++    WORD    exExtraBytes;    // Number of extra bytes in last page
++    WORD    exPages;         // Number of pages
++    WORD    exRelocItems;    // Number of pointers in relocation table
++    WORD    exHeaderSize;    // Size of header in paragraphs
++    WORD    exMinAlloc;      // Minimun allocation
++    WORD    exMaxAlloc;      // Max allocation
++    WORD    exInitSS;        // Initial SS value
++    WORD    exInitSP;        // Initial SP value
++    WORD    exCheckSum;      // Complemented checksum
++    WORD    exInitIP;        // Initial IP value
++    WORD    exInitCS;        // Initial CS value
++    WORD    exRelocTable;    // bytes offset to relocation table
++    WORD    exOverlay;       // Overlay number
++    WORD    exReserved[16];
++    WORD    exExtendOffset;  // Location of EH
++    } EXEHEADER;
++#define sEXEHEADER  (sizeof(EXEHEADER)-34)
++#define sEXELARGE   sizeof(EXEHEADER)
++
++#endif // #ifndef EXEHEADER_DEFINED
++
++// NEW_UNIX above
++
+ #define ISEXEHDR(b) ((EXEHDRSIG == AVDEREF_WORD(b)) || \
+-                                            (RDHEXESIG == AVDEREF_WORD(b)))
++					    (RDHEXESIG == AVDEREF_WORD(b)))
+ 
+ // Pack stuff
+ 
+ #ifdef __MACINTOSH__
+-	#define	PACK1		options align=packed
+-	#define PACK		options align=reset
++	#define PACK1           options align=packed
++	#define PACK            options align=reset
+ #else
+-	#define	PACK1		pack(1)
+-	#define	PACK		pack()
++	#define PACK1           pack(1)
++	#define PACK            pack()
+ #endif
+ 
+ // Special fix for NTK and VXD
+==== //depot/SARC/VIRLIB/SOURCE/ENGINE15/SRC/STRSCAN.CPP#1 - d:\worknewvir\ENGINE15\SRC\STRSCAN.CPP ====
+@@ -52,7 +52,8 @@
+ #include "avendian.h"
+ #include "strscan.h"
+ 
+-#include "ctsn.h"
++//#include "ctsn.h"				// NEW_UNIX
++#include "n30type.h"				// NEW_UNIX
+ #include "callback.h"
+ #include "navex.h"
+ 
+@@ -240,6 +241,8 @@
+             lpstSearchInfo->lplpbyPoolPtrs = NULL;
+             return(STRING_LOAD_GENERAL_ERROR);
+         }
++
++	dwPoolSize = DWENDIAN(dwPoolSize);		// NEW_UNIX
+ 
+         // allocate memory for pool
+ 
+@@ -722,7 +725,7 @@
+                     // first two bytes of hashed sigs are NEVER encrypted,
+                     // rest of bytes are...
+ 
+-                    if (*(LPWORD)lpbyScanMe == *(LPWORD)lpbySigPtr)
++                    if (AVDEREF_WORD(lpbyScanMe) == AVDEREF_WORD(lpbySigPtr))	// NEW_UNIX
+ 					{
+                         bMismatchOn3 = FALSE;
+                         bWildUsed = FALSE;
+@@ -1296,7 +1299,11 @@
+         *(lpszLast) = 0;
+     }
+ 
++#if defined(SYM_UNIX)
++    sprintf(szDataFile,"%s%s",szPath,"virscan8.dat");
++#else
+     sprintf(szDataFile,"%s%s",szPath,"VIRSCAN8.DAT");
++#endif
+ 
+     // THIS MUST BE DONE AFTER HEURISTICS ARE LOADED!
+ 
+@@ -1383,7 +1390,11 @@
+     szPath[dw+1] = 0;
+ 
+     mystrcpy(szDataFile,szPath);
++#if defined(SYM_UNIX)
++    mystrcat(szDataFile,"virscan8.dat");
++#else
+     mystrcat(szDataFile,"VIRSCAN8.DAT");
++#endif
+ 
+     // THIS MUST BE DONE AFTER HEURISTICS ARE LOADED!
+ 
+==== //depot/SARC/VIRLIB/SOURCE/HEUR/SRC/BEHAV.CPP#1 - d:\worknewvir\HEUR\SRC\BEHAV.CPP ====
+@@ -89,7 +89,7 @@
+ #ifdef SYM_WIN16
+ #define memicmp _fmemicmp
+ #define strlen _fstrlen
+-#elif defined(SYM_VXD) || defined(SYM_NTK)
++#elif defined(SYM_VXD) || defined(SYM_NTK) || defined(SYM_UNIX)
+ int mymemicmp(LPVOID,LPVOID,int);
+ #define memicmp mymemicmp
+ #endif
+@@ -133,14 +133,14 @@
+     lpBM->m_dwEPToEOFDist = 0;
+ 
+     for (i=0;i<OPCODE_QUEUE_SIZE;i++)
+-        lpBM->m_byOpcodeQueue[i] = 0;
++	lpBM->m_byOpcodeQueue[i] = 0;
+ 
+     lpBM->m_stConfig = *lpConfig;
+ }
+ 
+ BOOL BMStopScanning
+ (
+-	LPBEHAVE_MONITOR			lpBM
++	LPBEHAVE_MONITOR                        lpBM
+ )
+ {
+     lpBM->m_byBehaviorArray[BF7_STOP_SCANNING] = TRUE;
+@@ -165,30 +165,30 @@
+ {
+     if (lpBM->m_nFileType == BEHAVE_FILE_TYPE_EXE)
+     {
+-        if (lpBM->m_dwEPToEOFDist > lpBM->m_stConfig.wAssumedVirusSize)
+-        {
++	if (lpBM->m_dwEPToEOFDist > lpBM->m_stConfig.wAssumedVirusSize)
++	{
+ //            printf("StopEmulating: EP to EOF Dist > 4K\n");
+-            return(TRUE);
+-        }
++	    return(TRUE);
++	}
+ 
+-        if (!(lpBM->m_byBehaviorArray[BF7_ENTRY_AFTER_FIXUPS]))
+-        {
++	if (!(lpBM->m_byBehaviorArray[BF7_ENTRY_AFTER_FIXUPS]))
++	{
+ //            printf("StopEmulating: EP after fixups\n");
+-            return(TRUE);
+-        }
++	    return(TRUE);
++	}
+ 
+-        if (lpBM->m_byBehaviorArray[BF7_WINDOWS_EXE])
+-        {
++	if (lpBM->m_byBehaviorArray[BF7_WINDOWS_EXE])
++	{
+ //            printf("StopEmulating: Windows executable!\n");
+-            return(TRUE);
+-        }
++	    return(TRUE);
++	}
+     }
+ 
+     // check to see if we have a request to stop scanning?
+ 
+     if (lpBM->m_byBehaviorArray[BF7_STOP_SCANNING] == TRUE)
+     {
+-        return(TRUE);
++	return(TRUE);
+     }
+ 
+     // next make sure our image size is OK
+@@ -196,7 +196,7 @@
+     if (lpBM->m_dwImageSize < MIN_VIRUS_SIZE)
+     {
+ //            printf("StopEmulating: Image < 128 bytes\n");
+-            return(TRUE);
++	    return(TRUE);
+     }
+ 
+     // check to see if we have any print statements reached during standard
+@@ -210,10 +210,10 @@
+ 
+     if (lpBM->m_byBehaviorArray[BF9_CALL_WITH_LARGE_DISP])
+     {
+-        if (lpBM->m_stConfig.dwFlags & HEUR_FLAG_ABORT_CALL_LARGE_DISP)
+-        {
+-            return(TRUE);
+-        }
++	if (lpBM->m_stConfig.dwFlags & HEUR_FLAG_ABORT_CALL_LARGE_DISP)
++	{
++	    return(TRUE);
++	}
+     }
+ 
+ 	return(FALSE);
+@@ -229,9 +229,9 @@
+     lpBM->m_nFileType = nFileType;
+ 
+     if (nFileType == BEHAVE_FILE_TYPE_EXE)
+-        lpBM->m_byBehaviorArray[BF7_EXE_FILE] = TRUE;
++	lpBM->m_byBehaviorArray[BF7_EXE_FILE] = TRUE;
+     else
+-        lpBM->m_byBehaviorArray[BF7_COM_FILE] = TRUE;
++	lpBM->m_byBehaviorArray[BF7_COM_FILE] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -266,47 +266,47 @@
+ {
+ 	if (nIntType == INT_TYPE_INT_21)
+ 	{
+-        if ((wAX >> 8) > lpBM->m_stConfig.wNormalLegitInt21SubFuncMax)
++	if ((wAX >> 8) > lpBM->m_stConfig.wNormalLegitInt21SubFuncMax)
+ 	    {
+-            lpBM->m_byBehaviorArray[IF14_SYSTEM_AM_I_THERE] = TRUE;
+-            lpBM->m_wAXFromAmIThere = wAX;
+-    	}
++	    lpBM->m_byBehaviorArray[IF14_SYSTEM_AM_I_THERE] = TRUE;
++	    lpBM->m_wAXFromAmIThere = wAX;
++	}
+ 
+-        if ((wAX >> 8) == INT_21_PRINT_STRING)
+-        {
+-            // only look for genuine print int calls
++	if ((wAX >> 8) == INT_21_PRINT_STRING)
++	{
++	    // only look for genuine print int calls
+ 
+-            if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
+-                lpBM->m_byBehaviorArray[IF16_FOUND_PRINT_STRING] = TRUE;
++	    if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
++		lpBM->m_byBehaviorArray[IF16_FOUND_PRINT_STRING] = TRUE;
+ 
+-            // if we're not exploring and hit a print string, exit right away
++	    // if we're not exploring and hit a print string, exit right away
+ 
+-            if (bExplore == FALSE &&
+-                dwInstrNum < lpBM->m_stConfig.wDisreguardCleanBehaviorInstrCount)
+-            {
+-                lpBM->m_byBehaviorArray[BF7_STOP_SCANNING] = TRUE;
+-            }
+-        }
++	    if (bExplore == FALSE &&
++		dwInstrNum < lpBM->m_stConfig.wDisreguardCleanBehaviorInstrCount)
++	    {
++		lpBM->m_byBehaviorArray[BF7_STOP_SCANNING] = TRUE;
++	    }
++	}
+ 
+ 
+-        if ((wAX >> 8) == INT_21_TERMINATE)
+-        {
+-            // only look for genuine print int calls
++	if ((wAX >> 8) == INT_21_TERMINATE)
++	{
++	    // only look for genuine print int calls
+ 
+-            if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
+-                lpBM->m_byBehaviorArray[IF16_FOUND_TERMINATE] = TRUE;
+-        }
++	    if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
++		lpBM->m_byBehaviorArray[IF16_FOUND_TERMINATE] = TRUE;
++	}
+ 
+-        if ((wAX >> 8) == INT_21_WRITE_FILE)
+-        {
+-            if (wBX == 1 || wBX == 2)
+-            {
+-                // allow interpreted expert system to exclude based on this
++	if ((wAX >> 8) == INT_21_WRITE_FILE)
++	{
++	    if (wBX == 1 || wBX == 2)
++	    {
++		// allow interpreted expert system to exclude based on this
+ 
+-                if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
+-                    lpBM->m_byBehaviorArray[IF16_FOUND_PRINT_CHAR] = TRUE;
+-            }
+-        }
++		if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
++		    lpBM->m_byBehaviorArray[IF16_FOUND_PRINT_CHAR] = TRUE;
++	    }
++	}
+ 	}
+ 
+ 
+@@ -314,17 +314,17 @@
+     {
+ 
+ 
+-        return(BMSubmitInt21CallAux(lpBM,
++	return(BMSubmitInt21CallAux(lpBM,
+ 									nIntType,
+-                                    dwInstrNum,
+-                                    wAX,
+-                                    wBX,
+-                                    wCX,
+-                                    wDX,
+-                                    lpwAX,
+-                                    lpwBX,
+-                                    lpwCX,
+-                                    lpwDX));
++				    dwInstrNum,
++				    wAX,
++				    wBX,
++				    wCX,
++				    wDX,
++				    lpwAX,
++				    lpwBX,
++				    lpwCX,
++				    lpwDX));
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -357,287 +357,287 @@
+ 
+     switch (byAH)
+     {
+-        case INT_21_OPEN_FCB:
++	case INT_21_OPEN_FCB:
+ 
+-            bInt21Func = TRUE;
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF1_FILE_OPEN_UNKNOWN_MODE] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF1_FILE_OPEN_UNKNOWN_MODE] = TRUE;
++	    break;
+ 
+-        case INT_21_OPEN_FILE:
+-        case INT_21_OPEN_FILE_EXT:
++	case INT_21_OPEN_FILE:
++	case INT_21_OPEN_FILE_EXT:
+ 
+-            bInt21Func = TRUE;
++	    bInt21Func = TRUE;
+ 
+-            if ((byAL & INT_21_FILE_OPEN_MODE_MASK) ==
+-                INT_21_FILE_OPEN_READ_WRITE)
+-                lpBM->m_byBehaviorArray[IF1_FILE_OPEN_READ_WRITE] = TRUE;
+-            else if ((byAL & INT_21_FILE_OPEN_MODE_MASK) ==
+-                INT_21_FILE_OPEN_READ_ONLY)
+-                lpBM->m_byBehaviorArray[IF1_FILE_OPEN_READ_ONLY] = TRUE;
+-            else if ((byAL & INT_21_FILE_OPEN_MODE_MASK) ==
+-                INT_21_FILE_OPEN_WRITE_ONLY)
+-                lpBM->m_byBehaviorArray[IF1_FILE_OPEN_WRITE_ONLY] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF1_FILE_OPEN_UNKNOWN_MODE] = TRUE;
+-            break;
++	    if ((byAL & INT_21_FILE_OPEN_MODE_MASK) ==
++		INT_21_FILE_OPEN_READ_WRITE)
++		lpBM->m_byBehaviorArray[IF1_FILE_OPEN_READ_WRITE] = TRUE;
++	    else if ((byAL & INT_21_FILE_OPEN_MODE_MASK) ==
++		INT_21_FILE_OPEN_READ_ONLY)
++		lpBM->m_byBehaviorArray[IF1_FILE_OPEN_READ_ONLY] = TRUE;
++	    else if ((byAL & INT_21_FILE_OPEN_MODE_MASK) ==
++		INT_21_FILE_OPEN_WRITE_ONLY)
++		lpBM->m_byBehaviorArray[IF1_FILE_OPEN_WRITE_ONLY] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF1_FILE_OPEN_UNKNOWN_MODE] = TRUE;
++	    break;
+ 
+-        case INT_21_CLOSE_FCB:
+-        case INT_21_CLOSE_FILE:
++	case INT_21_CLOSE_FCB:
++	case INT_21_CLOSE_FILE:
+ 
+-            bInt21Func = TRUE;
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF5_FILE_CLOSE] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF5_FILE_CLOSE] = TRUE;
++	    break;
+ 
+-        case INT_21_FIND_FIRST_FCB:
+-        case INT_21_FIND_FIRST:
+-            bInt21Func = TRUE;
++	case INT_21_FIND_FIRST_FCB:
++	case INT_21_FIND_FIRST:
++	    bInt21Func = TRUE;
+ 
+-            
+-            lpBM->m_byBehaviorArray[IF9_FILE_FIND_FIRST] = TRUE;
+-            break;
++	    
++	    lpBM->m_byBehaviorArray[IF9_FILE_FIND_FIRST] = TRUE;
++	    break;
+ 
+-        case INT_21_FIND_NEXT_FCB:
+-        case INT_21_FIND_NEXT:
+-            bInt21Func = TRUE;
++	case INT_21_FIND_NEXT_FCB:
++	case INT_21_FIND_NEXT:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF9_FILE_FIND_NEXT] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF9_FILE_FIND_NEXT] = TRUE;
++	    break;
+ 
+-        case INT_21_DELETE_FCB:
+-        case INT_21_DELETE_FILE:
+-            bInt21Func = TRUE;
++	case INT_21_DELETE_FCB:
++	case INT_21_DELETE_FILE:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF10_FILE_DELETE] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF10_FILE_DELETE] = TRUE;
++	    break;
+ 
+-        case INT_21_CREATE_FCB:
+-        case INT_21_CREATE_FILE:
+-            bInt21Func = TRUE;
++	case INT_21_CREATE_FCB:
++	case INT_21_CREATE_FILE:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF10_FILE_CREATE] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF10_FILE_CREATE] = TRUE;
++	    break;
+ 
+-        case INT_21_RENAME_FCB:
+-        case INT_21_RENAME_FILE:
+-            bInt21Func = TRUE;
++	case INT_21_RENAME_FCB:
++	case INT_21_RENAME_FILE:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF10_FILE_RENAME] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF10_FILE_RENAME] = TRUE;
++	    break;
+ 
+-        case INT_21_SET_DTA:
+-            bInt21Func = TRUE;
++	case INT_21_SET_DTA:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF11_FILE_SET_DTA] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF11_FILE_SET_DTA] = TRUE;
++	    break;
+ 
+-        case INT_21_SET_VECTOR:
+-            bInt21Func = TRUE;
++	case INT_21_SET_VECTOR:
++	    bInt21Func = TRUE;
+ 
+-            if (byAL == 0x21)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_21] = TRUE;
+-            else if (byAL == 0x13)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_13] = TRUE;
+-            else if (byAL == 0x24)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_24] = TRUE;
+-            else if (byAL < lpBM->m_stConfig.wNormalInterruptVectorMax)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_LOW] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_HIGH] = TRUE;
+-            break;
++	    if (byAL == 0x21)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_21] = TRUE;
++	    else if (byAL == 0x13)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_13] = TRUE;
++	    else if (byAL == 0x24)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_24] = TRUE;
++	    else if (byAL < lpBM->m_stConfig.wNormalInterruptVectorMax)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_LOW] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_HIGH] = TRUE;
++	    break;
+ 
+-        case INT_21_GET_DATE:
+-            bInt21Func = TRUE;
++	case INT_21_GET_DATE:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_DATE] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_DATE] = TRUE;
++	    break;
+ 
+-        case INT_21_GET_TIME:
+-            bInt21Func = TRUE;
++	case INT_21_GET_TIME:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_TIME] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_TIME] = TRUE;
++	    break;
+ 
+-        case INT_21_GET_DTA:
+-            bInt21Func = TRUE;
++	case INT_21_GET_DTA:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF11_FILE_GET_DTA] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF11_FILE_GET_DTA] = TRUE;
++	    break;
+ 
+-        case INT_21_GET_VECTOR:
+-            bInt21Func = TRUE;
++	case INT_21_GET_VECTOR:
++	    bInt21Func = TRUE;
+ 
+-            if (byAL == 0x21)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_21] = TRUE;
+-            else if (byAL == 0x13)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_13] = TRUE;
+-            else if (byAL == 0x24)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_24] = TRUE;
+-            else if (byAL < lpBM->m_stConfig.wNormalInterruptVectorMax)
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_LOW] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_HIGH] = TRUE;
+-            break;
++	    if (byAL == 0x21)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_21] = TRUE;
++	    else if (byAL == 0x13)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_13] = TRUE;
++	    else if (byAL == 0x24)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_24] = TRUE;
++	    else if (byAL < lpBM->m_stConfig.wNormalInterruptVectorMax)
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_LOW] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_HIGH] = TRUE;
++	    break;
+ 
+-        case INT_21_CHDIR:
+-            bInt21Func = TRUE;
++	case INT_21_CHDIR:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF10_FILE_CHDIR] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF10_FILE_CHDIR] = TRUE;
++	    break;
+ 
+-        case INT_21_READ_FILE:
++	case INT_21_READ_FILE:
+ 			
+-            bInt21Func = TRUE;
++	    bInt21Func = TRUE;
+ 
+-            if (wCX == 3 || wCX == 4)
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_3_OR_4] = TRUE;
+-            else if (wCX < 8 && wCX > 4)
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_LESS_8] = TRUE;
+-            else if (wCX >= 0x1c && wCX <= 0x1e)
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_1C_TO_1E] = TRUE;
+-            else if (wCX == 0xFFFF)
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_FFFF] = TRUE;
+-            else if (wCX >= (FILE_SIZE_BAIT_VALUE -
+-                             lpBM->m_stConfig.wReadWriteBaitThreshold) &&
+-                     wCX < (FILE_SIZE_BAIT_VALUE +
+-                             lpBM->m_stConfig.wReadWriteBaitThreshold))
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_BAIT] = TRUE;
+-            else if (wCX >= 128)
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_128_PLUS] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF2_FILE_READ_GENERAL] = TRUE;
+-            break;
++	    if (wCX == 3 || wCX == 4)
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_3_OR_4] = TRUE;
++	    else if (wCX < 8 && wCX > 4)
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_LESS_8] = TRUE;
++	    else if (wCX >= 0x1c && wCX <= 0x1e)
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_1C_TO_1E] = TRUE;
++	    else if (wCX == 0xFFFF)
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_FFFF] = TRUE;
++	    else if (wCX >= (FILE_SIZE_BAIT_VALUE -
++			     lpBM->m_stConfig.wReadWriteBaitThreshold) &&
++		     wCX < (FILE_SIZE_BAIT_VALUE +
++			     lpBM->m_stConfig.wReadWriteBaitThreshold))
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_BAIT] = TRUE;
++	    else if (wCX >= 128)
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_128_PLUS] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF2_FILE_READ_GENERAL] = TRUE;
++	    break;
+ 
+-        case INT_21_WRITE_FILE:
++	case INT_21_WRITE_FILE:
+ 			
+-            bInt21Func = TRUE;
++	    bInt21Func = TRUE;
+ 
+-            // for file writes, make sure we're not writing
+-            // to stdout or stderr; BX (handle) == 1 or 2 ...
++	    // for file writes, make sure we're not writing
++	    // to stdout or stderr; BX (handle) == 1 or 2 ...
+ 
+-            if (wBX == 1 || wBX == 2)
+-                break;
++	    if (wBX == 1 || wBX == 2)
++		break;
+ 
+-            if (wCX == 3 || wCX == 4)
+-                lpBM->m_byBehaviorArray[IF3_FILE_WRITE_3_OR_4] = TRUE;
+-            else if (wCX < 8 && wCX > 4)
+-            {
+-                lpBM->m_byBehaviorArray[IF3_FILE_WRITE_LESS_8] = TRUE;
+-            }
+-            else if (wCX >= 0x1c && wCX <= 0x1e)
+-                lpBM->m_byBehaviorArray[IF3_FILE_WRITE_1C_TO_1E] = TRUE;
+-            else if (wCX >= (FILE_SIZE_BAIT_VALUE -
+-                             lpBM->m_stConfig.wReadWriteBaitThreshold) &&
+-                     wCX < (FILE_SIZE_BAIT_VALUE +
+-                             lpBM->m_stConfig.wReadWriteBaitThreshold))
+-                lpBM->m_byBehaviorArray[IF3_FILE_WRITE_BAIT] = TRUE;
+-            else if (wCX >= 128)
+-            {
+-                lpBM->m_byBehaviorArray[IF3_FILE_WRITE_128_PLUS] = TRUE;
++	    if (wCX == 3 || wCX == 4)
++		lpBM->m_byBehaviorArray[IF3_FILE_WRITE_3_OR_4] = TRUE;
++	    else if (wCX < 8 && wCX > 4)
++	    {
++		lpBM->m_byBehaviorArray[IF3_FILE_WRITE_LESS_8] = TRUE;
++	    }
++	    else if (wCX >= 0x1c && wCX <= 0x1e)
++		lpBM->m_byBehaviorArray[IF3_FILE_WRITE_1C_TO_1E] = TRUE;
++	    else if (wCX >= (FILE_SIZE_BAIT_VALUE -
++			     lpBM->m_stConfig.wReadWriteBaitThreshold) &&
++		     wCX < (FILE_SIZE_BAIT_VALUE +
++			     lpBM->m_stConfig.wReadWriteBaitThreshold))
++		lpBM->m_byBehaviorArray[IF3_FILE_WRITE_BAIT] = TRUE;
++	    else if (wCX >= 128)
++	    {
++		lpBM->m_byBehaviorArray[IF3_FILE_WRITE_128_PLUS] = TRUE;
+ 
+-                BMCheckWritesAgainstIP(lpBM,wCX);
+-                BMCheckWritesAgainstMOVS(lpBM,wCX);
++		BMCheckWritesAgainstIP(lpBM,wCX);
++		BMCheckWritesAgainstMOVS(lpBM,wCX);
+ 
+-            }
+-            else
+-                lpBM->m_byBehaviorArray[IF3_FILE_WRITE_GENERAL] = TRUE;
+-            break;
++	    }
++	    else
++		lpBM->m_byBehaviorArray[IF3_FILE_WRITE_GENERAL] = TRUE;
++	    break;
+ 
+-        case INT_21_SEEK_FILE:
++	case INT_21_SEEK_FILE:
+ 			
+-            bInt21Func = TRUE;
++	    bInt21Func = TRUE;
+ 
+-            if (byAL == INT_21_FILE_SEEK_SET &&
+-                wCX == 0 && wDX == 0)
+-                lpBM->m_byBehaviorArray[IF4_FILE_SEEK_TOF] = TRUE;
+-            else if (byAL == INT_21_FILE_SEEK_END &&
+-                     wCX == 0 && wDX == 0)
+-                lpBM->m_byBehaviorArray[IF4_FILE_SEEK_EOF] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF4_FILE_SEEK_GENERAL] = TRUE;
+-            break;
++	    if (byAL == INT_21_FILE_SEEK_SET &&
++		wCX == 0 && wDX == 0)
++		lpBM->m_byBehaviorArray[IF4_FILE_SEEK_TOF] = TRUE;
++	    else if (byAL == INT_21_FILE_SEEK_END &&
++		     wCX == 0 && wDX == 0)
++		lpBM->m_byBehaviorArray[IF4_FILE_SEEK_EOF] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF4_FILE_SEEK_GENERAL] = TRUE;
++	    break;
+ 
+-        case INT_21_CHMOD_FILE:
+-            bInt21Func = TRUE;
++	case INT_21_CHMOD_FILE:
++	    bInt21Func = TRUE;
+ 
+-            if (byAL == INT_21_FILE_CHMOD_GET)
+-                lpBM->m_byBehaviorArray[IF6_FILE_GET_ATTR] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF6_FILE_SET_ATTR] = TRUE;
+-            break;
++	    if (byAL == INT_21_FILE_CHMOD_GET)
++		lpBM->m_byBehaviorArray[IF6_FILE_GET_ATTR] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF6_FILE_SET_ATTR] = TRUE;
++	    break;
+ 
+-        case INT_21_GET_CUR_DIR:
+-            bInt21Func = TRUE;
++	case INT_21_GET_CUR_DIR:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF10_FILE_GET_CUR_DIR] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF10_FILE_GET_CUR_DIR] = TRUE;
++	    break;
+ 
+-        case INT_21_MEM_ALLOC:
+-            bInt21Func = TRUE;
++	case INT_21_MEM_ALLOC:
++	    bInt21Func = TRUE;
+ 
+-            lpBM->m_byBehaviorArray[IF13_SYSTEM_MEM_ALLOC] = TRUE;
+-            break;
++	    lpBM->m_byBehaviorArray[IF13_SYSTEM_MEM_ALLOC] = TRUE;
++	    break;
+ 
+-        case INT_21_EXEC:
+-            lpBM->m_byBehaviorArray[IF13_SYSTEM_PROG_EXEC] = TRUE;
+-            break;
++	case INT_21_EXEC:
++	    lpBM->m_byBehaviorArray[IF13_SYSTEM_PROG_EXEC] = TRUE;
++	    break;
+ 
+-        case INT_21_TIME_STAMP:
+-            bInt21Func = TRUE;
++	case INT_21_TIME_STAMP:
++	    bInt21Func = TRUE;
+ 
+-            if (byAL == INT_21_FILE_TIME_GET)
+-                lpBM->m_byBehaviorArray[IF7_FILE_GET_FILE_DATE] = TRUE;
+-            else
+-                lpBM->m_byBehaviorArray[IF7_FILE_SET_FILE_DATE] = TRUE;
+-            break;
++	    if (byAL == INT_21_FILE_TIME_GET)
++		lpBM->m_byBehaviorArray[IF7_FILE_GET_FILE_DATE] = TRUE;
++	    else
++		lpBM->m_byBehaviorArray[IF7_FILE_SET_FILE_DATE] = TRUE;
++	    break;
+     }
+ 
+     // update registers based on behavior...
+ 
+     switch (byAH)
+     {
+-        case INT_21_GET_DOS_VERSION:
+-            *lpwAX = 1;             // just in case
+-            *lpwBX = *lpwCX = 0;    // some viruses rely on BX=CX=0
+-            break;
++	case INT_21_GET_DOS_VERSION:
++	    *lpwAX = 1;             // just in case
++	    *lpwBX = *lpwCX = 0;    // some viruses rely on BX=CX=0
++	    break;
+ 
+-        case INT_21_OPEN_FILE:
+-        case INT_21_OPEN_FILE_EXT:
+-            *lpwAX = 7;             // file handle to give back to program
+-            break;
++	case INT_21_OPEN_FILE:
++	case INT_21_OPEN_FILE_EXT:
++	    *lpwAX = 7;             // file handle to give back to program
++	    break;
+ 
+-        case INT_21_READ_FILE:
+-            if (wCX == 0xFFFF)
+-                *lpwAX = FILE_SIZE_BAIT_VALUE;
+-            break;
++	case INT_21_READ_FILE:
++	    if (wCX == 0xFFFF)
++		*lpwAX = FILE_SIZE_BAIT_VALUE;
++	    break;
+ 
+-        case INT_21_SEEK_FILE:
+-            if (byAL == INT_21_FILE_SEEK_END &&
+-                     wCX == 0 && wDX == 0)
+-                *lpwDX = 0;
+-                *lpwAX = FILE_SIZE_BAIT_VALUE;
+-            break;
++	case INT_21_SEEK_FILE:
++	    if (byAL == INT_21_FILE_SEEK_END &&
++		     wCX == 0 && wDX == 0)
++		*lpwDX = 0;
++		*lpwAX = FILE_SIZE_BAIT_VALUE;
++	    break;
+     }
+ 
+     if (byAH >= 0x6D)
+     {
+-        // all DOS functions >= 6D clear value in AL...
++	// all DOS functions >= 6D clear value in AL...
+ 
+-        *lpwAX = wAX & 0xFF00U;
++	*lpwAX = wAX & 0xFF00U;
+     }
+ 
+     // pushf call far int 21 call (ah was right...)
+ 
+     if (bInt21Func == TRUE && nIntType == INT_TYPE_FAR_CALL)
+-        lpBM->m_byBehaviorArray[BF5_FOUND_PUSHF_CALL_FAR_21] = TRUE;
++	lpBM->m_byBehaviorArray[BF5_FOUND_PUSHF_CALL_FAR_21] = TRUE;
+ 
+     if (bInt21Func == TRUE && nIntType == INT_TYPE_INT_OTHER)
+     {
+-        lpBM->m_dwSuspiciousInt21Count++;
++	lpBM->m_dwSuspiciousInt21Count++;
+ 
+-        if (lpBM->m_dwSuspiciousInt21Count >= lpBM->m_stConfig.wSuspiciousIntThreshold)
+-            lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_INT_21] = TRUE;
++	if (lpBM->m_dwSuspiciousInt21Count >= lpBM->m_stConfig.wSuspiciousIntThreshold)
++	    lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_INT_21] = TRUE;
+     }
+     
+     return(BEHAVE_STATUS_OK);
+@@ -650,15 +650,15 @@
+ )
+ {
+     if (byIntNum == 0x21)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_21] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_21] = TRUE;
+     else if (byIntNum == 0x13)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_13] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_13] = TRUE;
+     else if (byIntNum == 0x24)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_24] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_24] = TRUE;
+     else if (byIntNum <= lpBM->m_stConfig.wNormalInterruptVectorMax)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_LOW] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_LOW] = TRUE;
+     else
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_HIGH] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_HIGH] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -670,15 +670,15 @@
+ )
+ {
+     if (byIntNum == 0x21)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_21] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_21] = TRUE;
+     else if (byIntNum == 0x13)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_13] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_13] = TRUE;
+     else if (byIntNum == 0x24)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_24] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_24] = TRUE;
+     else if (byIntNum <= lpBM->m_stConfig.wNormalInterruptVectorMax)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_LOW] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_LOW] = TRUE;
+     else
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_HIGH] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_HIGH] = TRUE;
+ 
+     // record that it was a direct set vector since this is fishy
+ 
+@@ -731,104 +731,104 @@
+ 
+     if (byIntNum == 0x13)
+     {
+-        switch(byAH)
+-        {
+-            case INT_13_READ_FUNC:
+-                if (wCX == 0x0001 && (wDX >> 8) == 0)      // track0,sec1,head0
+-                    lpBM->m_byBehaviorArray[IF15_INT_13_READ_MBR] = TRUE;
+-                else
+-                    lpBM->m_byBehaviorArray[IF15_INT_13_READ_GENERAL] = TRUE;
+-                break;
++	switch(byAH)
++	{
++	    case INT_13_READ_FUNC:
++		if (wCX == 0x0001 && (wDX >> 8) == 0)      // track0,sec1,head0
++		    lpBM->m_byBehaviorArray[IF15_INT_13_READ_MBR] = TRUE;
++		else
++		    lpBM->m_byBehaviorArray[IF15_INT_13_READ_GENERAL] = TRUE;
++		break;
+ 
+-            case INT_13_WRITE_FUNC:
+-                if (wCX == 0x0001 && (wDX >> 8) == 0)      // track0,sec1,head0
+-                    lpBM->m_byBehaviorArray[IF15_INT_13_WRITE_MBR] = TRUE;
+-                else
+-                    lpBM->m_byBehaviorArray[IF15_INT_13_WRITE_GENERAL] = TRUE;
+-                break;
++	    case INT_13_WRITE_FUNC:
++		if (wCX == 0x0001 && (wDX >> 8) == 0)      // track0,sec1,head0
++		    lpBM->m_byBehaviorArray[IF15_INT_13_WRITE_MBR] = TRUE;
++		else
++		    lpBM->m_byBehaviorArray[IF15_INT_13_WRITE_GENERAL] = TRUE;
++		break;
+ 
+-            case INT_13_FORMAT_FUNC:
+-                lpBM->m_byBehaviorArray[IF15_INT_13_FORMAT] = TRUE;
+-                break;
++	    case INT_13_FORMAT_FUNC:
++		lpBM->m_byBehaviorArray[IF15_INT_13_FORMAT] = TRUE;
++		break;
+ 
+-            default:
+-                lpBM->m_byBehaviorArray[IF15_INT_13_GENERAL] = TRUE;
+-                break;
+-        }
++	    default:
++		lpBM->m_byBehaviorArray[IF15_INT_13_GENERAL] = TRUE;
++		break;
++	}
+     }
+ 
+     if (byIntNum == 0x16)
+     {
+-        if (byAH == 0 || byAH == 1)
+-        {
+-            if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
+-                lpBM->m_byBehaviorArray[IF16_FOUND_KEYBOARD_INPUT] = TRUE;
+-        }
++	if (byAH == 0 || byAH == 1)
++	{
++	    if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
++		lpBM->m_byBehaviorArray[IF16_FOUND_KEYBOARD_INPUT] = TRUE;
++	}
+     }
+ 
+     if (byIntNum == 0x1a)
+     {
+-        lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_TIME] = TRUE;
++	lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_TIME] = TRUE;
+     }
+ 
+     if (byIntNum > lpBM->m_stConfig.wNormalInterruptVectorMax ||
+-        lpBM->m_stConfig.
+-            bySuspiciousInts[byIntNum] != 0)    // these ints are unused basically
++	lpBM->m_stConfig.
++	    bySuspiciousInts[byIntNum] != 0)    // these ints are unused basically
+     {
+-        lpBM->m_dwSuspiciousIntCount++;
++	lpBM->m_dwSuspiciousIntCount++;
+ 
+-        // check to see if we have an int 21-like function... if so, assume
+-        // this is a call to int 21 and deal with it accordingly...
++	// check to see if we have an int 21-like function... if so, assume
++	// this is a call to int 21 and deal with it accordingly...
+ 
+-        switch (byAH)
+-        {
++	switch (byAH)
++	{
+ 
+-            case INT_21_OPEN_FCB:
+-            case INT_21_CLOSE_FCB:
+-            case INT_21_FIND_FIRST_FCB:
+-            case INT_21_FIND_NEXT_FCB:
+-            case INT_21_DELETE_FCB:
+-            case INT_21_CREATE_FCB:
+-            case INT_21_RENAME_FCB:
+-            case INT_21_SET_DTA:
+-            case INT_21_SET_VECTOR:
+-            case INT_21_GET_DATE:
+-            case INT_21_GET_TIME:
+-            case INT_21_GET_DTA:
+-            case INT_21_GET_VECTOR:
+-            case INT_21_CHDIR:
+-            case INT_21_CREATE_FILE:
+-            case INT_21_OPEN_FILE:
+-            case INT_21_CLOSE_FILE:
+-            case INT_21_READ_FILE:
+-            case INT_21_WRITE_FILE:
+-            case INT_21_DELETE_FILE:
+-            case INT_21_SEEK_FILE:
+-            case INT_21_CHMOD_FILE:
+-            case INT_21_GET_CUR_DIR:
+-            case INT_21_MEM_ALLOC:
+-            case INT_21_FIND_FIRST:
+-            case INT_21_FIND_NEXT:
+-            case INT_21_RENAME_FILE:
+-            case INT_21_TIME_STAMP:
+-            case INT_21_OPEN_FILE_EXT:
++	    case INT_21_OPEN_FCB:
++	    case INT_21_CLOSE_FCB:
++	    case INT_21_FIND_FIRST_FCB:
++	    case INT_21_FIND_NEXT_FCB:
++	    case INT_21_DELETE_FCB:
++	    case INT_21_CREATE_FCB:
++	    case INT_21_RENAME_FCB:
++	    case INT_21_SET_DTA:
++	    case INT_21_SET_VECTOR:
++	    case INT_21_GET_DATE:
++	    case INT_21_GET_TIME:
++	    case INT_21_GET_DTA:
++	    case INT_21_GET_VECTOR:
++	    case INT_21_CHDIR:
++	    case INT_21_CREATE_FILE:
++	    case INT_21_OPEN_FILE:
++	    case INT_21_CLOSE_FILE:
++	    case INT_21_READ_FILE:
++	    case INT_21_WRITE_FILE:
++	    case INT_21_DELETE_FILE:
++	    case INT_21_SEEK_FILE:
++	    case INT_21_CHMOD_FILE:
++	    case INT_21_GET_CUR_DIR:
++	    case INT_21_MEM_ALLOC:
++	    case INT_21_FIND_FIRST:
++	    case INT_21_FIND_NEXT:
++	    case INT_21_RENAME_FILE:
++	    case INT_21_TIME_STAMP:
++	    case INT_21_OPEN_FILE_EXT:
+ 
+-                lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_INT] = TRUE;
++		lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_INT] = TRUE;
+ 
+-                return (BMSubmitInt21CallAux(lpBM,
++		return (BMSubmitInt21CallAux(lpBM,
+ 											 INT_TYPE_INT_OTHER,
+-                                             dwInstrNum,
+-                                             wAX,
+-                                             wBX,
+-                                             wCX,
+-                                             wDX,
+-                                             lpwAX,
+-                                             lpwBX,
+-                                             lpwCX,
+-                                             lpwDX));
+-            default:
+-                break;
+-        }
++					     dwInstrNum,
++					     wAX,
++					     wBX,
++					     wCX,
++					     wDX,
++					     lpwAX,
++					     lpwBX,
++					     lpwCX,
++					     lpwDX));
++	    default:
++		break;
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -849,15 +849,15 @@
+     wDisp -= 0x100;         // normalize w/respect to TOF
+ 
+     if (lpBM->m_dwImageSize >= lpBM->m_stConfig.wAssumedVirusSize)
+-        dwMinVirusOffset = lpBM->m_dwImageSize -
+-                                lpBM->m_stConfig.wAssumedVirusSize;
++	dwMinVirusOffset = lpBM->m_dwImageSize -
++				lpBM->m_stConfig.wAssumedVirusSize;
+     else
+-        dwMinVirusOffset = 0;
++	dwMinVirusOffset = 0;
+ 
+     if (wDisp > lpBM->m_stConfig.wAssumedVirusSize &&
+-        wDisp < dwMinVirusOffset)
++	wDisp < dwMinVirusOffset)
+     {
+-        lpBM->m_byBehaviorArray[BF9_JUMP_AT_TOF_TO_MIDDLE] = TRUE;
++	lpBM->m_byBehaviorArray[BF9_JUMP_AT_TOF_TO_MIDDLE] = TRUE;
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -872,7 +872,7 @@
+     // this is only noteworthy if we have done so after instr #0
+ 
+     if (dwInstrNum != 0)
+-        lpBM->m_byBehaviorArray[BF2_JUMP_TO_CS100] = TRUE;
++	lpBM->m_byBehaviorArray[BF2_JUMP_TO_CS100] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -915,7 +915,7 @@
+     dwLinearCur = (DWORD)wDestCS * 0x10 + wDestIP;
+ 
+     if (lpBM->m_nFileType == BEHAVE_FILE_TYPE_EXE && dwLinearEP > dwLinearCur)
+-        lpBM->m_byBehaviorArray[BF2_FAR_JUMP_BEFORE_ENTRY_EXE] = TRUE;
++	lpBM->m_byBehaviorArray[BF2_FAR_JUMP_BEFORE_ENTRY_EXE] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -940,29 +940,29 @@
+ )
+ {
+     if (byValue == 0xE9)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_E9] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_E9] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AH && byValue == 0x4B)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4B] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4B] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AH && byValue == 0x3D)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_3D] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_3D] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AH && byValue == 0x11)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_11] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_11] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AH && byValue == 0x12)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_12] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_12] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AH && byValue == 0x4E)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4E] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4E] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AH && byValue == 0x4F)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4F] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4F] = TRUE;
+ 
+     if (lpBM->m_byBehaviorArray[IF14_SYSTEM_AM_I_THERE] &&
+-        byValue == lpBM->m_wAXFromAmIThere>>8)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AM_I_THERE] = TRUE;
++	byValue == lpBM->m_wAXFromAmIThere>>8)
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AM_I_THERE] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -980,32 +980,32 @@
+     byLow = (BYTE)(wValue & 0xFF);
+ 
+     if (byHigh == 0xE9 || byLow == 0xE9)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_E9] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_E9] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AX && byHigh == 0x4B)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4B] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4B] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AX && byHigh == 0x3D)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_3D] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_3D] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AX && byHigh == 0x11)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_11] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_11] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AX && byHigh == 0x12)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_12] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_12] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AX && byHigh == 0x4E)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4E] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4E] = TRUE;
+ 
+     if (nRegister == BEHAVE_REG_AX && byHigh == 0x4F)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4F] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4F] = TRUE;
+ 
+     if (wValue == 0x5A4D)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_MZ] = TRUE;
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_MZ] = TRUE;
+ 
+     if (lpBM->m_byBehaviorArray[IF14_SYSTEM_AM_I_THERE] &&
+-        wValue == lpBM->m_wAXFromAmIThere)
+-        lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AM_I_THERE] = TRUE;
++	wValue == lpBM->m_wAXFromAmIThere)
++	lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AM_I_THERE] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -1030,11 +1030,11 @@
+     dwLinearCSIP = ((DWORD)wCurCS * 0x10) + wCurIP;
+ 
+     if (dwLinearCSIP >= dwLinearMoveStart &&
+-        dwLinearCSIP < dwLinearMoveStart + (DWORD)wLength)
++	dwLinearCSIP < dwLinearMoveStart + (DWORD)wLength)
+     {
+-        // code at the CSIP is being moved...
++	// code at the CSIP is being moved...
+ 
+-        lpBM->m_byBehaviorArray[BF5_FOUND_REPMOVS_CODE] = TRUE;
++	lpBM->m_byBehaviorArray[BF5_FOUND_REPMOVS_CODE] = TRUE;
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1079,31 +1079,31 @@
+ 
+     if (dwLinearOff == lpBM->m_dwLinearPUSHFOff + 1)
+     {
+-        // we have a possible INT 21 call... lets assume!
++	// we have a possible INT 21 call... lets assume!
+ 
+-        lpBM->m_byBehaviorArray[BF5_FOUND_PUSHF_CALL_FAR] = TRUE;
++	lpBM->m_byBehaviorArray[BF5_FOUND_PUSHF_CALL_FAR] = TRUE;
+ 
+-        status = BMSubmitInt21CallAux(lpBM,
++	status = BMSubmitInt21CallAux(lpBM,
+ 									  INT_TYPE_FAR_CALL,
+-                                      dwInstrNum,
+-                                      wAX,
+-                                      wBX,
+-                                      wCX,
+-                                      wDX,
+-                                      lpwAX,
+-                                      lpwBX,
+-                                      lpwCX,
+-                                      lpwDX);
++				      dwInstrNum,
++				      wAX,
++				      wBX,
++				      wCX,
++				      wDX,
++				      lpwAX,
++				      lpwBX,
++				      lpwCX,
++				      lpwDX);
+ 
+-        *lpbPossibleIntCall = TRUE;
++	*lpbPossibleIntCall = TRUE;
+ 
+-        // note, CS:IP has not been pushed yet so don't worry about removing
+-        // it from the stack... only remove the flags...
++	// note, CS:IP has not been pushed yet so don't worry about removing
++	// it from the stack... only remove the flags...
+ 
+-        if (bExplore == TRUE)
+-            *lpwSP += sizeof(WORD);         // pop flags
++	if (bExplore == TRUE)
++	    *lpwSP += sizeof(WORD);         // pop flags
+ 
+-        return(status);
++	return(status);
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1131,22 +1131,22 @@
+     WORD            wTemp;
+ 
+     if (wDisp == 0)
+-        lpBM->m_byBehaviorArray[BF5_FOUND_E80000] = TRUE;
++	lpBM->m_byBehaviorArray[BF5_FOUND_E80000] = TRUE;
+ 
+     if (nBufferLen == 0)
+-        return(BEHAVE_STATUS_OK);
++	return(BEHAVE_STATUS_OK);
+ 
+ 	// now check to see if we get any calls that have a large displacement,
+     // indicating that we don't have a virus...
+ 
+     if (dwInstrNum >= lpBM->m_stConfig.wMaxIterForEPAdjust &&
+-        bExplore == FALSE)
++	bExplore == FALSE)
+     {
+-        if (wDisp & 0x8000)
+-            wDisp = -(short)wDisp;
++	if (wDisp & 0x8000)
++	    wDisp = -(short)wDisp;
+ 
+-        if (wDisp > lpBM->m_stConfig.wAssumedVirusSize )
+-            lpBM->m_byBehaviorArray[BF9_CALL_WITH_LARGE_DISP] = TRUE;
++	if (wDisp > lpBM->m_stConfig.wAssumedVirusSize )
++	    lpBM->m_byBehaviorArray[BF9_CALL_WITH_LARGE_DISP] = TRUE;
+     }
+ 
+ 
+@@ -1156,43 +1156,43 @@
+ 
+     for (i=0;i<nBufferLen;i++)
+     {
+-        if (lpbyDestIPBuffer[i] == 0x9c)    // pushf
+-            bPUSHF = TRUE;
++	if (lpbyDestIPBuffer[i] == 0x9c)    // pushf
++	    bPUSHF = TRUE;
+ 
+-        if (lpbyDestIPBuffer[i] == 0xFF && // call far indirect
+-             ((lpbyDestIPBuffer[i+1] >> 3) & 7) == 3)
+-            bCallFar = TRUE;
++	if (lpbyDestIPBuffer[i] == 0xFF && // call far indirect
++	     ((lpbyDestIPBuffer[i+1] >> 3) & 7) == 3)
++	    bCallFar = TRUE;
+ 
+-        if (lpbyDestIPBuffer[i] == 0x9A)    // call far direct
+-            bCallFar = TRUE;
++	if (lpbyDestIPBuffer[i] == 0x9A)    // call far direct
++	    bCallFar = TRUE;
+ 
+-        if (lpbyDestIPBuffer[i] == 0xCD)
+-            bCallInt = TRUE;
++	if (lpbyDestIPBuffer[i] == 0xCD)
++	    bCallInt = TRUE;
+     }
+ 
+     if ((bPUSHF == TRUE && bCallFar == TRUE) || bCallInt == TRUE)
+     {
+-        int                         nIntType;
++	int                         nIntType;
+ 
+-        if (bCallInt == TRUE)
+-            nIntType = INT_TYPE_INT_OTHER;
+-        else if (bCallFar == TRUE)
+-            nIntType = INT_TYPE_FAR_CALL;
++	if (bCallInt == TRUE)
++	    nIntType = INT_TYPE_INT_OTHER;
++	else if (bCallFar == TRUE)
++	    nIntType = INT_TYPE_FAR_CALL;
+ 
+-        return(BMSubmitInt21CallAux(lpBM,
++	return(BMSubmitInt21CallAux(lpBM,
+ 									nIntType,
+-                                    dwInstrNum,
+-                                    wAX,
+-                                    wBX,
+-                                    wCX,
+-                                    wDX,
+-                                    &wTemp,
+-                                    &wTemp,
+-                                    &wTemp,
+-                                    &wTemp));
++				    dwInstrNum,
++				    wAX,
++				    wBX,
++				    wCX,
++				    wDX,
++				    &wTemp,
++				    &wTemp,
++				    &wTemp,
++				    &wTemp));
+ 
+-        // use wTemp for output registers since call is being used
+-        // and is not really being emulated
++	// use wTemp for output registers since call is being used
++	// and is not really being emulated
+     }
+ 
+     
+@@ -1221,19 +1221,19 @@
+     WORD            wTemp;
+ 
+     if (nBufferLen == 0)
+-        return(BEHAVE_STATUS_OK);
++	return(BEHAVE_STATUS_OK);
+ 
+     // now check to see if we get any jmps that have a large displacement,
+     // indicating that we don't have a virus...
+ 
+     if (dwInstrNum >= lpBM->m_stConfig.wMaxIterForEPAdjust &&
+-        bExplore == FALSE)
++	bExplore == FALSE)
+     {
+-        if (wDisp & 0x8000)
+-            wDisp = -(short)wDisp;
++	if (wDisp & 0x8000)
++	    wDisp = -(short)wDisp;
+ 
+-        if (wDisp > lpBM->m_stConfig.wAssumedVirusSize )
+-            lpBM->m_byBehaviorArray[BF9_CALL_WITH_LARGE_DISP] = TRUE;
++	if (wDisp > lpBM->m_stConfig.wAssumedVirusSize )
++	    lpBM->m_byBehaviorArray[BF9_CALL_WITH_LARGE_DISP] = TRUE;
+     }
+ 
+ 
+@@ -1242,47 +1242,47 @@
+     nBufferLen--;
+ 
+     if (nBufferLen > 3)                     // limit searching for CD to only
+-        nBufferLen = 3;                     // 3 bytes
++	nBufferLen = 3;                     // 3 bytes
+ 
+     for (i=0;i<nBufferLen;i++)
+     {
+-        if (lpbyDestIPBuffer[i] == 0x9c)    // pushf
+-            bPUSHF = TRUE;
++	if (lpbyDestIPBuffer[i] == 0x9c)    // pushf
++	    bPUSHF = TRUE;
+ 
+-        if (lpbyDestIPBuffer[i] == 0xFF && // call far indirect
+-             ((lpbyDestIPBuffer[i+1] >> 3) & 7) == 3)
+-            bCallFar = TRUE;
++	if (lpbyDestIPBuffer[i] == 0xFF && // call far indirect
++	     ((lpbyDestIPBuffer[i+1] >> 3) & 7) == 3)
++	    bCallFar = TRUE;
+ 
+-        if (lpbyDestIPBuffer[i] == 0x9A)    // call far direct
+-            bCallFar = TRUE;
++	if (lpbyDestIPBuffer[i] == 0x9A)    // call far direct
++	    bCallFar = TRUE;
+ 
+-        if (lpbyDestIPBuffer[i] == 0xCD)
+-            bCallInt = TRUE;
++	if (lpbyDestIPBuffer[i] == 0xCD)
++	    bCallInt = TRUE;
+     }
+ 
+     if ((bPUSHF == TRUE && bCallFar == TRUE) || bCallInt == TRUE)
+     {
+-        int                         nIntType;
++	int                         nIntType;
+ 
+-        if (bCallInt == TRUE)
+-            nIntType = INT_TYPE_INT_OTHER;
+-        else if (bCallFar == TRUE)
+-            nIntType = INT_TYPE_FAR_CALL;
++	if (bCallInt == TRUE)
++	    nIntType = INT_TYPE_INT_OTHER;
++	else if (bCallFar == TRUE)
++	    nIntType = INT_TYPE_FAR_CALL;
+ 
+-        return(BMSubmitInt21CallAux(lpBM,
++	return(BMSubmitInt21CallAux(lpBM,
+ 								    nIntType,
+-                                    dwInstrNum,
+-                                    wAX,
+-                                    wBX,
+-                                    wCX,
+-                                    wDX,
+-                                    &wTemp,
+-                                    &wTemp,
+-                                    &wTemp,
+-                                    &wTemp));
++				    dwInstrNum,
++				    wAX,
++				    wBX,
++				    wCX,
++				    wDX,
++				    &wTemp,
++				    &wTemp,
++				    &wTemp,
++				    &wTemp));
+ 
+-        // use wTemp for output registers since call is being used
+-        // and is not really being emulated
++	// use wTemp for output registers since call is being used
++	// and is not really being emulated
+     }
+ 
+ 
+@@ -1316,7 +1316,7 @@
+     lpBM->m_byOpcodeQueue[lpBM->m_nOpcodeIndex] = byOpcode;
+     lpBM->m_nOpcodeIndex++;
+     if (lpBM->m_nOpcodeIndex == OPCODE_QUEUE_SIZE)
+-        lpBM->m_nOpcodeIndex = 0;
++	lpBM->m_nOpcodeIndex = 0;
+ 
+     // count suspicious opcodes
+ 
+@@ -1334,19 +1334,19 @@
+ 
+     if ((byOpcode & 0xF8) == 0x50)              // check for push
+     {
+-        lpBM->m_dwStateFlags1 |= SF1_FOUND_PUSH;
++	lpBM->m_dwStateFlags1 |= SF1_FOUND_PUSH;
+     }
+     else
+     {
+-        if (lpBM->m_dwStateFlags1 & SF1_FOUND_PUSH)
+-        {
+-            if (byOpcode == 0xC3 || byOpcode == 0xCB)   // check for RET/F
+-            {
+-                BMSubmitPushRet(lpBM, wAfterIP == 0x100);
+-            }
+-        }
++	if (lpBM->m_dwStateFlags1 & SF1_FOUND_PUSH)
++	{
++	    if (byOpcode == 0xC3 || byOpcode == 0xCB)   // check for RET/F
++	    {
++		BMSubmitPushRet(lpBM, wAfterIP == 0x100);
++	    }
++	}
+ 
+-        lpBM->m_dwStateFlags1 &= ~SF1_FOUND_PUSH;
++	lpBM->m_dwStateFlags1 &= ~SF1_FOUND_PUSH;
+     }
+ 
+ 	// update the instr #
+@@ -1364,22 +1364,22 @@
+ {
+     switch (byOpcode)
+     {
+-        case 0x90:          // NOP
+-        case 0xF5:          // CMC
+-        case 0xF9:          // STC
+-        case 0xFA:          // CLI
+-        case 0xFB:          // STI
+-        case 0xFC:          // CLD
+-        case 0xFD:          // STD
+-            lpBM->m_dwSuspiciousOpcodeCount++;
++	case 0x90:          // NOP
++	case 0xF5:          // CMC
++	case 0xF9:          // STC
++	case 0xFA:          // CLI
++	case 0xFB:          // STI
++	case 0xFC:          // CLD
++	case 0xFD:          // STD
++	    lpBM->m_dwSuspiciousOpcodeCount++;
+ 
+-            if (lpBM->m_dwSuspiciousOpcodeCount >= lpBM->m_stConfig.wSuspiciousOpcodeThreshold)
+-                lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_OPCODES] = TRUE;
++	    if (lpBM->m_dwSuspiciousOpcodeCount >= lpBM->m_stConfig.wSuspiciousOpcodeThreshold)
++		lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_OPCODES] = TRUE;
+ 
+-            break;
+-        case 0xCF:          // IRET
+-            lpBM->m_byBehaviorArray[BF5_FOUND_IRET] = TRUE;
+-            break;
++	    break;
++	case 0xCF:          // IRET
++	    lpBM->m_byBehaviorArray[BF5_FOUND_IRET] = TRUE;
++	    break;
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1397,36 +1397,36 @@
+     
+     if (byOpcode == 0xE8)           // call opcode == 0xE8
+     {
+-        lpBM->m_dwStateFlags1 |= SF1_FOUND_CALL;
+-        lpBM->m_dwCallIterNum = dwInstrNum;
++	lpBM->m_dwStateFlags1 |= SF1_FOUND_CALL;
++	lpBM->m_dwCallIterNum = dwInstrNum;
+ 
+-        return(BEHAVE_STATUS_OK);
++	return(BEHAVE_STATUS_OK);
+     }
+ 
+     if (lpBM->m_dwStateFlags1 & SF1_FOUND_CALL)
+     {
+-        switch (byOpcode)
+-        {
+-            case 0x58:          // pop AX
+-            case 0x5B:          // pop BX
+-            case 0x59:          // pop CX
+-            case 0x5A:          // pop DX
+-            case 0x5E:          // pop SI
+-            case 0x5F:          // pop DI
+-            case 0x5D:          // pop BP
++	switch (byOpcode)
++	{
++	    case 0x58:          // pop AX
++	    case 0x5B:          // pop BX
++	    case 0x59:          // pop CX
++	    case 0x5A:          // pop DX
++	    case 0x5E:          // pop SI
++	    case 0x5F:          // pop DI
++	    case 0x5D:          // pop BP
+ 
+-                if (dwInstrNum == lpBM->m_dwCallIterNum + 1)
+-                    lpBM->m_byBehaviorArray[BF5_FOUND_CALL_POP] = TRUE;
++		if (dwInstrNum == lpBM->m_dwCallIterNum + 1)
++		    lpBM->m_byBehaviorArray[BF5_FOUND_CALL_POP] = TRUE;
+ 
+-                // fall through to default
++		// fall through to default
+ 
+-            default:
++	    default:
+ //                only remove our call status if we find a PUSH of some
+ //                sort  (see submitpush member function)
+ 
+ //                lpBM->m_dwStateFlags1 &= ~(DWORD)SF1_FOUND_CALL;
+-                break;
+-        }
++		break;
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1443,32 +1443,32 @@
+ {
+     if (byOpcode == 0x9C)                       // PUSHF
+     {
+-        lpBM->m_dwStateFlags1 |= SF1_FOUND_PUSHF;
+-        lpBM->m_dwLinearPUSHFOff = (DWORD)wCS * 0x10 + (DWORD)wIP;
++	lpBM->m_dwStateFlags1 |= SF1_FOUND_PUSHF;
++	lpBM->m_dwLinearPUSHFOff = (DWORD)wCS * 0x10 + (DWORD)wIP;
+ 
+-        return(BEHAVE_STATUS_OK);
++	return(BEHAVE_STATUS_OK);
+     }
+ 
+ 
+ 
+     if (lpBM->m_dwStateFlags1 & SF1_FOUND_PUSHF)
+     {
+-        switch (byOpcode)
+-        {
+-            case 0x2E:                          // CS: prefix
+-            case 0x3E:                          // DS: prefix
+-            case 0x26:                          // ES: prefix
+-            case 0x36:                          // SS: prefix
++	switch (byOpcode)
++	{
++	    case 0x2E:                          // CS: prefix
++	    case 0x3E:                          // DS: prefix
++	    case 0x26:                          // ES: prefix
++	    case 0x36:                          // SS: prefix
+ 
+-                // update the location of the supposed PUSHF so
+-                // our call far is properly handled
++		// update the location of the supposed PUSHF so
++		// our call far is properly handled
+ 
+-                lpBM->m_dwLinearPUSHFOff = (DWORD)wCS * 0x10 + (DWORD)wIP;
+-                break;
+-            default:
++		lpBM->m_dwLinearPUSHFOff = (DWORD)wCS * 0x10 + (DWORD)wIP;
++		break;
++	    default:
+ //                lpBM->m_dwStateFlags1 &= ~(DWORD)SF1_FOUND_PUSHF;
+-                break;
+-        }
++		break;
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1513,59 +1513,59 @@
+ )
+ {
+ /*
+-    DWORD			i;
++    DWORD                       i;
+     int             nLowerState, nStringLen;
+ 
+     if (dwMaxLen > MAX_ALTERNATING_STRING_LEN)
+-        dwMaxLen = MAX_ALTERNATING_STRING_LEN;
++	dwMaxLen = MAX_ALTERNATING_STRING_LEN;
+ 
+     nStringLen = 0;
+ 
+     if (islower(lpbyBuffer[0]))
+     {
+-        nLowerState = ALTERNATE_STATE_LOWER;
+-        nStringLen++;
++	nLowerState = ALTERNATE_STATE_LOWER;
++	nStringLen++;
+     }
+     else
+     {
+-        if (isalpha(lpbyBuffer[0]))
+-        {
+-            nLowerState = ALTERNATE_STATE_UPPER;
+-            nStringLen++;
+-        }
+-        else
+-            nLowerState = ALTERNATE_STATE_NEITHER;
++	if (isalpha(lpbyBuffer[0]))
++	{
++	    nLowerState = ALTERNATE_STATE_UPPER;
++	    nStringLen++;
++	}
++	else
++	    nLowerState = ALTERNATE_STATE_NEITHER;
+     }
+ 
+     for (i=0;i<dwMaxLen;i++)
+     {
+-        if (isalpha(lpbyBuffer[i]))
+-        {
+-            if (islower(lpbyBuffer[i]))
+-            {
+-                if (nLowerState == ALTERNATE_STATE_UPPER)
+-                {
+-                    nStringLen++;
+-                }
+-                nLowerState = ALTERNATE_STATE_LOWER;
+-            }
+-            else
+-            {
+-                if (nLowerState == ALTERNATE_STATE_LOWER)
+-                {
+-                    nStringLen++;
+-                }
+-                nLowerState = ALTERNATE_STATE_UPPER;
+-            }
+-        }
+-        else
+-        {
+-            nLowerState = ALTERNATE_STATE_NEITHER;
+-        }
++	if (isalpha(lpbyBuffer[i]))
++	{
++	    if (islower(lpbyBuffer[i]))
++	    {
++		if (nLowerState == ALTERNATE_STATE_UPPER)
++		{
++		    nStringLen++;
++		}
++		nLowerState = ALTERNATE_STATE_LOWER;
++	    }
++	    else
++	    {
++		if (nLowerState == ALTERNATE_STATE_LOWER)
++		{
++		    nStringLen++;
++		}
++		nLowerState = ALTERNATE_STATE_UPPER;
++	    }
++	}
++	else
++	{
++	    nLowerState = ALTERNATE_STATE_NEITHER;
++	}
+     }
+ 
+     if (nStringLen >= MIN_ALTERNATING_STRING_LEN)
+-        return(TRUE);
++	return(TRUE);
+ 
+ */
+     return(FALSE);
+@@ -1583,103 +1583,103 @@
+ 
+     int                     i, j, nBufferLen = (int)dwBufferLen;
+     LPHEUR_STRING_INFO      lpstHSI =
+-                                &lpBM->m_stConfig.stStringInfo;
++				&lpBM->m_stConfig.stStringInfo;
+ 
+     for (i=0;i<nBufferLen;i++)
+     {
+ 
+ #ifdef SYM_NLM
+-        if (i % 256 == 0)
+-            DRelinquishControl();
++	if (i % 256 == 0)
++	    DRelinquishControl();
+ #endif
+ 
+-        if (lpstHSI->abyFirstByteHash[lpbyBuffer[i]])
+-        {
+-            if (!memicmp(lpbyBuffer+i,"FUCK",strlen("FUCK")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_CUSS_WORD] = TRUE;
++	if (lpstHSI->abyFirstByteHash[lpbyBuffer[i]])
++	{
++	    if (!memicmp(lpbyBuffer+i,"FUCK",strlen("FUCK")))
++		lpBM->m_byBehaviorArray[BF8_STRING_CUSS_WORD] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"VIRUS",strlen("VIRUS")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_VIRUS] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"VIRUS",strlen("VIRUS")))
++		lpBM->m_byBehaviorArray[BF8_STRING_VIRUS] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"COM",strlen("COM")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"COM",strlen("COM")))
++		lpBM->m_byBehaviorArray[BF8_STRING_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"EXE",strlen("EXE")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"EXE",strlen("EXE")))
++		lpBM->m_byBehaviorArray[BF8_STRING_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.COM",strlen("*.COM")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.COM",strlen("*.COM")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"?.COM",strlen("?.COM")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"?.COM",strlen("?.COM")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"?.EXE",strlen("?.EXE")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"?.EXE",strlen("?.EXE")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.?OM",strlen("*.?OM")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.?OM",strlen("*.?OM")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.?OM",strlen("*.CO?")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.?OM",strlen("*.CO?")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.?O?",strlen("*.?O?")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.?O?",strlen("*.?O?")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.C*",strlen("*.C*")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.C*",strlen("*.C*")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.EXE",strlen("*.EXE")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.EXE",strlen("*.EXE")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.?XE",strlen("*.?XE")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.?XE",strlen("*.?XE")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.EX?",strlen("*.EX?")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.EX?",strlen("*.EX?")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.?X?",strlen("*.?X?")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.?X?",strlen("*.?X?")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"*.E*",strlen("*.E*")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"*.E*",strlen("*.E*")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"?COM",strlen("?COM")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"?COM",strlen("?COM")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"?EXE",strlen("?EXE")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"?EXE",strlen("?EXE")))
++		lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"(C)",strlen("(C)")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_COPYRIGHT] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"(C)",strlen("(C)")))
++		lpBM->m_byBehaviorArray[BF8_STRING_COPYRIGHT] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"BY ",strlen("BY ")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_BY] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"BY ",strlen("BY ")))
++		lpBM->m_byBehaviorArray[BF8_STRING_BY] = TRUE;
+ 
+-            if (!memicmp(lpbyBuffer+i,"COMMAND.COM",strlen("COMMAND.COM")))
+-                lpBM->m_byBehaviorArray[BF8_STRING_COMMAND_COM] = TRUE;
++	    if (!memicmp(lpbyBuffer+i,"COMMAND.COM",strlen("COMMAND.COM")))
++		lpBM->m_byBehaviorArray[BF8_STRING_COMMAND_COM] = TRUE;
+ 
+-            for (j=0;j<lpstHSI->wNumStrings;j++)
+-            {
+-                if (!memicmp(lpbyBuffer+i,
+-                             lpstHSI->astBehaveStrings[j].abyString,
+-                             lpstHSI->astBehaveStrings[j].wStringLen))
+-                {
+-                    lpBM->m_byBehaviorArray[BF8_STRING_SLOT_0 + j] = TRUE;
+-                    break;
+-                }
+-            }
++	    for (j=0;j<lpstHSI->wNumStrings;j++)
++	    {
++		if (!memicmp(lpbyBuffer+i,
++			     lpstHSI->astBehaveStrings[j].abyString,
++			     lpstHSI->astBehaveStrings[j].wStringLen))
++		{
++		    lpBM->m_byBehaviorArray[BF8_STRING_SLOT_0 + j] = TRUE;
++		    break;
++		}
++	    }
+ 
+ // CAREY: do we want to check for alternating strings?
+ /*
+-            if (BMMatchAlternatingString(lpBM,
++	    if (BMMatchAlternatingString(lpBM,
+ 										 lpbyBuffer+i, 
+ 										 dwBufferLen-i))
+-            {
+-                lpBM->m_byBehaviorArray[BF8_STRING_ALTERNATING_UP_LOW] = TRUE;
++	    {
++		lpBM->m_byBehaviorArray[BF8_STRING_ALTERNATING_UP_LOW] = TRUE;
+ 
+-            }
++	    }
+ */
+-        }
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1697,36 +1697,36 @@
+     // See if we even want to consider this repmovs...
+ 
+     if (wLength < MIN_VIRUS_SIZE ||
+-        wLength > lpBM->m_stConfig.wAssumedVirusSize )
+-        return(BEHAVE_STATUS_OK);
++	wLength > lpBM->m_stConfig.wAssumedVirusSize )
++	return(BEHAVE_STATUS_OK);
+ 
+     // first submit the removs
+ 
+     if (lpBM->m_nNumREPMOVSSubmissions < MAX_REPMOVS_SUBMISSIONS)
+-        lpBM->m_wREPMOVSSubmissions[lpBM->m_nNumREPMOVSSubmissions++] = wLength;
++	lpBM->m_wREPMOVSSubmissions[lpBM->m_nNumREPMOVSSubmissions++] = wLength;
+ 
+     for (i=0;i<lpBM->m_nNumFileWriteSubmissions;i++)
+     {
+-        lAbs = (long)wLength - lpBM->m_wFileWriteSubmissions[i];
+-        if (lAbs < 0)
+-            lAbs = -lAbs;
++	lAbs = (long)wLength - lpBM->m_wFileWriteSubmissions[i];
++	if (lAbs < 0)
++	    lAbs = -lAbs;
+ 
+-        // exact +/- 4 bytes in length
++	// exact +/- 4 bytes in length
+ 
+-        if (lAbs < lpBM->m_stConfig.wMOVSWriteThreshold)
+-        {
+-            lpBM->m_byBehaviorArray[BF6_EXACT_MOVS_WRITE_MATCH] = TRUE;
+-            lpBM->m_wVirusSize = wLength;
+-            break;
+-        }
++	if (lAbs < lpBM->m_stConfig.wMOVSWriteThreshold)
++	{
++	    lpBM->m_byBehaviorArray[BF6_EXACT_MOVS_WRITE_MATCH] = TRUE;
++	    lpBM->m_wVirusSize = wLength;
++	    break;
++	}
+ 
+-        // close is +/- 10% in length
++	// close is +/- 10% in length
+ 
+-        if (lAbs < (wLength / lpBM->m_stConfig.wMOVSWriteClosePercent))
+-        {
+-            lpBM->m_byBehaviorArray[BF6_CLOSE_MOVS_WRITE_MATCH] = TRUE;
+-            break;
+-        }
++	if (lAbs < (wLength / lpBM->m_stConfig.wMOVSWriteClosePercent))
++	{
++	    lpBM->m_byBehaviorArray[BF6_CLOSE_MOVS_WRITE_MATCH] = TRUE;
++	    break;
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1744,36 +1744,36 @@
+     // See if we even want to consider this file write...
+ 
+     if (wLength < MIN_VIRUS_SIZE ||
+-        wLength > lpBM->m_stConfig.wAssumedVirusSize )
+-        return(BEHAVE_STATUS_OK);
++	wLength > lpBM->m_stConfig.wAssumedVirusSize )
++	return(BEHAVE_STATUS_OK);
+ 
+     // first submit the file write
+ 
+     if (lpBM->m_nNumFileWriteSubmissions < MAX_FILE_WRITE_SUBMISSIONS)
+-        lpBM->m_wFileWriteSubmissions[lpBM->m_nNumFileWriteSubmissions++] = wLength;
++	lpBM->m_wFileWriteSubmissions[lpBM->m_nNumFileWriteSubmissions++] = wLength;
+ 
+     for (i=0;i<lpBM->m_nNumREPMOVSSubmissions;i++)
+     {
+-        lAbs = (long)wLength - lpBM->m_wREPMOVSSubmissions[i];
+-        if (lAbs < 0)
+-            lAbs = -lAbs;
++	lAbs = (long)wLength - lpBM->m_wREPMOVSSubmissions[i];
++	if (lAbs < 0)
++	    lAbs = -lAbs;
+ 
+-        // exact +/- 4 bytes in length
++	// exact +/- 4 bytes in length
+ 
+-        if (lAbs < lpBM->m_stConfig.wMOVSWriteThreshold)
+-        {
+-            lpBM->m_byBehaviorArray[BF6_EXACT_MOVS_WRITE_MATCH] = TRUE;
+-            lpBM->m_wVirusSize = wLength;
+-            break;
+-        }
++	if (lAbs < lpBM->m_stConfig.wMOVSWriteThreshold)
++	{
++	    lpBM->m_byBehaviorArray[BF6_EXACT_MOVS_WRITE_MATCH] = TRUE;
++	    lpBM->m_wVirusSize = wLength;
++	    break;
++	}
+ 
+-        // close is +/- 10% in length
++	// close is +/- 10% in length
+ 
+-        if (lAbs < (wLength / lpBM->m_stConfig.wMOVSWriteClosePercent))
+-        {
+-            lpBM->m_byBehaviorArray[BF6_CLOSE_MOVS_WRITE_MATCH] = TRUE;
+-            break;
+-        }
++	if (lAbs < (wLength / lpBM->m_stConfig.wMOVSWriteClosePercent))
++	{
++	    lpBM->m_byBehaviorArray[BF6_CLOSE_MOVS_WRITE_MATCH] = TRUE;
++	    break;
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1794,7 +1794,7 @@
+     dwEOFDist = (long)dwLinearEP - (long)dwLinearCur + (long)lpBM->m_dwEPToEOFDist;
+ 
+     if (lpBM->m_nNumIPSubmissions < MAX_IP_SUBMISSIONS)
+-        lpBM->m_wIPSubmissions[lpBM->m_nNumIPSubmissions++] = (WORD)dwEOFDist;
++	lpBM->m_wIPSubmissions[lpBM->m_nNumIPSubmissions++] = (WORD)dwEOFDist;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -1809,30 +1809,30 @@
+     long                lAbs;
+ 
+     if (wLength < MIN_VIRUS_SIZE || wLength > lpBM->m_stConfig.wAssumedVirusSize )
+-        return(BEHAVE_STATUS_OK);
++	return(BEHAVE_STATUS_OK);
+ 
+     for (i=0;i<lpBM->m_nNumIPSubmissions;i++)
+     {
+-        lAbs = (long)wLength - lpBM->m_wIPSubmissions[i];
+-        if (lAbs < 0)
+-            lAbs = -lAbs;
++	lAbs = (long)wLength - lpBM->m_wIPSubmissions[i];
++	if (lAbs < 0)
++	    lAbs = -lAbs;
+ 
+-        // exact +/- 4 bytes in length
++	// exact +/- 4 bytes in length
+ 
+-        if (lAbs < lpBM->m_stConfig.wIPEOFThreshold)
+-        {
+-            lpBM->m_byBehaviorArray[BF6_EXACT_EP_TO_EOF_WRITE_MATCH] = TRUE;
+-            lpBM->m_wVirusSize = wLength;
+-            break;
+-        }
++	if (lAbs < lpBM->m_stConfig.wIPEOFThreshold)
++	{
++	    lpBM->m_byBehaviorArray[BF6_EXACT_EP_TO_EOF_WRITE_MATCH] = TRUE;
++	    lpBM->m_wVirusSize = wLength;
++	    break;
++	}
+ 
+-        // close is +/- 10% in length
++	// close is +/- 10% in length
+ 
+-        if (lAbs < (wLength / lpBM->m_stConfig.wIPEOFWriteClosePercent))
+-        {
+-            lpBM->m_byBehaviorArray[BF6_CLOSE_EP_TO_EOF_WRITE_MATCH] = TRUE;
+-            break;
+-        }
++	if (lAbs < (wLength / lpBM->m_stConfig.wIPEOFWriteClosePercent))
++	{
++	    lpBM->m_byBehaviorArray[BF6_CLOSE_EP_TO_EOF_WRITE_MATCH] = TRUE;
++	    break;
++	}
+     }
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -1887,7 +1887,7 @@
+     lpBM->m_byBehaviorArray[BF4_FOUND_MEM_WRITE_AFTER_E9] = TRUE;
+ 
+     if (bBait == TRUE)
+-        lpBM->m_byBehaviorArray[BF4_FOUND_BAIT_WRITE_AFTER_E9] = TRUE;
++	lpBM->m_byBehaviorArray[BF4_FOUND_BAIT_WRITE_AFTER_E9] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -1909,7 +1909,7 @@
+ )
+ {
+     if (bRet100)
+-        lpBM->m_byBehaviorArray[BF2_PUSH_RET_100] = TRUE;
++	lpBM->m_byBehaviorArray[BF2_PUSH_RET_100] = TRUE;
+ 
+     lpBM->m_byBehaviorArray[BF2_PUSH_RET] = TRUE;
+ 
+@@ -1944,9 +1944,9 @@
+ )
+ {
+     if (bReachable == TRUE)
+-        lpBM->m_dwPersistFlags |= PSF_REACHED_FROM_ORIG_EP;
++	lpBM->m_dwPersistFlags |= PSF_REACHED_FROM_ORIG_EP;
+     else
+-        lpBM->m_dwPersistFlags &= ~(DWORD)PSF_REACHED_FROM_ORIG_EP;
++	lpBM->m_dwPersistFlags &= ~(DWORD)PSF_REACHED_FROM_ORIG_EP;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -1977,7 +1977,7 @@
+ )
+ {
+     if (lpBM->m_dwPersistFlags & PSF_REACHED_FROM_ORIG_EP)
+-        lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_0] = TRUE;
++	lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_0] = TRUE;
+ 
+     return(BEHAVE_STATUS_OK);
+ }
+@@ -1995,367 +1995,367 @@
+ #ifdef PRINT_DEBUG
+ 
+     if (lpBM->m_byBehaviorArray[IF1_FILE_OPEN_READ_WRITE] == TRUE)
+-        printf("%d: IF1_FILE_OPEN_READ_WRITE\n",nFileNum);
++	printf("%d: IF1_FILE_OPEN_READ_WRITE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF1_FILE_OPEN_READ_ONLY] == TRUE)
+-        printf("%d: IF1_FILE_OPEN_READ_ONLY\n",nFileNum);
++	printf("%d: IF1_FILE_OPEN_READ_ONLY\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF1_FILE_OPEN_WRITE_ONLY] == TRUE)
+-        printf("%d: IF1_FILE_OPEN_WRITE_ONLY\n",nFileNum);
++	printf("%d: IF1_FILE_OPEN_WRITE_ONLY\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF1_FILE_OPEN_UNKNOWN_MODE] == TRUE)
+-        printf("%d: IF1_FILE_OPEN_UNKNOWN_MODE\n",nFileNum);
++	printf("%d: IF1_FILE_OPEN_UNKNOWN_MODE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_LESS_8] == TRUE)
+-        printf("%d: IF2_FILE_READ_LESS_8\n",nFileNum);
++	printf("%d: IF2_FILE_READ_LESS_8\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_1C_TO_1E] == TRUE)
+-        printf("%d: IF2_FILE_READ_1C_TO_1E\n",nFileNum);
++	printf("%d: IF2_FILE_READ_1C_TO_1E\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_BAIT] == TRUE)
+-        printf("%d: IF2_FILE_READ_BAIT\n",nFileNum);
++	printf("%d: IF2_FILE_READ_BAIT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_128_PLUS] == TRUE)
+-        printf("%d: IF2_FILE_READ_128_PLUS\n",nFileNum);
++	printf("%d: IF2_FILE_READ_128_PLUS\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_GENERAL] == TRUE)
+-        printf("%d: IF2_FILE_READ_GENERAL\n",nFileNum);
++	printf("%d: IF2_FILE_READ_GENERAL\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_3_OR_4] == TRUE)
+-        printf("%d: IF2_FILE_READ_3_OR_4\n",nFileNum);
++	printf("%d: IF2_FILE_READ_3_OR_4\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF2_FILE_READ_FFFF] == TRUE)
+-        printf("%d: IF2_FILE_READ_FFFF\n",nFileNum);
++	printf("%d: IF2_FILE_READ_FFFF\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF3_FILE_WRITE_LESS_8] == TRUE)
+-        printf("%d: IF3_FILE_WRITE_LESS_8\n",nFileNum);
++	printf("%d: IF3_FILE_WRITE_LESS_8\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF3_FILE_WRITE_1C_TO_1E] == TRUE)
+-        printf("%d: IF3_FILE_WRITE_1C_TO_1E\n",nFileNum);
++	printf("%d: IF3_FILE_WRITE_1C_TO_1E\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF3_FILE_WRITE_128_PLUS] == TRUE)
+-        printf("%d: IF3_FILE_WRITE_128_PLUS\n",nFileNum);
++	printf("%d: IF3_FILE_WRITE_128_PLUS\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF3_FILE_WRITE_GENERAL] == TRUE)
+-        printf("%d: IF3_FILE_WRITE_GENERAL\n",nFileNum);
++	printf("%d: IF3_FILE_WRITE_GENERAL\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF3_FILE_WRITE_3_OR_4] == TRUE)
+-        printf("%d: IF3_FILE_WRITE_3_OR_4\n",nFileNum);
++	printf("%d: IF3_FILE_WRITE_3_OR_4\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF3_FILE_WRITE_BAIT] == TRUE)
+-        printf("%d: IF3_FILE_WRITE_BAIT\n",nFileNum);
++	printf("%d: IF3_FILE_WRITE_BAIT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF4_FILE_SEEK_TOF] == TRUE)
+-        printf("%d: IF4_FILE_SEEK_TOF\n",nFileNum);
++	printf("%d: IF4_FILE_SEEK_TOF\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF4_FILE_SEEK_EOF] == TRUE)
+-        printf("%d: IF4_FILE_SEEK_EOF\n",nFileNum);
++	printf("%d: IF4_FILE_SEEK_EOF\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF4_FILE_SEEK_GENERAL] == TRUE)
+-        printf("%d: IF4_FILE_SEEK_GENERAL\n",nFileNum);
++	printf("%d: IF4_FILE_SEEK_GENERAL\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF5_FILE_CLOSE] == TRUE)
+-        printf("%d: IF5_FILE_CLOSE\n",nFileNum);
++	printf("%d: IF5_FILE_CLOSE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF6_FILE_GET_ATTR] == TRUE)
+-        printf("%d: IF6_FILE_GET_ATTR\n",nFileNum);
++	printf("%d: IF6_FILE_GET_ATTR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF6_FILE_SET_ATTR] == TRUE)
+-        printf("%d: IF6_FILE_SET_ATTR\n",nFileNum);
++	printf("%d: IF6_FILE_SET_ATTR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF7_FILE_GET_FILE_DATE] == TRUE)
+-        printf("%d: IF7_FILE_GET_FILE_DATE\n",nFileNum);
++	printf("%d: IF7_FILE_GET_FILE_DATE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF7_FILE_SET_FILE_DATE] == TRUE)
+-        printf("%d: IF7_FILE_SET_FILE_DATE\n",nFileNum);
++	printf("%d: IF7_FILE_SET_FILE_DATE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_TIME] == TRUE)
+-        printf("%d: IF8_SYSTEM_GET_TIME\n",nFileNum);
++	printf("%d: IF8_SYSTEM_GET_TIME\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF8_SYSTEM_GET_DATE] == TRUE)
+-        printf("%d: IF8_SYSTEM_GET_DATE\n",nFileNum);
++	printf("%d: IF8_SYSTEM_GET_DATE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF9_FILE_FIND_FIRST] == TRUE)
+-        printf("%d: IF9_FILE_FIND_FIRST\n",nFileNum);
++	printf("%d: IF9_FILE_FIND_FIRST\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF9_FILE_FIND_NEXT] == TRUE)
+-        printf("%d: IF9_FILE_FIND_NEXT\n",nFileNum);
++	printf("%d: IF9_FILE_FIND_NEXT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF10_FILE_DELETE] == TRUE)
+-        printf("%d: IF10_FILE_DELETE\n",nFileNum);
++	printf("%d: IF10_FILE_DELETE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF10_FILE_CREATE] == TRUE)
+-        printf("%d: IF10_FILE_CREATE\n",nFileNum);
++	printf("%d: IF10_FILE_CREATE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF10_FILE_RENAME] == TRUE)
+-        printf("%d: IF10_FILE_RENAME\n",nFileNum);
++	printf("%d: IF10_FILE_RENAME\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF10_FILE_CHDIR] == TRUE)
+-        printf("%d: IF10_FILE_CHDIR\n",nFileNum);
++	printf("%d: IF10_FILE_CHDIR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF10_FILE_GET_CUR_DIR] == TRUE)
+-        printf("%d: IF10_FILE_GET_CUR_DIR\n",nFileNum);
++	printf("%d: IF10_FILE_GET_CUR_DIR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF11_FILE_GET_DTA] == TRUE)
+-        printf("%d: IF11_FILE_GET_DTA\n",nFileNum);
++	printf("%d: IF11_FILE_GET_DTA\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF11_FILE_SET_DTA] == TRUE)
+-        printf("%d: IF11_FILE_SET_DTA\n",nFileNum);
++	printf("%d: IF11_FILE_SET_DTA\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_21] == TRUE)
+-        printf("%d: IF12_SYSTEM_GET_VECTOR_21\n",nFileNum);
++	printf("%d: IF12_SYSTEM_GET_VECTOR_21\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_21] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_21\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_21\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_13] == TRUE)
+-        printf("%d: IF12_SYSTEM_GET_VECTOR_13\n",nFileNum);
++	printf("%d: IF12_SYSTEM_GET_VECTOR_13\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_13] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_13\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_13\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_24] == TRUE)
+-        printf("%d: IF12_SYSTEM_GET_VECTOR_24\n",nFileNum);
++	printf("%d: IF12_SYSTEM_GET_VECTOR_24\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_24] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_24\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_24\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_LOW] == TRUE)
+-        printf("%d: IF12_SYSTEM_GET_VECTOR_LOW\n",nFileNum);
++	printf("%d: IF12_SYSTEM_GET_VECTOR_LOW\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_LOW] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_LOW\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_LOW\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_GET_VECTOR_HIGH] == TRUE)
+-        printf("%d: IF12_SYSTEM_GET_VECTOR_HIGH\n",nFileNum);
++	printf("%d: IF12_SYSTEM_GET_VECTOR_HIGH\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_HIGH] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_HIGH\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_HIGH\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_DIRECT] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_DIRECT\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_DIRECT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF12_SYSTEM_SET_VECTOR_0] == TRUE)
+-        printf("%d: IF12_SYSTEM_SET_VECTOR_0\n",nFileNum);
++	printf("%d: IF12_SYSTEM_SET_VECTOR_0\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF13_SYSTEM_MEM_ALLOC] == TRUE)
+-        printf("%d: IF13_SYSTEM_MEM_ALLOC\n",nFileNum);
++	printf("%d: IF13_SYSTEM_MEM_ALLOC\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF13_SYSTEM_PROG_EXEC] == TRUE)
+-        printf("%d: IF13_SYSTEM_PROG_EXEC (4B)\n",nFileNum);
++	printf("%d: IF13_SYSTEM_PROG_EXEC (4B)\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF14_SYSTEM_AM_I_THERE] == TRUE)
+-        printf("%d: IF14_SYSTEM_AM_I_THERE\n",nFileNum);
++	printf("%d: IF14_SYSTEM_AM_I_THERE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF15_INT_13_READ_MBR] == TRUE)
+-        printf("%d: IF15_INT_13_READ_MBR\n",nFileNum);
++	printf("%d: IF15_INT_13_READ_MBR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF15_INT_13_WRITE_MBR] == TRUE)
+-        printf("%d: IF15_INT_13_WRITE_MBR\n",nFileNum);
++	printf("%d: IF15_INT_13_WRITE_MBR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF15_INT_13_READ_GENERAL] == TRUE)
+-        printf("%d: IF15_INT_13_READ_GENERAL\n",nFileNum);
++	printf("%d: IF15_INT_13_READ_GENERAL\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF15_INT_13_WRITE_GENERAL] == TRUE)
+-        printf("%d: IF15_INT_13_WRITE_GENERAL\n",nFileNum);
++	printf("%d: IF15_INT_13_WRITE_GENERAL\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF15_INT_13_FORMAT] == TRUE)
+-        printf("%d: IF15_INT_13_FORMAT\n",nFileNum);
++	printf("%d: IF15_INT_13_FORMAT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF15_INT_13_GENERAL] == TRUE)
+-        printf("%d: IF15_INT_13_GENERAL\n",nFileNum);
++	printf("%d: IF15_INT_13_GENERAL\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[ IF16_FOUND_PRINT_STRING] == TRUE)
+-        printf("%d: IF16_FOUND_PRINT_STRING\n",nFileNum);
++	printf("%d: IF16_FOUND_PRINT_STRING\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF16_FOUND_TERMINATE] == TRUE)
+-        printf("%d: IF16_FOUND_TERMINATE\n",nFileNum);
++	printf("%d: IF16_FOUND_TERMINATE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF16_FOUND_KEYBOARD_INPUT] == TRUE)
+-        printf("%d: IF16_FOUND_KEYBOARD_INPUT\n",nFileNum);
++	printf("%d: IF16_FOUND_KEYBOARD_INPUT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[IF16_FOUND_PRINT_CHAR] == TRUE)
+-        printf("%d: IF16_FOUND_PRINT_CHAR\n",nFileNum);
++	printf("%d: IF16_FOUND_PRINT_CHAR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF1_WRITE_TO_CS100] == TRUE)
+-        printf("%d: BF1_WRITE_TO_CS100\n",nFileNum);
++	printf("%d: BF1_WRITE_TO_CS100\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF1_READ_MCB] == TRUE)
+-        printf("%d: BF1_READ_MCB\n",nFileNum);
++	printf("%d: BF1_READ_MCB\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF1_WRITE_MCB] == TRUE)
+-        printf("%d: BF1_WRITE_MCB\n",nFileNum);
++	printf("%d: BF1_WRITE_MCB\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF1_FILE_WRITE_CS100] == TRUE)
+-        printf("%d: BF1_FILE_WRITE_CS100\n",nFileNum);
++	printf("%d: BF1_FILE_WRITE_CS100\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF1_REPMOVS_CS100] == TRUE)
+-        printf("%d: BF1_REPMOVS_CS100\n",nFileNum);
++	printf("%d: BF1_REPMOVS_CS100\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF2_JUMP_TO_CS100] == TRUE)
+-        printf("%d: BF2_JUMP_TO_CS100\n",nFileNum);
++	printf("%d: BF2_JUMP_TO_CS100\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF2_FAR_JUMP_BEFORE_ENTRY_EXE] == TRUE)
+-        printf("%d: BF2_FAR_JUMP_BEFORE_ENTRY_EXE\n",nFileNum);
++	printf("%d: BF2_FAR_JUMP_BEFORE_ENTRY_EXE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF2_PUSH_RET] == TRUE)
+-        printf("%d: BF2_PUSH_RET\n",nFileNum);
++	printf("%d: BF2_PUSH_RET\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF2_PUSH_RET_100] == TRUE)
+-        printf("%d: BF2_PUSH_RET_100\n",nFileNum);
++	printf("%d: BF2_PUSH_RET_100\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4B] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AH_4B\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AH_4B\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_3D] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AH_3D\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AH_3D\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_E9] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_ANY_E9\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_ANY_E9\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_11] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AH_11\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AH_11\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_12] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AH_12\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AH_12\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4E] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AH_4E\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AH_4E\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AH_4F] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AH_4F\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AH_4F\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_ANY_MZ] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_ANY_MZ\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_ANY_MZ\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF3_FOUND_CMP_AM_I_THERE] == TRUE)
+-        printf("%d: BF3_FOUND_CMP_AM_I_THERE\n",nFileNum);
++	printf("%d: BF3_FOUND_CMP_AM_I_THERE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_FILE_READ_E9] == TRUE)
+-        printf("%d: BF4_FOUND_FILE_READ_E9\n",nFileNum);
++	printf("%d: BF4_FOUND_FILE_READ_E9\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_FILE_READ_MZ] == TRUE)
+-        printf("%d: BF4_FOUND_FILE_READ_MZ\n",nFileNum);
++	printf("%d: BF4_FOUND_FILE_READ_MZ\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_FILE_WRITE_E9] == TRUE)
+-        printf("%d: BF4_FOUND_FILE_WRITE_E9\n",nFileNum);
++	printf("%d: BF4_FOUND_FILE_WRITE_E9\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_FILE_WRITE_MZ] == TRUE)
+-        printf("%d: BF4_FOUND_FILE_WRITE_MZ\n",nFileNum);
++	printf("%d: BF4_FOUND_FILE_WRITE_MZ\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_MEM_WRITE_AFTER_E9] == TRUE)
+-        printf("%d: BF4_FOUND_MEM_WRITE_AFTER_E9\n",nFileNum);
++	printf("%d: BF4_FOUND_MEM_WRITE_AFTER_E9\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_MEM_WRITE_AFTER_MZ] == TRUE)
+-        printf("%d: BF4_FOUND_MEM_WRITE_AFTER_MZ\n",nFileNum);
++	printf("%d: BF4_FOUND_MEM_WRITE_AFTER_MZ\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF4_FOUND_BAIT_WRITE_AFTER_E9] == TRUE)
+-        printf("%d: BF4_FOUND_BAIT_WRITE_AFTER_E9\n",nFileNum);
++	printf("%d: BF4_FOUND_BAIT_WRITE_AFTER_E9\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_OPCODES] == TRUE)
+-        printf("%d: BF5_FOUND_SUSPICIOUS_OPCODES\n",nFileNum);
++	printf("%d: BF5_FOUND_SUSPICIOUS_OPCODES\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_PUSHF_CALL_FAR] == TRUE)
+-        printf("%d: BF5_FOUND_PUSHF_CALL_FAR\n",nFileNum);
++	printf("%d: BF5_FOUND_PUSHF_CALL_FAR\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_CALL_POP] == TRUE)
+-        printf("%d: BF5_FOUND_CALL_POP\n",nFileNum);
++	printf("%d: BF5_FOUND_CALL_POP\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_REPMOVS] == TRUE)
+-        printf("%d: BF5_FOUND_REPMOVS\n",nFileNum);
++	printf("%d: BF5_FOUND_REPMOVS\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_REPMOVS_CODE] == TRUE)
+-        printf("%d: BF5_FOUND_REPMOVS_CODE\n",nFileNum);
++	printf("%d: BF5_FOUND_REPMOVS_CODE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_E9_AT_TOF] == TRUE)
+-        printf("%d: BF5_FOUND_E9_AT_TOF\n",nFileNum);
++	printf("%d: BF5_FOUND_E9_AT_TOF\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_INT] == TRUE)
+-        printf("%d: BF5_FOUND_SUSPICIOUS_INT\n",nFileNum);
++	printf("%d: BF5_FOUND_SUSPICIOUS_INT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_E80000] == TRUE)
+-        printf("%d: BF5_FOUND_E80000\n",nFileNum);
++	printf("%d: BF5_FOUND_E80000\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_IRET] == TRUE)
+-        printf("%d: BF5_FOUND_IRET\n",nFileNum);
++	printf("%d: BF5_FOUND_IRET\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_PUSHF_CALL_FAR_21] == TRUE)
+-        printf("%d: BF5_FOUND_PUSHF_CALL_FAR21\n",nFileNum);
++	printf("%d: BF5_FOUND_PUSHF_CALL_FAR21\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF5_FOUND_SUSPICIOUS_INT_21] == TRUE)
+-        printf("%d: BF5_FOUND_SUSPICIOUS_INT_21\n",nFileNum);
++	printf("%d: BF5_FOUND_SUSPICIOUS_INT_21\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF6_FOUND_SELF_MOD_CODE] == TRUE)
+-        printf("%d: BF6_FOUND_SELF_MOD_CODE\n",nFileNum);
++	printf("%d: BF6_FOUND_SELF_MOD_CODE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF6_CLOSE_MOVS_WRITE_MATCH] == TRUE)
+-        printf("%d: BF6_CLOSE_MOVS_WRITE_MATCH\n",nFileNum);
++	printf("%d: BF6_CLOSE_MOVS_WRITE_MATCH\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF6_EXACT_MOVS_WRITE_MATCH] == TRUE)
+-        printf("%d: BF6_EXACT_MOVS_WRITE_MATCH\n",nFileNum);
++	printf("%d: BF6_EXACT_MOVS_WRITE_MATCH\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF6_EXACT_EP_TO_EOF_WRITE_MATCH] == TRUE)
+-        printf("%d: BF6_EXACT_EP_TO_EOF_WRITE_MATCH\n",nFileNum);
++	printf("%d: BF6_EXACT_EP_TO_EOF_WRITE_MATCH\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF6_CLOSE_EP_TO_EOF_WRITE_MATCH] == TRUE)
+-        printf("%d: BF6_CLOSE_EP_TO_EOF_WRITE_MATCH\n",nFileNum);
++	printf("%d: BF6_CLOSE_EP_TO_EOF_WRITE_MATCH\n",nFileNum);
+  
+     if (lpBM->m_byBehaviorArray[BF7_ENTRY_AFTER_FIXUPS] == TRUE)
+-        printf("%d: BF7_ENTRY_AFTER_FIXUPS\n",nFileNum);
++	printf("%d: BF7_ENTRY_AFTER_FIXUPS\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF7_WINDOWS_EXE] == TRUE)
+-        printf("%d: BF7_WINDOWS_EXE\n",nFileNum);
++	printf("%d: BF7_WINDOWS_EXE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF7_STOP_SCANNING] == TRUE)
+-        printf("%d: BF7_STOP_SCANNING\n",nFileNum);
++	printf("%d: BF7_STOP_SCANNING\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF7_COM_FILE] == TRUE)
+-        printf("%d: BF7_COM_FILE\n",nFileNum);
++	printf("%d: BF7_COM_FILE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF7_EXE_FILE] == TRUE)
+-        printf("%d: BF7_EXE_FILE\n",nFileNum);
++	printf("%d: BF7_EXE_FILE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF7_FOUND_HEADER_IN_BODY] == TRUE)
+-        printf("%d: BF7_FOUND_HEADER_IN_BODY\n",nFileNum);
++	printf("%d: BF7_FOUND_HEADER_IN_BODY\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF7_FIND_FIRST_EXEC] == TRUE)
+-        printf("%d: BF7_FIND_FIRST_EXEC\n",nFileNum);
++	printf("%d: BF7_FIND_FIRST_EXEC\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_CUSS_WORD] == TRUE)
+-        printf("%d: BF8_STRING_CUSS_WORD\n",nFileNum);
++	printf("%d: BF8_STRING_CUSS_WORD\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_STAR_COM] == TRUE)
+-        printf("%d: BF8_STRING_STAR_COM\n",nFileNum);
++	printf("%d: BF8_STRING_STAR_COM\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_STAR_EXE] == TRUE)
+-        printf("%d: BF8_STRING_STAR_EXE\n",nFileNum);
++	printf("%d: BF8_STRING_STAR_EXE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_COM] == TRUE)
+-        printf("%d: BF8_STRING_COM\n",nFileNum);
++	printf("%d: BF8_STRING_COM\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_EXE] == TRUE)
+-        printf("%d: BF8_STRING_EXE\n",nFileNum);
++	printf("%d: BF8_STRING_EXE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_COPYRIGHT] == TRUE)
+-        printf("%d: BF8_STRING_COPYRIGHT\n",nFileNum);
++	printf("%d: BF8_STRING_COPYRIGHT\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_COMMAND_COM] == TRUE)
+-        printf("%d: BF8_STRING_COMMAND_COM\n",nFileNum);
++	printf("%d: BF8_STRING_COMMAND_COM\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_VIRUS] == TRUE)
+-        printf("%d: BF8_STRING_VIRUS\n",nFileNum);
++	printf("%d: BF8_STRING_VIRUS\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_ALTERNATING_UP_LOW] == TRUE)
+-        printf("%d: BF8_STRING_ALTERNATING_UP_LOW\n",nFileNum);
++	printf("%d: BF8_STRING_ALTERNATING_UP_LOW\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF8_STRING_BY] == TRUE)
+-        printf("%d: BF8_STRING_BY\n",nFileNum);
++	printf("%d: BF8_STRING_BY\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF9_JUMP_AT_TOF_TO_MIDDLE] == TRUE)
+-        printf("%d: BF9_JUMP_AT_TOF_TO_MIDDLE\n",nFileNum);
++	printf("%d: BF9_JUMP_AT_TOF_TO_MIDDLE\n",nFileNum);
+ 
+     if (lpBM->m_byBehaviorArray[BF9_CALL_WITH_LARGE_DISP] == TRUE)
+-        printf("%d: BF9_CALL_WITH_LARGE_DISP\n",nFileNum);
++	printf("%d: BF9_CALL_WITH_LARGE_DISP\n",nFileNum);
+  #endif
+ 
+     return(BEHAVE_STATUS_OK);
+@@ -2363,7 +2363,7 @@
+ }
+ 
+ 
+-#if defined(SYM_VXD) || defined(SYM_NTK)
++#if defined(SYM_VXD) || defined(SYM_NTK) || defined(SYM_UNIX)
+ 
+ 
+ int mymemicmp
+@@ -2378,17 +2378,17 @@
+ 
+     for (i=0;i<nLen;i++)
+     {
+-        chA = ((LPBYTE)lpvA)[i];
+-        if (chA >= 'a' && chA <= 'z')
+-        chA &= 0x5F;
++	chA = ((LPBYTE)lpvA)[i];
++	if (chA >= 'a' && chA <= 'z')
++	chA &= 0x5F;
+ 
+-        chB = ((LPBYTE)lpvB)[i];
+-        if (chB >= 'a' && chB <= 'z')
+-            chB &= 0x5F;
++	chB = ((LPBYTE)lpvB)[i];
++	if (chB >= 'a' && chB <= 'z')
++	    chB &= 0x5F;
+ 
+-        delta = chA - chB;
+-        if (delta)
+-            return(delta);
++	delta = chA - chB;
++	if (delta)
++	    return(delta);
+     }
+ 
+     return(0);
+==== //depot/SARC/VIRLIB/SOURCE/HEUR/SRC/CALLFAKE.CPP#1 - d:\worknewvir\HEUR\SRC\CALLFAKE.CPP ====
+@@ -34,7 +34,9 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#if !defined(SYM_UNIX)
+ #include <io.h>
++#endif
+ 
+ #include "avtypes.h"
+ #include "callfake.h"
+@@ -45,11 +47,11 @@
+     FILE    *temp;
+ 
+     if (uOpenMode == 0)
+-        strcpy(s,"rb");
++	strcpy(s,"rb");
+     if (uOpenMode & 1)
+-        strcpy(s,"wb");
++	strcpy(s,"wb");
+     if (uOpenMode & 2)
+-        strcpy(s,"rb+");
++	strcpy(s,"rb+");
+ 
+ 	temp = fopen(lpName,s);
+ 	if (temp == NULL)
+@@ -70,11 +72,13 @@
+ 
+     uRead = fread(lpBuffer,1,uBytes,(FILE *)hHandle);
+ 
++#if !defined(SYM_UNIX)
+     {
+-        extern DWORD g_dwNumDiskHits;
++	extern DWORD g_dwNumDiskHits;
+ 
+-        g_dwNumDiskHits++;
++	g_dwNumDiskHits++;
+     }
++#endif
+ 
+     return(uRead);
+ }
+@@ -85,11 +89,11 @@
+ 
+     if (uBytes != 0)
+     {
+-        uWrite = fwrite(lpBuffer,1,uBytes,(FILE *)hHandle);
+-        if (uWrite != uBytes)
+-            return((UINT)-1);
++	uWrite = fwrite(lpBuffer,1,uBytes,(FILE *)hHandle);
++	if (uWrite != uBytes)
++	    return((UINT)-1);
+ 
+-        return(uWrite);
++	return(uWrite);
+     }
+ 
+     return((UINT)-1);
+@@ -99,19 +103,31 @@
+ DWORD DFileSeek(HFILE hHandle, LONG dwOffset, int nFlag)
+ {
+     if (!fseek((FILE *)hHandle,dwOffset,nFlag))
+-        return(ftell((FILE *)hHandle));
++	return(ftell((FILE *)hHandle));
+ 
+     return((DWORD)-1);
+ }
+ 
+ DWORD DFileLength(HFILE hHandle)
+ {
++#if defined(SYM_UNIX)
++    DWORD dwCur = ftell((FILE *)hHandle);
++    fseek((FILE *)hHandle,0,SEEK_END);
++    DWORD dwEnd = ftell((FILE *)hHandle);
++    fseek((FILE *)hHandle,dwCur,SEEK_SET);
++    return(dwEnd);
++#else
+     return(filelength(fileno((FILE *)hHandle)));
++#endif
+ }
+ 
+ BOOL DFileDelete(LPTSTR lpFileName)
+ {
++#if defined(SYM_UNIX)
++    return(!remove(lpFileName));        /* 1 on success, 0 on failure */
++#else
+     return(!unlink(lpFileName));        /* 1 on success, 0 on failure */
++#endif
+ }
+ 
+ HFILE DFileCreate(LPTSTR lpFileName, UINT uAttr)
+@@ -120,7 +136,7 @@
+ 
+ 	temp = fopen(lpFileName,"wb");
+     if (NULL == temp)
+-        return(NULL);
++	return(NULL);
+     fclose(temp);
+ 
+     temp = (FILE *)DFileOpen(lpFileName,uAttr);
+@@ -128,7 +144,7 @@
+ 	if (NULL == temp)
+ 		return((HFILE)-1);
+ 	else
+-        return((HFILE)temp);
++	return((HFILE)temp);
+ 
+ }
+ 
+==== //depot/SARC/VIRLIB/SOURCE/HEUR/SRC/DATAFILE.CPP#1 - d:\worknewvir\HEUR\SRC\DATAFILE.CPP ====
+==== //depot/SARC/VIRLIB/SOURCE/HEUR/SRC/INSTR2.CPP#1 - d:\worknewvir\HEUR\SRC\INSTR2.CPP ====
+@@ -170,7 +170,7 @@
+ #ifdef SYM_WIN16
+ #define memicmp _fmemicmp
+ #define strlen _fstrlen
+-#elif defined(SYM_VXD) || defined(SYM_NTK)
++#elif defined(SYM_VXD) || defined(SYM_NTK) || defined(SYM_UNIX)  // NEW_UNIX
+ int mymemicmp(LPVOID,LPVOID,int);
+ #define memicmp mymemicmp
+ #endif
+==== //depot/SARC/VIRLIB/SOURCE/HEUR/SRC/MAIN.CPP#1 - d:\worknewvir\HEUR\SRC\MAIN.CPP ====
+@@ -56,7 +56,7 @@
+ int     g_nHeurLevel = 0;
+ 
+ DWORD   g_dwNumDiskHits, g_dwNumIter,
+-        g_dwTotalDiskHits, g_dwTotalIter;
++	g_dwTotalDiskHits, g_dwTotalIter;
+ 
+ BOOL    g_bWriteCRC;
+ 
+@@ -64,8 +64,8 @@
+ void do_file(char *filename, PAMLHANDLE hLocal)
+ {
+ 	PAMSTATUS   pamStatus;
+-	HFILE		hFile;
+-	WORD		wVirusID;
++	HFILE           hFile;
++	WORD            wVirusID;
+     BOOL        bVirusFound;
+ 
+ 	strupr(filename);
+@@ -74,9 +74,9 @@
+     g_nFileNum++;
+ 
+     fprintf(stderr,"Files scanned: %d, Files detected: %d, Detection %%: %.2f%%)\n",
+-           g_nFileNum,
+-           g_nNumInfections,
+-           (float)g_nNumInfections/(float)g_nFileNum * 100);
++	   g_nFileNum,
++	   g_nNumInfections,
++	   (float)g_nNumInfections/(float)g_nFileNum * 100);
+ 
+     printf("------------------------------------------------------------------------------\n");
+     printf("%d: %-60s\n",g_nFileNum,filename);
+@@ -89,9 +89,9 @@
+     hFile = DFileOpen(filename,READ_ONLY_FILE);
+ 	if (hFile != (HFILE)-1)
+ 	{
+-        g_bWriteCRC = TRUE;
++	g_bWriteCRC = TRUE;
+ 
+-        pamStatus = PAMScanFileH(hLocal, hFile, g_nHeurLevel, &bVirusFound, &wVirusID);
++	pamStatus = PAMScanFileH(hLocal, hFile, g_nHeurLevel, &bVirusFound, &wVirusID);
+ 		DFileClose(hFile);
+ 	}
+ 	else
+@@ -99,26 +99,26 @@
+ 
+     if (pamStatus == PAMSTATUS_OK)
+     {
+-        if (bVirusFound == TRUE)
+-        {
+-            g_nNumInfections++;
++	if (bVirusFound == TRUE)
++	{
++	    g_nNumInfections++;
+ 
+-            printf("%d:Virus found\n",g_nFileNum);
++	    printf("%d:Virus found\n",g_nFileNum);
+ 
+-            if (g_bDisplayVirusInfo)
+-                BMPrintBehavior(&hLocal->stBM,g_nFileNum);
+-        }
+-        else
+-        {
+-            if (gbDeleteClean == TRUE)
+-            {
+-                printf("File deleted.\n");
++	    if (g_bDisplayVirusInfo)
++		BMPrintBehavior(&hLocal->stBM,g_nFileNum);
++	}
++	else
++	{
++	    if (gbDeleteClean == TRUE)
++	    {
++		printf("File deleted.\n");
+ //                unlink(filename);
+-            }
++	    }
+ 
+-            if (g_bDisplayCleanInfo)
+-                BMPrintBehavior(&hLocal->stBM,g_nFileNum);
+-        }
++	    if (g_bDisplayCleanInfo)
++		BMPrintBehavior(&hLocal->stBM,g_nFileNum);
++	}
+     }
+ }
+ 
+@@ -141,8 +141,8 @@
+ void process_directory(char *dir, PAMLHANDLE hLocal)
+ {
+     FILEFINDDATA_T      stFindFileData;
+-	TCHAR				szTemp[256], szPath[256];
+-	BOOL				bFileDone = FALSE, bOK;
++	TCHAR                           szTemp[256], szPath[256];
++	BOOL                            bFileDone = FALSE, bOK;
+ 
+ 	sprintf(szPath,"%s\\%s",dir,"*.*");
+ 
+@@ -150,20 +150,20 @@
+ 
+ 	while (bOK == TRUE)
+ 	{
+-        sprintf(szTemp,"%s\\%s",dir,stFindFileData.szFileName);
++	sprintf(szTemp,"%s\\%s",dir,stFindFileData.szFileName);
+ 		strupr(szTemp);
+ 
+-        if (!(stFindFileData.dwFileAttributes & FF_ATTRIB_DIREC))
++	if (!(stFindFileData.dwFileAttributes & FF_ATTRIB_DIREC))
+ 		{
+-            char *ptr, szTemp2[100];
++	    char *ptr, szTemp2[100];
+ 
+-            ptr = strrchr(szTemp,'.');
+-            if (ptr)
+-                strcpy(szTemp2,ptr);
+-            else
+-                szTemp2[0] = 0;
++	    ptr = strrchr(szTemp,'.');
++	    if (ptr)
++		strcpy(szTemp2,ptr);
++	    else
++		szTemp2[0] = 0;
+ 
+-            if (!bFileDone)
++	    if (!bFileDone)
+ 			{
+ 				do_file(szTemp,hLocal);
+ 				if (gbScanAll == FALSE)
+@@ -172,11 +172,11 @@
+ 		}
+ 		else
+ 		{
+-            if (strcmp(stFindFileData.szFileName,".") && strcmp(stFindFileData.szFileName,".."))
++	    if (strcmp(stFindFileData.szFileName,".") && strcmp(stFindFileData.szFileName,".."))
+ 				process_directory(szTemp,hLocal);
+ 		}
+ 		
+-        bOK = FindNextFile(&stFindFileData);
++	bOK = FindNextFile(&stFindFileData);
+ 	}
+ 
+     CloseFileFind(&stFindFileData);
+@@ -193,34 +193,34 @@
+ 
+ 	for (i=1;i<argc;i++)
+ 	{
+-        strupr(argv[i]);
++	strupr(argv[i]);
+ 
+-        if (!strcmp(argv[i],"/D"))
++	if (!strcmp(argv[i],"/D"))
+ 		{
+-            gbDeleteClean = TRUE;
++	    gbDeleteClean = TRUE;
+ 		}
+ 
+-        if (!strncmp(argv[i],"/L",2))
++	if (!strncmp(argv[i],"/L",2))
+ 		{
+-            g_nHeurLevel = atoi(argv[i]+2);
+-        }
++	    g_nHeurLevel = atoi(argv[i]+2);
++	}
+ 
+-        if (!strcmp(argv[i],"/V"))
+-        {
+-            g_bDisplayVirusInfo = TRUE;
+-        }
++	if (!strcmp(argv[i],"/V"))
++	{
++	    g_bDisplayVirusInfo = TRUE;
++	}
+ 
+-        if (!strcmp(argv[i],"/C"))
+-        {
+-            g_bDisplayCleanInfo = TRUE;
+-        }
++	if (!strcmp(argv[i],"/C"))
++	{
++	    g_bDisplayCleanInfo = TRUE;
++	}
+ 
+ 
+ 	}
+ }
+ 
+ 
+-void main(int argc, char *argv[])
++int main(int argc, char *argv[])
+ {
+ 
+ 	PAMGHANDLE      hGlobal;
+@@ -236,7 +236,7 @@
+ 	if (pamStatus != PAMSTATUS_OK)
+ 	{
+ 		printf("Something didn't go right during global init: %d\n",pamStatus);
+-		return;
++		return 0;
+ 	}
+ 
+     pamStatus = PAMLocalInit(hGlobal,
+@@ -245,7 +245,7 @@
+ 	if (pamStatus != PAMSTATUS_OK)
+ 	{
+ 		printf("Something didn't go right during local init: %d\n",pamStatus);
+-		return;
++		return 0;
+ 	}
+ 
+ 	process_directory(argv[1], hLocal);
+@@ -256,12 +256,14 @@
+     printf("------------------------------------------------------------------------------\n");
+     if (g_nFileNum != 0)
+     {
+-        printf("Summary\nFiles scanned: %d, Files detected: %d, Detection %%: %.2f%%)\n",
+-               g_nFileNum,
+-               g_nNumInfections,
+-               (float)g_nNumInfections/(float)g_nFileNum * 100);
+-        printf("Average disk hits: %ld, Average iterations: %ld\n",
+-                g_dwTotalDiskHits/g_nFileNum,g_dwTotalIter/g_nFileNum);
++	printf("Summary\nFiles scanned: %d, Files detected: %d, Detection %%: %.2f%%)\n",
++	       g_nFileNum,
++	       g_nNumInfections,
++	       (float)g_nNumInfections/(float)g_nFileNum * 100);
++	printf("Average disk hits: %ld, Average iterations: %ld\n",
++		g_dwTotalDiskHits/g_nFileNum,g_dwTotalIter/g_nFileNum);
+     }
+     printf("------------------------------------------------------------------------------\n");
++
++    return 0;
+ }
+==== //depot/SARC/VIRLIB/SOURCE/HEUR/SRC/PAMAPI.CPP#1 - d:\worknewvir\HEUR\SRC\PAMAPI.CPP ====
+@@ -180,6 +180,7 @@
+                       &dwOffset,
+                       NULL, NULL, NULL, NULL);
+ 
++
+     if (DFSTATUS_OK != dfTemp)
+     {
+         DFCloseDataFile(hDataFile);
+@@ -187,7 +188,8 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
+ 
+     if ((DWORD)PAMFileSeek(hFile,dwOffset,SEEK_SET) != dwOffset ||
+ 		PAMFileRead(hFile,pTemp->low_mem_area,LOW_MEM_SIZE) !=
+ 		LOW_MEM_SIZE)
+@@ -199,6 +201,7 @@
+     }
+ 
+     /* now its time to load the PAM configuration options */
++
+ 
+     dfTemp = DFLookUp(hDataFile,
+                       ID_BLOOD_CONFIG_OPTIONS,
+@@ -245,7 +248,7 @@
+         pTemp->config_info[0].wSuspiciousIntThreshold =
+             WENDIAN(pTemp->config_info[0].wSuspiciousIntThreshold);
+         pTemp->config_info[0].wDisreguardCleanBehaviorInstrCount =
+-            WENDIAN(config_info[0].wDisreguardCleanBehaviorInstrCount);
++            WENDIAN(pTemp->config_info[0].wDisreguardCleanBehaviorInstrCount); // NEW_UNIX
+         pTemp->config_info[0].wAssumedVirusSize =
+             WENDIAN(pTemp->config_info[0].wAssumedVirusSize);
+         pTemp->config_info[0].wMinEXEVirusSize =
+@@ -285,7 +288,8 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
+ 
+ #ifdef BIG_ENDIAN
+ 
+     // endianize our config data...
+@@ -304,7 +308,7 @@
+         pTemp->config_info[1].wSuspiciousIntThreshold =
+             WENDIAN(pTemp->config_info[1].wSuspiciousIntThreshold);
+         pTemp->config_info[1].wDisreguardCleanBehaviorInstrCount =
+-            WENDIAN(config_info[1].wDisreguardCleanBehaviorInstrCount);
++            WENDIAN(pTemp->config_info[1].wDisreguardCleanBehaviorInstrCount); // NEW_UNIX
+         pTemp->config_info[1].wAssumedVirusSize =
+             WENDIAN(pTemp->config_info[1].wAssumedVirusSize);
+         pTemp->config_info[1].wMinEXEVirusSize =
+@@ -342,7 +346,8 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
+ 
+ #ifdef BIG_ENDIAN
+ 
+     // endianize our config data...
+@@ -361,7 +366,7 @@
+         pTemp->config_info[2].wSuspiciousIntThreshold =
+             WENDIAN(pTemp->config_info[2].wSuspiciousIntThreshold);
+         pTemp->config_info[2].wDisreguardCleanBehaviorInstrCount =
+-            WENDIAN(config_info[2].wDisreguardCleanBehaviorInstrCount);
++            WENDIAN(pTemp->config_info[2].wDisreguardCleanBehaviorInstrCount); // NEW_UNIX
+         pTemp->config_info[2].wAssumedVirusSize =
+             WENDIAN(pTemp->config_info[2].wAssumedVirusSize);
+         pTemp->config_info[2].wMinEXEVirusSize =
+@@ -413,6 +418,7 @@
+         return(PAMSTATUS_FILE_ERROR);
+     }
+ 
++
+     if ((DWORD)PAMFileSeek(hFile,dwOffset,SEEK_SET) != dwOffset ||
+         PAMFileRead(hFile,&pTemp->wHeurStreamLen,sizeof(WORD)) != sizeof(WORD))
+     {
+@@ -421,7 +427,10 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
++    pTemp->wHeurStreamLen = WENDIAN(pTemp->wHeurStreamLen); // NEW_UNIX
+ 
++
+     pTemp->lpbyHeurCode = (LPBYTE)PAMMemoryAlloc(pTemp->wHeurStreamLen);
+     if (pTemp->lpbyHeurCode == NULL)
+     {
+@@ -430,6 +439,8 @@
+ 
+         return(PAMSTATUS_MEM_ERROR);
+     }
++
++
+     if (PAMFileRead(hFile,
+                     pTemp->lpbyHeurCode,
+                     pTemp->wHeurStreamLen) != pTemp->wHeurStreamLen)
+@@ -440,7 +451,9 @@
+ 
+         return(PAMSTATUS_FILE_ERROR);
+     }
++
++   
+ 
+     /* success. break out the champaigne (is that spelled right?) */
+ 
+     DFCloseDataFile(hDataFile);
+@@ -450,6 +463,7 @@
+ 
+     pamTemp = PExcludeInit(&hExclude,szDataFile);
+ 
++
+ 	if (pamTemp != PAMSTATUS_OK)
+     {
+         PAMMemoryFree(pTemp->lpbyHeurCode);
+@@ -457,6 +471,7 @@
+ 
+         return(pamTemp);
+     }
++
+ 
+     pTemp->sig_exclude_info = hExclude;
+ 
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/AVCB.H#1 - d:\worknewvir\INCLUDE\SRC\AVCB.H ====
+@@ -1,7 +1,7 @@
+ // Copyright 1996 Symantec, Peter Norton Product Group
+ //************************************************************************
+ //
+-// $Header:   S:/INCLUDE/VCS/avcb.h_v   1.4   20 Nov 1996 15:20:58   AOONWAL  $
++// $Header:   S:/INCLUDE/VCS/AVCB.H_v   1.3   01 May 1997 11:26:22   MKEATIN  $
+ //
+ // Description:
+ //  AVAPI 2.0 cookie tray and callback structure definitions.
+@@ -11,8 +11,14 @@
+ // See Also:
+ //
+ //************************************************************************
+-// $Log:   S:/INCLUDE/VCS/avcb.h_v  $
++// $Log:   S:/INCLUDE/VCS/AVCB.H_v  $
++// 
++//    Rev 1.3   01 May 1997 11:26:22   MKEATIN
++// Changed a char to a TCHAR for unicode compatability.
++// 
++//    Rev 1.2   18 Apr 1997 13:44:12   MKEATIN
++// Latest header from NEWVIR/INCLUDE
+ // 
+ //    Rev 1.4   20 Nov 1996 15:20:58   AOONWAL
+ // No change.
+ // 
+@@ -34,6 +40,8 @@
+ 
+ #define _AVCB_H
+ 
++#include "avtypes.h"
++
+ //////////////////////////////////////////////////////////////////////
+ // CBSTATUS type definition
+ //////////////////////////////////////////////////////////////////////
+@@ -46,6 +54,13 @@
+ #define     CBSTATUS_ERROR      1
+ #define     CBSTATUS_ABORT      2       // application wants to abort scan
+ 
++#if defined(VC20) || defined(SYM_WIN32) || defined(SYM_UNIX)
++typedef struct
++{
++    HFILE   hFile;
++    TCHAR   lpstrPathName[SYM_MAX_PATH+1];
++} FILEINFO_T, FAR *LPFILEINFORMATION;
++#endif
+ 
+ //////////////////////////////////////////////////////////////////////
+ // Cookie tray structure definition
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/AVDATFIL.H#1 - d:\worknewvir\INCLUDE\SRC\AVDATFIL.H ====
+@@ -1,7 +1,7 @@
+ // Copyright 1996 Symantec, Peter Norton Product Group
+ //************************************************************************
+ //
+-// $Header:   S:/INCLUDE/VCS/avdatfil.h_v   1.2   20 Nov 1996 15:24:12   AOONWAL  $
++// $Header:   S:/INCLUDE/VCS/AVDATFIL.H_v   1.3   08 Jul 1997 17:49:40   MKEATIN  $
+ //
+ // Description:
+ //  AVAPI 2.0 datafile access definitions and structures.
+@@ -11,7 +11,17 @@
+ // See Also:
+ //
+ //************************************************************************
+-// $Log:   S:/INCLUDE/VCS/avdatfil.h_v  $
++// $Log:   S:/INCLUDE/VCS/AVDATFIL.H_v  $
++// 
++//    Rev 1.3   08 Jul 1997 17:49:40   MKEATIN
++// Changed DFFunctions() to EngFunctions().
++// 
++//    Rev 1.2   02 Jul 1997 10:17:50   CNACHEN
++// added proper w32/ntk pragma pack(push/pops)
++// 
++// 
++//    Rev 1.1   18 Apr 1997 13:44:20   MKEATIN
++// Latest header from NEWVIR/INCLUDE
+ // 
+ //    Rev 1.2   20 Nov 1996 15:24:12   AOONWAL
+ // No change.
+@@ -40,7 +50,11 @@
+ 
+ // file structures
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -67,9 +81,14 @@
+ 
+ #define sDATAFILEHEADER         sizeof(DATA_FILE_HEADER_T)
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+-DFSTATUS DFOpenDataFile
++
++DFSTATUS EngOpenDataFile
+ (
+     LPDATAFILECALLBACKS lpDataFileCallBacks,
+     WORD                wDataFileNum,
+@@ -77,7 +96,7 @@
+     LPLPVOID            lplpvFileInfo
+ );
+ 
+-DFSTATUS DFLookUp
++DFSTATUS EngLookUp
+ (
+     LPDATAFILECALLBACKS   lpDataFileCallBacks,
+     LPVOID                lpvFileInfo,
+@@ -86,7 +105,7 @@
+     LPBOOL                lpbSectionFound
+ );
+ 
+-DFSTATUS DFCloseDataFile
++DFSTATUS EngCloseDataFile
+ (
+     LPDATAFILECALLBACKS    lpDataFileCallBacks,
+     LPVOID                 lpvFileInfo
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/AVENGE.H#1 - d:\worknewvir\INCLUDE\SRC\AVENGE.H ====
+@@ -1,7 +1,7 @@
+ // Copyright 1996 Symantec, Peter Norton Product Group
+ //************************************************************************
+ //
+-// $Header:   S:/INCLUDE/VCS/avenge.h_v   1.16   19 May 1997 10:31:22   CNACHEN  $
++// $Header:   S:/INCLUDE/VCS/avenge.h_v   1.21   17 Jul 1997 17:49:56   DDREW  $
+ //
+ // Description:
+ //  Contains prototypes for functions exported by AVENGE.
+@@ -12,17 +12,43 @@
+ //
+ //************************************************************************
+ // $Log:   S:/INCLUDE/VCS/avenge.h_v  $
++// 
++//    Rev 1.21   17 Jul 1997 17:49:56   DDREW
++// Moved some "ifndef SYM_NLM's" around
++// 
++//    Rev 1.20   08 Jul 1997 17:20:24   MKEATIN
++// No longer pass the defualt NULL in any protypes.  This won't compile for
++// the NLM C compiler.
++// 
++//    Rev 1.19   02 Jul 1997 10:17:34   CNACHEN
++// added proper w32/ntk pragma pack(push/pops)
++// 
++// 
++//    Rev 1.18   03 Jun 1997 18:13:00   MKEATIN
++// Added the prototype for the new EngGetNumClaimedViruses().
++// 
++//    Rev 1.17   20 May 1997 13:18:22   CNACHEN
+ // 
+-//    Rev 1.16   19 May 1997 10:31:22   CNACHEN
+-// Added bootlist section id.
++//    Rev 1.16   19 May 1997 10:30:36   CNACHEN
++// Added bootlist section ID.
++// 
++//    Rev 1.15   15 May 1997 12:21:40   MKEATIN
++// Added a lpvProvidedFileInfo parameter to EngGetVirusName().
++// 
++//    Rev 1.14   13 May 1997 18:25:50   MKEATIN
++// Ported Carey's boot info caching code
++// 
++//    Rev 1.13   28 Apr 1997 18:37:36   MKEATIN
++// type defined HGENG as GENG FAR * instead of tagGENG FAR *
++// 
++//    Rev 1.12   28 Apr 1997 18:31:26   MKEATIN
++// Changed tagHENG to tagHGENG - woops.
+ // 
+-//    Rev 1.15   30 Apr 1997 19:19:44   Ray
+-// Added EngGetNumClaimedViruses() to retrieve "Claimed" number of
+-// viruses from Virscan1.dat.
++//    Rev 1.11   28 Apr 1997 18:26:40   MKEATIN
++// Gave names to structs GENG and LENG: tagGENG and tagLENG.
+ // 
+-//    Rev 1.14   29 Apr 1997 11:06:34   CNACHEN
+-// Added claimed number of viruses section to VIRSCAN1.DAT.  This is in
+-// section 500.
++//    Rev 1.10   18 Apr 1997 13:44:26   MKEATIN
++// Latest header from NEWVIR/INCLUDE
+ // 
+ //    Rev 1.13   20 Nov 1996 15:23:08   AOONWAL
+ // No change.
+@@ -287,7 +313,11 @@
+ #define FSTART_EXE_FILE_TYPE            2
+ #define FSTART_SYS_FILE_TYPE            3
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -306,7 +336,11 @@
+     WORD first_rel_offset;  /* offset of first relocation table */
+ } EXEHEADER_T, FAR *LPEXEHEADER;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ #define EXE_SIG1            0x4D5A
+ #define EXE_SIG2            0x5A4D
+@@ -321,7 +355,11 @@
+ #define COM_INITIAL_IP      0x100
+ #define COM_IP_SUB_CONST    0x100
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -332,7 +370,11 @@
+     BYTE buffer[8];
+ } SYSHEADER_T, FAR *LPSYSHEADER;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+@@ -412,7 +454,11 @@
+ #define ADDRESS_640K        0x0A0000ul
+ #define ADDRESS_1M          0x100000ul
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -426,7 +472,11 @@
+     BYTE            bySig[SIZE_MEM];
+ } MEMSIGREPAIR_T, FAR *LPMEMSIGREPAIR;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ typedef struct
+ {
+@@ -456,7 +506,11 @@
+ #define MEM_SIG_LEN_CD          15
+ #define MEM_SIG_LEN_ALL         13          // Same for ALL and TOM signatures
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -470,81 +524,14 @@
+     BYTE            bySig[MEM_SIG_LEN_ALL];
+ } MEM_ALL_SIG_T, FAR *LPMEM_ALL_SIG;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+-// Boot scanner data structures
+-//
+-///////////////////////////////////////////////////////////////////////////
+-
+-typedef struct
+-{
+-    MEMSIGGROUP_T   stBOO;
+-} BOOT_SCAN_INFO_T, FAR *LPBOOT_SCAN_INFO;
+-
+-#define PARTITION_OFFSET        446
+-#define PARTENTRY_SIZE           16
+-#define PARTITION_ACTIVE       0x80
+-#define MAX_PARTITIONS            4
+-#define SECTOR_SIZE             512
+-
+-// -------------------
+-// MBR Partition Entry
+-// -------------------
+-
+-typedef struct tagPARTENTRY
+-{
+-    BOOL    bActive;
+-    BYTE    byStartSide;
+-    BYTE    byStartSector;
+-    WORD    wStartCylinder;
+-    BYTE    byFileSystem;
+-    BYTE    byEndSide;
+-    BYTE    byEndSector;
+-    WORD    wEndCylinder;
+-    DWORD   dwRelativeSectors;
+-    DWORD   dwTotalSectors;
+-} PARTENTRY, FAR * LPPARTENTRY;
+-
+-// --------------------------------
+-// Partition entry file system IDs
+-// Snagged from core/include/disk.h
+-// --------------------------------
+-                                        // ----------------------------------
+-#define  PARTFS_NOT_USED         0x00   // none
+-#define  PARTFS_DOS_12           0x01   // DOS, 12-bit Fat
+-#define  PARTFS_XENIX1           0x02   // XENIX
+-#define  PARTFS_XENIX2           0x03   // XENIX
+-#define  PARTFS_DOS_16           0x04   // DOS, 16-bit Fat
+-#define  PARTFS_EXTENDED         0x05   // DOS, Extended
+-#define  PARTFS_BIGDOS           0x06   // DOS, 32Meg+ Partition
+-#define  PARTFS_HPFS             0x07   // HPFS partition
+-#define  PARTFS_OS2_BOOT_MGR     0x0A   // OS/2 boot manager
+-#define  PARTFS_DOS_32           0x0B   // DOS, 32-Bit Fat
+-#define  PARTFS_DOS_32_LBA       0x0C   // same as 0x0B w/ LBA int 13 extensions
+-#define  PARTFS_BIGDOS_LBA       0x0E   // same as 0x06 w/ LBA int 13 extensions
+-#define  PARTFS_EXTENDED_LBA     0x0F   // same as 0x05 w/ LBA int 13 extensions
+-#define  PARTFS_DM_RO            0x50   // Disk Manager R/O
+-#define  PARTFS_DM_RW            0x51   // Disk Manager R/W
+-#define  PARTFS_GOLDEN_BOW       0x56   // Golden Bow partition
+-#define  PARTFS_SS_UNKNOWN1      0x61   // SpeedStor partition
+-#define  PARTFS_386IX            0x63   // Interactive's 386/IX
+-#define  PARTFS_NETWARE_286      0x64   // Netware 286
+-#define  PARTFS_NETWARE_386      0x65   // Netware 386
+-#define  PARTFS_PCIX             0x75   // PCIX
+-#define  PARTFS_EVEREX_SUPERDOS  0xAA   // Everex Super DOS partitions <= 285M
+-#define  PARTFS_CPM              0xDB   // CPM
+-#define  PARTFS_SS_12BIT         0xE1   // SpeedStor 12-bit
+-#define  PARTFS_SS_UNKNOWN2      0xE3   // SpeedStor partition
+-#define  PARTFS_SS_16BIT         0xE4   // SpeedStor 16-bit
+-#define  PARTFS_SS_EXTENSION     0xF1   // SpeedStor Extension
+-#define  PARTFS_SS_LARGE         0xF4   // SpeedStor LARGE
+-#define  PARTFS_BBT              0xFF   // Bad Block Table (Unix)
+-                                        // -------------------------------------
+-
+-///////////////////////////////////////////////////////////////////////////
+-//
+ // CRC scanner data file info
+ //
+ ///////////////////////////////////////////////////////////////////////////
+@@ -553,7 +540,11 @@
+ 
+ #define CRC_NUM_VERIFY_BYTES    9
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -563,7 +554,11 @@
+     BYTE    byVerifyData[CRC_NUM_VERIFY_BYTES];
+ } CRC_SIG_DATA_T, FAR *LPCRC_SIG_DATA;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+@@ -650,7 +645,11 @@
+ 
+ // data file structures...
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -661,20 +660,29 @@
+     WORD    wFlags;         // CRC/ALG/BOO/MAC (repair or not)
+ } VIRUS_INFO_T, FAR *LPVIRUS_INFO;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+ // Top level AVENGE data structures
+ //
+ ///////////////////////////////////////////////////////////////////////////
+-
+ 
+ // Engine scan file initialization flags
+ 
+ #define GENG_INIT_FILE_FLAG_LOAD_ALL            0x00000001UL
+ #define GENG_INIT_FILE_FLAG_LOAD_WILD           0x00000002UL
+ 
++
++// boot init flags
++
++#define BOOT_INIT_NO_DISK_ACCESS                0x00000001UL
++
++
+ // Engine load status flags
+ 
+ #define GENG_FLAG_MEMORY_LOADED                 0x00000001UL
+@@ -682,8 +690,10 @@
+ #define GENG_FLAG_FILE_CRC_LOADED               0x00000004UL
+ #define GENG_FLAG_FILE_ALL_LOADED               0x00000008UL
+ #define GENG_FLAG_BOOT_LOADED                   0x00000010UL
++#define GENG_FLAG_BOOT_INFO_LOADED              0x00000020UL
+ #define GENG_FLAG_UNINITIALIZED                 0
+ 
++
+ // mutex defines
+ 
+ #define MUTEX_FREE                              0
+@@ -719,70 +729,18 @@
+     LPIPCCALLBACKS          lpIPCCallBacks;
+     LPVOID                  lpvMutexInfo;
+ } VIRUS_INFO_CACHE_T, FAR *LPVIRUS_INFO_CACHE;
+-
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+-// Global Engine Context
+-//
+-///////////////////////////////////////////////////////////////////////////
+-
+-typedef struct
+-{
+-    LPDATAFILECALLBACKS     lpDataFileCallBacks;    // Datafile callbacks
+-    LPPROGRESSCALLBACKS     lpProgressCallBacks;    // Progress callbacks
+-    LPGENERALCALLBACKS      lpGeneralCallBacks;     // General callbacks
+-    LPIPCCALLBACKS          lpIPCCallBacks;         // IPC callbacks
+-
+-    DWORD                   dwInitStatus;           // bits to specify
+-                                                    // initialization status
+-
+-    DWORD                   dwGlobalCookie;         // our global cookie
+-
+-    ALG_SCAN_INFO_T         stWildALGScanInfo;      // Wild ALG scanning data
+-    ALG_SCAN_INFO_T         stGeneralALGScanInfo;   // General ALG scanning data
+-    CRC_SCAN_INFO_T         stCRCScanInfo;          // General CRC scanning data
+-
+-    LPMEMORY_SCAN_INFO      lpMemoryScanInfo;
+-    LPBOOT_SCAN_INFO        lpBootScanInfo;
+-
+-    VIRUS_INFO_CACHE_T      stVirusInfoCache;
+-} GENG;
+-
+-typedef GENG FAR *HGENG;
+-typedef HGENG FAR *LPHGENG;
+-
+-
+-///////////////////////////////////////////////////////////////////////////
+-//
+-// Local Engine Context
+-//
+-///////////////////////////////////////////////////////////////////////////
+-
+-#define TEMP_BUFFER_SIZE        4096
+-
+-typedef struct
+-{
+-    HGENG                   hGEng;
+-
+-    DWORD                   dwLocalCookie;
+-
+-    ALGSCANDATA_T           stAlgScanData;
+-    FSTARTINFO_T            stFStartInfo;
+-
+-    BYTE                    byTempBuffer[TEMP_BUFFER_SIZE];
+-} LENG;
+-
+-typedef LENG FAR *HLENG;
+-typedef HLENG FAR *LPHLENG;
+-
+-///////////////////////////////////////////////////////////////////////////
+-//
+ // Algorithmic scanner structures/defines/etc
+ //
+ ///////////////////////////////////////////////////////////////////////////
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -813,7 +771,11 @@
+ 	BYTE bySigData[1];    			// Signature bytes
+ } ALG_SIG_DATA_T, FAR *LPALG_SIG_DATA, FAR * FAR *LPLPALG_SIG_DATA;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ #define MASK_HIGH_NIBBLE                0xF0
+ #define MASK_LOW_NIBBLE                 0x0F
+@@ -924,7 +886,11 @@
+ 
+ #define BOO_SIG_LEN             14
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -932,7 +898,11 @@
+     BYTE bySigData[BOO_SIG_LEN];    // Signature bytes
+ } BOO_SIG_DATA_T, FAR *LPBOO_SIG_DATA;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+@@ -990,7 +960,11 @@
+ typedef void (*LPUPDATEWORDKEY)(LPWORD lpwKey, WORD wDelta);
+ typedef void (*LPDECRYPTWORD)(LPWORD lpwData, WORD wKey);
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(push,1)
++#else
+ #pragma pack(1)
++#endif
+ 
+ typedef struct
+ {
+@@ -1012,9 +986,197 @@
+     WORD    wInfSize;               // Virus infection size
+ } VIRUS_REPAIR_T, FAR *LPVIRUS_REPAIR;
+ 
++#if defined(SYM_WIN32) || defined(SYM_NTK)
++#pragma pack(pop)
++#else
+ #pragma pack()
++#endif
++
++///////////////////////////////////////////////////////////////////////////
++//
++// Boot scanner data structures
++//
++///////////////////////////////////////////////////////////////////////////
++
++// used for VxD to cache all records
+ 
++typedef struct tag_BOOT_INFO_LIST
++{
++    HVIRUS                      hVirus;
++    VIRUS_INFO_T                stVirusInfo;
++    VIRUS_REPAIR_T              stVirusRepair;
++    BYTE                        byDecryptSig[DECRYPT_MEM_SIG_SIZE];
++    LPSTR                       lpszVirusName;
+ 
++    struct tag_BOOT_INFO_LIST * lpstNext;
++} BOOT_INFO_LIST_T, FAR *LPBOOT_INFO_LIST;
++
++typedef struct
++{
++    MEMSIGGROUP_T           stBOO;
++    LPBOOT_INFO_LIST        lpstBootInfoList;
++} BOOT_SCAN_INFO_T, FAR *LPBOOT_SCAN_INFO;
++
++#define PARTITION_OFFSET        446
++#define PARTENTRY_SIZE           16
++#define PARTITION_ACTIVE       0x80
++#define MAX_PARTITIONS            4
++#define SECTOR_SIZE             512
++
++// -------------------
++// MBR Partition Entry
++// -------------------
++
++typedef struct tagPARTENTRY
++{
++    BOOL    bActive;
++    BYTE    byStartSide;
++    BYTE    byStartSector;
++    WORD    wStartCylinder;
++    BYTE    byFileSystem;
++    BYTE    byEndSide;
++    BYTE    byEndSector;
++    WORD    wEndCylinder;
++    DWORD   dwRelativeSectors;
++    DWORD   dwTotalSectors;
++} PARTENTRY, FAR * LPPARTENTRY;
++
++// --------------------------------
++// Partition entry file system IDs
++// Snagged from core/include/disk.h
++// --------------------------------
++                                        // ----------------------------------
++#define  PARTFS_NOT_USED         0x00   // none
++#define  PARTFS_DOS_12           0x01   // DOS, 12-bit Fat
++#define  PARTFS_XENIX1           0x02   // XENIX
++#define  PARTFS_XENIX2           0x03   // XENIX
++#define  PARTFS_DOS_16           0x04   // DOS, 16-bit Fat
++#define  PARTFS_EXTENDED         0x05   // DOS, Extended
++#define  PARTFS_BIGDOS           0x06   // DOS, 32Meg+ Partition
++#define  PARTFS_HPFS             0x07   // HPFS partition
++#define  PARTFS_OS2_BOOT_MGR     0x0A   // OS/2 boot manager
++#define  PARTFS_DOS_32           0x0B   // DOS, 32-Bit Fat
++#define  PARTFS_DOS_32_LBA       0x0C   // same as 0x0B w/ LBA int 13 extensions
++#define  PARTFS_BIGDOS_LBA       0x0E   // same as 0x06 w/ LBA int 13 extensions
++#define  PARTFS_EXTENDED_LBA     0x0F   // same as 0x05 w/ LBA int 13 extensions
++#define  PARTFS_DM_RO            0x50   // Disk Manager R/O
++#define  PARTFS_DM_RW            0x51   // Disk Manager R/W
++#define  PARTFS_GOLDEN_BOW       0x56   // Golden Bow partition
++#define  PARTFS_SS_UNKNOWN1      0x61   // SpeedStor partition
++#define  PARTFS_386IX            0x63   // Interactive's 386/IX
++#define  PARTFS_NETWARE_286      0x64   // Netware 286
++#define  PARTFS_NETWARE_386      0x65   // Netware 386
++#define  PARTFS_PCIX             0x75   // PCIX
++#define  PARTFS_EVEREX_SUPERDOS  0xAA   // Everex Super DOS partitions <= 285M
++#define  PARTFS_CPM              0xDB   // CPM
++#define  PARTFS_SS_12BIT         0xE1   // SpeedStor 12-bit
++#define  PARTFS_SS_UNKNOWN2      0xE3   // SpeedStor partition
++#define  PARTFS_SS_16BIT         0xE4   // SpeedStor 16-bit
++#define  PARTFS_SS_EXTENSION     0xF1   // SpeedStor Extension
++#define  PARTFS_SS_LARGE         0xF4   // SpeedStor LARGE
++#define  PARTFS_BBT              0xFF   // Bad Block Table (Unix)
++
++
++///////////////////////////////////////////////////////////////////////////
++//
++// Global Engine Context
++//
++///////////////////////////////////////////////////////////////////////////
++
++typedef struct tagGENG
++{
++    LPDATAFILECALLBACKS     lpDataFileCallBacks;    // Datafile callbacks
++    LPPROGRESSCALLBACKS     lpProgressCallBacks;    // Progress callbacks
++    LPGENERALCALLBACKS      lpGeneralCallBacks;     // General callbacks
++    LPIPCCALLBACKS          lpIPCCallBacks;         // IPC callbacks
++
++    DWORD                   dwInitStatus;           // bits to specify
++                                                    // initialization status
++
++    DWORD                   dwGlobalCookie;         // our global cookie
++
++    ALG_SCAN_INFO_T         stWildALGScanInfo;      // Wild ALG scanning data
++    ALG_SCAN_INFO_T         stGeneralALGScanInfo;   // General ALG scanning data
++    CRC_SCAN_INFO_T         stCRCScanInfo;          // General CRC scanning data
++
++    LPMEMORY_SCAN_INFO      lpMemoryScanInfo;
++    LPBOOT_SCAN_INFO        lpBootScanInfo;
++
++    VIRUS_INFO_CACHE_T      stVirusInfoCache;
++} GENG;
++
++typedef GENG FAR  *HGENG;
++typedef HGENG FAR *LPHGENG;
++
++
++///////////////////////////////////////////////////////////////////////////
++//
++// Local Engine Context
++//
++///////////////////////////////////////////////////////////////////////////
++
++#define TEMP_BUFFER_SIZE        4096
++
++typedef struct tagLENG
++{
++    HGENG                   hGEng;
++
++    DWORD                   dwLocalCookie;
++
++    ALGSCANDATA_T           stAlgScanData;
++    FSTARTINFO_T            stFStartInfo;
++
++    BYTE                    byTempBuffer[TEMP_BUFFER_SIZE];
++} LENG;
++
++typedef LENG FAR  *HLENG;
++typedef HLENG FAR *LPHLENG;
++
++///////////////////////////////////////////////////////////////////////////
++//
++// Data structures for virus list functions
++//
++///////////////////////////////////////////////////////////////////////////
++
++#define NAME_BUFFER_SIZE    16384
++
++typedef struct
++{
++    LPVOID  lpvFileInfo;
++    BOOL    bNoFileHandle;
++    LPBYTE  lpbyNameBuffer;
++    DWORD   dwDataLeft;
++    DWORD   dwBufferLeft;
++    DWORD   dwBufferOffset;
++    DWORD   dwSectionStart;
++    DWORD   dwSectionOffset;
++} NAME_LOAD_INFO_T, FAR *LPNAME_LOAD_INFO;
++
++#define MAX_RECS_TO_HOLD        256
++#define MAX_INFREC_BUFFER_SIZE  (MAX_RECS_TO_HOLD * sizeof(VIRUS_INFO_T))
++
++typedef struct
++{
++    LPVOID  lpvFileInfo;
++    BOOL    bNoFileHandle;
++    LPBYTE  lpbyInfRecBuffer;
++    DWORD   dwTotalRecsLeft;
++    DWORD   dwTotalIndex;
++    DWORD   dwBufferRecsLeft;
++    DWORD   dwBufferIndex;
++    DWORD   dwSectionStart;
++    DWORD   dwRecSize;
++    DWORD   dwRecsInBuffer;
++} INFREC_LOAD_INFO_T, FAR *LPINFREC_LOAD_INFO;
++
++typedef struct
++{
++    INFREC_LOAD_INFO_T      stInfRecInfo;
++    NAME_LOAD_INFO_T        stNameInfo;
++} BULK_LOAD_INFO_T, FAR *LPBULK_LOAD_INFO;
++
++
++
+ ///////////////////////////////////////////////////////////////////////////
+ //
+ // Prototypes of exports
+@@ -1067,17 +1229,19 @@
+ //
+ ///////////////////////////////////////////////////////////////////////////
+ 
++#ifndef SYM_NLM
+ ENGSTATUS EngGlobalBootInit
+ (
+-    HGENG               hGEng
++    HGENG               hGEng,
++    DWORD               dwFlags
+ );
+ 
+ ENGSTATUS EngGlobalBootClose
+ (
+     HGENG               hGEng
+ );
++#endif
+ 
+-
+ ///////////////////////////////////////////////////////////////////////////
+ //
+ // Global Engine Context File Initialization and Close
+@@ -1152,7 +1316,9 @@
+     LPBOOL              lpbFoundSig,
+     LPHVIRUS            lphVirus
+ );
++
+ 
++#ifndef SYM_NLM
+ ENGSTATUS EngScanBoot
+ (
+     HLENG       hLEng,
+@@ -1161,8 +1327,8 @@
+     LPBOOL      lpbFoundSig,
+     LPHVIRUS    lphVirus
+ );
++#endif
+ 
+-
+ ///////////////////////////////////////////////////////////////////////////
+ //
+ // Local Engine Context Repair
+@@ -1177,6 +1343,7 @@
+     LPBOOL              lpbFileRepaired     // OUT: was the file repaired?
+ );
+ 
++#ifndef SYM_NLM
+ ENGSTATUS EngRepairBoot
+ (
+     HLENG               hLocalEng,          // temporary buffers and callbacks
+@@ -1185,6 +1352,7 @@
+     BYTE                byPartNumber,       // partition to repair
+     LPBOOL              lpbRepaired         // OUT: was the object repaired?
+ );
++#endif
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //
+@@ -1215,7 +1383,8 @@
+ (
+     HGENG               hGEng,
+     HVIRUS              hVirus,
+-    LPSTR               lpstrVirusName
++    LPSTR               lpstrVirusName,
++    LPVOID              lpvProvidedFileInfo
+ );
+ 
+ ENGSTATUS EngGetUserInfoHVIRUS
+@@ -1254,6 +1423,7 @@
+     WORD                wBufferSize
+ );
+ 
++#ifndef SYM_NLM
+ ENGSTATUS EngGetDiskType
+ (
+     LPLINEAROBJECT   lprLinear,         // [in] linear object to analyze
+@@ -1265,7 +1435,88 @@
+     LPBYTE      lpbyMBR,                // [in] Entire MBR
+     BYTE        byPartNumber,           // [in] Partition to parse (0 - 3)
+     LPPARTENTRY lprPartEntry            // [out] filled out PARTENTRY structure
++);
++#endif
++
++ENGSTATUS EngGetInfoVID
++(
++    HGENG               hGEng,
++    WORD                wVID,
++    LPHVIRUS            lphVirus,
++    LPVIRUS_INFO        lpVirusInfo,
++    LPSTR               lpstrVirusName,
++    LPBOOL              lpbFound
+ );
++
++///////////////////////////////////////////////////////////////////////////
++//
++// Virus list functions
++//
++///////////////////////////////////////////////////////////////////////////
++
++ENGSTATUS EngInitNameLoad
++(
++    HGENG                   hGEng,
++    LPVOID                  lpvFileInfo,
++    LPNAME_LOAD_INFO        lpstNLI
++);
++
++ENGSTATUS EngGetNextName
++(
++    HGENG                   hGEng,
++    LPNAME_LOAD_INFO        lpstNLI,
++    LPSTR                   lpszName
++);
++
++ENGSTATUS EngCloseNameLoad
++(
++    HGENG                   hGEng,
++    LPNAME_LOAD_INFO        lpstNLI
++);
++
++
++ENGSTATUS EngInitInfRecLoad
++(
++    HGENG                       hGEng,
++    LPVOID                      lpvFileInfo,
++    LPINFREC_LOAD_INFO          lpstNLI
++);
++
++ENGSTATUS EngGetNextInfRec
++(
++    HGENG                       hGEng,
++    LPINFREC_LOAD_INFO          lpstNLI,
++    LPVIRUS_INFO                lpstVirusInfo,
++    LPBOOL                      lpbDone
++);
++
++ENGSTATUS EngCloseInfRecLoad
++(
++    HGENG                       hGEng,
++    LPINFREC_LOAD_INFO          lpstNLI
++);
++
++
++ENGSTATUS EngInitBulkLoad
++(
++    HGENG               hGEng,
++    LPBULK_LOAD_INFO    lpstBLI
++);
++
++ENGSTATUS EngGetNextN30
++(
++    HGENG                   hGEng,
++    LPBULK_LOAD_INFO        lpstBLI,
++    LPN30                   lpstN30,
++    LPBOOL                  lpbDone
++);
++
++ENGSTATUS EngCloseBulkLoad
++(
++    HGENG               hGEng,
++    LPBULK_LOAD_INFO    lpstBLI
++);
++
+ 
+ #endif
+ 
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/AVTYPES.H#1 - d:\worknewvir\INCLUDE\SRC\AVTYPES.H ====
+@@ -60,11 +60,12 @@
+ //
+ //************************************************************************
+ 
++
+ #ifndef _AVTYPES_H
+ 
+ #define _AVTYPES_H
+ 
+-#if defined(VC20)
++#if defined(VC20) && !defined(SYM_UNIX)
+     #include <windows.h>
+ #endif
+ 
+@@ -74,63 +75,98 @@
+ 
+     #include <stdio.h>
+     #include <memory.h>
++    #include <string.h>
+ 
+     #if defined(SYM_MAX_PATH)
+-        #undef SYM_MAX_PATH         // force our definition of this constant
++	    #undef SYM_MAX_PATH         // force our definition of this constant
+     #endif
++
++    #define SYM_MAX_PATH        512
+ 
+-    #define SYM_MAX_PATH	512
++    #if defined(SYM_UNIX)
++        #define FAR 
++        #define HUGE
++    #else
++        #if !defined(FAR)
++            #define FAR far
++        #endif
++        #if !defined(HUGE)
++            #define HUGE huge
++        #endif
++    #endif
+ 
+     typedef unsigned char   BYTE;
+     typedef unsigned short  WORD;
+     typedef unsigned int    UINT;
+-    typedef unsigned long	DWORD;
++    typedef unsigned long   DWORD;
+     typedef int             BOOL;
+-    typedef WORD            far *LPWORD;
+-    typedef int             far *LPINT;
++    typedef WORD            FAR *LPWORD;
++    typedef int             FAR *LPINT;
+     typedef long            LONG;
+-    typedef char            far *LPSTR;
+-    typedef char            far *LPTSTR;
+-    typedef BYTE            far *LPBYTE;
+-    typedef void            far *LPVOID;
+-    typedef DWORD           far *LPDWORD;
+-    typedef BOOL            far *LPBOOL;
+-    typedef long            far *LPLONG;
+-    typedef LPSTR           far *LPLPSTR;
+-    
+-    #ifdef SYM_UNIX
+-        typedef int     HFILE
++    typedef char            FAR *LPSTR;
++    typedef char            FAR *LPTSTR;
++    typedef BYTE            FAR *LPBYTE;
++    typedef void            FAR *LPVOID;
++    typedef DWORD           FAR *LPDWORD;
++    typedef BOOL            FAR *LPBOOL;
++    typedef long            FAR *LPLONG;
++    typedef LPSTR           FAR *LPLPSTR;
++
++    #if defined(SYM_UNIX)
++        typedef FILE            *HFILE;
+     #endif
+ 
+-    #if !defined(VC20)
+-        #if !defined(SYM_UNIX)
+-            typedef FILE *          HFILE;
+-            typedef char            *LPWSTR;
+-            typedef void            VOID;
+-        #endif
++    #if !defined(VC20) && !defined(SYM_UNIX)
++        typedef FILE            *HFILE;
++        typedef char            *LPWSTR;
++        typedef void            VOID;
++    #endif
+ 
+-        #if defined (SYM_UNIX)
+-            #define FAR
+-        #else
+-            #define FAR             far
+-        #endif  // (SYM_UNIX)
++    #if defined(SYM_UNIX)
++        typedef WORD            *PWORD;             
++        typedef signed short    SWORD;
++        typedef signed long     SDWORD;
++        typedef unsigned int    *LPUINT;
++        typedef const char      *LPCSTR;
++        typedef const char      *LPCTSTR;
++        typedef char            WCHAR;
++        typedef char            TCHAR;
++        typedef char            *LPWSTR;
++        typedef char            **LPLPWSTR;
++        #define VOID            void
++        #define WINAPI
++        #define _T(x)           x
++    #endif
+ 
+-    #endif  // (VC20)
++#endif // !defined(BORLAND) && !defined(VC20) && !defined(SYM_UNIX)
+ 
+-    #if !defined(MEMSET)
+-        #define MEMSET          memset
+-    #endif
+-    #if !defined(MEMCPY)
+-        #define MEMCPY          memcpy
+-    #endif
+-    #if !defined(MEMCMP)
+-        #define MEMCMP          memcmp
+-    #endif
+ 
++#if !defined(MEMSET)
++    #define MEMSET          memset
++#endif
++#if !defined(MEMCPY)
++    #define MEMCPY          memcpy
++#endif
++#if !defined(MEMCMP)
++    #define MEMCMP          memcmp
++#endif
++#if !defined(STRCPY)
++    #define STRCPY          strcpy
++#endif
++#if !defined(STRCAT)
++    #define STRCAT          strcat
++#endif
++#if !defined(STRLEN)
++    #define STRLEN          strlen
++#endif
++#if !defined(STRNCPY)
++    #define STRNCPY         strncpy
++#endif
++    
++#if !defined(TRUE)
+     #define TRUE            1
+     #define FALSE           0
+-
+-#endif // !defined(BORLAND) && !defined(VC20) && !defined(SYM_UNIX)
++#endif
+ 
+ #if !defined(SEEK_SET)
+     #define SEEK_SET        0
+@@ -143,29 +179,32 @@
+ #endif
+ 
+ typedef long            MUTEX_T;
+-typedef MUTEX_T         far *LPMUTEX;
++typedef MUTEX_T         *LPMUTEX;
+ 
+ #define MEM_FIXME       0
+ #define DATE_TIME_FIXME 0
+ 
+ #ifndef FILE_OPEN_READ_ONLY
+-#define FILE_OPEN_READ_ONLY     0       // read only (file must exist)
+-#define FILE_OPEN_WRITE_ONLY    1       // truncate/create
+-#define FILE_OPEN_READ_WRITE    2       // read/write (file must exist)
++    #define FILE_OPEN_READ_ONLY     0       // read only (file must exist)
++    #define FILE_OPEN_WRITE_ONLY    1       // truncate/create
++    #define FILE_OPEN_READ_WRITE    2       // read/write (file must exist)
+ #endif
+ 
+ #ifndef LINEAR_OPEN_READ_ONLY
+-#define LINEAR_OPEN_READ_ONLY   0       // read only  (for scanning)
+-#define LINEAR_OPEN_READ_WRITE  2       // read/write (for repair)
++    #define LINEAR_OPEN_READ_ONLY   0       // read only  (for scanning)
++    #define LINEAR_OPEN_READ_WRITE  2       // read/write (for repair)
+ #endif
+ 
+-#if !defined (SYM_UNIX)
+-    typedef LPBYTE  far *LPLPBYTE;
+-    typedef LPVOID  far *LPLPVOID;
+-    typedef LPWSTR  far *LPLPWSTR;
++#if !defined(SYM_UNIX)
+     typedef HANDLE FILEHANDLE;
+-    #define INVALID_FILEHANDLE_VALUE INVALID_HANDLE_VALUE;
+-#endif  // (SYM_UNIX)
++#endif
++#define INVALID_FILEHANDLE_VALUE INVALID_HANDLE_VALUE;
++
++typedef LPBYTE  FAR *LPLPBYTE;
++typedef LPVOID  FAR *LPLPVOID;
++typedef LPWSTR  FAR *LPLPWSTR;
+ 
+ #endif  // _AVTYPES_H (from the top)
++
++
+ 
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/CTSN.H#1 - d:\worknewvir\INCLUDE\SRC\CTSN.H ====
+@@ -265,6 +265,7 @@
+ 
+ #include "callback.h"
+ 
++
+ //------------------------------------------------------------------------------
+ // CTSN.H - Protos, equates, and structures for 'C'
+ //------------------------------------------------------------------------------
+@@ -800,7 +801,12 @@
+     WORD   RM_SS;
+     } REALMODE;
+ #define sREALMODE   sizeof(REALMODE)
++
++// NEW_UNIX below
+ 
++#ifndef EXEHEADER_DEFINED
++#define EXEHEADER_DEFINED
++
+ //------------------------------------------------------------------------------
+ // Structure for EXE header
+ //------------------------------------------------------------------------------
+@@ -825,7 +831,11 @@
+     } EXEHEADER;
+ #define sEXEHEADER  (sizeof(EXEHEADER)-34)
+ #define sEXELARGE   sizeof(EXEHEADER)
++
++#endif // #ifndef EXEHEADER_DEFINED
+ 
++// NEW_UNIX above
++
+ //------------------------------------------------------------------------------
+ // NE Header structure
+ //------------------------------------------------------------------------------
+@@ -1047,6 +1057,7 @@
+     } BINHEADER;
+ #define sBINHEADER      sizeof(BINHEADER)
+ 
++#ifndef SYM_UNIX // NEW_UNIX
+ //-----------------------------------------------------------------------------
+ // Event Verify Structure
+ //-----------------------------------------------------------------------------
+@@ -1058,6 +1069,7 @@
+ 	TSR_STRUCT FAR *evTSR_STRUCT;        // Pointer to TSR_STRUCT for routine
+     } EV;
+ #define sEV         sizeof(EV)
++#endif // SYM_UNIX
+ 
+ //------------------------------------------------------------------------------
+ // Structure for callbacks in OVL file
+@@ -1362,6 +1374,9 @@
+ 
+ } EXCLUDEITEM, FAR * LPEXCLUDEITEM;
+ #define sEXCLUDEITEM sizeof(EXCLUDEITEM)
++
++// No prototypes needs for Unix ... yet
++#ifndef SYM_UNIX
+ 
+ #ifdef __cplusplus
+ extern "C" {
+@@ -1482,3 +1497,5 @@
+ #endif
+ 
+ #endif
++
++#endif // SYM_UNIX
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/NAVEX.H#1 - d:\worknewvir\INCLUDE\SRC\NAVEX.H ====
+@@ -698,6 +698,18 @@
+ #endif
+ 
+ 
++#if defined( SYM_UNIX ) && defined( AVAPI_INCLUDE )
++
++EXTSTATUS WINAPI EXTInitUnix (
++    HVCONTEXT hContext
++    );
++
++EXTSTATUS WINAPI EXTCloseUnix (
++    HVCONTEXT hContext
++    );
++
++#endif
++
+ #endif
+ 
+ #endif
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/NAVEX15.H#1 - d:\worknewvir\INCLUDE\SRC\NAVEX15.H ====
+@@ -744,6 +744,16 @@
+         HVCONTEXT hContext
+         );
+ 
++#elif defined(SYM_UNIX)
++
++    EXTSTATUS WINAPI EXTInitUnix (
++        HVCONTEXT hContext
++        );
++
++    EXTSTATUS WINAPI EXTCloseUnix (
++        HVCONTEXT hContext
++        );
++
+ #endif
+ 
+ #endif // AVAPI_INCLUDE
+==== //depot/SARC/VIRLIB/SOURCE/INCLUDE/SRC/PAMAPI.H#1 - d:\worknewvir\INCLUDE\SRC\PAMAPI.H ====
+@@ -161,7 +161,7 @@
+ 
+ #if defined(SYM_WIN32) || defined(SYM_NTK)
+ #pragma pack(push,1)
+-#else
++#elif !defined(SYM_UNIX)
+ #pragma pack(1)
+ #endif
+ 
+@@ -234,7 +234,7 @@
+ 
+ #if defined(SYM_WIN32) || defined(SYM_NTK)
+ #pragma pack(pop)
+-#else
++#elif !defined(SYM_UNIX)
+ #pragma pack()
+ #endif
+ 
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/AOLPW.CPP#1 - d:\worknewvir\NAVEX\SRC\AOLPW.CPP ====
+@@ -233,7 +233,11 @@
+ 
+     // virscan5.dat contains our sig data...
+ 
++#if defined(SYM_UNIX)
++    DataDirAppendName(lpszNAVEXDataDir,_T("virscan5.dat"),szDatFileName);
++#else
+     DataDirAppendName(lpszNAVEXDataDir,_T("VIRSCAN5.DAT"),szDatFileName);
++#endif
+ 
+     hFile = lpCallBack->FileOpen(szDatFileName,0);
+ 
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/DATADIR.CPP#1 - d:\worknewvir\NAVEX\SRC\DATADIR.CPP ====
+@@ -67,6 +67,12 @@
+     // If the string is empty or if the last character is not \,
+     // then add a backslash
+ 
++#if defined(SYM_UNIX)
++
++    if (lptstrPrevChar == NULL || *lptstrPrevChar != '/')
++        STRCAT(lptstrResult, "/");
++
++#else
+     if (lptstrPrevChar == NULL || *lptstrPrevChar != '\\')
+     {
+         // Append a backslash
+@@ -77,6 +83,8 @@
+         STRCAT(lptstrResult,"\\");
+ #endif
+     }
++
++#endif
+ 
+     STRCAT(lptstrResult,lptstrFileName);
+ }
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/HEUR.CPP#1 - d:\worknewvir\NAVEX\SRC\HEUR.CPP ====
+@@ -171,10 +171,18 @@
+     CALLBACKREV1        stCB = {NULL,NULL,DDFileRead,NULL,DDFileSeek};
+ 
+     mystrcpy(szDatFileName,lpszNAVEXDataDir);
++#if defined(SYM_UNIX)
+     mystrcat(szDatFileName,"VIRSCAN5.DAT");
++#else
++    mystrcat(szDatFileName,"virscan5.dat");
++#endif
+ 
+     mystrcpy(szNAVEXINIFile,lpszNAVEXDataDir);
++#if defined(SYM_UNIX)
++    mystrcat(szNAVEXINIFile,"heur.inf");
++#else
+     mystrcat(szNAVEXINIFile,"HEUR.INF");
++#endif
+ 
+     // only enable after we've successfully loaded
+ 
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/LDMCRSIG.CPP#1 - d:\worknewvir\NAVEX\SRC\LDMCRSIG.CPP ====
+@@ -1653,7 +1653,11 @@
+     // Open data file
+ 
+ #if !defined( __MACINTOSH__ )
++#if defined(SYM_UNIX)
++    DataDirAppendName(lpszDataDir,_T("virscan6.dat"),szDatFileName);
++#else
+     DataDirAppendName(lpszDataDir,_T("VIRSCAN6.DAT"),szDatFileName);
++#endif
+ 
+     hFile = lpstCallBack->FileOpen(szDatFileName,0);
+ #else
+@@ -1724,8 +1728,12 @@
+ 
+         // Close data file
+ 
++#if 0  // This return value check seems to be incorrect with respect to NAVAPI
+         if (lpstCallBack->FileClose(hFile) != 0)
+             bResult = FALSE;
++#endif
++        lpstCallBack->FileClose(hFile);  // NEW_UNIX
++
+     }
+ 
+     if (bResult == FALSE)
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/MCRHEUEN.CPP#1 - d:\worknewvir\NAVEX\SRC\MCRHEUEN.CPP ====
+@@ -32,6 +32,8 @@
+ #define APP_STRING "NAVNLM"
+ #elif defined(SYM_WIN16)
+ #define APP_STRING "NAVWIN"
++#elif defined(SYM_UNIX)
++#define APP_STRING "NAVUNIX"
+ #else
+ #define APP_STRING "NAVAP"
+ #endif
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/MCRRPR15.CPP#1 - d:\worknewvir\NAVEX\SRC\MCRRPR15.CPP ====
+@@ -625,7 +625,11 @@
+                 if (lpszFileName[i] == ':')
+                     nLastColon = i;
+                 else
++#if defined(SYM_UNIX)
++                if (lpszFileName[i] == '/')
++#else
+                 if (lpszFileName[i] == '\\')
++#endif
+                     nLastBackSlash = i;
+ 
+                 ++i;
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/MSX.CPP#1 - d:\worknewvir\NAVEX\SRC\MSX.CPP ====
+@@ -696,8 +696,13 @@
+ 
+     // Generate the filenames first
+ 
++#if defined(SYM_UNIX)
+     DataDirAppendName(lpszDataDir,_T("VIRSCAN6.DAT"),szFileName);
+     DataDirAppendName(lpszDataDir,_T("VSCANMSX.DAT"),gszMSXFileName);
++#else
++    DataDirAppendName(lpszDataDir,_T("virscan6.dat"),szFileName);
++    DataDirAppendName(lpszDataDir,_T("vscanmsx.dat"),gszMSXFileName);
++#endif
+ 
+     // Zero the database
+ 
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/MVP.CPP#1 - d:\worknewvir\NAVEX\SRC\MVP.CPP ====
+@@ -141,7 +141,11 @@
+ // Names of external NAV files.  No need of translation.
+ //
+ //---------------------------------------------------------------------------
++#if defined(SYM_UNIX)
++TCHAR gszMVPDataFileName[] = _T("mvpdef.dat");
++#else
+ TCHAR gszMVPDataFileName[] = _T("MVPDEF.DAT");
++#endif
+ 
+ //---------------------------------------------------------------------------
+ //
+@@ -886,7 +890,11 @@
+     if (MVPGetNAVDirectory(szDatFileName) == FALSE)
+         return(FALSE);
+ 
++#if defined(SYM_UNIX)
++    STRCAT(szDatFileName, _T("/"));
++#else
+     STRCAT(szDatFileName, _T("\\"));
++#endif
+ 
+     STRCAT(szDatFileName,MVP_DAT_FILENAME);
+ 
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/MVP.H#1 - d:\worknewvir\NAVEX\SRC\MVP.H ====
+@@ -60,7 +60,7 @@
+     DWORD               dwCRC
+ );
+ #else
+-#define MVPLoadData()   (TRUE)
++#define MVPLoadData(a)  (TRUE)
+ #define MVPUnloadData()
+ #define MVPCheck(a,b,c) (TRUE)
+ #endif
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/NAVEXENT.CPP#1 - d:\worknewvir\NAVEX\SRC\NAVEXENT.CPP ====
+@@ -113,6 +113,8 @@
+ #define APP_STRING "NAVOS2"
+ #elif defined(SYM_WIN)
+ #define APP_STRING "NAVWIN"
++#elif defined(SYM_UNIX)
++#define APP_STRING "NAVUNIX"
+ #endif
+ 
+ 
+@@ -218,7 +220,11 @@
+     if (lpszNAVEXINIFile == NULL || lpszNAVEXINIFile[0] == 0)
+     {
+         DataDirAppendName(lpszNAVEXDataDir,
++#if defined(SYM_UNIX)
++                          _T("navex15.inf"),
++#else
+                           _T("NAVEX15.INF"),
++#endif
+                           szInfFileName);
+ 
+         lpszNAVEXINIFile = szInfFileName;
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/NVX15INF.CPP#1 - d:\worknewvir\NAVEX\SRC\NVX15INF.CPP ====
+@@ -45,6 +45,8 @@
+ #define APP_STRING "NAVWIN"
+ #elif defined(SYM_OS2)
+ #define APP_STRING "NAVOS2"
++#elif defined(SYM_UNIX)
++#define APP_STRING "NAVUNIX"
+ #else
+ #define APP_STRING "NAVAP"
+ #endif
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/TROJSCAN.CPP#1 - d:\worknewvir\NAVEX\SRC\TROJSCAN.CPP ====
+@@ -191,7 +191,11 @@
+ 
+     // obtain the proper filename; assume data dir has trailing backslash
+ 
++#if defined(SYM_UNIX)
++    DataDirAppendName(lpszNAVEXDataDir,_T("virscan7.dat"),szDatFileName);
++#else
+     DataDirAppendName(lpszNAVEXDataDir,_T("VIRSCAN7.DAT"),szDatFileName);
++#endif
+ 
+     hFile = lpstCallBack->FileOpen(szDatFileName,0);
+ 
+==== //depot/SARC/VIRLIB/SOURCE/NAVEX/SRC/XL97EREN.CPP#1 - d:\worknewvir\NAVEX\SRC\XL97EREN.CPP ====
+@@ -32,6 +32,8 @@
+ #define APP_STRING "NAVNLM"
+ #elif defined(SYM_WIN16)
+ #define APP_STRING "NAVWIN"
++#elif defined(SYM_UNIX)
++#define APP_STRING "NAVUNIX"
+ #else
+ #define APP_STRING "NAVAP"
+ #endif

@@ -1,0 +1,81 @@
+@echo off
+echo.
+echo ----------------------
+echo Updating XWing Release
+echo ----------------------
+echo.
+
+pushd
+
+
+: ---------------------------------------------------------------------------
+: Set environment
+: ---------------------------------------------------------------------------
+set SRC_DRV=w:
+set DST_DRV=w:
+set SRC_BASEPATH=%SRC_DRV
+set DST_BASEPATH=%DST_DRV
+set REL_DIR=%DST_BASEPATH\NLMRel
+
+
+:
+: Check source
+:
+if not exist %SRC_BASEPATH\nul goto nosrc
+
+:
+: Create destination if it does not exist
+:
+if not exist %REL_DIR\nul md /s %REL_DIR
+
+
+: ---------------------------------------------------------------------------
+: Now copy all target files
+: ---------------------------------------------------------------------------
+
+echo    Copying NLMs to %REL_DIR
+copy /q %src_basepath\Release\NAVAPI\BinNLM\NAVAPI.NLM %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\Nav_Glue\NLM\release\I2_LDVP.nlm %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\Release\rtvscan.nlm %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPFix\release\vpfix.nlm %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPQue\release\vpque.nlm %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPReg\release\VPReg.nlm %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPRegEdt\release\VPRegEdt.nlm %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPStart\release\VPStart.nlm %REL_DIR
+copy /q %src_basepath\Norton_Antivirus\NAVNLM\src\QsFwd\release\QSFwd.nlm %REL_DIR
+
+echo    Copying Message file to %REL_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\src\rtvscan.msg %REL_DIR
+
+echo    Copy complete.
+echo.
+goto cleanup
+
+
+
+: ---------------------------------------------------------------------------
+: There is no source. Report error.
+: ---------------------------------------------------------------------------
+
+:nosrc
+echo.
+echo ** ERROR **
+echo.
+echo    Source %SRC_BASEPATH not found.
+echo    Make sure %SRC_BASEPATH exists, then run this batch file again.
+echo.
+
+
+: ---------------------------------------------------------------------------
+: Cleanup and leave
+: ---------------------------------------------------------------------------
+
+:cleanup
+set SRC_DRV=
+set DST_DRV=
+set SRC_BASEPATH=
+set DST_BASEPATH=
+set REL_DIR=
+
+popd
+

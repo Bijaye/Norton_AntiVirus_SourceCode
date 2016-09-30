@@ -1,0 +1,153 @@
+******************************************************************************
+Symantec AntiVirus Corporate Edition 10.1		           MSI_FAQ.TXT
+Copyright 2006 Symantec Corporation. 	       All rights reserved.  March 2006
+******************************************************************************
+
+This file is a list of the most commonly used MSI commands for Symantec 
+AntiVirus and Symantec Client Security. For a complete list of commands, 
+properties, and features, see the Symantec Knowledge Base.
+
+
+BASIC MSI commands
+------------------
+/QN - Quiet No UI
+/QB - Quiet Basic UI
+/L*V log.txt - full verbose logging to file log.txt
+
+MSI logging
+------------------
+When run from the setup.exe stub Symantec Antivirus, Symantec Client Security, and Symantec System Center automatically create installer logs to the %TEMP% folder (e.g. C:\Documents and Settings\<USERNAME>\Local Settings\Temp) named either SAV_INST.LOG, SCS_INST.LOG, or SSC_INST.LOG respectively. 
+When the installers are run from either the ClientRemote or AVServer tools the installer logs are automatically created in the %WINDIR%\temp folder (e.g. C:\WINDOWS\temp) named VPREMOTE.LOG.
+These installer logs are vital in determining installer failures. Please have these logs available when contacting Symantec Support.
+* Note – Localized operating systems may have slightly different folders for the log files. You can resolve this by clicking on the start button, clicking run and then entering either %TEMP% for the temp folder or %WINDIR%\temp for the windows temp folder.
+Please see the “Reading Installer logs” section below for more information.
+
+BASIC MSI properties
+--------------------
+REBOOT=REALLYSUPPRESS – During migration a reboot maybe required. By suppressing a required reboot, full product functionality may not be available until a reboot has taken place. This may not be apparent on a silent install or migration as no User Interface messages are displayed.
+
+SAV & SCS properties
+--------------
+INSTALLSERVER= (1 = Server, 0 = Client, Default is 0 = Client).  
+When installing a server:
+	SERVERGROUPNAME= (New or preexisting servergroup)
+	SERVERGROUPUSERNAME= (New or preexisting servergroup user name, The
+                              default is admin)
+	SERVERGROUPPASS= (New or preexisting servergroup password. The default 
+                          is symantec)
+	SERVERPARENT= (e.g. SERVERPARENT=MySavServer)
+	Note: For a silent install of a secondary server from the command line, 
+	you must set the SERVERPARENT property to the parent server computer
+	name. When performing a server rollout from the UI or Symantec System Center rollout install, 
+	setting this property is not required as the tool automatically fills this in.
+
+NETWORKTYPE= (1 = Managed, 2 = Unmanaged, Default is 2 = Unmanaged)
+When installing a managed client:
+	SERVERNAME= (preexisting SAV Server)
+	Note: The SERVERNAME must be a name.  It cannot be an IP address.
+
+RUNLIVEUPDATE= (1 = run LiveUpdate after install, 0 = do not run LiveUpdate after install, 
+                default = 1 run LiveUpdate after install)
+
+ENABLEAUTOPROTECT= (1 = ON, 0 = OFF, Default is 1 = ON)
+
+SYMPROTECTDISABLED= (0 = ON, 1 = OFF, Default is 0 = ON)
+
+INSTALLDIR= (Install target directory, default is C:\Program Files\
+             Symantec AntiVirus)
+
+SAV10UNINSTALLFIXRUN= (1 = already run, 0 = not yet run)
+Upgrading SAV10.x or SCS3.x requires modification of the cached install package
+or the upgrade will fail.  If SAV10.x or SCS3.x are detected, the install will
+abort unless the user is an administrator of the local machine.  Setting
+this property to 1 disables this check.  Note that enabling MSI to run with
+elevated privileges is not sufficient in this case.  In addition to
+installing as a local administrator, the modification can be accomplished in
+two other ways:
+1.  Temporarily grant users write access to the Windows\Installer directory
+for the duration of the upgrade.
+2.  Run the tool Tools\Sav9UninstallFix under the credentials of an account
+with write access to Windows\Installer, and then execute the upgrade with the
+property SAV9UNINSTALLFIXRUN=1 on the command line.
+
+
+Windows Security Center features
+--------------------------------
+These properties allow for the configuration of the interaction
+between users and the Windows Security Center (WSC) running on Windows® XP
+Service Pack 2.
+
+These properties apply to unmanaged clients only. The Symantec System Center
+controls these properties for managed clients.
+
+WSCCONTROL= (0= No action, 1 = Disable once, 2 = Disable always, 3 = Restore if disabled)
+Allows an administrator of a non-managed network to configure the WindowsSecurityCenterControl
+value set on the SSC Client Administrator Only General tab.
+
+WSCAVALERT= (0= Disable, 1 = Enable, Default is 0 = Disable)
+Allows an administrator of a non-managed network to configure the AntiVirusDisableNotify value for Windows Security Center.
+
+WSCFWALERT= (0= Disable, 1 = Enable, Default is 0 = Disable)
+Allows an administrator of a non-managed network to configure the FireWallDisableNotify value for Windows Security Center.
+
+WSCAVUPTODATE= (Integer value between 1 and 90, Default is 30)
+Allows an administrator of a non-managed network to configure the number of days used to determine if threat definitions are up to date for Windows Security Center.
+ 
+
+SCS-only properties
+-------------------
+ICFCONTROL= (0= No action, 1 = Disable once, 2 = Disable always, 3 = Restore if disabled)
+
+ICFDISABLENOTIFY= (0= Do not disable the notification message, 1= Disable the notification message)
+
+
+SAV features
+------------
+SAVUI - AntiVirus User Interface
+SAVHelp - AntiVirus Help
+QClient - Quarantine Client
+EMailTools - AntiVirus Email Tools Parent Feature
+NotesSnapin - Lotus Notes Email Snapin
+OutlookSnapin - MS Outlook Email Snapin
+Pop3Smtp - Internet POP3 Email Snapin
+Note - The EmailTools features are not installed on a SAV or SCS Server install.
+
+SCS features
+------------
+SCFHelp - Firewall Help
+AntiSpam – AdBlocking
+
+
+Adding and removing features
+----------------------------
+To remove existing features:
+
+REMOVE=<feature1>,<feature2>,<feature3>
+
+To add new features:
+
+ADDLOCAL=<feature1>,<feature2>,<feature3>, <existing feature 1>, 
+         <existing feature 2>, etc.
+
+Note: When adding new features using ADDLOCAL, any existing features on the 
+target computer that you want to retain must be included or the installation will remove any features on the target computer that are not listed.
+
+Reading Installer logs
+--------------------
+The common installer logs are SAV_INST.LOG, SCS_INST.LOG, or SSC_INST.LOG. These are standard MSI log files. You can search for an installer failure point by doing a text search for the string “value 3” (CTRL+F = find in Notepad). This is important in determining installer and migration failures, especially in silent scenarios. 
+A small sample of common errors and messages are “This version of [ProductName] requires Internet Explorer 5.5 Service Pack 2.” or “This version of [ProductName] does not support 64-bit platforms.  Please install Symantec AntiVirus for Win64 instead.”
+Please have the installer log file and error message available when contacting Symantec Support.
+
+Command line example
+--------------------
+This example demonstrates a silent Symantec AntiVirus Server installation. 
+The server is named MYSAVSERVER, has the user admin and uses the password 
+MYSAVPASSWORD. LiveUpdate is not run, and the server is not restarted even 
+if it is required.
+
+Sample command line: 
+setup /s /v"/l*v log.txt /qn INSTALLSERVER=1 SERVERGROUPNAME=MYSAVSERVER 
+SERVERGROUPUSERNAME=admin SERVERGROUPPASS=MYSAVPASSWORD RUNLIVEUPDATE=0 
+REBOOT=REALLYSUPPRESS"
+
+

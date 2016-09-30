@@ -1,0 +1,40 @@
+;
+; $Header:   S:/CSERVICE/VCS/projhook.inv   1.1   10 Sep 1997 16:10:46   KSACKIN  $
+;
+;-------------------------------------------------------------------------
+; $Log:   S:/CSERVICE/VCS/projhook.inv  $
+;  
+;     Rev 1.1   10 Sep 1997 16:10:46   KSACKIN
+;  Ported from QAKG.
+;  
+;     Rev 1.0.1.1   14 Aug 1997 15:24:36   KSACKIN
+;  Added a %projvers% for the lib path so that we will pick up the correct
+;  libraries on our branch, and removed the second item from our lib additions.
+;  This was for when this project resided in the ROSWELL area, and needed a 
+;  Family path entry.
+;
+;     Rev 1.0.1.0   12 Aug 1997 22:52:26   DALVIDR
+;  Branch base for version QAKG
+;
+;     Rev 1.0   09 May 1997 17:50:38   ksackin
+;  Initial revision.
+;
+;     Rev 1.0   29 Apr 1997 19:09:22   JBRENNA
+;  Initial revision.
+;
+;-------------------------------------------------------------------------
+
+
+; Pick up some libraries from the ANSI (not the Unicode) LIB directory.
+
+[IDU]
+set libpre=%PROJPRE%LIB%PROJVERS%.IDA
+
+[IRU]
+set libpre=%PROJPRE%LIB%PROJVERS%.IRA
+
+[ADU]
+set libpre=%PROJPRE%LIB%PROJVERS%.ADA
+
+[ARU]
+set libpre=%PROJPRE%LIB%PROJVERS%.ARA

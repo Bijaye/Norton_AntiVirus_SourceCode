@@ -1,0 +1,1736 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; $Header:   S:/NAVEX/VCS/bootheur.dav   1.70   08 Jan 1999 08:11:34   AOONWAL  $
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; This is the boot heuristics data file
+; The first line specifies detection thresholds for FBR, PBR and MBR,
+; respectively
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+Thresholds(#11,#21,#23)
+
+; FBR > 11 detects >80% of all floppy boot viruses in our collection
+; PBR > 21 detects >92% of all partition boot viruses in our collection
+; MBR > 23 detects >78% of all master boot record viruses in our collection
+;
+; These thresholds are set so the heuristics do not detect any of the 177+
+; samples in our clean boot collection (after some blatant FPs have been
+; excluded).
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;
+; Subsequent lines specify the signatures
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; Check for fetch from 413... or fetch/modify to 413...
+
+New(0xCD), 0x12, Bingo(#1,#1,#1,"INT 12")
+
+New(0x8B),
+       @00???110, 0x13, 0x04,
+       Bingo(#30,#30,#30,"MOV ??, [0413]") ; not found in clean boot records 9/5
+
+New(0xA1), 0x13, 0x04,
+       Bingo(#5,#5,#5,"MOV AX, [0413]")
+
+New(0xA1), 0x13, 0x04,
+       Scan(#16,0x2D), @????????, 0x00
+       Bingo(#10,#10,#10,"MOV AX, [0413] -> SUB AX, 00??")
+
+New(0xA1), 0x13, 0x04,
+       Scan(#16,0x48), 0x48
+       Bingo(#10,#10,#10,"MOV AX, [0413] -> DEC AX -> DEC AX")
+
+New(0xBE), 0x13, 0x04,
+       Scan(#16,0x8B), 0x04,
+       Bingo(#30,#30,#30,"MOV SI, 0413 -> MOV AX, [SI]")
+
+New(0xBF), 0x13, 0x04,
+       Scan(#16,0x8B), 0x05,
+       Bingo(#30,#30,#30,"MOV DI, 0413 -> MOV AX, [DI]")
+
+New(0xBB), 0x13, 0x04,
+       Scan(#16,0x8B), 0x07,
+       Bingo(#30,#30,#30,"MOV BX, 0413 -> MOV AX, [BX]")
+
+New(0xBE), 0x13, 0x04,
+       Scan(#16,0x8B), 0x04,
+       Scan(#16,0x89), 0x04,
+       Bingo(#30,#30,#30,"MOV SI, 0413 -> MOV AX, [SI] -> MOV [SI], AX")
+
+New(0xBF), 0x13, 0x04,
+       Scan(#16,0x8B), 0x05,
+       Scan(#16,0x89), 0x05,
+       Bingo(#30,#30,#30,"MOV DI, 0413 -> MOV AX, [DI] -> MOV [DI], AX")
+
+New(0xBB), 0x13, 0x04,
+       Scan(#16,0x8B), 0x07,
+       Scan(#16,0x89), 0x07,
+       Bingo(#30,#30,#30,"MOV BX, 0413 -> MOV AX, [BX] -> MOV [BX], AX")
+
+New(0xBE), 0x13, 0x04,
+       Scan(#16,0x83), 0x2C,
+       Bingo(#30,#30,#30,"MOV SI, 0413 -> SUB WORD PTR [SI], ??")
+
+New(0xBE), 0x13, 0x04,
+       Scan(#16,0xFF), 0x0C,
+       Bingo(#30,#30,#30,"MOV SI, 0413 -> DEC WORD PTR [SI]")
+
+New(0xBF), 0x13, 0x04,
+       Scan(#16,0x83), 0x2D,
+       Bingo(#30,#30,#30,"MOV DI, 0413 -> SUB WORD PTR [DI], ??")
+
+New(0xBF), 0x13, 0x04,
+       Scan(#16,0xFF), 0x0D,
+       Bingo(#30,#30,#30,"MOV DI, 0413 -> DEC WORD PTR [DI]")
+
+New(0xBB), 0x13, 0x04,
+       Scan(#16,0x83), 0x2F,
+       Bingo(#30,#30,#30,"MOV BX, 0413 -> SUB WORD PTR [BX], ??")
+
+New(0x89),
+       @00???110, 0x13, 0x04,
+       Bingo(#30,#30,#30,"MOV [0413], REG")
+
+New(0xC7),
+       0x06, 0x13, 0x04,
+       Bingo(#30,#30,#30,"MOV WORD PTR [0413], ????")
+
+New(0x83),
+       0x2E, 0x13, 0x04,
+       Bingo(#30,#30,#30,"SUB WORD PTR [0413], ??")
+
+New(0xA3), 0x13, 0x04,
+       Bingo(#30,#30,#30,"MOV [0413], AX")
+
+New(0xFF), 0x0E, 0x13, 0x04,
+       Bingo(#30,#30,#30,"DEC WORD PTR [413]")
+
+New(0x80), 0x2E, 0x13, 0x04,
+       Bingo(#30,#30,#30,"SUB BYTE PTR [0413], ??")
+
+New(0xA1), 0x13, 0x04, 0x48, 0x48
+       Scan(#16,0xA3), 0x13, 0x04,
+       Bingo(#30,#30,#30,"MOV AX, [0413] -> DEC AX -> DEC AX -> MOV [0413], AX");
+
+; Check for shift of [413] to obtain segment and other segment ops
+
+New(0xB1), 0x06, Scan(#16,0xD3), 0xE0,
+       Bingo(#30,#30,#30,"MOV CL, 06 -> SHL AX, CL")
+
+New(0xB9), 0x06, 0x00 Scan(#16,0xD3), 0xE0,
+       Bingo(#30,#30,#30,"MOV CX, 0006 -> SHL AX, CL")
+
+New(0x2D), @11?00000, 0x07,
+       Bingo(#5,#5,#5,"SUB AX, 7(C/E)0")
+
+New(0xBA), 0x40, 0x00,
+       Scan(#16,0xF7), 0xE2,
+       Bingo(#30,#30,#30,"MOV DX, 0040 -> MUL DX")
+
+; Check for revectoring of 004C and 004E
+
+New(0x8C), 0x06, 0x4E, 0x00
+       Bingo(#10,#10,#10,"MOV [004E], ES")
+
+New(0x8C), 0x0E, 0x4E, 0x00
+       Bingo(#30,#30,#30,"MOV [004E], CS")
+
+New(0xA3), @010011?0, 0x00,
+       Bingo(#10,#10,#10,"MOV [004(C/E)], AX")
+
+New(0x89), 0x1E, @010011?0, 0x00,
+       Bingo(#30,#30,#30,"MOV [004(C/E)], BX")
+
+New(0xA1), 0x4C, 0x00,
+       Bingo(#10,#10,#10,"MOV AX, [004C]")
+
+New(0xBB), 0x4C, 0x00,
+       Bingo(#30,#30,#30,"MOV BX, 004C")
+
+New(0xBE), 0x4C, 0x00,
+       Bingo(#5,#5,#5,"MOV SI, 004C")
+
+New(0xBE), 0x4C, 0x00,
+       0xA5, 0xA5,
+       Bingo(#10,#10,#10,"MOV SI, 004C -> MOVSW -> MOVSW")
+
+New(0xBF), 0x4C, 0x00,
+       Bingo(#1,#1,#1,"MOV DI, 004C")
+
+New( 0xBD), 0x4C, 0x00,
+       Bingo(#30,#30,#30,"MOV BP, 004C")   ; unusual
+
+New( 0xA1), 0x4E, 0x00,
+       Bingo(#10,#10,#10,"MOV AX, [004E]")
+
+
+New( 0xBB), 0x4E, 0x00,
+       Bingo(#30,#30,#30,"MOV BX, 004E")
+
+New( 0xBE), 0x4E, 0x00,
+       Bingo(#5,#5,#5,"MOV SI, 004E")
+
+New( 0xBF), 0x4E, 0x00,
+       Bingo(#30,#30,#30,"MOV DI, 004E")
+
+New( 0xBD), 0x4E, 0x00,
+       Bingo(#30,#30,#30,"MOV BP, 004E")   ; unusual
+
+New( 0xC7), 0x06, 0x4C, 0x00,
+       Bingo(#10,#10,#10,"MOV WORD PTR [004C], ????")
+
+; specify read/write to hard drive
+
+New(0xB8), @????????, 0x03,
+        Scan(#16,0xCD), 0x13,
+        Bingo(#30,#30,#30,"MOV AX, 03?? -> INT 13")
+
+New(0xB4), 0x03,
+        Scan(#16,0xCD), 0x13,
+        Bingo(#30,#30,#30,"MOV AH, 03 -> INT 13")
+
+New(0xB2), 0x80,
+       Bingo(#5,#0,#0,"MOV DL, 80")
+
+New(0xBA), 0x80, 0x00
+       Bingo(#5,#0,#0,"MOV DX, 0080")
+
+New(0xB4), 0x03,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV AH, 03 -> CALL ????")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AH, 03 -> INT 13")
+
+New(0xB4), 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DL, 80 -> INT 13")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AH, 03 -> INT 13")
+
+New(0xB4), 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DX, 0080 -> INT 13")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AX, 03?? -> INT 13")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DL, 80 -> INT 13")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AX, 03?? -> INT 13")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0xCD), 0x13
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DX, 0080 -> INT 13")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AH, 03 -> PUSHF -> CALL FAR [????]")
+
+New(0xB4), 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DL, 80 -> PUSHF -> CALL FAR [????]")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AH, 03 -> PUSHF -> CALL FAR [????]")
+
+New(0xB4), 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DX, 0080 -> PUSHF -> CALL FAR [????]")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AX, 03?? -> PUSHF -> CALL FAR [????]")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DL, 80 -> PUSHF -> CALL FAR [????]")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AX, 03?? -> PUSHF -> CALL FAR [????]")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DX, 0080 -> PUSHF -> CALL FAR [????]")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AH, 03 -> PUSHF -> CALL FAR direct")
+
+New(0xB4), 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DL, 80 -> PUSHF -> CALL FAR direct")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AH, 03 -> PUSHF -> CALL FAR direct")
+
+New(0xB4), 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DX, 0080 -> PUSHF -> CALL FAR direct")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AX, 03?? -> PUSHF -> CALL FAR direct")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DL, 80 -> PUSHF -> CALL FAR direct")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AX, 03?? -> PUSHF -> CALL FAR direct")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0x9C),
+       Scan(#16,0x9A),
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DX, 0080 -> PUSHF -> CALL FAR direct")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AH, 03 -> CALL near")
+
+New(0xB4), 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DL, 80 -> CALL near")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB4), 0x03,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AH, 03 -> CALL near")
+
+New(0xB4), 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV AH, 03 -> MOV DX, 0080 -> CALL near")
+
+New(0xB2), 0x80,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV DL, 80 -> MOV AX, 03?? -> CALL near")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xB2), 0x80,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DL, 80 -> CALL near")
+
+New(0xBA), 0x80, 0x00,
+       Scan(#16,0xB8), @????????, 0x03,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV DX, 0080 -> MOV AX, 03?? -> CALL near")
+
+New(0xB8), @????????, 0x03,
+       Scan(#16,0xBA), 0x80, 0x00,
+       Scan(#16,0xE8),
+       Bingo(#30,#30,#30,"MOV AX, 03?? -> MOV DX, 0080 -> CALL near")
+
+; Funky calls/jumps in general
+
+New( 0x9C),
+       Scan(#16,0xFF), @??011???,
+       Bingo(#2,#2,#2,"PUSHF -> CALL FAR [????]")
+
+New( 0x9C),
+       Scan(#16,0x9A),
+       Bingo(#5,#5,#5,"PUSHF -> CALL FAR direct")
+
+New(0x2E), 0xFF, 0x2E
+       Bingo(#5,#5,#5,"CS: JMP FAR [????]")
+
+New(0xEA), 0x00, 0x7C, 0x00, 0x00,
+       Bingo(#5,#5,#0,"JMP 0000:7C00")
+
+; Checks for the infection handler
+
+New( 0x3D), 0x01, 0x02,
+       Bingo(#30,#30,#30,"CMP AX, 0201")
+
+New( 0x80), 0xFC, 0x02,
+       Bingo(#5,#5,#5,"CMP AH, 02")
+
+New( 0x80), 0xFC, 0x03,
+       Bingo(#3,#3,#3,"CMP AH, 03")
+
+New( 0xF6), 0xC2, 0xF0,
+       Bingo(#5,#5,#5,"TEST DL, F0")
+
+New( 0x80), 0xFA, 0x80,
+       Bingo(#5,#5,#5,"CMP DL, 80")
+
+New( 0x80), 0xFA, 0x00,
+       Bingo(#1,#1,#1,"CMP DL, 00")
+
+New( 0x80), 0xFC, 0x02,
+       Scan(#16,0x83), 0xF9, 0x01,
+       Bingo(#30,#30,#30,"CMP AH, 02 -> CMP CX, +01")
+
+New( 0x3D), 0x01, 0x02,
+       Scan(#16,0x83), 0xF9, 0x01,
+       Bingo(#30,#30,#30,"CMP AX, 0201 -> CMP CX, +01")
+
+New( 0x80), 0xFC, 0x02,
+       Scan(#16,0x80), 0xFE, 0x00,
+       Bingo(#30,#30,#30,"CMP AH, 02 -> CMP DH, 00")
+
+New( 0x3D), 0x01, 0x02,
+       Scan(#16,0x80), 0xFE, 0x00,
+       Bingo(#30,#30,#30,"CMP AX, 0201 -> CMP DH, 00")
+
+New( 0x80), 0xFC, 0x02,
+       Scan(#16,0x81), 0xFA, 0x80, 0x00,
+       Bingo(#30,#30,#30,"CMP AH, 02 -> CMP DX, 0080")
+
+New( 0x3D), 0x01, 0x02,
+       Scan(#16,0x81), 0xFA, 0x80, 0x00,
+       Bingo(#30,#30,#30,"CMP AX, 0201 -> CMP DX, 0080")
+
+; Check for drive in use bit
+
+New( 0xF6), 0x06, 0x3F, 0x04, 0x01,
+       Bingo(#30,#30,#30,"TEST BYTE PTR [0x43F], 01")
+
+New( 0xBB), 0x3F, 0x04,
+       Scan(#16,0xF6), 0x07, 0x01
+       Bingo(#30,#30,#30,"MOV BX, 043F -> TEST BYTE PTR [BX], 01")
+
+New( 0xBE), 0x3F, 0x04,
+       Scan(#16,0xF6), 0x04, 0x01
+       Bingo(#30,#30,#30,"MOV SI, 043F -> TEST BYTE PTR [SI], 01")
+
+New( 0xBF), 0x3F, 0x04,
+       Scan(#16,0xF6), 0x05, 0x01
+       Bingo(#30,#30,#30,"MOV DI, 043F -> TEST BYTE PTR [DI], 01")
+
+New( 0xBB), 0x3F, 0x04,
+       Bingo(#30,#30,#30,"MOV BX, 043F")
+
+New( 0xBE), 0x3F, 0x04,
+       Bingo(#30,#30,#30,"MOV SI, 043F")
+
+New( 0xBF), 0x3F, 0x04,
+       Bingo(#30,#30,#30,"MOV DI, 043F")
+
+New( 0xA0), 0x3F, 0x04,
+       Bingo(#10,#10,#10,"MOV AL, [043F]")
+
+New( 0xA0), 0x3F, 0x04,
+       Scan(#16,0xA8), 0x01
+       Bingo(#30,#30,#30,"MOV AL, [043F] -> TEST AL, 01")
+
+; Checks for INT 1A
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Bingo(#10,#10,#10,"MOV AH, 00 -> INT 1A")
+
+New( 0x31), 0xC0,
+       Scan(#16, 0xCD), 0x1A,
+       Bingo(#10,#10,#10,"XOR AX, AX -> INT 1A")
+
+New( 0x30), 0xE4,
+       Scan(#16, 0xCD), 0x1A,
+       Bingo(#10,#10,#10,"XOR AH, AH -> INT 1A")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A")
+
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x81), 0xFA,
+       Bingo(#30,#30,#30,"MOV AH, 00 -> INT 1A -> CMP DX, ????")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x81), 0xFA,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A -> CMP DX, ????")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x81), 0xFA,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A -> CMP DX, ????")
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x81), 0xF9,
+       Bingo(#30,#30,#30,"MOV AH, 00 -> INT 1A -> CMP CX, ????")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x81), 0xF9,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A -> CMP CX, ????")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x81), 0xF9,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A -> CMP CX, ????")
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xF9,
+       Bingo(#30,#30,#30,"MOV AH, 00 -> INT 1A -> CMP CL, ??")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xF9,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A -> CMP CL, ??")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xF9,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A -> CMP CH, ??")
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFD,
+       Bingo(#30,#30,#30,"MOV AH, 00 -> INT 1A -> CMP CH, ??")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFD,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A -> CMP CH, ??")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFD,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A -> CMP CH, ??")
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFA,
+       Bingo(#30,#30,#30,"MOV AH, 00 -> INT 1A -> CMP DL, ??")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFA,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A -> CMP DL, ??")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFA,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A -> CMP DL, ??")
+
+New( 0xB4), 0x00,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFE,
+       Bingo(#30,#30,#30,"MOV AH, 00 -> INT 1A -> CMP DH, ??")
+
+New( 0xB4), 0x02,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFE,
+       Bingo(#30,#30,#30,"MOV AH, 02 -> INT 1A -> CMP DH, ??")
+
+New( 0xB4), 0x04,
+       Scan(#16, 0xCD), 0x1A,
+       Scan(#16, 0x80), 0xFE,
+       Bingo(#30,#30,#30,"MOV AH, 04 -> INT 1A -> CMP DH, ??")
+
+; Read of MBR is always bad for PBR/MBR.
+
+New( 0xB8), 0x01, 0x02
+       Scan(#16, 0xBA), 0x80, 0x00,
+       Scan(#16, 0xB9), 0x01, 0x00,
+       Scan(#16, 0xCD), 0x13,
+       Bingo(#0,#20,#20,"MOV AX, 0201 -> MOV DX, 0080 -> MOV CX, 0001 -> INT 13")
+
+New( 0xB8), 0x01, 0x02
+       Scan(#16, 0xB9), 0x01, 0x00,
+       Scan(#16, 0xBA), 0x80, 0x00,
+       Scan(#16, 0xCD), 0x13,
+       Bingo(#0,#10,#10,"MOV AX, 0201 ->  MOV CX, 0001 -> MOV DX, 0080 ->INT 13")
+
+New( 0xBA), 0x80, 0x00,
+       Scan(#16, 0xB9), 0x01, 0x00,
+       Scan(#16, 0xB8), 0x01, 0x02
+       Scan(#16, 0xCD), 0x13,
+       Bingo(#0,#10,#10,"MOV DX, 0080 -> MOV CX, 0001 -> INT 13")
+
+New( 0xB9), 0x01, 0x00,
+       Scan(#16, 0xBA), 0x80, 0x00,
+       Scan(#16, 0xB8), 0x01, 0x02
+       Scan(#16, 0xCD), 0x13,
+       Bingo(#0,#30,#30,"MOV CX, 0001 -> MOV DX, 0080 MOV AX, 0201 -> INT 13")
+
+; Read of sector to 0:7c00 should not happen in BRs, ok in MBR
+
+;New( 0xBB), 0x00, 0x7C,
+;       Scan(#16, 0xCD), 0x13,
+;       Bingo(#20,#20,#0,"MOV BX, 7C00 -> INT 13")
+
+; DOS checks
+
+New( 0xA1), 0x86, 0x00,
+       Bingo(#5,#5,#5,"MOV AX, [0086]")
+
+New( 0xA1), 0x84, 0x00,
+       Bingo(#5,#5,#5,"MOV AX, [0084]")
+
+New( 0xC7), 0x06, 0x84, 0x00
+       Bingo(#5,#5,#5,"MOV WORD PTR [0084], ????")
+
+New( 0xCD), 0x21
+       Bingo(#5,#5,#5,"INT 21")
+
+; Copy of BPB
+
+New( 0xB1), 0x1B,
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1B -> REPZ MOVSB")
+
+New( 0xB1), 0x1B,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1B -> REPNZ MOVSB")
+
+New( 0xB1), 0x1C,
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1C -> REPZ MOVSB")
+
+New( 0xB1), 0x1C,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1C -> REPNZ MOVSB")
+
+New( 0xB1), 0x1D,
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1D -> REPZ MOVSB")
+
+New( 0xB1), 0x1D,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1D -> REPNZ MOVSB")
+
+New( 0xB1), 0x1E,
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1E -> REPZ MOVSB")
+
+New( 0xB1), 0x1E,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1E -> REPNZ MOVSB")
+
+New( 0xB1), 0x1F,
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1F -> REPZ MOVSB")
+
+New( 0xB1), 0x1F,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 1F -> REPNZ MOVSB")
+
+New( 0xB1), 0x20,
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 20 -> REPZ MOVSB")
+
+New( 0xB1), 0x20,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CL, 20 -> REPNZ MOVSB")
+
+
+New( 0xB9), 0x1B, 0x00
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001B -> REPZ MOVSB")
+
+New( 0xB9), 0x1B, 0x00
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001B -> REPNZ MOVSB")
+
+New( 0xB9), 0x1C, 0x00
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001C -> REPZ MOVSB")
+
+New( 0xB9), 0x1C, 0x00
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001C -> REPNZ MOVSB")
+
+New( 0xB9), 0x1D, 0x00
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001D -> REPZ MOVSB")
+
+New( 0xB9), 0x1D, 0x00
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001D -> REPNZ MOVSB")
+
+New( 0xB9), 0x1E, 0x00
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001E -> REPZ MOVSB")
+
+New( 0xB9), 0x1E, 0x00
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001E -> REPNZ MOVSB")
+
+New( 0xB9), 0x1F, 0x00
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001F -> REPZ MOVSB")
+
+New( 0xB9), 0x1F, 0x00
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 001F -> REPNZ MOVSB")
+
+New( 0xB9), 0x20, 0x00
+       Scan(#16, 0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 0020 -> REPZ MOVSB")
+
+New( 0xB1), 0x20,
+       Scan(#16, 0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV CX, 0020 -> REPNZ MOVSB")
+
+New( 0xBF), 0x0B, 0x00,
+       Scan(#16,0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV DI, 000B -> REPZ MOVSB")
+
+New( 0xBF), 0x0B, 0x00,
+       Scan(#16,0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV DI, 000B -> REPNZ MOVSB")
+
+New( 0xBE), 0x0B, 0x00,
+       Scan(#16,0xF3), 0xA4,
+       Bingo(#30,#30,#30,"MOV SI, 000B -> REPZ MOVSB")
+
+New( 0xBE), 0x0B, 0x00,
+       Scan(#16,0xF2), 0xA4,
+       Bingo(#30,#30,#30,"MOV SI, 000B -> REPNZ MOVSB")
+
+; Check for partition accessing...
+
+New( 0xBE) 0xBE, 0x01,
+       Bingo(#30,#30,#0,"MOV SI, 01BE")
+
+New( 0xBE) 0xBE, 0x7D,
+       Bingo(#5,#5,#0,"MOV SI, 7DBE")
+
+New( 0xBF) 0xBE, 0x01,
+       Bingo(#30,#30,#0,"MOV DI, 01BE")
+
+New( 0xBF) 0xBE, 0x7D,
+       Bingo(#30,#30,#0,"MOV DI, 7DBE")
+
+New( 0xBE) 0xBE, 0x01,
+       Scan(#16,0xF3), 0xA4
+       Bingo(#30,#30,#30,"MOV SI, 01BE -> REPZ MOVSB")
+
+New( 0xBF) 0xBE, 0x01,
+       Scan(#16,0xF3), 0xA4
+       Bingo(#30,#30,#30,"MOV DI, 01BE -> REPZ MOVSB")
+
+New( 0xBE) 0xBE, 0x01,
+       Scan(#16,0xF2), 0xA4
+       Bingo(#30,#30,#30,"MOV SI, 01BE -> REPNZ MOVSB")
+
+New( 0xBF) 0xBE, 0x01,
+       Scan(#16,0xF2), 0xA4
+       Bingo(#30,#30,#30,"MOV DI, 01BE -> REPNZ MOVSB")
+
+; Check for compare against 55AA in non MBR...
+
+New(0x81), Scan(#4,0x55), 0xAA,
+       Bingo(#5,#10,#0,"CMP [????+??], AA55")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Exclusions follow
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+; DS1FLOP.SBR from IBM
+
+New(0x44), 0x49, 0x53, 0x4B, 0x53, 0x45, 0x43, 0x55, 0x52,
+       Bingo(#-1000,#-1000,#-1000,"DISKSECURE")
+
+; EZDR9706.MBR,EZDRIV95.MBR,EZDRIVE.MBR,EZDRV95B.MBR from IBM
+
+New(0x49), 0x4E, 0x49, 0x54, 0x20, 0x45, 0x52, 0x52,
+       Bingo(#-1000,#-1000,#-1000,"INIT ERR")
+
+; IMMNBOOT.BIN from IBM
+
+New(0xAC), 0x3C, 0xCD, 0x75, 0x3E, 0xAC, 0x2E, 0x3A, 0x06, 0x0D, 0x7F,
+       Bingo(#-1000,#-1000,#-1000,"LODSB -> CMP AL,CD -> JNZ 0275 -> LODSB -> CS: -> CMP AL,[7F0D]")
+
+; MAGICB3.DBR from IBM
+
+New(0x42), 0x49, 0x4F, 0x53, 0x20, 0x72, 0x65, 0x61, 0x64,
+       Bingo(#-1000,#-1000,#-1000,"BIOS read")
+
+; MARKL.DBR from IBM
+
+New(0x43), 0x61, 0x6E, 0x6E, 0x6F, 0x74, 0x20, 0x62, 0x6F, 0x6F, 0x74,
+       Bingo(#-1000,#-1000,#-1000,"Cannot boot")
+
+; OS2-21-1.SBS from IBM
+
+New(0x45), 0x72, 0x72, 0x6F, 0x72, 0x20, 0x72, 0x65, 0x61, 0x64, 0x69,
+        0x6E, 0x67,
+        Bingo(#-1000,#-1000,#-1000,"Error reading")
+
+; STK01.SBS, STK02.SBS from IBM
+
+New(0x53), 0x74, 0x61, 0x63, 0x6B, 0x65, 0x72,
+        Bingo(#-1000,#-1000,#-1000,"Stacker")
+
+; SWAPDRIV.BOO from IBM
+
+New(0x53), 0x77, 0x61, 0x70, 0x64, 0x72, 0x69, 0x76, 0x65,
+        Bingo(#-1000,#-1000,#-1000,"Swapdrive")
+
+; CPQDIAG.BOO from IBM
+
+New(0x4C), 0x6F, 0x61, 0x64, 0x20, 0x66, 0x61, 0x69, 0x6C, 0x75, 0x72, 0x65,
+        Bingo(#-1000,#-1000,#-1000,"Load failure")
+
+; GSBOOT.BIN from IBM
+
+New(0x43), 0x33, 0x07, 0x2B, 0x47, 0x20, 0x43, 0x43, 0xE2, 0xF7, 0x3D,
+        Bingo(#-1000,#-1000,#-1000,"INC BX -> XOR AX, [BX] -> SUB AX, [BX+20] -> INC BX -> INC BX -> LOOP ??")
+
+
+; MSDOS211.BIN from IBM
+
+New(0xFA), 0x33, 0xC0, 0x8E, 0xD0, 0xBC, 0x00, 0x7C, 0x8E, 0xD8,
+        0xA3, 0x7A, 0x00, 0xC7, 0x06, 0x78, 0x00,
+        Bingo(#-1000,#-1000,#-1000,"CLI -> XOR AX, AX -> MOV SS, AX -> MOV SP, 7C00 -> MOV DS, AX -> MOV [007A], AX -> MOV WORD PTR [0078], ????")
+
+; SAFENET.MBR from IBM
+
+New(0x43), 0x4F, 0x52, 0x52, 0x55, 0x50, 0x54, 0x45, 0x44, 0x2C,
+        Bingo(#-1000,#-1000,#-1000,"CORRUPTED")
+
+
+New(0x50), 0x61, 0x72, 0x74, 0x69, 0x74, 0x69, 0x6F, 0x6E,
+           0x2D, 0x49, 0x74,
+           Bingo(#-1000,#-1000,#-1000,"Partition-It")
+
+New(0xCD), 0x10, 0x31, 0xC0, 0xCD, 0x16, 0x3C, 0x00, 0x74, 0xF8, 0x3C, 0x0D,
+           0x74, 0xBA, 0x3C, 0x61,
+           Bingo(#-1000,#-1000,#-1000,"(fp from cust)")
+
+; repair by some AV program that only overwrites the top of
+; MBRs and leaves the rest (parts of the virus) intact...
+
+; 1608:0100 FA            CLI
+; 1608:0101 33C0          XOR     AX,AX
+; 1608:0103 8ED0          MOV     SS,AX
+; 1608:0105 BC007C        MOV     SP,7C00
+; 1608:0108 8BF4          MOV     SI,SP
+; 1608:010A 50            PUSH    AX
+; 1608:010B 07            POP     ES
+; 1608:010C 50            PUSH    AX
+; 1608:010D 1F            POP     DS
+; 1608:010E FB            STI
+; 1608:010F FC            CLD
+; 1608:0110 BF0006        MOV     DI,0600
+; 1608:0113 B90001        MOV     CX,0100
+; 1608:0116 F2            REPNZ
+; 1608:0117 A5            MOVSW
+; 1608:0118 EA1D060000    JMP     0000:061D
+; 1608:011D BEBE07        MOV     SI,07BE
+; 1608:0120 B304          MOV     BL,04
+; 1608:0122 803C80        CMP     BYTE PTR [SI],80
+; 1608:0125 740E          JZ      0135
+; 1608:0127 803C00        CMP     BYTE PTR [SI],00
+; 1608:012A 751C          JNZ     0148
+; 1608:012C 83C610        ADD     SI,+10
+; 1608:012F FECB          DEC     BL
+; 1608:0131 75EF          JNZ     0122
+; 1608:0133 CD18          INT     18
+; 1608:0135 8B14          MOV     DX,[SI]
+; 1608:0137 8B4C02        MOV     CX,[SI+02]
+; 1608:013A 8BEE          MOV     BP,SI
+; 1608:013C 83C610        ADD     SI,+10
+; 1608:013F FECB          DEC     BL
+; 1608:0141 741A          JZ      015D
+; 1608:0143 803C00        CMP     BYTE PTR [SI],00
+; 1608:0146 74F4          JZ      013C
+; 1608:0148 BE8B06        MOV     SI,068B
+; 1608:014B AC            LODSB
+; 1608:014C 3C00          CMP     AL,00
+; 1608:014E 740B          JZ      015B
+; 1608:0150 56            PUSH    SI
+; 1608:0151 BB0700        MOV     BX,0007
+; 1608:0154 B40E          MOV     AH,0E
+; 1608:0156 CD10          INT     10
+; 1608:0158 5E            POP     SI
+; 1608:0159 EBF0          JMP     014B
+; 1608:015B EBFE          JMP     015B
+; 1608:015D BF0500        MOV     DI,0005
+; 1608:0160 BB007C        MOV     BX,7C00
+
+New(0xFA), 0x33, 0xC0, 0x8E, 0xD0, 0xBC, 0x00, 0x7C, 0x8B, 0xF4,
+           Scan(#6, 0xFB),
+           0xFC, 0xBF, 0x00, 0x06, 0xB9, 0x00, 0x01, 0xF2,
+           0xA5, 0xEA, 0x1D, 0x06, 0x00, 0x00, 0xBE, 0xBE, 0x07, 0xB3, 0x04,
+           0x80, 0x3C, 0x80, 0x74, 0x0E, 0x80, 0x3C, 0x00, 0x75, 0x1C, 0x83,
+           0xC6, 0x10, 0xFE, 0xCB, 0x75, 0xEF, 0xCD, 0x18, 0x8B,
+           Bingo(#-1000,#-1000,#-1000,"(partial AV overwrite)")
+
+
+; another FP from moto.  MBR writes to itself and calls INT 1A
+
+New (0x2A), 0xE4, 0xCD, 0x1A,                           ; SUB AH, AH; INT 16
+            Scan(#20,0xB4), 0x01, 0xCD, 0x16,           ; MOV AH, 1, INT 1A
+            0x75, 0x1D, 0x2A, 0xE4,                     ; JNZ ???, SUB AH, AH
+            0xCD, 0x1A, 0x3B,                           ; INT 1A, CMP CX, ...
+            Bingo(#-1000,#-1000,#-1000,"japanese MBR")
+
+; an FP from the states (from TS)
+
+New (0x49), 0x4F, 0x20, 0x45, 0x52, 0x52,               "IO ERR ... BAD..."
+            Scan(#10,0x42), 0x41, 0x44,
+            Bingo(#-1000,#-1000,#-1000,"Domestic MBR that does [413] stuff")
+
+; systemsoft MBR
+
+New (0x53), 0x79, 0x73, 0x74, 0x65, 0x6D, 0x53, 0x6F, 0x66, 0x74,
+            Bingo(#-1000,#-1000,#-1000,"Systemsoft MBR")
+
+; FD boot from AGSI tool.
+
+New (0x46), 0x44, 0x42, 0x4F, 0x4F, 0x54, 0x20, 0x56, 0x65,
+            Bingo(#-1000,#-1000,#-1000,"FDBOOT Version 1.8")
+
+; Eudora BR from TS
+
+New (0x57), 0x69, 0x6E, 0x49, 0x6D, 0x61, 0x67, 0x65,
+            Bingo(#-1000,#-1000,#-1000,"WinImage")
+
+; NEXTSTEP MBR
+
+New (0x4E), 0x45, 0x58, 0x54, 0x53, 0x54, 0x45, 0x50,
+            Bingo(#-1000,#-1000,#-1000,"NEXTSTEP")
+
+; FASTBACK plus disk
+
+New (0x46), 0x61, 0x73, 0x74, 0x62, 0x61, 0x63,0x6B, 0x20,
+            Bingo(#-1000,#-1000,#-1000,"Fastback ")
+
+; another FP from moto supposedly called BOOTEAZY
+
+New (0x32), 0xE4, 0xCD, 0x1A,                           ; XOR AH, AH -> INT 1A
+            Scan(#16,0xB4), 0x01, 0xCD, 0x16,           ; MOV AH, 1 -> INT 16
+            Scan(#16,0xCD), 0x1A,                       ; INT 1A
+            Scan(#16,0xCD), 0x16),                      ; INT 16
+            Bingo(#-1000,#-1000,#-1000,"BOOTEAZY ")
+
+; yet another moto FP for a floppy disk that boots from the HD...
+
+New (0x4D), 0x45, 0x4C, 0x57, 0x41, 0x52, 0x45,
+            Scan(#32,0x28), 0x44, 0x4F,
+            Bingo(#-1000,#-1000,#-1000,"MELWARE ... (DOS/V)")
+
+; NTLDR PBR
+
+New (0xEB), 0xFE, 0xAC, 0x0A, 0xC0, 0x74, 0x09, 0xB4, 0x0E,
+            0xBB, 0x07, 0x00, 0xCD, 0x10, 0xEB, 0xF2, 0xC3,
+            0x50, 0x4A, 0x4A, 0xA0,
+            Bingo(#-1000,#-1000,#-1000,"NTLDR (italian)")
+
+; SYSLDR from moto;
+
+New (0xCD), 0x12, 0x2D, 0x10, 0x00, 0xB1, 0x06, 0xD3, 0xE0,
+            0x8E, 0xC0, 0xA3, 0x31, 0x00, 0xBB, 0x00, 0x00,
+            Bingo(#-1000,#-1000,#-1000,"SYSLDR")
+
+; VGA-COPY program formats disks
+
+New (0x56), 0x47, 0x41, 0x2D, 0x43, 0x4F, 0x50, 0x59,
+            Bingo(#-1000,#-1000,#-1000,"VGA-COPY")
+
+; NT LDR boot record.
+
+;cs:021C E80900         call   0228
+;cs:021F BEAD01         mov    si,01AD
+;cs:0222 E80300         call   0228
+;cs:0225 FB             sti
+;cs:0226 EBFE           jmp    0226
+;cs:0228 AC             lodsb
+;cs:0229 3C00           cmp    al,00
+;cs:022B 7409           je     0236
+;cs:022D B40E           mov    ah,0E
+;cs:022F BB0700         mov    bx,0007
+;cs:0232 CD10           int    10
+;cs:0234 EBF2           jmp    0228
+;cs:0236 C3             ret
+
+New (0xEB), 0xFE, 0xAC, 0x3C, 0x00, 0x74, Scan(#3,0xB4), 0x0E, 0xBB, 0x07,
+            0x00, 0xCD, 0x10, 0xEB, Scan(#2,0xC3),
+            Bingo(#-1000,#-1000,#-1000,"NTLDR")
+
+; keylabs bootmaster (MBR)
+
+New (0x4B), 0x65, 0x79, 0x4C, 0x61, 0x62, 0x73,
+            Bingo(#0,#0,#-1000,"KeyLabs")
+
+New (0x42), 0x6F, 0x6F, 0x74, 0x4D, 0x61, 0x73, 0x74, 0x65, 0x72,
+            Bingo(#0,#0,#-1000,"BootMaster")
+
+; new AV disk that replaces the BR if it's infected! :>
+
+;1655:014C A14E00        MOV     AX,[004E]
+;1655:014F 3D00C0        CMP     AX,C000
+;1655:0152 7316          JNB     016A
+;1655:0154 31D2          XOR     DX,DX
+;1655:0156 B90100        MOV     CX,0001
+;1655:0159 BB007C        MOV     BX,7C00
+;1655:015C B80103        MOV     AX,0301
+;1655:015F CD13          INT     13
+
+New (0xA1), 0x4E, 0x00, 0x3D, 0x00, 0xC0, 0x73, 0x16, 0x31, 0xD2, 0xB9, 0x01,
+            0x00, 0xBB, 0x00, 0x7C, 0xB8, 0x01, 0x03, 0xCD, 0x13,
+            Bingo(#-1000,#-1000,#-1000,"Anti-virus boot record")
+
+; moto IODATA boot record
+
+New (0xB4), 0x56, Scan(#16,0xCD), 0x1B,
+            0xEB, Scan(#16,0xCD), 0x13,
+            0x5D,
+            Bingo(#-1000,#-1000,#-1000,"IODATA")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; PC-DEC MBR f/ Motorola; it stores & encrypts the MBR somewhere.
+;
+; :0134 A11304          MOV     AX,[0413]
+; :0137 2E2B068101      SUB     AX,CS:[181]
+; :013C 48              DEC     AX
+; :013D E84301          CALL    0283
+; :0140 B90001          MOV     CX,0100
+
+New (0xA1), 0x13, 0x04,
+            0X2E, 0X2B, 0X06, 0X81, 0X01,
+            0X48,
+            0XE8, 0X43, 0X01,
+            0XB9, 0X00, 0X01,
+            Bingo(#-1000,#-1000,#-1000,"PC-DEC")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; #795: a South American MBR that partially overwrites infection
+;  of Diablo in MBR
+;
+; :011C  E2EF       LOOP 010D
+; :011E  B400       MOV  AH,00
+; :0120  CD16       INT  16
+; :0122  B40F       MOV  AH,0F
+; :0124  CD10       INT  10
+; :0126  B400       MOV  AH,00
+; :0128  CD10       INT  10
+; :012A  CD19       INT  19
+; 0x8E bytes of data followed by 0's
+; followed by remnant of Diablo's code:
+; :01e1  CD13       INT  13
+; :01E3  BEBE03     MOV  SI,03BE
+; :01E6  BFBE01     MOV  DI,01BE
+; :01E9  B92100     MOV  CX,0021
+; :01EC  F3A5       REPZ MOVSW
+;
+; :0200  CD13       INT  13
+; :0202  C606B00100 MOV  BYTE PTR [01B0],00
+
+New (0xE2),0xEF, 0xB4,0x00, 0xCD,0x16, 0xB4,0x0F, 0xCD,0x10,
+           0xB4,0x00, 0xCD,0x10, 0xCD,0x19,
+           Scan(#183, 0xCD),0x13, 0xBE,0xBE,0x03,
+           0xBF,0xBE,0x01,  0xB9,0x21,0x00,
+           0xF3,0xA5,  Scan(#20, 0xCD),0x13,
+           0xC6,0x06,0xB0,0x01,0x00,
+           Bingo(#-1000,#-1000,#-1000,"Diablo Remnant")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; #800: remnant of viral code in between JMP & DOS 5.0 boot code
+;
+New (0xFA), 0x33,
+            0xC0, 0x8E, 0xD0, 0xBC, 0x00, 0x7C, 0x16, 0x07,
+            0xBB, 0x78, 0x00, 0x36, 0xC5, 0x37, 0x1E, 0x56,
+            0x16, 0x53, 0xBF, 0x3E, 0x7C, 0xB9, 0x0B, 0x00,
+            0xFC, 0xF3, 0xA4, 0x06, 0x1F, 0xC6, 0x45, 0xFE,
+            0x0F, 0x8B, 0x0E, 0x18, 0x7C, 0x88, 0x4D, 0xF9,
+            0x89, 0x47, 0x02, 0xC7, 0x07, 0x3E, 0x7C, 0xFB,
+            0xCD, 0x13, 0x72, 0x79, 0x33, 0xC0, 0x39, 0x06,
+            0x13, 0x7C, 0x74, 0x08, 0x8B, 0x0E, 0x13, 0x7C,
+            0x89, 0x0E, 0x20, 0x7C, 0xA0, 0x10, 0x7C, 0xF7,
+            0x26, 0x16, 0x7C, 0x03, 0x06, 0x1C, 0x7C, 0x13,
+            0x16, 0x1E, 0x7C, 0x03, 0x06, 0x0E, 0x7C, 0x83,
+            0xD2, 0x00, 0xA3, 0x50, 0x7C, 0x89, 0x16, 0x52,
+            0x7C, 0xA3, 0x49, 0x7C, 0x89, 0x16, 0x4B, 0x7C,
+            0xB8, 0x20, 0x00, 0xF7, 0x26, 0x11, 0x7C,
+            Bingo(#-1000,#-1000,#-1000,"#800: DOS 5.0")
+
+; new exclusion for MICRO HOUSE MBR; does write to hard drive...
+
+New (0x4D), 0x49, 0x43, 0x52, 0x4F, 0x20, 0x48, 0x4F, 0x55, 0x53, 0x45,
+            Bingo(#-1000,#-1000,#-1000,"MICRO HOUSE")
+
+; exclusion for another MICRO HOUSE INT'L MBR
+
+;New (0x44), 0x52, 0x49, 0x56, 0x45, 0x50, 0x52, 0x4f, 0x28,
+;            0x54, 0x4d, 0x29, 0x20, 0x4d, 0x55, 0x4c, 0x54,
+;            0x49, 0x42, 0x4f, 0x4f, 0x54,
+
+; exclusion for boot manager of unknown origin
+
+New (0xBB), 0xAA, 0x55,
+            0x50,
+            0xB4, 0x41,
+            0xCD, 0x13,
+            0x58,
+            0x72, @????????,
+            0x81, 0xFB, 0x55, 0xAA,
+            Bingo(#-1000,#-1000,#-1000,"MOV BX, 55AA -> PUSH AX -> MOV AH, 41 - INT 13 -> POP AX ...")
+
+; exclusion for OS Boot Select v2.0
+
+New (0xbf), 0x00, 0x06,
+            0xb9, 0x00, 0x01,
+            0xf3,
+            0xa5,
+            0xea, 0x25, 0x06, 0x00, 0x00,
+            0x80, 0x3e, 0xfa, 0x06, 0x01,
+            Bingo(#-1000,#-1000,#-1000,"OS Boot Select v2.0")
+
+; exclusion for good DOS boot record - added because this partially overwrote
+; a viral boot sector.  jjw 30 Dec 97
+
+;0140 FA            CLI
+;0141 33C0          XOR  AX,AX
+;0143 8ED0          MOV  SS,AX
+;0145 BC007C        MOV  SP,7C00
+;0148 8EC0          MOV  ES,AX
+;014A 8ED8          MOV  DS,AX
+;014C BEA07C        MOV  SI,7CA0
+;014F AC            LODSB
+;0150 08C0          OR   AL,AL
+;0152 7406          JZ   015A
+;0154 B40E          MOV  AH,0E
+;0156 CD10          INT  10
+;0158 EBF5          JMP  014F
+;015A 30E4          XOR  AH,AH
+;015C CD16          INT  16
+;015E CD19          INT  19
+
+New (0xfa), 0x33, 0xc0,
+            0x8e, 0xd0, 0xbc, 0x00, 0x7c,
+            0x8e, 0xc0, 0x8e, 0xd8,
+            0xbe, 0xa0, 0x7c, 0xac,
+            0x08, 0xc0, 0x74, 0x06,
+            0xb4, 0x0e, 0xcd, 0x10,
+            0xeb, 0xf5, 0x30, 0xe4,
+            0xcd, 0x16, 0xcd, 0x19,
+            Bingo(#-1000,#-1000,#-1000,"Good DOS Boot Sector")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; #768: clean MBR code that overwrites the first 380 bytes of
+;       an Empire.Monkey infection
+
+New (0x33), 0XC0, 0x8E, 0xD0, 0xBC, 0x00, 0X7C, 0xFB,
+0x50, 0x07, 0x50, 0x1F, 0xFC, 0xBE, 0x1B, 0x7C,
+0xBF, 0X1B, 0x06, 0x50, 0x57, 0xB9, 0XE5, 0x01,
+0xF3, 0xA4, 0xCB, 0xBE, 0xBE, 0x07, 0xB1, 0x04,
+0x38, 0X2C, 0x7C, 0x09, 0x75, 0x15, 0X83, 0xC6,
+0x10, 0xE2, 0xF5, 0xCD, 0x18, 0x8B, 0x14, 0x8B,
+0xEE, 0X83, 0xC6, 0x10, 0x49, 0x74, 0X16, 0x38,
+0x2C, 0x74, 0xF6, 0xBE, 0x10, 0x07, 0x4E, 0xAC,
+0x3C, 0X00, 0x74, 0xFA, 0xBB, 0x07, 0X00, 0xB4,
+0x0E, 0xCD, 0x10, 0xEB, 0xF2, 0x89, 0x46, 0x25,
+0x96, 0X8A, 0x46, 0x04, 0xB4, 0x06, 0X3C, 0x0E,
+0x74, 0x11, 0xB4, 0x0B, 0x3C, 0x0C, 0x74, 0x05,
+0x3A, 0XC4, 0x75, 0x2B, 0x40, 0xC6, 0X46, 0x25,
+0x06, 0x75, 0x24, 0xBB, 0xAA, 0x55, 0x50, 0xB4,
+0x41, 0XCD, 0x13, 0x58, 0x72, 0x16, 0X81, 0xFB,
+0x55, 0xAA, 0x75, 0x10, 0xF6, 0xC1, 0x01, 0x74,
+0x0B,
+Bingo(#-1000,#-1000,#-1000,"Clean MBR Code #768")
+
+;
+; More clean MBR code from a partial overwrite
+; 30 Dec jjw   CI 932
+;
+; 0100 FA            CLI
+; 0101 2BC0          SUB	AX,AX
+; 0103 8ED0          MOV	SS,AX
+; 0105 8EC0          MOV	ES,AX
+; 0107 8ED8          MOV	DS,AX
+; 0109 B8007C        MOV	AX,7C00
+; 010C 8BE0          MOV	SP,AX
+; 010E FB            STI
+; 010F 8BF0          MOV	SI,AX
+; 0111 BF007E        MOV	DI,7E00
+; 0114 FC            CLD
+; 0115 B90001        MOV	CX,0100
+; 0118 F3            REPZ
+; 0119 A5            MOVSW
+; 011A E90002        JMP	031D
+; 011D B91000        MOV	CX,0010
+; 0120 8B36857E      MOV	SI,[7E85]
+; 0124 F60480        TEST	BYTE PTR [SI],80
+; 0127 7508          JNZ	0131
+; 0129 83EE10        SUB	SI,+10
+; 012C E2F6          LOOP	0124
+; 012E EB37          JMP	0167
+; 0130 90            NOP
+
+New (0xfa), 0x2b, 0xc0, 0x8e, 0xd0, 0x8e, 0xc0, 0x8e, 0xd8
+            0xb8, 0x00, 0x7c, 0x8b, 0xe0, 0xfb, 0x8b, 0xf0
+            0xbf, 0x00, 0x7e, 0xfc, 0xb9, 0x00, 0x01, 0xf3
+            0xa5, 0xe9, 0x00, 0x02, 0xb9, 0x10, 0x00, 0x8b
+            0x36, 0x85, 0x7e, 0xf6, 0x04, 0x80, 0x75, 0x08
+            0x83, 0xee, 0x10, 0xe2, 0xf6, 0xeb, 0x37, 0x90,
+            Bingo(#-1000, #-1000, #-1000,"Clean MBR Code #932")
+
+; Some unknown boot loader
+
+New (0xbe), 0x20, 0x7d, 0xb4, 0x04, 0xcd, 0x1a, 0x51,
+            0x8a, 0xc2, 0xff, 0xd6, 0x93, 0x8a, 0xc6,
+            0xff, 0xd6, 0xc1, 0xe0, 0x05, 0x0b, 0xd8,
+            Bingo(#-1000, #-1000, #-1000,"Unknown boot loader")
+
+;
+; Weird-ass floppy boot record that loads the hard disk's boot record
+; and essentially boots from the HD.
+; 02 Jan 98 jjw   CI 939
+;
+; 013E FA            CLI
+; 013F 33C0          XOR	AX,AX
+; 0141 8ED0          MOV	SS,AX
+; 0143 BC007C        MOV	SP,7C00
+; 0146 FB            STI
+; 0147 8ED8          MOV	DS,AX
+; 0149 8EC0          MOV	ES,AX
+; 014B FC            CLD
+; 014C A14E00        MOV	AX,[004E]
+; 014F 3D00C0        CMP	AX,C000
+; 0152 7315          JNB	0169
+; 0154 33D2          XOR	DX,DX
+; 0156 B90100        MOV	CX,0001
+; 0159 BB007C        MOV	BX,7C00
+; 015C B80103        MOV	AX,0301
+; 015F CD13          INT	13
+; 0161 BEDD7C        MOV	SI,7CDD
+; 0164 E83800        CALL	019F
+; 0167 EBFE          JMP	0167
+; 0169 BA8000        MOV	DX,0080
+; 016C B80008        MOV	AX,0800
+; 016F CD13          INT	13
+; 0171 730F          JNB	0182
+; 0173 BE2A7D        MOV	SI,7D2A
+; 0176 E82600        CALL	019F
+; 0179 33C0          XOR	AX,AX
+; 017B CD16          INT	16
+; 017D EA0000FFFF    JMP	FFFF:0000
+; 0182 BE8F7C        MOV	SI,7C8F
+; 0185 BF007E        MOV	DI,7E00
+; 0188 57            PUSH	DI
+; 0189 B91000        MOV	CX,0010
+; 018C F3            REPZ
+; 018D A4            MOVSB
+; 018E C3            RET
+; 018F BA8000        MOV	DX,0080
+; 0192 B90100        MOV	CX,0001
+; 0195 BB007C        MOV	BX,7C00
+; 0198 B80102        MOV	AX,0201
+; 019B 53            PUSH	BX
+; 019C CD13          INT	13
+; 019E C3            RET
+; 019F AC            LODSB
+; 01A0 3C00          CMP	AL,00
+; 01A2 7501          JNZ	01A5
+; 01A4 C3            RET
+; 01A5 BB0700        MOV	BX,0007
+; 01A8 B40E          MOV	AH,0E
+; 01AA CD10          INT	10
+; 01AC EBF1          JMP	019F
+
+New(0xfa), 0x33, 0xc0, 0x8e, 0xd0, 0xbc, 0x00, 0x7c,
+           0xfb, 0x8e, 0xd8, 0x8e, 0xc0, 0xfc, 0xa1, 0x4e,
+           0x00, 0x3d, 0x00, 0xc0, 0x73, 0x15, 0x33, 0xd2,
+           0xb9, 0x01, 0x00, 0xbb, 0x00, 0x7c, 0xb8, 0x01,
+           0x03, 0xcd, 0x13, 0xbe, 0xdd, 0x7c, 0xe8, 0x38,
+           0x00, 0xeb, 0xfe, 0xba, 0x80, 0x00, 0xb8, 0x00,
+           0x08, 0xcd, 0x13, 0x73, 0x0f, 0xbe, 0x2a, 0x7d,
+           0xe8, 0x26, 0x00, 0x33, 0xc0, 0xcd, 0x16, 0xea,
+           0x00, 0x00, 0xff, 0xff, 0xbe, 0x8f, 0x7c, 0xbf,
+           0x00, 0x7e, 0x57, 0xb9, 0x10, 0x00, 0xf3, 0xa4,
+           0xc3, 0xba, 0x80, 0x00, 0xb9, 0x01, 0x00, 0xbb,
+           0x00, 0x7c, 0xb8, 0x01, 0x02, 0x53, 0xcd, 0x13,
+           0xc3, 0xac, 0x3c, 0x00, 0x75, 0x01, 0xc3, 0xbb,
+           0x07, 0x00, 0xb4, 0x0e, 0xcd, 0x10, 0xeb, 0xf1,
+           Bingo(#-1000, #-1000, #-1000,"Weird-ass floppy boot loader")
+
+; Weird-ass MBR loader that checks for viruses and compares MBR to a
+; copy stored elsewhere on the disk.
+;
+; 0100 FA            CLI
+; 0101 33C0          XOR    AX,AX
+; 0103 8ED0          MOV    SS,AX
+; 0105 BC007C        MOV    SP,7C00
+; 0108 8BF4          MOV    SI,SP
+; 010A 50            PUSH   AX
+; 010B 07            POP    ES
+; 010C 50            PUSH   AX
+; 010D 1F            POP    DS
+; 010E FB            STI
+; 010F FC            CLD
+; 0110 BF0006        MOV    DI,0600
+; 0113 B90001        MOV    CX,0100
+; 0116 F3            REPZ
+; 0117 A5            MOVSW
+; 0118 EA1D060000    JMP    0000:061D
+; 011D E80201        CALL   0222
+; 0120 722E          JB 0150
+; 0122 BEBE07        MOV    SI,07BE
+; 0125 B304          MOV    BL,04
+; 0127 803C80        CMP    BYTE PTR [SI],80
+; 012A 740E          JZ 013A
+; 012C 803C00        CMP    BYTE PTR [SI],00
+; 012F 751C          JNZ    014D
+; 0131 83C610        ADD    SI,+10
+; 0134 FECB          DEC    BL
+; 0136 75EF          JNZ    0127
+; 0138 CD18          INT    18
+; 013A 8B14          MOV    DX,[SI]
+; 013C 8B4C02        MOV    CX,[SI+02]
+; 013F 8BEE          MOV    BP,SI
+; 0141 83C610        ADD    SI,+10
+; 0144 FECB          DEC    BL
+; 0146 741A          JZ 0162
+; 0148 803C00        CMP    BYTE PTR [SI],00
+; 014B 74F4          JZ 0141
+; 014D BE9006        MOV    SI,0690
+; 0150 AC            LODSB
+; 0151 3C00          CMP    AL,00
+; 0153 740B          JZ 0160
+; 0155 56            PUSH   SI
+; 0156 BB0700        MOV    BX,0007
+; 0159 B40E          MOV    AH,0E
+; 015B CD10          INT    10
+; 015D 5E            POP    SI
+; 015E EBF0          JMP    0150
+; 0160 EBFE          JMP    0160
+; 0162 BF0500        MOV    DI,0005
+; 0165 BB007C        MOV    BX,7C00
+; 0168 B80102        MOV    AX,0201
+; 016B 57            PUSH   DI
+; 016C CD13          INT    13
+; 016E 5F            POP    DI
+; 016F 730C          JNB    017D
+; 0171 33C0          XOR    AX,AX
+; 0173 CD13          INT    13
+; 0175 4F            DEC    DI
+; 0176 75ED          JNZ    0165
+; 0178 BEA806        MOV    SI,06A8
+; 017B EBD3          JMP    0150
+; 017D BEC706        MOV    SI,06C7
+; 0180 BFFE7D        MOV    DI,7DFE
+; 0183 813D55AA      CMP    WORD PTR [DI],AA55
+; 0187 75C7          JNZ    0150
+; 0189 8BF5          MOV    SI,BP
+; 018B EA007C0000    JMP    0000:7C00
+
+New(0xfa), 0x33, 0xc0, 0x8e, 0xd0, 0xbc, 0x00, 0x7c,
+           0x8b, 0xf4, 0x50, 0x07, 0x50, 0x1f, 0xfb, 0xfc,
+           0xbf, 0x00, 0x06, 0xb9, 0x00, 0x01, 0xf3, 0xa5,
+           0xea, 0x1d, 0x06, 0x00, 0x00, 0xe8, 0x02, 0x01,
+           0x72, 0x2e, 0xbe, 0xbe, 0x07, 0xb3, 0x04, 0x80,
+           0x3c, 0x80, 0x74, 0x0e, 0x80, 0x3c, 0x00, 0x75,
+           0x1c, 0x83, 0xc6, 0x10, 0xfe, 0xcb, 0x75, 0xef,
+           0xcd, 0x18, 0x8b, 0x14, 0x8b, 0x4c, 0x02, 0x8b,
+           0xee, 0x83, 0xc6, 0x10, 0xfe, 0xcb, 0x74, 0x1a,
+           0x80, 0x3c, 0x00, 0x74, 0xf4, 0xbe, 0x90, 0x06,
+           0xac, 0x3c, 0x00, 0x74, 0x0b, 0x56, 0xbb, 0x07,
+           0x00, 0xb4, 0x0e, 0xcd, 0x10, 0x5e, 0xeb, 0xf0,
+           0xeb, 0xfe, 0xbf, 0x05, 0x00, 0xbb, 0x00, 0x7c,
+           0xb8, 0x01, 0x02, 0x57, 0xcd, 0x13, 0x5f, 0x73,
+           0x0c, 0x33, 0xc0, 0xcd, 0x13, 0x4f, 0x75, 0xed,
+           0xbe, 0xa8, 0x06, 0xeb, 0xd3, 0xbe, 0xc7, 0x06,
+           0xbf, 0xfe, 0x7d, 0x81, 0x3d, 0x55, 0xaa, 0x75,
+           0xc7, 0x8b, 0xf5, 0xea, 0x00, 0x7c, 0x00, 0x00,
+           Bingo(#-1000, #-1000, #-1000, "Weird-ass MBR loader")
+
+;another Floppy boot sector that loads MBR (dk 1/15/98)
+;0100 EB3C          JMP     013E
+;...
+;013E 33C0          XOR     AX,AX
+;0140 8EC0          MOV     ES,AX
+;0142 8ED8          MOV     DS,AX
+;0144 FC            CLD
+;0145 B90001        MOV     CX,0100
+;0148 BE007C        MOV     SI,7C00
+;014B BF0040        MOV     DI,4000
+;014E F3            REPZ
+;014F A5            MOVSW
+;0150 E900C4        JMP     C553 (4053 during boot up)
+;0153 33C0          XOR     AX,AX
+;0155 B280          MOV     DL,80
+;0157 CD13          INT     13
+;0159 B80102        MOV     AX,0201
+;015C BA8000        MOV     DX,0080
+;015F B90100        MOV     CX,0001
+;0162 BB007C        MOV     BX,7C00
+;0165 CD13          INT     13
+;0167 720B          JB      0174
+;0169 813EFE7D55AA  CMP     WORD PTR [7DFE],AA55
+;016F 7503          JNZ     0174
+;0171 E98C3B        JMP     3D00 (7C00 during boot up)
+
+New(0xb9), 0x00, 0x01, 0xbe, 0x00, 0x7c, 0xbf, 0x00,
+           0x40, 0xf3, 0xa5, 0xe9, 0x00, 0xc4, 0x33, 0xc0,
+           0xb2, 0x80, 0xcd, 0x13, 0xb8, 0x01, 0x02,
+           Bingo(#-1000, #-1000, #-1000, "Weird Floppy Boot Sector")
+
+;
+; Below is a good MBR, but the right bytes were in the partition table on
+; the customer's sample to set off the Bloodhound heuristics.  jjw 20 Jan 98
+;
+; 0100 FA            CLI
+; 0101 33C0          XOR	AX,AX
+; 0103 8ED0          MOV	SS,AX
+; 0105 BC007C        MOV	SP,7C00
+; 0108 8BF4          MOV	SI,SP
+; 010A 50            PUSH	AX
+; 010B 07            POP	ES
+; 010C 50            PUSH	AX
+; 010D 1F            POP	DS
+; 010E FB            STI
+; 010F FC            CLD
+; 0110 BF0006        MOV	DI,0600
+; 0113 B90001        MOV	CX,0100
+; 0116 F3            REPZ
+; 0117 A5            MOVSW
+; 0118 EA1D060000    JMP	0000:061D
+; 011D BEBE07        MOV	SI,07BE
+; 0120 B304          MOV	BL,04
+; 0122 803C80        CMP	BYTE PTR [SI],80
+; 0125 740E          JZ	0135
+; 0127 803C00        CMP	BYTE PTR [SI],00
+; 012A 751C          JNZ	0148
+; 012C 83C610        ADD	SI,+10
+; 012F FECB          DEC	BL
+; 0131 75EF          JNZ	0122
+; 0133 CD18          INT	18
+; 0135 8B14          MOV	DX,[SI]
+; 0137 8B4C02        MOV	CX,[SI+02]
+; 013A 8BEE          MOV	BP,SI
+; 013C 83C610        ADD	SI,+10
+; 013F FECB          DEC	BL
+; 0141 741A          JZ	015D
+; 0143 803C00        CMP	BYTE PTR [SI],00
+; 0146 74F4          JZ	013C
+; 0148 BE8B06        MOV	SI,068B
+; 014B AC            LODSB
+; 014C 3C00          CMP	AL,00
+; 014E 740B          JZ	015B
+; 0150 56            PUSH	SI
+; 0151 BB0700        MOV	BX,0007
+; 0154 B40E          MOV	AH,0E
+; 0156 CD10          INT	10
+; 0158 5E            POP	SI
+; 0159 EBF0          JMP	014B
+; 015B EBFE          JMP	015B
+; 015D BF0500        MOV	DI,0005
+; 0160 BB007C        MOV	BX,7C00
+; 0163 B80102        MOV	AX,0201
+; 0166 57            PUSH	DI
+; 0167 CD13          INT	13
+; 0169 5F            POP	DI
+; 016A 730C          JNB	0178
+; 016C 33C0          XOR	AX,AX
+; 016E CD13          INT	13
+; 0170 4F            DEC	DI
+; 0171 75ED          JNZ	0160
+; 0173 BEA306        MOV	SI,06A3
+; 0176 EBD3          JMP	014B
+; 0178 BEC206        MOV	SI,06C2
+; 017B BFFE7D        MOV	DI,7DFE
+; 017E 813D55AA      CMP	WORD PTR [DI],AA55
+; 0182 75C7          JNZ	014B
+; 0184 8BF5          MOV	SI,BP
+; 0186 EA007C0000    JMP	0000:7C00
+
+New(0xfa), 0x33, 0xc0, 0x8e, 0xd0, 0xbc, 0x00, 0x7c
+           0x8b, 0xf4, 0x50, 0x07, 0x50, 0x1f, 0xfb, 0xfc
+           0xbf, 0x00, 0x06, 0xb9, 0x00, 0x01, 0xf3, 0xa5
+           0xea, 0x1d, 0x06, 0x00, 0x00, 0xbe, 0xbe, 0x07
+           0xb3, 0x04, 0x80, 0x3c, 0x80, 0x74, 0x0e, 0x80
+           0x3c, 0x00, 0x75, 0x1c, 0x83, 0xc6, 0x10, 0xfe
+           0xcb, 0x75, 0xef, 0xcd, 0x18, 0x8b, 0x14, 0x8b
+           0x4c, 0x02, 0x8b, 0xee, 0x83, 0xc6, 0x10, 0xfe
+           0xcb, 0x74, 0x1a, 0x80, 0x3c, 0x00, 0x74, 0xf4
+           0xbe, 0x8b, 0x06, 0xac, 0x3c, 0x00, 0x74, 0x0b
+           0x56, 0xbb, 0x07, 0x00, 0xb4, 0x0e, 0xcd, 0x10
+           0x5e, 0xeb, 0xf0, 0xeb, 0xfe, 0xbf, 0x05, 0x00
+           0xbb, 0x00, 0x7c, 0xb8, 0x01, 0x02, 0x57, 0xcd
+           0x13, 0x5f, 0x73, 0x0c, 0x33, 0xc0, 0xcd, 0x13
+           0x4f, 0x75, 0xed, 0xbe, 0xa3, 0x06, 0xeb, 0xd3
+           0xbe, 0xc2, 0x06, 0xbf, 0xfe, 0x7d, 0x81, 0x3d
+           0x55, 0xaa, 0x75, 0xc7, 0x8b, 0xf5, 0xea, 0x00
+           0x7c, 0x00, 0x00,
+           Bingo(#-1000, #-1000, #-1000, "Good MBR")
+
+; This is boot selector MBR exclusion for CI 1068
+; jjw 21 Jan 98
+
+ 
+; 01A8 B80103        MOV	AX,0301
+; 01AB BB0006        MOV	BX,0600
+; 01AE B90100        MOV	CX,0001
+; 01B1 B600          MOV	DH,00
+; 01B3 CD13          INT	13
+; 01B5 73AD          JNB	0164
+; 01B7 BEA607        MOV	SI,07A6
+; 01BA E80200        CALL	01BF
+; 01BD EBFE          JMP	01BD
+; 01BF AC            LODSB
+; 01C0 84C0          TEST	AL,AL
+; 01C2 7409          JZ	01CD
+; 01C4 BB0700        MOV	BX,0007
+; 01C7 B40E          MOV	AH,0E
+; 01C9 CD10          INT	10
+; 01CB EBF2          JMP	01BF
+; 01CD C3            RET
+; 01CE 2E            CS:
+; 01CF FF0ED47C      DEC	WORD PTR [7CD4]
+; 01D3 CF            IRET
+
+New(0xb8), 0x01, 0x03, 0xbb, 0x00, 0x06, 0xb9, 0x01, 0x00,
+           0xb6, 0x00, 0xcd, 0x13, 0x73, 0xad, 0xbe, 0xa6,
+           0x07, 0xe8, 0x02, 0x00, 0xeb, 0xfe, 0xac, 0x84,
+           0xc0, 0x74, 0x09, 0xbb, 0x07, 0x00, 0xb4, 0x0e,
+           0xcd, 0x10, 0xeb, 0xf2, 0xc3, 0x2e, 0xff, 0x0e,
+           0xd4, 0x7c, 0xcf,
+           Bingo(#-1000, #-1000, #-1000, "Boot Selector MBR")
+
+
+; DocsBoot Shareware Disk utility
+
+New(0x86), 0xe0, 0xe6, 0x70, 0x86, 0xe0, 0xe6, 0x71, 0xc3, 0x50,
+        0xb8, 0x82, 0x0b, 0xe8, 0xf0, 0xff, 0x58, 0xc3, 0x50
+        Bingo(#-1000,#-1000,#-1000,"CI# 1124")
+
+; NoVaSoft floppy bootsector -- loads MBR and boots off HD; CI 1252
+
+New (0x4e), 0x6f, 0x56, 0x61, 0x53, 0x6f, 0x66, 0x74, 0x20,
+            0x66, 0x6f, 0x72, 0x6d, 0x61, 0x74, 0x2e, 0x0d,
+            0x0a, 0x4e, 0x6f,
+            Bingo(#-1000,#-1000,#-1000,"NoVaSoft")
+
+; CPM bootsector - no 55aa at end.  Tries to load CPM into high mem w/ Int 12
+; CI 1492   jjw 10 Mar 98
+
+New(0xfc),  0xa5, 0xa5, 0xac, 0x2e, 0xa0, 0x18, 0x7c, 0xaa,
+            0xa5, 0xa5, 0xa5, 0x0e, 0x1f, 0xcd, 0x12, 0x2d,
+            0x40, 0x00, Bingo(#-1000,#-1000,#-1000,"CPM Boot")
+
+; DK Systems bootsector - Reads MBR.
+
+New(0xf3),  0xa5, 0xea, 0x56, 0x00, 0x60, 0x00, 0x0d, 0x0a
+            0x50, 0x61, 0x72, Bingo(#-1000,#-1000,#-1000,"DK Systems Boot")
+
+; CI 1707 -- D drive partition table with a bunch of garbage code
+;            that happened to include 3d0102 (cmp ax, 0201)
+New(0xe8), 0x10, 0x0f, 0xbf, 0x55, 0x14, 0x0f, 0xbf, 0xc8, 0x51,
+           Bingo(#-1000,#-1000,#-1000, "CI 1707")
+
+; CI 1730 -- viral remnants on D drive; never gets executed
+; CI 1731 -- hmm, same MBR -- weird format?
+New(0xc3), 0x26, 0x81, 0xbf, 0xfa, 0x01, 0x19, 0x92, 0xc3,
+           Bingo(#-1000,#-1000,#-1000, "CI 1730/31")
+
+; DocsBoot Shareware Disk utility version 0.42
+; sig on B40E 33 DB CD 10 EB F2 0D 0A 0A "DocsBoot"
+
+New(0xB4), 0x0E, 0x33, 0xDB, 0xCD, 0x10, 0xEB, 0xF2, 0x0D, 0x0A,
+        0x0A, 0x44, 0x6F, 0x63, 0x73, 0x42, 0x6F, 0x6F, 0x74
+        Bingo(#-1000,#-1000,#-1000,"DoscBoot+")
+
+; Customer issue 1826
+New(0xcd), 0x1f, 0x59, 0x5b, 0x73, 0x08, 0xb4, 0x0f, 0xcd, 0x13,
+        0xfe, 0xef, 0xeb, 0x13, 0xfe, 0xc3, 0x80, 0xdb, 0x2f
+        Bingo(#-1000,#-1000,#-1000,"CI 1826")
+
+; Boot sector from IBM
+New(0x4d), 0x46, 0x47, 0x5f, 0x42, 0x4f, 0x4f, 0x54
+        Bingo(#-1000,#-1000,#-1000,"MFG_BOOT")
+
+; DrivePro Multiboot MBR - CI 2127 jjw
+New(0x53), 0xb4, 0x03, 0x33, 0xdb, 0xcd, 0x10, 0xb9, 0x0c, 0x00,
+        0xbb, 0x1f, 0x00, 0xb8, 0x01, 0x13, 0xcd, 0x10, 0x5b, 0xc3
+        Bingo(#-1000,#-1000,#-1000,"DrivePro MultiBoot")
+
+; Weirdo OS boot sector - Unix? - CI 2176 jjw
+New (0x06), 0xb4, 0xc0, 0xcd, 0x15, 0x83, 0xc3, 0x03, 0x26, 0x8a,
+        0x07, 0x07, 0x3c, 0x80, 0x74, 0x06
+        Bingo(#-1000,#-1000,#-1000,"Weird OS Boot")
+
+; Slightly Different MBR - CI 2185 jjw
+New(0xfb), 0xbf, 0x00, 0x06, 0xb9, 0x00, 0x01, 0xf3, 0xa5, 0xbb,
+        0x20, 0x06, 0xff, 0xe3, 0x90, 0x90, 0xbe, 0x00, 0x06
+        Bingo(#-1000,#-1000,#-1000,"Different MBR")
+
+; Boot Sector - CI 2204 AO
+New(0x8a), 0x2e, 0x06, 0x02, 0x8a, 0x16, 0x07, 0x02, 0xd0, 0xca,
+        0xd0, 0xca, 0x0a, 0xca, 0xb2, 0x05, 0x50, 0x52, 0x8a, 0x16,
+        0x08, 0x02, 0xb4, 0x02, 0xcd, 0x13, 0x5a, 0x58, 0x73, 0x09
+        Bingo(#-1000,#-1000,#-1000,"CI 2204")
+
+; Boot sector with ad for some BBS in Germany -- CI 2287 Darren K.
+New(0x44), 0x41, 0x54, 0x41, 0x4e, 0x4f, 0x52, 0x4d
+        Bingo(#-1000,#-1000,#-1000,"DATANORM")
+
+; NTFS Boot loader from NT 4.0 - CI 2323
+New(0x8b), 0xf8, 0xb8, 0x00, 0x05, 0xcd, 0x2f, 0x3c,
+0xff, 0x75, 0x2a, 0x53
+        Bingo(#-1000,#-1000,#-1000,"NTFS Loader")
+
+; Boot sector buffer contents when doing a Diskcopy w/ an unformatted
+; target diskette.  This happens w/ CIs 2384 and 2421.  jjw 28 Jul 98
+New(0x3d), 0x01, 0x01, 0x02, 0x3d, 0x01, 0x02, 0x02,
+    0x3d, 0x01, 0x03, 0x02, 0x3d, 0x01, 0x04, 0x02,
+    0x3d, 0x01, 0x05, 0x02, 0x3d, 0x01, 0x06, 0x02,
+    0x3d, 0x01, 0x07, 0x02, 0x3d, 0x01, 0x08, 0x02,
+        Bingo(#-1000,#-1000,#-1000,"Intermediate Format")
+
+; CI 2623
+New(0x56), 0x69, 0x72, 0x75, 0x73, 0x20, 0x69, 0x6e,
+           0x20, 0x4d, 0x42, 0x52, 0x21, 0x20, 0x00,
+        Bingo(#-1000,#-1000,#-1000,"Virus in MBR! ")
+
+; CI
+New(0x5b), 0x4d, 0x41, 0x47, 0x49, 0x43, 0x42, 0x5d,
+        Bingo(#-1000,#-1000,#-1000,"[MAGICB]")
+
+; CI 2672
+New(0x4C), 0x6F, 0x63, 0x6B, 0x53, 0x69, 0x67, 0x00,
+        Bingo(#-1000,#-1000,#-1000,"LockSig")
+
+; CI
+New(0x4D), 0x61, 0x67, 0x69, 0x63, 0x20, 0x42, 0x75, 0x6C,
+           0x6C, 0x65, 0x74, 0x2E,
+        Bingo(#-1000,#-1000,#-1000,"Magic Bullet.")
+
+; CI 2674 jjw
+New(0xa1), 0x4e, 0x00, 0x3d, 0x00, 0xc0, 0x73, 0x15, 0x33,
+           0xd2, 0xb9, 0x01, 0x00, 0xbb, 0x00, 0x7c, 0xb8,
+           0x01, 0x03, 0xcd, 0x13, 0xbe, 0xf8, 0x7c, 0xe8,
+           0x3f, 0x00, 0xeb, 0xfe, 0x80, 0x3e, 0x15,
+       Bingo(#-1000,#-1000,#-1000,"NVClean Boot Sector")
+
+; ISSUE #4561
+New(0xB8), 0x20, 0x09, 0xCD, 0x10, 0xB3, 0xB2, 0xE8, 0xA2, 0xFF,
+           0x9D, 0x58, 0x5A, 0xC3, 0x56, 0x69, 0x72, 0x75, 0x73, 0x21,
+           0x21, 0x21, 0x20, 0x00, 0x20, 0x45, 0x72, 0x72, 0x6F, 0x72,
+           0x21, 0x0D, 0x0A, 0x42, 0x6f, 0x6f, 0x74, 0x69, 0x6e, 0x67,
+           0x20, 0x66, 0x72, 0x6f, 0x6d, 0x3a, 0x20,
+       Bingo(#-1000,#-1000,#-1000, "Western Digital 32bit partition")
+
+; ISSUE #4548
+New(0x33), 0xDB, 0xB4, 0x0E, 0xCD, 0x10, 0x45, 0xF9, 0xC3, 0x00, 0x00,
+           0x00, 0x0A, 0x0D, 0x4E, 0x6F, 0x20, 0x73, 0x79, 0x73, 0x74, 0x65,
+           0x6D, 0x20, 0x6F, 0x72, 0x20, 0x64, 0x69,
+       Bingo(#-1000,#-1000,#-1000, "Cure Boot?")
+
+; ISSUE #5212
+New(0xBE), 0xFF, 0xFD, 0x9C, 0x8E, 0xD8, 0xFF, 0x9C, 0x49, 0x02, 0x3B,
+           0x84, 0x14, 0x06, 0x8B, 0xF4, 0x75, 0x23, 0xBA, 0x40, 0x00,
+           0x3B, 0xC2, 0x76, 0x22,
+       Bingo(#-1000,#-1000,#-1000, "Boot Innoculation Tool from Germany")
+
+; ISSUE #7693
+New(0xBC), 0xF8, 0x7b, 0x8e, 0xc1, 0xBD, 0x78, 0x00, 0xC5, 0x76, 0x00,
+           0x1E, 0x56, 0x16, 0x55, 0xBF, 0x22, 0x05, 0x89, 0x7E, 0x00,
+           0x89, 0x4E, 0x02, 0xB1, 0x0B, 0xFC, 0xF3, 0xA4, 0x8E, 0xD9,
+           0xBD, 0x00, 0x7C, 0xC6, 0x45, 0xFE, 0x0F, 0x8B, 0x46, 0x18,
+           0x88, 0x45, 0xF9, 0x38, 0x4E, 0x40, 0x7D, 0x25, 0x8B, 0xC1,
+           0x99, 0xBB, 0x00, 0x07, 0xE8, 0x97, 0x00,
+       Bingo(#-1000,#-1000,#-1000, "Clean FAT32 #7693")
+
+; Issue #8044
+New(0x75), 0xf2, 0xbe, 0x11, 0x02, 0xb9, 0x24, 0x00, 0xb8, 0x00,
+           0xb8, 0x8e, 0xc0, 0xbf, 0x00, 0x0f, 0xe8, 0xd8, 0xff,
+           0xeb, 0xfe, 0xc3,
+       Bingo(#-1000,#-1000,#-1000, "#8044: Damaged boot virus")
+
+;#9116 DEC
+;:0100 59            POP     CX
+;:0101 56            PUSH    SI
+;:0102 53            PUSH    BX
+;:0103 5A            POP     DX
+;:0104 C25E86        RET     865E
+;:0107 E880AC        CALL    AD8A
+;:010A E0F5          LOOPNZ  0101
+New(0x59), 0x56, 0x53, 0x5a, 0xc2, 0x5e, 0x86, 0xe8, 0x80, 0xac, 0xe0, 0xf5,
+      Bingo(#-1000,#-1000,#-1000, "#9116: DEC funky boo")
+
+; ISSUE 9034
+New(0x4e), 0x6f, 0x20, 0x4d, 0x4f, 0x53, 0x20, 0x70, 0x61, 0x72, 0x74,
+           0x69, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x07, 0x00, 0x20, 0x4e,
+           0x6f, 0x74, 0x20, 0x61, 0x20, 0x42, 0x6f, 0x6f, 0x74, 0x61,
+           0x62, 0x6c, 0x65, 0x20, 0x50, 0x61, 0x72, 0x74, 0x69, 0x74,
+           0x69, 0x6f, 0x6e, 0x21, 0x3f,
+       Bingo(#-1000,#-1000,#-1000, "#9034: Disk utility")
+
+; ISSUE 9655
+; a CMP AX 0201 in jmp over area so we unfortunately just have to
+; take a big chunk of clean boot code
+New(0xFA), 0x33, 0xC9, 0x8E, 0xD1, 0xBC, 0xFC, 0x7B, 0x16, 0x07,
+           0xBD, 0x78, 0x00, 0xC5, 0x76, 0x00, 0x1E, 0x56, 0x16,
+           0x55, 0xBF, 0x22, 0x05, 0x89, 0x7E, 0x00, 0x89, 0x4E,
+           0x02, 0xB1, 0x0B, 0xFC, 0xF3, 0xA4, 0x06, 0x1F, 0xBD,
+           0x00, 0x7C, 0xC6, 0x45, 0xFE, 0x0F, 0x8B, 0x46, 0x18,
+       Bingo(#-1000,#-1000,#-1000, "#9655: Clean boot code")
+
+; ISSUE 10660
+New(0xc4), 0x06, 0x24, 0x00, 0x2e, 0xa3, 0x89, 0x01, 0x2e, 0x8c,
+           0x06, 0x8b, 0x01, 0xc4, 0x06, 0x4c, 0x00, 0x2e, 0xa3,
+           0x2d, 0x01, 0x2e, 0x8c, 0x06, 0x2f, 0x01, 0xb8, 0xa3,
+           0x00, 0xa3, 0x4c, 0x00, 0x8c, 0x0e, 0x4e, 0x00, 0xb8,
+           0x4e, 0x01, 0xa3, 0x24, 0x00, 0x8c, 0x0e, 0x26, 0x00,
+       Bingo(#-1000,#-1000,#-1000, "#10660: Clean boot code")
+

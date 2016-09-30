@@ -1,0 +1,65 @@
+
+File: CMigrant.txt
+
+This text file describes how to use the CMigrant class to assist in the
+implementation of a Windows 9x to Windows NT5.0 migration DLL.  The CMigrant
+class allows you to derive your own class to implement specialized tasks your
+application may need during such a migration.  CMigrant is created and called
+from the "migrate.cpp" module.
+
+
+STEPS TO USING "CMigrant"
+
+*) Derive your class from CMigrant (Migrant.h) and implement the following
+   virtual functions:
+   -- CheckAppInstallation(void) = 0;
+   -- CopyAppFiles(void);
+   -- InitAppDirs(void) = 0;
+   -- InitAppID(void) = 0;
+   -- IsAppInstalled(void) = 0;
+   -- WriteMigrationFlag(void) = 0;
+   Note that all are pure functions except "CopyAppFiles" (although you'll
+   most likely want to implement this function as well).
+
+*) Modify "CreateMig.cpp" so it will create an instance of your derived class.
+   (Remember to include the header for your derived class.)
+
+*) Initialize the static class members of the CMigrant class (a convenient
+   place to do this in the module that contains the implementation of your
+   derived class):
+   -- CMigrant::m_szInstallDirFiles[]
+   -- CMigrant::m_szProgramFilesSymantecFiles[]
+   -- CMigrant::m_szCommonFilesSymantecFiles[]
+   -- CMigrant::m_szMigInfExeFiles[]
+   -- CMigrant::m_szSymantecSharedRegkeys[]
+   -- CMigrant::m_codePageArray[]
+
+*) Include your derived class files and any other files you need in the
+   project, and "migrate.cpp" should drive everything for you!
+
+
+Some additional sources for information are:
+
+*) Go to the MIGRATE project in the Roswell area (env Roswell, proj Migrate)
+   for a working example of how this stuff works.  You should be able to
+   replace the "NavMig95.cpp" and header with your own implementation.
+
+*) There are several documents describing the Roswell effort in the "Migration
+   DLL" folder on ussm-admin1\shared\shared.
+
+*) The Microsoft document "MigExt.doc" has detailed information on exactly
+   what the migration DLL is supposed to do, and how to do it (also on
+   ussm-admin1\shared\shared).
+
+*) Some official web sites for migration information are:
+   -- http://www.microsoft.com/win32dev/guidelns/95vsnt.htm has a lengthy
+      article that discusses some platform differences between Win95 and NT
+   -- http://www.microsoft.com/WIN32DEV/GUIDELNS/TESTNT40.HTM discusses tips
+      for what to test to see if your Win95 app runs on NT correctly
+   -- http://www.microsoft.com/windows/thirdparty/winlogo/enterprise/
+      roadmap2.htm has the latest draft of logo requirements
+   -- the "Docs" directory has several MS docs from the workshop (the
+      documents "migext.doc" is especially full of technical details); there
+      is also a PowerPoint subdirectory containing slides from their
+      presentations
+

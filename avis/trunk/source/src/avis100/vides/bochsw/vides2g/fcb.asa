@@ -1,0 +1,230 @@
+/*
+  11/21/97 this VIDES2 module detects FCB infections
+*/
+
+rule FCBFileOp(filename: string; FCBseg, FCBofs, state, codeseg, filepos: integer);
+var
+cause: integer;
+callseg: integer;
+func: integer;
+thisFCBseg: integer;
+thisFCBofs: integer;
+retcode: integer;
+newfilepos: integer;
+endfilepos: integer;
+readOp: integer;
+writeOp: integer;
+closeOp: integer;
+onentrypoint: integer;
+newstate: integer;
+begin
+cause := strToInt(report_tag);
+if
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21
+/*        and strToInt(rettick) > strToInt(calltick)*/
+        -->
+        begin
+        if
+                cause = 1  --> callseg := strToU(cs);
+                cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+        fi;
+        func := rh(eax);
+        thisFCBseg := strToU(ds);
+        thisFCBofs := rx(edx);
+/*        retcode := rl(eax);*/
+        if
+                callseg = codeseg
+                and thisFCBseg = FCBseg
+                and thisFCBofs = FCBofs
+                /* We check the function # before any attempt to access the FCB at DS:DX */
+                and (func=0x10 or func=0x14 or func=0x15 or func=0x21 or func=0x22 or func=0x27 or func=0x28)
+                -->
+                        begin
+                        if
+                                filepos = -1
+                                and strToInt(rettick) = strToInt(calltick)      /* This record comes at call time */
+                                -->
+                                begin
+                                /* Read the file position in the FCB at call time */
+                                /* File position is (logical record #) times (logical record size) */
+                                newfilepos := readmemword(FCBseg, FCBofs+0x0C) * readmemword(FCBseg, FCBofs+0x0E);
+                                println('FCB Call - new filepos is ', int2h(newfilepos),'(',newfilepos,')');
+                                trigger off for_next FCBFileOp(filename, FCBseg, FCBofs, state, codeseg, newfilepos)
+                                end;
+                                
+                                filepos >= 0                                    /* filepos has been determined at call time */
+                                and strToInt(rettick) > strToInt(calltick)      /* This record comes at return time */
+                                -->
+                                begin
+                                retcode := rl(eax);
+                                readOp  := 0;   /* init */
+                                writeOp := 0;   /* init */
+                                closeOp := 0;   /* init */
+                                if
+                                        func = 0x14             /* sequential read */
+                                        and (retcode = 0 or retcode = 3)
+                                        -->
+                                                begin
+                                                println('FCB Seq Read');
+                                                endfilepos := readmemword(FCBseg, FCBofs+0x0C) * readmemword(FCBseg, FCBofs+0x0E);
+                                                readOp := 1
+                                                end;
+                                                
+                                        func = 0x15             /* sequential write */
+                                        and retcode = 0
+                                        -->
+                                                begin
+                                                println(' *** FCB Seq Write');
+                                                endfilepos := readmemword(FCBseg, FCBofs+0x0C) * readmemword(FCBseg, FCBofs+0x0E);
+                                                writeOp := 1
+                                                end;
+                                        
+                                        func = 0x21             /* random read */
+                                        and (retcode = 0 or retcode = 3)
+                                        -->
+                                                begin
+                                                println('FCB Rand Read');
+                                                /* We do not handle partial reads yet... */
+                                                endfilepos := filepos+readmemword(FCBseg, FCBofs+0x0E);
+                                                readOp := 1
+                                                end;
+                                        
+                                        func = 0x22             /* random write */
+                                        and retcode = 0
+                                        -->
+                                                begin
+                                                println(' *** FCB Rand Write');
+                                                endfilepos := filepos+readmemword(FCBseg, FCBofs+0x0E);
+                                                writeOp := 1
+                                                end;
+                                        
+                                        func = 0x27             /* random block read */
+                                        and (retcode = 0 or retcode = 3)
+                                        -->
+                                                begin
+                                                println('FCB Rand Block Read');
+                                                /* Once again, partial read pb */
+                                                endfilepos := filepos + rx(ecx) * readmemword(FCBseg, FCBofs+0x0E);
+                                                readOp := 1
+                                                end;
+                                        
+                                        func = 0x28             /* random block write */
+                                        and retcode = 0
+                                        -->
+                                                begin
+                                                println(' *** FCB Rand Block Write');
+                                                endfilepos := filepos + rx(ecx) * readmemword(FCBseg, FCBofs+0x0E);
+                                                writeOp := 1
+                                                end;
+                                        
+                                        func = 0x10
+                                        and retcode = 0
+                                        -->
+                                                begin
+                                                println('FCB Close'); /* Just let the thread die for now, then implement reopen */
+                                                closeOp := 1
+                                                end
+                                fi;
+                                
+                                /* Test if file operation involved entry point (EXE or COM) */
+                                onentrypoint := 0;
+                                if
+                                        endfilepos > filepos
+                                        and ((filepos <= 1)
+                                          or (filepos < 0x18 and endfilepos > 0x14))
+                                        --> onentrypoint := 1
+                                fi;
+                                if
+                                        onentrypoint = 1
+                                        and readOp = 1
+                                        and state < 2           /* Unnecessary test */
+                                        --> newstate := 1;
+                                        
+                                        onentrypoint = 1
+                                        and writeOp = 1
+                                        --> newstate := 2;
+                                        
+                                        true
+                                        --> newstate := state
+                                fi;
+                                /* Print alarm if we entered infection state */
+                                if
+                                        newstate = 2
+                                        and state = 0
+                                        --> println(' *** Possible Overwriting Infection using FCBs on ', filename);
+                                        
+                                        newstate = 2
+                                        and state = 1
+                                        --> println(' *** Possible Parasitic Infection using FCBs on ', filename);
+                                        
+                                        newstate != 2
+                                        and closeOp = 0
+                                        -->
+                                        trigger off for_next FCBFileOp(filename, FCBseg, FCBofs, newstate, codeseg, -1)
+                                fi
+                                end
+                        
+                        fi
+                        end;
+                true
+                -->
+                trigger off for_next FCBFileOp(filename, FCBseg, FCBofs, state, codeseg, filepos)
+        fi
+        end;
+                
+        true
+        -->
+        trigger off for_next FCBFileOp(filename, FCBseg, FCBofs, state, codeseg, filepos)
+fi
+end;
+
+external rule FCBOpen;
+var
+cause: integer;
+callseg: integer;
+func: integer;
+filename: string;
+begin
+cause := strToInt(report_tag);
+if
+        (cause = 1 or cause = 13)                       /* INT or breakpoint */
+        and strToU(imm) = 0x21                          /* DOS */
+        and strToInt(rettick) > strToInt(calltick)      /* We have return values */
+        and rl(eax) = 0                                 /* indicates success of FCB function */
+        -->
+        begin
+        if
+                cause = 1  --> callseg := strToU(cs);
+                cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+        fi;
+        func := rh(eax);
+        
+        if
+                func = 0x0F     /* Open with FCB */
+                -->
+                        begin
+                        filename := readASCIIZ(strToU(ds),rx(edx)+1,8);  /* DS:DX -> FCB */
+                        println('FCB Open of ', filename, ' - FCB at ',word2h(strToU(ds)),':',word2h(rx(edx)));
+                        trigger off for_next FCBFileOp(filename, strToU(ds), rx(edx), 0, callseg, -1)
+                        end
+                
+        fi
+        end
+fi;
+trigger off for_next FCBOpen
+end;
+
+init_action;
+begin
+        /* FCB functions */
+        start_watch_func(0x21,0x0F,3); /* open */
+        start_watch_func(0x21,0x10,3); /* close */
+        start_watch_func(0x21,0x14,3); /* sequential read */
+        start_watch_func(0x21,0x15,3); /* sequential write */
+        start_watch_func(0x21,0x21,3); /* random read */
+        start_watch_func(0x21,0x22,3); /* random write */
+        start_watch_func(0x21,0x27,3); /* random block read */
+        start_watch_func(0x21,0x28,3); /* random block write */
+        skip
+end.

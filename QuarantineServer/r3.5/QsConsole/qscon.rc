@@ -1,0 +1,903 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""qscon.tlb""\r\n"
+    "#include <winver.h>\r\n"
+    "#include ""qsvers.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_QSCONSOLE_16        BITMAP  DISCARDABLE     "qsconsol.bmp"
+IDB_QSCONSOLE_32        BITMAP  DISCARDABLE     "bmp00001.bmp"
+IDB_VIRUS_BMPS          BITMAP  DISCARDABLE     "viruschars.bmp"
+IDB_SNAPIN_LARGE        BITMAP  DISCARDABLE     "snapinl.bmp"
+IDB_SNAPIN_SMALL        BITMAP  DISCARDABLE     "snapins.bmp"
+IDB_DESCENDING          BITMAP  DISCARDABLE     "descendi.bmp"
+IDB_NONE                BITMAP  DISCARDABLE     "none.bmp"
+IDB_ASCENDING           BITMAP  DISCARDABLE     "ascend.bmp"
+IDR_ITEM_TOOLBAR        BITMAP  DISCARDABLE     "itemtool.bmp"
+IDR_SCOPE_TOOLBAR       BITMAP  DISCARDABLE     "scope_to.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_RESULT_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "TOP"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "NEW"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "TASK"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Repair Item",                ID_TASK_REPAIRITEM
+        MENUITEM "Res&tore Item",               ID_TASK_RESTOREITEM
+        MENUITEM "&Submit Item to Symantec",    ID_TASK_SUBMITITEMTOSARC
+    END
+    POPUP "VIEW"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+END
+
+IDR_SCOPE_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "TOP"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Attach to server...",        ID_TOP_ATTACHTOSERVER
+        MENUITEM SEPARATOR
+        MENUITEM "View Quarantine Log...",      IDM_VIEW_AMS_LOG
+        MENUITEM "Configure Quarantine Events...", IDM_CONFIGURE_AMS
+        MENUITEM SEPARATOR
+        MENUITEM "&Display Virus List",         IDM_DISPLAY_VIRUS_LIST
+    END
+    POPUP "NEW"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "TASK"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "VIEW"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+END
+
+IDR_HELP_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Help"
+    BEGIN
+        MENUITEM "What's This?",                ID_HELP_WHATSTHIS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SERVER DIALOG DISCARDABLE  0, 0, 190, 126
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Attach to Quarantine Server"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Server name",IDC_STATIC,7,7,41,8
+    EDITTEXT        IDC_SERVER,7,17,106,14,ES_AUTOHSCROLL
+    LTEXT           "&Username",IDC_STATIC,7,36,33,8
+    EDITTEXT        IDC_USER,7,46,106,14,ES_AUTOHSCROLL
+    LTEXT           "&Password",IDC_STATIC,7,65,32,8
+    EDITTEXT        IDC_PASSWORD,7,75,106,14,ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT           "&Domain",IDC_STATIC,7,94,25,8
+    EDITTEXT        IDC_DOMAIN,7,104,106,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,133,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,133,24,50,14
+END
+
+IDD_QSERVER_PAGE DIALOGEX 0, 0, 252, 221
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Folder location on server machine:",IDC_FOLDER_STATIC,
+                    13,18,158,8
+    EDITTEXT        IDC_Q_FOLDER,13,28,209,14,ES_AUTOHSCROLL,0,HIDC_Q_FOLDER
+    LTEXT           "&Maximum allowable size",IDC_MAX_STATIC,13,47,98,8,0,0,
+                    HIDC_MAX_STATIC
+    EDITTEXT        IDC_QFOLDER_SIZE,13,58,40,14,ES_AUTOHSCROLL | ES_NUMBER,
+                    0,HIDC_QFOLDER_SIZE
+    CONTROL         "Spin1",IDC_SPIN_FOLDER_SIZE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,46,57,11,14
+    LTEXT           "megabytes.",IDC_MEGABYTES_STATIC,58,61,53,8
+    LTEXT           "&Warning size",IDC_QFOLDER_WARNING_SIZE_STATIC,127,48,
+                    80,8,0,0,HIDC_QFOLDER_WARNING_SIZE_STATIC
+    EDITTEXT        IDC_EDIT_QFOLDER_WARNING_SIZE,127,57,40,15,
+                    ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_EDIT_QFOLDER_WARNING_SIZE
+    CONTROL         "Spin1",IDC_SPIN_QFOLDER_WARNING_SIZE,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,160,57,11,14
+    LTEXT           "megabytes.",IDC_MEGABYTES_STATIC2,172,61,53,8
+    LTEXT           "M&aximum allowable number of samples",
+                    IDC_MAX_NOSAMPLES_STATIC,13,76,132,8,0,0,
+                    HIDC_MAX_NOSAMPLES_STATIC
+    EDITTEXT        IDC_QFOLDER_NO_SAMPLES,13,87,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER,0,HIDC_QFOLDER_NO_SAMPLES
+    CONTROL         "Spin1",IDC_SPIN_NOSAMPLES,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,46,87,11,14
+    CONTROL         "P&urge samples as needed",IDC_CHECK_PURGE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,127,90,114,10,0,
+                    HIDC_CHECK_PURGE
+    CONTROL         "Listen on &IP",IDC_IP_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,126,76,10,0,HIDC_IP_CHECK
+    RTEXT           "&Port:",IDC_IP_STATIC,110,126,32,8
+    EDITTEXT        IDC_IP_PORT,145,124,40,14,ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_IP_PORT
+    CONTROL         "Listen on SP&X",IDC_IPX_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,144,72,10,0,HIDC_IPX_CHECK
+    RTEXT           "P&ort:",IDC_IPX_STATIC,110,144,32,8
+    EDITTEXT        IDC_SPX_PORT,145,142,40,14,ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_SPX_PORT
+    LTEXT           "Auto &refresh interval",IDC_REFRESH_STATIC,13,175,101,8,
+                    0,0,HIDC_REFRESH_STATIC
+    EDITTEXT        IDC_REFRESH_EDIT,13,185,29,14,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER,0,HIDC_REFRESH_EDIT
+    CONTROL         "Spin2",IDC_REFRESH_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,33,185,10,14
+    LTEXT           "Minutes",IDC_STATIC,46,188,80,8
+    GROUPBOX        "Quarantine Folder",IDC_STATIC,7,7,238,103
+    GROUPBOX        "Protocols",IDC_STATIC,7,114,238,48
+    GROUPBOX        "Console",IDC_STATIC,7,166,238,42
+    PUSHBUTTON      "Purge &Log",IDC_BUTTON_PURGE_LOG,145,183,50,14,NOT 
+                    WS_VISIBLE | WS_DISABLED,0,HIDC_BUTTON_PURGE_LOG
+END
+
+IDD_GENERAL_PAGE DIALOG DISCARDABLE  0, 0, 252, 218
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_NAME_EDIT,54,12,191,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Type:",IDC_STATIC,7,40,42,8
+    EDITTEXT        IDC_TYPE_EDIT,54,40,191,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Location:",IDC_STATIC,7,52,42,8
+    EDITTEXT        IDC_LOCATION_EDIT,54,52,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Size:",IDC_STATIC,7,64,42,8
+    EDITTEXT        IDC_SIZE_EDIT,54,64,191,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Quarantined:",IDC_STATIC,7,84,45,8
+    EDITTEXT        IDC_QUARANTINE_EDIT,54,84,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Submitted:",IDC_STATIC,7,96,44,8
+    EDITTEXT        IDC_SUBMITTED_EDIT,54,96,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Status:",IDC_STATIC,7,108,44,8
+    EDITTEXT        IDC_STATUS_EDIT,54,108,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Static",IDC_INFORMATION_EDIT,13,133,224,55
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,7,
+                    7,25,23
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,33,
+                    238,1
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,78,
+                    238,1
+    GROUPBOX        "Notes",IDC_STATIC_RECOMMEND_GRP,7,123,238,73
+    LTEXT           "Submitted by:",IDC_STATIC,7,108,44,8,NOT WS_VISIBLE
+    EDITTEXT        IDC_SUBMITTEDBY_EDIT,54,108,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_VISIBLE | NOT WS_BORDER | NOT 
+                    WS_TABSTOP
+END
+
+IDD_CLIENT_PAGE DIALOG DISCARDABLE  0, 0, 252, 218
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "User Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "User:",IDC_STATIC,7,40,44,8
+    EDITTEXT        IDC_USERNAME_EDIT,54,40,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Computer:",IDC_STATIC,7,52,44,8
+    EDITTEXT        IDC_COMPUTER_EDIT,54,53,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Domain:",IDC_STATIC,7,64,44,8
+    EDITTEXT        IDC_DOMAIN_EDIT,54,64,165,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "IP Address:",IDC_STATIC,7,76,44,8
+    EDITTEXT        IDC_IPADDRESS_EDIT,54,76,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "MAC Address:",IDC_STATIC,7,88,47,8
+    EDITTEXT        IDC_NACADDRESS_EDIT,54,88,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Platform:",IDC_STATIC,7,109,44,8
+    EDITTEXT        IDC_PLATFORM_EDIT,54,109,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Product:",IDC_STATIC,7,121,44,8
+    EDITTEXT        IDC_PRODUCT_EDIT,54,121,191,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,7,
+                    7,25,23
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,33,
+                    238,1
+    EDITTEXT        IDC_NAME_EDIT,54,12,172,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,102,
+                    238,1
+END
+
+IDD_VIRUS_PAGE DIALOG DISCARDABLE  0, 0, 252, 218
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Virus Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Virus name:",IDC_STATIC,7,7,49,8
+    LTEXT           "Static",IDC_VIRUS_NAME_STATIC,63,7,175,8
+    LTEXT           "Aliases:",IDC_STATIC,7,18,49,8
+    LTEXT           "Static",IDC_ALIASES_STATIC,63,18,175,8
+    LTEXT           "Infects:",IDC_STATIC,7,29,49,8
+    LTEXT           "Static",IDC_INFECTS_STATIC,63,29,175,8
+    LTEXT           "Likelihood:",IDC_STATIC,7,40,49,8
+    LTEXT           "Static",IDC_LIKELIHOOD_STATIC,63,40,175,8
+    LTEXT           "Length:",IDC_STATIC,7,51,49,8
+    LTEXT           "Static",IDC_LENGTH_STATIC,63,51,175,8
+    CONTROL         "",IDC_MEMORY_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,14,81,10,10
+    LTEXT           "Memory resident",IDC_STATIC,27,80,93,8
+    CONTROL         "",IDC_SIZE_STEALTH_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,14,91,10,10
+    LTEXT           "Size stealth",IDC_STATIC,27,90,93,8
+    CONTROL         "",IDC_FULL_STEALTH_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,14,101,10,10
+    LTEXT           "Full stealth",IDC_STATIC,27,100,93,8
+    CONTROL         "",IDC_TRIGGER_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,131,81,10,10
+    LTEXT           "Triggered event",IDC_STATIC,144,80,93,8
+    CONTROL         "",IDC_ENCRYPTING_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,131,91,10,10
+    LTEXT           "Encrypting",IDC_STATIC,144,90,93,8
+    CONTROL         "",IDC_POLY_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    131,101,10,10
+    LTEXT           "Polymorphic",IDC_STATIC,144,100,93,8
+    LTEXT           "Virus comments here",IDC_COMMENTS_STATIC,13,130,223,57
+    GROUPBOX        "Characteristics",IDC_STATIC,7,67,238,49
+    GROUPBOX        "Comments",IDC_STATIC,7,121,238,72
+END
+
+IDD_RESTORE_DIALOG DIALOG DISCARDABLE  0, 0, 312, 196
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Restore Items"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,255,7,50,14
+    LTEXT           "Static",IDC_DESCR_STATIC,34,7,215,19
+    ICON            IDI_RESTORE,IDC_ICON_STATIC,7,7,20,20
+    CTEXT           "Progress",IDC_PROGRESS_STATIC,126,28,58,8
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,7,
+                    39,298,12
+    CONTROL         "List1",IDC_ITEM_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,61,298,128
+END
+
+IDD_FETCH_FILE_DIALOG DIALOG DISCARDABLE  0, 0, 237, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symantec AntiVirus Quarantine"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,93,74,50,14
+    ICON            IDI_RESTORE,IDC_STATIC,7,7,20,20
+    LTEXT           "Reading files from the Quarantine Server.  Please wait...",
+                    IDC_SERVER_STATIC,39,7,191,20
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,7,
+                    53,223,14
+    CTEXT           "Static",IDC_PROGRESS_STATIC,7,41,223,8
+END
+
+IDD_SELECT_COMPUTER_PAGE DIALOG DISCARDABLE  0, 0, 331, 157
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Computer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "&This computer",IDC_CHOOSER_RADIO_LOCAL_MACHINE,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,16,34,297,10
+    CONTROL         "&Another Computer",IDC_CHOOSER_RADIO_SPECIFIC_MACHINE,
+                    "Button",BS_AUTORADIOBUTTON,16,51,82,10
+    EDITTEXT        IDC_CHOOSER_EDIT_MACHINE_NAME,101,51,154,13,
+                    ES_AUTOHSCROLL | WS_GROUP
+    PUSHBUTTON      "B&rowse...",IDC_CHOOSER_BUTTON_BROWSE_MACHINENAMES,263,
+                    51,53,14
+    RTEXT           "&Username",IDC_USERNAME_STATIC,24,71,59,8
+    EDITTEXT        IDC_USER,101,71,106,13,ES_AUTOHSCROLL
+    RTEXT           "&Password",IDC_PASSWORD_STATIC,22,91,61,8
+    EDITTEXT        IDC_PASSWORD,101,91,106,13,ES_PASSWORD | ES_AUTOHSCROLL
+    RTEXT           "&Domain",IDC_DOMAIN_STATIC,35,111,48,8
+    EDITTEXT        IDC_DOMAIN,101,110,106,13,ES_AUTOHSCROLL
+    LTEXT           "Select the computer which hosts the Quarantine Server you want this Snap-in to manage. ",
+                    IDC_CHOOSER_STATIC,7,6,317,8
+    GROUPBOX        "This snap-in will manage Quarantine Server on:",
+                    IDC_CHOOSER_GROUP_TARGET_MACHINE,7,20,317,110
+END
+
+IDD_DIALOG_PURGE_LOG DIALOG DISCARDABLE  0, 0, 439, 261
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symantec Central Quarantine Purge Log"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,382,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,382,24,50,14
+    CONTROL         "",IDC_RICHEDIT_PURGE_LOG,"RICHEDIT",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_BORDER | WS_GROUP | WS_TABSTOP,7,7,367,247
+    PUSHBUTTON      "Clear",IDC_BUTTON_CLEAR,382,42,50,14
+END
+
+IDD_VIEWVIRUSLIST DIALOG DISCARDABLE  0, 0, 276, 227
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Detectable Virus List"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            285,IDC_STATIC,7,7,20,20
+    LTEXT           "Symantec AntiVirus can detect the following viruses with the current set of virus definitions.",
+                    IDC_STATIC,32,7,153,25
+    LTEXT           "&Detectable viruses:",IDC_STATIC,7,38,173,8
+    CONTROL         "List1",IDC_VIRUSLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_OWNERDRAWFIXED | WS_BORDER | 
+                    WS_TABSTOP,7,48,261,158
+    LTEXT           "Definition version:",IDC_STATIC,7,212,80,8
+    LTEXT           "Static",IDC_PATTERNFILE,94,212,57,8
+    LTEXT           "Total:",IDC_STATIC,161,212,31,8
+    LTEXT           "Static",IDC_NUMPATTERNS,201,212,38,8
+    DEFPUSHBUTTON   "Close",IDOK,218,7,50,14
+    PUSHBUTTON      "&Virus Info...",IDC_ABOUTVIRUS,218,24,50,14,NOT 
+                    WS_VISIBLE | WS_DISABLED
+END
+
+IDD_OUTBREAK_PROPERTIES DIALOGEX 0, 0, 252, 221
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Outbreak Management"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Communication",IDC_STATIC,7,7,238,66
+    LTEXT           "Web Address:",IDC_STATIC,13,20,78,8
+    COMBOBOX        IDC_COMBO1,96,18,135,30,CBS_DROPDOWN | CBS_AUTOHSCROLL | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,0,HIDC_COMBO1
+    LTEXT           "Defcon level to retrieve",IDC_STATIC,13,37,70,8
+    EDITTEXT        IDC_EDIT1,96,35,18,14,ES_AUTOHSCROLL,0,HIDC_EDIT1
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_ARROWKEYS,113,35,
+                    10,14
+    LTEXT           "Retrieval interval",IDC_STATIC,13,55,64,8
+    EDITTEXT        IDC_EDIT2,96,53,18,14,ES_AUTOHSCROLL,0,HIDC_EDIT2
+    CONTROL         "Spin2",IDC_SPIN2,"msctls_updown32",UDS_ARROWKEYS,113,53,
+                    10,14
+    GROUPBOX        "Alerting",IDC_STATIC,7,80,238,117
+    CONTROL         "Use Naboo Central logging",IDC_CHECK2,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,91,113,10
+    CONTROL         "Log events locally",IDC_CHECK3,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,109,117,10
+    CONTROL         "Display popup message",IDC_CHECK4,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,129,113,10
+    EDITTEXT        IDC_EDIT3,132,89,18,14,ES_AUTOHSCROLL,0,HIDC_EDIT3
+    CONTROL         "Spin1",IDC_SPIN3,"msctls_updown32",UDS_ARROWKEYS,149,89,
+                    10,14
+    LTEXT           "Defcon threshold",IDC_STATIC,162,91,77,8
+    EDITTEXT        IDC_EDIT4,132,107,18,14,ES_AUTOHSCROLL,0,HIDC_EDIT4
+    CONTROL         "Spin1",IDC_SPIN4,"msctls_updown32",UDS_ARROWKEYS,149,
+                    107,10,14
+    LTEXT           "Defcon threshold",IDC_STATIC,162,108,77,8
+    EDITTEXT        IDC_EDIT5,132,126,18,14,ES_AUTOHSCROLL,0,HIDC_EDIT5
+    CONTROL         "Spin1",IDC_SPIN5,"msctls_updown32",UDS_ARROWKEYS,149,
+                    126,10,14
+    LTEXT           "Defcon threshold",IDC_STATIC,162,127,77,8
+END
+
+IDD_DIALOG1 DIALOG DISCARDABLE  0, 0, 187, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New Virus Write-up"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Display",IDOK,24,66,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,99,66,50,14
+    LTEXT           "OWLS Client has detected a new virus write-up from Symantec Security Response\n\nVirus Name:\tLove Bug\nDefcon Level:\t4\nType:\t\tWorm",
+                    IDC_STATIC,7,7,173,54
+END
+
+IDD_DIALOG2 DIALOG DISCARDABLE  0, 0, 187, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "SARC Virus write-ups"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "OK",IDOK,130,26,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,130,43,50,14
+    LTEXT           "New Symantec Security Response Virus write-ups",
+                    IDC_STATIC,7,7,91,8
+    LISTBOX         IDC_LIST1,7,19,116,127,LBS_SORT | LBS_NOINTEGRALHEIGHT | 
+                    WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "Display",IDC_BUTTON1,130,7,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_QSCONSOLE           REGISTRY DISCARDABLE    "QSConsole.rgs"
+IDR_QCSCOPEITEM         REGISTRY DISCARDABLE    "QCScopeItem.rgs"
+IDR_QSCONSOLEABOUT      REGISTRY DISCARDABLE    "CQSConsoleAbout.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_SERVER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+
+    IDD_GENERAL_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_CLIENT_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_VIRUS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 211
+    END
+
+    IDD_RESTORE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
+
+    IDD_FETCH_FILE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 230
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SELECT_COMPUTER_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 324
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 150
+    END
+
+    IDD_DIALOG_PURGE_LOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 432
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 254
+    END
+
+    IDD_OUTBREAK_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 214
+    END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_ITEM_TOOLBAR TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_TASK_REPAIRITEM
+    BUTTON      ID_TASK_RESTOREITEM
+    BUTTON      ID_TASK_SUBMITITEMTOSARC
+END
+
+IDR_SCOPE_TOOLBAR TOOLBAR DISCARDABLE  16, 16
+BEGIN
+    BUTTON      ID_TOP_ATTACHTOSERVER
+    BUTTON      IDM_VIEW_AMS_LOG
+    BUTTON      IDM_CONFIGURE_AMS
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_RESTORE             ICON    DISCARDABLE     "restore.ico"
+IDI_REPAIR              ICON    DISCARDABLE     "repair.ico"
+IDI_MAIN_ICON           ICON    DISCARDABLE     "main_ico.ico"
+IDI_SAMPLE_ERROR        ICON    DISCARDABLE     "error.ico"
+IDI_ICON1               ICON    DISCARDABLE     "ALFPAGER.ICO"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "qscon"
+    IDS_APPLICATION_NAME    "Symantec Central Quarantine"
+    IDS_QSCONSOLE_DESC      "Symantec Central Quarantine Server Control Console"
+    IDS_QSCONSOLE_PROVIDER  "Symantec Corporation"
+    IDS_QSCONSOLE_VERSION   "3.5"
+    IDS_COL_FILENAME        "File name"
+    IDS_COL_USERNAME        "User name"
+    IDS_COL_MACHINE_NAME    "Computer"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COL_DOMAIN_NAME     "Domain Name"
+    IDS_COL_RECIEVED        "Received on"
+    IDS_COL_SUBMITTED       "Submitted on"
+    IDS_COL_SUBMIT_BY       "Submitted by"
+    IDS_COL_STATUS          "Status"
+    IDS_NOT_SUBMITTED       "Not Submitted"
+    IDS_SERVER_ATTACH_ERROR_CAPTION "Error attaching to server"
+    IDS_ERROR               "Quarantine Server Error"
+    IDS_CONFIG_ERROR        "Error configuring quarantine server."
+    IDS_BAD_QSERVER_FOLDER  "The specified quarantine folder is invalid.  Please specify a valid folder. \n(eg. D:\\Quarantine )"
+    IDS_TITLE               "Symantec Central Quarantine"
+    IDS_DELETE_WARNING      "Are you sure you want to delete this item?"
+    IDS_BYTES_STR           "%u Bytes"
+    IDS_KILOBYTES           "KB"
+    IDS_MEGABYTES           "MB"
+    IDS_GIGABYTES           "GB"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BYTES               "%s (%s bytes)"
+    IDS_FILE_TYPE           "%s file"
+    IDS_FILE                "file"
+    IDS_NA                  "N/A"
+    IDS_COL_VIRUS_NAME      "Virus"
+    IDS_UNKNOWN             "Unknown"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_TASK_RESTOREITEM     "Restore infected items without repairing."
+    ID_TASK_REPAIRITEM      "Scan and repair infected items."
+    ID_TASK_SUBMITITEMTOSARC 
+                            "Send selected items to the Symantec Security Response."
+    IDS_REPAIR_DESCR        "The selected files will be repaired and restored to %s."
+    IDS_RESTORE_DESCR       "The selected files will be restored to %s."
+    ID_TOP_ATTACHTOSERVER   "Attach to a quarantine server"
+    IDS_RESTORE_FILENAME_HEADER "Filename"
+    IDS_RESTORE_STATUS_HEADER "Status"
+    IDS_MULTI_DELETE_WARNING "Are you sure you want to delete these %d items?"
+    IDS_WORKING             "Working"
+    IDS_SAVE_AS_FILTER      "All Files (*.*)|*.*||"
+    IDS_RESTORE_OVERWRITE_TITLE "Overwrite warning"
+    IDS_RESTORE_OVERWRITE_FORMAT 
+                            "The file: %s\nalready exists.  Do you want to overwrite this file?"
+    IDS_CLOSE               "&Close"
+    IDS_ACTION_COMPLETED    "Action complete."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BROWSE_FOR_SAVE_LOCATION "Select destination folder."
+    IDS_BY                  " by "
+    IDS_RECOMMEND_SUBMITTED "This item has already been submitted to Symantec Security Response for analysis.  When you receive new virus definitions, you should attempt repairs on this item."
+    IDS_RECOMMEND_QUARANTINE 
+                            "You should attempt repairs on this item.  If the item cannot be repaired, then it should be submitted to Symantec Security Response for analysis."
+    IDS_ERROR_MULTI_CONFIG  "This server cannot be configured because it is currently being\nconfigured by another user or instance of the\nQuarantine Server Console.  "
+    IDS_BAD_PORT            "You may only specify a port value between 1 and 65535."
+    IDS_BAD_MAX_SIZE        "You must allow at least 1MB and no more than 4095MB of disk space in order for the quarantine server to function."
+    IDS_ERROR_ITEM_GONE     "The item you have selected has been removed from the Quarantine Server\npossibly by another administration console."
+    IDS_ERROR_ITEMS_GONE    "You have selected %d item(s) that have been removed from the Quarantine Server\npossibly by another administration console."
+    IDS_STATUS_BAR_FORMAT   "Virus Definitions Date: %s."
+    IDS_STATUS_BAR_FORMAT_NODEFS "No Virus Definitions Found."
+    IDS_REPAIR_ITEMS        "Repair Items"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROGRESS_FORMAT     "File %d of %d complete."
+    IDS_REPAIRED            "Repaired"
+    IDS_RESTORED            "Restored"
+    IDS_ERROR_TITLE         "Symantec Central Quarantine"
+    IDS_ERROR_FETCHING_FILES 
+                            "An error has occured while transferring files from the quarantine server."
+    IDS_DESTINATION_DIR     "Destination folder"
+    IDS_DESCRIPTION_FORMAT  "Console is attached to Quarantine Server on %s Machine."
+    IDS_RESTORE_WARNING     "Warning!  You are about to restore potentially infected items to your local computer.  Are you sure you want to do this?"
+    IDS_REPAIR_ITEM         "Repair this item?"
+    IDS_MULTI_REPAIR_ITEM   "Repair these %d items?"
+    IDS_NOACTION            "No Action"
+    IDS_CANT_REPAIR         "This file cannot be repaired."
+    IDS_NO_VIRUS_FOUND      "No virus detected."
+    IDS_COMMON              "Common"
+    IDS_RARE                "Rare"
+    IDS_BYTES_STR_FORMAT    "%s Bytes"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_1FILE               "%s Files"
+    IDS_2FILE               "%s and %s Files"
+    IDS_3FILE               "%s, %s, and %s Files"
+    IDS_1BOOT               "%s Boot Records"
+    IDS_2BOOT               "%s and %s Boot Records"
+    IDS_3BOOT               "%s, %s, and %s Boot"
+    IDS_COM                 ".COM"
+    IDS_EXE                 ".EXE"
+    IDS_SYS                 ".SYS"
+    IDS_FLOPPY              "Floppy"
+    IDS_HARDDISK            "Hard Disk"
+    IDS_MASTER              "Master"
+    IDS_SUBMIT_PROMPT_FORMAT 
+                            "Would you like to submit these %d items to the Symantec Anti Virus Research Center?"
+    IDS_SUBMIT_PROMPT       "Would you like to submit this item to the Symantec Anti Virus Research Center?"
+    IDS_DELETE_PROPERTY_WARNING 
+                            "You cannot delete an item while properties are being displayed for it.  \nClose the properties dialog and retry the delete operation."
+    IDS_COMPUTER_BROWSER_CAPTION 
+                            "Select the Quarantine Server you want this Snap-in to manage."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CONNECT_FAILIRE_FMT "Cannot connect to server %s.\n\nMake sure the Quarantine Server is installed on the specified\nmachine, and that the user information is correct."
+    IDS_NODE_NAME           "Symantec Central Quarantine"
+    IDS_EXTENSION_SNAPIN    "Extension Snap-in"
+    IDS_NODE_DESC           "Symantec Central Quarantine Server"
+    IDS_NONE                "None"
+    IDS_NODE_NAME_FMT       "Symantec Central Quarantine (%s)"
+    IDS_STATUS_HELD         "Held"
+    IDS_LOCAL_NODE_NAME     "Symantec Central Quarantine (Local)"
+    IDS_ERROR_FILE_GONE_FMT "The file %s has been removed from the Quarantine Server,\npossibly by another administration console."
+    IDS_FILE_DOES_NOT_EXIST "File does not exist on server."
+    IDS_ERROR_ACCESS_DENIED "This action cannot be performed because the\nitem %s is in use by another user or process."
+    IDS_ERROR_INITIALIZING_SND 
+                            "Error initializing Scan & Deliver.  Please re-install the Quarantine Server Console."
+    IDS_ERROR_OUTOFMEMORY   "Out of memory!  Please close some of your running applications and retry the operation."
+    IDS_ERROR_NO_DEFS       "No virus definitions found.  You will not be able to repair or submit items to \nSymantec Security Response until virus definitions are installed."
+    IDS_SCANANDDELIVER      "Scan & Deliver"
+    IDS_AVIS                "AVIS"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_QUARANTINED         "Quarantined"
+    IDS_SUBMITTED           "Submitted"
+    IDS_STATUS_RELEASED     "Released"
+    IDS_STATUS_UNNEEDED     "Unneeded"
+    IDS_STATUS_NEEDED       "Needed"
+    IDS_STATUS_AVAILIABLE   "Available"
+    IDS_STATUS_DISTRIBUTED  "Distributed"
+    IDS_STATUS_INSTALLED    "Installed"
+    IDS_STATUS_ATTENTION    "Attention"
+    IDS_STATUS_ERROR        "Error"
+    IDS_STATUS_DISTRIBUTE   "Distribute"
+    IDS_STATUS_NOTINSTALLED "Not installed"
+    IDS_STATUS_RESTART      "Restart"
+    IDS_STATUS_LEGACY       "Legacy"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LOCAL               "(Local)"
+    IDS_LOCAL_LANGUAGE      "English"
+    IDS_NOT_COMPLETED       "Sample not completed."
+    IDS_COL_COMPLETED       "Analyzed"
+    IDS_COL_AGE             "Age"
+    IDS_COL_SAMPLE_STATE    "Sample state"
+    IDS_COL_MIM_SEQ_NEEDED  "Definitions needed"
+    IDS_COL_ERROR           "Errors"
+    IDS_BOOL_NOTCOMPLETE    "No"
+    IDS_BOOL_COMPLETE       "Yes"
+    IDS_MULTI_ANAYLSIS_NOT_COMPLTE_DELETE_WARNING 
+                            "One or more of the selected samples has not finished analysis.  \nContinue?"
+    IDS_ANAYLSIS_NOT_COMPLTE_DELETE_WARNING 
+                            "The Sample has not finished analysis.  \nContinue?"
+    IDS_BROWSEQDIRS_STRING  "Select a drive and path to the location to quarantine virus samples"
+    IDS_QSEVENT_PRODUCT_NAME "Central Quarantine"
+    IDS_AMS_CONFIG_CAPTION  "Central Quarantine Events"
+    IDS_AMS_LOG_CAPTION     "Central Quarantine Log"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_NO_AMS_SERVER_CONFIGURED "There is no AMS server assigned."
+    IDS_READ_STATUS         "Reading Samples|%lu"
+    IDS_ATTACH_STATUS       "Connecting to Quarantine Server"
+    IDS_BAD_WARNING_SIZE    "Warning:  Size should be less than max allowable Quarantine Folder size"
+    IDS_BAD_WARNING_SIZE2   "This must be at least 1MB and no more than 4095MB in order for the disk quota alert to function. This value should be less than the maimum size for the quarantine folder."
+    IDS_AMS_SERVER_CONFIG_ERROR 
+                            "Cannot retrieve AMS server configuration from quarantine server."
+    IDS_QSERVER_ATTENTION_ERROR 
+                            "Unable to retrieve error data from Quarantine Server"
+    IDS_STATBAR_SAMPLE_COUNT_FORMAT "%d Samples Quarantined."
+    IDM_VIEW_AMS_LOG        "View AMS Log for Quarantine Events"
+    IDM_CONFIGURE_AMS       "Configure AMS Notification services for Quarantine Events"
+    IDS_PROPERTY_PAGE_NO_QS_DEFINED 
+                            "Console has not been attached to a Quarantine Server.  \nPlease Select ""Attach to Server"" from the \nQuarantine node's right click menu."
+    IDS_ERROR_QS_SERVER_DIED 
+                            "Connection to Quarantine Server %s has been lost.  \nRe-connect?"
+    IDS_QFOLDER_NOT_ENOUGH_DISK_SPACE_FMT 
+                            "Free disk space is %d meg. Quaraintine Folder max size is greater than the free space on the disk."
+    IDS_QUARANTINED_RECOMEND 
+                            "This file has been received by Central Quarantine. Wait for it to be handled by the Immune System. If you have automatic submission turned off, you will need to manually submit this sample."
+    IDS_RECOMMEND_NONE      "None"
+    IDS_RELEASED_RECOMMEND  "This sample has been released for automatic submission. It will be sent to Symantec Security Response. If desired you may remove it from the submission queue on the Actions tab. You will then need to manually submit it at a later time."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_UNNEEDED_RECOMMEND  "New definitions are not needed. You may delete this sample from the Quarantine Console."
+    IDS_SUBMITTED_RECOMMEND "This sample has been submitted to Symantec Security Response. Wait for new definitions to be automatically returned."
+    IDS_NEEDED_RECOMMEND    "New definitions are needed for this sample. Wait for them to be downloaded."
+    IDS_AVAILABLE_RECOMMEND "New definitions have been received for this sample and are  waiting to be distributed. If you have automatic distribution turned off, use the deliver button on the Actions tab to deliver new definitions to the machine where this sample originated."
+    IDS_DISTRIBUTE_RECOMMEND 
+                            "New definitions will be distributed to the machine where this sample originated. Make sure that the machine is turned on and connected to the network."
+    IDS_DISTRIBUTED_RECOMMEND 
+                            "New definitions have been received and distributed to the machine where this sample originated. You may delete this sample, or wait until the status changes to 'Installed' and then delete it."
+    IDS_ERROR_RECOMMEND     "This sample encountered an error in processing. Correct the error if possible  and Re-submit the sample. Call tech support if necessary."
+    IDS_NOTINSTALLED_RECOMMEND 
+                            "Unable to currently install definitions to the machine where this sample originated. If this is a Gateway product, you may need to download new definitions from the Symantec FTP site."
+    IDS_INSTALLED_RECOMMEND "New definitions have been installed to the machine where this sample was quarantined. You can now delete this sample from the Quarantine Console."
+    IDS_HELD_RECOMMEND      "This sample is held waiting for the Administrator to submit it manually. Use the Submit button on the Actions tab to queue it for submission to Symantec Security Response."
+    IDS_BAD_NO_SAMPLE_MAX_SIZE 
+                            "You must allow at least 10 samples to be quarantined and no more than 5000 in order for the quarantine server to function."
+    IDS_SAMPLE_AGE_FORMAT   "%D d, %H h, %M m"
+    IDS_ERROR_QSERVER_FOLDER_INVALID 
+                            "The Quarantine Server cannot access or create the specified folder.  Probably a network drive.\n Network drives are not supported as Quarantine Folders"
+    IDS_BLANK               " "
+    IDS_NAMEPASSWORD_REQUIRED 
+                            "A Username / Password is required to attach to Symantec Central Quarantine on another machine."
+    IDS_WARNING_TITLE       "Central Quarantine Warning"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DISPLAY_VIRUS_LIST  "Display Virus List"
+    IDS_Q_MOVE_SAMPLES      "Do you want to move samples already quarantined \nto the new quarantine folder?\nYes will move the samples, No will delete the samples and update the QFolder\nCancel will return you to the dialog box"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_COLUMN_VIRUSLIST_NAME "Virus Name"
+    IDS_COLUMN_VIRUSLIST_INFECTS "Infects"
+    IDS_LOADING_SIGS        "Loading..."
+    IDS_COLUMN_VIRUSLIST_SPREAD "In the Wild"
+    IDS_VIRUS_LIST_LOAD_ERROR 
+                            "Error loading virus list.  Probable causes are:\nCommunication lost with Quarantine Server.\nQuarantine Sever has not yet retrieved \nvirus definitions from the Digital Immune System."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "qscon.tlb"
+#define VR_FILEDESCRIPTION  "Central Quarantine Console\0"
+#define VR_INTERNALNAME      "QSCON\0"
+#define VR_ORIGINALFILENAME "QSCON.DLL\0"
+#include <winver.h>
+#include "qsvers.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

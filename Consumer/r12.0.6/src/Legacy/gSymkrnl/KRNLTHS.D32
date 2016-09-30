@@ -1,0 +1,82 @@
+;------------------------------------------------------------------------
+; Copyright (c) Symantec 1994.  All rights reserved.
+;
+; $Header:   S:/SYMKRNL/VCS/KRNLTHS.D3v   1.9   22 Jun 1998 21:11:50   RFULLER  $
+;
+; This is the definition file for the Thunked Win32 library
+;
+;------------------------------------------------------------------------
+; $Log:   S:/SYMKRNL/VCS/KRNLTHS.D3v  $
+;  
+;     Rev 1.9   22 Jun 1998 21:11:50   RFULLER
+;  Updated for QAKN Branch
+;
+;     Rev 1.8   25 Nov 1997 09:59:26   RFULLER
+;  Updated for CORE M Branch
+;
+;     Rev 1.7   16 Oct 1997 14:51:34   HKIM
+;  Updated for QAKL for Borg
+;
+;     Rev 1.6   13 Aug 1997 00:48:54   RFULLER
+;  Updated for QAKK Branch
+;
+;     Rev 1.5   19 Feb 1997 23:43:22   JCUBBAG
+;  QAKJ BRANCH FOR WARLOCK
+;
+;     Rev 1.4   30 Oct 1996 14:42:56   rjackso
+;  Quake G branch
+;
+;     Rev 1.3   22 Oct 1996 15:29:14   RJACKSO
+;  Update for QAKF branch
+;
+;     Rev 1.2   08 Aug 1996 14:58:14   DLEWIS
+;  UPDATE FOR QUAKE BRANCH
+;
+;     Rev 1.1   29 May 1996 18:35:12   RJACKSO
+;  Update for QAKD branch
+;
+;     Rev 1.0   26 Jan 1996 20:22:22   JREARDON
+;  Initial revision.
+;
+;     Rev 1.6   26 Jan 1996 12:14:36   JREARDON
+;  Updated Branch letter to D
+;
+;     Rev 1.5   13 Oct 1995 17:19:54   RJACKSO
+;  Quake A Branch Updates
+;
+;     Rev 1.4   28 Jun 1995 00:56:04   JREARDON
+;  Bumped number to 9
+;
+;     Rev 1.3   30 May 1995 18:10:28   REESE
+;  Added HWIsPCI function.
+;
+;     Rev 1.2   25 Apr 1995 00:03:58   MPYE
+;  Bumped to Quake 8.
+;
+;     Rev 1.1   16 Nov 1994 18:20:18   BRAD
+;  No longer thunk for MemCopyPhysical()
+;
+;     Rev 1.0   24 Jun 1994 10:38:58   HENRI
+;  Initial revision.
+;
+
+LIBRARY S32THNSO
+
+DESCRIPTION 'Win32s Kernel Thunks, Copyright 1994, Symantec Corporation'
+
+EXPORTS
+	DiskGetPhysicalInfo32		@100
+	DiskAbsOperation32 		@101
+	DiskBlockDevice32 		@102
+	DiskMapLogToPhyParams32 	@103
+	DiskGetInfo32 			@104
+	DiskGetBootDrive32		@105
+	DiskResetDOS32 			@106
+	DiskReset32			@107
+	EISACMOSRead32			@109
+	EISACMOSWrite32			@110
+	CMOSRead32			@111
+	CMOSWrite32			@112
+	HWIsEISA32			@113
+	HWIsMicroChannel32		@114
+	HWIsPCI32				@115

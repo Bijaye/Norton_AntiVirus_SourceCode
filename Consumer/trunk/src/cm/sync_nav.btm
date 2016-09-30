@@ -1,0 +1,55 @@
+:: This simple batch file will update your clientspec with the CM clientspec, sync down everything
+:: then run CCSync.  It is a nice convenient way to keep your local source up to date.  Just copy
+:: it to a local location (eg. desktop) and modify the variables below.  Run it daily or as often
+:: as you like, and it will update your local source to match what CM is currently building with.
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: setup perforce port and user information
+::  -you need to fill this stuff in with your information
+::  -P4USER = your perforce username
+::  -P4PASS = your perforce user password (only need to set this if you dont have it saved on your computer)
+::  -P4CLIENT = your NTP clientspec for this machine
+::  -CLIENTROOT = the root of your clientspec (eg: d:\perforce\avshared)
+::
+::  *use /CLR switch to force overwritten existing files
+::
+
+set P4PORT=perforce.symantec.com:1666
+set P4USER=
+set P4PASSWD=
+set P4CLIENT=
+set CLIENTROOT=
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: update the AVShared client and sync it (you shouldn't need to touch this)
+::  -sync the clientspec text file
+::  -update the cm clientspec with the text file
+::  -output the newly updated cm clientspec as a template for our client
+::  -update our client to that template text file.
+::
+
+set CLOBBER_SYNC=
+set CLR_FLAG=
+do param = 1 to 127
+	shift 1
+	iff "%0" == "" then
+		shift -%param%
+		goto continue
+	endiff
+	iff "%0" == "/CLR" then
+		set CLOBBER_SYNC=-f
+		set CLR_FLAG= /CLR
+	endiff
+enddo
+shift -127
+
+:continue
+
+p4 sync -f //depot/Norton_AntiVirus/Consumer/trunk/src/cm/clientspecs/navconsumer_r14.0_cm_client.clientspec
+p4 client -i < "%CLIENTROOT%/src/cm/clientspecs/navconsumer_r14.0_cm_client.clientspec"
+p4 client -o -t navconsumer_r14.0_cm_client > .\tmpclient
+p4 client -i < .\tmpclient
+del .\tmpclient
+p4 sync %CLOBBER_SYNC%
+call "%CLIENTROOT%\src\cm\ccsync.btm" %CLR_FLAG%

@@ -1,0 +1,427 @@
+/*
+  11/20/97 this VIDES2 module reports file infections using handles
+*/
+
+uses extraction;
+uses findtrigger;
+
+/*
+ Throughout the rules, a state describes a particular point in an infection process, it can be:
+ 0: before file entrypoint is read
+ 1: after file EP has been read, before it has been written
+ 2: after file EP has been written -> we suspect an infection
+*/
+
+/* When we wait for a reopen, the TTL is a # of INT21s */
+
+rule WaitReopen(targetname: string; codeseg, state, filetype, ttl:integer);
+var
+filename: string;
+handle: integer;
+cause: integer;
+callseg: integer;
+begin
+cause := strToInt(report_tag);
+if
+        ttl = 0
+        -->
+                println('TTL expired for WaitReopen on ', targetname);
+                
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21
+        -->
+        begin
+        if
+                cause = 1  --> callseg := strToU(cs);
+                cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+        fi;
+        if
+                rh(eax) = 0x3D                  /* If successful Open call from good code segment */
+                and callseg = codeseg
+                and strToU(retcf) = 0
+                -->
+                        begin
+                        filename := readASCIIZ(strToU(ds),rx(edx),256);         /* Check good filename */
+                        if
+                                filename = targetname
+                                -->
+                                        begin
+                                        handle := rl(reteax);
+                                        println('Reopen ', filename, ' - Handle ', handle);
+                                        /* Spy file operations on the return handle starting from the last state */
+                                        /* The simple fact of writting to the entrypoint is enough to suspect an infection, */
+                                        /*  so the state is not really necessary */
+                                        /* The main purpose of this is to avoid tagging an infection as overwritting when it is parasitic */
+                                        trigger off for_next FileOp(targetname, codeseg, handle, 0, state, filetype)
+                                        end;
+                        
+                                true
+                                -->
+                                        trigger off for_next WaitReopen(targetname, codeseg, state, filetype, ttl-1)
+                        fi
+                        end;
+                        
+                true
+                -->
+                        trigger off for_next WaitReopen(targetname, codeseg, state, filetype, ttl-1)
+                
+        fi
+        end;
+        
+        true
+        -->
+                trigger off for_next WaitReopen(targetname, codeseg, state, filetype, ttl)
+fi
+end;
+
+rule FileOp(filename: string; codeseg, handle, filepos, state, filetype: integer);
+var
+func: integer;
+sub: integer;
+newfilepos: integer;
+newstate: integer;
+onentrypoint: integer;      /* True (1) if the filepos is on the entrypoint, false (0) otherwise */
+cause: integer;
+callseg: integer;
+begin
+cause := strToInt(report_tag);
+if
+        (cause = 1 or cause = 13)       /* INT instruction or Breakpoint */
+        and strToU(imm) = 0x21          /* DOS */
+        and strToInt(rettick) > strToInt(calltick)
+        -->
+                begin
+                if
+                        cause = 1  --> callseg := strToU(cs);
+                        cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+                fi;
+                if
+                        callseg = codeseg        /* from good Code Segment */
+                        and rl(ebx) = handle            /* The good handle (if ebx is a handle!) */
+                        and strToU(retcf) = 0         /* Operation has been successful */
+                        -->
+                        begin
+                        /* Now, let's test the interesting functions: Lseek, Read, Write and Close */
+                        func := rh(eax);
+                        sub := rl(eax);
+                        if
+                                func = 0x42     /* Lseek */
+                                -->
+                                begin
+                                print(word2h(codeseg), ': Lseek on ', filename, ' - Handle ', handle);
+                                println(' - (AX=',int2h(rx(eax)),' BX=',int2h(rx(ebx)),' CX=',int2h(rx(ecx)),' DX=',int2h(rx(edx)),')');
+                                newfilepos := rx(retedx)*65536 + rx(reteax);
+                                /*println('NewFilePos is ', int2h(newfilepos));*/
+                                trigger off for_next FileOp(filename, codeseg, handle, newfilepos, state, filetype)
+                                end;
+                                
+                                func = 0x3F     /* Read */
+                                -->
+                                begin
+                                print(word2h(codeseg), ': Read  on ', filename, ' - Handle ', handle);
+                                println(' - ', int2h(rx(ecx)), ' bytes at ', int2h(filepos));
+                                newfilepos := filepos + rx(reteax);
+                                
+                                /* FileOp on EP? */
+                                /* Warning: here, we have a choice: either trusting the file extension or not */
+                                /* Trusting it means we may miss some infections an EXE files with a COM extension, for example */
+                                /* Not trusting it is a looser definition and we may have false positives, although it is unlikely */
+                                /* We choose not to trust the extension, thus testing the entrypoint for both COM and EXE types */
+                                onentrypoint := 0;
+                                
+                                /* Following is the old, stricter definition: */
+                                /*
+                                if
+                                        newfilepos > filepos    At least 1 byte
+                                        and ((filetype = 1 and filepos <= 1)                            At least 1 byte was read in the 2 first bytes of a COM file
+                                          or (filetype = 2 and filepos < 0x18 and newfilepos > 0x14))   At least 1 byte was read from the CS:IP EXE header fields at 0x14 and 0x16
+                                        --> onentrypoint := 1
+                                fi;
+                                */
+                                
+                                /* Here is the new definition */
+                                if
+                                        newfilepos > filepos
+                                        and ((filepos <= 1)
+                                          or (filepos < 0x18 and newfilepos > 0x14))
+                                        --> onentrypoint := 1
+                                fi;
+                                
+                                /* If state = 0 and FileOp on entry point, enter next state */
+                                newstate := state;
+                                if
+                                        onentrypoint = 1 and state = 0
+                                        --> newstate := 1
+                                fi;
+                                trigger off for_next FileOp(filename, codeseg, handle, newfilepos, newstate, filetype)
+                                end;
+                                
+                                func = 0x40     /* Write */
+                                -->
+                                begin
+                                print(word2h(codeseg), ': Write on ', filename, ' - Handle ', handle);
+                                println(' - ', int2h(rx(ecx)), ' bytes at ', int2h(filepos));
+                                newfilepos := filepos + rx(reteax);
+                                
+                                /* FileOp on EP? */ /* See comment above */
+                                onentrypoint := 0;
+                                if
+                                        newfilepos > filepos
+                                        and ((filepos <= 1)
+                                          or (filepos < 0x18 and newfilepos > 0x14))
+                                        --> onentrypoint := 1
+                                fi;
+
+                                /* If FileOp on entry point, print alarm */
+                                if
+                                        onentrypoint = 1 and state = 0
+                                        -->
+                                                begin
+                                                println(' *** Possible Overwriting Infection on ', filename);
+                                                println('Triggering extraction process');
+                                                trigger off for_current EnqueueForExtraction(filename);
+                                                trigger off for_next FindTrigger(codeseg, 1000, strToInt(calltick))
+                                                end;
+                                        onentrypoint = 1 and state = 1
+                                        -->
+                                                begin
+                                                println(' *** Possible Parasitic Infection on ', filename);
+                                                println('Triggering extraction process');
+                                                trigger off for_current EnqueueForExtraction(filename);                                                
+                                                trigger off for_next FindTrigger(codeseg, 1000, strToInt(calltick))
+                                                end;
+                                        onentrypoint = 0
+                                        --> trigger off for_next FileOp(filename, codeseg, handle, newfilepos, state, filetype)
+                                fi
+                                /* Here we may define newstate at 2 and go on to observe virus behaviour... */
+                                end;
+                                
+                                func = 0x3E     /* Close */
+                                -->
+                                begin
+                                /* We just stop spying operations on this handle */
+                                println(word2h(codeseg), ': Close on ', filename, ' - Handle ', handle, ' - (Waiting for reopen)');
+                                /* Wait a short amount of time for the file to be reopened */
+                                /* The last parameter is the TTL (Time To Live) of the WaitReopen thread */
+                                /* In this case, the TTL is a # of INT21 audit records */
+                                /* (50 calls to INT21 seems big enough to me, but this has to be tested on real viruses) */
+                                trigger off for_next WaitReopen(filename, codeseg, state, filetype, 50)
+                                end;
+                                
+                                true
+                                --> trigger off for_next FileOp(filename, codeseg, handle, filepos, state, filetype)
+                        fi
+                        end;
+                        
+                        true
+                        --> trigger off for_next FileOp(filename, codeseg, handle, filepos, state, filetype)
+                fi
+                end;
+        true
+        --> trigger off for_next FileOp(filename, codeseg, handle, filepos, state, filetype)
+fi
+end;
+
+rule NameOp(targetname: string; codeseg, filetype, ttl: integer);
+var
+func: integer;
+filename: string;
+newfilename: string;
+newisCOM: integer;
+newisEXE: integer;
+handle: integer;
+cause: integer;
+callseg: integer;
+begin
+cause := strToInt(report_tag);
+if
+        ttl = 0
+        -->
+                println('TTL expired for NameOp on ', targetname);
+
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21
+        -->
+                begin
+                if
+                        cause = 1  --> callseg := strToU(cs);
+                        cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+                fi;
+                func := rh(eax);
+                
+                if
+                        func = 0x56             /* Rename */
+                        and strToU(retcf) = 0 /* successful */
+                        and callseg = codeseg
+                        -->
+                                begin
+                                filename := readASCIIZ(strToU(ds),rx(edx),256);
+                                newfilename := readASCIIZ(strToU(es),rx(edi),256);
+                                newisCOM := match('.*[Cc][Oo][Mm]$', newfilename);
+                                newisEXE := match('.*[Ee][Xx][Ee]$', newfilename);
+                                if
+                                        filename = targetname
+                                        -->
+                                                if
+                                                        newisCOM = 1 or newisEXE = 1
+                                                        -->
+                                                                skip;
+                                                        true
+                                                        -->
+                                                                trigger off for_next NameOp(newfilename, codeseg, filetype, ttl)
+                                                fi;
+                                        true
+                                        -->
+                                                trigger off for_next NameOp(targetname, codeseg, filetype, ttl-1)
+                                fi
+                                end;
+                                
+                        func = 0x3D
+                        and strToU(retcf) = 0 /* success */
+                        and callseg = codeseg
+                        -->
+                                begin
+                                /* Get filename */
+                                filename := readASCIIZ(strToU(ds),rx(edx),256);
+                                        if
+                                                filename = targetname
+                                                -->
+                                                        begin
+                                                        handle := rl(reteax);
+                                                        println('Open ', filename, ' - Handle ', handle);
+                                                        /* Spying actions on the file corresponding to this handle */
+                                                        /* Starting at File Position 0, in state 0 (not infected) */
+                                                        /* Filetype: 1 -> COM, 2 -> EXE */
+                                                        trigger off for_next FileOp(filename, codeseg, handle, 0, 0, filetype)
+                                                        end;
+                                        true
+                                        -->
+                                                trigger off for_next NameOp(targetname, codeseg, filetype, ttl-1)
+                                        fi
+                                        end;
+                        
+                        true
+                        -->
+                                trigger off for_next NameOp(targetname, codeseg, filetype, ttl-1)
+                fi
+                end;
+                
+        true
+        -->
+                trigger off for_next NameOp(targetname, codeseg, filetype, ttl-1)
+fi
+end;
+
+external rule DetectHandle;
+var
+func: integer;
+filename: string;
+newfilename: string;
+err: integer;
+handle: integer;
+isCOM: integer;
+isEXE: integer;
+newisCOM: integer;
+newisEXE: integer;
+cause: integer;
+callseg: integer;
+begin
+cause := strToInt(report_tag);
+if
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21                          /* DOS interrupt */
+        and strToInt(rettick) > strToInt(calltick)      /* record contains ret values */
+        -->
+        begin
+        func := rh(eax);
+        /*println(byte2h(func));*/
+        if
+                cause = 1  --> callseg := strToU(cs);
+                cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+        fi;
+        /*
+        if
+                func > 0x3C and func < 0x44 and func != 0x3E and (func != 0x40 or rl(ebx) != 1)
+                -->
+                begin
+                if
+                        cause = 1  --> print('  ');
+                        cause = 13 --> print('B ')
+                fi;
+                print('Int 21h Func ', byte2h(func));
+                print(' (AL=',byte2h(rl(eax)),' BX=',word2h(rx(ebx)),' CX=',word2h(rx(ecx)),' DX=',word2h(rx(edx)),') from ',word2h(callseg));
+                println(' - (Call: ', strToInt(calltick), ' - Ret: ', strToInt(rettick), ')')
+                end
+        fi;
+        */
+        
+        /* Now deal with the different functions */
+        if
+                /*
+                func = 0x4B
+                -->
+                println('Ret from Exec ', readASCIIZ(strToU(ds), rx(edx), 256));
+                */
+
+                func = 0x3D             /* Open with handle */
+                and strToU(retcf) = 0 /* success */
+                -->
+                begin
+                /* Get filename */
+                filename := readASCIIZ(strToU(ds),rx(edx),256);
+                /*println('Open ',filename);*/
+                isCOM := match('.*[Cc][Oo][Mm]$', filename);
+                isEXE := match('.*[Ee][Xx][Ee]$', filename);
+                if
+                        (isCOM = 1)
+                        or (isEXE = 1)
+                        -->
+                        begin
+                        handle := rl(reteax);
+                        println('Open ', filename, ' - Handle ', handle);
+                        /* Spying actions on the file corresponding to this handle */
+                        /* Starting at File Position 0, in state 0 (not infected) */
+                        /* Filetype: 1 -> COM, 2 -> EXE */
+                        trigger off for_next FileOp(filename, callseg, handle, 0, 0, isCOM+2*isEXE)
+                        /*skip*/
+                        end
+                fi
+                end;
+                                        
+                func = 0x56             /* Rename */
+                and strToU(retcf) = 0
+                -->
+                begin
+                /* Get old and new names */
+                filename := readASCIIZ(strToU(ds),rx(edx),256);
+                isCOM := match('.*[Cc][Oo][Mm]$', filename);
+                isEXE := match('.*[Ee][Xx][Ee]$', filename);
+                newfilename := readASCIIZ(strToU(es),rx(edi),256);
+                newisCOM := match('.*[Cc][Oo][Mm]$', newfilename);
+                newisEXE := match('.*[Ee][Xx][Ee]$', newfilename);
+                if
+                        (isCOM = 1 or isEXE = 1)
+                        and (newisCOM = 0 and newisEXE = 0)
+                        -->
+                        begin
+                        println('Rename ', filename, ' to ', newfilename);
+                        trigger off for_next NameOp(newfilename, strToU(cs), isCOM+2*isEXE, 200)
+                        end
+                fi
+                end
+        fi
+        end
+fi;
+trigger off for_next DetectHandle
+end;
+
+init_action;
+begin
+        start_watch_func(0x21,0x3D,2); /* Open */
+        start_watch_func(0x21,0x3E,2); /* Close */
+        start_watch_func(0x21,0x3F,2); /* Read */
+        start_watch_func(0x21,0x40,2); /* Write */
+        start_watch_func(0x21,0x42,2); /* Lseek */
+        start_watch_func(0x21,0x56,2); /* Rename */
+        skip
+end.

@@ -1,0 +1,25 @@
+@echo off
+@rem **********************************************************
+@rem Usage: StmpNLMs.btm dd-mm-yy
+@rem
+@rem echo batch file to stamps NetWare files built as part of XWing
+@rem ***********************************************************
+
+SET TIMESTAMP=07:50:00
+
+@if "%1" NE ""  goto letsrock
+@echo usage: StmpNLMs.btm dd-mm-yy
+@goto byebye
+
+:letsrock
+
+SET P4SOURCE=W:
+
+SET DATESTAMP=%1
+
+SET NAVNLM_RELEASE_DIR=%P4SOURCE%\Release
+
+@Echo Stamping NAVNLM files...
+@FDWIN %NAVNLM_RELEASE_DIR%\*.*  /D%DATESTAMP% /T%TIMESTAMP%
+
+:byebye

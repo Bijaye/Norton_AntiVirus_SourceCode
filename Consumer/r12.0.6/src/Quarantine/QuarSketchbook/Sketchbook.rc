@@ -1,0 +1,466 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "NAVVer.h"
+#include "filever.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""NAVVer.h""\r\n"
+    "#include ""filever.h""\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\Sketchbook.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "#include ""verinc.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\Sketchbook.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 267, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "About Sketchbook"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    LTEXT           "SKETCHBOOK, ERASER Engine Tester",IDC_STATIC,40,10,141,
+                    8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2004",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,210,7,50,16,WS_GROUP
+END
+
+IDD_SKETCHBOOK_DIALOG DIALOGEX 0, 0, 594, 398
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Sketchbook"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Get",IDC_GETANOMALY,477,18,43,14
+    PUSHBUTTON      "Quick (ccEraser) Scan",IDC_SCAN,529,164,58,23,
+                    BS_MULTILINE
+    PUSHBUTTON      "Detect Anomaly (File)",IDC_DET_ANOMALY,529,88,58,26,
+                    BS_MULTILINE
+    PUSHBUTTON      "Remediate",IDC_REMEDIATE,477,209,43,14
+    PUSHBUTTON      "ccEraser Settings",IDC_SET_SETTINGS,529,64,58,21,
+                    BS_MULTILINE
+    PUSHBUTTON      "Undo",IDC_UNDO,529,208,58,14
+    CONTROL         "",IDC_LIST_DETECTION,"SysListView32",LVS_REPORT | 
+                    LVS_ALIGNLEFT | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,13,102,458,93
+    CONTROL         "",IDC_LIST_REMEDIATION,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,13,209,458,93
+    CONTROL         "",IDC_LIST_ANOMALY,"SysListView32",LVS_REPORT | 
+                    LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,13,18,457,65
+    EDITTEXT        IDC_RESULT,42,353,456,38,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
+    EDITTEXT        IDC_SCANSTATUS,42,338,456,15,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "Load Object",IDC_LOADOBJECT,529,190,58,14,BS_MULTILINE
+    PUSHBUTTON      "Detect",IDC_DETECT,477,102,43,14
+    PUSHBUTTON      "Save",IDC_SAVEANOMALY,477,68,43,14
+    PUSHBUTTON      "Save",IDC_SAVEDETECTION,477,180,43,14
+    PUSHBUTTON      "Save",IDC_SAVEREMEDIATION,477,288,43,14
+    GROUPBOX        "Detection Action",IDC_STATIC,7,91,516,108
+    GROUPBOX        "Remediation Action",IDC_STATIC,7,199,516,109
+    LTEXT           "Status:",IDC_STATIC,7,339,24,8
+    LTEXT           "Results:",IDC_STATIC,7,366,27,8
+    CONTROL         "Localize Text",IDC_LOCALIZE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,529,7,58,10
+    PUSHBUTTON      "Reload Engine",IDC_RELOAD,529,40,58,20,BS_MULTILINE
+    PUSHBUTTON      "Remove",IDC_REMOVEANOMALY,477,43,43,14
+    PUSHBUTTON      "Remove",IDC_REMOVEDETECT,477,141,43,14
+    PUSHBUTTON      "Remove",IDC_REMOVEREMEDIATE,477,248,43,14
+    CONTROL         "Cache Data",IDC_CACHE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,529,18,58,10
+    PUSHBUTTON      "Full Scan",IDC_FULLSCAN,529,147,58,14,BS_MULTILINE
+    GROUPBOX        "Anomaly",IDC_STATIC,7,7,516,81
+    CONTROL         "Save Undo",IDC_SAVEUNDO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,529,29,58,10
+    PUSHBUTTON      "Abort",IDC_ABORT,529,226,58,14,WS_DISABLED
+    PUSHBUTTON      "Detect Anomaly (List)",IDC_DET_ANOMALY_LIST,529,117,58,
+                    27,BS_MULTILINE
+    PUSHBUTTON      "&Create QuarItem from file",
+                    IDC_BUTTON_QUAR_ITEM_CREATE_WFILE,179,307,88,14,
+                    BS_MULTILINE
+    PUSHBUTTON      "Create QuarItem &w/o file",
+                    IDC_BUTTON_QUAR_ITEM_CREATE_WO_FILE,524,329,63,17,
+                    BS_MULTILINE
+    LTEXT           "QuarItem:",IDC_STATIC,7,326,34,8
+    EDITTEXT        IDC_EDIT_QUAR_ITEM_STATUS,42,323,455,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    PUSHBUTTON      "Create &VirusFile",IDC_BUTTON_VIRUS_FILE_CREATE,523,294,
+                    64,14
+    PUSHBUTTON      "SND-&GetRemediationData",
+                    IDC_BUTTON_SND_GET_REMEDIATION_DATA,408,307,85,14
+    PUSHBUTTON      "Remediate and &Add RemediationData",
+                    IDC_BUTTON_REMEDIATE_ADD_DATA,270,307,122,14
+    PUSHBUTTON      "&Load by name/VID",IDC_BUTTON_LOAD_QUAR_ITEM,522,312,65,
+                    14
+    PUSHBUTTON      "&Scan QuarItem",IDC_BUTTON_SCAN_QUAR_ITEM,522,350,65,14
+    PUSHBUTTON      "&Repair QuarItem",IDC_BUTTON_REPAIR_QUAR_ITEM,522,377,
+                    65,14
+    PUSHBUTTON      "Take Snapshot",IDC_BUTTON_TAKE_SNAPSHOT,523,258,64,14
+    PUSHBUTTON      "Add Snap to QItem",IDC_BUTTON_ADD_SNAPSHOT,523,275,64,
+                    14
+END
+
+IDD_SETSETTINGS DIALOGEX 0, 0, 167, 216
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Settings"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Set",IDOK,110,7,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,110,32,50,16
+    EDITTEXT        IDC_DEPTH,16,23,75,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Set Depth of Scan:",IDC_DEPTH_TEXT,16,9,75,8
+    CONTROL         "Scan Dll",IDC_SCANDLL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,43,41,10
+    COMBOBOX        IDC_DOMAIN,16,65,114,78,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "Set Input Filter",IDC_FILTER,16,96,64,14
+    PUSHBUTTON      "Reset Input Filter",IDC_RESETFILTER,16,119,64,14
+    PUSHBUTTON      "Set Output Filter",IDC_OUTFILTER,90,96,64,14
+    PUSHBUTTON      "Reset Output Filter",IDC_RESETOUTFILTER,90,119,64,14
+    COMBOBOX        IDC_REPAIR,16,141,114,78,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+IDD_SETFILTERDLG DIALOGEX 0, 0, 374, 172
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Filter"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,316,7,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,316,26,50,16
+    LTEXT           "Filter the Scan:",IDC_FILTER_TEXT,62,20,119,8
+    GROUPBOX        "Filter",IDC_STATIC,23,7,176,32
+    CONTROL         "File",IDC_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    233,52,41,12
+    CONTROL         "Registry",IDC_REGISTRY,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,233,69,41,10
+    CONTROL         "Process",IDC_PROCESS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,233,87,41,10
+    CONTROL         "Service",IDC_SERVICE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,233,104,40,10
+    CONTROL         "Batch",IDC_BATCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    315,53,41,12
+    CONTROL         "INI",IDC_INI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,315,
+                    67,25,10
+    CONTROL         "Startup",IDC_STARTUP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,315,84,39,10
+    CONTROL         "COM",IDC_COM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,315,
+                    102,32,10
+    CONTROL         "Viral",IDC_VIRAL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    7,53,29,10
+    CONTROL         "Client Compliancy",IDC_CLIENTCOM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,118,138,71,10
+    CONTROL         "Spyware",IDC_SPYWARE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,155,43,10
+    CONTROL         "Generic Loadpoint",IDC_GENERICLOAD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,118,155,115,10
+    LTEXT           "Anomaly Types",IDC_STATIC,7,42,66,8
+    LTEXT           "Detection Types",IDC_STATIC,233,41,66,8
+    CONTROL         "Malicious",IDC_MALICIOUS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,70,111,10
+    CONTROL         "Trackware",IDC_TRACKWARE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,118,53,48,10
+    CONTROL         "ReservedMalicious",IDC_RESERVEMALICIOUS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,87,75,10
+    CONTROL         "Dialer",IDC_DIALER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,118,70,34,10
+    CONTROL         "Heuristic",IDC_HEURISTIC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,104,42,10
+    CONTROL         "RemoteAccess",IDC_REMOTEACCESS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,118,87,63,10
+    CONTROL         "SecurityRisk",IDC_SECURITYRISK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,121,54,10
+    CONTROL         "Adware",IDC_ADWARE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,118,104,39,10
+    CONTROL         "Hacktool",IDC_HACKTOOL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,138,43,10
+    CONTROL         "Joke",IDC_JOKE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    118,121,31,10
+END
+
+IDD_DETECT DIALOGEX 0, 0, 342, 125
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Reverse Lookup Detection"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,33,98,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,125,98,50,14
+    EDITTEXT        IDC_FILE,88,14,179,14,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Browse",IDC_BUTTON1,278,26,50,14
+    EDITTEXT        IDC_VID,63,73,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "VID:",IDC_STATIC,19,76,15,8
+    LTEXT           "Long File Name:",IDC_STATIC,28,17,54,8
+    EDITTEXT        IDC_FILESHORT,88,33,179,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "Short File Name:",IDC_STATIC,28,39,56,8
+END
+
+IDD_ABORT DIALOGEX 0, 0, 83, 53
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE
+CAPTION "Abort"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Abort",IDC_ABORT,14,18,50,14
+END
+
+IDD_UNDO DIALOGEX 0, 0, 315, 74
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "Undo Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Save",IDC_UNDOSAVE,7,7,50,14
+    PUSHBUTTON      "Save To",IDC_UNDOSAVETO,7,30,50,14
+    PUSHBUTTON      "Save As",IDC_UNDOSAVEAS,7,53,50,14
+    LTEXT           "Restore the file to an user defined location with the original filename",
+                    IDC_STATIC,83,30,225,8
+    LTEXT           "Restore the file to the original location with original filename",
+                    IDC_STATIC,83,7,198,8
+    LTEXT           "Restore the file to an user defined location and filename",
+                    IDC_STATIC,83,53,184,8
+END
+
+IDD_SESSION DIALOGEX 0, 0, 187, 108
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW | WS_EX_NOINHERITLAYOUT
+CAPTION "Sketchbook Session Manager"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Load New Definition",IDC_NEWDEFINITION,56,46,74,14
+    PUSHBUTTON      "Start New Instance",IDC_NEWINSTANCE,56,71,74,14
+END
+
+IDD_DETECTLIST DIALOGEX 0, 0, 343, 202
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Reverse Lookup Detection"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,33,160,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,125,160,50,14
+    PUSHBUTTON      "Browse for file to add",IDC_BROWSE,61,54,150,14
+    EDITTEXT        IDC_VID,63,135,40,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "VID:",IDC_STATIC,19,138,15,8
+    EDITTEXT        IDC_FILELIST,26,33,289,14,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "List of files to be scanned:",IDC_STATIC,26,18,99,8
+    EDITTEXT        IDC_ADDSTRING,44,82,161,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Manual Add String",IDC_ADD,227,82,82,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 260
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_SKETCHBOOK_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 587
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 391
+        HORZGUIDE, 7
+    END
+
+    IDD_SETSETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 160
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 209
+    END
+
+    IDD_SETFILTERDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 367
+        VERTGUIDE, 118
+        VERTGUIDE, 233
+        VERTGUIDE, 315
+        VERTGUIDE, 366
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 165
+        HORZGUIDE, 53
+        HORZGUIDE, 67
+        HORZGUIDE, 84
+        HORZGUIDE, 102
+        HORZGUIDE, 119
+    END
+
+    IDD_DETECT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 335
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 118
+    END
+
+    IDD_ABORT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 76
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 46
+    END
+
+    IDD_UNDO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 308
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_SESSION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 101
+    END
+
+    IDD_DETECTLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 336
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 195
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SETSETTINGS DLGINIT
+BEGIN
+    IDC_DOMAIN, 0x403, 18, 0
+0x6f4c, 0x6163, 0x486c, 0x736f, 0x2b74, 0x654e, 0x7774, 0x726f, 0x006b, 
+
+    IDC_DOMAIN, 0x403, 10, 0
+0x6f4c, 0x6163, 0x486c, 0x736f, 0x0074, 
+    IDC_REPAIR, 0x403, 16, 0
+0x6552, 0x6170, 0x7269, 0x6e41, 0x4464, 0x6c65, 0x7465, 0x0065, 
+    IDC_REPAIR, 0x403, 11, 0
+0x6552, 0x6170, 0x7269, 0x6e4f, 0x796c, "\000" 
+    IDC_REPAIR, 0x403, 11, 0
+0x6544, 0x656c, 0x6574, 0x6e4f, 0x796c, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About Sketchbook..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\Sketchbook.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+#include "verinc.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

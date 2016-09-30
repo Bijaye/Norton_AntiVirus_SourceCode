@@ -1,0 +1,110 @@
+@echo off
+setlocal
+
+if "%1"=="" goto USAGE
+
+cls
+echo. ^ echo. ^ echo.
+echo This batch file copies files for 
+echo NavNLM to the layout server.
+echo.
+echo.
+echo.
+
+input Do you want to continue?  (Y or n)  %%myinput
+if "%myinput" eq "n" goto end
+
+:-------------------------------------------------------------------------
+: Copy files to the CM-FTP\CM_FTP layout area.
+:-------------------------------------------------------------------------
+
+cls
+cdd c:\bld_area
+if not isdir navnlm goto ERRMSG
+echo Valid Build Environment was found.
+
+net use h: /d
+net use h: \\cm-ftp\cm_ftp
+h:
+cd \
+if isdir RELEASE goto morecopy
+echo.
+echo Unable to map the H: drive to CM-FTP\RELEASE.  Aborting...
+goto end
+
+:morecopy
+
+
+
+:-------------------------------------------------------------------------
+: Copy Files
+:-------------------------------------------------------------------------
+
+:start_copy
+
+echo. ^ echo.
+input Do you want to copy files?  (Y or n)  %%myinput
+if "%myinput" eq "n" goto end
+echo. ^ echo.
+
+cdd c:\bld_area\navnlm\release 
+if %_? == 0 goto copy_files
+echo.
+echo Change Directory to Release was unsuccessful.  Aborting...
+goto END
+:copy_files
+echo **********************************
+echo Copying Files for NavNLM %1
+echo **********************************
+echo.
+echo Erasing any previous layout for %1...1
+erase  h:\release\nav\navnlm7.6\%1\release\*.* /sxzyq
+echo.
+echo Copying NavNLM layout for %1...
+md /s h:\release\nav\navnlm7.6\%1\release
+copy . h:\release\nav\navnlm7.6\%1\release /s
+
+
+goto end
+
+:-------------------------------------------------------------------------
+: Error, display usage information
+:-------------------------------------------------------------------------
+:USAGE
+cls
+echo.
+echo.
+echo Please specify a valid NavNLM build number!
+echo.
+echo Example:  copynavnlm 24
+echo.
+echo.
+goto END
+
+:-------------------------------------------------------------------------
+: Error MSG
+:-------------------------------------------------------------------------
+:ERRMSG
+cls
+echo.
+echo.
+echo ERROR! No build of NavNLM found on e: drive.
+echo.
+echo  Example:  copynavnlm 24
+echo.
+echo.
+goto END
+
+
+:-------------------------------------------------------------------------
+: The End
+:-------------------------------------------------------------------------
+:END
+:
+
+echo. ^ echo. ^ echo.
+echo Finished copying files.
+echo. ^ echo. ^ echo.
+
+
+endlocal

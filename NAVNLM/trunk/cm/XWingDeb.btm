@@ -1,0 +1,111 @@
+@echo off
+echo.
+echo ----------------------
+echo Updating XWing Release
+echo ----------------------
+echo.
+
+pushd
+
+
+: ---------------------------------------------------------------------------
+: Set environment
+: ---------------------------------------------------------------------------
+set SRC_DRV=w:
+set DST_DRV=w:
+set SRC_BASEPATH=%SRC_DRV
+set DST_BASEPATH=%DST_DRV
+set DEB_DIR=%DST_BASEPATH\NLMDeb
+
+
+:
+: Check source
+:
+if not exist %SRC_BASEPATH\nul goto nosrc
+
+:
+: Create destination if it does not exist
+:
+if not exist %DEB_DIR\nul md /s %DEB_DIR
+
+
+: ---------------------------------------------------------------------------
+: Now copy all target files
+: ---------------------------------------------------------------------------
+
+echo    Copying NLMs to %DEB_DIR
+copy /q %src_basepath\Release\NAVAPI\BinNLM\NAVAPI.NLM %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\Nav_Glue\NLM\debug\I2_LDVP.nlm %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\Debug\rtvscan.nlm %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPFix\debug\vpfix.nlm %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPQue\debug\vpque.nlm %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPReg\debug\VPReg.nlm %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPRegEdt\debug\VPRegEdt.nlm %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPStart\debug\VPStart.nlm %DEB_DIR
+copy /q %src_basepath\Norton_Antivirus\NAVNLM\src\QsFwd\debug\QSFwd.nlm %DEB_DIR
+
+echo    Copying MAPs to %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\Nav_Glue\NLM\debug\I2_LDVP.map %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\Debug\rtvscan.map %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPFix\debug\vpfix.map %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPQue\debug\vpque.map %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPReg\debug\VPReg.map %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPRegEdt\debug\VPRegEdt.map %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPStart\debug\VPStart.map %DEB_DIR
+copy /q %src_basepath\Norton_Antivirus\NAVNLM\src\QsFwd\debug\QSFwd.nlm.map %DEB_DIR\QSFwd.map
+
+echo    Converting SYMs for RDEBUG
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\Nav_Glue\NLM\debug\I2_LDVP.sym
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\Debug\rtvscan.sym
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPFix\debug\vpfix.sym
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPQue\debug\vpque.sym
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPReg\debug\VPReg.sym
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPRegEdt\debug\VPRegEdt.sym
+cvpack %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPStart\debug\VPStart.sym
+
+echo    Copying SYMs to %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\Nav_Glue\NLM\debug\I2_LDVP.sym %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\Debug\rtvscan.sym %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPFix\debug\vpfix.sym %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPQue\debug\vpque.sym %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPReg\debug\VPReg.sym %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPRegEdt\debug\VPRegEdt.sym %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\VPStart\debug\VPStart.sym %DEB_DIR
+copy /q %src_basepath\Norton_Antivirus\NAVNLM\src\QsFwd\debug\QSFwd.sym %DEB_DIR
+
+
+echo    Copying Message file to %DEB_DIR
+copy /q %src_basepath\Core_Technology\LDVP_Shared\Pscan\NLM\src\rtvscan.msg %DEB_DIR
+
+echo    Copy complete.
+echo.
+goto cleanup
+
+
+
+: ---------------------------------------------------------------------------
+: There is no source. Report error.
+: ---------------------------------------------------------------------------
+
+:nosrc
+echo.
+echo ** ERROR **
+echo.
+echo    Source %SRC_BASEPATH not found.
+echo    Make sure %SRC_BASEPATH exists, then run this batch file again.
+echo.
+
+
+: ---------------------------------------------------------------------------
+: Cleanup and leave
+: ---------------------------------------------------------------------------
+
+:cleanup
+set SRC_DRV=
+set DST_DRV=
+set SRC_BASEPATH=
+set DST_BASEPATH=
+set DEB_DIR=
+
+popd
+

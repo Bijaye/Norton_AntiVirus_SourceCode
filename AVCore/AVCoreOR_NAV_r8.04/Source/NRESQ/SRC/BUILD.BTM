@@ -1,0 +1,27 @@
+: Copyright 1996 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/NRESQ/VCS/build.btv   1.0   20 Mar 1996 09:45:36   GWESTER  $
+:                                                                       :
+: Description:                                                          :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/NRESQ/VCS/build.btv  $
+:  
+:     Rev 1.0   20 Mar 1996 09:45:36   GWESTER
+:  Initial revision.
+:  
+:
+:-----------------------------------------------------------------------:
+
+@echo off
+
+: Delete the .CPP and .H files that were our own custom versions.
+: Kirin needs the CORE versions of the files. (We can't CHKOLD them since
+: they are branched.)
+if exist %proj%\src%PROJVERS%\stdhelp.h del /z %proj%\src%PROJVERS%\stdhelp.h
+
+
+call mk nresq %1
+if exist make.err copy build.err+make.err build.err
+

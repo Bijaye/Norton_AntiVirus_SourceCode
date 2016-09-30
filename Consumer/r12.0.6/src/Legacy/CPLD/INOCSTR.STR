@@ -1,0 +1,316 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/inocstr.stv   1.0   06 Feb 1997 20:50:28   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV inoculation options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptInocStrings,
+//      LPVOID *        lpOptInocArgs,
+//
+//      CheckBoxRec     cbInocUse
+//      CheckBoxRec     cbInocRepair
+//      CheckBoxRec     cbInocInoculate
+//      CheckBoxRec     cbInocStop
+//      CheckBoxRec     cbInocDelete
+//      CheckBoxRec     cbInocContinue
+//      CheckBoxRec     cbInocExclude
+//
+//      ComboBoxRec     cxInocRespondNotInoc
+//      ComboBoxRec     cxInocRespondChanged
+//
+//      TERec           teInocPath
+//
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/inocstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:28   RFULLER
+// Initial revision
+// 
+//    Rev 1.2   07 Aug 1996 17:02:18   JBRENNA
+// Port DOSNAV changes
+// 
+// 
+//    Rev 1.25   18 Apr 1996 08:08:22   MZAREMB
+// Corrected misspelling of "backslash". STS# NAV 52820
+// 
+//    Rev 1.24   04 Mar 1996 18:34:42   MKEATIN
+// Ported DX fixes from KIRIN
+// 
+//    Rev 1.1   31 Jan 1996 21:31:56   MKEATIN
+// Added DX support - NULL pointer was being passed instead of a string pointer
+// 
+//    Rev 1.0   30 Jan 1996 16:21:02   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:54:56   BARRY
+// Initial revision.
+// 
+//    Rev 1.23   01 Jul 1995 17:03:12   BARRY
+// Fix inoc path validation
+// 
+//    Rev 1.22   10 Feb 1995 13:46:26   DALLEE
+// Final 2 changes to single leading capital letter.
+// 
+//    Rev 1.21   20 Jan 1995 18:52:50   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.20   29 Dec 1994 12:50:48   DALLEE
+// Include navopts.h for old MAX_PATH_SIZE define.
+// 
+//    Rev 1.19   28 Dec 1994 12:07:46   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.2   09 Dec 1994 19:32:20   DALLEE
+    // Paths for NAVOPTS.DAT strings to old 144 bytes.
+    //
+    //    Rev 1.1   30 Nov 1994 17:25:18   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.18   28 Dec 1994 11:55:54   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:50   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.16   11 Aug 1993 13:07:38   BRAD
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+#include "navopts.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define CX_INOC_WIDTH       (35)
+#define CX_NOT_INOC_LENGTH  ( 4)
+#define CX_CHANGED_LENGTH   ( 3)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    [];     // These externs are declared in
+extern ButtonsRec buOkCancelHelp;       //  OPTSTR.CPP
+
+                                        // NAVDINOC.C
+extern UINT TEInocPathFilter ( TERec *te, UINT *c);
+
+
+//************************************************************************
+// PROTOTYPES
+//************************************************************************
+
+
+//************************************************************************
+// SHARED STATIC VARIABLES
+//************************************************************************
+
+static char szPrompt        [] = "Prompt";
+static char szDenyAccess    [] = "Deny access";
+
+
+//------------------------------------------------------------------------
+// Inoculations CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszOptInocStrings [] =           // Strings for inoculation CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    " %C1",                             // cbInocSystem
+    "     system files",                // Beginning of text in 'cbInocSystem'
+    "%38f ",                            // Push buttons over to far right
+    " %C2",                             // cbInocUse
+    "     %C3",                         // Inoculate on floppies
+    DIALOG_EMPTY_LINE,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B4",                              // buOkCancelHelp
+
+    DIALOG_1COL,
+    DIALOG_LEFT,
+    " %50gHow to respond",              // BEGIN GROUP
+    "   ^When an item has not been inoculated:",
+    "   %X5",                           // cxInocRespondNotInoc
+    DIALOG_EMPTY_LINE,
+    "   When an inoculated ite^m has changed:",
+    "   %X6",                           // cxInocRespondChanged
+    DIALOG_EMPTY_LINE,
+    "   %3aButtons to display if prompted%1a",
+                                        // cbInocRepair, cbInocInoculate...
+    "   %C7    %C8    %C9",              //  cbInocStop
+                                        // cbInocDelete, cbInocContinue...
+    "   %C10    %C11     %C12",           //  cbInocExclude
+    DIALOG_GROUP_END,
+
+    " Inoculation ^path:",
+    " %T13",                            // teInocPath
+
+    DIALOG_END,
+    };
+
+//------------------------------------------------------------------------
+// Inoculations CP Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbInocSystem =
+    {
+    "Inoculate ^boot records and",      // Rest of text is in the dlg tmplate
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocUse =
+    {
+    "Inoculate program ^files",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocFloppies =
+    {
+    "Inoc^ulate files on floppies",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocRepair =
+    {
+    "^Repair",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocInoculate =
+    {
+    "^Inoculate",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocStop =
+    {
+    "^Stop",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocDelete =
+    {
+    "^Delete",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocContinue =
+    {
+    "Co^ntinue",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbInocExclude =
+    {
+    "E^xclude",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+static char *lpszRespondNotInocLabels [] =
+    {
+    szPrompt,
+    "Inoculate automatically",
+    "Notify only - don't inoculate",
+    szDenyAccess,
+    NULL,
+    };
+
+ComboBoxRec cxInocRespondNotInoc =
+    {
+    CBS_NOEDIT,
+    lpszRespondNotInocLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_INOC_WIDTH,                      // Max width of entries
+    CX_NOT_INOC_LENGTH,                 // Lenght of list
+    };
+
+static char *lpszRespondChangedLabels [] =
+    {
+    szPrompt,
+    "Notify only - don't reinoculate",
+    szDenyAccess,
+    NULL,
+    };
+
+ComboBoxRec cxInocRespondChanged =
+    {
+    CBS_NOEDIT,
+    lpszRespondChangedLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_INOC_WIDTH,                      // Max width of entries
+    CX_CHANGED_LENGTH,                  // Length of list
+    };
+
+static char szInocPath [MAX_PATH_SIZE + 1];
+
+TERec teInocPath =
+    {
+    0, 0,                               // Row, col - internal use
+    (36 + 2),                           // Width on screen
+    szInocPath,                         // String to edit set when used
+    MAX_PATH_SIZE,                      // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal
+    TEInocPathFilter,                   // Character validate function
+    0,                                  // Flags
+    NULL,                               // Field validate function
+    };
+
+LPVOID lpOptInocArgs [] =               // Arguments to pass to control panel
+    {
+    &cbInocSystem,
+    &cbInocUse,
+    &cbInocFloppies,
+    &buOkCancelHelp,
+    &cxInocRespondNotInoc,
+    &cxInocRespondChanged,
+    &cbInocRepair,
+    &cbInocInoculate,
+    &cbInocStop,
+    &cbInocDelete,
+    &cbInocContinue,
+    &cbInocExclude,
+    &teInocPath,
+    };
+
+BYTE *apszInvalidInocPathError [] =
+    {
+    DIALOG_EMPTY_LINE,
+    " The entered path is invalid. ",
+    DIALOG_EMPTY_LINE,
+    " NOTE: The inoculation path must start with a backslash (\\). ",
+    DIALOG_EMPTY_LINE,
+    DIALOG_END
+    };

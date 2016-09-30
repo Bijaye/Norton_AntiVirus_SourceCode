@@ -1,0 +1,19 @@
+!define BLANK ""
+.cpp : $(%include)
+.h : $(%include)
+
+.cpp.obj :
+  if not exist $[&.cpp copy $[@ . > nul
+ *wpp386 $^&.cpp -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+acsapi.lib : a2api.obj a97lznt.obj acsapi.obj .AUTODEPEND
+            
+!ifneq BLANK "a2api.obj a97lznt.obj acsapi.obj"
+ @for %i in (a2api.obj a97lznt.obj acsapi.obj) do @%append acsapi.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append acsapi.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 acsapi.lib @ acsapi.lb1
+
+

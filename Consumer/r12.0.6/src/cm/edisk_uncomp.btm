@@ -1,0 +1,35 @@
+rem Create Output Directories
+
+md %root%..\edisk_uncomp
+md %root%..\edisk_uncomp\BootCD
+md %root%..\edisk_uncomp\img
+md %root%..\edisk_uncomp\EBD
+md %root%..\edisk_uncomp\EBD\Disk1
+md %root%..\edisk_uncomp\EBD\Disk2
+md %root%..\edisk_uncomp\EBD\Disk3
+md %root%..\edisk_uncomp\EBD\Disk4
+md %root%..\edisk_uncomp\EBD\NAVDX
+
+
+rem Copy over BootCD
+copy %root%..\install\EDisk\BootCD\*.* %root%..\edisk_uncomp\BootCD
+
+rem Copy over NAVDX.VXD and NAVDX.OVL
+copy %root%..\bin.dvx\*.* %root%..\edisk_uncomp\EBD\NAVDX
+
+rem Copy over Disk1
+copy %root%..\install\EDisk\EBD\Disk1\*.* %root%..\edisk_uncomp\EBD\Disk1
+
+rem Copy over Disk2
+copy %root%..\install\EDisk\EBD\Disk2\*.* %root%..\edisk_uncomp\EBD\Disk2
+
+rem Copy over Disk3
+copy %root%..\install\EDisk\EBD\Disk3\*.* %root%..\edisk_uncomp\EBD\Disk3
+
+rem Copy over Disk4
+copy %root%..\install\EDisk\EBD\Disk4\*.* %root%..\edisk_uncomp\EBD\Disk4
+
+rem Copy over img files
+copy %root%..\Nobuilds\Norton_Emergency_Disk\*.* %root%..\edisk_uncomp\img
+
+

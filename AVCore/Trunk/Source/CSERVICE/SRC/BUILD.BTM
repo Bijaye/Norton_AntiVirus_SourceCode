@@ -1,0 +1,30 @@
+:: $Header:   S:/CSERVICE/VCS/build.btv   1.0   09 May 1997 17:50:34   ksackin  $
+::
+:: Build file for NAVW project.  Forces update of all targets.
+::------------------------------------------------------------------------
+:: $Log:   S:/CSERVICE/VCS/build.btv  $
+:  
+:     Rev 1.0   09 May 1997 17:50:34   ksackin
+:  Initial revision.
+:  
+:     Rev 1.1   18 Apr 1997 13:48:56   DSACKIN
+:  Ported from Tesla
+:  
+:     Rev 1.0   13 Mar 1997 15:09:26   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   08 Nov 1996 11:46:54   DKEEFER
+:  Initial revision
+:  
+:     Rev 1.0   24 Apr 1996 20:13:40   DSACKIN
+:  Initial revision.
+:  
+:
+::------------------------------------------------------------------------
+
+
+call mk service %1
+if exist make.err copy build.err+make.err
+
+call mk svcctrl %1
+if exist make.err copy build.err+make.err

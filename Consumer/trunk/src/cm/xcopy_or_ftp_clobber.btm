@@ -1,0 +1,36 @@
+echo on
+set USEFTP=NOTSET
+set FILENAME=
+
+set SRCPATH=%1
+set LOCALPATH=%2
+set USEFTP=%3
+set SRCURL=%4
+set FILENAME=%5
+
+set FTPUSER=symcorp\cm_only
+set FTPPSWD=p@sswordforCM
+set ROBOCOPYEXE=%root%..\..\Nobuilds\W2003ResKit_Tools\robocopy.exe
+
+iff "%USEFTP%" eq "NOTSET" then
+	%ROBOCOPYEXE% %SRCPATH% %LOCALPATH% %FILENAME% /mir /v /PURGE
+else
+	REM Get rid of the quotes around SRCURL
+
+	SET PATHLEN=%@LEN[%SRCURL%]
+	set PATHLEN=%@DEC[%PATHLEN%]
+	set PATHLEN=%@DEC[%PATHLEN%]
+	set SRCURL=%@SUBSTR[%SRCURL%,1,%PATHLEN%]
+
+	REM Figure out the depth of the path on the host
+
+	set PATHDEPTH=%@WORDS["/",%SRCURL%]
+	set PATHDEPTH=%@DEC[%PATHDEPTH%]
+	set PATHDEPTH=%@DEC[%PATHDEPTH%]
+
+	REM Use WGet to move the files
+
+	tools\wget --user=%FTPUSER% --password=%FTPPSWD% --passive-ftp -r -l 0 -nv -nH --cut-dirs=%PATHDEPTH% -P %LOCALPATH% "%SRCURL%/"
+endiff
+
+quit %errorlevel%

@@ -1,0 +1,12 @@
+echo Building installers . . .
+set SavePath="%Path"
+set Path="C:\Progra~1\Instal~1\Instal~1.5pr\Program;%Path"
+set projectname=..\Install\QuarServ
+set medianame=Default
+IsBuild -p%projectname -m%medianame > IsBuild1.rpt
+if ERRORLEVEL != 0 goto BuildErr
+set projectname=..\Install\QuarCons
+set medianame=Default
+IsBuild -p%projectname -m%medianame > IsBuild2.rpt
+if ERRORLEVEL != 0 goto BuildErr
+set Path="%SavePath"

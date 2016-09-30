@@ -1,0 +1,74 @@
+REGEDIT4
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 
+; This profile contains configuration parameters for the
+; scanBlessed.exe and scanLatest.exe programs on the gateway.
+; 
+; The scanBlessed.exe program, and if necessary the scanLatest.exe 
+; program, are called by the postSuspectSample servlet (located in 
+; the AVISservlets.DLL file) each time a new sample is submitted to 
+; the gateway.  The programs use the parameters in this profile to 
+; scan the sample for known viruses.
+; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Quarantine\Server\AVIS\Current]
+
+;----------------------------------------------------------------------
+; If new definitions are received from the analysis center while 
+; old defintions in use, the programs will wait this long for samples
+; currently being scanned to complete before changing definitions. 
+; The unit for this parameter is "minutes".
+;----------------------------------------------------------------------
+
+"definitionChangeTimeout"="5"
+
+;----------------------------------------------------------------------
+; The programs allocate the specified minimum number of threads during
+; initialization for scanning multiple samples concurrently.  If
+; necessary, the programs will allocate additional threads, up to the
+; specified maximum.
+;----------------------------------------------------------------------
+
+"definitionConcurrencyMaximum"="64"
+"definitionConcurrencyMinimum"="2"
+
+;----------------------------------------------------------------------
+; The programs always initialize the NAV scan engines to use the 
+; maximum heuristic level available.
+;----------------------------------------------------------------------
+
+"definitionHeuristicLevel"="3"
+
+;----------------------------------------------------------------------
+; The definion library is located in a local directory.
+;----------------------------------------------------------------------
+
+"definitionLibraryDirectory"="d:\\signatures"
+
+;----------------------------------------------------------------------
+; The interface to the scan programs used by the postSuspectSample
+; servlet will wait for the specified timeout for a result.  If the
+; scan programs do not respond within this timeout, the interface
+; will automatically wait for an interval and retry.
+;----------------------------------------------------------------------
+
+"scanCompletionTimeout"="90"
+"scanRetryInterval"="10"
+"scanRetryLimit"="1"
+
+;----------------------------------------------------------------------
+; The scan programs may create temporary files in this directory.
+;----------------------------------------------------------------------
+
+"temporaryDirectory"="d:\\temp"
+
+;----------------------------------------------------------------------
+The scan programs will trace their activity in this log file.
+;----------------------------------------------------------------------
+
+"traceEnable"="1"
+"traceFilename"="d:\\log\\AVISscan.log"
+"traceFilter"="0xFFFFFFFF"
+"traceSeverity"="debug"

@@ -1,0 +1,52 @@
+;****************************************************************************
+; Copyright 1998 Symantec, Peter Norton Product Group
+;****************************************************************************
+; A2SIGS.WDF
+;
+; $Header:   S:/NAVEX/VCS/a2sigs.WDv   1.0   11 May 1998 18:37:10   DCHI  $
+;
+; This source file contains definitions for the Access 2.0 viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/a2sigs.WDv  $
+   
+      Rev 1.0   11 May 1998 18:37:10   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+[NameSigStart]
+[Comment]       Only "AUTOEXEC"
+[ID]            NAME_ONLY_AUTOEXEC
+[Signature]     SeekSet(0) "AUTOEXEC" AtEnd()
+[NameSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv.A Access 2.0 Autoexec macro
+[ID]            CRC_ACCESSIVA
+[CRCA2]         0xD3999155
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NameSigStart]
+[Comment]       Only "V"
+[ID]            NAME_ONLY_V
+[Signature]     SeekSet(0) "V" AtEnd()
+[NameSigEnd]
+
+[MacroSigStart]
+[Comment]       AM.Accessiv.A Access 2.0 V VB module
+[ID]            MS_ACCESSIVA_V
+[Signature]     "v" NameSig(NAME_ONLY_V) SeekCur(-6) "Acesi"
+[MacroSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Accessiv.A
+[Type]          A2
+[QAStatus]      PASSED
+[ID]            VID_A2_ACCESSIVA
+[Signature]     NamedCRCSig(CRC_ACCESSIVA) or MacroSig(MS_ACCESSIVA_V)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+

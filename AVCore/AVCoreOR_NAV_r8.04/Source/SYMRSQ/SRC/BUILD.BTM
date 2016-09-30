@@ -1,0 +1,15 @@
+                                        :: Complain if updating only a single
+                                        :: target.
+                                        :: This is set TRUE in BUILDALL.BTM
+iff "%__UpdateAll" != "TRUE" then
+    echo.
+    echo *** Warning:  You are only updating part of the %PROJNAME% project.
+    echo To update the entire project, run %PROJ%\SRC\BUILDALL.BTM
+    echo.
+endiff
+
+@echo off
+
+call mk symrsq %1
+if exist make.err copy build.err+make.err build.err
+

@@ -1,0 +1,40 @@
+/*
+  11/20/97 this VIDES2 module tries to determine the infection trigger(s)
+*/
+
+/* For this rule the TTL (Time To Live) is a number of INT21 records received */
+/* (this way, we avoid to decrease the TTL on such things as INT28 or spied instructions) */
+
+external rule FindTrigger(vseg, ttl, callbefore: integer);
+if
+        ttl = 0
+        -->
+                println('TTL expired for FindTrigger');
+        
+        strToInt(report_tag) = 1
+        and strToU(imm) = 0x21
+        -->
+                if
+                        strToU(cs) != vseg
+                        and strToInt(calltick) < callbefore
+                        -->
+                                println(' *** Possible infection trigger is DOS function ', byte2h(rh(eax)));
+                        
+                        true
+                        -->
+                                trigger off for_next FindTrigger(vseg, ttl-1, callbefore)
+                fi;
+        
+        true
+        -->
+                trigger off for_next FindTrigger(vseg, ttl, callbefore)
+fi;
+
+init_action;
+begin
+        /* Here are common infection triggers */
+        start_watch_func(0x21,0x4B,2); /* watch Exec */
+        start_watch_func(0x21,0x3D,2); /* watch Exec */
+        start_watch_func(0x21,0x3E,2); /* watch Exec */
+        skip
+end.

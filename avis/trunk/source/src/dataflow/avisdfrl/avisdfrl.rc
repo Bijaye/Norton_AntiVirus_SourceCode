@@ -1,0 +1,541 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""version.rc""\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AVISDFRL.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_PRINT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Resources"
+    BEGIN
+        MENUITEM "&Save",                       ID_RESOURCES_SAVE
+        MENUITEM "&Load",                       ID_RESOURCES_LOAD
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "&Hide",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "Manager &Window",             ID_ACTION_SHOWALMWINDOW
+        MENUITEM "&Resource Summary",           ID_VIEW_SUMMARY
+        MENUITEM "&Machine Statistics",         ID_VIEW_MACHINESTATISTICS
+        MENUITEM "&Issue Statistics",           ID_VIEW_COOKIE_STATISTICS
+    END
+    POPUP "&Actions"
+    BEGIN
+        MENUITEM "&Enable",                     ID_ACTIONS_ENABLE
+        MENUITEM "&Disable",                    ID_ACTIONS_DISABLE
+        MENUITEM SEPARATOR
+        MENUITEM "&Add",                        ID_ACTIONS_ADD
+        MENUITEM "&Remove",                     ID_ACTIONS_REMOVE
+        MENUITEM "&Modify",                     ID_ACTIONS_MODIFY
+        MENUITEM "&Copy",                       ID_ACTIONS_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "Remo&ve All",                 ID_ACTIONS_REMOVEALL
+        MENUITEM "Di&sable All",                ID_ACTIONS_DISABLEALL
+        MENUITEM "E&nable All",                 ID_ACTIONS_ENABLEALL
+        MENUITEM SEPARATOR
+        MENUITEM "Ena&ble Machine",             ID_ACTIONS_ENABLEMACHINE
+        MENUITEM "Disable Mac&hine",            ID_ACTIONS_DISABLEMACHINE
+        MENUITEM SEPARATOR
+        MENUITEM "Enable Resource &Type",       ID_ACTIONS_ENABLEJOB
+        MENUITEM "Disable Resource T&ype",      ID_ACTIONS_DISABLEJOB
+    END
+    POPUP "&Setup"
+    BEGIN
+        POPUP "&Log"
+        BEGIN
+            MENUITEM "&Flush",                      ID_LOG_FLUSH
+            MENUITEM "&Settings",                   ID_LOG_SETTINGS
+        END
+        MENUITEM "&Single Job Per Machine",     ID_SETUP_SINGLEJOBPERMACHINE
+        MENUITEM "&Error Count For Auto Disable", 
+                                                ID_SETUP_ERRORCOUNTFORAUTODISABLE
+
+        MENUITEM "&Display Resource Progress Window", 
+                                                ID_SETUP_DISPLAYRESOURCEPROGRESSWINDOW
+
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About DataFlow Resources...", ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 313, 93
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About DataFlow Resources"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    DEFPUSHBUTTON   "OK",IDOK,274,7,32,14,WS_GROUP
+    LTEXT           "1",IDC_ABOUT_PRODUCT_NAME,40,11,193,17
+    LTEXT           "2",IDC_ABOUT_VERSION_INFO,40,38,193,17
+    LTEXT           "3",IDC_ABOUT_COPYRIGHT_INFO,40,65,193,17
+END
+
+IDD_DIALOG_RESOURCE_INFO DIALOG DISCARDABLE  0, 0, 292, 199
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Immune System Resources Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDC_STATIC_DLG_TEXT,7,7,210,27
+    RTEXT           "&Job ID :",IDC_STATIC_JOB_ID,7,50,77,8
+    COMBOBOX        IDC_COMBO_JOBID,100,46,185,88,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "TCP/IP &Machine Name :",IDC_STATIC_MACHINE,7,68,77,8
+    COMBOBOX        IDC_COMBO_MACHINE,100,64,185,88,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    RTEXT           "&NT Computer Name :",IDC_STATIC_NTMACHINE,7,86,77,8
+    EDITTEXT        IDC_EDIT_NTMACHINENAME,100,82,185,14,ES_AUTOHSCROLL
+    RTEXT           "&User Name :",IDC_STATIC,7,104,77,8
+    EDITTEXT        IDC_EDIT_USERNAME,100,101,185,14,ES_AUTOHSCROLL
+    RTEXT           "&Timeout Period :",IDC_STATIC,7,122,77,8
+    EDITTEXT        IDC_EDIT_TIMEOUT,100,120,185,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    RTEXT           "&Program To Launch :",IDC_STATIC,7,140,77,8
+    EDITTEXT        IDC_EDIT_PROGRAM,100,139,185,14,ES_AUTOHSCROLL
+    RTEXT           "Error Count :",IDC_STATIC_ERROR_COUNT,7,158,77,8,NOT 
+                    WS_VISIBLE
+    EDITTEXT        IDC_EDIT_ERROR_COUNT,100,158,74,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_VISIBLE
+    PUSHBUTTON      "Reset &Error Count",IDC_BUTTON_ERROR_COUNT_RESET,183,
+                    158,90,14,NOT WS_VISIBLE | WS_DISABLED
+    RTEXT           "Timeout Count :",IDC_STATIC_TIMEOUT_COUNT,7,176,77,8,
+                    NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT_TIMEOUT_COUNT,100,177,74,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_VISIBLE
+    PUSHBUTTON      "&Reset Timeout Count",IDC_BUTTON_TIMEOUT_COUNT_RESET,
+                    183,177,90,14,NOT WS_VISIBLE | WS_DISABLED
+    DEFPUSHBUTTON   "OK",IDOK,235,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,235,24,50,14
+END
+
+IDD_DIALOG_RESOURCE_SUMMARY DIALOG DISCARDABLE  0, 0, 354, 178
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Immune System Resources Summary"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,297,7,50,14
+    CONTROL         "List1",IDC_LIST_RESOURCES_SUMMARY,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_AUTOARRANGE | WS_BORDER | 
+                    WS_TABSTOP,7,7,287,164
+END
+
+IDD_DIALOG_MACHINE_STATISTICS DIALOG DISCARDABLE  0, 0, 395, 151
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Immune System Machine Statistics"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,338,7,50,14
+    CONTROL         "List1",IDC_LIST_MACHINES,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SORTASCENDING | 
+                    LVS_AUTOARRANGE | WS_BORDER | WS_TABSTOP,7,7,326,137
+    LTEXT           "Refresh Interval:",IDC_STATIC,335,87,53,21
+    EDITTEXT        IDC_EDIT_REFRESH_INTERVAL,339,116,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+END
+
+IDD_DIALOG_ACTIVITY_LOG_SETTING DIALOG DISCARDABLE  0, 0, 274, 76
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Activity Log Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "Log &File Name : ",IDC_STATIC,7,7,78,8
+    EDITTEXT        IDC_EDIT_LOG_FILE_NAME,88,7,124,14,ES_AUTOHSCROLL | 
+                    WS_GROUP
+    RTEXT           "&Maximum Log File Size : ",IDC_STATIC,7,31,78,8
+    EDITTEXT        IDC_EDIT_MAX_LOG_SIZE,88,30,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "KB ( 0 - 10240 )",IDC_STATIC,132,31,50,8
+    RTEXT           "Log &Buffer Size : ",IDC_STATIC,7,55,78,8
+    EDITTEXT        IDC_EDIT_LOG_BUFFER_SIZE,88,53,40,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "KB ( 0 - 32 )",IDC_STATIC,132,55,38,8
+    DEFPUSHBUTTON   "OK",IDOK,217,7,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,217,24,50,14
+END
+
+IDD_DIALOG_AUTO_DISABLE_ERROR_COUNT DIALOG DISCARDABLE  0, 0, 186, 65
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Auto Disable Error Count"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Error count for automatically disabling the resources",
+                    IDC_STATIC,7,7,119,27
+    EDITTEXT        IDC_EDIT_ERROR_COUNT,7,37,113,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+IDD_DIALOG_COOKIE_STATISTICS DIALOG DISCARDABLE  0, 0, 315, 161
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Issue Statistics"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "&Issue Tracking Number : ",IDC_STATIC_COOKIE_ID_PROMPT,
+                    7,7,86,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDITCOOKIE_ID,96,7,150,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_COOKIE_STATISTICS,7,26,239,128,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_VSCROLL | WS_HSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,258,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,258,29,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+
+    IDD_DIALOG_RESOURCE_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 285
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 192
+    END
+
+    IDD_DIALOG_RESOURCE_SUMMARY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 347
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 171
+    END
+
+    IDD_DIALOG_MACHINE_STATISTICS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 388
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_DIALOG_ACTIVITY_LOG_SETTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 267
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+
+    IDD_DIALOG_AUTO_DISABLE_ERROR_COUNT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 58
+    END
+
+    IDD_DIALOG_COOKIE_STATISTICS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 308
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 154
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "AntiVirus Immune System DataFlow Resources\n\nAntiVirus Immune System DataFlow Resources\n\n\nDataFlow Resources.Document\nDFRes Document"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "AntiVirus Immune System DataFlow Resources"
+    AFX_IDS_IDLEMESSAGE     "For Help, press F1"
+    AFX_IDS_HELPMODEMESSAGE "Select an object on which to get Help"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Hide the resources window\nHide"
+    ID_HELP_INDEX           "Opens Help\nHelp Topics"
+    ID_HELP_FINDER          "List Help topics\nHelp Topics"
+    ID_HELP_USING           "Display instructions about how to use help\nHelp"
+    ID_CONTEXT_HELP         "Display help for clicked on buttons, menus and windows\nHelp"
+    ID_HELP                 "Display help for current task or command\nHelp"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ACTION_SHOWALMWINDOW "Show AVIS DataFlow Manager Window\nShow Manager Window"
+    ID_ACTIONS_ENABLE       "Enable the selected resource\nEnable"
+    ID_ACTIONS_DISABLE      "Disable the selected resource\nDisable"
+    ID_ACTIONS_ADD          "Add a new resource\nAdd"
+    ID_ACTIONS_REMOVE       "Remove the selected resource\nRemove"
+    ID_ACTIONS_MODIFY       "Modify the selected resource\nModify"
+    ID_ACTIONS_COPY         "Copy the selected resource as a new resource\nCopy"
+    ID_RESOURCES_SAVE       "Save resources to disk file\nSave"
+    ID_ACTIONS_REMOVEALL    "Remove all resources\nRemove All"
+    ID_RESOURCES_LOAD       "Load resources from disk file\nLoad"
+    ID_VIEW_STATISTICS      "Show Resource Summary"
+    ID_VIEW_SUMMARY         "Show summary of all resources\nResourceSummary"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DF_JOB_STRING       "Resource"
+    IDS_DF_IP_ADDRESS_STRING "Machine"
+    IDS_DF_USER_NAME_STRING "User Name"
+    IDS_DF_COOKIE_ID_STRING "Issue Tracking Number"
+    IDS_DF_STATUS_STRING    "Status"
+    IDS_DF_START_TIME_STRING "Start Time"
+    IDS_DF_TIMEOUT_STRING   "Timeout"
+    IDS_DF_PROGRAM_STRING   "Program"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDP_RELOAD_FAIL_RESOURCE_BUSY 
+                            "Cannot reload resources as some resource is busy"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DF_JOB_SEQUENCE     "Job Seq."
+    IDS_SERVICE_TAG         "Service"
+    IDS_MACHINE_TAG         "Machine"
+    IDS_USER_TAG            "User"
+    IDS_TIMEOUT_TAG         "Timeout"
+    IDS_PROGRAM_TAG         "Program"
+    IDS_PROGRAM_NAME        "rsh"
+    IDS_RESOURCE_FILE_NAME  "AVISDFRL.lst"
+    IDS_DF_RESOURCE_FREE_STR "Free"
+    IDS_DF_RESOURCE_BUSY_STR "Busy"
+    IDS_DF_RESOURCE_DOWN_STR "Down"
+    IDS_DF_RESOURCE_COMPLETED_STR "Completed"
+    IDS_DF_RESOURCE_IGNORE_STR "Ignore"
+    IDS_DF_RESOURCE_UNKNOWN_STR "Unknown"
+    IDS_BAK_RESOURCE_FILE_NAME "AVISDFRL.lst.bak"
+    IDS_INDICATOR_COUNTS    "XXX/XXX/XXX XXX XXX"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DF_RESOURCE_TIMEDOUT_STR "Timed Out"
+    IDS_DF_RESOURCE_ERROR_STR "Error"
+    IDS_NTMACHINENAME_TAG   "NTMachineName"
+    IDS_DF_NTMACHINENAME_STRING "NT Machine Name"
+    IDS_INDICATOR_UPTIME    "XXXX-XX:XX:XX"
+    IDS_ABOUT_COPYRIGHT_INFO "Copyright © %1, IBM Corp."
+    IDS_LSTFILE_PROLOG      "#######################################################################\n# \n# Target file: AVISdfrl.lst\n# \n# Target directory: D:\\avis\n# \n# Target machine: 'Rainier' executive machine in the analysis center\n# \n# Target application: AVISdfrl.dll\n# \n# Please refer to the 'AnalysisCenterOperations.doc' file for more\n# information on how to configure the Dataflow resource locator module.\n# The document file mentioned here can be found in the \n# 'avis200.xxx\\src\\docs' subdirectory of the AVIS source tree.\n# \n#######################################################################\n"
+    IDS_CFGFILE_PROLOG      "#######################################################################\n# \n# Target file: AVISdfrl.cfg\n# \n# Target directory: D:\\avis\n# \n# Target machine: 'Rainier' executive machine in the analysis center\n# \n# Target application: AVISdfrl.dll\n# \n# Please refer to the 'AnalysisCenterOperations.doc' file for more\n# information on how to configure the Dataflow resource locator module.\n# The document file mentioned here can be found in the \n# 'avis200.xxx\\src\\docs' subdirectory of the AVIS source tree.\n# \n#######################################################################\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_MACHINESTATISTICS "Show machine statistics\nMachine Statistics"
+    ID_ACTIONS_DISABLEALL   "Disable all the resources"
+    ID_ACTIONS_ENABLEALL    "Enable all the resources"
+    ID_LOG_FLUSH            "Flush Log File To Disk\nFlush Log"
+    ID_LOG_SETTINGS         "Log File Settings\nLog Settings"
+    ID_SETUP_SINGLEJOBPERMACHINE 
+                            "Run a single job per machine\nSingle Job Per Machine"
+    ID_ACTIONS_ENABLEMACHINE 
+                            "Enable all resources on the current machine\nEnable Machine"
+    ID_ACTIONS_DISABLEMACHINE 
+                            "Disable all resources on the current machine\nDisable Machine"
+    ID_SETUP_ERRORCOUNTFORAUTODISABLE 
+                            "Error count after which the resource is automatically disabled\nAuto Disable Error Count"
+    ID_ACTIONS_ENABLEJOB    "Enable all resources with the current resource type\nEnable Resource Type"
+    ID_ACTIONS_DISABLEJOB   "Disable all resources with the current resource type\nDisable Resource Type"
+    ID_SETUP_DISPLAYRESOURCEPROGRESSWINDOW 
+                            "Display output window for resource"
+    ID_VIEW_COKKIESTATISTICS "Show issue statistics\nIssue Statistics"
+    ID_VIEW_COOKIE_STATISTICS "Show issue statistics\nIssue Statistics"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "version.rc"
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

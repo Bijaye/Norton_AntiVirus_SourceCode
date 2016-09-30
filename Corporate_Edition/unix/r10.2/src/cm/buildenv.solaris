@@ -1,0 +1,92 @@
+# This file is included by all sol.mak files.
+# This implementation is for Solaris and the gcc compiler.
+
+#Library builder:
+AR=/usr/ccs/bin/ar
+ARFLAGS=-rv
+
+MAKE_LIB=$(AR)
+
+#Compiler:
+#CC=/usr/local/tools/bin/gcc-2.95.2
+#CCC=/usr/local/tools/bin/g++-2.95.2
+CC=/usr/local/bin/gcc
+CCC=/usr/local/bin/g++
+COMPILE.c=$(CC) $(CFLAGS) -c
+COMPILE.cc=$(CCC) $(CCFLAGS) -c
+COMPILE.cpp=$(COMPILE.cc)
+
+# Defines specific to a platform
+PLATFORM_DEFINES=$(ENDIAN) $(SO_DEFINES) -D_POSIX_PTHREAD_SEMANTICS -D_TSOL -DSOLARIS -DSYM_SOLARIS -D_REENTRANT -D_PTHREADS -DSYM_VALIDATE_MEMALLOC
+
+STL_INCLUDE="-I$(EXTRA_DEPTH)../NoBuilds/sgistl/include"
+
+#Linker:
+LINK.c=$(CCC) $(LDFLAGS)
+LINK.cc=$(CCC) $(LDFLAGS) $(CCFLAGS)
+LINK.cpp=$(LINK.c)
+
+# From /usr/share/lib/make/make.rules (see: make(S1))
+OUTPUT_OPTION=-o $@
+
+.SUFFIXES:
+.SUFFIXES: .so .o .c .c~ .f .f~ .y .y~ .l .l~ .s .s~ .sh .sh~ .h .h~ .cpp .cp~ .C .C~ .a
+
+#Force C compiles to C++
+.c.o:
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
+# .cpp suffix rule:
+
+.cpp:
+	$(LINK.cpp) $(OUTPUT_OPTION) $< $(LDLIBS)
+
+.cpp.o:
+	$(COMPILE.cpp) $(OUTPUT_OPTION) $<
+
+#The default path to our run-time linked libs
+RTLPATH=-R/usr/lib
+
+#Linker flags for runtime symbol binding
+BIND_LATE=-shared
+
+#Linker flags for compile-time symbol binding in .so's
+BIND_EARLY=-symbolic
+
+#Linker flags - Forces a fatal error if any undefined  symbols  remain
+# at  the  end  of the link
+FORCE_RESOLVE_ALL=-defs
+
+#default Link Flags for an .so:
+SO_LINK_FLAGS=$(BIND_LATE) $(RTLPATH) $(FORCE_RESOLVE_ALL)
+
+#Default Link Flags for a vanilla program:
+PROG_LINK_FLAGS=$(RTLPATH)
+
+#POSIX libs:
+POSIX_LIBS=-lposix4
+
+#Threading libs:
+THR_LIBS=-lpthread
+
+#Libs to support dynamic linking
+DYNLINK_LIBS=-ldl
+
+#Standard libs
+STD_LIBS=$(THR_LIBS) $(POSIX_LIBS) $(DYNLINK_LIBS)
+
+#Standard libs used in building an .so:
+SO_LIBS=$(STD_LIBS)
+
+#C Compiler flags:
+CFLAGS=
+
+#Tool used to create an .so:
+MAKE_SO=$(LINK.c)
+
+#Tool used to make a program executable
+MAKE_PROG=$(LINK.c)
+
+#Makefile:
+MAKEF=./solaris/solaris.mak
+

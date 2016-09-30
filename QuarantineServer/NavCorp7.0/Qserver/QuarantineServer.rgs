@@ -1,0 +1,23 @@
+HKCR
+{
+	Qserver.QuarantineServer.1 = s 'QuarantineServer Class'
+	{
+		CLSID = s '{C60B0160-894B-11D2-8E5F-2A0712000000}'
+	}
+	Qserver.QuarantineServer = s 'QuarantineServer Class'
+	{
+		CLSID = s '{C60B0160-894B-11D2-8E5F-2A0712000000}'
+		CurVer = s 'Qserver.QuarantineServer.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C60B0160-894B-11D2-8E5F-2A0712000000} = s 'QuarantineServer Class'
+		{
+			ProgID = s 'Qserver.QuarantineServer.1'
+			VersionIndependentProgID = s 'Qserver.QuarantineServer'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{C60B0154-894B-11D2-8E5F-2A0712000000}'
+			'TypeLib' = s '{C60B0153-894B-11D2-8E5F-2A0712000000}'
+		}
+	}
+}

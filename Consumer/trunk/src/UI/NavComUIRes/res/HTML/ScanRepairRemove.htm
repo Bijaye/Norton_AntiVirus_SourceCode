@@ -1,0 +1,120 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+        <BASE href="res://navcomui.loc">
+	<link rel="stylesheet" type="text/css" href="NavScan.css" />
+	<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+	<script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( Apply );
+			InitSymButton( Cancel );
+			InitSymButton( Back );
+		}
+	</script>		
+  
+</head>
+<body scroll="no" onLoad="OnLoad()" id="scanrepair_body">
+
+  <!-------------------------------------- Header ------------------------------------------------>
+
+  <H1 id="title">Manual Repair - Risks</h1>
+  <a id="MoreInfo" href="#" tabindex="9" class="headerLink">more info</a>
+
+  <!-------------------------------------- Tab Links ------------------------------------------------>
+
+  <Span id="RegularViewTabs">
+  <Div class="tabArea" >					<!-- Page Selection Tabs Area -->	
+	<a href="#" class="tab tabSelected" id="tab1" tabindex="1">	<!-- Selection 1 tab link -->	  
+    </a>
+ 
+    <a href="#" class="tab " id="tab2" tabindex="2">	<!-- Selection 2 tab link -->	  
+    </a>
+  </div>
+  </span>
+  <Span id="HighContrastViewTabs">
+  <Div class="tabAreaHC" >					<!-- Page Selection Tabs Area -->	
+  <a href="#" link="#FFFFFF" vlink="#FFFFFF" class="tabHC tabSelectedHC" id="tab1HC" tabindex="3"> <!-- Selection 1 tab link -->	  
+  </a>
+ 
+    <a href="#" class="tabHC " id="tab2HC" tabindex="4">	<!-- Selection 2 tab link -->	  
+    </a>
+    </div>
+  </span>
+
+  <!-------------------------------------- Tab  page ------------------------------------------------>
+  <div class="TabContent" id="tab1Content" style="background-color:#EEEEEE; border-color:#aaaaaa">		<!-- set the Tab Area -->		
+  	<p id="tabDescription" style="position:absolute; margin:15px; padding-right:20px;"></p>
+  	<p id="tabDescriptionHC" style="position:absolute; margin:8px; padding-right:20px;"></p>
+		<div class="TabContentTop">				<!-- Set position of top area -->	  
+                        <Div class="TabActiveXControl">			<!-- Working area -->		                       
+                        <object 
+                         classid="clsid:0A398EE6-277C-480D-BD4F-3288EA3AB8E2" 
+                         id="AxListCtrl" width="100%" height="100%" 
+                         viewastext tabindex="5">                
+                        <PARAM NAME="Enabled" VALUE="-1">
+                    </object> 
+      </div>	<!-- End Working Area -->		    
+    </div>		<!-- End Top Area -->		  
+
+    <div class="TabContentBottom">			<!-- Set Position of bottom area -->  
+      <Div class="TabUserAction">			<!-- Set background and border -->    
+        <div class="TabUserActionBG"></div>		<!-- Set color fade effect -->	      
+        <p id="pWorkingArea" class="TabUserActionContent" style="margin-top:5px; padding-left:4px;">		<!-- Working area -->		      
+			
+			
+			<table id="GeneralNotesSection" cellpadding="0" cellspacing="2" style="position:absolute; bottom:0px; left:3px">
+				<tr>
+					<td><img id="GeneralNotesImage" src="about.gif"></img></td>
+                                        <td><span id="GeneralNotesText" style="padding-left:2px"></span>
+                                            <a id="LaunchQuarantine" href="#" tabindex="10"><span id="QuarantineNameText"></span></a></td>
+				</tr>
+			</table>
+		
+        </p>						<!-- End Working Area -->	      
+      </div>						<!-- End background and border -->    
+    </div>						<!-- end Bottom Area -->		  
+  </div>						
+  <!-- End Tab Area -->			
+  
+  
+	<div id="email_tool_tip">
+		<table cellpadding="2" cellspacing="0" >
+			<tr>
+				<td nowrap class="email_tool_tip_title">Sender:</td> <td nowrap><span id="email_sender" class="email_tool_tip"></span></td>
+			</tr>
+			<tr>
+				<td nowrap class="email_tool_tip_title">Recipient:</td>	<td nowrap><span id="email_recipient" class="email_tool_tip"></span></td>
+			</tr>
+			<tr>
+				<td nowrap  class="email_tool_tip_title">Subject:</td> <td nowrap><span id="email_subject" class="email_tool_tip"></span></td>
+			</tr>
+		</table>
+	</div>
+  
+  <!-------------------------------------- Footer (Buttons) ------------------------------------------------>
+
+
+  <Div class="buttonArea">
+	<span id="spanApplyButton" class="symButton" style="position:absolute; right:103px; margin-top:5px; margin-right:10px; margin-left:8px; width:96px; height:24px;">
+		<button id="Apply" accesskey="O" type="SUBMIT" class="symButton" tabindex="6" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">O</u>K</button>
+	</span>
+	
+	<span id="spanCancelButton" class="symButton" style="position:absolute; right:8px; margin-top:5px; margin-right:0px; margin-left:8px; width:96px; height:24px;">
+		<button id="Cancel" accesskey="C" type="SUBMIT" class="symButton" tabindex="7" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">C</u>ancel</button>
+	</span>
+	
+	<span id="spanBackButton" class="symButton" style="position:absolute; right:8px; margin-top:5px; margin-right:0px; margin-left:8px; width:96px; height:24px; display:none;">
+		<button id="Back" accesskey="B" type="SUBMIT" class="symButton" tabindex="8" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">B</u>ack</button>
+	</span>
+  </div>

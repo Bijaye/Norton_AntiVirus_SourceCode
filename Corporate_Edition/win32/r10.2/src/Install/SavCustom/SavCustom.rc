@@ -1,0 +1,427 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include <winver.h>\r\n"
+    "#include ""nav.ver""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\VPRemove.ico"
+IDI_FIND_ICON           ICON                    "res\\find_com.ico"
+IDI_PASS                ICON                    "res\\password.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SERVER_LIST DIALOGEX 0, 0, 315, 204
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Select Symantec AntiVirus Server"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "List1",IDC_SERVER_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SORTASCENDING | LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,101,59,204,89
+    DEFPUSHBUTTON   "&OK",IDC_RET_OK,197,185,51,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDC_RET_CANCEL,254,185,51,14,WS_GROUP
+    PUSHBUTTON      "&Find Computer...",IDC_FINDCOMPUTER_BUTTON,101,154,68,
+                    14
+    CONTROL         "",IDC_STATIC_LOGO,"Static",SS_WHITERECT | NOT 
+                    WS_VISIBLE,10,10,80,158
+    CONTROL         "",IDC_CUTIN_LINE,"Static",SS_GRAYFRAME | NOT WS_VISIBLE,
+                    10,178,295,1
+    LTEXT           "Please select the Symantec AntiVirus Server. This server will set the client's configuration and share the virus definitions.",
+                    IDC_STATIC,101,10,204,25
+    LTEXT           "Server name:",IDC_STATIC,101,38,55,18
+    LTEXT           "",IDC_SERVER_NAME,163,38,141,13,NOT WS_GROUP
+END
+
+IDD_CONTINUE_DIALOG DIALOGEX 0, 0, 207, 78
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Uninstall Message"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "&Yes",IDOK,96,57,50,14
+    PUSHBUTTON      "&No",IDCANCEL,150,57,50,14
+    LTEXT           "Symantec AntiVirus Corporate Edition Uninstall Program will remove Symantec AntiVirus software from your computer. Do you want to continue?",
+                    IDC_CONTINUE_TEXT,7,7,193,45
+END
+
+IDD_DISPLAY_DIALOG DIALOG  0, 0, 207, 46
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Static",IDC_DISPLAY_TEXT,38,17,162,12
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,13,21,20
+END
+
+IDD_DOMPASSWD_DLG DIALOG  0, 0, 249, 71
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Uninstall Password"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Please enter the uninstall password to remove Symantec AntiVirus from this computer.",
+                    IDC_STATIC,7,7,156,27
+    LTEXT           "Parent server:",IDC_STATIC,7,40,49,8
+    EDITTEXT        IDC_STATIC_DOMAIN,64,40,117,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "&Password:",IDC_STATIC,7,56,34,8
+    EDITTEXT        IDC_PASSWORD_EDIT,64,54,117,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "&OK",IDOK,192,7,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,192,24,50,14
+END
+
+IDD_FINDCOMPUTER_DIALOG DIALOGEX 0, 0, 264, 111
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find Computer"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    COMBOBOX        IDC_COMPUTER,75,44,117,46,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Search by:",IDC_STATIC,28,64,35,8
+    CONTROL         "Name",IDC_RADIONAME,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,75,64,35,10
+    CONTROL         "Address",IDC_RADIOADDRESS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,121,64,41,10
+    LTEXT           "Of type:",IDC_STATIC,28,81,26,8
+    COMBOBOX        IDC_COMPUTERTYPE,75,80,117,50,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    ICON            IDI_FIND_ICON,IDC_STATIC,28,15,20,20
+    LTEXT           "Enter the computer name or address you would like to find.",
+                    IDC_STATIC,75,14,119,26
+    PUSHBUTTON      "&Find",IDOK,207,7,50,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,207,25,50,14
+    LTEXT           "Search for:",IDC_STATIC,28,46,36,8
+END
+
+IDD_VERIFYPASSWORD DIALOGEX 0, 0, 226, 86
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Symantec Client Security"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_PASSWORD,60,45,159,14,ES_PASSWORD | ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,105,66,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,169,66,50,14
+    ICON            IDI_PASS,IDC_STATIC,17,14,20,20
+    LTEXT           "This Server Group does not exist.  To create it, please retype the password below to verify and click OK.  Click Cancel to not create this Server Group.",
+                    IDC_STATIC,60,7,159,33
+    LTEXT           "Password:",IDC_STATIC,7,47,47,9
+END
+
+IDD_NEW_PASS_DLG DIALOGEX 0, 0, 228, 147
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Symantec Client Security"
+FONT 8, "MS Sans Serif", 400, 0, 0x0
+BEGIN
+    ICON            IDI_PASS,IDC_STATIC,17,14,21,20
+    LTEXT           "The password on the existing server is too small. Please verify the existing password, then type in a  new password of at least six characters and finally verify the new password.",
+                    IDC_STATIC,55,7,166,33
+    LTEXT           "&Old Password:",IDC_STATIC,22,50,46,8
+    EDITTEXT        IDC_EDIT_OLDPASSWORD,78,50,132,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "&New Password:",IDC_STATIC,22,76,50,8
+    EDITTEXT        IDC_EDIT_NEWPASSWORD,78,76,132,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "&Verify Password:",IDC_STATIC,22,102,53,8
+    EDITTEXT        IDC_EDIT_VERIFYPASSWORD,78,102,132,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,105,126,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,171,126,50,14
+END
+
+IDD_SRV_LOGIN_DLG DIALOGEX 0, 0, 229, 146
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symantec Client Security"
+FONT 8, "MS Sans Serif", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,105,125,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,172,125,50,14
+    ICON            IDI_PASS,IDC_STATIC,17,14,20,20
+    LTEXT           "To migrate a managed secondary server to a new secure version you must first authenticate to the primary server. Enter the user name and password for the Server Group below.",
+                    IDC_STATIC,56,7,166,39
+    LTEXT           "Server name:",IDC_STATIC,23,50,43,8
+    LTEXT           "&User name:",IDC_STATIC,23,73,37,8
+    LTEXT           "&Password:",IDC_STATIC,23,96,34,8
+    EDITTEXT        IDC_EDIT_SRV_NAME,77,50,134,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_EDIT_USERNAME,77,73,134,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_PASSWORD,77,96,134,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BROWSER             BITMAP                  "res\\Browser.bmp"
+IDB_IS_BITMAP           BITMAP                  "res\\Install5.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_NEW_PASS_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 221
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 140
+    END
+
+    IDD_SRV_LOGIN_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 222
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 139
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_DEFAULT_TITLE       "Uninstall Message"
+    IDS_NO_SELECTION        "A selection must be made to continue."
+    IDS_AMS_NAME            "&Alert Messaging System 2 - AMS²"
+    IDS_CLIENT_MESSAGE      "Removing client software..."
+    IDS_CONSOLE_MESSAGE     "Removing administrator software..."
+    IDS_SERVER_MESSAGE      "Removing server software..."
+    IDS_AMS2_MESSAGE        "Removing AMS² software..."
+    IDS_UNINSTALL_COMPLETE  "LANDesk software has successfully been removed from your computer."
+    IDS_COPYFILES           "Copying Files"
+    IDS_DELETEFILES         "Deleting Files"
+    IDS_SETUPERROR          "Setup was unable to install the application. Error %1."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SETUPCANCELED       "Setup canceled. Setup was unable to complete the installation."
+    IDS_REBOOT_MESSAGE      "You must restart your computer before the new settings will take effect.\n\nDo you want to restart your computer now?"
+    IDS_TDK_MESSAGE         "Removing Test Drive Client software..."
+    IDS_APPS_MESSAGE        "Shutting down application windows..."
+    IDS_ERROR_STOP_TRANSMAN "Unable to stop transman.dll services."
+    IDS_ERROR_FREE_TRANSMAN "Unable to release transman.dll."
+    IDS_BLANK_USERNAME      "Server Group Username cannot be blank.  Please enter a valid Server Group Username."
+    IDS_ERROR_FAILEDCREDENTIALS 
+                            "The Username and Password are not valid credentials on the Server Group provided.\nDo one of the following:\n\n- Enter a different Server Group name.\n- Enter a different Username and Password.\n"
+    IDS_ERROR_UNMANAGED_SECONDARY 
+                            "A managed client cannot connect to an unmanaged Secondary Server.\nIt must connect to either a managed Secondary Server\nor directly to a Primary Server."
+    IDS_ERROR_UNMANAGED_SECONDARY_TITLE "Managed Client connection error."
+    26                      "You must enter a Server Name, a blank Server Name is invalid."
+    IDS_ERROR_NO_SERVER_NAME_TITLE "Server Name Error."
+    IDS_ERROR_SERVER_NAME_TOO_LONG 
+                            "The Server Group Name entered contains too many characters.\nA Server Group Name may contain up to a maximum of 47 characters."
+    IDS_ERROR_UNMANAGED_SECONDARY_SERVER 
+                            "A new managed Secondary Server cannot connect to an unmanaged\nSecondary Server or to a legacy Primary Server.\nTo ensure secure communications a new managed Secondary Server\nmust connect to a new Primary Server."
+    IDS_ERROR_UNMANAGED_SECONDARY_SERVER_TITLE 
+                            "Managed Server connection error."
+    IDS_ERROR_SMALLPASS     "Invalid password entry, passwords must be at least six characters long.\nPlease enter a valid password."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MONITOR_LINK        "Service Monitor"
+    IDS_CONSOLEHLP_LINK     "Administrator Release Notes"
+    IDS_CLIENT_LINK         "Symantec AntiVirus"
+    IDS_CLIENTHLP_LINK      "Client Release Notes"
+    IDS_SERVER_NORESPONSE   "Server '%s' is not responding. Error: 0x%x"
+    IDS_ERROR_SERVER_NOT_FOUND 
+                            "Unable to locate the specified Symantec AntiVirus server."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERR_PATHTOOLONG     "The install path is selected is too long. When the selected path is appended with the Symantec path\n it's total is %d characters but it must be a total of less then %d characters."
+    IDS_ERROR_TIMEOUTOFSYNC "The time on this Server is not in sync with the Primary Server of the Server Group provided.\nDo one of the following:\n\n- Enter a different Server Group name.\n- Synchronize the times and restart the Symantec AntiVirus install."
+    IDS_ERROR_USERNAME_TOO_LONG 
+                            "The User Name entered contains too many characters.\nA User Name may contain up to a maximum of 40 characters."
+    IDS_ERROR_PASSWORD_TOO_LONG 
+                            "The password entered contains too many characters.\nA password may contain up to a maximum of 30 characters."
+    IDS_ERR_MAN_NO_PARENT   "You cannot migrate a secondary server that does not have a parent server."
+    IDS_ERR_MAN_NO_PARENT_CONTACT 
+                            "The primary server appears to be down, you cannot migrate a secondary server if it cannot not connect to it's parent server."
+    IDS_ERR_MAN_PARENT_SECURE 
+                            "You must migrate the primary server to a secure version first. You cannot migrate a secure secondary server prior to a legacy parent server."
+    IDS_ERROR_PRI_SERVERNOTFOUND 
+                            "The server you have selected could not be contacted.\nIt could either be down or unreachable.\nThe Migration will continue as a standalone server.\nUse SSC to fix the server parent after the install has completed."
+    IDS_ERROR_SEC_SRV_MIG   "You are migrating an unmanaged Secondary server.\nYou cannot manage clients with this server until it is either promoted to a Primary server\n or attaches to a Primary server and then becomes a managed Seconday server.\nUse SSC to fix the server parent issue after the install has completed."
+    IDS_ERROR_MIGSRV_PASS_TITLE "Server Migration Password Error."
+    IDS_ERROR_MIGSRV_OLD_PASS_MISMATCH 
+                            "The Old Password entered doesn't match the server password."
+    IDS_ERROR_MIGSRV_NEW_PASS_MISMATCH 
+                            "The new Passwords are not the same, please re-enter."
+    IDS_INVALID_PASSWD      "The password entered is incorrect. Check the Caps Lock key and enter the password again."
+    IDS_ERROR_MIGSRV_NEW_PASS_LENGTH 
+                            "The new Passwords entered are too small, please re-enter a password of at least six characters."
+    IDS_ERROR_MIG_FAILEDCREDENTIALS 
+                            "The Username and Password entered are not valid credentials on the primary Server.\nYou cannot authenticate a new secondary server to a legacy primary server of different versions.\nPlease note - you are required to migrate the primary server prior to migrating any secondary servers.\n\nPlease re-enter the primary server credentials or cancel the server migration."
+    IDS_ERROR_MIG_TIMEOUTOFSYNC 
+                            "The time on this Server is not in sync with the Primary Server of the Server Group provided.\n- Synchronize the times and restart the Symantec AntiVirus install."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_INSTALL_APP         "Setup"
+    IDS_UNINSTALL_APP       "Uninstall"
+    IDS_COL_SERVER          "Server"
+    IDS_COL_VERSION         "Version"
+    IDS_UNKNOWN_VERSION     "Unknown"
+    IDS_INVALIDFINDSERVERNAME 
+                            "Invalid server name or address.\n\nPlease enter a valid server name, or address to search for."
+    IDS_CANTFINDSERVER      "Unable to find the server '%s'.\n\nVerify that the server name is correct and the server is running Symantec AntiVirus."
+    IDS_SEARCH_IPADDRESS    "TCP/IP Address (Windows NT)"
+    IDS_SEARCH_IPXADDRESS   "IPX Address (NetWare)"
+    IDS_SEARCH_SERVEREITHER "Server (All)"
+    IDS_SEARCH_SERVERNT     "Server (Windows NT)"
+    IDS_SEARCH_SERVERNETWARE "Server (NetWare)"
+    IDS_ERROR_SERVERS_NOT_FOUND 
+                            "Unable to locate servers running Symantec AntiVirus."
+    IDS_PLEASE_WAIT         "Please wait..."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_REBOOT              "Please reboot the system."
+    IDS_ERROR_AMSCLIENT     "Unable to launch AMS Client Uninstall"
+    IDS_CAPTION_AMSCLIENT   "AMS Client UnInstallation"
+    IDS_ERRORCAPTION_AMSCLIENT "AMS Client UnInstallation Failed"
+    IDS_ERR_AMSCLIENT_INSTALLAMS "Could not find InstallAMS Function"
+    IDS_ERROR_UNABLE_BUILD_DOMAIN_LIST "Unable to build domain list."
+    IDS_ERROR_UNABLE_CLEANUP_DOMAIN_LIST "Unable to cleanup domain list."
+    IDS_ERROR_SERVERNOTFOUND 
+                            "The server you have selected could not be contacted.\nIf you have a firewall installed, please verify that\ninbound NetBIOS names are not blocked.\nOtherwise please select another server that is\ncurrently available to continue."
+    IDS_ERROR_BLANKGROUP    "Server Group names cannot be blank.  Please enter a valid Server Group name."
+    IDS_ERROR_OLDVERSION    "The Server Group entered is running an older version of Symantec AntiVirus than setup supports.\nDo one of the following:\n\n- Type in a new server group name\n- Select a server group that has this version installed\n- Run setup again to update this server group"
+    IDS_ERROR_BADGROUPNAME  "Server Group names cannot have '\\' characters in them."
+    IDS_GROUP_NEW           "This Server Group does not exist.  Do you wish to create it?"
+    IDS_ERROR_BLANKPASS     "Blank passwords are not allowed.  Please enter a valid password."
+    IDS_ERROR_NOMATCH       "The passwords do not match.  Please re-enter your passwords."
+    IDS_ERROR_NOMATCHSERVER "The password you typed does not match the Server Group's. Please re-enter the password."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PATHTITLE           "Invalid installation directory"
+    IDS_ERR_BLANKPATH       "An empty path is invalid"
+    IDS_ERR_PATHTOOSHORT    "Path is too short, it must be greater than three characters"
+    IDS_ERR_NOSEMICOLON     "Path may not contain the ';' character"
+    IDS_ERR_NOAMPERSAND     "Path maynot contain the '&' character"
+    IDS_ERR_NOHIASCII       "Path may not contain any HiASCII characters"
+    IDS_ERR_NODBCS          "Path may not contain any DBCS characters"
+    IDS_ERR_NOLEADSPACE     "No part of the path may contain a leading space"
+    IDS_ERR_NOPATH          "Unable to read INSTALLDIR"
+    IDS_ERROR_NONSECURE     "The Server Group entered is running a pre-SSL version of Symantec AntiVirus that is no longer supported.\nDo one of the following:\n\n- Type in a new server group name to create a new server group\n- Select a server group that already has a newer version installed\n- Migrate the selected server group to the current version, then redo this install.\n"
+    IDS_ERROR_NOPRIMARY     "The Server Group you entered does not appear to have a primary server.\nIf you continue, this server will not be attached to the primary server group selected.\nYou do have the option of manually attaching it to a Primary Server via SSC after install.\nDo you wish to continue this Server Install?\n"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_GROUPNAME_NOPOUND 
+                            "Server Group names cannot begin with the '#' character."
+    IDS_ERROR_CANTCONTACTPRIMARY 
+                            "Unable to contact the primary server %1!s! of server group %2!s!.  Please select a different server group."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include <winver.h>
+#include "nav.ver"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

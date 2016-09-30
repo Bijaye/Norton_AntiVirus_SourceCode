@@ -1,0 +1,66 @@
+<html>
+<head>
+<title>Norton AntiVirus</title>
+
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+<script Language="JavaScript" src="DisplayScriptError.js"></script>
+<script language="JavaScript" src="options.js"></script>
+<script language="JavaScript" src="options_new_ext_dlg.js"></script>
+<link rel="stylesheet" type="text/css" href="navstyle.css">
+<META ID="charset_exdlg" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1" />
+</head>
+<body id="body_extdlg" scroll="no" leftmargin="0" topmargin="0"
+      onHelp="Help();"
+      onLoad="initialize_options_new_ext_dlg();" TABINDEX="-1">
+<!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+<span id="InvalidExt" style="display:none">Invalid extension!</span> 
+<span id="DuplicateExt" style="display:none">Duplicate extension! The new extension already exists in your list.</span> 
+<!-- end of JavaScript text -->
+<form id="form_extdlg" name='options_new_ext_dlg' onsubmit='return false;'>
+  <table id="t1" width="100%" height="100%" bgcolor="#FFFFFF">
+    <tr id="t1_tr1" valign="bottom"> 
+      <td id="t1_td1" valign="top"> 
+        <table id="t2" width="100%" height="100%" border="0" cellspacing="0" cellpadding="0" style="background-image: url('topbg.gif'); background-repeat: no-repeat;">
+          <tr> 
+            <td id="t2_td1" width="100%" height="4" valign="top" align="right">&nbsp;</td>
+          </tr>
+          <tr id="t2_tr1" valign="top">
+            <td id="t2_td2" valign="top" style="padding-bottom:1px" width="50%">
+			  <label for="Extension" accesskey="x" id="Extension_AccessKey">
+			  <span class="cutitleb" id="ext_dlg_title">&nbsp;&nbsp;E<u>x</u>tension to add</span></label>
+			</td>
+            <td id="t2_td3" align="right">
+			  <a href=''onClick="Help(); return false;">
+                <span class="cuhelp" id="ext_dlg_help">more info</span>
+		      </a><span id="table2_space1">&nbsp;&nbsp;&nbsp;</span>
+            </td>
+          </tr>
+          <tr>
+            <td valign="top" id="extdlg_td_1">
+             <input id="Extension" class="normal" size="20" maxlength="255" onKeyUp="OnKey();" onKeyPress="OnKey();" onpropertychange="OnKey();">
+            </td>
+            <td id="t2_td4" valign="top" style="padding-bottom:1px" width="50%" align="right">
+              <table id="t3" width="100%"border="0" cellspacing="0" cellpadding="2">
+                <tr> 
+                  <td> <button id="OK" style="width: 97;" class="goldnav1" OnClick="Save();"> 
+                    <label for="OK" accesskey="o" id="OK_AccessKey"> <span class="indent10" id="ext_dlg_ok"><u>O</u>K</span></label></button></td>
+                </tr> 
+                <tr> 
+                  <td>
+                    <button id="Cancel" style="width: 97;" class="goldnav1" OnClick="location.href = 'closeme.xyz';">
+                      <label for="Cancel" accesskey="c" id="Cancel_AccessKey">
+					    <span class="indent10" id="ext_dlg_cancel"><u>C</u>ancel</span>
+                      </label>
+					</button> 
+                  </td>
+                </tr> 
+              </table>
+			</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

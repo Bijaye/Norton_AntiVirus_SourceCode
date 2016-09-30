@@ -1,0 +1,28 @@
+/////////////////////////////////////////////////////////////////////
+// Timer.IDL
+//
+// Copyright 1992-1996 Symantec, Peter Norton Product Group
+/////////////////////////////////////////////////////////////////////
+//
+// Defines our Timer interface
+//
+/////////////////////////////////////////////////////////////////////
+
+[ uuid (a4fcf0e0-c05f-11cf-9449-0020afd42bed),
+  version(1.0)
+]
+interface Timer
+{
+
+/////////////////////////////////////////////////////////////////////
+// Functions (UNICODE / NONUNICODE) for Logging a message on the server
+
+boolean Server_LogMessageA(
+   [in] unsigned long   dwMilliseconds,
+   [in, string] byte *  lpszMessage);
+
+boolean Server_LogMessageW(
+   [in] unsigned long      dwMilliseconds,
+   [in, string] wchar_t *  lpszMessage);
+
+}

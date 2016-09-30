@@ -1,0 +1,157 @@
+@ECHO OFF
+
+@REM --------------------------------------------------------------------------
+@REM Batch file to create the trial version self extracting zip files
+@REM
+@REM The process of this file is as follows:
+@REM
+@REM 1 - Copies all the files to the %PROJPRE%\FINAL directory.
+@REM 2 - Stamps the files with the time and date hard-coded below.
+@REM 3 - Zips the files into one zip called _ZIPNAME
+@REM 4 - Runs the WINZIPSE.EXE program from the NOBUILDS area to create the
+@REM     self-extracting executable called _EXENAME.
+@REM 5 - Stamps the resulting executable with the hard-coded date and time
+@REM     below.
+@REM --------------------------------------------------------------------------
+
+SET _SOURCE_FILES=D:\NAVNT
+SET _ZIPNAME=NAVNT2TR.ZIP
+SET _EXENAME=NAVNT2TR.EXE
+SET _SOURCE_DATE=02/21/97
+SET _SOURCE_TIME=02:01a
+SET _WINZIP_ABOUT=%PROJPRE%NOBUILDS\SRC\ABOUT.TXT
+SET _wINZIP_DIALOG=%PROJPRE%NOBUILDS\SRC\DIALOG.TXT
+SET _WINZIP_ICON=%LANGPRE%NAVW\SRC\NAVW.ICO
+
+PUSHD
+
+@REM Verify location of files to create the self extracting executable
+IFF "%_DOS%" == "NT" THEN
+    MSGBOX YESNO "Source Files" The self extracting executable will be created from files in %_SOURCE_FILES%. Is this correct
+    IF %_? != 10 GOTO BATCHEND
+ELSE
+    @ECHO The self extracting executable will be created from files in %_SOURCE_FILES%. Is this correct
+    CHOICE /C:YN Is this correct?
+    IF ERRORLEVEL 2 GOTO BATCHEND
+    @ECHO.
+ENDIFF
+
+IFF "%_DOS%" == "NT" THEN
+    MSGBOX YESNO "Confirmation" The date/time on the self-extracting executable will be set to %_SOURCE_DATE% %_SOURCE_TIME%. Is this correct?
+    IF %_? != 10 GOTO BATCHEND
+ELSE
+    @ECHO Current file dates will be set to %_SOURCE_DATE% %_SOURCE_TIME%
+    CHOICE /C:YN Is this correct?
+    IF ERRORLEVEL 2 GOTO BATCHEND
+    @ECHO.
+ENDIFF
+
+IFF "%PROJPRE%" == "" THEN
+    GOTO noprojerr
+ENDIFF
+
+IFF NOT EXIST %PROJPRE%FINAL\NUL THEN
+    GOTO nofinalerr
+ENDIFF
+
+ECHO Changing to %_SOURCE_FILES%
+CDD %_SOURCE_FILES%
+
+@REM --------------------------------------------------------------------------
+@REM Zip up the files
+@REM --------------------------------------------------------------------------
+
+IFF EXIST %_ZIPNAME% THEN
+    DEL %_ZIPNAME%
+ENDIFF
+
+IFF EXIST FILELIST.TXT THEN
+    DEL FILELIST.TXT
+ENDIFF
+
+IFF EXIST %@FILENAME[%_WINZIP_ABOUT] THEN
+    DEL %@FILENAME[%_WINZIP_ABOUT]
+ENDIFF
+
+IFF EXIST %@FILENAME[%_WINZIP_DIALOG] THEN
+    DEL %@FILENAME[%_WINZIP_DIALOG]
+ENDIFF
+
+IFF EXIST %@FILENAME[%_WINZIP_ICON] THEN
+    DEL %@FILENAME[%_WINZIP_ICON]
+ENDIFF
+
+IFF EXIST %_ZIPNAME THEN
+    DEL %_ZIPNAME
+ENDIFF
+
+IFF EXIST %_EXENAME THEN
+    DEL %_EXENAME
+ENDIFF
+
+DIR /B > FILELIST.TXT
+
+@rem Zip all files at once
+pkzip -ex %_ZIPNAME% @FILELIST.TXT
+
+COPY %_WINZIP_ABOUT%
+COPY %_WINZIP_DIALOG%
+COPY %_WINZIP_ICON%
+
+@REM --------------------------------------------------------------------------
+@REM Create the self-extracting zip
+@REM --------------------------------------------------------------------------
+
+R:\WINZIPSE\WINZIPSE.EXE -SETUP -I%@FILENAME[%_WINZIP_ICON] -win32 -T%@FILENAME[%_WINZIP_DIALOG] -A%@FILENAME[%_WINZIP_ABOUT] %_ZIPNAME% -Y  -LE -C SETUP.EXE
+rem R:\WINZIPSE\WINZIPSE.EXE -SETUP -Inavw.ico -win32 -Tdialog.txt -Aabout.txt %_ZIPNAME% -Y  -LE -C SETUP.EXE
+@REM @ECHO.
+@REM @ECHO When WINZIPSE has finished,
+
+@REM --------------------------------------------------------------------------
+@REM Stamp the date/time for the self-extracting zip
+@REM --------------------------------------------------------------------------
+
+FD /D:%_SOURCE_DATE /T:%_SOURCE_TIME %_EXENAME%
+@ECHO zipfile %_EXENAME% created successfully
+@ECHO.
+GOTO BATCHEND
+
+@REM Subroutine to copy the files from the various locations
+
+:copysub
+RETURN
+
+
+:noprojerr
+ECHO.
+ECHO You must use env to set the Marconi product before using this batchfile
+ECHO.
+GOTO BATCHEND
+
+:nofinalerr
+ECHO.
+ECHO Error - %PROJPRE%FINAL directory does not exist
+ECHO.
+GOTO BATCHEND
+
+:missfileerr
+ECHO.
+echo %a missing.
+ECHO Not all files were copied.  Terminating...
+ECHO.
+GOTO BATCHEND
+
+:batchend
+POPD
+UNSET _SOURCE_FILES
+UNSET _ZIPNAME
+UNSET _EXENAME
+UNSET _SOURCE_DATE
+UNSET _SOURCE_TIME
+UNSET _WINZIP_ABOUT
+UNSET _wINZIP_DIALOG
+UNSET _WINZIP_ICON
+
+
+
+

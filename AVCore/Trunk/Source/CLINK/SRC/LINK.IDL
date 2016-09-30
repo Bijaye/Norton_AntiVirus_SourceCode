@@ -1,0 +1,29 @@
+/////////////////////////////////////////////////////////////////////
+// Link.IDL
+//
+// Copyright 1992-1996 Symantec, Peter Norton Product Group
+/////////////////////////////////////////////////////////////////////
+//
+// Defines our interface for the CLinkClient and CLinkServer objects
+//
+/////////////////////////////////////////////////////////////////////
+
+[ uuid (da685d60-38e6-11d0-b5c5-00a024bdfdb7),
+  version(1.1)
+]
+interface Link
+{
+
+/////////////////////////////////////////////////////////////////////
+// Functions for sending a packet from a CLinkClient to a CLinkServer
+
+unsigned long Link_SendCommand(
+   [in] unsigned long dwSize,
+   [in, size_is(dwSize)] byte * pPacket);
+
+unsigned long Link_SendStringA(
+   [in, string] byte *  lpszString);
+
+unsigned long Link_SendStringW(
+   [in, string] wchar_t *  lpszString);
+}

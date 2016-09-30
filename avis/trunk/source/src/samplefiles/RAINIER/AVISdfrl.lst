@@ -1,0 +1,182 @@
+#######################################################################
+# 
+# Target file: AVISdfrl.lst
+# 
+# Target directory: D:\avis
+# 
+# Target machine: 'Rainier' executive machine in the analysis center
+# 
+# Target application: AVISdfrl.dll
+# 
+# Please refer to the 'AnalysisCenterOperations.doc' file for more
+# information on how to configure the Dataflow resource locator module.
+# The document file mentioned here can be found in the 
+# 'avis200.xxx\src\docs' subdirectory of the AVIS source tree.
+# 
+#######################################################################
+Service : UnSerializeBuild
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 300
+Program : perl d:\bin\UnSerializeBuild.pl
+
+Service : UnDeferrer
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 21600
+Program : perl.exe d:\bin\UnDeferrer.pl
+
+Service : StatusUpdater
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 21600
+Program : perl.exe d:\bin\StatusUpdater.pl
+
+Service : SerializeBuild
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 300
+Program : perl d:\bin\SerializeBuild.pl
+
+Service : Rescan
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 2400
+Program : d:\avis\AVISDFScan.exe
+
+Service : MacroReplicator
+Machine : k2
+User : auto
+Timeout : 2000
+Program : perl /data/Avis/Macro/Scripts/perl/mrep.pl
+
+Service : MacroReplicator
+Machine : leine
+User : auto
+Timeout : 2000
+Program : perl /data/Avis/Macro/Scripts/perl/mrep.pl
+
+Service : MacroController
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 300
+Program : perl d:\bin\mrepctrl.pl
+
+Service : MacroAnalysis
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 300
+Program : perl d:\bin\manalysis.pl
+
+Service : JediSlider
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 300
+Program : perl d:\bin\JediSlider.pl
+
+Service : IncrementalUnitTest
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 300
+Program : perl d:\bin\UnitTest.pl
+
+Service : IncrementalDefBuilder
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 1200
+Program : perl d:\bin\BuildDefinitions.pl
+
+Service : GetDefinitions
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 1200
+Program : perl.exe d:\bin\GetDefinitions.pl
+
+Service : GetAttributes
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 900
+Program : perl.exe d:\bin\GetSampleAttributes.pl
+
+Service : FullUnitTest
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 300
+Program : perl d:\bin\UnitTest.pl
+
+Service : FullDefBuilder
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 1200
+Program : perl d:\bin\BuildDefinitions.pl
+
+Service : Deferrer
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 300
+Program : perl.exe d:\bin\Deferrer.pl
+
+Service : Classifier
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 300
+Program : perl d:\bin\classifier.pl
+
+Service : BinaryReplicator
+Machine : rocky
+NTMachineName : rocky
+User : auto
+Timeout : 1800
+Program : perl d:\bin\vrep.pl
+
+Service : BinaryReplicator
+Machine : everest
+NTMachineName : everest
+User : auto
+Timeout : 1800
+Program : perl d:\bin\vrep.pl
+
+Service : BinaryController
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 300
+Program : perl d:\bin\vrepctrl.pl
+
+Service : BinaryAnalysis
+Machine : whitney
+NTMachineName : whitney
+User : auto
+Timeout : 3600
+Program : perl d:\bin\vanalysis.pl
+
+Service : BinaryAnalysis
+Machine : fuji
+NTMachineName : fuji
+User : auto
+Timeout : 3600
+Program : perl d:\bin\vanalysis.pl
+
+Service : ArchiveSample
+Machine : rainier
+NTMachineName : rainier
+User : auto
+Timeout : 300
+Program : perl d:\bin\ArchiveSample.pl
+

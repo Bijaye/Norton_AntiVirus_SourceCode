@@ -1,0 +1,35 @@
+@echo off
+
+setlocal
+
+  iff "%platform%" == ".IDA" then
+       echo Building %PROJ%, "NuInst - Win32 DEBUG"
+       rem
+       rem Clean the project first
+       rem
+       msdev "%PROJ%\NuInst.dsp" /MAKE "NuInst - Win32 DEBUG" /clean > MAKE.ERR
+       rem
+       rem Now build it
+       rem
+       msdev "%PROJ%\NuInst.dsp" /MAKE "NuInst - Win32 DEBUG" >> MAKE.ERR
+       set ret=%?%
+       type MAKE.ERR
+       If not %ret% == 0 copy make.err %LANGPRE%\errors\trunk\errors\NuInst.ida
+       del make.err
+  else
+       echo Building %PROJ%, "NuInst - Win32 Release"
+       rem
+       rem Clean the project first
+       rem
+       msdev "%PROJ%\NuInst.dsp" /MAKE "NuInst - Win32 Release" /clean > MAKE.ERR
+       rem
+       rem Now build it
+       rem
+       msdev "%PROJ%\NuInst.dsp" /MAKE "NuInst - Win32 Release" >> MAKE.ERR
+       set ret=%?%
+       type MAKE.ERR
+       if not %ret% == 0 copy make.err %LANGPRE%\errors\trunk\errors\NuInst.ira
+       del make.err
+  endiff     
+  
+endlocal

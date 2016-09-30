@@ -1,0 +1,68 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+	<BASE href="res://navcomui.loc">
+	<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" type="text/css" href="NavScan.css" />
+	<title>Memory Infection</title>
+	
+	<script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+	<script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( Yes ); 
+			InitSymButton( No ); 
+		}
+	</script>		
+	
+</head>
+
+<body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" tabindex="-1" scroll="no" onLoad="OnLoad()" style="margin-top:45px;">
+
+	<!-------------------------------------- Header ------------------------------------------------>
+
+	<h1 id="title">Risk</h1>
+	<a id="MoreInfo" href="#" tabindex="2" class="headerLink">more info</a>
+
+	
+	<!--------------------------------------- Stats  Area ------------------------------------------------>
+
+	<div id = "div1" class="ActionArea" style="position:absolute; width:100%; padding-left:20px; padding-right:20px;">
+		<span id="statement">%s</span>
+		<br><br>
+		<span id="recommendation">It is recommended that you allow Norton AntiVirus to close these programs and process these risks.</span>
+		<br><br>
+		<span id="warning"> <strong id="strongWarning">Warning:</strong>&nbsp; Save all open files before clicking Next.</span>
+		
+		<!--------------------------------------- Timeout  Area ------------------------------------------------>
+		<div id="timerTextDiv" style="padding-top:10px; visibility:hidden">
+	        <span id="closetimer">This dialog will automatically close in <span id="timerCount">60</span> seconds without processing the risk(s) running in memory.</span>
+                <br><br>
+	        </div>
+            <!--------------------------------------- Bottom Area ------------------------------------------------>
+                <span id="continue">Click Next to continue.</span>
+	</div>
+
+	<!--------------------------------------- Button  Area ------------------------------------------------>	
+	<div align="center" class="buttonArea" id="scanmem_buttonarea">
+		<span id = "span5" class="symButton" style="width:96px; height: 24px; margin-right:10px;">
+			<button id="Yes" accesskey="N" type="SUBMIT" class="symButton" tabindex="3" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">N</u>ext</button>
+		</span>
+		
+		<span id = "span6" class="symButton" style="width:96px; height: 24px;">
+			<button id="No" accesskey="C" type="SUBMIT" class="symButton" tabindex="1" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">C</u>ancel</button>
+		</span>
+	</div>
+	
+
+</body>	
+</html>	

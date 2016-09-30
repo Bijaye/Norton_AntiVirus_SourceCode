@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<FirewallData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="NISPolicySchema-2.0.xsd">
+	<Settings>
+		<FirewallOptions>
+			<EnableNetworkDetector>0</EnableNetworkDetector>
+			<EnablePortBlocking>1</EnablePortBlocking>
+			<FilterOutbound>0</FilterOutbound>
+			<TrustedLocationMap1>1</TrustedLocationMap1>
+			<TrustedLocationMap2>0</TrustedLocationMap2>
+			<RestrictedLocationMap1>0</RestrictedLocationMap1>
+			<RestrictedLocationMap2>0</RestrictedLocationMap2>
+			<EnableIDSInTrustedZone>1</EnableIDSInTrustedZone>
+			<EnableIPv6>1</EnableIPv6>
+			<DatagramReceiveAction>2</DatagramReceiveAction>			
+		</FirewallOptions>
+		<IDSOptions>
+			<EnableIDS>1</EnableIDS> 
+			<EnableAutoBlock>1</EnableAutoBlock> 
+			<AutoBlockTimeout>30</AutoBlockTimeout>
+			<BlockFragmentedIPPackets>2</BlockFragmentedIPPackets>
+			<AutoBlockThreshold>2</AutoBlockThreshold> 
+		</IDSOptions>
+	</Settings>
+	<Rules>
+		<GeneralRules>
+			<Rule>
+				<Description>Default Inbound ICMP</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>icmp</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>3</Port>
+					<Port>0</Port>
+					<Port>11</Port>
+				</LocalPorts>
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Inbound NetBIOS</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>block</Action>
+				<Protocol>udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>137</Port>
+					<Port>138</Port>
+				</LocalPorts>
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Inbound Loopback</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>tcp-udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts />
+				<RemotePorts />
+				<LocalAddresses>
+					<MaskedAddress>127.0.0.0:255.0.0.0</MaskedAddress>
+				</LocalAddresses>
+				<RemoteAddresses>
+					<MaskedAddress>127.0.0.0:255.0.0.0</MaskedAddress>
+				</RemoteAddresses>
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Block Inbound ICMP</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>block</Action>
+				<Protocol>icmp</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts />
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Inbound Bootp</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>68</Port>
+				</LocalPorts>
+				<RemotePorts>
+					<Port>67</Port>
+				</RemotePorts>
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Windows File Sharing</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>tcp-udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>logging</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>139</Port>
+				</LocalPorts>
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Microsoft Windows 2000 SMB</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>tcp-udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>logging</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>445</Port>
+				</LocalPorts>
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Block EPMAP</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>block</Action>
+				<Protocol>tcp-udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>logging</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>135</Port>
+				</LocalPorts>
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default IPV6 Loopback</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>tcp-udp</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts />
+				<RemotePorts />
+				<LocalAddresses>
+					<Address>0000:0000:0000:0000:0000:0000:0000:0001</Address>
+					<Address>FE80:0000:0000:0000:0000:0000:0000:0001</Address>
+				</LocalAddresses>
+				<RemoteAddresses>
+					<Address>0000:0000:0000:0000:0000:0000:0000:0001</Address>
+					<Address>FE80:0000:0000:0000:0000:0000:0000:0001</Address>
+				</RemoteAddresses>
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Inbound ICMPV6</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>permit</Action>
+				<Protocol>icmpv6</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts>
+					<Port>1</Port>
+					<Port>2</Port>
+					<Port>129</Port>
+					<Port>3</Port>
+					<Port>133</Port>
+					<Port>134</Port>
+					<Port>135</Port>
+					<Port>136</Port>
+				</LocalPorts>
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>
+			<Rule>
+				<Description>Default Block Inbound ICMPV6</Description>
+				<LookupKey>NoAlert</LookupKey>
+				<DetailsKey>NoAlert</DetailsKey>
+				<SummaryKey>NoAlert</SummaryKey>
+				<InUse>enabled</InUse>
+				<Action>block</Action>
+				<Protocol>icmpv6</Protocol>
+				<Direction>in</Direction>
+				<Logging>none</Logging>
+				<LogThreshold>1</LogThreshold>
+				<LocalPorts />
+				<RemotePorts />
+				<LocalAddresses />
+				<RemoteAddresses />
+				<LocationMap>0</LocationMap>
+				<EnableMap>0</EnableMap>
+			</Rule>			
+		</GeneralRules>
+	</Rules>
+	<LocationManagement>
+		<Locations>
+			<Location Name="Default">
+				<ID>0</ID>
+				<DisplayName>Default</DisplayName>
+				<Connection>
+					<Other>RESV Default</Other>
+				</Connection>
+			</Location>
+			<Location Name="Home">
+				<ID>1</ID>
+				<DisplayName>Home</DisplayName>
+				<Connection>
+					<Other>RESV Home</Other>
+				</Connection>
+			</Location>
+			<Location Name="Away">
+				<ID>3</ID>
+				<DisplayName>Away</DisplayName>
+				<Connection>
+					<Other>RESV Away</Other>
+				</Connection>
+			</Location>
+		</Locations>
+		<NetSpecOrder>
+			<NetSpec1>GatewayMACAddress</NetSpec1>
+			<NetSpec2>DialupNumber</NetSpec2>
+			<NetSpec3>DialupEntryName</NetSpec3>
+			<NetSpec4>SSID</NetSpec4>
+			<NetSpec5>GatewayIPAddress</NetSpec5>
+			<NetSpec6>LocalIPAddress</NetSpec6>
+			<NetSpec7>Domain</NetSpec7>
+		</NetSpecOrder>
+	</LocationManagement>
+</FirewallData>

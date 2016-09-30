@@ -1,0 +1,26 @@
+HKCR
+{
+	LiveUpdate.luNavCallBack.1 = s 'luNavCallBack Class'
+	{
+		CLSID = s '{09C9DBC1-893D-11D2-B40A-00600831DD76}'
+	}
+	LiveUpdate.luNavCallBack = s 'luNavCallBack Class'
+	{
+		CLSID = s '{09C9DBC1-893D-11D2-B40A-00600831DD76}'
+		CurVer = s 'LiveUpdate.luNavCallBack.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {09C9DBC1-893D-11D2-B40A-00600831DD76} = s 'luNavCallBack Class'
+		{
+			ProgID = s 'LiveUpdate.luNavCallBack.1'
+			VersionIndependentProgID = s 'LiveUpdate.luNavCallBack'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{3C2E74A0-887E-11D2-B40A-00600831DD76}'
+		}
+	}
+}

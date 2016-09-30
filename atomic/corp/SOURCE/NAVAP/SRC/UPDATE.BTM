@@ -1,0 +1,48 @@
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::
+:: This copies all the proper NAVAP files up to the network after MKUPDATE
+::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::
+:: $Header:   S:/NAVAP/VCS/UPDATE.BTv   1.1   30 Apr 1997 19:01:14   RStanev  $
+::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::
+:: $Log:   S:/NAVAP/VCS/UPDATE.BTv  $
+:  
+:     Rev 1.1   30 Apr 1997 19:01:14   RStanev
+:  Cleaned up.
+:
+:     Rev 1.0   30 Apr 1997 16:49:04   JBRENNA
+:  Initial revision.
+:
+::
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+call DecPlat.btm
+
+iff "%CORE_SOFT%" == "K" then
+
+    @rem In NTK case
+
+    iff "%CORE_BMODE" == "R" then
+
+    ::
+    :: Make a backup copy of the drivers, and then strip debug information
+    ::
+
+    copy *.sys *.syd
+    R:\NT40SDK.B2\mstools\bin\i386\rebase -b 0x10000 -x . navap.sys
+
+    endiff
+
+else
+    @rem In VXD case
+
+endiff
+
+if exist *.*   copy *.*   %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%
+if exist *.vxd copy *.vxd %_projpre%\BIN%PROJVERS%%PLATFORM%\%TARGET%
+if exist *.sys copy *.sys %_projpre%\BIN%PROJVERS%%PLATFORM%\%TARGET%
+if exist *.syd copy *.syd %_projpre%\BIN%PROJVERS%%PLATFORM%\%TARGET%
+if exist *.sym copy *.sym %_projpre%\BIN%PROJVERS%%PLATFORM%\%TARGET%

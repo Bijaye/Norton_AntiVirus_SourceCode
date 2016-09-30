@@ -1,0 +1,125 @@
+﻿<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="common.css" />
+	<link rel="stylesheet" type="text/css" href="RiskDetails.css" />
+</head>
+<body id="riskdetails_body">
+
+  <!-------------------------------------- Header ------------------------------------------------>
+  <div class="titleArea">
+    <div id="title">Risk Properties</div>
+    <div id="HSpacer1" class="HSpace"></div>
+    <div id="MoreInfoDIV"><a id="moreInfo" href="#" tabindex="1" class="ULink" accesskey="h"><u>H</u>elp</a></div>
+  </div>
+  <!-------------------------------------- Tab Links ------------------------------------------------>
+  <div class="tabs" id="tabcontainer">
+    <div class="strip" tabindex="0">
+      <div id="RiskTab" panel="MatrixBody" selected><div id="RiskTabTitle" tabtitle="1">Risk Impact</div></div>
+      <div id="DetailsTab" panel="DetailsBody"><div id="DetailsTabTitle" tabtitle="1">Details</div></div>
+    </div>
+  <!-- ------------------------------------ Tab Pages ---------------------------------------------- -->
+    <!-- Threat Matrix Tab -->
+    <div id="MatrixBody" name="MatrixBody" selected>
+      <div id="MatrixHeader" class="RiskHeader">
+        <div id="risk_name_title" class="ellipse">Risk Name:&nbsp;<a id="matrix_risk_name" href="#" style="font:normal;"></a></div>
+        <div id="risk_type_title">Risk Type:&nbsp;<span id="matrix_risk_type" style="font:normal;"></span></div>
+        <div id="risk_dependencies_title">Dependencies:&nbsp;<span id="matrix_risk_dependencies" style="font:normal;"></span></div>
+      </div>
+      <div id="MatrixContent" class="RiskContent">
+        <span id="matrix_description">Risk impact is based on Performance, Privacy, Removal and Stealth impact. Select a category for more details.</span>
+        <table id="tabl_1" cellpadding="0" cellspacing="0" class="TopMatrixTable">
+          <tr>
+            <td id="1td" nowrap colspan="2" class="OverallTitleTD"><a id="overallTitle" href="#">Overall Risk Impact:</a></td>
+            <td id="99td" class="IndicatorTD"><img id="matrix_imageThreatOverall" src="damage_1.gif"/></td>
+            <td class="text ITextTD"><span id="matrix_overall" class="IndicatorTD">Low</span></td>
+            <td class="SpacerTD" id="riskdetails_td1"></td>
+          </tr>
+          <tr>
+            <td class="Tree"><img id="imageT1" src="T.gif"/></td>
+            <td id="2td" nowrap class="SubTitleTD"><a id="performaceTitle" href="#" class="link">Performance:</a></td>
+            <td id="3td" class="IndicatorTD"><img id="imageThreatPerformace" src="damage_1.gif"/></td>
+            <td class="text ITextTD"><span id="performace" class="IndicatorTD">Low</span></td>
+            <td class="SpacerTD" id="riskdetails_td3"></td>
+          </tr>
+          <tr>
+            <td class="Tree"><img id="imageT2" src="T.gif"/></td>
+            <td id="5td" nowrap class="SubTitleTD"><a id="privacyTitle" href="#" class="link">Privacy:</a></td>
+            <td id="10td" class="IndicatorTD"><img id="imageThreatPrivacy" src="damage_1.gif"/></td>
+            <td class="text ITextTD"><span id="privacy" class="IndicatorTD">Low</span></td>
+            <td class="SpacerTD" id="riskdetails_td4"></td>
+          </tr>
+          <tr>
+            <td class="Tree"><img id="imageT3" src="T.gif"/></td>
+            <td id="6td" nowrap class="SubTitleTD"><a id="removalTitle" href="#" class="link">Removal:</a></td>
+            <td id="11td" class="IndicatorTD"><img id="imageThreatRemoval" src="damage_1.gif"/></td>
+            <td class="text ITextTD"><span id="removal" class="IndicatorTD">Low</span></td>
+            <td class="SpacerTD" id="riskdetails_td5"></td>
+          </tr>
+          <tr>
+            <td class="Tree"><img id="imageL" src="L.gif"/></td>
+            <td id="7td" nowrap class="SubTitleTD"><a id="stealthTitle" href="#" class="link">Stealth:</a></td>
+            <td id="12td" class="IndicatorTD"><img id="imageThreatStealth" src="damage_1.gif"/></td>
+            <td class="text ITextTD"><span id="stealth" class="IndicatorTD">Low</span></td>
+            <td class="SpacerTD" id="riskdetails_td6"></td>
+          </tr>
+        </table>
+        <table id="1tbl" cellpadding="5px" cellspacing="0px" class="DetailsTable">
+          <tr>
+            <td id="tdThreatImage" nowrap colspan="1" class="ThreatImage">
+              <span id="threatImpactTitle">Overall Risk Impact</span>
+              <img id="imageDetails" src="damage_1.gif"/>
+              <span id="threatImpactDetails">Low</span>
+            </td>
+          </tr>
+          <tr>
+            <td id="ThreatDescription" class="ThreatDescription"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Details Tab -->
+    <div id="DetailsBody" name="DetailsBody">
+      <div id="DetailsHeader" class="RiskHeader">
+        <div id="drisk_name_title" class="ellipse">Risk Name:&nbsp;<a id="details_risk_name" href="#" style="font:normal;"></a></div>
+        <div id="drisk_type_title">Risk Type:&nbsp;<span id="details_risk_type" style="font:normal;"></span></div>
+        <div id="drisk_level_title">Risk Level:&nbsp;<span id="details_overall">Low</span><img id="details_imageThreatOverall" style="margin-left:5px;" src="damage_1.gif"/></div>
+        <div id="drisk_dependencies_title">Dependencies:&nbsp;<span id="details_risk_dependencies" style="font:normal;"></span></div>
+      </div>
+      <div id="DetailsContent" class="RiskContent">
+        <div id="1div">
+          <p id="details_description">Risk type description unavailable.</p>
+        </div>
+        <div id="AffectedAreasTopAx" align="left" class="SelectListDIV">
+          <table id="RemDetailsTypes" type="reportview" cellspacing="-1px" fixedrows="1">
+            <tr><th id="AffAreas">Affected Area</th></tr>
+            <tr><td>No affected areas...</td></tr>
+          </table>
+        </div>
+        <div id="AffectedAreasBottomAX" align="left" class="SelectListDIV">
+          <table id="RemDetailsTable" type="reportview" cellspacing="-1px" fixedrows="1">
+            <tr><th id="Details">Details</th></tr>
+            <tr><td>No items</td></tr>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div> <!-- End Tab Area -->
+
+
+  <!-------------------------------------- Footer (Buttons) ------------------------------------------------>
+  <div id="5div" class="buttonArea">
+    <button id="close" accesskey="C" type="SUBMIT" role="default-button" tabindex="11" accesskey="c"><u>C</u>lose</button>
+  </div>
+
+</body>
+</html>

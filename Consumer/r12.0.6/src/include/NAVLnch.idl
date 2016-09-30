@@ -1,0 +1,58 @@
+// NAVLnch.idl : IDL source for NAVLnch.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVLnch.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+
+	[
+		object,
+		uuid(534744A3-D82A-4071-818B-9AEBC5947537),
+		dual,
+		helpstring("Symantec.Norton.AntiVirus.IAppLauncher Interface"),
+		pointer_default(unique)
+	]
+	interface IAppLauncher : IDispatch
+	{
+		[id(1), helpstring("method LaunchQuarantine")] HRESULT LaunchQuarantine();
+		[id(2), helpstring("method LaunchLiveUpdate")] HRESULT LaunchLiveUpdate();
+		[id(3), helpstring("method LaunchRescueDisk")] HRESULT LaunchRescueDisk();
+		[propget, id(4), helpstring("property IsLiveUpdateInstalled")] HRESULT IsLiveUpdateInstalled([out, retval] BOOL *pbLUInstalled);
+		[propget, id(5), helpstring("property IsRescueDiskInstalled")] HRESULT IsRescueDiskInstalled([out, retval] BOOL *pbRDInstalled);
+		[id(7), helpstring("method LaunchHelp")] HRESULT LaunchHelp(DWORD dwHelpID);
+		[id(8), helpstring("method LaunchEmailProxy")] HRESULT LaunchEmailProxy();
+		[propget, id(9), helpstring("property CanLaunchLiveUpdate")] HRESULT CanLaunchLiveUpdate([out, retval] BOOL *pVal);
+		[id(10), helpstring("method LaunchUnEraseWizard")] HRESULT LaunchUnEraseWizard();
+		[id(11), helpstring("method LaunchWipeInfo")] HRESULT LaunchWipeInfo();
+		[propget, id(12), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+		[id(13), helpstring("method LaunchActivityLog")] HRESULT LaunchActivityLog();
+		[id(15), helpstring("method LaunchNAV")] HRESULT LaunchNAV();
+		[id(16), helpstring("method LaunchSubscriptionWizard")] HRESULT LaunchSubscriptionWizard();
+        [id(17), helpstring("method LaunchURL")] HRESULT LaunchURL([in] BSTR bstrURL);
+		[id(18), helpstring("method GetBrandingURL")] HRESULT GetBrandingURL([in] LONG nResourceId, [out,retval] BSTR* pVal);
+		[id(19), helpstring("method LaunchVirusEncyclopedia")] HRESULT LaunchVirusEncyclopedia(void);
+		[id(20), helpstring("method LaunchLiveUpdateAndWait")] HRESULT LaunchLiveUpdateAndWait();
+    };
+
+[
+	uuid(9275E229-718E-4A2D-8EE0-10C5AA524C22),
+	version(1.0),
+	helpstring("Symantec.Norton.AntiVirus.NAVLnch 1.0 Type Library")
+]
+library NAVLNCHLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(51CD5322-C0EC-4513-BCEF-1C9B2EC88719),
+		helpstring("Symantec.Norton.AntiVirus.AppLauncher Class")
+	]
+	coclass AppLauncher
+	{
+		[default] interface IAppLauncher;
+	};
+};

@@ -1,0 +1,117 @@
+rem Create Output Directories
+
+md %root%..\binaries
+md %root%..\binaries\avcore
+md %root%..\binaries\avcore\source
+md %root%..\binaries\avcore\source\bin.ira
+md %root%..\binaries\avcore\source\bin.irav
+md %root%..\binaries\avcore\source\bin.iru
+md %root%..\binaries\avcore\source\bin.wra
+md %root%..\binaries\bin.ira
+md %root%..\binaries\bin.dvx
+md %root%..\binaries\bin.dos
+md %root%..\binaries\install
+md %root%..\binaries\install\msi
+md %root%..\binaries\install\msi\res
+md %root%..\binaries\install\msi\scripts
+md %root%..\binaries\install\release
+md %root%..\binaries\nobuilds
+md %root%..\binaries\nobuilds\APRegKeys
+md %root%..\binaries\nobuilds\APRegKeys\9x
+md %root%..\binaries\nobuilds\APRegKeys\NT
+md %root%..\binaries\SDKs
+
+rem Copy AVCORE binaries
+copy %root%..\avcore\source\bin.ira\*.* %root%..\binaries\avcore\source\bin.ira
+copy %root%..\avcore\source\bin.irav\*.* %root%..\binaries\avcore\source\bin.irav
+copy %root%..\avcore\source\bin.iru\*.* %root%..\binaries\avcore\source\bin.iru
+copy %root%..\avcore\source\bin.wra\*.* %root%..\binaries\avcore\source\bin.wra
+
+
+rem Copy NAV binaries
+copy %root%..\bin.ira\*.* %root%..\binaries\bin.ira
+copy %root%..\bin.ira\unsigned\*.* %root%..\binaries\bin.ira\unsigned
+copy %root%..\bin.dvx\*.* %root%..\binaries\bin.dvx
+copy %root%..\bin.dos\*.* %root%..\binaries\bin.dos
+
+rem Copy MSI folder
+copy %root%..\install\msi\*.* %root%..\binaries\install\msi\*.*
+copy %root%..\install\msi\scripts\*.* %root%..\binaries\install\msi\scripts\*.*
+copy %root%..\install\msi\res\*.* %root%..\binaries\install\msi\res\*.*
+
+rem Copy MSI release folder
+copy %root%..\install\release\*.* %root%..\binaries\install\release\*.*
+
+rem Copy over Nobuilds Files
+copy %root%..\nobuilds\*.* %root%..\binaries\nobuilds\*.*
+
+rem Copy over APRegKeys
+copy %root%..\nobuilds\APRegKeys\9x\*.* %root%..\binaries\nobuilds\APRegKeys\9x\*.*
+copy %root%..\nobuilds\APRegKeys\NT\*.* %root%..\binaries\nobuilds\APRegKeys\NT\*.*
+
+rem Copy over ConfigFiles
+md %root%..\binaries\nobuilds\configfiles
+xcopy %root%..\nobuilds\configfiles %root%..\binaries\nobuilds\configfiles
+
+rem Copy over html files.
+md %root%..\binaries\nobuilds\html
+copy %root%..\Nobuilds\html\*.* %root%..\binaries\Nobuilds\html\*.*
+
+rem Copy over WinHelp files.
+md %root%..\binaries\Nobuilds\Help
+xcopy %root%..\Nobuilds\Help %root%..\binaries\Nobuilds\Help
+
+rem Copy over Defannity
+md %root%..\binaries\nobuilds\DefAnnty
+md %root%..\binaries\nobuilds\DefAnnty\RELEASE
+copy %root%..\nobuilds\DefAnnty\RELEASE\*.* %root%..\binaries\nobuilds\DefAnnty\RELEASE\*.*
+
+rem Copy over DumbFiles
+md %root%..\binaries\Nobuilds\dumbfiles
+copy %root%..\Nobuilds\dumbfiles\*.* %root%..\binaries\Nobuilds\dumbfiles\*.*
+
+rem Copy over LiveSubscribe
+md %root%..\binaries\Nobuilds\LiveSubscribe
+md %root%..\binaries\Nobuilds\LiveSubscribe\redist
+copy %root%..\Nobuilds\LiveSubscribe\redist\LRSETUP.EXE %root%..\binaries\Nobuilds\LiveSubscribe\redist\LRSETUP.EXE
+
+rem Copy over Rescue
+md %root%..\binaries\Nobuilds\Norton_Rescue
+md %root%..\binaries\Nobuilds\Norton_Rescue\Latest
+md %root%..\binaries\Nobuilds\Norton_Rescue\bits
+md %root%..\binaries\Nobuilds\Norton_Rescue\bits\Rescue
+md %root%..\binaries\Nobuilds\Norton_Rescue\bits\MSSHLIB
+
+copy %root%..\Nobuilds\Norton_Rescue\bits\Rescue\*.* %root%..\binaries\Nobuilds\Norton_Rescue\bits\Rescue\*.*
+copy %root%..\Nobuilds\Norton_Rescue\bits\MSSHLIB\*.* %root%..\binaries\Nobuilds\Norton_Rescue\bits\MSSHLIB\*.*
+copy %root%..\Nobuilds\Norton_Rescue\Latest\NavResc.dll %root%..\binaries\Nobuilds\Norton_Rescue\Latest\NavResc.dll
+
+rem Copy over ScanVirusDefs
+md %root%..\binaries\Nobuilds\ScanVirusDefs
+copy %root%..\Nobuilds\ScanVirusDefs\*.* %root%..\binaries\Nobuilds\ScanVirusDefs\*.*
+
+rem Copy over Tasks files
+md %root%..\binaries\Nobuilds\Tasks
+copy %root%..\Nobuilds\Tasks\*.* %root%..\binaries\Nobuilds\Tasks\*.*
+
+rem Copy over Defs files
+md %root%..\binaries\Nobuilds\Defs
+copy %root%..\Nobuilds\Defs\intel.zip %root%..\binaries\Nobuilds\Defs\intel.zip
+copy %root%..\Nobuilds\Defs\CRNTHUBB.zip %root%..\binaries\Nobuilds\Defs\CRNTHUBB.zip
+
+rem Copy over Patch32i.dll
+md %root%..\binaries\Nobuilds\defutils
+md %root%..\binaries\Nobuilds\defutils\PATCHAPP
+md %root%..\binaries\Nobuilds\defutils\PATCHAPP\BIN.IRA
+copy %root%..\Nobuilds\defutils\PATCHAPP\BIN.IRA\PATCH32I.DLL %root%..\binaries\Nobuilds\defutils\PATCHAPP\BIN.IRA\PATCH32I.DLL
+
+rem Copy over the CM folder
+md %root%..\binaries\cm
+copy %root%..\cm %root%..\binaries\cm
+
+rem Copy over all SDKS
+xcopy %root%..\SDKs %root%..\binaries\SDKs
+
+rem Remove unnecessary files.
+del %root%..\binaries\install\release\NAV.msi
+del %root%..\binaries\install\release\ph.txt

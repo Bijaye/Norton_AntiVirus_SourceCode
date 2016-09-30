@@ -1,0 +1,344 @@
+<html>
+    <head>
+        <title>NAV Status</title>
+        <meta http-equiv="Content-Language" content="en-us">
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <meta http-equiv="MSThemeCompatible" content="yes">
+        <link rel="stylesheet" type="text/css" href="nav2005.css">
+            <iframe id="resErr" src="navErrors.htm" class="hidden" name="NAV_Errors"></iframe>
+            <script language="JavaScript" src="DisplayScriptError.js"></script>
+            <!-- *** NAV Status must be loaded in the HTML since it uses connection points which IE sets up at load time *** -->
+            <object classid="clsid:ED429095-AF99-41A1-BA88-D7E9459B3AF4" id="axNAVStatus" class="hidden"
+                VIEWASTEXT>
+            </object>
+            <script language="JavaScript" src="SymAlertStatic.js"></script>
+            <!-- <script language="JavaScript" src="../Simulator/navstatsSimulator.js"></script> -->
+            <script language="JavaScript" src="SymButton.js"></script>
+            <script language="JavaScript" src="navstats.js"></script>
+            <script language="JavaScript" for="axNAVStatus" event="StatusChangedEvent">
+// Cheesey fix for Microsoft bug this occurs with IE 5.00 before SP2 or WSH version 5.1.0.5907. Defect # 396183.
+OnStatusChangedEvent();
+            </script>
+    </head>
+    <body id="oBody" class="navPanelBody" scroll="no" onload="OnLoad()">
+        <!-- Main table. Helps to keep the panel layout in the editor -->
+        <table id="tableNAVStatusPanel" width="418" height="320" cellSpacing="0" cellPadding="0"
+            border="0">
+            <tr>
+                <!-- System Status -->
+                <td class="navPanelTitleTD" height="28" id="stats_td1">
+                    <nobr>
+                        <span id="oSysStatusName" class="navPanelTitle">Status</span>
+                    </nobr>
+                </td>
+            </tr>
+            <tr>
+                <td id="oStatusPane" class="navStatHintBg" style="visibility:hidden" valign="top">
+                    <!-- Tab background image -->
+                    <span id="oTabBgImage" class="navTaskTab" style="background-image: url(statTabBg.png); top: 29px; height: 42px"></span>
+                    <!-- Top tab background image -->
+                    <span id="oTabBgTop" class="navTaskTab" style="background-image: url(statTabBgTop.png); top: 9px; height: 36px"></span>
+                    <!-- Bottom tab background image -->
+                    <span id="oTabBgBottom" class="navTaskTab" style="background-image: url(statTabBgBottom.png); bottom: 0px; height: 36px"></span>
+                    <!-- NAV status and hints table -->
+                    <table id="tableStatus" height="100%" cellSpacing="0" cellPadding="0" width="100%" border="0">
+                        <tr>
+                            <td valign="top" id="stats_td2">
+                                <!-- This table hosts status categories -->
+                                <table id="tableStatusCategories" height="100%" cellSpacing="0" cellPadding="0" width="100%"
+                                    border="0">
+                                    <tr>
+                                        <td valign="top" id="stats_td3">
+                                            <table id="tableSecurity" cellSpacing="0" cellPadding="0" width="100%" border="0">
+                                                <tr>
+                                                    <td valign="top" id="stats_td4">
+                                                        <table id="tableSecurityStatus" class="navTask" cellSpacing="0" cellPadding="0" width="100%"
+                                                            border="0">
+                                                            <!-- Auto-protect -->
+                                                            <tr id="oItemTrAP" class="navStatItemTR" onclick="OnItemClick(indexAP)">
+                                                                <td width="38" id="reports_td_1">
+                                                                    <img id="oItemIconAP" class="navStatItemStateIcon" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_1"><a id="oItemNameAP" class="navTask" onclick="return false" href="#">Auto-Protect</a></td>
+                                                                <td width="0"><span id="oItemValueAP" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                            <!-- Separator -->
+                                                            <tr id="oSeparatorAP">
+                                                                <td class="navStatItemSeparator" colSpan="3" id="rep_td4"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="rep_img3"></td>
+                                                            </tr>
+                                                            <!-- Spyware -->
+                                                            <tr id="oItemTrSW" class="navStatItemTR" onclick="OnItemClick(indexSW)">
+                                                                <td width="38" id="reports_td_2">
+                                                                    <img id="oItemIconSW" class="navStatItemStateIcon" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_2"><a id="oItemNameSW" class="navTask" onclick="return false" href="#">Spyware 
+                                                                        Protection</a></td>
+                                                                <td width="0"><span id="oItemValueSW" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                            <!-- Separator -->
+                                                            <tr id="oSeparatorSW">
+                                                                <td class="navStatItemSeparator" colSpan="3" id="rep_td5"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="rep_img4"></td>
+                                                            </tr>
+                                                            <!-- Internet worm protection -->
+                                                            <tr id="oItemTrWP" class="navStatItemTR" onclick="OnItemClick(indexWP)">
+                                                                <td width="38" id="reports_td_4">
+                                                                    <img id="oItemIconWP" class="navStatItemStateIcon" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_3"><a id="oItemNameWP" class="navTask" onclick="return false" href="#">Internet 
+                                                                        Worm Protection</a></td>
+                                                                <td width="0"><span id="oItemValueWP" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                            <!-- Separator -->
+                                                            <tr id="oSeparatorWP">
+                                                                <td class="navStatItemSeparator" colSpan="3" id="rep_td6"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="rep_img5"></td>
+                                                            </tr>
+                                                            <!-- Email -->
+                                                            <tr id="oItemTrEm" class="navStatItemTR" onclick="OnItemClick(indexEm)">
+                                                                <td width="38" id="reports_td_5">
+                                                                    <img id="oItemIconEm" class="navStatItemStateIcon" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_4"><a id="oItemNameEm" class="navTask" onclick="return false" href="#">Email 
+                                                                        Scanning</a></td>
+                                                                <td width="0"><span id="oItemValueEm" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                            <!-- Separator -->
+                                                            <tr id="oSeparatorEm">
+                                                                <td class="navStatItemSeparator" colSpan="3" id="rep_td7"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="rep_img6"></td>
+                                                            </tr>
+                                                            <!-- Full scan -->
+                                                            <tr id="oItemTrFS" class="navStatItemTR" onclick="OnItemClick(indexFS)">
+                                                                <td width="38" id="reports_td_6">
+                                                                    <img id="oItemIconFS" class="navStatItemStateIcon" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_5"><a id="oItemNameFS" class="navTask" onclick="return false" href="#">Full 
+                                                                        System Scan</a></td>
+                                                                <td width="0"><span id="oItemValueFS" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                        </table> <!-- tableSecurityStatus -->
+                                                    </td>
+                                                </tr>
+                                            </table> <!-- tableSecurity -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="bottom" id="rep_td1">
+                                            <table id="tableSubscriptions" cellSpacing="0" cellPadding="0" width="100%" border="0">
+                                                <tr>
+                                                    <td id="oCategorySubscription" class="navStatCategory">
+                                                        <span id="oCategorySubscriptionTitle">Subscription Service</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td valign="top" id="stats_td5">
+                                                        <table id="tableSubscriptionStatus" class="navTask" cellSpacing="0" cellPadding="0" width="100%"
+                                                            border="0">
+                                                            <!-- Virus defs -->
+                                                            <tr id="oItemTrVD" class="navStatItemTR" onclick="OnItemClick(indexVD)">
+                                                                <td width="38" id="reports_td_7">
+                                                                    <img id="oItemIconVD" class="navStatItemStateIcon" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_6"><a id="oItemNameVD" class="navTask" onclick="return false" href="#">Virus 
+                                                                        Definitions</a></td>
+                                                                <td><span id="oItemValueVD" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                            <!-- Separator -->
+                                                            <tr id="oSeparatorVD">
+                                                                <td class="navStatItemSeparator" colSpan="3" id="rep_td2"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="rep_img1"></td>
+                                                            </tr>
+                                                            <!-- License/Subscriptions -->
+                                                            <tr id="oItemTrLS" class="navStatItemTR" onclick="OnItemClick(indexLS)">
+                                                                <td width="38" id="reports_td_8">
+                                                                    <img class="navStatItemStateIcon" id="oItemIconLS" width="20" height="20" src="check_wht.gif"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_7"><a class="navTask" id="oItemNameLS" onclick="return false" href="#">Days Remaining</a></td>
+                                                                <td><span id="oItemValueLS" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                            <!-- Separator -->
+                                                            <tr id="oSeparatorLS">
+                                                                <td class="navStatItemSeparator" colSpan="3" id="rep_td3"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="rep_img2"></td>
+                                                            </tr>
+                                                            <!-- Auto-LiveUpdate -->
+                                                            <tr id="oItemTrLU" class="navStatItemTR" onclick="OnItemClick(indexLU)">
+                                                                <td width="38" id="reports_td_9">
+                                                                    <img class="navStatItemStateIcon" id="oItemIconLU" height="20" src="check_wht.gif" width="20"
+                                                                        border="0"></td>
+                                                                <td width="162" id="reportstd_8"><a id="oItemNameLU" class="navTask" onclick="return false" href="#">Automatic 
+                                                                        LiveUpdate</a></td>
+                                                                <td><span id="oItemValueLU" class="navStatItemValue">Refreshing</span></td>
+                                                            </tr>
+                                                        </table> <!-- tableSubscriptionStatus -->
+                                                    </td>
+                                                </tr>
+                                            </table> <!-- tableSubscriptions -->
+                                        </td>
+                                    </tr>
+                                </table> <!-- tableStatusCategories -->
+                            </td>
+                            <td valign="top" width="124" id="stats_td5"> <!-- Chenge the size of the details panel here -->
+                                <!-- Hints panel -->
+                                <table id="tableHints" class="navStatHintTable" height="100%" cellSpacing="0" cellPadding="0"
+                                    width="100%" border="0">
+                                    <tr>
+                                        <td valign="top" id="stats_td6">
+                                            <span id = "1span" style="overflow: hidden; height: 194px">
+                                                <div id="oHintTitle" class="navStatHintTitle">Refreshing</div>
+                                                <div id="oHintText" class="navStatHintText">Please wait while the status is being 
+                                                    refreshed.</div>
+                                                <div><br>
+                                                    <a id="oHintMoreInfo" onclick="OnMoreInfo(); return false" class="navStatHintMoreInfo"
+                                                        style="visibility: hidden" href="#">more info</a></div>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <!-- button2 is above #1 and is only used when there's 2 buttons, so it's not the default -->
+                                    <tr>
+                                        <td height="34" align="center" style="padding-right: 4px" id="rpts_td1">
+                                            <span id = "2span" class="symButton" style="width: 98px; height: 24px">
+                                                <button id="oHintButton2" name="HintButton" class="symButton" style="background-image:url(btn96x22set.jpg)"
+                                                    onclick="OnButton2Click()"></button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <!-- button1 -->
+                                    <tr>
+                                        <td height="44" align="center" style="padding-right: 4px" id="rpts_td2">
+                                            <span id = "3span" class="symButton" style="width: 98px; height: 24px">
+                                                <button id="oHintButton" name="HintButton" class="symButton" style="background-image:url(btn96x22set.jpg)"
+                                                    onclick="OnButtonClick()"></button>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table> <!-- tableDetails -->
+                            </td>
+                        </tr>
+                    </table> <!-- tableStatus -->
+                </td>
+            </tr>
+        </table> <!-- tableNAVStatusPanel -->
+        <!-- NAV Status page resources -->
+        <div style="display:none"><br>
+            <br>
+            <div id="oSysStatusOK">Good</div>
+            <div id="oSysStatusWarn">Attention</div>
+            <div id="oSysStatusUrgent">Urgent Attention</div>
+            <div id="oHintOldUpdates">Your virus definitions are out of date. Run LiveUpdate 
+                for the latest virus protection updates.</div>
+            <div id="oHintExpiredSub">You are not fully protected from the latest threats. 
+                Renew your subscription for the latest virus protection updates.</div>
+            <div id="oHintTitleAP">Auto-Protect</div>
+            <div id="oHintAP">Provides continuous protection from viruses, spyware, and other 
+							  risks.</div>
+            <div id="oHintAPNOAS">Provides continuous protection from viruses and other 
+								  risks.</div>
+            <div id="oHintTitleSW">Spyware Protection</div>
+            <div id="oHintSW">Protects your computer against security risks. You can restore removed risks if necessary.</div>
+            <div id="oHintTitleEm">Email Scanning</div>
+            <div id="oHintEm">Detects viruses, spyware, and other risks in your email messages.</div>
+            <div id="oHintEmNOAS">Detects viruses and other risks in your email messages.</div>
+            <div id="oHintTitleWP">Internet Worm Protection</div>
+            <div id="oHintWP">Blocks Internet worm attacks at the point of entry.</div>
+            <div id="oHintWPUpgraded">For added protection, this feature was upgraded to use 
+                your Symantec firewall program.</div>
+            <div id="oHintTitleFS">Full System Scan</div>
+            <div id="oHintFS">It is recommended that you perform a full system scan at least once a week to ensure that your system stays protected.</div>
+            <div id="oHintTitleVD">Virus Definitions</div>
+            <div id="oHintVD">Your virus definitions are up to date.</div>
+            <div id="oHintVDWarn">Your virus definitions are out-of-date. Run LiveUpdate for 
+                the latest virus protection updates.</div>
+            <div id="oHintTitleLU">Automatic LiveUpdate</div>
+            <div id="oHintLU">Provides the latest virus protection and program updates from Symantec when your computer is connected to the Internet.</div>
+            <div id="oHintTitleLS">Subscription Status</div>
+            <div id="oHintSubsOK">Your subscription for virus protection is current.</div>
+            <div id="oHintSubsWarnDays">Your subscription for virus protection will expire in # days.</div>
+            <div id="oHintSubsWarnAutoRenew">%s need to verify if your subscription is still active.</div>
+            <div id="oHintSubsExpiredAutoRenew">%s cannot protect you until you verify that your subscription is active.</div>
+            <div id="oHintSubsWarnDay">Your subscription for virus protection will expire in # day.</div>
+            <div id="oHintTitleSubsStatus">Subscription Status</div>
+            <div id="oHintSubsExpired">Your subscription for virus protection has expired.</div>
+            <div id="oHintLicenseViolated">%s has been corrupted. Uninstall and reinstall %s.</div>
+            <div id="oHintLicenseError">%s has experienced an error that prevents it from 
+                determining the correct status. Please uninstall and reinstall %s.</div>
+            <div id="oHintRetailExpired">You must activate %s to continue your protection.</div>
+            <div id="oHintRetailDays">You must activate within # days or %s will stop working.</div>
+            <div id="oHintRetailDay">You must activate within # day or %s will stop working.</div>
+            <div id="oHintTrialExpired">Your trial period has expired. To ensure continued 
+                protection, click View Options below.</div>
+            <div id="oHintTrial">The trial period ends on #. Purchase %s before this date to 
+                continue uninterrupted protection.</div>
+            <div id="oHintTryDieExpired">The trial period has expired.</div>
+			<div id="oHintTryDieDays">The trial period ends in # days.</div>
+			<div id="oHintTryDieDay">The trial period ends in # day.</div>
+            <div id="oHintRentalExpired">To ensure continued protection, click View Options below.</div>
+            <div id="oHintRentalDays">Your trial period is valid for # days. To 
+                ensure uninterrupted protection, click View Options.</div>
+            <div id="oHintRentalDay">Your trial period is valid for # day. To 
+                ensure uninterrupted protection, click View Options.</div>
+            <div id="oHintRentalCancelled">Your service has been cancelled. To 
+            	continue your protection please renew it.</div>
+            <div id="oHintRentalOutOfDate">%s cannot protect you until you confirm your service is active.</div>
+            <div id="oHintRentalAlert">%s needs to check if your service is still active.</div>
+            <div id="oHintRentalActive">Your %s service is current and active.</div>
+            <div id="oBtnTextTurnOn">Turn On</div>
+            <div id="oBtnTextActivate">Activate Now</div>
+            <div id="oBtnTextViewOptions">View Options</div>
+            <div id="oBtnTextPurchase">Purchase</div>
+            <div id="oBtnTextCheckService">Check Service</div>
+            <div id="oBtnTextCheckStatus">Check Status</div>
+            <div id="oBtnTextVerifyStatus">Verify</div>
+            <div id="oBtnTextRenew">Renew Now</div>
+            <div id="oBtnTextScanNow">Scan Now</div>
+            <div id="oBtnTextRunLU">LiveUpdate</div>
+            <div id="oBtnTextRestore">Restore</div>
+            <div id="oCategorySubscriptionTitleFmt">%s Service</div>
+            <div id="oTextOn">On</div>
+            <div id="oTextOff">Off</div>
+            <div id="oTextUpgraded">Upgraded</div>
+            <div id="oTextHolding">Expired</div>
+            <div id="oTextError">Error</div>
+            <div id="oTextTampered">Corrupted</div>
+            <div id="oTextExpired">Expired</div>
+            <div id="oTextActive">Active</div>
+            <div id="oTextCancelled">Cancelled</div>
+            <div id="oTextOutOfDate">Out of Date</div>
+            <div id="oTextAlert">Alert</div>
+            <div id="oTextNotCompleted">Not completed</div>
+            <div id="oTextNotInstalled">Not installed</div>
+            <div id="oTextUpdating">Updating</div>
+            <div id="oTextDays"># days</div>
+            <div id="oTextDay"># day</div>
+            <div id="oTitleRenewal">Renewal Date</div>
+            <div id="oTitleRetail">Activation</div>
+            <div id="oTitleRetailOutOfDate">Subscription Status Out of Date</div>
+            <div id="oTitleRetailAlert">Subscription Status Alert</div>
+            <div id="oTitleProductActivation">Product Activation</div>
+            <div id="oTitleTrial">Trial Period</div>
+            <div id="oTitleTrialExpired">Trial Period</div>
+			<div id="oTitleTryDie">Trial Period</div>
+            <div id="oTitleRentalExpired">Service Status Expired</div>
+            <div id="oTitleRentalActive">Service Status Active</div>
+            <div id="oTitleRentalCancelled">Service Status Cancelled</div>
+            <div id="oTitleRentalOutOfDate">Service Status Out of Date</div>
+            <div id="oTitleRentalAlert">Service Status Alert</div>
+            <div id="oTitleRentalActivation">Service Activation</div>
+            <div id="oTitleDaysRemaining">Days Remaining</div>
+            <div id="oNameNAV">%s</div>
+            <div id="oNameRenewal">Renewal Date</div>
+            <div id="oNameSubscription">Subscription</div>
+            <div id="oNameRetail">Activate Within</div>
+            <div id="oNameRetailExpired">Product Activation</div>
+            <div id="oNameTrial">Purchase Within </div>
+			<div id="oNameTryDie">Trial Period</div>
+<!--            <div id="oNameTrialDays"># days </div>
+            <div id="oNameTrialDay"># day </div> OBSOLETED BY DEFECT 1-4DASGG -->
+            <div id="oNameTrialExpired">Trial Period</div>
+            <div id="oNameRental">Service Status</div>
+            <div id="oNameRentalActivation">Service Activation</div>
+            <div id="oNameEmail">Email Scanning</div>
+            <div id="oNameEmailIncoming">Incoming Email</div>
+            <div id="oNameEmailOutgoing">Outgoing Email</div>
+            <div id="oNameDaysRemaining">Days Remaining</div>
+            <div id="oNAV">Norton AntiVirus</div>
+        </div>
+        <!-- End of resources -->
+    </body>
+</html>

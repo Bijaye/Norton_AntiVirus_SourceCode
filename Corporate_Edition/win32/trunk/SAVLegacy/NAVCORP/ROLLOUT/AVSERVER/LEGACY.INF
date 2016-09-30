@@ -1,0 +1,224 @@
+;************************************************************************
+;	Norton AntiVirus
+;	Corporate Edition
+;	Common INF file						
+;	
+;	Copyright(c) 1999-2000 Symantec Corporation
+;************************************************************************
+
+
+[ScanEngineOptions]
+Engine=NAV
+
+
+;************************************************************************
+;							System Files Section
+;************************************************************************
+
+[LegacyUninstall]
+DelFiles=Windows.copy.files,Legacy.copy.files
+DelReg=Legacy.Del.Reg
+
+[Windows.copy.files]
+ldvp95.ini
+	
+[Legacy.copy.files]
+ctl3d32.sto
+event.dll
+wol32.dll
+readme.txt
+vpwin32.exe
+oscuistf.dll
+ldvptrap.dll
+expand.dll
+uninst.exe
+vpwin32.hlp
+support.hlp
+viruses.hlp
+pscan.sys
+rtvscan.exe
+action.dll
+rss.exq
+vp_undo.exe
+decom32.dll
+scannt.dll
+smice32.dll
+README.TXT
+RESCUE.DOS
+LDVP95.EXE
+RESCUE.EXE
+RESCUE.DAT
+MSVCRT40.DLL
+VSCAND.EXE
+MFC40.DLL
+LDVP95.HLP
+GCL51FW.DLL
+COMMON.VIR
+SCAN32.DLL
+MEMBOOT.DLL
+SMICE32.DLL
+DECOM32.DLL
+
+[LegacyDirs]
+Suspect
+Client
+
+[LegacyLinks]
+Link=StartUp,,WProtect for Windows 95
+Link=LANDesk Virus Protect,,LDVP Uninstall
+Link=LANDesk Virus Protect,,README
+Link=LANDesk Virus Protect,,WProtect for Windows NT
+Link=LANDesk Virus Protect,,WProtect for Windows 95
+Link=LANDesk Virus Protect,,WProtect for Windows 95 Read Me
+Link=LANDesk Virus Protect,,Uninstall WProtect for Windows 95
+Link=LANDesk Virus Protect,,Create Emergency Rescue Disk
+
+[Legacy.Del.Reg]
+HKLM,SOFTWARE\Intel\Landesk\"VirusProtect"
+HKLM,SOFTWARE\Intel\"WProtect for Windows 95"
+HKLM,Software\Microsoft\Windows\CurrentVersion\App Paths\"LDVP95.exe"
+HKLM,Software\Microsoft\Windows\CurrentVersion\Uninstall\"WProtect for Windows 95"
+
+[Legacy_Client_Services]
+DelService=LANDesk VirusProtect Server
+DelService=Pscan
+
+[Legacy_Server_Services]
+DelService=LANDesk Notification
+DelService=LANDesk VirusProtect Server
+DelService=Pscan
+
+[LegacyShares]
+DelShare=VPHOME
+DelShare=VPALERT$
+
+
+;************************************************************************
+;							System Files Section
+;************************************************************************
+
+[WinNTSystemFiles]
+;system\ctl3dnt.dll,ctl3d32.dll
+;system\comctlnt.dll,comctl32.dll
+
+[Win95SystemFiles]
+;system\ctl3d95.dll,ctl3d32.dll
+;system\comctl95.dll,comctl32.dll
+system\msvcrt.dll
+
+[SystemFiles]
+;system\ctl3d.dll
+;system\mfc42.dll
+;system\msvcrt.dll
+;system\msvcirt.dll
+;system\msvcrt40.dll
+;system\msvcp50.dll
+;system\stdole32.tlb
+;system\oleaut32.dll
+;system\olepro32.dll
+
+
+;************************************************************************
+;							Common Components Section
+;************************************************************************
+
+[OnCommonUninstall]
+DelDirs=CommonDirs
+DelFiles=CommonFiles,CommonEngineFiles
+DelReg=CommonDelRegistry
+UnShareFiles=SetupSharedFiles,SetupRegFiles
+DelLinks=CommonMenuItems
+
+[CommonDefaultOptions]
+NT3_ONLY,0
+
+[CommonDirs]
+,,xfer
+,,ams2
+,%TEMP_PATH%\,NAVSetup,{DEST_ABSPATH}
+
+[SetupSharedFiles]
+,,vpremove.exe
+,,legacy.inf
+
+[SetupRegFiles]
+,,ldvpdist.dll
+,,transman.dll
+
+[CommonFiles]
+,,client32.inf
+,,console.inf
+,,server.inf
+,,vpdata.var
+,,grc.dat
+,,path.ini
+,,copysrv.exe
+,,setup.exe
+,,vpremote.dat
+,,eremove.exe
+,,*.gid
+,,*.fts
+,,*.ftg
+
+[CommonEngineFiles]
+,,version.dmp
+,,vpdebug.log
+,,ibmlic.dat
+,,navlic.dat
+,,lic.dat
+,,vp*.vdb
+,,vd*.vdb
+,,verv.vdb
+,,virfilt.lst
+,,virsig.lst
+,,catalog.dat
+,,naveng.exp
+,,naveng32.dll
+,,navex15.*
+,,navex32a.dll
+,,ncsacert.txt
+,,technote.txt
+,,update.txt
+,,virscan.inf
+,,virscan*.dat
+,,whatsnew.txt
+,,zdone.dat
+,,naveng16.dll
+,,navex16.dll
+,,naveng.nlm
+
+[CommonDelRegistry]
+HKCU,Software\Intel\Landesk\VirusProtect6
+HKLM,Software\Intel\Landesk\VirusProtect6
+HKLM,Software\Microsoft\Windows\CurrentVersion\Uninstall\LDVP
+
+[CommonMenuItems]
+Norton AntiVirus Corporate Edition
+Norton AntiVirus Corporate Edition (Common),{NT3_ONLY}
+
+[OnAms2Uninstall]
+DelSnapIn{AMS2_Console}=AmsExecute{Execute}
+
+[AmsExecute]
+InstallAMS()
+
+[LDVPAppWindows]
+LANDeskVPAdmin
+LANDeskVPTray
+LANDeskVPC32
+LANDeskSetup
+
+
+; This section of keys will only be deleted if there are not any keys or values in them
+[EmptyRegistryUninstall]
+HKLM,Software\Intel\LANDesk\VirusProtect6\CurrentVersion
+HKLM,Software\Intel\LANDesk\VirusProtect6
+HKLM,Software\Intel\DLLUsage\VP6
+HKLM,Software\Intel\DLLUsage
+HKLM,Software\Intel\LANDesk\AMS2\Installed\Files
+HKLM,Software\Intel\LANDesk\AMS2\Installed
+HKLM,Software\Intel\LANDesk\AMS2
+HKLM,Software\Intel\LANDesk
+HKCU,Software\Intel\LANDesk
+HKCU,Software\Intel
+

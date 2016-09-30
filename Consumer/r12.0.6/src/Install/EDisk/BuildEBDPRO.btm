@@ -1,0 +1,175 @@
+@echo off
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+md %root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO
+copy %root%..\..\..\Nobuilds\Norton_Emergency_Disk\NED.exe %root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\NED.exe
+copy %root%..\..\..\Nobuilds\Norton_Emergency_Disk\readme.txt %root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\readme.txt
+
+IFF EXIST %root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\disk1.img THEN
+	echo cleaning up old image files
+	erase %root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO*.img
+ENDIFF
+
+copy %root%..\..\..\Nobuilds\Norton_Emergency_Disk\ned.exe %root%\ned.exe
+
+:========================================================================
+: Emergency Disk 1
+:========================================================================
+echo.
+echo Creating Norton AntiVirus Emergency Disk 1
+echo.
+
+copy %root%cln98se.img %root%disk1.img
+DELAY 5
+%root%ned /SILENT
+erase %root%disk1.img /y /z
+
+IFF NOT EXIST a:\COMMAND.COM THEN
+	set label=Norton SystemWorks EMEREGENCY DISK 1
+	SCRPUT 11 999 bri red on blu wasn't created properly INSERT A Floppy Disk in the A: drive
+	gosub INSERT_DISK
+	GOTO REDO1
+ENDIFF
+
+attrib -r -s -h  a:\*.*
+erase a:\command.com
+
+copy %root%..\..\Install\EDisk\EBD\Disk1_Pro\*.* a:
+
+attrib +r +s +h  a:\io.sys
+attrib +r +s +h  a:\msdos.sys
+
+copy %root%..\..\Install\EDisk\Startup_pro.exe a:\startup.exe
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Norton AntiVirus Emergency Disk 1" image.
+echo.
+
+DELAY 5
+%root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Disk 1"
+
+echo.
+echo Norton AntiVirus Emergency Disk 1 Completed!
+echo.
+
+:========================================================================
+: Emergency Disk 2
+:========================================================================
+echo.
+echo Creating Norton AntiVirus Emergency Boot Disk 2
+echo.
+
+erase a:\*.* /y /z
+
+copy %root%..\..\Install\EDisk\EBD\Disk2\*.* a:
+copy %root%..\..\Bin.dvx\Navdx.* a:
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Norton AntiVirus Emergency Disk 2" image.
+echo.
+
+DELAY 5
+%root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Disk 2"
+
+echo.
+echo Norton AntiVirus Emergency Disk 2 Completed!
+echo.
+
+
+:========================================================================
+: Emergency Disk 3 (Definition Disk)
+:========================================================================
+echo.
+echo Creating Norton AntiVirus Definition Disk
+echo.
+
+erase a:\*.* /y /z
+
+copy %root%..\..\Install\EDisk\EBD\Disk3\*.* a:
+
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Norton AntiVirus Definition Disk" image.
+echo.
+
+DELAY 5
+%root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\ned.exe /SILENT /STORE "Norton AntiVirus Definition Disk"
+
+echo.
+echo Norton AntiVirus Definition Disk Completed!
+echo.
+
+:========================================================================
+: Emergency Disk 4 (UnErase)
+:========================================================================
+echo.
+echo Creating Norton AntiVirus Emergency Disk 4 (UnErase)
+echo.
+
+erase a:\*.* /y
+
+copy %root%..\..\Install\EDisk\EBD\Disk4\*.* a:
+
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Norton AntiVirus Definition Disk" image.
+echo.
+
+DELAY 5
+%root%..\..\..\Nobuilds\Norton_Emergency_Disk\NAVPRO\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Disk 4"
+
+echo.
+echo Norton AntiVirus Emergency Disk 4 Completed!
+echo.
+
+:========================================================================
+:  Restore the Boot through image, so CM can reboot remotely if the build breaks
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Boot Through Image"
+echo.
+
+copy %root%bypass.img %root%disk1.img
+DELAY 5
+%root%ned /SILENT
+erase %root%disk1.img /y /z
+
+echo.
+echo Boot Through Image Restored!
+echo.
+
+quit
+
+:INSERT_DISK
+	rem prompt to insert disk
+	
+	SCREEN 12 999 Please insert disk:
+	pause
+return

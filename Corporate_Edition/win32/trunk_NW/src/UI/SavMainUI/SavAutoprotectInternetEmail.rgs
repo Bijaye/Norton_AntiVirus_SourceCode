@@ -1,0 +1,27 @@
+HKCR
+{
+	SavMainUI.SavAutoprotectInternetEmail.1 = s 'SavAutoprotectInternetEmail Class'
+	{
+		CLSID = s '{9A4A52A6-7B83-403D-A6C9-1C8A492687CD}'
+	}
+	SavMainUI.SavAutoprotectInternetEmail = s 'SavAutoprotectInternetEmail Class'
+	{
+		CLSID = s '{9A4A52A6-7B83-403D-A6C9-1C8A492687CD}'
+		CurVer = s 'SavMainUI.SavAutoprotectInternetEmail.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {9A4A52A6-7B83-403D-A6C9-1C8A492687CD} = s 'SavAutoprotectInternetEmail Class'
+		{
+			ProgID = s 'SavMainUI.SavAutoprotectInternetEmail.1'
+			VersionIndependentProgID = s 'SavMainUI.SavAutoprotectInternetEmail'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{72DCBB81-94A9-4499-86E5-1188FAC09630}'
+		}
+	}
+}

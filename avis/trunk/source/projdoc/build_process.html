@@ -1,0 +1,450 @@
+<HTML>
+<HEAD>
+<TITLE>Source Code Control and Build Process</TITLE>
+</HEAD>
+
+<body>
+<h1 align=center>Source Code Control and Build Process</h1>
+<p align=center><b>***** IBM Internal Use Only *****</b> 
+<p align=center>Created by <a href="mailto:rbking2@us.ibm.com">Robert B. King</a> 
+<p align=center>Maintained by <a href="mailto:stubbs@us.ibm.com">R. Glenn Stubbs</a> 
+<p align=center>Last Revised on October 14, 1998 
+
+<P>The purpose of this note is to specify the IBM Immune System build
+and source code control procedures.  The contents of this note was
+derived from the note describing the IBM AntiVirus 3.0 build and
+source code control procedures.  We proceed to describe three issues:
+source code control, build tree structure and process, and makefile
+parameters and naming conventions.  The master copy of this document
+is located in CMVC in the <B>projdoc</B> directory and is owned by the
+CMVC component <B>build</B>.
+
+<MENU>
+<LI><A HREF="#Source_Code_Control">Source Code Control</A> </LI>
+<LI><A HREF="#Build_Tree_Structure">Build Tree Structure</A> </LI>
+<LI><A HREF="#Naming_Conventions">Naming Conventions</A> </LI>
+<LI><A HREF="#Env_Var_Settings">Environment Variables Settings for
+American English Build Example</A> </LI>
+</MENU>
+
+<H2>Background: Languages</H2>
+
+<P>Since we are reusing the build system from Version 3.0 of IBM
+AntiVirus, the source code control and build process takes into
+account various national languages.  Since no translation of the
+Immune System is planned, we will only be using <B>ea</B> which stands
+for American English.
+
+<H2><A NAME="Source_Code_Control">Source Code Control</H2>
+
+<P>The source code control system is called CMVC (Configuration
+Management Version Control).  We plan to enable the notion of "tracks"
+within CMVC.  This gives developers the ability to group multiple
+files for functional changes and bug fixes as one -- e.g., we either
+include all of the files necessary or none of the files.  In addition,
+this enables us to spin builds regardless of the status of CMVC.
+
+<P>Whenever a developer needs to modify code in response to a bug or
+DCR (from the new Lotus Notes database), a "Defect" or "Feature" must
+be opened by the developer against the appropriate CMVC component.
+The developer should specify the Lotus Notes ID number as the comment
+in their Defect or Feature.  Next, the developer chooses to accept the
+Defect (or Feature) and then they create a "Track" which will be used
+to associate all file changes required for this bug (or DCR).  At this
+time, files can be locked by the developer and then changes are
+checked in.  When a developer is finished making their changes, they
+complete all the "Fix Records".  This automatically moves the state of
+the track to "integrate".  At this point, the changed code is eligible
+for inclusion in the next build.
+
+<P>The first time a build starts, a level ("001") is created.  This
+level contains all the files from the previous level plus those tracks
+currently in the "integrate" state.  If the build finishes without
+errors, then this level is committed.  If the build has errors, then
+we fix them and respin an incremental build with only the files that
+have been changed.  In essence, "001" represents the build number
+in terms of builds that succeeded without errors.  Level manipulation
+is reserved to the Hawthorne product builder.
+
+<P>The structure of the CMVC components is as follows (subject to change):
+<PRE>
+    software
+        immune_system_software
+            avis_daemon
+            avis_gui
+            avis_servlets
+            build
+            avis_dataflow
+            avis_clients
+            avis_gateway
+            avis_database
+            avis_filter
+
+    licensed_products
+
+    products
+        build
+        package
+        product_info
+
+    resources
+
+    test
+</PRE>
+<P>The CMVC client code can be found in \\avnetsrv\ftproot\tools\cmvc.
+CMVC has four client products: "linux" for Linux, "os2" for OS/2,
+"win16" for Windows 3.1, and "win32" for Windows 95, and Windows NT.
+
+<H2>Build Process</H2>
+
+<H3><A NAME="Build_Tree_Structure">Build Tree Structure </H3>
+
+<P>The build tree listed below is the one that will be created on the
+build machines.  The complete source files will be copied to each NT
+build machine.  The build machines will only build those components
+that need to be built on each respective machine.  The results will be
+copied to a shared read-only LAN drive that developers can use to
+build against.  The build process will be capable of iterating through
+each makefile twice: once for release builds (production or ship) and
+a second time for debug builds (to be used by developers when
+debugging problems).
+
+<P>The input (read-only) source trees obtained from CMVC will be structured as follows:
+<PRE>
+src
+  build
+  dataflow
+  inc
+
+utils
+  w32
+
+resdoc
+  com
+    inc
+  ea
+</PRE>
+<P>The "src" tree contains all language independent code -- e.g., all
+the C, CPP, and ASM files, most of the H files, etc.  The "resdoc"
+tree contains items that the translation houses need to perform their
+job, including resources, documentation, and help.  Its directory
+structure is parallel to the "src" directory structure underneath each
+language.  For those resource, documentation, and header files that
+are common across all languages, a "common" subdirectory exists (with
+parallel subdirectories). The "utils" tree contains locally developed
+utilities that are needed for the build process -- e.g., "setcrc",
+"pkzip", etc.
+
+<P>The "src\inc" contains header files that are used to describe APIs
+for various component libraries.  For instance, the header file
+"mac.h" will be owned by the CMVC component "macros"; the header file
+"vvr.h" will be owned by the CMVC component "vvr".
+
+<P>The "src\incmak" contains make include files.  This is a centralized
+location where developers may place their make include files -- e.g., if
+a developer generates rules files that are common between multiple 
+components.
+
+<P>After the build completes, the following trees will also exist:
+<PRE>
+dobj
+  ea
+
+dlib
+  ea
+
+dout
+  ea
+
+robj
+  ea
+
+rlib
+  ea
+
+rout
+  ea
+    32
+    nt
+
+</PRE>
+<P>Compiler output and scratch space for compilation (e.g., response
+files) are placed in either "dobj" (debug) and "robj" (release) which
+has subdirectories for each language (to handle in the worst case DOS
+which needs to be recompiled for each language).  Below that, the
+structure will be parallel to that of the "src" tree.  Similarly, the
+contents of the "rlib" and "dlib" will be uniquely named libraries
+that can be used by both developers and the build process for the
+creation of DLLs and EXEs.
+
+<P>The final results of the build process and the input for the
+packaging process will be placed in the "dout" and "rout" directories
+according to their language and platform name.  It is from these
+directories that packaging will obtain its inputs and its outputs will
+be placed somewhere (perhaps in "dpack" and "rpack" whose structure
+will be determined at a later date).
+
+<H3><A NAME="Naming_Conventions">Naming Conventions </H3>
+
+<P>If we extend the list of six operating system platform codes (from
+Ed Pring's "Trees of Trees" document) to take into account additional
+target platforms, then we get the following table:
+<PRE>
+   Windows 32-bit (e.g., WinNT & Win95)         32
+   Windows 32-bit Static Libraries              3S
+   Windows NT                                   NT
+   Windows NT Static Libraries                  NS
+</PRE>
+<P>The corresponding list of compilers follows:
+<PRE>
+   Microsoft Visual C++ 5.0                     V5
+   Microsoft Visual C++ 6.0                     VC
+</PRE>
+<P>Within the intermediate object directory tree, if multiple
+object/output directories are needed (e.g., for backend libraries), I
+suggest that developers to utilize these naming conventions for those
+subdirectories: "xxyy", where "xx" designates the compiler and "yy"
+designates the target operating system.  For instance, the VVR
+scratch/object directory for the ship (release) version of American
+English using Microsoft Visual C++ 6.0 for Windows NT might have the
+name "robj\ea\vvr\vcnt".
+
+<P>For instance, the makefile used to build
+the VVR library compiled using Microsoft Visual C++ 6.0 for Windows NT
+might have the filename "vvrvcnt.mak".
+
+<H3><A NAME="Env_Vars_Defs">Environment Variables </H3>
+
+<P>The following environment variables are defined to locate the base
+(root directory) of various compilers and tools:
+
+<DL COMPACT SIZE=15>
+<DT><B>DEVSTD97 </B>
+<DD>This points to the directory containing the Microsoft Visual
+Studio 97 (which contains Microsoft Visual C++ 5.0 Enterprise
+Edition).
+<DT><B>VISSTD60</B>
+<DD>This points to the directory containing the Microsoft Visual
+Studio 6.0 (which contains Microsoft Visual C++ 6.0 Enterprise
+Edition).
+<DT><B>xxDB2xx</B> 
+<DD>Not defined yet... points to the directory containing the DB2
+library and header files.
+<DT><B>xxGOxx</B> 
+<DD>Not defined yet... points to the directory containing the Lotus Go
+server libraries and header files.
+</DL>
+
+<P>The following environment variables are set in the build process to
+indicate different attributes about the build:
+
+<DL COMPACT SIZE=15>
+<DT><B>BLDDEBUG</B> 
+<DD>If this environment variable is defined, then assume that a
+debug build is occurring (e.g., extra tracing messages and/or less/no
+optimization).  If it is not defined, then assume that a release build
+is occuring.  
+<DT><B>BLDOS</B> 
+<DD>This contains "w32" which corresponds to the NT build operating system.
+<DT><B>LANG1</B> 
+<DD>This designates the language that is being built.  For the Immune System,
+we will only be building "ea" (American English).
+<DT><B>LANGTYPE </B> 
+<DD>This designates whether the language is an "SBCS" or "DBCS"
+language type. American English is an "SBCS" (single byte character
+set) language.
+<DT><B>LANGNAME </B> 
+<DD>This designates which language is being built such as "T_LANG_EA"
+for American English.  It might be useful to include this variable in
+the CFLAGS of a makefile for a component that needs to know which
+language is being compiled.
+</DL>
+
+<P>The following environment variables are defined to locate the
+various build trees (all environment variables may include a drive
+letter):
+
+<DL COMPACT SIZE=15>
+<DT><B>SRCD </B> 
+<DD>This points to the root of the "src" tree. 
+<DT><B>SRCDRIVE </B> 
+<DD>This contains the drive letter and colon for the "src" tree.
+<DT><B>UTILD </B> 
+<DD>This points to the concatenation of the root of the "utils"
+tree and the current build platform (e.g., "w32").
+Developers can access locally produced utilities from this directory.
+<DT><B>RESD </B> 
+<DD>This points to the concatenation of the root of the "resdoc" tree
+and the current build national language (LANG1).
+<DT><B>RESDRIVE </B> 
+<DD>This contains the drive letter and colon for the "resdoc" tree.
+<DT><B>OBJD </B> 
+<DD>This points to the concatenation of the root of the "robj" or
+"dobj" tree (depending upon whether this is a debug build or a release
+build) and the current build national language (LANG1).
+<DT><B>OBJDRIVE </B> 
+<DD>This contains the drive letter and colon for the appropriate object tree.
+<DT><B>LIBD </B> 
+<DD>This points to the concatenation of the root of the "rlib" or
+"dlib" tree (depending upon whether this is a debug build or a release
+build) and the current build national language (LANG1).
+<DT><B>OUTD </B> 
+<DD>This points to the concatenation of the root of the "rout" or
+"dout" tree (depending upon whether this is a debug build or a release
+build) amd the current build national language (LANG1).
+</DL>
+
+<P>To more easily support developer builds, five additional
+environment variables are defined that will most likely include a
+drive letter.  These variables will be used when the above xxxD
+variables are pointing to various directories on a local developers
+machine.  In the section of this document on Makefiles, I will
+describe how these variables are used:
+
+<DL COMPACT SIZE=15>
+<DT><B>BLDSRC </B> 
+<DD>This points to the root of the "src" tree from a build on the LAN.
+<DT><B>BLDLIB </B> 
+<DD>This points to the base of the appropriate "rlib" or "dlib" tree
+from a build on the LAN. 
+<DT><B>BLDRES </B> 
+<DD>This points to the concatenation of the root of the "resdoc" tree
+and the current build national language from a build on the LAN.
+<DT><B>VCLIB </B> 
+<DD>This contains a list of directories that should be searched for
+libraries.  It is in a syntax that is appropriate for the Microsoft
+Visual C++ Linker ("PATHNAME1;PATHNAME2"). 
+<DT><B>INCPATHS </B> 
+<DD>This contains a list of directories that should be searched for
+header files. Similarly, its purpose is to simplify makefiles.
+</DL>
+
+<H3><A NAME="Makefiles">Makefiles </H3>
+
+<P>The build process consists of multiple passes.  Each pass should
+continue regardless of the errors that are generated.  Makefile
+execution errors (compilation, linking, etc.)  should be printed on
+the console (e.g., either standard output or standard error).  If a
+makefile does not require one of these passes, then its makefile
+should still have the appropriate target -- it just does not do
+anything:
+<OL COMPACT>
+<LI>This "make clean" pass ("clean" is the target name) is used to erase
+the appropriate files for the current build national language.
+
+<LI>This "make depend" pass is used to generate the dependencies for
+the various targets. It can also be used to create the appropriate
+output directories and/or to copy the source files to the "robj" (or
+"dobj") working directories.
+
+<LI>This "make compile" pass is used to compile the C, CPP, and ASM files
+into OBJ files and to compile resource RC files into RES with the
+resource compiler.  Depending upon whether this is a release or debug
+spin, the results will be placed in the appropriate "robj" or "dobj"
+directory.
+
+<LI>This "make library" pass is used to generate the libraries using the
+object files.  Similarly, depending upon whether this is a release or
+debug spin, the results will be placed in the appropriate "rlib" or
+"dlib" directory.  No mixed National Language libraries are permitted
+(e.g., all objects for a particular library must come from the same
+national language).
+
+<LI>This "make help" pass is used for building help and documentation --
+essentially things that will be translated for specific language
+versions.
+
+<LI>This "make exedll" pass is used to build the executables and DLLs from
+the libraries and a minimal number of object files.  In general, all
+executables and DLLs should be built from libraries.  This will be
+discussed in further detail below.
+</OL>
+
+<P>Packaging occurs after the build process finishes -- the actual
+process will be determined later.
+
+<P>Under no circumstances should any file be written or modified in
+the "src" or "resdoc" trees.  The developer is provided with space for
+objects, response files, etc. in the OBJD tree and is expected to
+generate any appropriate subdirectories.  At a minimum, the
+appropriate root directory must be created.  For example, to find the
+working location for creating the "vvr" objects for Microsoft Visual
+C++ 5.0 for Windows NT, the "vvr" developer could set for an internal
+makefile variable called OBJ as follows: OBJ = $(OBJD)/vvr/vcnt
+
+<H3>Makefile Invocation Examples</H3>
+
+<P>If we were compiling in American English ("ea"), then all language
+variables would be set to "ea".
+
+<H3>Easier Development using the Same Makefile as Build</H3>
+
+<P>To permit easier development of executables and DLLs on a
+developers workstation, we uge the them to include the following
+environment variables in your search paths for header files and
+libraries.  Please note that I have also expanded out the current
+proposed definition for each of these variables:
+<PRE>
+INCPATHS=-I$(SRCD)\inc -I$(RESD)\..\com\inc -I$(BLDSRC)\inc -I$(BLDRES)\..\com\inc
+VCLIB=$(LIBD)\..\$(LANG1);$(BLDLIB)\..\$(LANG1)
+</PRE>
+<P>Lets looks at the advantages of this approach in terms of three cases:
+<OL COMPACT>
+<LI>When the production build runs, the BLDLIB, BLDSRC, and BLDRES will
+be set to the values LIBD, SRCD, and RESD, respectively.  Hence, the
+statement above has no impact.
+
+<LI>If I am a GUI (or front-end developer), then I can set up my local
+environment to one that parallels the build environment.  In addition,
+I can choose a build on the LAN and set the environment variables
+BLDLIB, BLDSRC, and BLDRES to point to the appropriate trees.  When I
+want to link a new GUI program with the backend libraries from the
+LAN, the linker will first search the local machine for the libraries
+and secondly search the LAN.
+
+<LI>If I am a backend developer, then I can also set up my local
+environment to one to one that parallels the build environment.  I can
+build a GUI that uses my backend library by first rebuilding my
+library and secondly rebuilding the GUI on my local machine.  During
+the second step, the GUI makefile will first search for its libraries
+locally and secondly from the LAN.
+</OL>
+
+<H3><A NAME="Env_Var_Settings"> Environment Variable Settings for
+American English Build </H3>
+
+<P>For illustration purposes, assume that the C drive on the build
+machines contains both the operating system and the build (compiler
+and other utilities) tools and that the D drive contains the build
+input and outputs for release avis100 and level 010.  For an American
+English release (ship) build, the following environment variables
+would be set:
+<PRE>
+AVIS_BUILD=100.010
+AVIS_VERSION=1.0
+AVIS_VRM=100
+BLDLIB=D:\avis100.010\rlib\ea
+BLDOS=w32
+BLDRES=D:\avis100.010\resdoc\ea
+BLDSRC=D:\avis100.010\src
+CPWIN32RC=-10x409
+DEVSTD97=C:\DevStudio
+INCPATHS=-Id:\avis100.010\src\inc -Id:\avis100.010\resdoc\ea\..\com\inc -Id:\avis100.010\src\inc -Id:\avis100.010\resdoc\ea\..\com\inc
+LANG1=ea
+LANGNAME=T_LANG_EA
+LANGTYPE=SBCS
+OBJD=d:\avis100.010\robj\ea
+OBJDRIVE=d:
+OUTD=d:\avis100.010\rout\ea
+RESD=d:\avis100.010\resdoc\ea
+RESDRIVE=d:
+SRCD=d:\avis100.010\src
+SRCDRIVE=d:
+TREED=d:\avis100.010\rtree
+UTILD=d:\avis100.010\utils\w32
+VCLIB=d:\avis100.010\rlib\ea\..\ea;d:\is100.010\rlib\ea\..\ea;
+VISSTD60=C:\VisualStudio
+</PRE>
+
+</body>
+</html>

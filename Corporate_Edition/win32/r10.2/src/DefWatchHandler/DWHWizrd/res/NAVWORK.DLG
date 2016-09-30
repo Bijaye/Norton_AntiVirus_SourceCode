@@ -1,0 +1,1315 @@
+// Copyright 1993 - 2003 Symantec Corporation. All rights reserved.
+//************************************************************************
+//
+// $Header:   N:/NAVWORK/VCS/navwork.dlv   1.45   28 Jul 1998 11:19:52   JBRENNA  $
+//
+// Description:
+//  Dialogs for NAVWORK.DLL
+//
+// Notes:
+//  This file is broken into W32 and W16 sections.
+//  In addition, the W32 section has sections for NAVWNT modified dialogs,
+//  standard W32 version of the same dialogs, and common NAVWNT/standard
+//  dialogs.
+//
+// See Also:
+//************************************************************************
+// $Log:   N:/NAVWORK/VCS/navwork.dlv  $
+// 
+//    Rev 1.45   28 Jul 1998 11:19:52   JBRENNA
+// Change IDD_SYSINTEG_PROMPT to have CONTINUE button as the default button by placing it first.
+// 
+//    Rev 1.44   27 Jul 1998 14:49:14   TCASHIN
+// Fixed more clipping bugs.
+// 
+//    Rev 1.43   25 Jul 1998 19:08:06   mdunn
+// Removed stray "D" at the end of the file.
+// 
+//    Rev 1.42   24 Jul 1998 15:36:42   tcashin
+// More simplified Chinese clipping tweaks.
+// 
+//    Rev 1.37   20 Jul 1998 16:33:20   tcashin
+// Made minor changes to the repair wizard's "Still Infected" panel to
+// fix a clipping problem in simplified Chinese.
+// 
+//    Rev 1.36   16 Jul 1998 17:30:34   tcashin
+// Yet another clipping fix ... virus info dialog ... simplified Chinese.
+// 
+//    Rev 1.35   16 Jul 1998 17:16:50   dshanno
+// Fixed WIN9X Scan Summary placement of ID_SS_FILSCAN
+// 
+//    Rev 1.34   10 Jul 1998 16:59:56   tcashin
+// Minor tweak for text clipping in Simplified Chinese.
+// 
+//    Rev 1.33   08 Jul 1998 19:28:00   tcashin
+// Fixed a clipping problem in the virus info dialog.
+// 
+//    Rev 1.32   08 Jul 1998 19:19:10   dshanno
+// Tiny tweaks to Scan Summary screen
+// 
+//    Rev 1.31   29 Jun 1998 13:50:50   DBuches
+// Fixed more text clipping problems.
+// 
+//    Rev 1.30   26 Jun 1998 15:06:44   jtaylor
+// Fixed y alignment on controls.
+// Fixed the swapped locations of the Quarantine and deleted BR and MBR.
+//
+//    Rev 1.29   22 Jun 1998 14:41:26   dshanno
+// Changed layout for Standard W32 Dialogs that I had overlooked
+//
+//
+//    Rev 1.28   15 Jun 1998 12:58:30   dshanno
+// Repositioned text for layout on scan screen and scan summary screens
+// Changed text on Quarantine Repair Wiz Panel
+//
+//    Rev 1.27   10 Jun 1998 16:50:02   DBuches
+// Fixed more text clipping problems.
+//
+//    Rev 1.26   07 Jun 1998 15:07:00   tcashin
+// Fixed more text clipping bugs.
+//
+//    Rev 1.25   05 Jun 1998 11:35:16   DBuches
+// Fixed more text clipping.
+//
+//    Rev 1.24   03 Jun 1998 18:42:16   tcashin
+// Added Forward Files dialog.
+//
+//    Rev 1.23   02 Jun 1998 20:46:58   DBUCHES
+// Fixed text clipping problems.
+//
+//    Rev 1.22   02 Jun 1998 18:50:28   DBuches
+// Corrected problem with animation in zip download dialog.
+//
+//    Rev 1.21   29 May 1998 16:02:40   DBuches
+// Fixed misc problems with Netscape Download save dialogs.
+//
+//    Rev 1.20   27 May 1998 19:00:20   TCASHIN
+// Fixed the scan results dialogs to have "--" in areas that do not
+// apply (quarantining MBRs, etc.). All others start with zero.
+//
+//    Rev 1.19   19 May 1998 00:13:44   tcashin
+// More dialog box changes for counting repaired, quarantine, and deleted files.
+//
+//    Rev 1.18   12 May 1998 17:37:28   mdunn
+// Fixed 114828 - text clipping in the two "virus found in download" dlgs.
+//
+//    Rev 1.17   12 May 1998 13:56:58   tcashin
+// Rearranged the summary dialogs. Added number of files deleted
+// and quarantined to the repair wizard finish panels.
+//
+//    Rev 1.16   13 Apr 1998 22:41:50   tcashin
+// Added Quarantine button to the Problems Found dialog.
+//
+//    Rev 1.15   06 Apr 1998 15:21:54   DBuches
+// Added new animation control to scanning dialog.
+//
+//    Rev 1.14   03 Apr 1998 12:08:56   tcashin
+// Added the new quarantine panel to the repair wizard.
+//
+//    Rev 1.13   09 Mar 1998 23:48:28   DALLEE
+// Removed old Repair Wizard UI elements.
+// Replaced with stuff for new Repair Wizard.
+//
+//    Rev 1.12   18 Feb 1998 16:22:16   mdunn
+// Ported NEC code from the ROSNEC area.
+//
+//    Rev 1.11   26 Aug 1997 18:03:38   DBUCHES
+// Fixed text clipping bugs.
+//
+//    Rev 1.10   21 Jul 1997 13:50:34   DBUCHES
+// Widened static text fields in VirusInfo dialogs.
+//
+//    Rev 1.9   11 Jul 1997 14:18:16   DBUCHES
+// Moved groupboxes in ScanResults dialog.
+//
+//    Rev 1.8   11 Jul 1997 13:58:14   DBUCHES
+// Adjusted text positions in ScanResults dialog.
+//
+//    Rev 1.7   27 Jun 1997 14:43:02   DBUCHES
+// Fixed the very same overlapping problems for NT platforms
+//
+//    Rev 1.6   18 Jun 1997 16:18:18   TIVANOV
+// fix the overlaping in the problems found dialog
+//
+//    Rev 1.5   18 Jun 1997 15:07:50   TIVANOV
+// remove the quarantine controls
+//
+//    Rev 1.4   04 Jun 1997 15:12:02   DALLEE
+// Put back IDD_SCANRESDLG for NT. Why was this ifdef'd out?
+//
+//    Rev 1.3   22 May 1997 13:43:02   TIVANOV
+// new button on Virus Found dialog
+//
+//    Rev 1.2   02 May 1997 12:18:42   TIVANOV
+// new quarantine button in the ProblemsFound dialog
+//
+//    Rev 1.1   24 Apr 1997 11:14:44   JBRENNA
+// 1. Remove IDD_MEMSCANDLG_MEMONLY dialog.
+// 2. Merge Tesla's changes to the IDD_SCANRESDLG, IDD_DOWNLOADSAVEAS_NT, and
+//    IDD_DOWNLOADSAVEINFECTED_NT dialogs.
+//
+//    Rev 1.0   06 Feb 1997 21:03:36   RFULLER
+// Initial revision
+//
+//    Rev 1.37   27 Jan 1997 11:30:52   JBRENNA
+// Add IDD_MEMSCANDLG_MEMONLY as a copy of IDD_MEMSCANDLG. This new dialog is
+// used when MBR and BR scanning will not occur because of option settings.
+// (NEC machines also).
+//************************************************************************
+
+#include <dlgs.h>
+#include <commctrl.h>
+#include "nunavdlg.h"
+#include "stdhelp.h"
+#include "navbtmap.h"
+
+#include "dbcs.h"
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+#ifdef NAVSCANW
+
+// for Win95
+IDD_SCANDLG DIALOG 29, 35, 248, 226
+STYLE WS_MINIMIZEBOX | WS_POPUP | WS_SYSMENU
+CAPTION "Symantec AntiVirus"
+CLASS "ScanWindow"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SC_BOX1,7,12,234,74,WS_GROUP
+    GROUPBOX        "",ID_SC_BOX2,7,92,234,103,WS_GROUP
+    GROUPBOX        "",ID_SC_BOX3,16,65,217,17,WS_GROUP
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,11,122,223,1
+    CONTROL         "",IDC_ANIMATION,"SysAnimate32",ACS_CENTER,13,17,220,40
+    CONTROL         "",ID_SC_FILLBAR,"msctls_progress32",0x0,17,70,215,11
+    LTEXT           "Folder:",ID_SC_DIRTXT,17,58,31,8
+    LTEXT           "",ID_SC_DIR,53,58,178,8
+    LTEXT           "",ID_SC_WORKINGON,8,5,233,8
+    LTEXT           "Action",ID_SC_ITEMTXT,16,107,59,8,SS_CENTERIMAGE
+    LTEXT           "Scanned:",ID_SC_SCANNEDTXT,16,128,59,9
+    LTEXT           "Infected:",ID_SC_INFTXT,16,140,59,9
+    LTEXT           "Repaired:",ID_SC_CLEANTXT,22,156,60,9
+    CTEXT           "Master boot records",ID_SC_MBRECTXT,128,101,48,18
+    RTEXT           "0",ID_SC_MBSCAN,135,128,25,9
+    RTEXT           "0",ID_SC_MBINF,135,140,25,9
+    RTEXT           "0",ID_SC_MBCLN,135,156,25,9
+    RTEXT           "--",ID_SC_MBQUAR,135,168,25,9
+    RTEXT           "--",ID_SC_MBDEL,135,180,25,9
+    CTEXT           "Boot records",ID_SC_BRTXT,179,107,58,9,SS_CENTERIMAGE
+    RTEXT           "0",ID_SC_BRSCAN,187,128,25,9
+    RTEXT           "0",ID_SC_BRINF,187,140,25,9
+    RTEXT           "0",ID_SC_BRCLN,187,156,25,9
+    RTEXT           "--",ID_SC_BRQUAR,187,168,25,9
+    RTEXT           "--",ID_SC_BRDEL,187,180,25,9
+    CTEXT           "Files",ID_SC_FILESTXT,84,107,38,9,SS_CENTERIMAGE
+    RTEXT           "0",ID_SC_FILSCAN,87,128,25,9
+    RTEXT           "0",ID_SC_FILINF,87,140,25,9
+    RTEXT           "0",ID_SC_FILCLN,87,156,25,9
+    DEFPUSHBUTTON   "&Stop",ID_SC_STOP,98,204,49,16
+    LTEXT           "Quarantined:",ID_SS_QUARTXT,22,168,60,9
+    LTEXT           "Deleted:",ID_SS_DELETETXT,22,180,60,9
+    RTEXT           "0",ID_SC_FILQUAR,87,168,25,9
+    RTEXT           "0",ID_SC_FILDEL,87,180,25,9
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,11,152,223,1
+END
+
+// for NT
+IDD_SCANDLG_NT DIALOG 29, 35, 248, 226
+STYLE WS_MINIMIZEBOX | WS_POPUP | WS_SYSMENU
+CAPTION "Symantec AntiVirus NT"
+CLASS "ScanWindow"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SC_BOX1,7,12,234,74,WS_GROUP
+    GROUPBOX        "",ID_SC_BOX2,7,92,234,103,WS_GROUP
+    GROUPBOX        "",ID_SC_BOX3,16,65,217,17,WS_GROUP
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,11,122,223,1
+    CONTROL         "",IDC_ANIMATION,"SysAnimate32",ACS_CENTER,13,17,220,40
+    CONTROL         "",ID_SC_FILLBAR,"msctls_progress32",0x0,17,70,215,11
+    LTEXT           "Folder:",ID_SC_DIRTXT,17,58,31,8
+    LTEXT           "",ID_SC_DIR,53,58,178,8
+    LTEXT           "",ID_SC_WORKINGON,8,5,233,8
+    LTEXT           "Action",ID_SC_ITEMTXT,16,107,59,8,SS_CENTERIMAGE
+    LTEXT           "Scanned:",ID_SC_SCANNEDTXT,16,128,59,9
+    LTEXT           "Infected:",ID_SC_INFTXT,16,140,59,9
+    LTEXT           "Repaired:",ID_SC_CLEANTXT,22,156,60,9
+    CTEXT           "Master boot records",ID_SC_MBRECTXT,128,101,48,18
+    RTEXT           "0",ID_SC_MBSCAN,135,128,25,9
+    RTEXT           "0",ID_SC_MBINF,135,140,25,9
+    RTEXT           "0",ID_SC_MBCLN,135,156,25,9
+    RTEXT           "--",ID_SC_MBQUAR,135,168,25,9
+    RTEXT           "--",ID_SC_MBDEL,135,180,25,9
+    CTEXT           "Boot records",ID_SC_BRTXT,179,107,58,9,SS_CENTERIMAGE
+    RTEXT           "0",ID_SC_BRSCAN,187,128,25,9
+    RTEXT           "0",ID_SC_BRINF,187,140,25,9
+    RTEXT           "0",ID_SC_BRCLN,187,156,25,9
+    RTEXT           "--",ID_SC_BRQUAR,187,168,25,9
+    RTEXT           "--",ID_SC_BRDEL,187,180,25,9
+    CTEXT           "Files",ID_SC_FILESTXT,84,107,38,9,SS_CENTERIMAGE
+    RTEXT           "0",ID_SC_FILSCAN,87,128,25,9
+    RTEXT           "0",ID_SC_FILINF,87,140,25,9
+    RTEXT           "0",ID_SC_FILCLN,87,156,25,9
+    DEFPUSHBUTTON   "&Stop",ID_SC_STOP,98,204,49,16
+    LTEXT           "Quarantined:",ID_SS_QUARTXT,22,168,60,9
+    LTEXT           "Deleted:",ID_SS_DELETETXT,22,180,60,9
+    RTEXT           "0",ID_SC_FILQUAR,87,168,25,9
+    RTEXT           "0",ID_SC_FILDEL,87,180,25,9
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,11,152,223,1
+END
+
+
+// For Win95
+IDD_SCANSUMDLG DIALOG DISCARDABLE 7, 23, 300, 205
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Scan Results"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SS_BOX1,6,3,229,81,BS_PUSHLIKE
+    GROUPBOX        "",ID_SS_BOX2,6,89,230,105,BS_PUSHLIKE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,9,121,221,1
+    DEFPUSHBUTTON   "&Close",IDOK,242,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Print...",ID_SS_PRINT,242,25,49,15
+    PUSHBUTTON      "&Details...",ID_SS_DETAILS,242,44,49,15
+    PUSHBUTTON      "&Help",9,242,63,49,15
+    LTEXT           "Summary:",ID_SS_SCANSUMTXT,13,11,60,9
+    LTEXT           "",ID_SS_SCANSUM,82,12,148,8
+    LTEXT           "Items scanned:",ID_SS_ITSCANTXT,13,22,60,9
+    LTEXT           "",ID_SS_ITSCAN,82,23,148,8
+    LTEXT           "File type:",ID_SS_SCANTYPTXT,13,44,60,9
+    LTEXT           "",ID_SS_SCANTYP,82,45,148,8
+    LTEXT           "Other settings:",ID_SS_OTHERTXT,13,55,60,9
+    LTEXT           "",ID_SS_OTHER,82,54,148,8
+    LTEXT           "Scan time:",ID_SS_SCANTIMTXT,13,66,60,9
+    LTEXT           "",ID_SS_SCANTIM,82,66,148,10
+    LTEXT           "Action",ID_SS_ITEMTXT,14,106,44,8
+    LTEXT           "Scanned:",ID_SS_SCANNEDTXT,13,128,56,9
+    LTEXT           "Infected:",ID_SS_INFTXT,13,140,56,9
+    LTEXT           "Repaired:",ID_SS_REPAIRTXT,19,156,56,9
+    CTEXT           " Master boot records",ID_SS_MBRECTXT,124,98,50,21
+    RTEXT           "0",ID_SS_MBSCAN,135,128,25,9
+    RTEXT           "0",ID_SS_MBINF,135,140,25,9
+    RTEXT           "0",ID_SS_MBCLN,135,156,25,9
+    RTEXT           "--",ID_SS_MBDEL,135,180,25,9
+    RTEXT           "--",ID_SS_MBQUAR,135,168,25,9
+    LTEXT           "Boot records",ID_SS_BRTXT,178,106,52,9
+    RTEXT           "0",ID_SS_BRSCAN,185,128,25,9
+    RTEXT           "0",ID_SS_BRINF,185,140,25,9
+    RTEXT           "0",ID_SS_BRCLN,185,156,25,9
+    RTEXT           "--",ID_SS_BRDEL,185,180,25,9
+    RTEXT           "--",ID_SS_BRQUAR,185,168,25,9
+    CTEXT           "Files",ID_SS_FILESTXT,82,106,40,12
+    RTEXT           "0",ID_SS_FILSCAN,78,128,34,9
+    RTEXT           "0",ID_SS_FILINF,77,140,35,9
+    RTEXT           "0",ID_SS_FILCLN,77,156,35,8
+    LTEXT           "Quarantined:",ID_SS_QUARTXT,19,168,56,9
+    LTEXT           "Deleted:",ID_SS_DELETETXT,19,180,56,9
+    RTEXT           "0",ID_SS_FILQUAR,77,168,35,9
+    RTEXT           "0",ID_SS_FILDEL,77,181,35,8
+    LTEXT           "Memory:",ID_SS_MEMTXT,13,33,60,9
+    LTEXT           "",ID_SS_MEMSCAN,82,34,148,8
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,9,152,221,1
+END
+
+
+// for NT
+IDD_SCANSUMDLG_NT DIALOG DISCARDABLE  7, 23, 300, 193
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION |
+    WS_SYSMENU
+CAPTION "Scan Results"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SS_BOX1,6,3,229,69,WS_GROUP
+    DEFPUSHBUTTON   "&Close",IDOK,242,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Print...",ID_SS_PRINT,242,25,49,15
+    PUSHBUTTON      "&Details...",ID_SS_DETAILS,242,44,49,15
+    PUSHBUTTON      "&Help",9,242,63,49,15
+    LTEXT           "Summary:",ID_SS_SCANSUMTXT,13,11,60,10
+    LTEXT           "",ID_SS_SCANSUM,82,11,148,10
+    LTEXT           "Items scanned:",ID_SS_ITSCANTXT,13,22,60,10
+    LTEXT           "",ID_SS_ITSCAN,82,22,148,10
+    LTEXT           "File type:",ID_SS_SCANTYPTXT,13,33,60,10
+    LTEXT           "",ID_SS_SCANTYP,82,33,148,10
+    LTEXT           "Other settings:",ID_SS_OTHERTXT,13,44,60,10
+    LTEXT           "",ID_SS_OTHER,82,44,148,10
+    LTEXT           "Scan time:",ID_SS_SCANTIMTXT,13,55,60,10
+    LTEXT           "",ID_SS_SCANTIM,82,55,148,10
+    GROUPBOX        "",ID_SS_BOX2,6,77,230,105
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,9,109,221,1
+    LTEXT           "Action",ID_SS_ITEMTXT,13,94,44,9
+    LTEXT           "Scanned:",ID_SS_SCANNEDTXT,13,116,56,9
+    LTEXT           "Infected:",ID_SS_INFTXT,13,128,56,9
+    LTEXT           "Repaired:",ID_SS_REPAIRTXT,19,144,56,9
+    CTEXT           " Master boot records",ID_SS_MBRECTXT,124,86,50,21
+    RTEXT           "0",ID_SS_MBSCAN,135,116,25,9
+    RTEXT           "0",ID_SS_MBINF,135,128,25,9
+    RTEXT           "0",ID_SS_MBCLN,135,144,25,9
+    RTEXT           "--",ID_SS_MBDEL,135,168,25,9
+    RTEXT           "--",ID_SS_MBQUAR,135,156,25,9
+    LTEXT           "Boot records",ID_SS_BRTXT,178,94,52,9
+    RTEXT           "0",ID_SS_BRSCAN,185,116,25,9
+    RTEXT           "0",ID_SS_BRINF,185,128,25,9
+    RTEXT           "0",ID_SS_BRCLN,185,144,25,9
+    RTEXT           "--",ID_SS_BRDEL,185,168,25,9
+    RTEXT           "--",ID_SS_BRQUAR,185,156,25,9
+    CTEXT           "Files",ID_SS_FILESTXT,82,94,40,12
+    RTEXT           "0",ID_SS_FILSCAN,77,116,35,9
+    RTEXT           "0",ID_SS_FILINF,77,128,35,9
+    RTEXT           "0",ID_SS_FILCLN,77,144,35,9
+    LTEXT           "Quarantined:",ID_SS_QUARTXT,19,156,56,9
+    LTEXT           "Deleted:",ID_SS_DELETETXT,19,168,56,9
+    RTEXT           "0",ID_SS_FILQUAR,77,156,35,9
+    RTEXT           "0",ID_SS_FILDEL,77,168,35,9
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,9,140,221,1
+END
+
+// NOTE: the column positions within ID_SR_LISTBOX are dynamically calculated
+// based on the positions of ID_SR_LISTVIRUS_NAME and ID_SR_STATUS.
+
+IDD_SCANRESDLG DIALOG DISCARDABLE  7, 22, 339, 234
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Problems Found"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SR_BOX1,7,4,265,115,WS_GROUP
+    GROUPBOX        "",ID_SR_BOX2,7,121,265,56,WS_GROUP
+    GROUPBOX        "",ID_SR_ALERTFRAME,7,181,265,46,WS_GROUP
+    DEFPUSHBUTTON   "Do&ne",ID_SR_DONE,280,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Repair",ID_SR_REPAIR,280,25,49,15
+    PUSHBUTTON      "&Delete",ID_SR_DELETE,280,44,49,15
+    PUSHBUTTON      "&Exclude",ID_SR_EXCL,280,63,49,15
+    PUSHBUTTON      "&Quarantine",ID_SR_QUARANTINE,280,82,49,15
+    PUSHBUTTON      "&Info...",ID_SR_INFO,280,101,49,15
+    PUSHBUTTON      "&Help",9,280,122,49,15
+    LTEXT           "Status",ID_SR_STATUS,185,16,33,8,NOT WS_GROUP
+    LTEXT           "Virus",ID_SR_LISTVIRUSNAME,95,16,35,8,NOT WS_GROUP
+    LTEXT           "Na&me",-1,16,16,41,8,NOT WS_GROUP
+    LISTBOX         ID_SR_LISTBOX,14,25,251,91,LBS_USETABSTOPS | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "",ID_SR_RAP,11,129,256,26,NOT WS_GROUP
+    LTEXT           "",ID_SR_RAP2,11,148,256,25,NOT WS_GROUP
+    LTEXT           "",ID_SR_ALERT,11,189,257,35
+END
+
+
+// NOTE: the column positions within ID_SR_LISTBOX are dynamically calculated
+// based on the positions of ID_SR_LISTVIRUS_NAME and ID_SR_STATUS.
+
+IDD_DETAILS DIALOG DISCARDABLE  7, 22, 339, 194
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK  | DS_CONTEXTHELP
+CAPTION "Details of Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "", ID_SR_BOX1, 7, 1, 265, 118, WS_GROUP
+    GROUPBOX        "", ID_SR_BOX2, 7, 119, 265, 45, WS_GROUP
+    GROUPBOX        "", ID_SR_ALERTFRAME, 7, 163, 265, 26, WS_GROUP
+    PUSHBUTTON      "&Close",ID_SR_DONE,280,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Info...",ID_SR_INFO,280,25,49,15
+    PUSHBUTTON      "&Help",IDHELP,280,44,49,15
+    LTEXT           "Status",ID_SR_STATUS,185,8,33,8,NOT WS_GROUP
+    LTEXT           "Virus",ID_SR_LISTVIRUSNAME,95,8,35,8,NOT WS_GROUP
+    LTEXT           "Na&me",-1,16,8,41,8,NOT WS_GROUP
+    LISTBOX         ID_SR_LISTBOX,14,17,251,97,LBS_USETABSTOPS | WS_VSCROLL |
+                    WS_GROUP | WS_TABSTOP | LBS_NOINTEGRALHEIGHT
+    LTEXT           "",ID_SR_RAP,11,125,247,16,NOT WS_GROUP
+    LTEXT           "",ID_SR_RAP2,11,144,247,16,NOT WS_GROUP
+    LTEXT           "",ID_SR_ALERT,11,169,252,18
+END
+
+// for Win95
+IDD_MEMSCANDLG DIALOG 13, 23, 215, 108
+STYLE  DS_MODALFRAME | WS_POPUP | WS_CAPTION | DS_3DLOOK
+CAPTION "Symantec Memory and Boot Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "", IDI_MS_BOX, "Static", SS_SUNKEN, 5, 6, 204, 97
+    LTEXT "Scanning memory...", -1, 15, 15, 185, 8
+    CONTROL "", IDI_MS_FILLMEM, "msctls_progress32", 0x0, 15, 26, 186, 12
+    LTEXT "Scanning master boot records...", -1, 15, 43, 185, 8
+    CONTROL "", IDI_MS_FILLMBOOT, "msctls_progress32", 0x0, 15, 54, 186, 12
+    LTEXT "Scanning boot records...", -1, 15, 71, 185, 8
+    CONTROL "", IDI_MS_FILLBOOT, "msctls_progress32", 0x0, 15, 82, 186, 12
+END
+
+// for NT
+IDD_MEMSCANDLG_NT DIALOG 13, 23, 215, 80
+STYLE  DS_MODALFRAME | WS_POPUP | WS_CAPTION | DS_3DLOOK
+CAPTION "Symantec Boot Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX "", IDI_MS_BOX,  5, 6, 204, 69, WS_GROUP
+    GROUPBOX "", IDI_MS_BOX1, 14, 21, 188, 18, WS_GROUP
+    GROUPBOX "", IDI_MS_BOX2, 14, 49, 188, 18, WS_GROUP
+    LTEXT "Scanning master boot records...", -1, 15, 15, 185, 8
+    CONTROL "", IDI_MS_FILLMBOOT, "msctls_progress32", 0x0, 15, 26, 186, 12
+    LTEXT "Scanning boot records...", -1, 15, 43, 185, 8
+    CONTROL "", IDI_MS_FILLBOOT, "msctls_progress32", 0x0, 15, 54, 186, 12
+END
+
+// for NT on NECs (no MBR scanning)
+IDD_MEMSCANDLG_NT_NEC DIALOG 13, 23, 215, 62
+STYLE  DS_MODALFRAME | WS_POPUP | WS_CAPTION | DS_3DLOOK
+CAPTION "Symantec Boot Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX "", IDI_MS_BOX,  5, 6, 204, 46, WS_GROUP
+    GROUPBOX "", IDI_MS_BOX1, 14, 21, 188, 18, WS_GROUP
+    LTEXT "Scanning floppy disk boot records...", -1, 15, 15, 185, 8
+    CONTROL "", IDI_MS_FILLBOOT, "msctls_progress32", 0x0, 15, 26, 186, 12
+END
+
+IDD_WRITELOG DIALOG DISCARDABLE  18, 18, 194, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Writing Activity Log"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_WRITELOG_BOX,10,18,173,16, WS_GROUP
+    CONTROL         "",ID_WRITELOG_FILLBAR,"msctls_progress32",0x0,11,23,171,10
+    LTEXT           "Writing activity log information to disk...",-1,11,12,
+                    182,8,NOT WS_GROUP
+    PUSHBUTTON      "&Stop",IDCANCEL,71,39,49,15,WS_GROUP | NOT WS_TABSTOP
+END
+
+
+IDD_FORWARDFILES DIALOG DISCARDABLE  18, 18, 194, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Forwarding Files"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_WRITELOG_BOX,10,18,173,16, WS_GROUP
+    CONTROL         "",ID_WRITELOG_FILLBAR,"msctls_progress32",0x0,11,23,171,10
+    LTEXT           "Forwarding quarantined files to server...",-1,11,12,
+                    182,8,NOT WS_GROUP
+    PUSHBUTTON      "&Stop",IDCANCEL,71,39,49,15,WS_GROUP | NOT WS_TABSTOP
+END
+
+IDD_DOALL DIALOG DISCARDABLE  18, 18, 201, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",ID_DOALL_BOX,"Static",SS_SUNKEN,5,7,190,94
+    LTEXT           "",ID_DOALL_ACTION,10,12,178,8
+    ICON            1,-1,91,27,18,20
+    CONTROL         "",ID_DOALL_FILLBAR_BOX,"Static",SS_SUNKEN,13,63,176,13
+    CONTROL         "",ID_DOALL_FILLBAR,"msctls_progress32",WS_GROUP,14,64,
+                    174,11
+    LTEXT           "",ID_DOALL_FILE,14,53,168,8
+    DEFPUSHBUTTON   "&Stop",IDCANCEL,76,80,49,15,WS_GROUP
+END
+
+//////////////////////////////////////////////////////////////////////////
+// Standard W32 dialogs
+//////////////////////////////////////////////////////////////////////////
+
+#else   // #ifdef NAVSCANW
+
+IDD_SCANDLG DIALOG 29, 35, 248, 226
+STYLE WS_MINIMIZEBOX | WS_POPUP | WS_SYSMENU
+CAPTION "Symantec AntiVirus"
+CLASS "ScanWindow"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SC_BOX1,7,12,234,74,WS_GROUP
+    GROUPBOX        "",ID_SC_BOX2,7,92,234,103,WS_GROUP
+    GROUPBOX        "",ID_SC_BOX3,16,65,217,17,WS_GROUP
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,11,122,223,1
+    CONTROL         "",IDC_ANIMATION,"SysAnimate32",ACS_CENTER,13,17,220,40
+    CONTROL         "",ID_SC_FILLBAR,"msctls_progress32",0x0,17,70,215,11
+    LTEXT           "Folder:",ID_SC_DIRTXT,17,58,31,8
+    LTEXT           "",ID_SC_DIR,53,58,178,8
+    LTEXT           "",ID_SC_WORKINGON,8,5,233,8
+    LTEXT           "Action",ID_SC_ITEMTXT,16,107,59,8,SS_CENTERIMAGE
+    LTEXT           "Scanned:",ID_SC_SCANNEDTXT,16,128,59,9
+    LTEXT           "Infected:",ID_SC_INFTXT,16,140,59,9
+    LTEXT           "Repaired:",ID_SC_CLEANTXT,22,156,60,9
+    CTEXT           "Master boot records",ID_SC_MBRECTXT,128,101,48,18
+    RTEXT           "0",ID_SC_MBSCAN,135,128,25,9
+    RTEXT           "0",ID_SC_MBINF,135,140,25,9
+    RTEXT           "0",ID_SC_MBCLN,135,156,25,9
+    RTEXT           "--",ID_SC_MBQUAR,135,168,25,9
+    RTEXT           "--",ID_SC_MBDEL,135,180,25,9
+    CTEXT           "Boot records",ID_SC_BRTXT,179,107,58,9,SS_CENTERIMAGE
+    RTEXT           "0",ID_SC_BRSCAN,187,128,25,9
+    RTEXT           "0",ID_SC_BRINF,187,140,25,9
+    RTEXT           "0",ID_SC_BRCLN,187,156,25,9
+    RTEXT           "--",ID_SC_BRQUAR,187,168,25,9
+    RTEXT           "--",ID_SC_BRDEL,187,180,25,9
+    CTEXT           "Files",ID_SC_FILESTXT,84,107,38,9,SS_CENTERIMAGE
+    RTEXT           "0",ID_SC_FILSCAN,87,128,25,9
+    RTEXT           "0",ID_SC_FILINF,87,140,25,9
+    RTEXT           "0",ID_SC_FILCLN,87,156,25,9
+    DEFPUSHBUTTON   "&Stop",ID_SC_STOP,98,204,49,16
+    LTEXT           "Quarantined:",ID_SS_QUARTXT,22,168,60,9
+    LTEXT           "Deleted:",ID_SS_DELETETXT,22,180,60,9
+    RTEXT           "0",ID_SC_FILQUAR,87,168,25,9
+    RTEXT           "0",ID_SC_FILDEL,87,180,25,9
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,11,152,223,1
+END
+
+IDD_SCANSUMDLG DIALOG DISCARDABLE  7, 23, 300, 205
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Scan Results"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SS_BOX1,6,3,229,81,BS_PUSHLIKE
+    GROUPBOX        "",ID_SS_BOX2,6,89,230,107,BS_PUSHLIKE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,9,121,221,1
+    DEFPUSHBUTTON   "&Close",IDOK,242,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Print...",ID_SS_PRINT,242,25,49,15
+    PUSHBUTTON      "&Details...",ID_SS_DETAILS,242,44,49,15
+    PUSHBUTTON      "&Help",9,242,63,49,15
+    LTEXT           "Summary:",ID_SS_SCANSUMTXT,13,11,60,9
+    LTEXT           "",ID_SS_SCANSUM,82,11,148,8
+    LTEXT           "Items scanned:",ID_SS_ITSCANTXT,13,22,60,9
+    LTEXT           "",ID_SS_ITSCAN,82,22,148,8
+    LTEXT           "File type:",ID_SS_SCANTYPTXT,13,44,60,9
+    LTEXT           "",ID_SS_SCANTYP,82,44,148,8
+    LTEXT           "Other settings:",ID_SS_OTHERTXT,13,55,60,9
+    LTEXT           "",ID_SS_OTHER,82,55,148,8
+    LTEXT           "Scan time:",ID_SS_SCANTIMTXT,13,66,60,9
+    LTEXT           "",ID_SS_SCANTIM,82,66,148,10
+    LTEXT           "Action",ID_SS_ITEMTXT,14,106,44,8
+    LTEXT           "Scanned:",ID_SS_SCANNEDTXT,13,128,56,9
+    LTEXT           "Infected:",ID_SS_INFTXT,13,140,56,9
+    LTEXT           "Repaired:",ID_SS_REPAIRTXT,19,158,56,9
+    CTEXT           " Master boot records",ID_SS_MBRECTXT,124,98,50,21
+    RTEXT           "0",ID_SS_MBSCAN,135,128,25,9
+    RTEXT           "0",ID_SS_MBINF,135,140,25,9
+    RTEXT           "0",ID_SS_MBCLN,135,158,25,9
+    RTEXT           "--",ID_SS_MBDEL,135,182,25,9
+    RTEXT           "--",ID_SS_MBQUAR,135,170,25,9
+    LTEXT           "Boot records",ID_SS_BRTXT,178,106,52,9
+    RTEXT           "0",ID_SS_BRSCAN,185,128,25,9
+    RTEXT           "0",ID_SS_BRINF,185,140,25,9
+    RTEXT           "0",ID_SS_BRCLN,185,158,25,9
+    RTEXT           "--",ID_SS_BRDEL,185,182,25,9
+    RTEXT           "--",ID_SS_BRQUAR,185,170,25,9
+    CTEXT           "Files",ID_SS_FILESTXT,82,106,40,12
+    RTEXT           "0",ID_SS_FILSCAN,77,128,35,9
+    RTEXT           "0",ID_SS_FILINF,77,140,35,9
+    RTEXT           "0",ID_SS_FILCLN,77,158,35,9
+    LTEXT           "Quarantined:",ID_SS_QUARTXT,19,170,56,9
+    LTEXT           "Deleted:",ID_SS_DELETETXT,19,182,56,9
+    RTEXT           "0",ID_SS_FILQUAR,77,170,35,9
+    RTEXT           "0",ID_SS_FILDEL,77,182,35,8
+    LTEXT           "Memory:",ID_SS_MEMTXT,13,33,60,9
+    LTEXT           "",ID_SS_MEMSCAN,82,33,148,10
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME,9,154,221,1
+END
+
+
+// NOTE: the column positions within ID_SR_LISTBOX are dynamically calculated
+// based on the positions of ID_SR_LISTVIRUS_NAME and ID_SR_STATUS.
+
+IDD_SCANRESDLG DIALOG DISCARDABLE  7, 22, 339, 234
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Problems Found"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_SR_BOX1,7,4,265,115,WS_GROUP
+    GROUPBOX        "",ID_SR_BOX2,7,121,265,56,WS_GROUP
+    GROUPBOX        "",ID_SR_ALERTFRAME,7,181,265,46,WS_GROUP
+    DEFPUSHBUTTON   "Do&ne",ID_SR_DONE,280,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Repair",ID_SR_REPAIR,280,25,49,15
+    PUSHBUTTON      "&Delete",ID_SR_DELETE,280,44,49,15
+    PUSHBUTTON      "&Exclude",ID_SR_EXCL,280,63,49,15
+    PUSHBUTTON      "&Quarantine",ID_SR_QUARANTINE,280,82,49,15
+    PUSHBUTTON      "&Info...",ID_SR_INFO,280,101,49,15
+    PUSHBUTTON      "&Help",9,280,122,49,15
+    LTEXT           "Status",ID_SR_STATUS,185,16,33,8,NOT WS_GROUP
+    LTEXT           "Virus",ID_SR_LISTVIRUSNAME,95,16,35,8,NOT WS_GROUP
+    LTEXT           "Na&me",-1,16,16,41,8,NOT WS_GROUP
+    LISTBOX         ID_SR_LISTBOX,14,25,251,91,LBS_USETABSTOPS | WS_VSCROLL | 
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "",ID_SR_RAP,11,129,256,26,NOT WS_GROUP
+    LTEXT           "",ID_SR_RAP2,11,148,256,25,NOT WS_GROUP
+    LTEXT           "",ID_SR_ALERT,11,189,257,35
+END
+
+
+// NOTE: the column positions within ID_SR_LISTBOX are dynamically calculated
+// based on the positions of ID_SR_LISTVIRUS_NAME and ID_SR_STATUS.
+
+IDD_DETAILS DIALOG DISCARDABLE  7, 22, 339, 189
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK  | DS_CONTEXTHELP
+CAPTION "Details of Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",ID_SR_BOX1,"Static",SS_SUNKEN,7,6,265,113
+    CONTROL         "",ID_SR_BOX2,"Static",SS_SUNKEN,7,123,265,39
+    CONTROL         "",ID_SR_ALERTFRAME,"Static",SS_SUNKEN,7,165,265,18
+    PUSHBUTTON      "&Close",ID_SR_DONE,280,6,49,15,WS_GROUP
+    PUSHBUTTON      "&Info...",ID_SR_INFO,280,25,49,15
+    PUSHBUTTON      "&Help",IDHELP,280,44,49,15
+    LTEXT           "Status",ID_SR_STATUS,185,13,33,8,NOT WS_GROUP
+    LTEXT           "Virus",ID_SR_LISTVIRUSNAME,95,13,35,8,NOT WS_GROUP
+    LTEXT           "Na&me",-1,16,13,41,8,NOT WS_GROUP
+    LISTBOX         ID_SR_LISTBOX,14,22,251,91,LBS_USETABSTOPS | WS_VSCROLL |
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "",ID_SR_RAP,11,125,247,16,NOT WS_GROUP
+    LTEXT           "",ID_SR_RAP2,11,144,247,16,NOT WS_GROUP
+    LTEXT           "",ID_SR_ALERT,11,169,252,12
+END
+
+
+IDD_MEMSCANDLG DIALOG 13, 23, 215, 108
+STYLE  DS_MODALFRAME | WS_POPUP | WS_CAPTION | DS_3DLOOK
+CAPTION "Symantec Memory and Boot Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "", IDI_MS_BOX, "Static", SS_SUNKEN, 5, 6, 204, 97
+    LTEXT "Scanning memory...", -1, 15, 15, 185, 8
+    CONTROL "", IDI_MS_FILLMEM, "msctls_progress32", 0x0, 15, 26, 186, 12
+    LTEXT "Scanning master boot records...", -1, 15, 43, 185, 8
+    CONTROL "", IDI_MS_FILLMBOOT, "msctls_progress32", 0x0, 15, 54, 186, 12
+    LTEXT "Scanning boot records...", -1, 15, 71, 185, 8
+    CONTROL "", IDI_MS_FILLBOOT, "msctls_progress32", 0x0, 15, 82, 186, 12
+END
+
+// for Win95 NEC
+IDD_MEMSCANDLG_MEMANDBR DIALOG 13, 23, 215, 80
+STYLE  DS_MODALFRAME | WS_POPUP | WS_CAPTION | DS_3DLOOK
+CAPTION "Symantec Memory and Boot Scan"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL "", IDI_MS_BOX, "Static", SS_SUNKEN, 5, 6, 204, 69
+    LTEXT "Scanning memory...", -1, 15, 15, 185, 8
+    CONTROL "", IDI_MS_FILLMEM, "msctls_progress32", 0x0, 15, 26, 186, 12
+    LTEXT "Scanning boot records...", -1, 15, 43, 185, 8
+    CONTROL "", IDI_MS_FILLBOOT, "msctls_progress32", 0x0, 15, 54, 186, 12
+END
+
+IDD_INOCFILECHANGED DIALOG DISCARDABLE  18, 18, 254, 141
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK | DS_CONTEXTHELP
+CAPTION "Inoculated File Changed"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDI_INOCHANGE_BOX,"Static",SS_SUNKEN | WS_GROUP,8,7,180,125
+    DEFPUSHBUTTON   "&Repair",IDI_INOCHANGE_REPAIR,195,7,49,15,WS_GROUP
+    PUSHBUTTON      "&Delete",IDI_INOCHANGE_DELETE,195,26,49,14
+    PUSHBUTTON      "&Inoculate",IDI_INOCHANGE_INOC,195,44,49,14
+    PUSHBUTTON      "&Exclude",IDI_INOCHANGE_EXCLUDE,195,62,49,15
+    PUSHBUTTON      "&Continue",IDI_INOCHANGE_CONTINUE,195,81,49,14
+    PUSHBUTTON      "&Stop",IDI_INOCHANGE_STOP,195,99,49,14
+    PUSHBUTTON      "&Help",IDHELP,195,117,49,14
+    LTEXT           "",IDI_INOCHANGE_MSG,17,16,164,53
+    LTEXT           "This file has been scanned and is not infected with a known virus. It could be infected with an unknown virus or this file could be a self modifying file. What would you like to do?",
+                    IDI_INOCHANGE_INFO,16,76,164,33
+    CTEXT           "",IDI_INOCHANGE_ALERT,15,111,167,18,NOT WS_GROUP
+END
+
+IDD_INOCFILE DIALOG DISCARDABLE  24, 26, 253, 122
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK | DS_CONTEXTHELP
+CAPTION "File Inoculation"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDI_INOCFILE_BOX,"Static",SS_SUNKEN,8,7,180,107
+    DEFPUSHBUTTON   "&Inoculate",IDI_INOCFILE_INOC,195,7,49,14,WS_GROUP
+    PUSHBUTTON      "&Exclude",IDI_INOCFILE_EXCLUDE,195,25,49,15
+    PUSHBUTTON      "&Delete",IDI_INOCFILE_DELETE,195,44,49,15
+    PUSHBUTTON      "&Continue",IDI_INOCFILE_CONTINUE,195,63,49,14
+    PUSHBUTTON      "&Stop",IDI_INOCFILE_STOP,195,81,49,14
+    PUSHBUTTON      "&Help",IDHELP,195,99,49,14
+    LTEXT           "",IDI_INOCFILE_MSG,17,17,164,51
+    LTEXT           "This file has been scanned and is not infected with a known virus. What would you like to do?",
+                    IDI_INOCFILE_INFO,14,71,164,18
+    CTEXT           "",IDI_INOCFILE_ALERT,15,91,167,18,NOT WS_GROUP
+END
+
+IDD_SYSINTEG DIALOG DISCARDABLE  23, 23, 180, 68
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "System Integrity Check"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            ID_ICON_NAV0,-1,80,6,18,20
+    LTEXT           "",IDI_SYSINTEG_TEXT,6,30,168,30
+END
+
+IDD_SYSINTEG_PROMPT DIALOG DISCARDABLE  18, 18, 234, 97
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK  | DS_CONTEXTHELP
+CAPTION "System Integrity"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "&Continue",IDI_SYSINTEG_CONT,176,40,49,14
+    PUSHBUTTON      "&Repair",IDI_SYSINTEG_REPAIR,176,4,49,14,WS_GROUP
+    PUSHBUTTON      "&Inoculate",IDI_SYSINTEG_INOC,176,22,49,14
+    PUSHBUTTON      "&Stop",IDI_SYSINTEG_STOP,176,58,49,14
+    PUSHBUTTON      "&Help",IDHELP,176,76,49,14
+    LTEXT           "",IDI_SYSINTEG_TEXT,10,7,153,42,NOT WS_GROUP
+    LTEXT           "What would you like to do?",IDI_SYSINTEG_TEXT2,10,55,
+                    153,9,NOT WS_GROUP
+    LTEXT           "",IDI_SYSINTEG_ALERT,10,69,154,17,NOT WS_GROUP
+END
+
+IDD_WRITELOG DIALOG DISCARDABLE  18, 18, 194, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Writing Activity Log"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",ID_WRITELOG_FILLBAR,"msctls_progress32",0x0,11,23,171,10
+    LTEXT           "Writing activity log information to disk...",-1,11,12,
+                    182,8,NOT WS_GROUP
+    PUSHBUTTON      "&Stop",IDCANCEL,71,39,49,15,WS_GROUP | NOT WS_TABSTOP
+END
+
+IDD_FORWARDFILES DIALOG DISCARDABLE  18, 18, 194, 61
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Forwarding Files"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "",ID_WRITELOG_BOX,10,18,173,16, WS_GROUP
+    CONTROL         "",ID_WRITELOG_FILLBAR,"msctls_progress32",0x0,11,23,171,10
+    LTEXT           "Forwarding quarantined files to server...",-1,11,12,
+                    182,8,NOT WS_GROUP
+    PUSHBUTTON      "&Stop",IDCANCEL,71,39,49,15,WS_GROUP | NOT WS_TABSTOP
+END
+
+IDD_DOALL DIALOG DISCARDABLE  18, 18, 201, 106
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",ID_DOALL_BOX,"Static",SS_SUNKEN,5,7,190,94
+    LTEXT           "",ID_DOALL_ACTION,10,12,178,8
+    ICON            1,-1,91,27,18,20
+    CONTROL         "",ID_DOALL_FILLBAR,"msctls_progress32",WS_GROUP,14,64,
+                    174,11
+    LTEXT           "",ID_DOALL_FILE,14,53,168,8
+    DEFPUSHBUTTON   "&Stop",IDCANCEL,76,80,49,15,WS_GROUP
+END
+// End of LAGUAGE LANG_ENGLISH,SUBLANG_ENGLISH_US
+
+#endif  // #ifdef NAVSCANW - #else
+
+//////////////////////////////////////////////////////////////////////////
+// Shared NT and Standard W32 Dialogs
+//////////////////////////////////////////////////////////////////////////
+
+LANGUAGE LANG_ENGLISH,SUBLANG_ENGLISH_US
+
+IDD_DOWNLOADVIRUSDLG DIALOG DISCARDABLE  18, 18, 285, 159
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CONTEXTHELP | DS_3DLOOK
+CAPTION "Virus Found in Download"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Repair",IDI_V_REPAIR,229,5,49,14,WS_GROUP
+    PUSHBUTTON      "&Abort",IDI_V_DELETE,229,22,49,14
+    PUSHBUTTON      "I&gnore",IDI_V_CONTINUE,229,40,49,14
+    PUSHBUTTON      "&Info...",IDI_V_INFO,229,58,49,14
+    PUSHBUTTON      "&Help",IDHELP,229,76,49,14
+    CONTROL         "",IDC_ANIMATION,"BUTTON",BS_OWNERDRAW,8,8,32,32
+    LTEXT           "",IDI_V_MSG,41,13,172,43,NOT WS_GROUP
+    LTEXT           "",IDI_V_ALERT,11,123,205,16,NOT WS_GROUP
+    GROUPBOX        "",-1,4,2,218,153
+    LTEXT "Click Repair to eliminate the virus.", IDI_MSG_VIRUSREPAIR, 11, 42, 196, 8, WS_CHILD | WS_VISIBLE | WS_GROUP
+    LTEXT "If you cannot Repair the file, click Abort to prevent the infected file from downloading onto your local drive. Try to download the file from a different site.", IDI_MSG_VIRUSDELETE, 11, 56, 196, 24, WS_CHILD | WS_VISIBLE | WS_GROUP
+    LTEXT "Click Ignore to disregard this virus alert.", IDI_MSG_VIRUSCONTINUE, 11, 87, 195, 18, WS_CHILD | WS_VISIBLE | WS_GROUP
+    LTEXT "Click Info... to find out more about the virus.", IDI_MSG_VIRUSINFO, 11, 101, 195, 18, WS_CHILD | WS_VISIBLE | WS_GROUP
+END
+
+IDD_DOWNLOADVIRUSZIPDLG DIALOG DISCARDABLE  18, 18, 285, 180
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CONTEXTHELP | DS_3DLOOK
+CAPTION "Virus Found in Download"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Repair",IDI_V_REPAIR,229,5,49,14,WS_GROUP
+    PUSHBUTTON      "&Abort",IDI_V_DELETE,229,22,49,14
+    PUSHBUTTON      "I&gnore",IDI_V_CONTINUE,229,40,49,14
+    PUSHBUTTON      "Ignore A&ll",IDI_V_STOP,229,58,49,14
+    PUSHBUTTON      "&Info...",IDI_V_INFO,229,76,49,14
+    PUSHBUTTON      "&Help",IDHELP,229,94,49,14
+    CONTROL         "",IDC_ANIMATION,"Button",BS_OWNERDRAW,8,8,32,32
+    LTEXT           "",IDI_V_MSG,41,13,170,43,NOT WS_GROUP
+    LTEXT           "",IDI_V_ALERT,11,158,205,12,NOT WS_GROUP
+    GROUPBOX        "",-1,4,2,218,174
+    LTEXT           "Click Abort to prevent the entire compressed file from downloading onto your local drive. Try to download the file from a different site.",
+                    IDI_MSG_VIRUSZIPDELETE,11,57,196,24
+    LTEXT           "Click Ignore to disregard this virus alert and continue scanning the compressed file for additional viruses.",
+                    IDI_MSG_VIRUSZIPCONTINUE,11,83,196,24
+    LTEXT           "Click Ignore All to disregard this virus alert and stop scanning the compressed file for additional viruses.",
+                    IDI_MSG_VIRUSZIPSTOP,11,109,195,24
+    LTEXT           "Click Info... to find out more about the virus.",
+                    IDI_MSG_VIRUSINFO,11,135,195,17
+END
+
+
+//////
+IDD_DOWNLOADSAVEAS_95 DIALOG DISCARDABLE  36, 24, 276, 143
+STYLE DS_3DLOOK | DS_CONTROL | DS_CONTEXTHELP | WS_CHILD | WS_CLIPSIBLINGS |
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Save Download"
+FONT 8, "Helv"
+BEGIN
+    ICON            ID_ICON_NAV0,-1,5,5,21,20
+    LTEXT           "Symantec AntiVirus Scanner has determined that this file is free from viruses.",
+                    IDI_CS_MSG_AREWEINFECTED,35,10,230,15
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED2,35,7,230,18
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED3,35,7,230,18
+    LTEXT           "",1119,1,26,180,40,NOT WS_GROUP
+    ICON            50,-1,5,66,21,20,NOT WS_VISIBLE
+    LTEXT           "<< Insert Symantec advotext here >>",IDI_CS_MSG_ADVOTEXT,
+                    5,105,270,36
+    CONTROL         "",IDI_CS_NETSCAPELOGO,"Button",BS_OWNERDRAW | WS_GROUP,
+                    176,77,100,25
+    CONTROL         "",IDI_CS_STATIC_SEPARATOR,"Static",SS_GRAYFRAME | NOT
+                    WS_VISIBLE | WS_GROUP,6,68,270,1
+    CONTROL         "",IDI_CS_STATIC_3DSEPARATOR,"Static",SS_OWNERDRAW | NOT
+                    WS_VISIBLE | WS_GROUP,6,68,270,8
+    LTEXT           "Symantec AntiVirus Scanner",IDI_CS_MSG_PRODUCT,5,79,150,9
+    LTEXT           "Custom Version",IDI_CS_MSG_CUSTOMVERSION,5,88,100,9
+END
+
+IDD_DOWNLOADSAVEINFECTED_95 DIALOG DISCARDABLE  36, 24, 281, 161
+STYLE DS_3DLOOK | DS_CONTROL | DS_CONTEXTHELP | WS_CHILD | WS_CLIPSIBLINGS |
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Save Download"
+FONT 8, "Helv"
+BEGIN
+    ICON            ID_ICON_NAV0,-1,5,5,21,20
+    LTEXT           "Symantec AntiVirus Scanner has determined that this file is free from viruses.",
+                    IDI_CS_MSG_AREWEINFECTED,35,10,246,16
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED2,35,7,230,36
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED3,35,7,230,36
+    LTEXT           "",1119,1,44,180,40,NOT WS_GROUP
+    ICON            50,-1,5,84,21,20,NOT WS_VISIBLE
+    LTEXT           "<< Insert Symantec advotext here >>",IDI_CS_MSG_ADVOTEXT,
+                    5,123,270,36
+    CONTROL         "",IDI_CS_NETSCAPELOGO,"Button",BS_OWNERDRAW | WS_GROUP,
+                    179,95,100,25
+    CONTROL         "",IDI_CS_STATIC_SEPARATOR,"Static",SS_GRAYFRAME | NOT
+                    WS_VISIBLE | WS_GROUP,6,86,270,1
+    CONTROL         "",IDI_CS_STATIC_3DSEPARATOR,"Static",SS_OWNERDRAW | NOT
+                    WS_VISIBLE | WS_GROUP,6,86,270,8
+    LTEXT           "Symantec AntiVirus Scanner",IDI_CS_MSG_PRODUCT,5,97,150,9
+    LTEXT           "Custom Version",IDI_CS_MSG_CUSTOMVERSION,5,106,100,9
+END
+
+IDD_DOWNLOADSAVEAS_NT DIALOG DISCARDABLE  36, 24, 264, 285
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Save Downloaded File"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "File &Name:",1090,6,43,76,9
+    EDITTEXT        IDI_CS_FILENAME,6,53,90,12,ES_AUTOHSCROLL |
+                    ES_OEMCONVERT
+    LISTBOX         IDI_CS_FILEBOX,6,69,90,68,LBS_SORT | LBS_OWNERDRAWFIXED |
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL |
+                    WS_TABSTOP
+    LTEXT           "&Directories:",-1,110,43,92,9,NOT WS_VISIBLE
+    LTEXT           "&Directories:",IDI_CS_DIRECTORYLABEL,110,43,92,9
+    LTEXT           "",IDI_CS_DIRECTORY,110,55,92,9,SS_NOPREFIX
+    LISTBOX         IDI_CS_DIRECTORYBOX,110,69,92,68,LBS_SORT |
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS |
+                    LBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "List Files of &Type:",1089,6,141,90,9
+    COMBOBOX        IDI_CS_FILETYPES,6,151,90,36,CBS_DROPDOWNLIST |
+                    CBS_AUTOHSCROLL | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Dri&ves:",1091,110,141,92,9
+    COMBOBOX        IDI_CS_DRIVES,110,151,92,68,CBS_DROPDOWNLIST |
+                    CBS_OWNERDRAWFIXED | CBS_AUTOHSCROLL | CBS_SORT |
+                    CBS_HASSTRINGS | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",1,208,43,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",2,208,61,50,14,WS_GROUP
+    PUSHBUTTON      "&Help",1038,208,83,50,14,WS_GROUP
+    CONTROL         "&Read Only",1040,"Button",BS_AUTOCHECKBOX | WS_GROUP |
+                    WS_TABSTOP,208,105,50,12
+    CONTROL         "",ID_DLG_ICON1,"Button",BS_OWNERDRAW | WS_GROUP,5,8,26,
+                    26
+    CONTROL         "",ID_DLG_ICON2,"Button",BS_OWNERDRAW | NOT WS_VISIBLE |
+                    WS_GROUP,5,173,18,20
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED,35,13,230,20
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED2,34,10,224,28
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED3,34,10,224,18
+    LTEXT           "<< Insert Symantec advotext here >>",IDI_CS_MSG_ADVOTEXT,
+                    5,222,247,40
+    CONTROL         "",IDI_CS_NETSCAPELOGO,"Button",BS_OWNERDRAW | WS_GROUP,
+                    174,182,100,25
+    CONTROL         "",IDI_CS_STATIC_SEPARATOR,"Static",SS_GRAYFRAME | NOT
+                    WS_VISIBLE | WS_GROUP,6,173,253,1
+    CONTROL         "",IDI_CS_STATIC_3DSEPARATOR,"Static",SS_OWNERDRAW | NOT
+                    WS_VISIBLE | WS_GROUP,6,173,253,8
+    LTEXT           "Symantec AntiVirus Scanner",IDI_CS_MSG_PRODUCT,5,184,150,
+                    9
+    LTEXT           "Custom Version",IDI_CS_MSG_CUSTOMVERSION,5,193,100,9
+END
+
+IDD_DOWNLOADSAVEINFECTED_NT DIALOG DISCARDABLE  36, 24, 264, 298
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Save Downloaded File"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "File &Name:",1090,6,58,76,9
+    EDITTEXT        IDI_CS_FILENAME,6,68,90,12,ES_AUTOHSCROLL |
+                    ES_OEMCONVERT
+    LISTBOX         IDI_CS_FILEBOX,6,84,90,68,LBS_SORT | LBS_OWNERDRAWFIXED |
+                    LBS_HASSTRINGS | LBS_DISABLENOSCROLL | WS_VSCROLL |
+                    WS_TABSTOP
+    LTEXT           "&Directories:",-1,110,58,92,9,NOT WS_VISIBLE
+    LTEXT           "&Directories:",IDI_CS_DIRECTORYLABEL,110,58,92,9
+    LTEXT           "",IDI_CS_DIRECTORY,110,70,92,9,SS_NOPREFIX
+    LISTBOX         IDI_CS_DIRECTORYBOX,110,84,92,68,LBS_SORT |
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS |
+                    LBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "List Files of &Type:",1089,6,156,90,9
+    COMBOBOX        IDI_CS_FILETYPES,6,166,90,36,CBS_DROPDOWNLIST |
+                    CBS_AUTOHSCROLL | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Dri&ves:",1091,110,156,92,9
+    COMBOBOX        IDI_CS_DRIVES,110,166,92,68,CBS_DROPDOWNLIST |
+                    CBS_OWNERDRAWFIXED | CBS_AUTOHSCROLL | CBS_SORT |
+                    CBS_HASSTRINGS | WS_BORDER | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",1,208,58,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",2,208,76,50,14,WS_GROUP
+    PUSHBUTTON      "&Help",1038,208,98,50,14,WS_GROUP
+    CONTROL         "&Read Only",1040,"Button",BS_AUTOCHECKBOX | WS_GROUP |
+                    WS_TABSTOP,208,120,50,12
+    CONTROL         "",ID_DLG_ICON1,"Button",BS_OWNERDRAW | WS_GROUP,5,8,26,
+                    26
+    CONTROL         "",ID_DLG_ICON2,"Button",BS_OWNERDRAW | NOT WS_VISIBLE |
+                    WS_GROUP,5,180,18,20
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED,35,13,230,20
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED2,34,10,224,42
+    LTEXT           "",IDI_CS_MSG_AREWEINFECTED3,34,10,224,32
+    LTEXT           "<< Insert Symantec advotext here >>",IDI_CS_MSG_ADVOTEXT,
+                    6,254,247,40
+    CONTROL         "",IDI_CS_NETSCAPELOGO,"Button",BS_OWNERDRAW | WS_GROUP,
+                    174,197,100,25
+    CONTROL         "",IDI_CS_STATIC_SEPARATOR,"Static",SS_GRAYFRAME | NOT
+                    WS_VISIBLE | WS_GROUP,6,188,253,1
+    CONTROL         "",IDI_CS_STATIC_3DSEPARATOR,"Static",SS_OWNERDRAW | NOT
+                    WS_VISIBLE | WS_GROUP,6,188,253,8
+    LTEXT           "Symantec AntiVirus Scanner",IDI_CS_MSG_PRODUCT,5,199,150,
+                    9
+    LTEXT           "Custom Version",IDI_CS_MSG_CUSTOMVERSION,5,208,100,9
+END
+
+
+IDD_VIRUSDLG DIALOG DISCARDABLE  18, 18, 285, 159
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_CONTEXTHELP | DS_3DLOOK
+CAPTION "Virus Found"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Repair",IDI_V_REPAIR,229,4,49,14,WS_GROUP
+    PUSHBUTTON      "&Delete",IDI_V_DELETE,229,22,49,14
+    PUSHBUTTON      "&Quarantine",IDI_V_QUARANTINE,229,40,49,14
+    PUSHBUTTON      "&Exclude",IDI_V_EXCLUDE,229,40,49,14
+    PUSHBUTTON      "&Info...",IDI_V_INFO,229,58,49,14
+    PUSHBUTTON      "&Stop",IDI_V_STOP,229,76,49,14
+    PUSHBUTTON      "&Continue",IDI_V_CONTINUE,229,94,49,14
+    PUSHBUTTON      "&Help",IDHELP,229,112,49,14
+    CONTROL         "",IDC_ANIMATION,"BUTTON",BS_OWNERDRAW,8,8,32,32
+    LTEXT           "",IDI_V_MSG,48,16,166,43,NOT WS_GROUP
+    LTEXT           "",IDI_V_MSG_EX,11,62,204,68,NOT WS_GROUP
+    LTEXT           "",IDI_V_ALERT,11,134,205,16,NOT WS_GROUP
+    GROUPBOX        "",-1,4,2,218,153
+END
+
+                                        // If you make any changes to this template,
+                                        // make sure they show up in IDD_VIRUSONLYINFODLG
+                                        // as well:
+IDD_SCANINFODLG DIALOG DISCARDABLE  7, 17, 252, 268
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Virus Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,194,6,49,14,WS_GROUP
+    PUSHBUTTON      "P&rint...",IDI_VI_PRINT,194,24,49,14
+    PUSHBUTTON      "&Help",9,194,42,49,14
+    LTEXT           "Name:",IDI_VI_FNAMETXT,6,7,42,8
+    LTEXT           "",IDI_VI_FNAME,53,7,137,16
+    LTEXT           "Status:",IDI_VI_STATUSTXT,6,26,42,8
+    LTEXT           "",IDI_VI_STATUS,53,26,137,41
+    LTEXT           "Virus name:",IDI_VI_VNAMETXT,6,76,50,10
+    LTEXT           "",IDI_VI_VNAME,53,76,137,10
+    LTEXT           "Aliases:",IDI_VI_ALIASTXT,6,87,42,10
+    LTEXT           "",IDI_VI_ALIAS,53,87,137,10
+    LTEXT           "Infects:",IDI_VI_INFECTSTXT,6,98,42,10
+    LTEXT           "",IDI_VI_INFECTS,53,98,137,10
+    LTEXT           "Likelihood:",IDI_VI_LIKETXT,6,109,42,10
+    LTEXT           "",IDI_VI_LIKE,53,109,137,10
+    LTEXT           "Length:",IDI_VI_LENGTHTXT,6,120,42,10
+    CONTROL         "",IDI_VI_MEMRES,"NAVBITMAP",WS_DISABLED | 0xb,39,144,8,10
+    CONTROL         "",IDI_VI_SIZESTLTH,"NAVBITMAP",WS_DISABLED | 0xb,39,155,8,10
+    CONTROL         "",IDI_VI_FULLSTLTH,"NAVBITMAP",WS_DISABLED | 0xb,39,166,8,10
+    CONTROL         "",IDI_VI_TRIGGER,"NAVBITMAP",WS_DISABLED | 0xb,145,144,8,10
+    CONTROL         "",IDI_VI_ENCRYPT,"NAVBITMAP",WS_DISABLED | 0xb,145,155,8,10
+    CONTROL         "",IDI_VI_POLYMORHP,"NAVBITMAP",WS_DISABLED | 0xb,145,166,8,10
+    LTEXT           "",IDI_VI_LENGTH,53,120,55,10
+    LTEXT           "Memory resident",IDI_VI_MEMRESTXT,49,144,80,9
+    LTEXT           "Size stealth",IDI_VI_STEALTHTXT,49,155,80,9
+    LTEXT           "Full stealth",IDI_VI_SLFENCRTXT,49,166,80,9
+    LTEXT           "Triggered event",IDI_VI_OVERWRTXT,155,144,80,9
+    LTEXT           "Encrypting",IDI_VI_COMPTXT,155,155,80,9
+    LTEXT           "Polymorphic",IDI_VI_PARASTXT,155,166,80,9
+    GROUPBOX        "Characteristics",IDI_VI_TYPEGRP,6,131,236,49
+    LTEXT           "",IDI_VI_COMMENT,14,191,218,45
+    GROUPBOX        "Comments:",IDI_VI_COMMGRP,6,183,236,59
+    PUSHBUTTON      "<< &Previous virus",IDI_VI_PREV,37,247,76,15,WS_GROUP
+    PUSHBUTTON      "&Next virus >>",IDI_VI_NEXT,130,247,76,15
+    CONTROL         "",-1,"Static",SS_GRAYFRAME,5,72,239,1
+END
+
+IDD_VIRUSONLYINFODLG DIALOG DISCARDABLE  7, 17, 252, 199
+STYLE DS_MODALFRAME  | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK | DS_CONTEXTHELP
+CAPTION "Virus Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,194,6,49,14,WS_GROUP
+    PUSHBUTTON      "P&rint...",IDI_VI_PRINT,194,24,49,14
+    PUSHBUTTON      "&Help",9,194,42,49,14
+    LTEXT           "",IDI_VI_FNAME,53,-30,137,16,NOT WS_VISIBLE
+    LTEXT           "",IDI_VI_STATUS,53,-30,137,16,NOT WS_VISIBLE
+    LTEXT           "Virus name:",IDI_VI_VNAMETXT,6,7,50,10
+    LTEXT           "",IDI_VI_VNAME,60,7,130,10
+    LTEXT           "Aliases:",IDI_VI_ALIASTXT,6,18,50,10
+    LTEXT           "",IDI_VI_ALIAS,60,18,130,10
+    LTEXT           "Infects:",IDI_VI_INFECTSTXT,6,29,50,10
+    LTEXT           "",IDI_VI_INFECTS,60,29,130,10
+    LTEXT           "Likelihood:",IDI_VI_LIKETXT,6,40,50,10
+    LTEXT           "",IDI_VI_LIKE,60,40,130,10
+    LTEXT           "Length:",IDI_VI_LENGTHTXT,6,51,50,10
+    LTEXT           "",IDI_VI_LENGTH,60,51,130,10
+    CONTROL         "",IDI_VI_MEMRES,"NAVBITMAP",WS_DISABLED | 0xb,39,75,8,10
+    CONTROL         "",IDI_VI_SIZESTLTH,"NAVBITMAP",WS_DISABLED | 0xb,39,86,8,10
+    CONTROL         "",IDI_VI_FULLSTLTH,"NAVBITMAP",WS_DISABLED | 0xb,39,97,8,10
+    CONTROL         "",IDI_VI_TRIGGER,"NAVBITMAP",WS_DISABLED | 0xb,145,75,8,10
+    CONTROL         "",IDI_VI_ENCRYPT,"NAVBITMAP",WS_DISABLED | 0xb,145,86,8,10
+    CONTROL         "",IDI_VI_POLYMORHP,"NAVBITMAP",WS_DISABLED | 0xb,145,97,8,10
+    LTEXT           "Memory resident",IDI_VI_MEMRESTXT,49,75,80,9
+    LTEXT           "Size stealth",IDI_VI_STEALTHTXT,49,86,80,9
+    LTEXT           "Full stealth",IDI_VI_SLFENCRTXT,49,97,80,9
+    LTEXT           "Triggered event",IDI_VI_OVERWRTXT,155,75,80,9
+    LTEXT           "Encrypting",IDI_VI_COMPTXT,155,86,80,9
+    LTEXT           "Polymorphic",IDI_VI_PARASTXT,155,97,80,9
+    GROUPBOX        "Characteristics",IDI_VI_TYPEGRP,6,62,236,49
+    LTEXT           "",IDI_VI_COMMENT,13,123,218,43
+    GROUPBOX        "Comments:",IDI_VI_COMMGRP,6,114,236,57
+    PUSHBUTTON      "<< &Previous virus",IDI_VI_PREV,37,177,76,15,WS_GROUP
+    PUSHBUTTON      "&Next virus >>",IDI_VI_NEXT,130,177,76,15
+END
+
+IDD_VIRUSINFODLG DIALOG DISCARDABLE  7, 17, 247, 183
+STYLE DS_MODALFRAME | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Virus Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,188,7,49,14,WS_GROUP
+    PUSHBUTTON      "P&rint...",IDI_VI_PRINT,188,25,49,14
+    PUSHBUTTON      "&Help",9,188,42,49,14
+    LTEXT           "Virus name:",IDI_VI_VNAMETXT,8,6,51,10
+    LTEXT           "",IDI_VI_VNAME,62,6,118,10
+    LTEXT           "Aliases:",IDI_VI_ALIASTXT,8,17,51,10
+    LTEXT           "",IDI_VI_ALIAS,62,17,118,10
+    LTEXT           "Infects:",IDI_VI_INFECTSTXT,8,28,51,10
+    LTEXT           "",IDI_VI_INFECTS,62,28,118,10
+    LTEXT           "Likelihood:",IDI_VI_LIKETXT,8,39,51,10
+    LTEXT           "",IDI_VI_LIKE,62,39,118,10
+    LTEXT           "Length:",IDI_VI_LENGTHTXT,8,50,51,10
+    LTEXT           "",IDI_VI_LENGTH,62,50,118,10
+    CONTROL         "",IDI_VI_MEMRES,"NAVBITMAP",WS_DISABLED | 0xb,39,79,8,10
+    CONTROL         "",IDI_VI_SIZESTLTH,"NAVBITMAP",WS_DISABLED | 0xb,39,90,8,10
+    CONTROL         "",IDI_VI_FULLSTLTH,"NAVBITMAP",WS_DISABLED | 0xb,39,101,8,10
+    CONTROL         "",IDI_VI_TRIGGER,"NAVBITMAP",WS_DISABLED | 0xb,147,79,8,10
+    CONTROL         "",IDI_VI_ENCRYPT,"NAVBITMAP",WS_DISABLED | 0xb,147,90,8,10
+    CONTROL         "",IDI_VI_POLYMORHP,"NAVBITMAP",WS_DISABLED | 0xb,147,101,8,10
+    LTEXT           "Memory resident",IDI_VI_MEMRESTXT,49,78,69,9
+    LTEXT           "Size stealth",IDI_VI_STEALTHTXT,49,89,69,9
+    LTEXT           "Full stealth",IDI_VI_SLFENCRTXT,49,100,69,9
+    LTEXT           "Triggered event",IDI_VI_OVERWRTXT,157,78,75,9
+    LTEXT           "Encrypting",IDI_VI_COMPTXT,157,89,75,9
+    LTEXT           "Polymorphic",IDI_VI_PARASTXT,157,100,75,9
+    GROUPBOX        "Characteristics",IDI_VI_TYPEGRP,8,64,230,49
+    LTEXT           "",IDI_VI_COMMENT,16,129,218,40
+    GROUPBOX        "Comments:",IDI_VI_COMMGRP,8,119,230,56
+END
+
+IDD_ASKQUESTION DIALOG DISCARDABLE  15, 29, 267, 87
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "",IDI_ASK_ONLYONE,187,8,69,14,WS_GROUP
+    PUSHBUTTON      "",IDI_ASK_ALL,188,27,69,14
+    PUSHBUTTON      "Cancel",IDCANCEL,188,46,69,14
+    PUSHBUTTON      "&Help",9,188,65,69,14
+    LTEXT           "",IDI_ASK_RAPFLD,9,10,164,69
+END
+
+IDD_CONFIRM_DELETE DIALOG DISCARDABLE  0, 0, 240, 100
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Confirm File Delete"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "You are about to delete the file:",-1,7,7,188,9
+    LTEXT           "",IDC_CD_FILE,7,21,226,9
+    LTEXT           "Files deleted by Symantec AntiVirus cannot be recovered. Are you sure you want to delete this file?",
+                    -1,7,42,226,24
+    DEFPUSHBUTTON   "&Yes",IDOK,7,79,50,14,WS_GROUP
+    PUSHBUTTON      "Yes to &All",IDC_CD_ALL,65,79,50,14
+    PUSHBUTTON      "&No",IDC_CD_NO,123,79,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,181,79,50,14
+END
+
+IDD_CRITERRDLG DIALOG DISCARDABLE  12, 23, 185, 89
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Virus Found"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDI_CR_BOX,"Static",SS_SUNKEN,5,7,175,78
+    CONTROL         "",IDC_ANIMATION,"NAVBITMAP",WS_DISABLED | 0xb,110,20,20,20
+    LTEXT           "",IDI_CR_MSG,11,11,164,28,NOT WS_GROUP
+    CTEXT           "",IDI_CR_ALERT,10,64,164,18,NOT WS_GROUP
+#ifdef NAVSCANW                         // Scanner:
+    LTEXT           "Computer has been shutdown.",
+                    -1,11,42,164,16
+#else                                   // Not scanner:
+    LTEXT           "Computer has been shutdown. Reboot from your write-protected rescue disk.",
+                    -1,11,42,164,16
+#endif                                  // NAVSCANW
+END
+
+//////////////////////////////////////////////////////////////////////////
+// Begin Repair Wizard dialogs
+//
+
+IDD_WIZPAGE1 DIALOG DISCARDABLE  0, 0, 272, 147
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW |
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "Your computer is infected with the following viruses:",
+                    IDC_STATIC,81,2,186,18
+    LISTBOX         IDC_LIST_VIRUSES,81,22,107,43,LBS_SORT |
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_GROUP |
+                    WS_TABSTOP
+    PUSHBUTTON      "Virus &Info...",IDC_BUTTON_VIRUS_INFO,195,51,56,14,
+                    WS_GROUP
+    LTEXT           "The easiest way to eliminate viruses is to let Symantec AntiVirus do it automatically.  You can, however, choose to do it manually, one infected item at a time.",
+                    IDC_STATIC,81,82,189,33
+    CONTROL         "&Automatic (recommended)",IDC_RADIO_AUTOMATIC,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,81,118,143,10
+    CONTROL         "&Manual",IDC_RADIO_MANUAL,"Button",BS_AUTORADIOBUTTON,
+                    81,131,120,10
+END
+
+IDD_WIZPAGE2 DIALOG DISCARDABLE  0, 0, 272, 147
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW |
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "The following items are infected:",IDC_STATIC,81,2,189,
+                    29
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT |
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP |
+                    WS_TABSTOP,81,36,190,73
+    LTEXT           "Click Next to repair the infected items.",IDC_STATIC,81,
+                    138,190,8
+END
+
+IDD_WIZPAGE3 DIALOG DISCARDABLE  0, 0, 272, 147
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "The following infected files are still on your computer.  You should delete these files and replace them with clean, uninfected copies.",
+                    IDC_STATIC,81,2,189,33
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,81,40,190,64
+    CONTROL         "&Delete the infected files.",IDC_RADIO1,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,81,109,190,10
+    CONTROL         "D&o not delete (your computer will still be infected)",
+                    IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | BS_TOP | 
+                    BS_MULTILINE,81,122,190,24
+END
+
+IDD_WIZPAGE4 DIALOG DISCARDABLE  0, 0, 272, 148
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW |
+                    WS_DISABLED,0,1,75,146
+    LTEXT           "The following items are still infected with viruses:",
+                    IDC_STATIC,81,2,189,30
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT |
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP |
+                    WS_TABSTOP,81,36,190,73
+    PUSHBUTTON      "Ad&vice...",IDC_ADVICE_BUTTON,222,113,50,14,WS_GROUP
+    LTEXT           "Click Next to continue.",IDC_STATIC,81,138,190,8
+END
+
+IDD_WIZPAGE5 DIALOG DISCARDABLE  0, 0, 272, 147
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    CONTROL         "Animate",IDC_ANIMATE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,80,1,28,26
+    LTEXT           "You have not eliminated all viruses.",IDC_STATIC,117,4,
+                    150,38
+    LTEXT           "Static",IDC_ITEMS_SCANNED_STATIC,81,56,115,8
+    LTEXT           "Static",IDC_ITEMS_INFECTED_STATIC,81,66,175,8
+    LTEXT           "Static",IDC_ITEMS_REPAIRED_STATIC,81,76,175,8
+    LTEXT           "Static",IDC_ITEMS_QUARANTINED_STATIC,81,86,175,8
+    LTEXT           "Static",IDC_ITEMS_DELETED_STATIC,81,96,175,8
+    PUSHBUTTON      "More &Info...",IDC_MORE_INFO_BUTTON,204,49,61,14,
+                    WS_GROUP
+    LTEXT           "As a safety precaution, scan all of the disks you use, including floppies, to make sure you've found the source of the infection.",
+                    IDC_STATIC,81,113,190,33
+END
+
+IDD_WIZPAGE6 DIALOG DISCARDABLE  0, 0, 272, 147
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "Congratulations!  You have eliminated the viruses",
+                    IDC_FINISH_TEXT,81,2,186,42
+    LTEXT           "Static",IDC_ITEMS_SCANNED_STATIC,81,56,116,8
+    LTEXT           "Static",IDC_ITEMS_INFECTED_STATIC,81,66,175,8
+    LTEXT           "Static",IDC_ITEMS_REPAIRED_STATIC,81,76,175,8
+    LTEXT           "Static",IDC_ITEMS_QUARANTINED_STATIC,81,86,175,8
+    LTEXT           "Static",IDC_ITEMS_DELETED_STATIC,81,96,175,8
+    PUSHBUTTON      "More &Info...",IDC_MORE_INFO_BUTTON,204,49,61,14,
+                    WS_GROUP
+    LTEXT           "As a safety precaution, scan all of the disks you use, including floppies, to make sure you've found the source of the infection.",
+                    IDC_STATIC,81,113,190,33
+END
+
+IDD_WIZPAGE7 DIALOG DISCARDABLE  0, 0, 272, 147
+STYLE WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "NAV could not repair these files.  We recommend you Quarantine the files.  Quarantined files are held isolated from the rest of your system until you act upon them.",
+                    IDC_STATIC,81,2,189,38
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,81,43,190,63
+    CONTROL         "&Quarantine the infected files.",IDC_RADIO1,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,81,113,188,10
+    CONTROL         "D&o not Quarantine (your computer will still be infected)",
+                    IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | BS_TOP | 
+                    BS_MULTILINE,81,125,185,21
+END
+
+//
+// End Repair Wizard dialogs
+//////////////////////////////////////////////////////////////////////////
+

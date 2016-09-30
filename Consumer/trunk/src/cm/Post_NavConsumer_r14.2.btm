@@ -1,0 +1,110 @@
+echo off
+
+
+if "%1"=="" goto USAGE
+
+set bld_num=%1
+set postingarea=Unreleased_Builds\NAV\r14.2
+set dest_rt=%postingarea%\%bld_num%
+set dest_root=%dest_rt%\SDK
+set dest_root2=build_environments\NavConsumer_r14.2\%1
+
+set BUILDNOTES=//depot/Norton_AntiVirus/Consumer/trunk/src/cm/BuildNotes/BuildNotes.html
+set BUILDNOTES_DIR=C:\bld_area\navcon_r14.2\nav\src\cm\BuildNotes
+set BUILDNOTES_FILE=BuildNotes.html
+set BUILD_TYPE=CM
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+cdd %root%
+@call %root%layout %BUILD_TYPE
+
+
+set POST_PATH=h:
+
+rem //////////////////////////////////////////////////////////////
+rem look for parameters we recognize
+rem
+do param = 1 to 127
+  shift 1
+  iff "%0"=="" then
+     shift -%param%
+     goto continue
+  endiff
+  iff "%@upper[%0]"=="/OUT" then
+     shift 1
+     set dest_rt=%bld_num
+     set dest_root=%bld_num\SDK
+     set POST_PATH=%0
+  endiff
+enddo
+shift -127
+
+:continue
+
+cdd %POST_PATH%\
+md %dest_rt
+md %dest_rt\Metrics
+md %dest_root
+md %dest_root2
+
+echo ********************************************
+echo Posting Layouts to folder on ussm-cpd
+echo ********************************************
+echo.
+xcopy /d/f/i/e %root%..\Final\*		%POST_PATH%\%dest_rt\
+REM %root%tools\wput.exe -N -nv --basename=%root%..\Final\ %root%..\Final\ ftp://symcorp\cm_only:p@sswordforCM@ussm-cpd.corp.symantec.com/%@replace[\,/,%dest_rt%]/
+
+python R:\cm\rmallold.py %postingarea%
+
+if x%DEVBLD% == x 
+	rem we only want to create these zips if its a cm build (not on dragonfly)
+	
+	echo.
+	echo ********************************************
+	echo Creating NavConsumer_r14.2_NU Final #%1  Zip  ...
+	echo ********************************************
+	echo.
+	cd d:
+	call wzzip -exrP j:\NavConsumer_r14.2_NU_%1.zip %root%..\ui\aboutplg\*.*
+endiff
+
+echo.
+echo ********************************************
+echo Make sure we have the latest BuildNotes.html
+echo file, and copy the build notes to ussm-cpd.
+echo ********************************************
+echo.
+
+echo.
+echo.
+echo **********************************************
+echo NavConsumer r14.2 Build # %1 is complete.
+echo **********************************************
+echo.
+echo.
+echo.
+
+:done
+echo.
+echo Done.
+quit
+
+:-------------------------------------------------------------------------
+: Error, display usage information
+:-------------------------------------------------------------------------
+:USAGE
+cls
+echo.
+echo  Please enter a build number
+echo.
+goto done

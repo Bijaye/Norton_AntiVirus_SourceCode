@@ -1,0 +1,15 @@
+Each of the projects in Ansel (win32) use the following settings:
+
+Compiler warning level 3 for release and debug (/W3)
+Create "Program Database" output for release (/Zi)
+Generate a mapfile for both release and debug (/map /mapinfo:exports /mapinfo:lines)
+Linker for release builds generates debug output (/debug /opt:ref)
+
+Each DLL is (re)based (/base:"0xHHH00000")
+
+These base values are set in each DLLs DSP file:
+
+exchext.dll	0x61000000
+notesext.dll	0x64000000
+ncschdlr.dll	0x64100000
+sesahook.dll	0x66000000

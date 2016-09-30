@@ -1,0 +1,310 @@
+*---------------------------------------------------------------------
+*  Service level
+*---------------------------------------------------------------------
+SERVICELEVEL
+   LEVEL = '000000'
+
+*---------------------------------------------------------------------
+*  Default directories
+*---------------------------------------------------------------------
+* Specify a path separating directories with a forward slash character
+PATH
+   FILE      = 'C:/SYMANTEC',
+* String to localize
+   FILELABEL = 'NAV Installation directory',
+
+   AUX1      = 'C:/SYMANTEC/COMMON/SHARED/VIRUSDEF',
+* String to localize
+   AUX1LABEL = 'Virus Definitions Directory',
+
+   AUX2      = 'C:/VDEFS',
+* String to localize
+   AUX2LABEL = 'Temp Virus Def Location'
+
+
+*---------------------------------------------------------------------
+*  Used to communicate to the preinstaller the program directory the user installed to.
+*---------------------------------------------------------------------
+FILE
+   EXIT = 'SETVAR INSTALLEDFILE=%EPFIBOOTDRIVE%://XYZNAVO2.ZZZ'
+
+*---------------------------------------------------------------------
+*  Component entries
+*---------------------------------------------------------------------
+COMPONENT
+   NAME	= 'NAVOS2',
+   ID		= 'NAVOS2',
+   DISPLAY	= 'NO',
+   SIZE		= '0'
+
+COMPONENT
+   NAME	= 'VIRUSDEFS',
+   ID		= 'VDEFS',
+   DISPLAY	= 'NO',
+   SIZE		= '0'
+
+*---------------------------------------------------------------------
+*  Component entry for NAV OS/2.
+*  You need to modify the SIZE entry.
+*---------------------------------------------------------------------
+COMPONENT
+* String to localize
+   NAME	= 'Norton AntiVirus for OS/2',
+* String to localize
+   DESCRIPTION = 'Norton AntiVirus for OS/2',
+   REQUIRES	= 'NAVOS2',
+   DISPLAY 	= 'YES',
+* This needs to be set by the build person before building the installer
+* The following is the size as of 23 November 1998  
+* 9/10/99: The set size is still bigger than the current size which is 8014427
+   SIZE         = '9863168'
+
+*---------------------------------------------------------------------
+*  Exit to define product folder's object ID.  This is for epfisinc.pkg
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN = 'ALWAYS',
+   EXIT     = 'SETVAR FOLDERID=Sym_NAV'
+
+
+*---------------------------------------------------------------------
+*  Create your product's folder on the desktop.
+*---------------------------------------------------------------------
+ FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          		= 'CREATEWPSOBJECT WPFolder "Norton AntiVirus"
+   <WP_DESKTOP> R "OBJECTID=<%FOLDERID%>"'
+
+*---------------------------------------------------------------------
+*  Set variable CATALOG to be the name of the catalog file;
+*  This is for epfisinc.pkg
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN      = 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR = 'NO',
+   EXIT          = 'SETVAR CATALOG=NAVOS2.ICF'
+
+*---------------------------------------------------------------------
+*  The included package file will install and register the
+*  Installation Utility.  You do not need to make any changes to
+*  EPFISINC.PKG.
+*---------------------------------------------------------------------
+INCLUDE
+  NAME = 'DRIVE: EPFISINC.PKG'
+
+
+*---------------------------------------------------------------------
+*  Describe the packed file for NAV portion
+*---------------------------------------------------------------------
+PACKFILE
+   ID		= 'NAVOS2',
+   SOURCE	= 'DRIVE:NAVOS2._',
+   UNPACK	= 'YES'   
+
+*---------------------------------------------------------------------
+*  Describe the packed file for Virus Definitions portion
+*---------------------------------------------------------------------
+PACKFILE
+   ID		= 'VDEFS',
+   SOURCE	= 'DRIVE:VIRUSDEF._',
+   UNPACK	= 'YES'   
+
+*---------------------------------------------------------------------
+*  Include 1 FILE entry for each file in the packed file.
+*---------------------------------------------------------------------
+*---------------------------------------------------------------------
+* Copy the catalog file
+*---------------------------------------------------------------------
+FILE
+   PACKID		= 'NAVOS2',
+   PWS			= 'NAVOS2.ICF',
+   WHEN		= 'INSTALL || UPDATE || RESTORE',
+   REPLACEINUSE 	= 'I U D R',
+   UNPACK        	= 'YES'
+
+*---------------------------------------------------------------------
+* Copy the description file
+*---------------------------------------------------------------------
+FILE
+   PACKID		= 'NAVOS2',
+   PWS			= 'NAVOS2.DSC',
+   WHEN		= 'INSTALL || UPDATE || RESTORE',
+   REPLACEINUSE 	= 'I U D R',
+   UNPACK        	= 'YES'
+
+*---------------------------------------------------------------------
+* Copy the .cmd file needed to create the preinstaller file.
+*---------------------------------------------------------------------
+FILE
+   PACKID		= 'NAVOS2',
+   PWS			= 'MAKAFILE.CMD',
+   WHEN		= 'INSTALL || UPDATE || RESTORE',
+   REPLACEINUSE 	= 'I U D R',
+   UNPACK        	= 'YES'
+
+* Remove the preinstaller file.
+FILE
+   EXIT = 'DELETEFILES %INSTALLEDFILE%'
+
+*---------------------------------------------------------------------
+*  Create the file that the preinstaller needs
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'EXEC %EPFIFILEDIR%//makafile.cmd %EPFIFILEDIR% %INSTALLEDFILE%'
+
+* Remove the file since it is no longer needed.
+FILE
+   EXIT = 'DELETEFILES %EPFIFILEDIR%//makafile.cmd'
+
+INCLUDE
+  NAME = 'DRIVE: NAVFILES.PKG'
+
+*---------------------------------------------------------------------
+*  Create a program object in the product folder for NAVOS2.EXE
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'CREATEWPSOBJECT WPProgram "Norton AntiVirus"
+<%FOLDERID%> R "EXENAME=%EPFIFILEDIR%//NAVOS2.EXE;
+OBJECTID=<NAVOS2EXE>;"'
+
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'CREATEWPSOBJECT WPProgram "LiveUpdate"
+<%FOLDERID%> R "EXENAME=%EPFIFILEDIR%//NAVLUOS2.EXE;
+OBJECTID=<NAVLUOS2EXE>;"'
+
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'CREATEWPSOBJECT WPProgram "Startup Norton Program Scheduler"
+<%FOLDERID%> R "EXENAME=%EPFIFILEDIR%//OS2SCHED.EXE;
+OBJECTID=<OS2SCHED.EXE>;"'
+
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'CREATEWPSOBJECT WPProgram "Uninstall Norton AntiVirus"
+<%FOLDERID%> R "EXENAME=%EPFIFILEDIR%//VDEFINST.EXE;
+PARAMETERS=/U;
+OBJECTID=<NAVOS2UNIN>;"'
+
+
+*---------------------------------------------------------------------
+*  Launch vdefinst
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'EXEC %EPFIFILEDIR%//VDEFINST.EXE /I:%EPFIFILEDIR% /D:%EPFIAUX2DIR% /V:%EPFIAUX1DIR%'
+
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'ADDINI "SymantecNAV" "InstallDir" "%EPFIFILEDIR%"'
+
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'ADDINI "SymantecNAV" "AVDefsDir" "%EPFIAUX1DIR%"'
+
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'ADDINI "SymantecNAV" "InstallVersion" "5.0"'
+
+
+*---------------------------------------------------------------------
+*  Create a program object in the startup group
+*  Note: This happen after vdefinst.exe is run.  
+*        For pre 5.02 build 43 installs the install can not
+*        remove/update the scheduler Icon.  so vdefinst just nukes
+*        the icon in the startup folder
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'INSTALL || UPDATE || RESTORE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'CREATEWPSOBJECT WPProgram "Startup Norton Program Scheduler"
+<WP_START> R "EXENAME=%EPFIFILEDIR%//OS2SCHED.EXE;
+OBJECTID=<STARTUP_OS2SCHED.EXE>;STARTUPDIR=EXENAME=%EPFIFILEDIR%;
+PARAMETERS=/h;"'
+
+
+*---------------------------------------------------------------------
+*  Remove the program object in the product folder for NAVOS2.EXE
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEWPSOBJECT <NAVOS2EXE>'
+
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEWPSOBJECT <NAVLUOS2EXE>'
+
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEWPSOBJECT <OS2SCHED.EXE>'
+
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEWPSOBJECT <NAVOS2UNIN>'
+
+*---------------------------------------------------------------------
+*  Remove the program object in the startup group
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEWPSOBJECT <STARTUP_OS2SCHED.EXE>'
+
+
+*---------------------------------------------------------------------
+*  Remove the program folder - this needs to be the last item in regards to
+*  program folder removal.
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEWPSOBJECT <%FOLDERID%>'
+
+*---------------------------------------------------------------------
+*  Remove the file that the preinstaller needs.
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEFILES %INSTALLEDFILE%'
+
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'ADDINI "SymantecNAV" "InstallDir"'
+
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'NO',
+   EXIT          	= 'ADDINI "SymantecNAV" "AVDefsDir"'
+
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'ADDINI "SymantecNAV" "InstallVersion"'
+
+*---------------------------------------------------------------------
+*  On Uninstall: Remove any file that Nav created after install
+*---------------------------------------------------------------------
+FILE
+   EXITWHEN		= 'DELETE',
+   EXITIGNOREERR	= 'YES',
+   EXIT          	= 'DELETEFILES %EPFIFILEDIR%//SCHEDCFG.INI'
+
+

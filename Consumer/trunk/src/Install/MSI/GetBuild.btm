@@ -1,0 +1,85 @@
+@echo off
+set build_ver=0
+set major_num=0
+set minor_num=0
+set sub_ver=0
+set build_num=0
+if "%1"=="" goto syntax
+ON BREAK goto cleanup
+set FILEINHANDLE=%@FILEOPEN[%1,read,t]
+iff "%FILEINHANDLE"=="-1" then
+	echo Invalid filename: %1
+	quit 1
+endiff
+
+set cur_line_num=0
+set cur_found=0
+set cur_line_text=%@FILEREAD[%FILEINHANDLE]
+do while NOT "%cur_line_text"=="**EOF**"
+	
+	::looking for major version
+	iff %@INDEX[%cur_line_text,#define VER_NUM_PRODVERMAJOR]==0 then
+			set begin_str=#define VER_NUM_PRODVERMAJOR
+			set major_num=%@RIGHT[%@EVAL[%@LEN[%cur_line_text] - %@LEN[%begin_str]],%cur_line_text]
+			set major_num=%@EVAL[%major_num]
+			::echo %major_num
+	endiff
+	::goto get_next_line  ::if found don't look through rest of ifs
+	
+	::looking for minor version
+	iff %@INDEX[%cur_line_text,#define VER_NUM_PRODVERMINOR]==0 then
+			set begin_str=#define VER_NUM_PRODVERMINOR
+			set minor_num=%@RIGHT[%@EVAL[%@LEN[%cur_line_text] - %@LEN[%begin_str]],%cur_line_text]
+			set minor_num=%@EVAL[%minor_num]
+			::echo %minor_num
+	endiff
+	::goto get_next_line
+	
+	::looking for sub version
+	iff %@INDEX[%cur_line_text,#define VER_NUM_PRODVERSUBMINOR]==0 then
+			set begin_str=#define VER_NUM_PRODVERSUBMINOR  
+			set sub_ver=%@RIGHT[%@EVAL[%@LEN[%cur_line_text] - %@LEN[%begin_str]],%cur_line_text]
+			set sub_ver=%@EVAL[%sub_ver]
+			::echo %sub_ver
+	endiff
+	::goto get_next_line
+	
+	::looking for build number
+	iff %@INDEX[%cur_line_text,#define VER_NUM_BUILDNUMBER]==0 then
+			set begin_str=#define VER_NUM_BUILDNUMBER					
+			set build_num=%@RIGHT[%@EVAL[%@LEN[%cur_line_text] - %@LEN[%begin_str]],%cur_line_text]
+			set build_num=%@EVAL[%build_num]
+			::echo %build_num
+	endiff
+			
+	::get_next_line
+	set cur_line_num=%@INC[%cur_line_num]
+	set cur_line_text=%@FILEREAD[%FILEINHANDLE]
+enddo
+
+set build_ver=%major_num.%minor_num.%sub_ver.%build_num
+::echo %build_ver
+
+:cleanup
+set FILEINHANDLE=%@FILECLOSE[%FILEINHANDLE]
+
+unset FILEINHANDLE
+unset cur_line_num
+unset cur_found
+unset cur_line_text
+unset begin_str
+quit 0
+
+:syntax
+echo %@UPPER[%@NAME[%0]]
+echo.
+echo Purpose: Get the build#'s and all dates in the headerfile specified
+echo.
+echo  Format: %@UPPER[%@NAME[%0]] [headerfile]
+echo          headerfile - The header file to read build information from
+echo.
+echo Example headerfile:
+echo    #define VER_NUM_PRODVERMAJOR				12
+echo    #define VER_NUM_PRODVERMINOR				0
+echo    #define VER_NUM_PRODVERSUBMINOR				0
+echo    #define VER_NUM_BUILDNUMBER				1

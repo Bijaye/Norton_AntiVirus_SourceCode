@@ -1,0 +1,680 @@
+/* Copyright 1994 Symantec Corporation                                  */
+/************************************************************************
+// *                                                                      *
+// * $Header:   S:/SYMKRNL/VCS/SYMKRNL.THv   1.2   26 Aug 1997 07:52:28   gvogel  $ *
+// *                                                                      *
+// * Description:                                                         *
+// *      Contains thunk definitions for Windows 4.0 thunk compiler.	*
+// *                                                                      *
+// ************************************************************************
+// $Log:   S:/SYMKRNL/VCS/SYMKRNL.THv  $ */
+// 
+//    Rev 1.2   26 Aug 1997 07:52:28   gvogel
+// Added DiskIsSubst to thunks.
+// 
+//    Rev 1.1   18 Mar 1996 10:57:26   THOFF
+// Renamed the FSINFO structure to FILESYSINFO because of a name conflict.
+// 
+//    Rev 1.0   26 Jan 1996 20:22:24   JREARDON
+// Initial revision.
+// 
+//    Rev 1.30   13 Dec 1995 14:10:18   DBUCHES
+// 32bit fat changes.
+//
+//    Rev 1.29   07 Dec 1995 12:50:36   ROWANT
+// Removed huge from DISKREC
+//
+//    Rev 1.28   07 Dec 1995 12:43:00   ROWANT
+// Fixed syntax
+//
+//    Rev 1.27   07 Dec 1995 12:38:52   ROWANT
+// Updated sectorCount to DWORD
+//
+//    Rev 1.26   04 Dec 1995 16:00:14   MARKK
+// Work for 32 bit FAT
+//
+//    Rev 1.25   30 May 1995 18:10:32   REESE
+// Added HWIsPCI function.
+//
+//    Rev 1.24   10 Mar 1995 01:18:46   BRUCE
+//
+// Changed the lpbSwaped parm to _DiskIsDoubleSpace() to be a pointer to a
+// WORD instead of a ptr to a BOOL because BOOL changes size between 32 and 16
+// sides (and the thunk compiler doesn't do well with that).
+//
+//    Rev 1.23   17 Jan 1995 17:43:08   HENRI
+// Changed SYSHEAPINFO to use 16 bit HGLOBALS
+//
+//    Rev 1.22   04 Jan 1995 16:46:36   RGLENN
+// Added StackerFlushDrive()
+//
+//    Rev 1.21   27 Dec 1994 16:27:54   BRUCE
+// Removed NameReturnLongName() references
+//
+//    Rev 1.20   21 Dec 1994 16:39:00   BRAD
+// Renamed long/short functions
+//
+//    Rev 1.19   09 Dec 1994 17:13:28   BILL
+// Fixed file so it compiles
+//
+//    Rev 1.18   09 Dec 1994 16:34:40   BILL
+// Added missing structure for SysHeapInfo
+//
+//    Rev 1.17   09 Dec 1994 15:12:52   HENRI
+// Added SystemHeapInfo and GetSystemResources thunks
+//
+//    Rev 1.16   21 Nov 1994 19:05:08   BRUCE
+// Added NameGetLong/ShortName() functions and thunks to get to them
+//
+//    Rev 1.15   16 Nov 1994 18:20:14   BRAD
+// No longer thunk for MemCopyPhysical()
+//
+//    Rev 1.14   02 Nov 1994 20:11:52   RGLENN
+// More Stacker stuff
+//
+//    Rev 1.13   01 Nov 1994 11:58:22   DBUCHES
+// Added StackerDiskBlockDevice thunk
+//
+//    Rev 1.12   27 Oct 1994 15:34:04   RGLENN
+// Added thunks for StackerGet/PutUnitData
+//
+//    Rev 1.11   04 Oct 1994 16:13:14   DBUCHES
+// Added thunk for DiskGetDriverTable
+//
+//    Rev 1.10   03 Oct 1994 17:00:38   DBUCHES
+// Added thunk for DiskGetDASDType()
+//
+//    Rev 1.9   28 Sep 1994 18:27:16   DBUCHES
+// Added thunk for DiskGetLockedTable
+//
+//    Rev 1.8   21 Sep 1994 16:06:38   DAVID
+// More workarounds for thunk-induced exception violations under the
+// debugger.  All pointers fields in structures are now declared as DWORDs
+// to the thunk compiler, and an extra function argument is used to translate
+// the field value separately.  The translated value is stuffed back into the
+// structure before the 16-bit code is executed, and the original field value
+// is restored before returning control back to the 32-bit caller.
+//
+//    Rev 1.7   20 Sep 1994 21:06:08   DAVID
+// Added padding fields to DiskRec and AbsDiskRec to ensure DWORD fields
+// are on DWORD boundaries.  This fixes the exception violations that
+// occur when these structures passed to functions implemented with thunks
+// in Chicago.  Also made some other adjustments to the thunk script.
+//
+//    Rev 1.6   17 Aug 1994 16:26:20   DBUCHES
+// Fixed incorrect AbsDiskRec typedef
+//
+//    Rev 1.5   27 Jul 1994 16:17:54   DBUCHES
+// Added thunk for DiskRecToFloppyAbsDiskRec
+//
+//    Rev 1.4   25 Jul 1994 13:33:48   DBUCHES
+// Added thunk for _DiskIsDoubleSpace()
+//
+//    Rev 1.3   07 Jul 1994 16:05:00   DBUCHES
+// Added thunks for DiskIsStacker, DiskIsBlockDevice and DiskIsDriveSpace
+//
+//    Rev 1.2   06 Jul 1994 17:09:52   DBUCHES
+// Added thunks for DiskGetPhysicalType, DiskIsCompressed,
+// and DiskIsDoubleSpace.
+//
+//    Rev 1.1   29 Jun 1994 18:41:14   DBUCHES
+// Added thunk for DiskGetHDParams
+//
+//    Rev 1.0   23 Jun 1994 19:04:14   PATRICKM
+// Initial revision.
+//
+//
+
+enablemapdirect3216 = true;	// Creates 32->16 thunks
+
+/*----------------------------------------------------------------------*
+ * We need to include general definitions because the thunk compiler	*
+ * can only include files that are in the same directory.		*
+ *----------------------------------------------------------------------*/
+typedef unsigned short USHORT;
+typedef          short SHORT;
+typedef unsigned long  ULONG;
+typedef          long  LONG;
+typedef unsigned int   UINT;
+typedef          int   INT;
+typedef unsigned char  UCHAR;
+typedef hinstance HINSTANCE;
+
+typedef void    VOID;
+typedef void   *PVOID;
+typedef void   *LPVOID;
+typedef UCHAR   BYTE;
+typedef USHORT  WORD;
+typedef ULONG   DWORD;
+typedef UINT    HANDLE;
+typedef int     BOOL;
+typedef char   *LPSTR, *PSTR;
+typedef /* const */ char *LPCSTR, *PCSTR;
+typedef BYTE   *PBYTE;
+typedef BYTE   *LPBYTE;
+typedef USHORT  SEL;
+typedef INT    *LPINT;
+typedef UINT   *LPUINT;
+typedef DWORD  *LPDWORD;
+typedef LONG   *LPLONG;
+typedef WORD   *LPWORD;
+
+typedef WORD    STATUS;
+
+typedef unsigned int HGLOBAL;
+typedef WORD HGLOBAL16;
+
+typedef DWORD    CLUSTER;
+
+// From TOOLHELP.H (16 bit)
+typedef struct tagSYSHEAPINFO
+{
+    DWORD dwSize;
+    WORD wUserFreePercent;
+    WORD wGDIFreePercent;
+    HGLOBAL16 hUserSegment;
+    HGLOBAL16 hGDISegment;
+    HGLOBAL16 hWndSegment;
+    HGLOBAL16 hMenuSegment;
+    HGLOBAL16 hGDI32Segment;
+} SYSHEAPINFO, *LPSYSHEAPINFO;
+
+/*----------------------------------------------------------------------*/
+/* AbsDiskRec                                                           */
+/*      Contains all the information you need to manipulate absolute    */
+/*      physical sectors of a disk                                      */
+/*      Kinda like DiskRec                                              */
+/*      NOTE: Fixed Size                                                */
+/*									*/
+/*	The two records differ only in their treatment of the buffer	*/
+/*	field.  Sometimes the field is used to return a real mode	*/
+/*	address which must not be treated as a selector:segment needing	*/
+/*	conversion to a flat mode address.  Other times, it is used to 	*/
+/*	hold a protected mode address which must be converted.		*/
+/*----------------------------------------------------------------------*/
+
+typedef struct
+    {
+    BYTE        dn;                     /* Drive number (0,1,0x80,0x81) */
+
+/* starting coordinates */
+    BYTE        startingHead;           /* First head (0-based)         */
+    WORD        startingTrack;          /* First track (0-based)        */
+    BYTE        startingSector;         /* First sector (1-based)       */
+
+/* ending coordinates   */
+    BYTE        endingHead;             /* Ending head # (0-based)      */
+    WORD        endingTrack;            /* Ending track # (0-based)     */
+    BYTE        endingSector;           /* Ending sector # (1-based)    */
+
+    BYTE        sectorsPerTrack;        /* Sectors on each track        */
+    WORD        totalTracks;            /* Total tracks on disk         */
+    BYTE        totalHeads;             /* Total heads on disk          */
+
+/* current coordinates  */
+    BYTE        head;                   /* Current head (0-based)       */
+    WORD        track;                  /* Current track (0-based)      */
+    BYTE        sector;                 /* Current sector (1-based)     */
+
+    BYTE        numSectors;             /* Number of sectors to use     */
+    BYTE	padding[2];		/* Put buffer on DWORD boundary	*/
+    DWORD       buffer;                 /* Ptr. to buffer to use        */
+    BYTE        sectorsProcessed;       /* Number of sectors processed  */
+    BYTE        CMOS_Type;              /* CMOS drive type              */
+                                        /* (Floppies only)              */
+                                        /*   1 - 360K                   */
+                                        /*   2 - 1.2M                   */
+                                        /*   3 - 720K                   */
+                                        /*   4 - 1.44M                  */
+    BYTE        numDrives;              /* Num. drives (floppy or hard) */
+    } ABSDISKREC, *LPABSDISKREC;
+
+
+/*----------------------------------------------------------------------*/
+/* BPBRec                                                               */
+/*      Record containing disk BPB information.                         */
+/*      NOTE: Fixed Size                                                */
+/*									*/
+/*	We use a structure of bytes to bring the BPB accross the 	*/
+/*	thunking layer to avoid trouble caused by having DWORD		*/
+/*	fields on non DWORD boundaries.					*/
+/*----------------------------------------------------------------------*/
+
+typedef struct BPBREC
+    {
+    WORD        bytesPerSector;         /* Bytes per sector             */
+    BYTE        sectorsPerCluster;      /* Sectors per cluster          */
+    WORD        startOfFat;             /* First sector of Fat          */
+    BYTE        numberFats;             /* Copies of Fat                */
+    WORD        maxRootEntries;         /* Maximum entries in Root dir. */
+    WORD        oldTotalSectors;        /* Old total number of sectors  */
+    BYTE        mediaDescriptor;        /* Media descriptor BYTE        */
+    WORD        sectorsPerFat;          /* Sectors per Fat              */
+    WORD        sectorsPerTrack;        /* Sectors per Track            */
+    WORD        heads;                  /* Number of sides              */
+    DWORD       hiddenSectors;          /* Number of hidden sectors     */
+    DWORD       totalSectors;           /* Total sectors for BigFoot    */
+                                        /*      drives                  */
+    BYTE        reserved[6];            /* Reserved                     */
+    } BPBRec, *LPBPBREC;
+
+typedef struct
+    {
+    BYTE	bpbdata[31]; 		// 31 == sizeof(BPBREC)
+    } BPBTHUNKREC, *LPBPBTHUNKREC;
+
+typedef struct FILESYSINFO
+    {
+    DWORD       dwSignature;		// Signature: Aarr;
+    DWORD       dwFreeClusterCount;	// Count of free clusters
+    DWORD       dwNextFreeCluster;	// Next cluster to be allocated
+    DWORD       dwReserved1[3];
+    } FILESYSINFO;
+
+/*----------------------------------------------------------------------*/
+/* DiskRec                                                              */
+/*      Record containing all information needed to read/write from/to  */
+/*      a disk using DOS absolute sectors (INT 25h and INT 26h).        */
+/*      Includes support for BigFoot and DOS 3.4                        */
+/*      NOTE: Fixed Size                                                */
+/*----------------------------------------------------------------------*/
+
+typedef struct DISKREC
+    {
+    BYTE        dn;                     /* Drive number (0-A:,1-B:,etc) */
+    BYTE        driverEntry;            /* Entry within device driver   */
+    WORD        bytesPerSector;         /* Bytes per Sector             */
+    BYTE        sectorsPerCluster;      /* Sectors per Cluster          */
+    BYTE        reserved;               /* Reserved                     */
+    WORD        startOfFat;             /* First sector of Fat          */
+    BYTE        numberFats;             /* Copies of Fat                */
+    WORD        maxRootEntries;         /* Maximum root dir. entries    */
+    WORD        startOfRootDir;         /* First sector of Root dir.    */
+
+    BYTE        byIOType;               /* Is drive BigFooted?          */
+    BYTE        byFATType;              /* Is 16-bit Fat? (or 12-bit?)  */
+    BYTE        dl;                     /* Drive Letter (A:,B:,etc.)    */
+    BYTE        mediaDescriptor;        /* Media descriptor BYTE        */
+    WORD        sectorsInRoot;          /* Sectors in root directory    */
+    BYTE        padding1;               /* Pad to next DWORD boundary   */
+    DWORD       totalSectors;           /* Total sectors on disk (not   */
+                                        /*    filled in by LoadDiskInfo)*/
+    DWORD       sectorsBeforePartition; /* Total sectors before this    */
+                                        /*      partition               */
+    DWORD       bytesPerCluster;        /* Bytes per cluster: Same as:  */
+                                        /* BytesPerSector *             */
+                                        /*      SectorsPerCluster       */
+    DWORD       sector;                 /* First sector to read/write   */
+    DWORD       sectorCount;            /* Number of sectors to r/w     */
+    BYTE        *buffer;                /* Buffer where reads/writes    */
+                                        /*      will occur              */
+    WORD        wMajorType;             // Major drive type
+    WORD        wMinorType;             // Minor drive type
+    WORD        wMask;                  // Mask for this drive i.e. NDRV_xxx
+    BYTE        padding2[2];            // Pad to next DWORD boundary
+    DWORD       dwStartOfDataEx;        /* First sector of Data area    */
+    DWORD       dwMaxClusterEx;         /* Largest Cluster number       */
+    DWORD       dwSectorsPerFATEx;      /* Sectors Per Fat              */
+    CLUSTER     clBAD;                  // The value of BAD cluster
+    CLUSTER     clEOF;                  // The lowest value of EOF
+
+    /********************************************************************
+     * Note, the fields below are only valid iff IsFAT32 is TRUE.       *
+     ********************************************************************/
+
+    CLUSTER     clRootSCN;              /* First cluster of Root dir.   */
+    FILESYSINFO FSInfo;                 // Extended boot info
+
+    BYTE        byReserved[26];         // Future space
+    } DiskRec, DISKREC, *LPDISKREC;
+
+
+
+
+/*----------------------------------------------------------------------*/
+/* Int13Rec                                                             */
+/*      Contains many fields that will be filled in if an INT 13h is    */
+/*      generated when performing a DOS INT 25h call.  Used to map a    */
+/*      logical device to its physical attributes.                      */
+/*----------------------------------------------------------------------*/
+
+typedef struct INT13REC
+    {
+    BYTE        generated;              /* Was it generated?            */
+    BYTE        dn;                     /* Physical drive #             */
+    BYTE        head;                   /* Starting head # (0-based)    */
+    WORD        track;                  /* Starting track # (0-based)   */
+    BYTE        sector;                 /* Starting sector # (1-based)  */
+    BYTE        trigger;                /* Time for handler to act?     */
+    } INT13REC, *LPINT13REC;
+
+
+// Start of Stacker thunks.  Sorry about the mess.
+
+/* New structure for version 3.X volumes */
+typedef         struct  EXTENT_struct
+    {
+    WORD    xlclu;      /* logical cluster offset from start of file */
+    WORD    xpclu;      /* host cluster number */
+    }       EXTENT;
+
+
+    /*      BPB (BIOS Parameter Block) */
+typedef struct  SBPB_struct
+    {
+    WORD    BytesPerSec;    /*2 Bytes per sector */
+    BYTE    SecPerCluster;  /*1 Sectors per cluster */
+    WORD    ReservedSec;    /*2 Number of reserved sectors */
+    BYTE    NumberFATS;     /*1 Number of FAT copies */
+    WORD    RootEntries;    /*2 Number of root directory entries */
+    WORD    ShortTotalSec;  /*2 Total sectors (0 if TotalSec is used) */
+    BYTE    MediaDescriptor;/*1 Media descriptor */
+    WORD    SecPerFAT;      /*2 Number of sectors per FAT */
+    WORD    SecTrack;       /*2 Number of sectors per track (optional) */
+    WORD    NumberHeads;    /*2 Number of heads (optional) */
+    DWORD   NumberHiddenSec;/*4 Number of hidden sectors (optional) */
+    DWORD   TotalSec;       /*4 Total sectors (if ShortTotalSec = 0) */
+    } SBPB;               //  25
+
+
+typedef         struct  DIRCMAP_struct
+    {
+    WORD    DCclu;      /* 2which cluster is it (0 or -1 --> invalid)        */
+    DWORD   DCsector;   /* 4start sector                                     */
+    BYTE    DCflags;    /* 1flags (used for writing only)                    */
+    BYTE    DCreserved; /* 1reserved, keep on word boundaries                */
+    } DIRCMAP;          // 8
+
+
+typedef     struct  BMCSRec
+    {
+    WORD    BMSignature;    /* Bitmap control structure signature */
+    WORD    BMValid;        /* Bitmap copy valid indicator */
+    DWORD   BMCurrent;      /* Current allocation bit offset */
+    DWORD   BMErased;       /* # erased sectors + 0F0000000H */
+                                                        /* (if upper nibble not F0, rebuild!) */
+    DWORD   BMReserved;     /* Reserved, set to zero */
+    } BMCSRec;
+
+
+typedef struct  CM_struct
+    {
+    WORD    xCNext; /* next FAT_CTL block in ring           */
+    WORD    xCPrev; /* previous FAT_CTL block in ring       */
+    BYTE    xCUnit; /* unit entry is for (-1 if no data)    */
+    } CM;
+
+        /* Bitmap cache control structure.  Each perunit holds one of           */
+        /* these control structures for the LAST sector of the bitmap,          */
+        /* which must always be resident in external memory for                         */
+        /* performance reasons (since it holds the BMCS).  In addition,         */
+        /* there is a doubly-linked list of these structures (shared            */
+        /* among units) starting at BitmapHead                                                          */
+
+typedef         struct  BM_CTL_struct
+    {
+    CM      BM_CTL_CM;              /* cache management, must be at front   */
+    BYTE    BCflags;                /* flags (see below definitions)        */
+    WORD    BCsector;               /* sector number within STACVOL file    */
+    WORD    BC_EA;                  /* sector buffer external address       */
+    } BM_CTL;
+
+typedef struct  CBLK_struct
+    {
+    WORD    CBbaseBlock;    /* base cluster for this block (-1 if empty)    */
+    WORD    CBbaseGroup;    /* base cluster for this group                  */
+    WORD    CBlastReadClu;  /* which cluster was read last?                 */
+    WORD    CBmaxBaseBlock; /* max allowed CBbaseBlock value                */
+    WORD    CBcmapSize;     /* # bytes/CMAP (3 or 4)                        */
+    BYTE   CBdata[138];  /* local CMAP entries from CMAP group           */
+    } CBLK;
+
+typedef struct CRES_struct /*  *** Resident (hashed) portion of control sector */
+    {
+    BYTE    CPasswordRW[8]; /* Password for Read/Write access */
+    BYTE    CPasswordRO[8]; /* Password for Read-Only access */
+    WORD    CVersion;       /* version of creating software * 100 */
+    WORD    CPhyBytesPerSec;/* Bytes/Sector of device volume was created on */
+    BYTE    CCompType;      /* Compression Type - volume compression method */
+    BYTE    CReserved[3];   /* Reserved, set to zero */
+    DWORD   CVolumeID;      /* Volume IDentification code */
+    DWORD   CPhysical;      /* total physical sectors in volume */
+    WORD    CBoot;          /* sector number of Boot Sector */
+    WORD    CBitmapSize;    /* sector(s) reserved for Bitmap (0 if none) */
+    WORD    CBitmap;        /* start sector of Bitmap block */
+    WORD    CXFAT;          /* start sector of XFATs */
+    WORD    CRoot;          /* start sector of Root directory */
+    WORD    CMainStore;     /* start sector of Main Store region */
+    DWORD   CMountID;       /* ZERO in file, but stored in sector #1 as     */
+                            /* unique mount ID for media checks.  This field*/
+                            /* MUST be at the end of CRES (see SDMEDCHK)    */
+    } CRES;
+
+typedef         struct  PERUNIT_struct
+    {
+    BYTE    lg_bpb[26];    /* compressed drive's (logical) BPB         */
+    WORD    lg_vstate;          /* volume state, or error offset            */
+    BYTE    lg_open_count;      /* inc'd by dev open, dec'd by dev close    */
+    BYTE    lg_flags2;          /* extra flags                              */
+    BYTE    lg_flags;           /* unit related flags - see below           */
+    BYTE    lg_log2;            /* LOG base 2 of logical bytes/sector       */
+    WORD    lg_bytesclu;        /* bytes per cluster                        */
+    WORD    lg_maxcluster;      /* max valid cluster number (2 based)       */
+    WORD    lg_12bit;           /* -1 if 12-bit FATs, 0 if 16-bit FATS      */
+    WORD    lg_CBsize;          /* # entries in CMAP block (CBLK3/CBLK4)    */
+    WORD    lg_mainstore;       /* 1st logical sector mapped by cluster     */
+    WORD    lg_root;            /* 1st logical sector of Root directory     */
+    WORD    lg_unused;          /* not used...                              */
+    BYTE    lg_filepass[8];     /* encrypted password   *** DO NOT ***      */
+    BYTE    lg_filename[8];     /* file name            *** CHANGE ***      */
+    BYTE    lg_fileext[3];      /* file extent          *** ORDER  ***      */
+    BYTE    lg_filedrive;       /* ASCII file drive letter                  */
+    WORD    lg_minerase;        /* min cluster to erase                     */
+    WORD    lg_maxerase;        /* max cluster to erase (0-->none)          */
+    WORD    clugroup;           /* clusters per FAT/CMAP cache group        */
+    WORD    FATgroup_size;      /* FAT size (3 * PU.lg_bpb.BytesPerSec)     */
+    WORD    curx_tab;           /* "current" x_tab entry                    */
+    BYTE    PU_unit;            /* logical unit (0=1st PU, 1=2nd PU...)     */
+    BYTE    PU_reserved1;       /* keep word alignment                      */
+
+    BYTE    rdDirCmap[8];  /* cmap of last uncompressed dir read       */
+    BYTE    wrDirCmap[8];  /* cmap of last uncompressed dir written    */
+    WORD    unpkTaskMinSecCnt;  /* min # sectors read to task               */
+    WORD    unpkTaskMinBytCnt;  /* unpkTaskMinSecCnt * bytes_sec            */
+
+    WORD    physDataSec2;       /* physical sector of cluster 2             */
+    WORD    phys_sec_clu;       /* word version of dv_bpb.SecPerCluster     */
+    WORD    x_tab_last;         /* offset of last extent entry in xtab      */
+
+    WORD    BMCurrentSize;      /* size of free cmap at bcs.BMCurrent       */
+    DWORD   bitmap_size;        /* Bitmap+Control Struct size in bytes      */
+    WORD    bcs_offset;         /* PU.bcs byte offset within last sector    */
+    WORD    bits_per_sec;       /* # bitmap bits per sector                 */
+        BM_CTL  bcc;            /* Bitmap cache ctrl (last sector)                      */
+    WORD    lg_freeCluCnt;      /* from int 21/function 36H                 */
+    BYTE    PU_reserved3[28];   /* keep bcs aligned with version 2.x        */
+    BMCSRec bcs;                /* local Bitmap Control Structure copy      */
+                                /* (bcs.BMsignature --> bcc valid)                      */
+    CBLK    ccb;                /* secondary local CMAP block                           */
+    DWORD   PU_reserved4;       /* align dv_strategy with Stacker 2.x       */
+
+    BYTE    dv_bpb[26];    /* BPB of physical device holding volume    */
+    DWORD   dv_strategy;        /* physical device driver strategy addr     */
+    DWORD   dv_interrupt;       /* physical device driver interrupt addr    */
+    WORD    dv_att;             /* device driver header attributes          */
+    WORD    dv_cluster0;        /* first file cluster (from directory)      */
+    BYTE    dv_log2;            /* LOG base 2 of physical bytes/sector      */
+    BYTE    dv_unit;            /* physical device driver unit index        */
+    CRES    ctlres;             /* resident control sector fields                       */
+    DWORD   phys_free_cnt;      /* # free physical sectors in MainStore     */
+    DWORD   dpb_ptr;            /* pointer to DOS DPB for drive (Ver2)      */
+    WORD    dv_hdr;             /* offset of device driver                  */
+    DWORD   x_max;              /* total sectors (from DOS dir size)        */
+
+    BYTE    x_tab[64];     /* main extent table, followed              */
+    EXTENT  x_tabend[2];        /*   by 2 terminator slots                                      */
+    } PERUNIT,  *LPPERUNIT;
+
+// End of Stacker Junk.
+
+BYTE DiskGetPhysicalInfo16(LPABSDISKREC lpAbsDisk)
+{
+    lpAbsDisk = inout;
+}
+
+
+BYTE DiskAbsOperation16(BYTE command, LPABSDISKREC lpAbsDisk, LPVOID buffer)
+{
+    lpAbsDisk = inout;
+    buffer = inout;
+}
+
+BOOL DiskGetHDParams16 (LPDISKREC diskPtr, LPABSDISKREC absDiskPtr, LPBPBTHUNKREC BPBPtr)
+{
+    diskPtr = inout;
+    absDiskPtr = inout;
+    BPBPtr = output;
+}
+
+int DiskGetPhysicalType16(LPDISKREC diskPtr, LPABSDISKREC absDiskPtr)
+{
+    diskPtr = inout;
+    absDiskPtr = inout;
+}
+
+UINT STK20DiskBlockDeviceThunk16(UINT command, LPDISKREC diskPtr, LPVOID buffer)
+{
+    diskPtr = inout;
+    buffer = inout;
+}
+
+BOOL DiskIsCompressed16(BYTE dl)
+{
+}
+
+BOOL DiskRecToFloppyAbsDiskRec16 (LPDISKREC diskPtr, LPABSDISKREC lpAbsDisk)
+{
+    diskPtr = inout;
+    lpAbsDisk = inout;
+}
+
+BOOL StackerPutUnitData16(BYTE drive, LPPERUNIT lpPerUnit)
+{
+    lpPerUnit = inout;
+}
+
+BOOL StackerGetUnitData16(BYTE drive, LPPERUNIT lpPerUnit)
+{
+    lpPerUnit = inout;
+}
+
+BOOL DiskIsDoubleSpace16(BYTE dl)
+{
+}
+
+BOOL DiskIsBlockDevice16(BYTE dl)
+{
+}
+
+BOOL DiskIsSubst16(BYTE dl)
+{
+}
+
+BOOL DiskIsStacker16(BYTE dl)
+{
+}
+
+BOOL _DiskIsDoubleSpace16(BYTE drive, LPBYTE lpbyHostDriveLetter, LPWORD lpbSwapped, LPBYTE lpbySequence)
+{
+    lpbyHostDriveLetter = inout;
+    lpbSwapped = inout;
+    lpbySequence = inout;
+}
+
+UINT DiskBlockDevice16(UINT uCommand, LPDISKREC lpDisk, LPVOID buffer)
+{
+    lpDisk = inout;
+    buffer = inout;
+}
+
+BOOL DiskIsDriveSpace16(BYTE dl)
+{
+}
+
+VOID DiskMapLogToPhyParams16 (DWORD dwSector, BYTE dl, LPINT13REC lpInt13Package)
+{
+    lpInt13Package = inout;
+}
+
+BOOL DiskGetInfo16 (BYTE dl, LPDISKREC lpDisk)
+{
+    lpDisk = inout;
+}
+
+BOOL DiskGetDASDType16(BYTE drive, LPBYTE DASDTypePtr)
+{
+    DASDTypePtr = inout;
+}
+
+BYTE DiskGetBootDrive16(VOID)
+{
+}
+
+VOID DiskResetDOS16(BYTE dl)
+{
+}
+
+VOID DiskReset16(VOID)
+{
+}
+
+BOOL DiskGetDriverTable16(BYTE dl, LPDISKREC lpDiskPtr)
+{
+     lpDiskPtr = inout;
+}
+
+VOID DiskGetLockedTable16(LPBYTE lockedDriveTable)
+{
+    lockedDriveTable = inout;
+}
+
+BYTE EISACMOSRead16(BYTE slot, BYTE funct, LPBYTE address)
+{
+}
+
+BYTE EISACMOSWrite16(WORD length, LPBYTE address)
+{
+}
+
+BYTE CMOSRead16(BYTE address)
+{
+}
+
+VOID CMOSWrite16(BYTE address, BYTE CMOSdata)
+{
+}
+
+BOOL HWIsPCI16(VOID)
+{
+}
+
+BOOL HWIsEISA16(VOID)
+{
+}
+
+BOOL HWIsMicroChannel16(VOID)
+{
+}
+
+WORD GetFreeSystemResources16(WORD fuSysResource)
+{
+}
+
+BOOL SystemHeapInfo16(LPSYSHEAPINFO lpSysHeap)
+{
+    lpSysHeap=inout;
+}
+
+BOOL StackerFlushDrive16(BYTE drive)
+{
+}

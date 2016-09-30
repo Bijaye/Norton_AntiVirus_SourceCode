@@ -1,0 +1,23 @@
+Each of the Roswell/Tesla CD-ROMs has a different AutoRun, which is 
+done by changing the CDSTART.HLP file. Depending upon the CD, the 
+CDSTART.HLP file comes from a different project and makefile:
+
+Roswell Basic CD          <-- ROSWELL CDSTRHLP autoros.hlp
+Roswell Deluxe CD         <-- ROSWELL CDSTRHLP autorosd.hlp
+Tesla CD                  <-- ROSWELL CDSTRHLP autotesl.hlp
+Roswell Basic 10-Pack CD  <-- ROSWELL CDSTR10P autor10p.hlp
+Roswell Deluxe 10-Pack CD <-- ROSWELL CDSTR10P autod10p.hlp
+
+The source code in the CDSTRHLP project is the code that should 
+be carried forward.
+
+The source code in the CDSTR10P project was branched from the 
+CDSTRHLP project as a quick hack to avoid having to tamper with the
+CDSTRHLP project during STM. The CDSTART.HLP for the 10-packs does
+nothing new except for include a few new links to the network admin
+programs and docs.
+
+-GWESTER  9/10/97 6:28p
+
+
+

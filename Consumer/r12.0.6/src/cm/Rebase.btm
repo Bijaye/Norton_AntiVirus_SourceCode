@@ -1,0 +1,5 @@
+pushd
+set CMDIR=%@FULL[.\]
+cdd ..\..\src\BIN.IRA
+%CMDIR%\..\..\Nobuilds\msvc7\Common7\Tools\Bin\ReBase.Exe -v -b 0x69900000 -l rebase.log @%CMDIR%\files_to_rebase.txt
+popd

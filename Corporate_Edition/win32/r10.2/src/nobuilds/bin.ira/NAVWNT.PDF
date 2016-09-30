@@ -1,0 +1,60 @@
+[PDF]
+Version=1.0
+
+[Complete Setup]
+CommandLine=setup.exe -s -sms -mnavwnt.mif
+CommandName=Complete
+UserInputRequired=FALSE
+SupportedPlatforms=Windows NT 4.0 (x86, axp)
+
+[Deinstall Setup]
+CommandLine=\%systemroot%\\IsUninst.exe -f"c:\Program Files\Navnt\navnt.isu" -c"c:\Program Files\Navnt\NAVINSTNT.DLL" -a
+CommandName=Deinstall
+UserInputRequired=FALSE
+SupportedPlatforms=Windows NT 4.0 (x86)
+
+[Manual Setup]
+CommandLine=setup.exe 
+CommandName=Manual
+UserInputRequired=TRUE
+SupportedPlatforms=Windows NT 4.0 (x86, axp)
+SynchronousSystemExitRequired=TRUE
+
+[Package Definition]
+Product=NAVCORP
+Version=7.0
+Comment=Symantec AntiVirus Corporate Edition 7.0
+SetupVariations=Complete, Deinstall, Manual
+ErrorCodes=Yes
+Company=Symantec Corporation
+ImportDirectory=.
+SetupDirectory=.
+Environments=Windows NT 4.0 (x86)
+Capabilities=Local Setup, Import
+;TelephoneSupportNumber=
+RebootAfterInstall=No
+RebootAfterDeInstall=No
+
+[SMS Import Commands]
+cmd 1=
+
+[Setup Package for Inventory]
+InventoryThisPackage=TRUE
+Detection Rule Part 1=file 1
+
+[file 1]
+FILE=VPC32.EXE
+COLLECT=FALSE
+Checksum=
+CRC=
+DATE=
+SIZE=
+TIME=
+BYTE=
+WORD=
+LONG=
+TOKEN 1=
+TOKEN 2=
+TOKEN 3=
+TOKEN 4=
+

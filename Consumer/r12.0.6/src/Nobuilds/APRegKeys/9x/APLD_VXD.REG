@@ -1,0 +1,15 @@
+REGEDIT4
+
+// This file restores Norton AntiVirus Auto-Protect to its default behavior.
+//
+// When you import this file into your registry, the Auto-Protect user
+// interface (NAVAPW32.EXE) will be loaded by the Auto-Protect VxD before 
+// you log in. If your system behaves strangely with this setting, try 
+// loading NAVAPW32.EXE after you log in by importing APLD_RUN.REG into 
+// your registry.
+//
+// You must restart Windows for this change to take effect.
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus\Auto-Protect\InternalSettings]
+"RegisterAppyTimeForAgent"=dword:00000001
+"ExecuteAgent"=dword:00000001

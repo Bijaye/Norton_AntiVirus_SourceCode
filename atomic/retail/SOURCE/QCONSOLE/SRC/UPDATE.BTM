@@ -1,0 +1,20 @@
+::
+:: $Header:   S:/QCONSOLE/VCS/update.btv   1.0   30 Jun 1998 18:37:56   VGLOSTE  $
+::
+::      This batch file updates the project area based on the TARGET 
+::      setting.  The TARGET is set up as part of BPROJ and the project's
+::      personalized PROJHOOK.
+::------------------------------------------------------------------------
+:: $Log:   S:/QCONSOLE/VCS/update.btv  $
+:  
+:     Rev 1.0   30 Jun 1998 18:37:56   VGLOSTE
+:  Initial revision.
+:  
+::------------------------------------------------------------------------
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.exe copy *.exe %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*

@@ -1,0 +1,143 @@
+// NAVUI.idl : IDL source for NAVUI.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVUI.tlb) and marshalling code.
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Interfaces
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "SWMisc.idl";
+	[
+		object,
+		uuid(526B48B8-C972-4155-8D93-B6653618DBEB),
+		dual,
+		helpstring("INSWInternetCategory Interface"),
+		pointer_default(unique)
+	]
+	interface INSWInternetCategory : IDispatch
+	{
+	};
+/*
+[
+	uuid(8AD3F7BA-911E-40A0-B08E-AF3FDEE48983),
+	version(1.0),
+	helpstring("NAVUI 1.0 Type Library")
+]
+library NAVUILib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+};
+
+[
+	uuid(88734681-FCB2-11d2-B9D2-00C04FAC114C), //1
+	helpstring("SYMSystemWorksPlugin 0.1"),
+	version(0.1)
+]
+library SYMSystemWorksPlugin
+*/
+//////////////////////////////////////////////////////////////////////////////
+// SYMSystemWorksPlugins
+//////////////////////////////////////////////////////////////////////////////
+[
+	uuid(88734681-FCB2-11d2-B9D2-00C04FAC114C),
+	version(1.0),
+	helpstring("NAVUI 1.0 Type Library")
+]
+library NAVUILib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	interface INSWCategoryHook;
+	interface IVarBstrCol;
+
+	[
+		uuid(9A6DA1F3-5D12-4DE0-85D1-CD4D8A0CC454),
+		helpstring("NSWPluginView Class")
+	]
+	coclass NSWPluginView
+	{
+		[default] interface INSWIntegratorProduct;
+	};
+
+	[
+		uuid(88734682-FCB2-11d2-B9D2-00C04FAC114C), //2
+		helpstring("NSWPluginView2002 Class")
+	]
+	coclass NSWPluginView2002
+	{
+		[default] interface INSWIntegratorProduct;
+	};
+
+
+	[
+		uuid(88734683-FCB2-11d2-B9D2-00C04FAC114C), //3
+		helpstring("NSWCategory Class")
+	]
+	coclass NSWCategory
+	{
+		[default] interface INSWCategory;
+	};
+
+	[
+		uuid(88734686-FCB2-11d2-B9D2-00C04FAC114C),
+		helpstring("NSWStatusCategory Class")
+	]
+	coclass NSWStatusCategory
+	{
+		[default] interface INSWCategory;
+	};
+
+	[
+		uuid(88734687-FCB2-11d2-B9D2-00C04FAC114C),
+		helpstring("NSWScanCategory Class")
+	]
+	coclass NSWScanCategory
+	{
+		[default] interface INSWCategory;
+	};
+
+	[
+		uuid(88734685-FCB2-11d2-B9D2-00C04FAC114C),
+		helpstring("NSWReportsCategory Class")
+	]
+	coclass NSWReportsCategory
+	{
+		[default] interface INSWCategory;
+	};
+/*
+	[
+		uuid(88734688-FCB2-11d2-B9D2-00C04FAC114C),
+		helpstring("NSWSchedulingCategory Class")
+	]
+	coclass NSWSchedulingCategory
+	{
+		[default] interface INSWCategory;
+	};
+	*/
+
+	[
+		uuid(88734684-FCB2-11d2-B9D2-00C04FAC114C), //4
+		helpstring("NSWFrame Class")
+	]
+	coclass NSWFrame
+	{
+		[default] interface INSWFrame;
+	};
+
+
+	[
+		uuid(E15DBD6B-6190-4E5B-9699-CFDBC7765761),
+		helpstring("NSWAdvancedCategory Class")
+	]
+	coclass NSWAdvancedCategory
+	{
+		[default] interface INSWCategory;
+	};
+
+};

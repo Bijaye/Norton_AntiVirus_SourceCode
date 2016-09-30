@@ -1,0 +1,74 @@
+;
+; $Header:   S:/NAVLU/VCS/ProjHook.inv   1.7   28 Aug 1998 16:22:34   JBRENNA  $
+;
+; NavLu projhook.
+;
+;-------------------------------------------------------------------------
+; $Log:   S:/NAVLU/VCS/ProjHook.inv  $
+;  
+;     Rev 1.7   28 Aug 1998 16:22:34   JBRENNA
+;  Port changes from QAKN branch to trunk.
+;  
+;     Rev 1.4.1.5   20 Jul 1998 16:28:52   mdunn
+;  Now using release 004 of DEFUTILS
+;  
+;     Rev 1.4.1.4   15 Jul 1998 20:31:52   mdunn
+;  Now using release 003 of DEFUTILS
+;  
+;     Rev 1.4.1.3   10 Jul 1998 12:24:36   TCASHIN
+;  Changed the ADA target to use MSVC 5.0. This has also been changed for
+;  all Alpha targets in avcore.inf.
+;  
+;     Rev 1.4.1.2   29 Jun 1998 15:20:34   mdunn
+;  Now using release.002 of DEFUTILS files.
+;  
+;     Rev 1.4.1.1   23 Jun 1998 19:39:28   mdunn
+;  Switched to release 001 of AVCOMP.
+;  
+;     Rev 1.4.1.0   22 Jun 1998 19:51:22   RFULLER
+;  Branch base for version QAKN
+;  
+;     Rev 1.4   09 Apr 1998 11:15:44   mdunn
+;  Added Win 98 scheduler stuff.
+;  
+;     Rev 1.3   24 Mar 1998 13:45:02   RFULLER
+;  Added INCLUDEPRE and LIBPRE environment variables to use AVCOMP.
+;
+;     Rev 1.2   11 Sep 1997 13:32:28   MKEATIN
+;  Ported changes from branch G.
+;
+;     Rev 1.1.1.1   14 Aug 1997 14:15:46   KSACKIN
+;  Removed the %QUAKE% at the end of our IncludePre.  This is because
+;  LiveUpdateI is a non-branching project.
+;
+;     Rev 1.1.1.0   12 Aug 1997 22:57:34   DLEWIS
+;  Branch base for version QAKG
+;
+;     Rev 1.1   01 Aug 1997 09:36:08   JBRENNA
+;  LiveUpdate project renamed to LiveUpdateI.
+;
+;     Rev 1.0   03 Jun 1997 14:30:22   JBRENNA
+;  Initial revision.
+;
+;-------------------------------------------------------------------------
+
+[IRA]
+tools=MSVC60SP2X86;MSVC60MFCSP2X86;MASM611;CORESDK.009
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001;r:\inetsdk\include;r:\inetsdk\win32inc
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%;r:\inetsdk\lib;r:\inetsdk\win32lib
+
+[IDA]
+tools=MSVC60SP2X86;MSVC60MFCSP2X86;MASM611;CORESDK.009
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001;r:\inetsdk\include;r:\inetsdk\win32inc
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%;r:\inetsdk\lib\debug;r:\inetsdk\win32lib
+
+[ARA]
+tools=MSVC60AXP;MSVC60MFCAXP;CORESDK.009
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%
+
+[ADA]
+tools=MSVC60AXP;MSVC60MFCAXP;CORESDK.009
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%
+tools=MSVC50AXP;MSVC50MFCAXP

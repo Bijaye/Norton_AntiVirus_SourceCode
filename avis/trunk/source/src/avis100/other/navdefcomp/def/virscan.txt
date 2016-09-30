@@ -1,0 +1,33 @@
+  Fields          Meaning                        Example
+===============================================================================
+Virus Name      CARO Name (22 char max)        Jerusalem.Standard
+ <Alias(es)     Alias List                      <1808, Israeli, PLO, ...
+ >Notes         255 char max. DO start          >Deletes files on Friday ...
+ >...           additional lines with ">".      >a Black Box may appear ...
+ # VID(s)       N30 VIDs pointing here          # 01E2h 01E3h 01E4h ...
+ #...           additional lines with "#".      # 0234h
+ * ==========   Record delimiter                * =============================
+===============================================================================
+Notes:
+
+The entries need not be kept alphabetical, but are easier to work with
+in this form.
+
+Never use ">", "#", or "*" in the text fields.
+Never use ":" to start a line.
+
+Keep comments above the :BEGIN line or Below the :END line.
+===============================================================================
+                                    Comments
+
+          A single entry, for testing Autoverv-generated repairs
+
+===============================================================================
+:BEGIN
+* =============================================================================
+Autoverv
+<
+>Autoverv test
+#2EFF
+* =============================================================================
+:END

@@ -1,0 +1,134 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+        <title>Norton Antivirus Advanced Options: Disk Exclusions</title>
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script Language="JavaScript" src="options.js"></script>
+		<script Language="JavaScript" src="options_adv_exclusions.js"></script>
+        <link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+    </head>
+    <BODY class="clsDetails" id="body_options_adv_exclusions"
+			tabIndex="-1" scroll="no"
+			onhelp="parent.CurrentPage.Help();"
+			onload="parent.CurrentPage = new ExclusionPage();">
+        <IFRAME ID="Iframe1" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+            SRC="options_errorid.htm"></IFRAME>
+
+        <span id="ExclusionError" style="DISPLAY: none">Invalid exclusion!</span>
+		<span id="DuplicateExclusion" style="DISPLAY: none">You have already excluded this item.</span>
+		<span id="DefaultsWarning" style="DISPLAY: none">Attention:
+Restoring the exclusion list to its default settings will remove any items that
+you have added to the list. Do you want to restore page defaults now?</span>
+
+		<div class="optionpage_header">
+			ADVANCED OPTIONS:&nbsp;Scan Exclusions
+		</div>
+
+			<form name="options_adv_exclusions_fs" ID="Form2">
+				<div class="optiongroup_header">
+					Which disks, folders, or files to exclude from risk scanning
+				</div>
+				<div class="optiongroup">
+	        		<select class="NavSelBoxSmall" id="exclusions_select_1" name="FS_Exclusions" size="6";
+						ondblclick="add_update_fs_exclusion(false);"
+						onclick="enable_fs_buttons();"
+						onchange="enable_fs_buttons();">
+					</select>
+					<div style="width: 100%;">
+						<button id="Button1" class="stdbttn2" name="Create"
+							onMouseOver="ButtonMouseOver(this); return false;" 
+							onMouseOut="ButtonMouseOut(this); return false;" 
+							onMouseDown="ButtonMouseDown(this); return false;" 
+							onKeyDown="ButtonKeyDown(this);" 
+							onKeyUp="ButtonKeyUp(this);" 				
+							onFocus="ButtonFocus(this); return false;" 
+							onBlur="ButtonBlur(this); return false;" 
+		            		onclick="add_update_fs_exclusion(true); this.focus();" accesskey="E"
+		            		style="MARGIN-TOP:20px">
+							N<u>e</u>w...
+						</button><br />
+						<button id="Button2" class="stdbttn2_dis" name="Change"
+							onMouseOver="ButtonMouseOver(this); return false;" 
+							onMouseOut="ButtonMouseOut(this); return false;" 
+							onMouseDown="ButtonMouseDown(this); return false;" 
+							onKeyDown="ButtonKeyDown(this);" 
+							onKeyUp="ButtonKeyUp(this);" 				
+							onFocus="ButtonFocus(this); return false;" 
+							onBlur="ButtonBlur(this); return false;" 	
+	          				disabled onclick="add_update_fs_exclusion(false); this.focus();" accesskey="D">
+							E<u>d</u>it...
+						</button><br />
+						<button id="Button3" class="stdbttn2_dis" name="Remove"
+							onMouseOver="ButtonMouseOver(this); return false;" 
+							onMouseOut="ButtonMouseOut(this); return false;" 
+							onMouseDown="ButtonMouseDown(this); return false;" 
+							onKeyDown="ButtonKeyDown(this);" 
+							onKeyUp="ButtonKeyUp(this);" 				
+							onFocus="ButtonFocus(this); return false;" 
+							onBlur="ButtonBlur(this); return false;" 					
+		        			disabled onclick="remove_fs_exclusion();" accesskey="R">
+							<u>R</u>emove...
+						</button>
+					</div>
+				</div>
+			</form>
+			<form name="options_adv_exclusions_ap" style="position: absolute; top: 200px;">
+				<div class="optiongroup_header">
+					Which disks, folders, or files to exclude from Auto-Protect scanning
+				</div>
+				<div class="optiongroup">
+	        		<select class="NavSelBoxSmall" id="table1_exclusions_select" name="AP_Exclusions" size="6";
+						onClick="enable_ap_buttons();"
+						onDblClick="add_update_ap_exclusion(false);"
+						onChange="enable_ap_buttons();">
+					</select>
+					<div style="width: 100%;">
+						<button id="Button4" class="stdbttn2" name="Create"
+							onMouseOver="ButtonMouseOver(this); return false;" 
+							onMouseOut="ButtonMouseOut(this); return false;" 
+							onMouseDown="ButtonMouseDown(this); return false;" 
+							onKeyDown="ButtonKeyDown(this);" 
+							onKeyUp="ButtonKeyUp(this);" 				
+							onFocus="ButtonFocus(this); return false;" 
+							onBlur="ButtonBlur(this); return false;" 			
+		            		onClick="add_update_ap_exclusion(true); this.focus();" accesskey="W"
+		            		style="MARGIN-TOP:20px">
+							Ne<u>w</u>...
+						</button><br />
+						<button id="Button5" class="stdbttn2_dis" name="Change"
+							onMouseOver="ButtonMouseOver(this); return false;" 
+							onMouseOut="ButtonMouseOut(this); return false;" 
+							onMouseDown="ButtonMouseDown(this); return false;" 
+							onKeyDown="ButtonKeyDown(this);" 
+							onKeyUp="ButtonKeyUp(this);" 				
+							onFocus="ButtonFocus(this); return false;" 
+							onBlur="ButtonBlur(this); return false;" 	
+	          				onClick="add_update_ap_exclusion(false); this.focus();" disabled accesskey="I">
+							Ed<u>i</u>t...
+						</button><br />
+						<button id="Button6" class="stdbttn2_dis" name="Remove"
+							onMouseOver="ButtonMouseOver(this); return false;" 
+							onMouseOut="ButtonMouseOut(this); return false;" 
+							onMouseDown="ButtonMouseDown(this); return false;" 
+							onKeyDown="ButtonKeyDown(this);" 
+							onKeyUp="ButtonKeyUp(this);" 				
+							onFocus="ButtonFocus(this); return false;" 
+							onBlur="ButtonBlur(this); return false;" 
+		        			onClick="remove_ap_exclusion();" disabled accesskey="M">
+							Re<u>m</u>ove...
+						</button>
+					</div>
+				</div>
+			</form>
+
+	</body>
+</html>

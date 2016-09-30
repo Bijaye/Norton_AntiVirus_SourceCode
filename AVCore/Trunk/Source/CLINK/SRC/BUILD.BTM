@@ -1,0 +1,20 @@
+REM *****************************************************************
+REM
+REM Build file for the CLink project.
+REM
+REM Projects:
+REM    LinkCli - Client piece
+REM    LinkSrv - Server piece
+REM
+REM    APSCli  - Client for talking to NAVAPSVC
+REM
+REM *****************************************************************
+
+call mk linkcli %1
+if exist make.err copy build.err+make.err
+
+call mk linksrv %1
+if exist make.err copy build.err+make.err
+
+call mk apscli %1
+if exist make.err copy build.err+make.err

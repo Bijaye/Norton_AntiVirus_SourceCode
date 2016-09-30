@@ -1,0 +1,120 @@
+REGEDIT4
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 
+; target file: AVISscan.reg
+; 
+; target directory: D:\avis
+; 
+; target machine: gw01sample01.gw01.dis.symantec.com
+; 
+; target applications: scanBlessed.exe and scanLatest.exe
+; 
+; This registry import file contains configuration parameters for the
+; scanBlessed.exe and scanLatest.exe programs on the sample receiver
+; machine in the "gateway 01" array.
+;  
+; The scanBlessed.exe and scanLatest.exe programs are called by the
+; postSuspectSample servlet (located in the AVISservlets.DLL file)
+; running under LotusGo each time a new sample is received from the
+; IcePack.exe program on a customer Quarantine server.  These programs
+; scan samples for known viruses using the current blessed and unblessed
+; definitions, respectively.
+; 
+; This file may be used to create or restore the default values of all
+; variables.  To do this, stop both the scanBlessed.exe and
+; scanLatest.exe programs.  Then import this file into the Windows
+; Registry, using the WintNT regedit.exe program.  Then start both the
+; scanBlessed.exe and scanLatest.exe programs again.
+; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Quarantine\Server\AVIS\Current]
+
+;----------------------------------------------------------------------
+; The "definitionChangeTimeout" parameter specifies how long, in
+; minutes, the scanXxxxx.exe programs will wait for a scan of a sample
+; to complete, when new definitions have been downloaded, before
+; unloading the old definitions and loading the new definitions.
+;----------------------------------------------------------------------
+
+"definitionChangeTimeout"="5"
+
+;----------------------------------------------------------------------
+; The "definitionConcurrencyXxxxx" parameters specify the minimum and
+; maximum number of threads used for scanning samples.
+;----------------------------------------------------------------------
+
+"definitionConcurrencyMaximum"="64"
+"definitionConcurrencyMinimum"="2"
+
+;----------------------------------------------------------------------
+; The "definitionHeuristicLevel" parameter specifies the heuristic
+; detection level used when scanning samples for unknown viruses.  A
+; value of "0" disables all heuristics; a value between "1" and "3"
+; enables heuristics, with increasingly aggressive detection (and
+; increasing likelihood of false positives).
+;----------------------------------------------------------------------
+
+"definitionHeuristicLevel"="3"
+
+;----------------------------------------------------------------------
+; The "definitionLibraryDirectory" parameter specifies the directory
+; where NAV definition packages will be stored and unpacked.
+;----------------------------------------------------------------------
+
+"definitionLibraryDirectory"="\\\\gw01data01\\signatures"
+
+;----------------------------------------------------------------------
+; The "scanXxxx" parameters specify how the sample importer will behave
+; when scanning samples with the scanXxxxxx.exe programs takes too long.
+; 
+; The "scanCompletionTimeout" parameter specifies how long, in seconds,
+; the sample importer will wait for the scanXxxxxx.exe programs to
+; complete the scan of a sample.
+; 
+; The "scanRetryInterval" parameter specifies how long, in seconds, the
+; sample importer will wait, after a scan of a sample has failed to
+; complete, before trying again.
+; 
+; The "scanRetryLimit" parameter specifies how many times, after a scan
+; of a sample has failed to complete, the sample importer will try
+; again.
+;----------------------------------------------------------------------
+
+"scanCompletionTimeout"="90"
+"scanRetryInterval"="10"
+"scanRetryLimit"="1"
+
+;----------------------------------------------------------------------
+; The "temporaryDirectory" specifies a directory where the
+; scanXxxxx..exe programs may create temporary files.
+;----------------------------------------------------------------------
+
+"temporaryDirectory"="d:\\temp"
+
+;----------------------------------------------------------------------
+; The "traceXxxxx" parameters specify how the scanXxxxxx.exe programs
+; trace their internal operations.
+; 
+; The "traceEnable" parameter enables or disables (values "1" or "0",
+; respectively) tracing.  When enabled, the scanXxxxxx.exe programs
+; write their tracing information into multiple files in a specified
+; directory.
+; 
+; The "traceFilename" parameter specifies the name of the directory
+; where trace files are written.  The names of the files are composed by
+; inserting the current month and day and hour between the specified
+; filename and extension, in the format "filename.MM-DD-HH.extension".
+; 
+; The "traceSeverity" parameter enables increasingly detailed (values
+; "error" or "warning" or "info" or "debug" or "entryexit") tracing of
+; internal operations.
+;----------------------------------------------------------------------
+
+"traceEnable"="1"
+"traceFilename"="d:\\log\\AVISscan.log"
+"traceFilter"="0xFFFFFFFF"
+"traceSeverity"="debug"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

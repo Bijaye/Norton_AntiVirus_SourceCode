@@ -1,0 +1,62 @@
+#---------------------------------------------------------
+# Makefile begins.
+#---------------------------------------------------------
+# SCC: @(#) 94 1/29/99 14:48:09 AVNADMIN32 1.2 @(#)
+
+all: clean depend compile library exedll help
+
+setup:
+!IF ( "$(LANGTYPE)" == "DBCS" )
+        set VCC_LANGTYPE_FLAG=_MBCS
+        set DBCSLIB=$(LIBD)\dbcsvcnt.lib
+!ELSE
+        set VCC_LANGTYPE_FLAG=_SBCS
+        set DBCSLIB=
+!ENDIF
+	set NO_EXTERNAL_DEPS=1
+
+depend: setup
+        @cd $(SRCD)\loadgate
+        @$(SRCDRIVE)
+        @if not exist $(OBJD)              mkdir $(OBJD)
+        @if not exist $(OBJD)\loadgate     mkdir $(OBJD)\loadgate
+        @if not exist $(OUTD)              mkdir $(OUTD)
+        @if not exist $(OUTD)\NT           mkdir $(OUTD)\NT
+
+        @echo Depend done
+
+compile: setup
+        @cd $(SRCD)\loadgate
+        @$(SRCDRIVE)
+        -@ldgw.cmd compile
+        @echo Compile done
+
+help: setup
+        @cd $(SRCD)\loadgate
+        @$(SRCDRIVE)
+        @echo Help done
+
+library: setup
+        @cd $(SRCD)\loadgate
+        @$(SRCDRIVE)
+        @echo Library done
+
+exedll: setup
+        @cd $(SRCD)\loadgate
+        @$(SRCDRIVE)
+        -@ldgw.cmd exedll
+	@if exist $(OUTD)\nt\loadgate.exe del $(OUTD)\nt\loadgate.exe
+        ren $(OUTD)\nt\testgate.exe loadgate.exe
+        @echo ExeDll done
+
+clean: setup
+        @cd $(SRCD)\loadgate
+        @$(SRCDRIVE)
+        -del $(OUTD)\nt\loadgate.exe
+        -@ldgw.cmd clean
+        @if exist $(OBJD)\testgate.mk erase $(OBJD)\loadgate\testgate.mk
+        @echo Clean done
+
+#---------------------------------------------------------
+# Makefile ends.
+#---------------------------------------------------------

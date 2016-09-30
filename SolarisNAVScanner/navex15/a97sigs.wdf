@@ -1,0 +1,283 @@
+;****************************************************************************
+; Copyright 1998 Symantec, Peter Norton Product Group
+;****************************************************************************
+; A97SIGS.WDF
+;
+; $Header:   S:/NAVEX/VCS/a97sigs.WDv   1.6   30 Dec 1998 14:31:52   CFORMUL  $
+;
+; This source file contains definitions for the Access 95/97 viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/a97sigs.WDv  $
+   
+      Rev 1.6   30 Dec 1998 14:31:52   CFORMUL
+   Added AMG.Trojan
+   
+      Rev 1.5   22 Nov 1998 11:53:04   relniti
+   VID_TOXD AM.Tox.D 0x64b9
+   
+      Rev 1.4   20 Nov 1998 19:25:46   relniti
+   add VID_DUMBSAMPLE for Access Macro Dumb sample
+   
+      Rev 1.3   01 Sep 1998 11:42:32   AOONWAL
+   Updated from SNDBOT after the corruption in USSM-SARC\VOL1
+   
+      Rev 1.4   28 Aug 1998 18:01:08   DCHI
+   Reverted to version 1.2.
+   
+      Rev 1.3   28 Aug 1998 15:43:00   DCHI
+   Added dummy sigs to beginning and end.
+   
+      Rev 1.2   23 Aug 1998 16:56:24   RELNITI
+   FIX A97M.Accessiv.C
+   
+      Rev 1.1   21 Aug 1998 09:53:46   RELNITI
+   ZOO: 63E8-E9: AM.Jaring.intended, AM.Accessiv.C,
+   
+      Rev 1.0   11 May 1998 18:37:10   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+//////////////////////////////
+// NameSig
+//////////////////////////////
+
+[NameSigStart]
+[Comment]       Only "AUTOEXEC"
+[ID]            NAME_ONLY_AUTOEXEC
+[Signature]     SeekSet(0) "AUTOEXEC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "JARING"
+[ID]            NAME_ONLY_JARING
+[Signature]     SeekSet(0) "JARING" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "JARINGNETWORK"
+[ID]            NAME_ONLY_JARINGNETWORK
+[Signature]     SeekSet(0) "JARINGNETWORK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "SLARC" for AM Dumb Sample
+[ID]            NAME_ONLY_SLARC
+[Signature]     SeekSet(0) "SLARC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "TDU"
+[ID]            NAME_ONLY_TDU
+[Signature]     SeekSet(0) "TDU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "VIRUS"
+[ID]            NAME_ONLY_VIRUS
+[Signature]     SeekSet(0) "VIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "LINDA3"
+[ID]            NAME_ONLY_LINDA3
+[Signature]     SeekSet(0) "LINDA3" AtEnd()
+[NameSigEnd]
+
+
+//////////////////////////////
+// Accessiv virus sigs
+//////////////////////////////
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv dumb sample Access 97 Autoexec macro
+[ID]            CRC_DUMBSAMPLE_AUTOEXEC
+[CRCA97]        0x68906259
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv dumb sample.A SLARC VBA module
+[ID]            CRC_DUMBSAMPLEA_SLARC
+[CRCA97]        0x9FA6387C
+[Signature]     NameSig(NAME_ONLY_SLARC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Accessiv dumb sample
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_DUMBSAMPLE
+[Signature]     NamedCRCSig(CRC_DUMBSAMPLE_AUTOEXEC) and
+[Signature]     NamedCRCSig(CRC_DUMBSAMPLEA_SLARC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv Access 97 Autoexec macro
+[ID]            CRC_ACCESSIV_AUTOEXEC
+[CRCA97]        0x1278727F
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv.A Virus VBA module
+[ID]            CRC_ACCESSIVA_VIRUS
+[CRCA97]        0x0DF6784C
+[Signature]     NameSig(NAME_ONLY_VIRUS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Accessiv.A
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_ACCESSIVA
+[Signature]     NamedCRCSig(CRC_ACCESSIV_AUTOEXEC) or
+[Signature]     NamedCRCSig(CRC_ACCESSIVA_VIRUS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv.B Virus VBA module
+[ID]            CRC_ACCESSIVB_VIRUS
+[CRCA97]        0xD97B331C
+[Signature]     NameSig(NAME_ONLY_VIRUS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Accessiv.B
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_ACCESSIVB
+[Signature]     NamedCRCSig(CRC_ACCESSIV_AUTOEXEC) and
+[Signature]     NamedCRCSig(CRC_ACCESSIVB_VIRUS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Accessiv.C: AUTOEXEC macro
+[ID]            CRC_ACCESSIVC_AUTOEXEC
+[CRCA97]        0x8DC58AC5
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Accessiv.C uses Random name VBA modules
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_ACCESSIVC
+[Signature]     NamedCRCSig(CRC_ACCESSIVC_AUTOEXEC) and
+[Signature]     CRC(0xEEE54A75)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+//////////////////////////////
+// Tox virus sigs
+//////////////////////////////
+
+[NamedCRCSigStart]
+[Comment]       AM.Tox Access 97 Autoexec macro
+[ID]            CRC_TOX_AUTOEXEC
+[CRCA97]        0xF3910648
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Tox.A Virus VBA module
+[ID]            CRC_TOXA_TDU
+[CRCA97]        0x9B8E5276
+[Signature]     NameSig(NAME_ONLY_TDU)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Tox.A
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_TOXA
+[Signature]     NamedCRCSig(CRC_TOX_AUTOEXEC) and
+[Signature]     NamedCRCSig(CRC_TOXA_TDU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Tox.B Virus VBA module
+[ID]            CRC_TOXB_TDU
+[CRCA97]        0x9C5E5F00
+[Signature]     NameSig(NAME_ONLY_TDU)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Tox.B
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_TOXB
+[Signature]     NamedCRCSig(CRC_TOX_AUTOEXEC) and
+[Signature]     NamedCRCSig(CRC_TOXB_TDU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Tox.D Virus VBA module
+[ID]            CRC_TOXD_TDU
+[CRCA97]        0x59d2dec6
+[Signature]     NameSig(NAME_ONLY_TDU)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Tox.D dropped by W97M.Cross.A
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_TOXD
+[Signature]     NamedCRCSig(CRC_TOX_AUTOEXEC) and
+[Signature]     NamedCRCSig(CRC_TOXD_TDU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+//////////////////////////////
+// JARINGNETWORK
+//////////////////////////////
+
+[NamedCRCSigStart]
+[Comment]       AM.Jaring.intended
+[ID]            CRC_JARING_AUTOEXEC
+[CRCA97]        0x17F5731C
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       AM.Jaring.intended JARINGNETWORK VBA module
+[ID]            CRC_JARING_JARINGNETWORK
+[CRCA97]        0x06145943
+[Signature]     NameSig(NAME_ONLY_JARINGNETWORK)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       AM.Jaring.Intended
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_JARING
+[Signature]     NamedCRCSig(CRC_JARING_AUTOEXEC) or
+[Signature]     NamedCRCSig(CRC_JARING_JARINGNETWORK)
+[Repair]        UseSignature, NameSig(NAME_ONLY_AUTOEXEC),
+[Repair]        NameSig(NAME_ONLY_JARINGNETWORK),
+#and if he ever fix the virus:
+[Repair]        NameSig(NAME_ONLY_JARING)
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       A97M.Amg.Trojan 
+[ID]            CRC_AMGA_LINDA3
+[CRCA97]        0x962ED1D6
+[Signature]     NameSig(NAME_ONLY_LINDA3)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       A97M.Amg.Trojan
+[Type]          A97
+[QAStatus]      PASSED
+[ID]            VID_AMGA
+[Signature]     NamedCRCSig(CRC_AMGA_LINDA3)
+[Repair]        UseSignature
+[KnownVirusSigEnd]

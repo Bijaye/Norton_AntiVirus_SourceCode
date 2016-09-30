@@ -1,0 +1,16 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {4703E5A5-78D2-4cef-B592-268104B2601D} = s 'HPP Common Events Class'
+		{
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{B1B54196-7252-478a-8142-04C402BD6F8E}'
+		}
+	}
+}

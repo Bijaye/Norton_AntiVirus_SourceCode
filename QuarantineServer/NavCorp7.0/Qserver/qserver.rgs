@@ -1,0 +1,29 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{C60B0154-894B-11D2-8E5F-2A0712000000} = s 'qserver'
+		
+		ForceRemove 'qserver.EXE'
+		{
+			val AppID = s {C60B0154-894B-11D2-8E5F-2A0712000000}
+		}
+	}
+}
+
+HKLM
+{
+    NoRemove SYSTEM
+    {
+        NoRemove CurrentControlSet
+        {
+            NoRemove Control
+            {
+                NoRemove 'Server Applications'
+                {
+                    ForceRemove val {26140C85-B554-11D2-8F45-3078302C2030} = s 'Norton AntiVirus Quarantine Service'
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,162 @@
+:: Copyright 1995 Symantec, Peter Norton Product Group
+::************************************************************************
+::
+:: $Header:   S:/NOBUILDS.NT/VCS/BUILD.BTv   1.11   21 Jul 1998 15:06:56   mdunn  $
+::
+:: Description:
+::      Bogus way to put Beaverton's zip dll into Luigi.
+::
+:: Contains:
+::
+:: See Also:
+::************************************************************************
+:: $Log:   S:/NOBUILDS.NT/VCS/BUILD.BTv  $
+:  
+:     Rev 1.11   21 Jul 1998 15:06:56   mdunn
+:  XNTINOC.AXP should go to lib.ara, not .ida
+:  
+:     Rev 1.10   01 May 1998 13:36:04   mdunn
+:  Now creating separate OEM version of NAVOPTS/NAVDEF.DAT.
+:  
+:     Rev 1.9   01 Aug 1997 09:39:20   JBRENNA
+:  Comment out the call to striprem.awk. We no longer use the INF files for Install / Uninstall
+:  
+:     Rev 1.8   14 Jul 1997 12:02:52   KSACKIN
+:  Added an update for our DEC Alpha dependent libraries.
+:
+:     Rev 1.7   10 Jul 1997 10:31:10   JBRENNA
+:  Generate NAVOPTS.DAT and NAVDEF.DAT to the SRC directory rather than the
+:  LIB.BIN directory.
+:
+:     Rev 1.6   13 Jun 1997 14:34:32   KSACKIN
+:  Updated the removal of read only attributes to include the language area.
+:
+:     Rev 1.5   09 Jun 1997 11:15:26   KSACKIN
+:  Integrated the NavBin32.Exe utility to create the NavOpts.Dat and NavDef.Dat
+:  files.
+:
+:     Rev 1.4   23 May 1997 16:19:12   KSACKIN
+:  Added copy section for all source files to a lib.bin directory and removed
+:  the read-only attribute flag for our Install Shield projects.
+:
+:     Rev 1.3   29 Apr 1997 09:49:08   JBRENNA
+:  Specify path for AWKSCR.BTM call.
+:
+:     Rev 1.2   29 Apr 1997 09:47:36   JBRENNA
+:  Convert W32 to new IRA/IDA platform specification.
+:
+:     Rev 1.1   25 Apr 1997 16:19:52   JBRENNA
+:  Only copy XNT*.LIB files. The other files are copied by NOBUILDS.
+:
+:     Rev 1.0   25 Apr 1997 11:35:26   ksackin
+:  Initial revision.
+:
+:     Rev 1.0   13 Mar 1997 15:17:04   RFULLER
+:  Initial revision
+:
+:     Rev 1.2   13 Feb 1997 17:53:12   TSmith
+:  Put install script obfuscation in separate batch file.
+:
+:     Rev 1.1   04 Dec 1996 22:53:18   jmillar
+:  add gryphon install scripts to awk script list for obfuscation
+:
+:     Rev 1.0   08 Nov 1996 11:37:18   DKEEFER
+:  Initial revision
+:
+:     Rev 1.3   11 Jul 1996 13:04:00   jmillar
+:  copy tools to s:\tools\
+:
+:     Rev 1.2   05 Jun 1996 22:09:42   jmillar
+:  add copy to bin.dos of navcrc, navbin, startlst and navboot.hlp. That way
+:  I don't have to build all these DOS platforms to build these tools that
+:  haven't changed in 4 years.
+:
+:     Rev 1.1   20 May 1996 22:29:34   jmillar
+:  add circular dependency libs for NAVWNT target
+:
+:     Rev 1.0   30 Jan 1996 15:58:50   BARRY
+:  Initial revision.
+:
+:     Rev 1.0   30 Jan 1996 14:52:04   BARRY
+:  Initial revision.
+:
+:     Rev 1.6   12 Dec 1995 00:07:16   DALLEE
+:  Updated for PROJVERS.
+:
+:     Rev 1.5   05 Dec 1995 00:14:08   GWESTER
+:  Added nntlib01.lib and nntxutil.lib to handle NT's circular references.
+:
+:     Rev 1.4   21 Nov 1995 15:05:40   BARRY
+:  Remove references to obsolete files
+:
+:     Rev 1.3   19 Nov 1995 15:18:34   DALLEE
+:  Add scary awk script for Gargoyle install scripts, too.  ;-)
+:
+:     Rev 1.2   14 Jul 1995 03:48:30   BARRY
+:  add scary awk script
+:
+:     Rev 1.1   30 May 1995 17:05:30   JJOHNSON
+:  Added n32inoc.lib and n32xutil.lib to handle circular dependencies
+:
+:     Rev 1.0   28 Mar 1995 17:42:40   DALLEE
+:  Initial revision.
+::************************************************************************
+
+@rem copy %PROJ%\SRC%PROJVERS%\navcrc.exe      %PROJPRE%\BIN%PROJVERS%.DOS
+@rem copy %PROJ%\SRC%PROJVERS%\navcrc.exe      S:\TOOLS\
+@rem copy %PROJ%\SRC%PROJVERS%\navbin.exe      %PROJPRE%\BIN%PROJVERS%.DOS
+@rem copy %PROJ%\SRC%PROJVERS%\navbin.exe      S:\TOOLS\
+@rem copy %PROJ%\SRC%PROJVERS%\startlst.exe    %PROJPRE%\BIN%PROJVERS%.DOS
+@rem copy %PROJ%\SRC%PROJVERS%\startlst.exe    S:\TOOLS\
+@rem
+@rem copy %PROJ%\SRC%PROJVERS%\navboot.hlp     %PROJPRE%\BIN%PROJVERS%.DOS
+@rem
+@rem These are copied by the NOBUILDS project.
+@rem
+@rem copy %PROJ%\SRC%PROJVERS%\n32inoc.lib     %PROJPRE%\LIB%PROJVERS%.W32
+@rem copy %PROJ%\SRC%PROJVERS%\n32xutil.lib    %PROJPRE%\LIB%PROJVERS%.W32
+
+copy %PROJ%\SRC%PROJVERS%\nntlib01.lib    %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\nntlib01.lib    %PROJPRE%\LIB%PROJVERS%.IDA
+copy %PROJ%\SRC%PROJVERS%\nntxutil.lib    %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\nntxutil.lib    %PROJPRE%\LIB%PROJVERS%.IDA
+
+copy %PROJ%\SRC%PROJVERS%\xntinoc.lib     %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\xntinoc.lib     %PROJPRE%\LIB%PROJVERS%.IDA
+copy %PROJ%\SRC%PROJVERS%\xntxutil.lib    %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\xntxutil.lib    %PROJPRE%\LIB%PROJVERS%.IDA
+
+copy %PROJ%\SRC%PROJVERS%\xntinoc.axp     %PROJPRE%\LIB%PROJVERS%.ARA\xntinoc.lib
+copy %PROJ%\SRC%PROJVERS%\xntxutil.axp    %PROJPRE%\LIB%PROJVERS%.ARA\xntxutil.lib
+
+: Obfuscate our install scripts.
+: unused call %PROJ%\SRC%PROJVERS%\awkscr.btm
+
+:
+: Copy all source files to a lib.bin directory and remove read-only
+: attribute to provide Install Shield with writable source files.
+:
+IFF NOT EXIST %PROJ%\LIB%PROJVERS%.BIN\NUL  THEN
+    md %PROJ%\LIB%PROJVERS%.BIN
+ENDIFF
+
+copy %PROJ%\SRC%PROJVERS%\*.* %PROJ%\LIB%PROJVERS%.BIN
+attrib -r %PROJ%\LIB%PROJVERS%.BIN\*.*
+
+: Update the language area as well.
+IFF NOT EXIST %LANGPROJ%\LIB%PROJVERS%.BIN\NUL  THEN
+    md %LANGPROJ%\LIB%PROJVERS%.BIN
+ENDIFF
+
+copy %LANGPROJ%\SRC%PROJVERS%\*.* %LANGPROJ%\LIB%PROJVERS%.BIN
+attrib -r %LANGPROJ%\LIB%PROJVERS%.BIN\*.*
+
+
+: Build NavOpts.Dat file.
+%PROJPRE%BIN%PROJVERS%.IRA\NAVBIN32.EXE %PROJPRE%NAVBIN32\SRC%PROJVERS%\navoptnt.ini %PROJ%\lib%PROJVERS%.bin\navopts.dat
+copy %PROJ%\lib%PROJVERS%.bin\navopts.dat %PROJ%\lib%PROJVERS%.bin\navdef.dat
+
+: Build OEM version of NAVOPTS.DAT
+%PROJPRE%BIN%PROJVERS%.IRA\NAVBIN32.EXE %PROJPRE%NAVBIN32\SRC%PROJVERS%\oemoptnt.ini %PROJ%\lib%PROJVERS%.bin\oemopts.dat
+copy %PROJ%\lib%PROJVERS%.bin\oemopts.dat %PROJ%\lib%PROJVERS%.bin\oemdef.dat
+

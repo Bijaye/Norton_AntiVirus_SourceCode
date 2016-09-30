@@ -1,0 +1,183 @@
+@echo on
+
+color bright yellow on black
+rem
+rem Check for debug switch
+rem
+if "%@upper[%1]" == "/DBG" goto Debug
+
+set buildr_err= buildr.err
+set buildd_err= buildd.err
+if exist *.err del *.err /qz
+
+echo *******************************************************
+echo *** Building Central Quarantine clients and related projects ***
+echo ***                 Release Build                   ***
+echo *******************************************************
+call devenv "..\QServer Client Components.sln" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+echo *******************************************************
+echo *** Building Quarantine server and related projects ***
+echo ***                 Release Build                   ***
+echo *******************************************************
+call devenv "..\Quarantine Server Build.sln" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+
+
+
+cd ..\..\..\..\Norton_AntiVirus\QuarantineServer\cm
+
+echo *******************************************************
+echo ***                 Building Transman               ***
+echo *******************************************************
+pushd
+call transman.btm
+popd
+
+
+echo *******************************************************
+echo ***                 Building SCSComms               ***
+echo *******************************************************
+devenv "..\..\..\Norton_AntiVirus\Corporate_Edition\win32\src\ScsComms\ScsComms.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+echo *******************************************************
+echo ***                 Building SAVSECURECA            ***
+echo *******************************************************
+devenv "..\..\..\Norton_AntiVirus\Corporate_Edition\win32\src\Install\savSecureCA\SAVSecureCA.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+
+echo *******************************************************
+echo ***                 Building Jedi Projects          ***
+echo *******************************************************
+devenv "..\..\..\Norton_System_Center\Src\Install\IsUser\InstallShieldUserDLL.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+devenv "..\..\..\Core_Technology\LDVP_Shared\Src\DefCast\GrenLeaf\Greenleaf.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+devenv "..\..\..\Core_Technology\LDVP_Shared\Src\DefCast\DefCast.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+devenv "..\..\..\Core_Technology\LDVP_Shared\Src\InstallAMS\InstallAMS.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+devenv "..\..\..\Norton_Antivirus\Corporate_Edition\Win32\src\AVCore\Scandres\src\Scandres.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+devenv "..\..\..\Norton_Antivirus\Corporate_Edition\Win32\src\AVCore\Scandlvr\src\Scandlvr.vcproj" /rebuild Release /OUT "make.err" 
+type make.err >> %buildr_err%
+
+color bright cyan on black
+echo *******************************************************
+echo ***          Copying custom install DLLs            ***
+echo ***                 Release Build                   ***
+echo *******************************************************
+
+rem call mdir.bat "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+
+if not exist "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32" md /s ..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32" md /s "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Server\Setup Files\Compressed Files\0009-English\Intel 32" md /s "..\Install\Server\Setup Files\Compressed Files\0009-English\Intel 32"
+if not exist "..\Install\Server\Setup Files\Compressed Files\0009-English\OS Independent" md /s "..\Install\Server\Setup Files\Compressed Files\0009-English\OS Independent"
+if not exist "..\Install\Server\Setup Files\Uncompressed Files\Language Independent\Intel 32" md /s "..\Install\Server\Setup Files\Uncompressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Server\Setup Files\Uncompressed Files\0009-English\Intel 32" md /s "..\Install\Server\Setup Files\Uncompressed Files\0009-English\Intel 32"
+if not exist "..\Install\Server\Setup Files\Uncompressed Files\0009-English\OS Independent" md /s "..\Install\Server\Setup Files\Uncompressed Files\0009-English\OS Independent"
+
+if not exist "..\Install\Console\Setup Files\Compressed Files\Language Independent\Intel 32" md /s "..\Install\Console\Setup Files\Compressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Console\Setup Files\Compressed Files\0009-English\Intel 32" md /s "..\Install\Console\Setup Files\Compressed Files\0009-English\Intel 32"
+if not exist "..\Install\Console\Setup Files\Compressed Files\0009-English\OS Independent" md /s "..\Install\Console\Setup Files\Compressed Files\0009-English\OS Independent"
+if not exist "..\Install\Console\Setup Files\Uncompressed Files\Language Independent\Intel 32" md /s "..\Install\Console\Setup Files\Uncompressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Console\Setup Files\Uncompressed Files\0009-English\Intel 32" md /s "..\Install\Console\Setup Files\Uncompressed Files\0009-English\Intel 32"
+if not exist "..\Install\Console\Setup Files\Uncompressed Files\0009-English\OS Independent" md /s "..\Install\Console\Setup Files\Uncompressed Files\0009-English\OS Independent"
+copy /q /z /k "..\shared\BinIntelAnsiWin32Release\qsinst.dll" "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+copy /q /z /k "..\nobuilds\immc.exe" "..\install\console\setup files\compressed files\language independent\intel 32"
+copy /q /z /k "..\nobuilds\navinstnt.dll" "..\install\console\setup files\compressed files\language independent\intel 32"
+
+rem attrib "..\Nobuilds\Hawking\Navdefs\*.*" -r
+rem attrib "..\Nobuilds\Hawking\Navhub\*.*" -r
+
+if ERRORLEVEL == 0 goto Complete
+goto BuildErr
+
+:Debug
+echo *******************************************************
+echo *** Building Central Quarantine clients and related projects ***
+echo ***                  Debug Build                    ***
+echo *******************************************************
+call devenv "..\QServer Client Components.sln" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+echo *******************************************************
+echo *** Building Quarantine server and related projects ***
+echo ***                  Debug Build                    ***
+echo *******************************************************
+call devenv "..\Quarantine Server Build.sln" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+
+echo *******************************************************
+echo ***                 Building Transman               ***
+echo *******************************************************
+call transman.btm /DBG
+
+
+echo *******************************************************
+echo ***                 Building SCSComms               ***
+echo *******************************************************
+devenv "..\..\..\Norton_AntiVirus\Corporate_Edition\win32\src\ScsComms\ScsComms.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+echo *******************************************************
+echo ***                 Building SAVSECURECA            ***
+echo *******************************************************
+devenv "..\..\..\Norton_AntiVirus\Corporate_Edition\win32\src\Install\savSecureCA\SAVSecureCA.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+
+echo *******************************************************
+echo ***                 Building Jedi Projects          ***
+echo *******************************************************
+devenv "..\..\..\Norton_System_Center\Src\Install\IsUser\InstallShieldUserDLL.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+devenv "..\..\..\Core_Technology\LDVP_Shared\Src\DefCast\GrenLeaf\Greenleaf.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+devenv "..\..\..\Core_Technology\LDVP_Shared\Src\DefCast\DefCast.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+devenv "..\..\..\Core_Technology\LDVP_Shared\Src\InstallAMS\InstallAMS.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+devenv "..\..\..\Norton_Antivirus\Corporate_Edition\Win32\src\AVCore\Scandres\src\Scandres.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+devenv "..\..\..\Norton_Antivirus\Corporate_Edition\Win32\src\AVCore\Scandlvr\src\Scandlvr.vcproj" /rebuild Debug /OUT "make.err" 
+type make.err >> %buildd_err%
+
+if ERRORLEVEL == 0 goto Complete
+
+:BuildErr
+color bright red on black
+echo *******************************************************
+echo ***      Errors have occured durring the build      ***
+echo ***         See file MAKE.ERR for details           ***
+echo *******************************************************
+beep 440 2
+goto AllDone
+
+:Complete
+color bright green on black
+echo *******************************************************
+echo ***               Build successfull.                ***
+echo *******************************************************
+if exist make.err del make.err /qz
+goto AllDone
+
+:AllDone
+color white on black
+

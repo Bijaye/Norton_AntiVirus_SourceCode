@@ -1,0 +1,248 @@
+::******************************************************************************
+::******************************************************************************
+:: update_nav_headers.btm
+:: Updates version files
+:: This script assumes the perforce environment variables are set such that the
+:: files to be modified are in the client's range and may be modified.
+::   %0 - First parameter needs to be set equal to the CM build number which
+::        will be used.
+::******************************************************************************
+::******************************************************************************
+setlocal
+@echo off
+echo Starting %0...
+
+if "%1"=="" goto USAGE
+
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+:: Set our global environment variables.
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+
+set _BVerFileName=build.h
+set _BVerPath=..\include\%_BVerFileName
+set _VVerFileName=VERSION.DAT
+set _VVerPath=..\nobuilds\%_VVerFileName
+set _ChangeText=%@unique[%temp]
+set _ChangeNum=%@unique[%temp]
+set _MKAWK=r:\mk\awk.exe
+set _CMBUILDNUM=%1
+
+iff not exist %_MKAWK then
+    echo ERROR: %_MKAWK not found!
+    goto failure
+endiff
+
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+:: Calculate date
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+
+set _MonthNo=%_month
+set _DayNo=%_day
+set _YearNo=%_year
+
+iff %@len[%_MonthNo] == 1 then
+        set _MonthNo=0%_MonthNo
+endiff
+iff %@len[%_DayNo] == 1 then
+        set _DayNo=0%_DayNo
+endiff
+
+set _SequenceNumber=%_year%%_MonthNo%%_DayNo%
+echo Month = %_MonthNo
+echo Day   = %_DayNo
+echo Year  = %_YearNo
+echo YearMonthDay = %_Sequencenumber
+echo CM Build Number = %1
+
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+:: Create Perforce change list
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+
+: Use existing Perforce client.
+
+iff "%P4CLIENT" EQ "" then
+    echo P4CLIENT is not set.  Aborting.
+    quit 1
+endiff
+
+echo P4CLIENT=%P4CLIENT
+
+iff "%USERNAME" NE "" then
+    set _UserName=%USERNAME
+elseiff "%LOGNAME" NE "" then
+    set _UserName=%LOGNAME
+elseiff "%VCSID" NE "" then
+    set _UserName=%VCSID
+endiff
+
+:: Check if computername environment var is set
+iff "%COMPUTERNAME" NE "" then
+    set _MachineName=%COMPUTERNAME
+else
+    set _MachineName=Unknown
+endiff
+
+TEXT > %_ChangeText
+# A Perforce Change Specification.
+#
+#  Change:      The change number. 'new' on a new changelist.  Read-only.
+#  Date:        The date this specification was last modified.  Read-only.
+#  Client:      The client on which the changelist was created.  Read-only.
+#  User:        The user who created the changelist. Read-only.
+#  Status:      Either 'pending' or 'submitted'. Read-only.
+#  Description: Comments about the changelist.  Required.
+#  Jobs:        What opened jobs are to be closed by this changelist.
+#               You may delete jobs from this list.  (New changelists only.)
+#  Files:       What opened files from the default changelist are to be added
+#               to this changelist.  You may delete files from this list.
+#               (New changelists only.)
+
+Change:	new
+
+Status:	new
+
+Description:
+ENDTEXT
+
+echo 	CM build: %1 >> %_ChangeText
+
+TEXT >> %_ChangeText
+	This is change is being created by an automated build script.
+	Info on the version being submitted:
+ENDTEXT
+
+echo         Product:             %PRODNAME >> %_ChangeText
+iff "%_SequenceNumber" != "" then
+    echo         SequenceNumber:      %_SequenceNumber >> %_ChangeText
+endiff
+echo         User:                %_UserName >> %_ChangeText
+echo         Machine:             %_MachineName >> %_ChangeText
+echo         Build:               CM >> %_ChangeText
+
+echo p4 change
+@call p4 change -i < %_ChangeText > %_ChangeNum
+iff "%_?" ne "0" then 
+  echo ERROR: Failed to create new perforce changelist.
+  goto failure
+endiff
+
+for %i in (@%_ChangeNum) do set changenum=%@word[1,%i]
+del /yzq "%_ChangeText"
+del /yzq "%_ChangeNum"
+
+::------------------------------------------------------------------------------
+:: Update version file 1
+::------------------------------------------------------------------------------
+
+set _Tempfile=%@unique[%temp]
+
+:: Check out the header file 1
+
+echo p4 sync -f "%_BVerPath"
+p4 sync -f "%_BVerPath"
+echo p4 edit -c %changenum "%_BVerPath"
+p4 edit -c %changenum "%_BVerPath"
+iff "%?" ne "0" then 
+  echo ERROR: Failed to check out %_BVerPath.
+  goto failure
+endiff
+
+:: For some reason, perhaps the path is too long, awk doesn't like to load this file from this location.
+:: Copy this to the CM folder and have awk load it from there.
+copy %_BVerPath .
+
+:: Update CM build number.
+echo @call %_MKAWK -f %@ALTNAME["navverup.awk"] bCM=1 MonthNo=%_MonthNo DayNo=%_DayNoNo YearNo=%_YearNo CM_BUILD_NUMBER=%_CMBUILDNUM %@ALTNAME["%_BVerFileName"] : %_Tempfile
+@call %_MKAWK -f %@ALTNAME["navverup.awk"] bCM=1 MonthNo=%_MonthNo DayNo=%_DayNo YearNo=%_YearNo CM_BUILD_NUMBER=%_CMBUILDNUM %@ALTNAME["%_BVerFileName"] > %_Tempfile
+iff "%_?" ne "0" then 
+  echo ERROR: Failed to update version in %_BVerFileName.
+  goto failure
+endiff
+
+:: Replace the ver file.
+:: Clean up intermediate files.
+move "%_Tempfile" "%_BVerPath"
+del %_BVerFileName
+
+::------------------------------------------------------------------------------
+:: Update version file 2
+::------------------------------------------------------------------------------
+
+set _Tempfile=%@unique[%temp]
+
+:: Check out the header file
+
+echo p4 sync -f "%_VVerPath"
+p4 sync -f "%_VVerPath"
+echo p4 edit -c %changenum "%_VVerPath"
+p4 edit -c %changenum "%_VVerPath"
+iff "%?" ne "0" then 
+  echo ERROR: Failed to check out %_VVerPath.
+  goto failure
+endiff
+
+:: For some reason, perhaps the path is too long, awk doesn't like to load this file from this location.
+:: Copy this to the CM folder and have awk load it from there.
+copy %_VVerPath .
+
+:: Update CM build number.
+echo @call %_MKAWK -f %@ALTNAME["navverup.awk"] bCM=1 MonthNo=%_MonthNo DayNo=%_DayNoNo YearNo=%_YearNo CM_BUILD_NUMBER=%_CMBUILDNUM %@ALTNAME["%_VVerFileName"] : %_Tempfile
+@call %_MKAWK -f %@ALTNAME["navverup.awk"] bCM=1 MonthNo=%_MonthNo DayNo=%_DayNo YearNo=%_YearNo CM_BUILD_NUMBER=%_CMBUILDNUM %@ALTNAME["%_VVerFileName"] > %_Tempfile
+iff "%_?" ne "0" then 
+  echo ERROR: Failed to update version in %_VVerFileName.
+  goto failure
+endiff
+
+:: Replace the ver file.
+:: Clean up intermediate files.
+move "%_Tempfile" "%_VVerPath"
+del %_VVerFileName
+
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+:: Check in changes...
+::------------------------------------------------------------------------------
+::------------------------------------------------------------------------------
+
+:: Submit the change
+echo p4 submit -c %changenum
+@call p4 submit -c %changenum
+iff "%_?" ne "0" then 
+  echo ERROR: Failed to submit new perforce changes.
+  goto failure
+endiff
+
+:success
+endlocal
+echo %0 finished successfully.
+quit 0
+
+:failure
+endlocal
+echo %0 failed with errors.
+quit 1
+
+:usage
+echo.
+echo This script is to be run by CM personnel only.
+echo.
+echo Usage:
+echo.
+echo %0 build_num
+echo.
+echo build_num is required.
+echo.
+echo Example:
+echo            %0 15
+echo.
+echo            Updates version files for build # 15.
+echo.
+echo.
+endlocal
+quit 1

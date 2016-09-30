@@ -1,0 +1,24 @@
+HKCR
+{
+	Rtvscan.OEMSettingsManager.1 = s 'OEMSettingsManager Class'
+	{
+		CLSID = s '{567E4150-E7D1-48BA-B03D-4FB71A217080}'
+	}
+	Rtvscan.OEMSettingsManager = s 'OEMSettingsManager Class'
+	{
+		CLSID = s '{567E4150-E7D1-48BA-B03D-4FB71A217080}'
+		CurVer = s 'Rtvscan.OEMSettingsManager.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {567E4150-E7D1-48BA-B03D-4FB71A217080} = s 'OEMSettingsManager Class'
+		{
+			ProgID = s 'Rtvscan.OEMSettingsManager.1'
+			VersionIndependentProgID = s 'Rtvscan.OEMSettingsManager'
+			ForceRemove 'Programmable'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{9BDC812A-6973-438E-A2D0-19BA66D2161F}'
+		}
+	}
+}

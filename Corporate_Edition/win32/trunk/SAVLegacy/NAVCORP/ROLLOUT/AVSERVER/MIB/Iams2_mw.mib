@@ -1,0 +1,151 @@
+-- Intel Corporation LANDesk Alert Management System 2 MIB
+
+LANDesk-AMS2-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+  enterprises, Counter, TimeTicks
+     FROM RFC1155-SMI
+
+  DisplayString
+     FROM RFC1213-MIB
+
+  TRAP-TYPE
+     FROM RFC-1215
+
+  OBJECT-TYPE
+     FROM RFC-1212;
+
+-- Intel OIDs
+intel OBJECT IDENTIFIER ::= {enterprises 343}
+products OBJECT IDENTIFIER ::= {intel 2}
+network-products OBJECT IDENTIFIER ::= {products 5}
+lanDesk OBJECT IDENTIFIER ::= {network-products 1}
+ams2alert OBJECT IDENTIFIER ::= {lanDesk 1}
+
+-- Trap Information
+severity OBJECT-TYPE
+   SYNTAX INTEGER { monitor(1), informational(2), ok(4), non-critical(8), critical(16), non-recoverable(32), all(63) }
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "The severity level of the event the SNMP Trap is reporting."
+   ::= {ams2alert 7}
+
+eventTime OBJECT-TYPE
+   SYNTAX INTEGER
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "The date and time the trap was sent on the source computer.  The number of seconds elapsed since midnight (00:00:00), January 1, 1970."
+   ::= {ams2alert 8}
+
+eventID OBJECT-TYPE
+   SYNTAX INTEGER
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "An integer ID representing who generated the SNMP Trap."
+   ::= {ams2alert 9}
+
+eventSource OBJECT-TYPE
+   SYNTAX DisplayString(SIZE(0..100))
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "A string value representing who generated the SNMP Trap."
+   ::= {ams2alert 10}
+
+eventMessage OBJECT-TYPE
+   SYNTAX DisplayString(SIZE(0..1024))
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "The description of the event the SNMP Trap is reporting."
+   ::= {ams2alert 11}
+
+computerName OBJECT-TYPE
+   SYNTAX DisplayString(SIZE(0..20))
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "The source computer that generated the SNMP Trap."
+   ::= {ams2alert 12}
+
+eventLog OBJECT-TYPE
+   SYNTAX INTEGER { application(0), security(2), system(3) }
+   ACCESS not-accessible
+   STATUS mandatory
+   DESCRIPTION "The WindowsNT event log were the event was detected.  If the event wasn't detected from a WindowsNT event log the value will be zero (0)."
+   ::= {ams2alert 13}
+
+ams2DefaultTrap TRAP-TYPE
+   -- Generated in response to NAV service startup, service shutdown, or virus definition updates
+   ENTERPRISE ams2alert
+   VARIABLES { computerName, eventTime, eventID, eventSource, eventMessage, severity }
+   DESCRIPTION "Intel Alert Management System 2 default trap."
+      --#TYPE "Intel AMS 2:  Default trap"
+      --#SUMMARY "%s: %s"
+      --#ARGUMENTS {3, 4}
+      --#SEVERITY severity
+      --#TIMEINDEX 0
+      --#HELP "ldalarm.hlp"
+      --#HELPTAG 5
+      --#STATE  OPERATIONAL
+   ::= 5
+
+ams2VirusFound TRAP-TYPE
+   -- Generated in response to NAV virus detections
+   ENTERPRISE ams2alert
+   VARIABLES { computerName, eventTime, eventID, eventSource, eventMessage, severity }
+   DESCRIPTION "Intel Alert Management System 2:  Virus found!"
+      --#TYPE "Intel AMS 2:  Virus found!"
+      --#SUMMARY "%s: %s"
+      --#ARGUMENTS {3, 4}
+      --#SEVERITY severity
+      --#TIMEINDEX 0
+      --#HELP "ldalarm.hlp"
+      --#HELPTAG 5
+      --#STATE  OPERATIONAL
+   ::= 6
+
+ams2ConfigurationChange TRAP-TYPE
+   -- Generated in response to NAV server configuration changes
+   ENTERPRISE ams2alert
+   VARIABLES { computerName, eventTime, eventID, eventSource, eventMessage, severity }
+   DESCRIPTION "Intel Alert Management System 2:  Configuration change."
+      --#TYPE "Intel AMS 2:  Config change"
+      --#SUMMARY "%s: %s"
+      --#ARGUMENTS {3, 4}
+      --#SEVERITY severity
+      --#TIMEINDEX 0
+      --#HELP "ldalarm.hlp"
+      --#HELPTAG 5
+      --#STATE  OPERATIONAL
+   ::= 7
+
+ams2VirusLikeBehavior TRAP-TYPE
+   -- Generated in response to NAV virus-like behavior detections
+   ENTERPRISE ams2alert
+   VARIABLES { computerName, eventTime, eventID, eventSource, eventMessage, severity }
+   DESCRIPTION "Intel Alert Management System 2:  Virus-like behavior detected!"
+      --#TYPE "Intel AMS 2:  Virus-like behavior!"
+      --#SUMMARY "%s: %s"
+      --#ARGUMENTS {3, 4}
+      --#SEVERITY severity
+      --#TIMEINDEX 0
+      --#HELP "ldalarm.hlp"
+      --#HELPTAG 5
+      --#STATE  OPERATIONAL
+   ::= 10
+
+ams2ScanStartStop TRAP-TYPE
+   -- Generated in response to NAV's start or stop of scheduled, startup, and custom scans
+   ENTERPRISE ams2alert
+   VARIABLES { computerName, eventTime, eventID, eventSource, eventMessage, severity }
+   DESCRIPTION "Intel Alert Management System 2:  Scan start or stop occured."
+      --#TYPE "Intel AMS 2:  Scan start/stop"
+      --#SUMMARY "%s: %s"
+      --#ARGUMENTS {3, 4}
+      --#SEVERITY severity
+      --#TIMEINDEX 0
+      --#HELP "ldalarm.hlp"
+      --#HELPTAG 5
+      --#STATE  OPERATIONAL
+   ::= 11
+
+END
+

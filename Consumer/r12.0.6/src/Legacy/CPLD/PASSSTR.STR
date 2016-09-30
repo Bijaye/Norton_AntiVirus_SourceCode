@@ -1,0 +1,392 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/passstr.stv   1.0   06 Feb 1997 20:50:28   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV password options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptPasswordStrings,
+//      LPVOID *        lpOptPasswordArgs,
+//
+//      CheckBoxRec     cbPasswordProtect
+//      ListRec         lrPasswordItems
+//      RadioButtonsRec rbPasswordProtectType
+//      ButtonsRec      buPasswordSet
+//
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/passstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:28   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   30 Jan 1996 16:21:00   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:54:54   BARRY
+// Initial revision.
+// 
+//    Rev 1.17   20 Jan 1995 18:52:50   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.16   28 Dec 1994 12:07:44   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.2   06 Dec 1994 20:04:14   DALLEE
+    // Put back strings removed for Mini-Nav.
+    //
+    //    Rev 1.1   30 Nov 1994 17:26:14   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.15   28 Dec 1994 11:55:52   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:52   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.13   17 Sep 1993 02:33:32   DALLEE
+    // Added strings for dialog to complain that there is no password.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+#include "nlibcfg.h"
+#include "passwd.h"
+
+#include "navdprot.h"
+#include "navopts.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define PASSWORD_LIST_WIDTH     (40)
+#define PASSWORD_LIST_HEIGHT    (10)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    [];     // These externs are declared in
+extern ButtonsRec buOkCancelHelp;       //  OPTSTR.CPP
+extern ScrollBarRec sbOptScrollBar;
+
+
+//------------------------------------------------------------------------
+// Password CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszOptPasswordStrings [] =       // String for password CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    " %C1",                             // cbPasswordProtect
+    "     %B2",                         // buPasswordSet
+    "%38f ",                            // Push buttons over to far right
+    " %R3",                             // rbPasswordProtectType
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B4",                              // buOkCancelHelp
+
+    DIALOG_1COL,
+    DIALOG_LEFT,
+    "     %L5",                         // lrPasswordItems
+    "      Note: Items with checkmarks are protected.",
+    DIALOG_END,
+    };
+
+
+//------------------------------------------------------------------------
+// Password CP Dialog Controls
+//------------------------------------------------------------------------
+
+TERec teNAVOldPassword =
+    {
+    0, 0,                               /* Left side of the edit box    */
+    PASSWORD_LEN + 2,                   /* Width of the edit box        */
+    NULL,                               /* The string we're editing     */
+    PASSWORD_LEN,                       /* Maximum length of the string */
+    0,                                  /* Insertion point              */
+    0,                                  /* First char visible in box    */
+    NULL,
+    TE_NO_ECHO | TE_NO_STRIP,           /* Bit flags                    */
+    };
+
+TERec teNAVNewPassword =
+    {
+    0, 0,                               /* Left side of the edit box    */
+    PASSWORD_LEN + 2,                   /* Width of the edit box        */
+    NULL,                               /* The string we're editing     */
+    PASSWORD_LEN,                       /* Maximum length of the string */
+    0,                                  /* Insertion point              */
+    0,                                  /* First char visible in box    */
+    NULL,
+    TE_NO_ECHO | TE_NO_STRIP,           /* Bit flags                    */
+    };
+
+TERec teNAVConfirmPassword =
+    {
+    0, 0,                               /* Left side of the edit box    */
+    PASSWORD_LEN + 2,                   /* Width of the edit box        */
+    NULL,                               /* The string we're editing     */
+    PASSWORD_LEN,                       /* Maximum length of the string */
+    0,                                  /* Insertion point              */
+    0,                                  /* First char visible in box    */
+    NULL,
+    TE_NO_ECHO | TE_NO_STRIP,           /* Bit flags                    */
+    NULL,
+    0
+    };
+
+CheckBoxRec cbPasswordProtect =
+    {
+    "^Password Protect",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+static char *lpszPasswordProtectTypeLabels [] =
+    {
+    "^Maximum password protection",
+    "C^ustom password protection",
+    NULL,
+    };
+
+RadioButtonsRec rbPasswordProtectType =
+    {
+    lpszPasswordProtectTypeLabels,      // Button text
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1, 0,                               // Pad, gap
+    };
+
+static char *lpszPasswordSetLabel [] =
+    {
+    "^Set password",
+    NULL,
+    };
+
+ButtonsRec buPasswordSet =
+    {
+    lpszPasswordSetLabel,               // Button text
+    SHOW_HOT_KEYS | USE_PAD | NO_DEFAULT,
+    0,                                  // Value - not used
+    0, 0,                               // Row, col - internal
+    0, 0,                               // Pad, gap
+    };
+
+char *lpszPasswordItems [] =
+    {
+    "View reports",
+    "Clear activity log",
+    "View virus list",
+    "Delete virus list entries",
+    "Inoculate files",
+    "Uninoculate files",
+    "View scanner settings",
+    "View Auto-Protect settings",
+    "View alert settings",
+    "View exclusions list settings",
+    "Add/edit/delete exclusions",
+    "View activity log Settings",
+    "View inoculation settings",
+    "View general settings",
+    };
+
+ListRec lrPasswordItems =
+    {
+    0, 0,                               // Row, col - internal use?
+    1,                                  // Number of columns
+    PASSWORD_LIST_WIDTH,                // Width of column
+    PASSWORD_LIST_HEIGHT,               // Height of list
+                                        // Using Exclude list function for now
+    PasswordListWriteEntry,             // Function to write each entry
+    PasswordListMouseProc,              // do_mouse()
+    NULL,                               // check_match()
+    NULL,                               // event_filter()
+    lpszPasswordItems,                  // Pointers to entries
+    sizeof (char *),                    // size of each entry
+    THIN_LIST_BOX,                      // Flags
+    &sbOptScrollBar,
+    NULL,                               // (char *) String between columns
+    OPT_LIST_DELAY1, OPT_LIST_DELAY2,   // Tick delays between scrolls
+    MAX_PROTECT_FEATURE,                // Number of list entries
+    0, 0,                               // First entry, active entry
+    0,                                  // Width of separator string
+    NULL,                               // Title
+    NULL,                               // User pointer
+    PASSWORD_LIST_WIDTH,                // Width of entire list
+    0,                                  // BYTERECT - rectangle around list
+    1,                                  // Height of each entry
+    };
+
+LPVOID lpOptPasswordArgs [] =           // Arguments to pass to control panel
+    {
+    &cbPasswordProtect,
+    &buPasswordSet,
+    &rbPasswordProtectType,
+    &buOkCancelHelp,
+    &lrPasswordItems,
+    };
+
+
+/************************************************************************
+ * Bad password alert                                                   *
+ ************************************************************************/
+
+BYTE *apszBadPassword[] =
+    {
+    DIALOG_EMPTY_LINE,
+    " %3aIncorrect password!%1a ",
+    DIALOG_EMPTY_LINE,
+    " Try entering your password again. ",
+    DIALOG_EMPTY_LINE,
+    DIALOG_END
+    };
+
+LPSTR lpszNoPassword [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    " %45g",
+    "   You have specified to have some options",
+    "   password protected, but you have not",
+    "   entered a password.",
+    DIALOG_EMPTY_LINE,
+    "   You must enter a password to protect the",
+    "   selected options.",
+    DIALOG_EMPTY_LINE,
+    DIALOG_GROUP_END,
+
+    DIALOG_END,
+    };
+
+
+/************************************************************************
+ * Bad new password alert                                               *
+ ************************************************************************/
+
+BYTE *apszBadNewPassword[] =
+    {
+    DIALOG_EMPTY_LINE,
+    " %3aDoes not match!%1a ",
+    DIALOG_EMPTY_LINE,
+    " Try your %3anew%1a password again. ",
+    DIALOG_EMPTY_LINE,
+    DIALOG_END
+    };
+
+/************************************************************************
+ *
+ ************************************************************************/
+
+BYTE *removePasswordDlgSTR[] =
+    {
+    DIALOG_EMPTY_LINE,
+    " Do you wish to remove ",
+    " the password? ",
+    DIALOG_EMPTY_LINE,
+    DIALOG_END
+    };
+
+DialogRec removePasswordDlg =
+    {
+    0, 0,
+    NORMAL_DIALOG_FLAGS,
+    NULL,
+    removePasswordDlgSTR,
+    &yesNoButton,
+    NULL
+    };
+
+
+/************************************************************************
+ * Change password dialog                                               *
+ ************************************************************************/
+
+BYTE *ChangePasswordDlgSTR[] =
+    {
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    DIALOG_EMPTY_LINE,
+    " %28g",
+    "   Old password:",
+    "   %T1",
+    DIALOG_EMPTY_LINE,
+    "   New password:",
+    "   %T2",
+    DIALOG_EMPTY_LINE,
+    "   Confirm new password:",
+    "   %T3",
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    DIALOG_EMPTY_LINE,
+    "%B4",
+
+    DIALOG_1COL,
+    DIALOG_LEFT,
+    " %41g",
+    "   Passwords are case insensitive",
+    "   (uppercase and lowercase match). They",
+    "   can be 1 to 16 characters in length.",
+    DIALOG_GROUP_END,
+    DIALOG_END
+    };
+
+char changePasswordTitle[] = "Set Password";
+char NewPasswordTitle[] = "Password";
+
+DialogRec NAVChangePasswordDlg =
+    {
+    0, 0,
+    NORMAL_DIALOG_FLAGS,
+    changePasswordTitle,
+    ChangePasswordDlgSTR,
+    NULL,
+    NULL
+    };
+
+
+/************************************************************************
+ * Inquire password dialog                                               *
+ ************************************************************************/
+
+BYTE *InquirePasswordDlgSTR[] =
+    {
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    DIALOG_EMPTY_LINE,
+    " Enter password:",
+    DIALOG_EMPTY_LINE,
+    " %T1 ",
+    DIALOG_NEXT_COL,
+    DIALOG_CENTER,
+    DIALOG_EMPTY_LINE,
+    "%B2",
+    DIALOG_END
+    };
+
+
+DialogRec NAVInquirePasswordDlg =
+    {
+    0, 0,
+    NORMAL_DIALOG_FLAGS,
+    "Verify password",
+    InquirePasswordDlgSTR,
+    NULL,
+    NULL
+    };
+

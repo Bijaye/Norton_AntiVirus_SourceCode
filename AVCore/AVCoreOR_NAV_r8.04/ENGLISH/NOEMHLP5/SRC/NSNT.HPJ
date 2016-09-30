@@ -1,0 +1,85 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+; This file replaces the navwnt.hpj; its for the NT Scanner only product.
+[OPTIONS]
+HCW=1
+ERRORLOG=nsnt.LOG
+LCID=0x409 0x0 0x0 ;English (United States)
+REPORT=Yes
+TITLE=Norton AntiVirus Scanner for Windows NT
+CNT=NAVWNT.CNT
+COPYRIGHT=Copyright (c) 1994-96 Symantec Corp.
+HLP=nsnt.HLP
+
+[FILES]
+NShlpbtn.rtf
+NSchelp.rtf
+NSintro.rtf
+NStask.rtf
+Nsopts.rtf
+upgrade.rtf
+support.rtf
+
+[MAP]
+#include navwhlp.h
+
+[WINDOWS]
+;MAIN="Norton AntiVirus",,28676,(r15269887),(r8454143),f2
+;TASK="Norton AntiVirus Task",,29188,(r15269887),(r8454143),f2; asdfbdf
+;TERM="Info Desk Glossary",,28676,(r15269887),(r8454143),f2
+MAIN="Norton AntiVirus",,25604,(r15269887),(r8454143)
+TASK="Norton AntiVirus Task",,25604,(r15269887),(r8454143),f2
+TERM="Symantec Glossary",,4,(r15269887),(r8454143),f2
+
+[CONFIG]
+; MAIN
+;BrowseButtons() ;I don't believe you need this line.
+;RR("INFODESK.DLL","InfoDeskUI","US")
+;InfoDeskUI(hwndContext,"MAIN")
+;RR("INFODESK.DLL","Options","U")
+;CB("SYMHLP_TERMFINDER","&Glossary","AL(`GLOSSARY',0,`',`TERM')")
+;CB("SYMHLP_OPTIONS","&Options","Options(hwndApp)")
+CB("SYMHLP_EXIT","E&xit","Exit()")
+BrowseButtons()
+
+[CONFIG-TASK]
+; TASK
+;BrowseButtons() ;I don't believe you need this line.
+;RR("INFODESK.DLL","InfoDeskUI","US")
+;InfoDeskUI(hwndContext,"MAIN")
+;RR("INFODESK.DLL","Options","U")
+;CB("SYMHLP_TERMFINDER","&Glossary","AL(`GLOSSARY',0,`',`TERM')")
+;CB("SYMHLP_OPTIONS","&Options","Options(hwndApp)")
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-TERM]
+; TERM
+;BrowseButtons() ;I don't believe you need this line.
+;RR("INFODESK.DLL","InfoDeskUI","US")
+;InfoDeskUI(hwndContext,"MAIN")
+;RR("INFODESK.DLL","Options","U")
+CB("SYMHLP_TERMFINDER","&Glossary","AL(`GLOSSARY',0,`',`TERM')")
+;CB("SYMHLP_OPTIONS","&Options","Options(hwndApp)")
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[EXCLUDE]
+VLA
+AUTO-PROTECT
+OBSOLETE
+INOCULATION
+NAV95
+NETSCAN               ; Netscape scanner
+SCANNER               ; Non-Netscape scanner
+VIRUS SENSOR
+PASSWORD
+NTSRV
+DEC
+NODEC95
+OEMOUT
+
+[INCLUDE]
+NET
+NT
+NODEC
+NODECNT
+SCANONLY

@@ -1,0 +1,43 @@
+# A Perforce Client Specification.
+#
+#  Client:      The client name.
+#  Update:      The date this specification was last modified.
+#  Access:      The date this client was last used in any way.
+#  Owner:       The user who created this client.
+#  Host:        If set, restricts access to the named host.
+#  Description: A short description of the client (optional).
+#  Root:        The base directory of the client workspace.
+#  Options:     Client options:
+#                      [no]allwrite [no]clobber [no]compress
+#                      [no]crlf [un]locked [no]modtime [no]rmdir
+#  View:        Lines to map depot files into the client workspace.
+#
+# Use 'p4 help client' to see more about client views and options.
+
+Client:	navcorp_r7.0_qserver_cm_bv
+
+Update:	2000/06/23 11:21:58
+
+Access:	2000/11/20 14:55:33
+
+Owner:	jgrigon
+
+Description:
+	Created by jgrigon.
+	updated by bkingsl
+	Added to labeling by bkingsl on 4/26/01
+	$Header: //depot/Norton_Antivirus/QuarantineServer/NavCorp7.0/cm/navcorp_r7.0_qserver_cm_bv.clientspec#1 $
+
+Root:	\\usbv-dev3\dev\dev\bld_area\navcorp7.clean
+
+Options:	noallwrite clobber compress crlf unlocked modtime normdir
+
+View:
+	//depot/Norton_AntiVirus/QuarantineServer/navcorp7.0/... //navcorp_r7.0_qserver_cm_bv/Norton_AntiVirus/QuarantineServer/...
+	//depot/Norton_AntiVirus/QuarantineServer/navcorp7.0/Nobuilds/NavApi/Latest.cm/... //navcorp_r7.0_qserver_cm_bv/Norton_AntiVirus/QuarantineServer/Nobuilds/NavAPI/...
+	//depot/Norton_AntiVirus/AVCore/avcoreoc/Source/Include/Src/... //navcorp_r7.0_qserver_cm_bv/Norton_AntiVirus/AVCore/Source/Include/Src/...
+	//depot/CORE/coreoc/Source/Include/src/... //navcorp_r7.0_qserver_cm_bv/Core/Source/Include/src/...
+	//depot/Release/AVCOMP/DEFUTILS/release.005/... //navcorp_r7.0_qserver_cm_bv/Release/DefUtils/...
+	//depot/tools/msvc6sp2.x86/redist/... //navcorp_r7.0_qserver_cm_bv/tools/msvc6_sp2/redist/...
+	//depot/tech_pubs/Quarantine/r1.0/... //navcorp_r7.0_qserver_cm_bv/tech_pubs/Quarantine/...
+

@@ -1,0 +1,68 @@
+// /////////////////////////////////////////////////////////////////////////////////////////////////
+// Symantec copyright header start
+// //////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2004 Symantec Corporation.
+// All rights reserved.
+//
+// /////////////////////////////////////////////////////////////////////////////////////////////////
+// Symantec copyright header stop
+// //////////////////////
+// ccPasswd.idl : IDL source for ccPasswd.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ccPasswd.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	
+	[
+		object,
+		uuid(0E2AE66C-BAAF-4772-8833-2B9CE184A7D0),
+		dual,
+		helpstring("IPassword Interface"),
+		pointer_default(unique)
+	]
+	interface IPassword : IDispatch
+	{
+		[propput, id(1), helpstring("property ProductID")] HRESULT ProductID([in] long newVal);
+		[propput, id(2), helpstring("property FeatureName")] HRESULT FeatureName([in] BSTR newVal);
+		[id(3), helpstring("method Set")] HRESULT Set([in] BOOL bPromptForOldPwd, [out,retval] BOOL *bSuccess);
+		[id(4), helpstring("method Check")] HRESULT Check([out,retval] BOOL *bSuccess);
+		[propget, id(5), helpstring("property UserName")] HRESULT UserName([out, retval] BSTR *pVal);
+		[propput, id(5), helpstring("property UserName")] HRESULT UserName([in] BSTR newVal);
+//		[propget, id(6), helpstring("property UseWindowsAccounts")] HRESULT UseWindowsAccounts([out, retval] BOOL *pVal);
+//		[propput, id(6), helpstring("property UseWindowsAccounts")] HRESULT UseWindowsAccounts([in] BOOL newVal);
+		[id(7), helpstring("method Reset")] HRESULT Reset([out,retval] BOOL *bSuccess);
+		[id(8), helpstring("method Clear")] HRESULT Clear([out,retval] BOOL *bSuccess);
+		[id(9), helpstring("method AddUser")] HRESULT AddUser([in] BSTR bsPassword, [out,retval] BOOL *bSuccess);
+		[propget, id(10), helpstring("property ProductName")] HRESULT ProductName([out, retval] BSTR *pVal);
+		[propput, id(10), helpstring("property ProductName")] HRESULT ProductName([in] BSTR newVal);
+		[propget, id(11), helpstring("property Enabled")] HRESULT Enabled([out, retval] BOOL *pVal);
+		[propput, id(11), helpstring("property Enabled")] HRESULT Enabled([in] BOOL newVal);
+		[propget, id(12), helpstring("property UserPasswordSet")] HRESULT UserPasswordSet([out, retval] BOOL *pVal);
+	};
+
+[
+	uuid(0FA8EA57-0F7A-4097-8703-1F5894AB9D2F),
+	version(1.0),
+	helpstring("NAVPwd 1.0 Type Library")
+]
+library CCPASSWDLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	
+	[
+		uuid(8B2285B0-3698-4674-AD35-15F5F74C1F07),
+		helpstring("Symantec.Norton.AntiVirus.NAVPwd Class")
+	]
+	coclass Password
+	{
+		[default] interface IPassword;
+	};
+};

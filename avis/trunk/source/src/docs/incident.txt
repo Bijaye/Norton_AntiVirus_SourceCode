@@ -1,0 +1,102 @@
+                        Immune System Incident Reporting
+                           IBM/Symantec confidential
+                 Ian Whalley, <inw@us.ibm.com>, +1-914-784-7808
+                                   2000-03-23
+
+
+General instructions
+
+  Always remember the following:
+
+    * Be specific, and relevant.  Provide as much information
+      as possible about as many parts of the system as you
+      can, in addition to all relevant log files.
+    * Log files cannot be 'too large'.  Having said that, always
+      ZIP them before emailing.
+
+
+'On either side' ?!
+
+  In a very coarse viewing, the Immune System looks like this:
+
+    ISIA/QServer <----> Gateway <----> Analysis Centre <----> SDGS
+  
+  Thus, for each component, 'on either side' means:
+
+    * ISIA/QServer      :   Gateway
+    * Gateway           :   ISIA/QServer & Analysis Centre
+    * Analysis Centre   :   Gateway      & SDGS
+    * SDGS              :   Analysis Centre
+
+
+Information to provide
+
+  The following are basic pieces of information which should be
+  included in the incident report:
+
+    * Date and time of incident;
+    * Symantec reference number(s);
+    * Name and contact information for Symantec contact;
+    * Name and contact information for customer contact;
+    * Circumstances of test;
+        * What tests you were performing;
+        * How you were performing them;
+        * Whether the servers and/or gateway and/or analysis
+          centre were under heavy load;
+        * Roughly how many samples and blessed/unblessed
+          definition sets had been through the gateway
+          and analysis centre since the last database reset;
+    * In which component the incident was first seen;
+    * Incident description;
+        * What happened;
+        * When it happened, what was the component doing at the
+          time?
+        * What steps you took to attempt to find out more about
+          what happened;
+        * What happened when you took these steps;
+        * What you eventually did to get the system working
+          again 
+    * Initial condition of all components in the system;
+    * Step-by-step sequence of actions leading to failure;
+    * Instructions for reproducing the effect/failure;
+    * Version numbers and builds of all relevant components.  These
+      include:
+        * IcePack             [QServer machine];
+        * ScanExplicit        [QServer machine];
+        * Jedi build          [QServer machine, clients];
+        * Servlets            [Gateway];
+        * ScanBlessed/Latest  [Gateway]
+
+
+Diagnostic information to be gathered
+
+    * Log files from the component in which the incident
+      manifested itself;
+    * Log files from the components on either side of the
+      affected component;
+    * From the QServer machine:
+        * Non-recursive ZIP archive of
+            c:\program files\symantec\quarantine\server
+          [The Quarantine Server installation directory]
+        * ZIP archive of
+            c:\quarantine
+          [The Central Quarantine directory]
+        * Recursive registry dump of
+            HKEY_LOCAL_MACHINE\Software\Symantec
+    * From the Gateway machines:
+        * ZIP archive of
+            d:\avis
+        * ZIP archive of
+            d:\log
+    * Any other information, logs, captures etc that you consider
+      relevant.  These can include:
+        * Screen captures, of;
+            * All error dialogs;
+            * Quarantine Console 'details' pane;
+            * Quarantine Console property pages (if applicable);
+            * Quarantine Console sample property pages (if applicable);
+            * Lotus Go 'Activity' pane [on gateway];
+            * DataFlow window [in analyis centre]
+        * Dr Watson logs;
+        * tcpdump packet logs;
+        * anything else

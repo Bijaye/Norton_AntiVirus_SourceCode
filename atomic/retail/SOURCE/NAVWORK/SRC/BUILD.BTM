@@ -1,0 +1,19 @@
+:: $Header:   S:/NAVWORK/VCS/build.btv   1.1   21 Mar 1997 19:06:08   DALLEE  $
+::
+:: Build file for NAVWORK project.  Updates single platform/target.
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVWORK/VCS/build.btv  $
+:  
+:     Rev 1.1   21 Mar 1997 19:06:08   DALLEE
+:  Removed BUILDALL.BTM references.
+:  Removed old log comments.
+:  Changed args from "%1" to "%&" to pass all arguments to MK.
+:  
+:     Rev 1.0   06 Feb 1997 21:02:36   RFULLER
+:  Initial revision
+::------------------------------------------------------------------------
+
+call mk navwork %&
+
+if exist make.err copy build.err+make.err build.err
+

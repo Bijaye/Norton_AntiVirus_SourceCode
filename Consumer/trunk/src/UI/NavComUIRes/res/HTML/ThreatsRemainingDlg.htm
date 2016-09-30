@@ -1,0 +1,71 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+		<BASE href="res://navcomui.loc">
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" type="text/css" href="NavScan.css" />
+            <title>Action Required</title>
+	
+            <script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+            <script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( OK ); 
+		}
+            </script>
+	
+    </head>
+
+<body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" tabindex="-1" scroll="no" onLoad="OnLoad()" style="margin-top:45px;" >
+
+        <!-------------------------------------- Header ------------------------------------------------>
+
+        <h1 id="title">Action Required</h1>
+        <a href="#" id="MoreInfo" tabindex="1" class="headerLink">more info</a> 
+
+        <!-------------------------------------- Text Discription ------------------------------------------------>
+		<div id="description" style="font-size:11px; padding-left:18px; padding-right:18px">2 of the 5 threats found on your system were not repaired or removed.</div>
+		
+        <!--------------------------------------- Stats  Area ------------------------------------------------>
+
+        <div class="ActionArea" style="position:absolute; width:100%; padding-left:18px; padding-right:18px; padding-top:10px;">
+            <table>
+                <tr>
+                    <td>
+            <input id="Ignore" name="Action" type="radio" checked VALUE="Ignore">
+                    </td>
+                    <td>
+                    <label for="Ignore">Ignore these risks for this scan only</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+            <input id="Review" name="Action" type="radio">
+                    </td>
+                    <td>
+                    <label for="Review">Review these risks in the Manual Repair view</label>
+                    </td>
+                </tr>
+            </table>
+        <br>
+            Note: On the Manual Repair view, you can click the name of each risk program to get further instructions from the Symantec website.
+        </div>
+
+        <!--------------------------------------- Button  Area ------------------------------------------------>
+
+        <div class="buttonArea">
+            <span class="symButton" style="position:absolute; right:8px; margin-top:5px; margin-right:0px; padding:0px; margin-left:8px; width:96px; height: 24px; ">
+                <button id="OK" accesskey="O" type="SUBMIT" class="symButton" tabindex="1" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">O</u>K</button>
+            </span>
+        </div>
+    </body>
+</html>

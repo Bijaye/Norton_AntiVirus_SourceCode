@@ -1,0 +1,129 @@
+<HTML>
+<HEAD>
+<META NAME="GENERATOR" Content="Microsoft FrontPage 6.0">
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<TITLE>Document Title</TITLE>
+</HEAD>
+<BODY>
+
+<H2><I><B>WebInstall: A network installation mechanism using a web server and browser.</I></B></H2>
+<hr>
+<ul>
+	<li><a href="#Overview">Overview</a>
+	<li><a href="#Installation">Installation</a>
+	<li><a href="#RequirementsAndLimitations">Requirements & Limitations</a>
+</ul> 
+
+<PR><a name="Overview"></a>
+<hr WIDTH="65" ALIGN="Left" >	<B><I>Overview</I></B>	<hr WIDTH="65" ALIGN="Left" >
+<br>
+<!--  Overview text below -->
+<ul>
+
+	WebInstall allows for easy deployment of Windows 
+	<a href="http://msdn.microsoft.com/library/en-us/msi/over_2fjm.asp?frame=true">MSI</a>
+	based software from a Web server. WebInstall is capable of installing many applications
+	with a single click!  Since WebInstall is HTML based it allows for easy rebranding,
+	easy installation, and is compliant with all HTTP web servers on all platforms.  
+<br><br>
+	<ul><i>Note:</i>
+	The server side component of WebInstall does not require a Windows platform.  The client
+      does require the Windows platform.&nbsp;<br>
+	</ul>
+<br>
+	WebInstall allows administrators to control the installation sequence and how installations
+	are to be performed.  For example, an administrator may want to make an installation silent
+	with no user interaction.  MSI installation controls are specified in the configuration file. The
+	controls should conform to Microsoft's MSI <a href="http://msdn.microsoft.com/library/en-us/msi/app_73eb.asp?frame=true">
+	command line</a> standard when executing MSIExec.
+<br><br>
+	WebInstall works by installing an ActiveX control on the client's machine.  The control is
+	automatically installed when a user starts the installation processes.  The ActiveX control
+	will only be downloaded when it's not installed on the client machine.  Typically, the 
+	control will only need to be downloaded once.  Once installed the ActiveX control is passed the
+	configuration file (files.ini) that controls the sequence of events.  The configuration file contains
+	all the information needed to download file(s) and execute a single file.  The executable file then
+	executes the MSIExec command to install the application(s).
+<br><br>
+
+	WebInstall follows the following sequence when executed:
+
+	<ul>
+		<li>Download ActiveX control (if needed).</li>
+		<li>Download configuration file.</li>
+		<li>Download all files specified in the configuration file.</li>
+		<li>Execute the file specified by the LaunchApplication tag in the configuration file.</li>
+	</ul>
+</ul>
+
+
+<PR><a name="Installation"></a>
+<hr WIDTH="80" ALIGN="Left" >	<B><I>Installation</I></B>	<hr WIDTH="80" ALIGN="Left" >
+<br>
+<!--  Installation text below -->
+
+
+Deploying software using WebInstall consists of the 
+	following steps: <br><br>
+	
+	<ul>
+	<li>Copy required files (supplied with WebInstall) to the web server. Required files consists of:</li>
+		<ul>
+			<li>files.ini</li>
+			<li>launch.bat</li>
+			<li>brnotsup.htm</li>
+			<li>default.htm</li>
+			<li>intro.htm</li>
+			<li>logo.jpg</li>
+			<li>oscheck.htm</li>
+			<li>plnotsup.htm</li>
+			<li>start.htm</li>
+			<li>webinst.cab</li>
+			<li>"... Any number of MSI files."</li>
+		</ul>
+	<li>Edit 'files.ini' adding any files that need to be installed.</li>
+	<li>If unique branding is required perform the following:</li>
+		<ul>
+			<li>Replace logo.jpg with the appropriate logo.</li>
+			<li>Edit text in HTML pages to reflect desired branding.</li>
+		</ul>
+	<li>Create a link to WebInstall's HTML installation page (intro.htm).</li>
+	<li>Test the link with a <a href="#RequirementsAndLimitations"> compatible</a> browser.</li>
+	</ul>
+	
+
+<PR><a name="RequirementsAndLimitations"></a>
+<hr WIDTH="195" ALIGN="Left" >	<B><I>Requirements & Limitations</I></B>	<hr WIDTH="195" ALIGN="Left" >
+
+<ul>
+	<i>Server Requirements</i>
+</ul>
+
+<ul>
+	<li>HTTP Web Server.</li>
+</ul> 
+
+<ul>
+	<i>Client Requirements</i>
+</ul>
+<ul>
+	<li> Microsoft Internet Explorer version 5.5 Service Pack 2 or higher.  Installing Symantec Client Security or Symantec AntiVirus Corporate Edition requires Microsoft Internet Explorer 5.5 Service Pack 2 or
+      later.</li>
+	<li>User must allow ActiveX controls to be installed on local machine.</li>
+    &nbsp;
+    <p>
+	<i>Limitations</i>
+    </p>
+</ul> 
+
+
+<ul>
+	<li>No authentication is required to download and install software.</li>
+	<li>Files cannot be hosted on multiple web servers.</li>
+	<li>Files must reside on the server in the same directory with, or in a relative path from, the webinstall directory.</li>
+	<li>WebInstall executes a single file (Use a batch file to execute multiple files).</li>
+	<li>File and path names are case sensitive on Unix machines.</li>
+</ul> 
+
+</BODY>
+</HTML>

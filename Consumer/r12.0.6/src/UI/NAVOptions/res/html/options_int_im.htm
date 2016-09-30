@@ -1,0 +1,116 @@
+<html>
+<head>
+<title id="im_title">Norton AntiVirus</title>
+
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+<script Language="JavaScript" src="DisplayScriptError.js"></script>
+<script language="JavaScript" src="options_int_im.js"></script>
+<link rel="stylesheet" type="text/css" href="navstyle.css">
+<META ID="charset_int_im" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1">
+</head>
+<body id="body_int_im" bottomMargin="0" scroll="no" leftmargin="5" topmargin="5" class="clsDetails" onHelp="parent.CurrentPage.Help();" onLoad="parent.CurrentPage = new InstantMessengerPage();" TABINDEX="-1">
+<!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+<span id="ConfiguredGood" style="display:none">Successfully configured Instant Messenger clients.</span>  
+<!-- end of JavaScript text -->
+<form name="options_int_instantmessenger">
+  <table id="t1" width="425" border="0" height="372" bgcolor="#FFFFFF" cellspacing="0" cellpadding="0">
+    <tr> 
+      <td id="t1_td1" valign="top" height="232" width="298"> 
+        <table id="t2" width="425" height="41" border="0" cellspacing="0" cellpadding="0" style="background-image: url('topbg.gif'); background-repeat: no-repeat;">
+          <tr> 
+            <td id="t2_td1" width="424" height="4" valign="top" align="right" colspan="2">&nbsp;</td>
+          </tr>
+          <tr id="t2_tr1" valign="top"> 
+            <td id="t2_td2" align="left" height="12" valign="top" style="padding-bottom:1px" width="300">&nbsp;&nbsp;<span class="cutitleb" id="im_instantmessengers">Instant Messenger</span></td>
+            <td id="t2_td3" align="right"><a id="im_help_link" href='' onClick="parent.CurrentPage.Help(); return false;"><span class="cuhelp" id="im_help">more info</span></a>&nbsp;&nbsp;&nbsp;</td>
+          </tr>
+        </table>
+		<br>
+        <table id="t3" border=0 width="387">
+          <tr>
+            <td id="t3_td1" colspan="2" height="22" width="387" style="padding-left:10px"><span class="culinkhead" id="im_whattoprotect"><b>Which instant messengers to protect</b></span></td>
+          </tr>
+          <tr>
+            <td id="t3_td2" width="5%" height="20" valign="top">
+            <input class="smallcheck" type="checkbox" id="AOL_Enabled" onclick="ConfCheck();" name="AOL_Enabled"></td>
+            <td id="t3_td2a"><label for="AOL_Enabled" accesskey="a" id="AOL_Enabled_AccessKey"><span class="indent10" id="im_scanaol"><u>A</u>OL 
+              Instant Messenger&nbsp;</span> <span id="aol_recommended">(recommended)</span> <span id="aol_not_available" style="display: none; color: red;">(requires version 4.7 or higher)</span></label></td>
+          </tr>
+          <tr id="MSNMessengerRow">
+            <td id="t3_td3" width="5%" height="20" valign="top"><input class="smallcheck" type="checkbox" id="MSN_Enabled" onclick="ConfCheck();" name="MSN_Enabled"></td>
+            <td id="t3_td3a"><label for="MSN_Enabled" accesskey="m" id="MSN_Enabled_AccessKey"><span class="indent10" id="im_scanmsn"><u>M</u>SN / Windows
+              Messenger&nbsp;</span> <span id="msn_recommended">(recommended)</span> <span id="msn_not_available" style="display: none; color: red;">(<a style="color: red;" href='' onClick="parent.CurrentPage.Help(); return false;">required versions</a>)</span></label></td>
+          </tr>
+		  <tr>
+            <td id="t3_td4" width="5%" height="20" valign="top"><input class="smallcheck" type="checkbox" id="YIM_Enabled" onclick="ConfCheck();" name="YIM_Enabled"></td>
+            <td id="t3_td4a"><label for="YIM_Enabled" accesskey="y" id="YIM_AccessKey"><span class="indent10" id="im_scanyim"><u>Y</u>ahoo! 
+              Messenger&nbsp;</span> <span id="yahoo_recommended">(recommended)</span> <span id="yahoo_not_available" style="display: none; color: red;">(requires version 5.0 or higher)</span></label></td>
+          </tr>
+          <tr id="TOMRow" style="display:none">
+            <td id="t3_td5" width="5%" height="20" valign="top"><input class="smallcheck" type="checkbox" id="TOM_Enabled" onclick="ConfCheck();" name="TOM_Enabled"></td>
+            <td id="t3_td5a"><label for="TOM_Enabled" accesskey="t" id="TOM_AccessKey"><span class="indent10" id="im_scantom"><u>T</u>-Online 
+              Messenger&nbsp;</span> <span id="tom_recommended">(recommended)</span> <!--<span id="tom_not_available" style="display: none; color: red;">(requires version 5.0 or higher)</span>--></label></td>
+          </tr>
+        </table>
+        <table id="table6" width="415" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+		  <td id="t6_td1">&nbsp&nbsp&nbsp<button id="Configure_IM" class="goldnav3" onclick="ConfigureIM();" accesskey="c"><u>C</u>onfigure New Users</button>
+		  </tr>
+		</table>
+		<table width="423" border="0" cellspacing="0" cellpadding="0" id="im_tbl1">
+            <td id="separator1" align="center" width="423">
+                <img align="middle" border="0" height="1" src="dots.gif" width="303" id="im_img1">
+            </td>
+        </table>
+        <table id="table4" width="387" height="26">
+          <tr> 
+            <td id="table4_cell1" style="padding-left:10px"><span class="culinkhead" id="im_howtorespond"><b>How 
+              to respond when a virus is found</b></span></td>
+          </tr>
+        </table>
+        <table id="t4a" width="415" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+            <td id="t4a_cell9"><IMG id="im_img_arrow_dots5" border=0 SRC="arrow_dots_blank.gif" width="5" Height="5"></td>
+            <td id="t4a_cell10" width="10"><input type="radio" id="idrad_im_Quarantine" name="ResponseType"></td>
+            <td id="t4a_cell11"><IMG id="im_img_arrow_dots6" border=0 SRC="arrow_dots_blank.gif" width="3" Height="5"></td>
+            <td id="t4a_cell12" width="100%"><label for="idrad_im_Quarantine" accesskey="r" id="im_quarantine">T<u>r</u>y to repair then quarantine if unsuccessful (recommended)</label></td>
+         </tr>
+         <tr> 
+            <td id="t4a_cell1"><IMG id="im_img_arrow_dots1" border=0 SRC="arrow_dots_blank.gif" width="5" Height="5"></td>
+            <td id="t4a_cell2" width="10"><input type="radio" id="idrad_im_AutoRepair" name="ResponseType"></td>
+            <td id="t4a_cell3"><IMG id="im_img_arrow_dots2" border=0 SRC="arrow_dots_blank.gif" width="3" Height="5"></td>
+            <td id="t4a_cell4" width="100%"><label for="idrad_im_AutoRepair" accesskey="p" id="im_autorepair">Re<u>p</u>air the infected file</label></td>
+         </tr>
+         <tr> 
+            <td id="t4a_cell5"><IMG id="im_img_arrow_dots3" border=0 SRC="arrow_dots_blank.gif" width="5" Height="5"></td>
+            <td id="t4a_cell6" width="10"><input type="radio" id="idrad_im_AskMe" name="ResponseType"></td>
+            <td id="t4a_cell7"><IMG id="im_img_arrow_dots4" border=0 SRC="arrow_dots_blank.gif" width="3" Height="5"></td>
+            <td id="t4a_cell8" width="100%"><label for="idrad_im_AskMe" accesskey="k" id="im_askme">As<u>k</u> me what to do</label></td>
+         </tr>
+        </table>
+        <table width="423" border="0" cellspacing="0" cellpadding="0" id="im_tbl2">
+            <td id="separator2" align="center" width="423">
+                <img align="middle" border="0" height="1" src="dots.gif" width="303" id="im_img2">
+            </td>
+        </table>
+        <table id="table5" width="387" height="26">
+          <tr> 
+            <td id="table5_cell1" style="padding-left:10px"><span class="culinkhead" id="im_advanced"><b>How to 
+              notify the source of an infected file</b></span></td>
+          </tr>
+        </table>
+        <table id="table5a" width="387" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td id="t5a_td1" width="5%" height="20" valign="top">
+            <input class="smallcheck" type="checkbox" id="MSN_Alert_Enabled" name="MSN_Alert_Enabled"></td>
+            <td id="t5a_td2"><label for="MSN_Alert_Enabled" accesskey="s" id="MSN_Alert_AccessKey"><span class="indent10" id="im_msn_alert">Alert <u>s</u>ender 
+              when an infected file is received (requires MSN / Windows Messenger <a href='' onClick="parent.CurrentPage.Help(); return false;">see supported versions</a>)</label>
+            </td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

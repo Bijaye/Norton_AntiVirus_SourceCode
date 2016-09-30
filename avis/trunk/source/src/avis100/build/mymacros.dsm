@@ -1,0 +1,48 @@
+'------------------------------------------------------------------------------
+'FILE DESCRIPTION: New Macro File
+'------------------------------------------------------------------------------
+
+Sub RebuildAll()
+'DESCRIPTION: Rebuild all release versions
+
+Dim projCol
+Dim configCol
+Dim numProjects
+Dim numConfigs
+Dim i
+Dim j
+
+set projCol = Projects
+numProjects = projCol.Count
+
+For i=1 To numProjects
+    Dim proj
+    set proj = projCol(i)
+    If proj.Type = "Build" Then
+        set configCol = proj.Configurations
+        numConfigs = configCol.Count
+        For j=1 to numConfigs
+            Dim config
+            set config = configCol(j)
+			Dim ConfigName
+			ConfigName = UCase(Right(config.Name, 7))
+			If ConfigName = "RELEASE" then
+				'MsgBox config.name, vbOkOnly
+				Application.RebuildAll config
+			else
+				'MsgBox config.name, vbOkOnly
+			end if
+        Next
+    End If
+Next
+End Sub
+
+
+Sub Avis100()
+	Documents.Open "build\Avis100.dsw",,true
+	Documents.SaveAll True
+	Call RebuildAll()
+	Documents.Add "Text"
+	ActiveDocument.Save "D:\avis100build.done"
+	quit
+End Sub

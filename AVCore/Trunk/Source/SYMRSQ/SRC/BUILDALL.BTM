@@ -1,0 +1,50 @@
+::
+:: $Header:   S:/SYMRSQ/VCS/buildall.btv   1.0   25 Jun 1996 10:41:02   GWESTER  $
+::
+:: This file performs mkupdate's for all targets in the SYMRSQ project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/SYMRSQ/VCS/buildall.btv  $
+:  
+:     Rev 1.0   25 Jun 1996 10:41:02   GWESTER
+:  Initial revision.
+:  
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+
+                                        :: Build each target for each platform.
+set __Plat=WIN
+for %%__Targ in (SYMRSQ BOOTPLAN) do gosub Build_It
+
+set __Plat=W32
+for %%__Targ in (SYMRSQ BOOTPLAN) do gosub Build_It
+
+
+                                        :: Cleanup and exit.
+:Done
+
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+if "%__Targ" != "" unset __Targ
+
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call proj symrsq %__Plat %__Targ
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

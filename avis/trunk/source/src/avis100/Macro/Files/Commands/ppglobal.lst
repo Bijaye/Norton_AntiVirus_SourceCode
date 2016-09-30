@@ -1,0 +1,34 @@
+
+#for viruses that infect new presentations based on an infected Blank Presentation
+
+[RESTORE]virus
+[STARTAPP]
+   [MNEWDOC]new1
+     [SENDTEXT]new1|[TAB]Title[ESC]
+     [SENDTEXT]new1|[TAB]Text[ESC]
+     [MSAVEAS]new1|newgoat1
+     [MSHOW]newgoat1
+   [MCLOSE]newgoat1
+   [MNEWDOC]new2
+     [MSAVEAS]new2|newgoat2
+     [MSHOW]newgoat2
+   [MCLOSE]newgoat2
+[MCLOSEAPP]
+
+[RESTORE]virus
+[STARTAPP]
+   [MNEWDOC]new3
+     [SENDTEXT]new3|[TAB]Title[ESC]
+     [SENDTEXT]new3|[TAB]Text[ESC]
+     [MSAVEAS]new3|newgoat3
+     [MSTARTSHOW]newgoat3
+     [CENTERLEFTCLICK]newgoat3
+     [SENDTEXT]newgoat3|[ESC]
+   [MCLOSE]newgoat3
+   [MNEWDOC]new4
+     [MSAVEAS]new4|newgoat4
+     [MSTARTSHOW]newgoat4
+     [CENTERLEFTCLICK]newgoat4
+     [SENDTEXT]newgoat4|[ESC]
+   [MCLOSE]newgoat4
+[MCLOSEAPP]

@@ -1,0 +1,27 @@
+HKCR
+{
+	SWPlugin.NSWPluginView2002.1 = s 'NSWPluginView2002 Class'
+	{
+		CLSID = s '{88734682-FCB2-11d2-B9D2-00C04FAC114C}'
+	}
+	SWPlugin.NSWPluginView2002 = s 'NSWPluginView2002 Class'
+	{
+		CLSID = s '{88734682-FCB2-11d2-B9D2-00C04FAC114C}'
+		CurVer = s 'SWPlugin.NSWPluginView2002.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {88734682-FCB2-11d2-B9D2-00C04FAC114C} = s 'NSWPluginView2002 Class'
+		{
+			ProgID = s 'SWPlugin.NSWPluginView2002.1'
+			VersionIndependentProgID = s 'SWPlugin.NSWPluginView2002'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{88734681-FCB2-11d2-B9D2-00C04FAC114C}'
+		}
+	}
+}
+

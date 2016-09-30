@@ -1,0 +1,203 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+#define VR_FILEDESCRIPTION      "Norton AntiVirus Utilities"
+#define VR_INTERNALNAME         "DefAnnty"
+#define VR_ORIGINALFILENAME     "DefAnnty.DLL"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "vlib.ver"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""vlib.ver""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "1 TYPELIB ""NavLUCallback.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+
+//VS_VERSION_INFO VERSIONINFO
+// FILEVERSION 6,0,0,0
+// PRODUCTVERSION 6,0,0,0
+// FILEFLAGSMASK 0x3fL
+//#ifdef _DEBUG
+// FILEFLAGS 0x1L
+//#else
+// FILEFLAGS 0x0L
+//#endif
+// FILEOS 0x4L
+// FILETYPE 0x2L
+// FILESUBTYPE 0x0L
+//BEGIN
+//    BLOCK "StringFileInfo"
+//    BEGIN
+//        BLOCK "040904B0"
+//        BEGIN
+//            VALUE "CompanyName", "Symantec\0"
+//            VALUE "FileDescription", "NavLUCallback Module\0"
+//            VALUE "FileVersion", "6.00\0"
+//            VALUE "InternalName", "NavLUCallback\0"
+//            VALUE "LegalCopyright", "Copyright 1999\0"
+//            VALUE "OriginalFilename", "NavLUCallback.DLL\0"
+//            VALUE "ProductName", "NavLUCallback Module\0"
+//            VALUE "ProductVersion", "6.00\0"
+//            VALUE "OLESelfRegister", "\0"
+//        END
+//    END
+//    BLOCK "VarFileInfo"
+//    BEGIN
+//        VALUE "Translation", 0x409, 1200
+//    END
+//END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_LUNAVCALLBACK       REGISTRY DISCARDABLE    "luNavCallBack.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+CG_IDD_PROGRESS DIALOG DISCARDABLE  0, 0, 204, 86
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Progress1",CG_IDC_PROGDLG_PROGRESS,"msctls_progress32",
+                    WS_BORDER,12,10,154,13
+    LTEXT           " 0 %",CG_IDC_PROGDLG_PERCENT,172,12,20,10
+    LTEXT           "Please wait. Virus protection files are being updated.\n\nAfter LiveUpdate completes operation, your computer will have the most current protection against viruses.",
+                    IDC_STATIC,12,34,180,43
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROJNAME            "NavLUCallback"
+    CG_IDS_PROGRESS_CAPTION "Updating Virus Protection Files"
+    IDS_DESC_NAV95          "Norton Antivirus Software Updates"
+    IDS_DESC_NAVNT          "Norton Antivirus Software Updates"
+    IDS_DESC_MICRO_TEXT     "Virus Definitions (2)"
+    IDS_DESC_MICRO_BINARY   "Virus Definitions (1)"
+    IDS_DESC_SCAN_DELIVER   "SARC Submission Software Updates"
+    IDS_DESC_ENGINE         "Virus Definitions (3)"
+    IDS_DESC_DEFS           "Virus Definitions Files"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FINISH_NUM_VIRUSES  "Norton AntiVirus now detects %u known viruses."
+    IDS_ERR_NO_CMDLINES     "The Norton AntiVirus product was unable to determine which\r LiveUpdate packages to request. Please reinstall your\r Norton AntiVirus product to correct this problem."
+    IDS_ERR_NO_CMDLINES_TITLE "Norton AntiVirus LiveUpdate Error"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FINISH1_TITLE       "Virus Protection Updated"
+    IDS_FINISH2_TITLE       "Virus Protection Not Updated"
+    IDS_FINISH3_TITLE       "Update Not Necessary"
+    IDS_FINISH4_TITLE       "Transfer Completed"
+    IDS_FINISH_SUCCESS1     "Your virus protection files have been updated successfully to protect your computer against all newly discovered viruses.\r\r"
+    IDS_FINISH_SUCCESS2     "\r\rYou must restart your computer so that Norton AntiVirus Auto-Protect can use the new protection files."
+    IDS_FINISH_NOTHINGNEW   "Norton AntiVirus has determined that no update is necessary. You already have the most recent virus definition files."
+    IDS_FINISH_HOSTBUSY     "Your virus protection files have not been updated. Norton AntiVirus was unable to connect due to heavy traffic.\r\rPlease try again in a few minutes."
+    IDS_FINISH_USERCANCEL   "Your virus protection files have not been updated. The online connection was canceled before completion.\r\rPlease try again."
+    IDS_FINISH_FILEINUSE    "All files have been transferred successfully to your computer.  However, because one or more of these files are currently in use, you must restart your computer. You will also need to run LiveUpdate again to complete the update."
+    IDS_FINISH_ERROR        "Your virus protection files have not been updated. Norton AntiVirus was unable to connect.\r\rVerify that your online connections are operational and try again."
+    IDS_FINISH_MORE_VIRUS   "Norton AntiVirus now detects %u known viruses, an increase of %d virus since your last update."
+    IDS_FINISH_MORE_VIRUSES "Norton AntiVirus now detects %u known viruses, an increase of %d viruses since your last update."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FINISH1_TITLE_PATCHES "Program Updates Completed"
+    IDS_FINISH2_TITLE_PATCHES "Program Not Updated"
+    IDS_FINISH3_TITLE_PATCHES "Program Updates Current"
+    IDS_FINISH4_TITLE_PATCHES "Transfer Completed"
+    IDS_FINISH_SUCCESS1_PATCHES 
+                            "Your Norton AntiVirus program files have been transferred successfully."
+    IDS_FINISH_SUCCESS2_PATCHES 
+                            "\r\rYou must restart your computer to complete the update."
+    IDS_FINISH_NOTHINGNEW_PATCHES 
+                            "Norton AntiVirus has determined that no update is necessary. You already have the most recent program files."
+    IDS_FINISH_HOSTBUSY_PATCHES 
+                            "Your Norton AntiVirus program files have not been updated. LiveUpdate was unable to connect due to heavy traffic.\r\rPlease try again in a few minutes."
+    IDS_FINISH_USERCANCEL_PATCHES 
+                            "Your Norton AntiVirus program files have not been updated. The online connection was canceled before completion.\r\rPlease try again."
+    IDS_FINISH_FILEINUSE_PATCHES 
+                            "All files have been transferred successfully to your computer. However, because one or more of these files are currently in use, you must restart your computer. You will also need to run LiveUpdate again to complete the update."
+    IDS_FINISH_ERROR_PATCHES 
+                            "Your Norton AntiVirus program files have not been updated. LiveUpdate was unable to connect.\r\rVerify that your online connections are operational and try again."
+    IDS_FINISH_ERROR_MICRODEF 
+                            "Your virus protection files have not been updated. An error occured while updating the virus definition files.\r\rPlease try again."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LUNAVCALLBACK_DESC  "luNavCallBack Class"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "NavLUCallback.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

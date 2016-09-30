@@ -1,0 +1,89 @@
+:: $Header:   S:/CPLD/VCS/build.btv   1.1   06 Jun 1997 18:54:10   MKEATIN  $
+::
+:: Build file for CPLD project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/CPLD/VCS/build.btv  $
+:  
+:     Rev 1.1   06 Jun 1997 18:54:10   MKEATIN
+:  Add code to nuke CV and DEBUG_ALL.
+:  
+:     Rev 1.0   06 Feb 1997 20:50:22   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:57:00   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 10:10:02   BARRY
+:  Initial revision.
+:  
+:     Rev 1.6   27 Apr 1994 14:12:54   DALLEE
+:  Removed multiple build support.
+:  Run BUILDALL.BTM to update all targets.
+:  
+:     Rev 1.5   23 Mar 1994 22:02:10   DALLEE
+:  Make sure that we build from a clean directory.
+:  
+:     Rev 1.4   17 Mar 1994 23:55:56   DALLEE
+:  Added targets NAVB and NAVNETB for Bankers Trust.
+::------------------------------------------------------------------------
+
+                                        :: Complain if updating only a single
+                                        :: target.
+                                        :: This is set TRUE in BUILDALL.BTM
+iff "%__UpdateAll" != "TRUE" then
+    echo.
+    echo *** Warning:  You are only updating part of the %PROJNAME% project.
+    echo To update the entire project, run %PROJ%\SRC\BUILDALL.BTM
+    echo.
+endiff
+
+                                        :: If CodeView or DEBUG_ALL are active,
+                                        :: and this is DOS, DX, DVX, or DVS, 
+                                        :: temporarily disable them.
+IF %@index[.DOS.DX.DVS.DVX.,%PLATFORM] NE -1  gosub killcv
+
+
+call mk cpld %1
+if exist make.err copy build.err+make.err
+
+call mk cpldstr %1
+if exist make.err copy build.err+make.err
+
+                                        :: If "killcv" shut off CodeView or DEBUG_ALL,
+                                        :: turn them back on.
+IF %@index[.DOS.DX.DVS.DVX.,%PLATFORM] NE -1  gosub restorecv
+
+quit
+
+                                        :: Subroutine "killcv" ...
+:killcv
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+    iff not "%CV%" == "" then
+        set OLD_CV=%CV%
+	    set CV=
+            echo ** Your CV environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/DVS libraries should never be MKUPDATE'd with debug info!
+	endiff
+    iff not "%DEBUG_ALL%" == "" then
+        set OLD_DEBUG_ALL=%DEBUG_ALL%
+	    set DEBUG_ALL=
+            echo ** Your DEBUG_ALL environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/DVS libraries should never be MKUPDATE'd with debug info!
+	endiff
+return
+
+                                        :: Subroutine "restorecv" ...
+:restorecv
+    iff not "%OLD_CV%" == "" then
+        set CV=%OLD_CV%
+	    echo ** Your CV environment variable has been restored.
+	endiff
+    iff not "%OLD_DEBUG_ALL%" == "" then
+        set DEBUG_ALL=%OLD_DEBUG_ALL%
+	    echo ** Your DEBUG_ALL environment variable has been restored.
+	endiff
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+return

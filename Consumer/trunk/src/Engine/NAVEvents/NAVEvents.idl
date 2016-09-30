@@ -1,0 +1,84 @@
+// NAVEvents.idl : IDL source for NAVEvent.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVEvents.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+import "ccEventManagerClient.idl";
+
+	[
+		object,
+		uuid(5C8565AD-EF69-4D44-891D-970A76783D42),
+		dual,
+		helpstring("Symantec.NAV.NAVEventCommonInt Interface"),
+		pointer_default(unique)
+	]
+	interface INAVEventCommonInt : ISerializableEventEx
+	{
+		[id(100), helpstring("method GetPropertyLong")] HRESULT GetPropertyLong(long iPropIndex, long* plValue);
+		[id(101), helpstring("method SetPropertyLong")] HRESULT SetPropertyLong(long iPropIndex, long lValue );
+		[id(102), helpstring("method GetPropertyBSTR")] HRESULT GetPropertyBSTR(long iPropIndex, BSTR* pbstrValue );
+		[id(103), helpstring("method SetPropertyBSTR")] HRESULT SetPropertyBSTR(long iPropIndex, BSTR* pbstrValue );
+	};
+	[
+		object,
+		uuid(6D460987-669E-4F29-8CE1-57AEF680E1BC),
+		dual,
+		helpstring("Symantec.NAV.EventSubscriber Interface"),
+		pointer_default(unique)
+	]
+	interface INAVEventSubscriber : ISubscriberEx
+	{
+        [id(10), helpstring("method DisconnectProxy")] HRESULT DisconnectProxy(void);
+	};
+	[
+		object,
+		uuid(BC0D9345-628F-4032-8ABB-B5B882CFCD9F),
+		dual,
+		helpstring("Symantec.NAV.EventProvider Interface"),
+		pointer_default(unique)
+	]
+	interface INAVEventProvider : IProviderEx
+	{
+        [id(10), helpstring("method DisconnectProxy")] HRESULT DisconnectProxy(void);
+	};
+[
+	uuid(3ABF9055-667E-4FDF-ADDA-2622E8677CBC),
+	version(1.0),
+	helpstring("NAVEvents 1.0 Type Library")
+]
+library NAVEVENTSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		uuid(EB188466-3B18-44C8-8BFF-6BE5CD5D2F05),
+		helpstring("Symantec.NAV.NAVEventCommonInt Class"),
+	]
+	coclass NAVEventCommonInt
+	{
+		[default] interface INAVEventCommonInt;
+	};
+	[
+		uuid(7849AB10-3468-4C64-912E-00AF4B8DCB6E),
+		helpstring("Symantec.NAV.NAVEventSubscriber Class"),
+		noncreatable
+	]
+	coclass NAVEventSubscriber
+	{
+		[default] interface INAVEventSubscriber;
+	};
+	[
+		uuid(5E2E74C1-384D-4ACA-82E5-898FFA890936),
+		helpstring("Symantec.NAV.NAVEventProvider Class"),
+		noncreatable
+	]
+	coclass NAVEventProvider
+	{
+		[default] interface INAVEventProvider;
+	};
+
+};

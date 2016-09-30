@@ -1,0 +1,500 @@
+@echo off
+rem Symantec Antivirus Corporate Edition Server Product Module/Package Build
+rem By David Luxford, 2002 December 5
+rem
+rem Command line arguments:
+rem    <None>
+rem
+rem Return value:
+rem     0 - Success
+rem     Non-Zero - Failure of some kind
+rem
+rem Uses:
+rem     BUILDPACKAGERDIRECTORY
+rem     BUILDTOOLINSTALLSHIELD
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  %_BATCHNAME
+rem * Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorBadEnvironment
+if "%BUILDPACKAGERDIRECTORY%" = "" goto ErrorBadEnvironment
+
+echo * Initializing...
+set PDFDir=%CLIENTROOT%\packager\Packager\r1.0\Product Modules\PDF
+set ProductModuleRoot=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Product Modules
+set SavServerProductModule=%ProductModuleRoot%\SAV Server
+set SavServerProductModuleFiles=%SavServerProductModule%\files
+set SavServerInstallImage=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\Install\NCServer\Build1\Release1\DiskImages\DISK1
+set SavServerInstallData=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\Install\NCServer\Data
+set SavClientInstallData=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\Install\NCClient\Data
+set SavClientProductModule=%ProductModuleRoot%\SAV Client
+set SavClientProductModuleFiles=%SavClientProductModule%\files
+
+echo * Uninstall/reinstall packager (this also uninstalls all product modules)...
+attrib -r -s -h /s /q /e "%BUILDPACKAGERDIRECTORY%\*.*"
+del /s /q "%BUILDPACKAGERDIRECTORY%\Preppdt.exe"
+msiexec /x "%CLIENTROOT%\Release\Packager\Disk1\Symantec Packager.msi" /qn
+msiexec /i "%CLIENTROOT%\Release\Packager\Disk1\Symantec Packager.msi" /qn
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i "%CLIENTROOT%\Release\Packager\Tools" "%BUILDPACKAGERDIRECTORY%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Creating product module files directories...
+if exist "%SavServerProductModuleFiles%" attrib -r -s -h /s /q /e "%SavServerProductModuleFiles%"
+if exist "%SavServerProductModuleFiles%" del /s /y /x /q "%SavServerProductModuleFiles%" >&nul
+md /s "%SavServerProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\clt-inst"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\clt-inst\win32"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\CommonDIS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\CommonDIS Not Registered"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Decomposers"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\LiveUpdate"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\LiveUpdateAdmin"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\LiveUpdateNS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\logon"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Shared"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Snapin-ccMail"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Snapin-ccMail-OCX"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Snapin-Exchange"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Snapin-Exchange-OCX"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Snapin-Notes"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Mail Snapin-Notes-OCX"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Drivers"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\AMS2 Install"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\CommonDIS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\CommonDIS Not Registered"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\LiveUpdate"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\LiveUpdateNS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\logon"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Shared"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Snapin-ccMail"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Snapin-ccMail-OCX"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Snapin-Exchange"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Snapin-Exchange-OCX"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Snapin-Notes"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Mail Snapin-Notes-OCX"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\maps"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\NAV Drivers"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\NAV Program"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Program-9x"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Program Self-Reg"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\NAV Program-AT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Program-NEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Program-NT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Symantec"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav System"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Windows"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav Windows-AT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\NAV Windows-NEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav WinSysNS-9x"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Nav WinSysNS-NT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\NAVTARGET Server"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\NAVTARGET Workstation"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\New Settings"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\New Settings-AT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\New Settings-NEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\PdsService"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Qconsole"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Registry"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Sevinst"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\SilentSetupUnmanaged"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Support"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Symantec Shared"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\SymantecStringSharedNT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\SymReg"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\Unmanage"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\vdb"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\virusdef nocopy"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\VirusDefinitions"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\winsock2"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program\winsys"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program-9x"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav Program Self-Reg"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program-AT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program-NEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV Program-NT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav Symantec"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav System"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav Windows"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav Windows-AT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav Windows-NEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAV WinSysNS-9x"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Nav WinSysNS-NT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAVTARGET Server"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\NAVTARGET Workstation"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\New Settings"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\New Settings-AT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\New Settings-NEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\PdsService"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Qconsole"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Registry"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Sevinst"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\SilentSetupUnmanaged"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Support"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\Symantec Shared"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\SymantecStringSharedNT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\SymReg"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\vdb"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\virusdef nocopy"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\VirusDefinitions"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\winsock2"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\winsys"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Support"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Registry"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Symantec"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\SevInst"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Vdb"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\VirDefs"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\LiveUpdt"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\CmnDISNR"
+if %errorlevel% != 0 goto BuildFailed
+
+echo `* Coping finished install files -> product module source...`
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\AMSAdmin"                                "%SavServerProductModuleFiles%\AMSAdmin\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\AMSCust"                                 "%SavServerProductModuleFiles%\AMSCust\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\AMSInst"                                 "%SavServerProductModuleFiles%\AMSInst\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\NAV Program\dec*.*"                      "%SavServerProductModuleFiles%\Decomposers\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\dec2rar.dll"    "%SavServerProductModuleFiles%\Decomposers\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\dec2http.dll"   "%SavServerProductModuleFiles%\Decomposers\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\rec2.dll"		"%SavServerProductModuleFiles%\Decomposers\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\Nav WinSysNS"                            "%SavServerProductModuleFiles%\NAV WinSysNS-9x\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\NAV Program"                             "%SavServerProductModuleFiles%\NAV Program-NT\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavClientInstallData%\NAV Program-NT"                          "%SavServerProductModuleFiles%\NAV Program-NT\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavClientInstallData%\NAV Program-9x"                          "%SavServerProductModuleFiles%\NAV Program-9x\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\NAV Program"                             "%SavServerProductModuleFiles%\NAV Program\"
+if %errorlevel% != 0 goto BuildFailed
+copy                       "%SavServerInstallImage%\Support\*.*"                            "%SavServerProductModuleFiles%\NAV Program"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\Dec2Ole1.dll"   "%SavServerProductModuleFiles%\nav program\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\Dec2Msg.dll"    "%SavServerProductModuleFiles%\nav program\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\dec2HTTP.dll"   "%SavServerProductModuleFiles%\nav program\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\dec2rar.dll"    "%SavServerProductModuleFiles%\nav program\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallImage%\settings.ini"                           "%SavServerProductModuleFiles%\support\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\LiveUpdate\LUSETUP.EXE"                  "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\LiveUpdt\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\LiveUpdateAdmin\s32luhl1.dll"            "%SavServerProductModuleFiles%\LiveUpdateAdmin"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\CommonDIS Not Registered\MFC42.DLL"      "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\CmnDISNR\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\CommonDIS Not Registered\*.ldl"          "%SavServerProductModuleFiles%\commondis not registered\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\CommonDIS\*.*"                           "%SavServerProductModuleFiles%\commondis\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\logon\*.*"                               "%SavServerProductModuleFiles%\logon\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\nav program self-reg\*.*"                "%SavServerProductModuleFiles%\nav program self-reg\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\nav winsysns\*.*"                        "%SavServerProductModuleFiles%\nav winsysns\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\pdsservice\*.*"                          "%SavServerProductModuleFiles%\pdsservice\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\qconsole\*.*"                            "%SavServerProductModuleFiles%\qconsole\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\winsys\*.*"                              "%SavServerProductModuleFiles%\winsys\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\Registry\*.*"                            "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Registry\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\Nav Symantec\S32stat.DLL"                "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Symantec\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\Nav WinSysNS\MFC42.DLL"                  "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Data\WinSysNS\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\Sevinst\sevinst.exe"                     "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\SevInst\"
+if %errorlevel% != 0 goto BuildFailed
+copy                       "%SavServerInstallImage%\Support\*.*"                            "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Support\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\vdb\VD14FE08.vdb"                        "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\Vdb\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\vdb\VD14FE08.vdb"                        "%SavServerProductModuleFiles%\NAV Program\vdb\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\vdb\VD14FE08.vdb"                        "%SavServerProductModuleFiles%\NAV Program\logon\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\vdb\VD14FE08.vdb"                        "%SavServerProductModuleFiles%\vdb\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\vdb\VD14FE08.vdb"                        "%SavServerProductModuleFiles%\logon\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\VirusDefinitions\*.*"                    "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\VirDefs\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallData%\virusdef nocopy\vdefmgmt.dat"            "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\VirDefs\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallImage%\settings.ini"           "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallImage%\Setup.wis"              "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallImage%\VPREMOTE.DAT"           "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i /y "%SavServerInstallImage%\VPREMOTE.exe"           "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\"
+if %errorlevel% != 0 goto BuildFailed
+attrib -r /q "%PDFDir%" >nul
+copy "%PDFDir%\CentQuar.pdf"                                                                "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\Luadmin.pdf"                                                                 "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\scsadmn.pdf"                                                                 "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\scsclnt.pdf"                                                                 "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\scsinst.pdf"                                                                 "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\scsref.pdf"                                                                  "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\savce80a.pdf"                                                                "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\tech_pubs\_FINAL_DOCS\SCS\SAV_CORP_Ed_8.1\Client_Guide\PDF\savce81c.pdf"                                                        "%SavServerProductModuleFiles%\PDF\savce80c.pdf"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\savce80i.pdf"                                                                "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%PDFDir%\savce80r.pdf"                                                                "%SavServerProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+copy "%SavServerInstallImage%\Symantec AntiVirus Server.msi"                     "%SavServerProductModule%"
+if %errorlevel% != 0 goto BuildFailed
+copy "%SavServerInstallImage%\data1.cab"                                                    "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files"
+if %errorlevel% != 0 goto BuildFailed
+attrib -r -s -h /s /q /e "%SavServerProductModuleFiles%"
+
+echo * Copying SAV Client silent package...
+set ServerClientPackageFilename=%SavServerInstallData%\clt-inst\win32\Setup.exe
+copy "%ServerClientPackageFilename%" "%SavServerProductModuleFiles%\clt-inst\win32\setup.exe"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Creating reduced DATA1.CAB...
+set CabWorkDir=%SavServerProductModule%\CabWork
+if exist "%CabWorkDir%" del /s /q /y /x /z "%CabWorkDir%\*.*"
+if not exist "%CabWorkDir%" mkdir "%CabWorkDir%"
+if not exist "%CabWorkDir%\Original" mkdir "%CabWorkDir%\Original"
+if not exist "%CabWorkDir%\New" mkdir "%CabWorkDir%\New"
+copy "%SavServerInstallImage%\data1.cab" "%CabWorkDir%"
+rem CABARC X appears to ignore dest directory argument
+pushd
+cdd "%CabWorkDir%\Original"
+"%CLIENTROOT%\Tools\Platform.SDK\bin\cabarc.exe" -o X "%CabWorkDir%\data1.cab" *.* "%CabWorkDir%\Original"
+popd
+copy "%CabWorkDir%\Original\Global_*.*"     "%CabWorkDir%\New"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CabWorkDir%\Original\_2520437.CP_"   "%CabWorkDir%\New"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CabWorkDir%\Original\_2520850.CP_"   "%CabWorkDir%\New"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CabWorkDir%\Original\_0C27E165F3244BB480519D330912955C.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_326B4A072B9045C1A098312F40278429.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_A6EA988D7BD7406CB07D5EB6BB178764.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_DBAE1459AF294F63890F8A0607388EA8.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+echo * Compressing new CAB...
+pushd
+cdd "%CabWorkDir%\New"
+rem * The order of files in this CAB must be the same relative ordering as in the original
+rem * install's DATA1.CAB.  This huge command line ensures they are added in that order.
+rem * Alternately, you can use MakeCAB /F with a simple DDF file, but this requires an
+rem * external file.  See docs on MAKECAB, DIANTZ, or DIAMOND for more information.
+"%ClientRoot%\Tools\Platform.SDK\bin\cabarc.exe" N "%CabWorkDir%\data1reduced.cab" Global_Controls_COMCATDLL_f0.3207D1B0_80E5_11D2_B95D_006097C4DE24 Global_VC_MFC42ANSICore_f0.51D569E2_8A28_11D2_B962_006097C4DE24 Global_Vba_VBStockProp_f0.7EBEDD3E_AA66_11D2_B980_006097C4DE24 Global_VC_IRT_f0.3CE1F932_C090_11D2_977B_006097C4DE24 Global_VC_CPPRT60_f0.51D569E3_8A28_11D2_B962_006097C4DE24 Global_VC_CRT_f0.51D569E0_8A28_11D2_B962_006097C4DE24  _0C27E165F3244BB480519D330912955C.DFC262C728804BDA94761D430CA3AE8C _326B4A072B9045C1A098312F40278429.DFC262C728804BDA94761D430CA3AE8C _A6EA988D7BD7406CB07D5EB6BB178764.DFC262C728804BDA94761D430CA3AE8C _DBAE1459AF294F63890F8A0607388EA8.DFC262C728804BDA94761D430CA3AE8C Global_System_OLEPRO32_f0.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_System_STDOLE_f1.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_System_OLEAUT32_f2.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_System_OLEAUT32_f3.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 _2520850.CP_ _2520437.CP_  
+set tempErrorLevel=%errorlevel%
+popd
+if %tempErrorLevel% != 0 goto BuildFailed
+copy "%CabWorkDir%\data1reduced.cab" "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\data1.cab"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Neutralizing language in MSI...
+"%CLIENTROOT%\Release\Packager\Tools\SetMsiCP" "%SavServerProductModule%\Symantec AntiVirus Server.msi" 0
+attrib -r "%SavServerProductModule%\SAV Server for NT.PDT"
+
+echo * Building PMI...
+attrib -r /q /e "%CLIENTROOT%\Release\Packager\Tools\*.*"
+attrib -r /q /e "%ProductModuleRoot%\graphics\*.*"
+if exist "%SavServerProductModule%\_prepPDTBackups" del /s /q /y /x /z "%SavServerProductModule%\_prepPDTBackups\*.*"
+"%BUILDPACKAGERDIRECTORY%\PrepPDT" /s:2 "%SavServerProductModule%\SAV Server for NT.PDT"
+if not exist "%SavServerProductModule%\PRODUCT.PDT" goto BuildFailed
+echo * Recopying reduced data1.cab -> SavServer BinaryTable\cd_install_files
+copy "%CabWorkDir%\data1reduced.cab" "%SavServerProductModuleFiles%\BinaryTable\CD_Install_Files\data1.cab"
+if %errorlevel% != 0 goto BuildFailed
+rem ISDev703 will report error -2200 if the ISM is marked ReadOnly.  To be safe, remove this from all files in directory.
+attrib -r -s -h /q /e "%SavServerProductModule%\*.*"
+if exist "%SavServerProductModule%\Release" del /s /y /q "%SavServerProductModule%\Release\*.*"
+"%BUILDTOOLINSTALLSHIELD%\system\iscmdbld" -p "%SavServerProductModule%\SAVS Product Module.ism" -f {7D2B86CA-2D5D-469E-92ED-E56B62BD1D3C} -r "Product Module Install Images" -b "%SavServerProductModule%\Release" -e y -x
+if %errorlevel% != 0 goto BuildFailed
+rem * Additional validation is needed as ISDev does not always set errorlevel on a failure
+if %@FILESIZE["%SavServerProductModule%\Release\Product Module Install Images\Product Module Install Images\DiskImages\DISK1\Product Module.msi",b] LT 1048576 goto BuildFailed
+ren "%SavServerProductModule%\Release\Product Module Install Images\Product Module Install Images\DiskImages\DISK1\Product Module.msi" "Symantec AntiVirus Server.PMI"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Generating Symantec AntiVirus Server package...
+set FinishedPackages=%SavServerProductModule%\packages
+if exist "%FinishedPackages%" del /s /q /y /x /z "%FinishedPackages%\*.*"
+if not exist "%FinishedPackages%" md "%FinishedPackages%"
+rem Packager uninstall removes all product modules, so no need to uninstall them
+msiexec /i "%SavServerProductModule%\Release\Product Module Install Images\Product Module Install Images\DiskImages\DISK1\Symantec AntiVirus Server.PMI" /qn
+if %errorlevel% != 0 goto BuildFailed
+rem Current version of packager has a bug:  it will fail to generate a package unless a copy of the
+rem PKG and PCG exist in the All Users\Documents directory.
+if exist "C:\Documents and Settings\All Users\Documents\Packager" del /s /y /q "C:\Documents and Settings\All Users\Documents\Packager\*.*"
+if not exist "C:\Documents and Settings\All Users\Documents\Packager" md /s "C:\Documents and Settings\All Users\Documents\Packager"
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Server.p?g" "C:\Documents and Settings\All Users\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Server.pkg" "%FinishedPackages%\savcesrv.exe"
+if not exist "%FinishedPackages%\savcesrv.exe" goto BuildFailed
+
+echo `* ==>` %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<==`
+set returnVal=0
+goto RealEnd
+
+:BuildFailed
+set returnVal=2
+echo ERROR:  build FAILED!
+echo At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo ERROR - 4DOS not detected!  The 4DOS shell is required to run this script.
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo ERROR - 4DOS too old!  Version 3.02B or later is required to run this script.
+goto RealEnd
+
+:ErrorBadEnvironment
+set returnVal=5
+echo ERROR - environment not initialized (CLIENTROOT or BUILDPACKAGERDIRECTORY not set)!
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  %_BATCHNAME
+quit %returnVal%

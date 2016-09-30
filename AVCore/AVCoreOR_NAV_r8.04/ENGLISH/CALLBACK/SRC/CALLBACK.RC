@@ -1,0 +1,207 @@
+// Copyright 1995 Symantec Corporation                                  
+//***************************************************************************
+// 
+// $Header:   N:/CALLBACK/VCS/callback.rcv   1.0   18 Jun 1997 13:19:00   MKEATIN  $ 
+// 
+// Description: 
+//      VIRSCAN resource file.
+// 
+//***************************************************************************
+// $Log:   N:/CALLBACK/VCS/callback.rcv  $ 
+// 
+//    Rev 1.0   18 Jun 1997 13:19:00   MKEATIN
+// Initial revision.
+// 
+//    Rev 1.0   17 Jun 1997 15:06:52   MKEATIN
+// Initial revision.
+// 
+//    Rev 1.4   31 May 1997 15:51:36   MKEATIN
+// Addded resources from DBUCHES NAVEX UI Callbacks.
+// 
+//    Rev 1.3   14 Jun 1995 13:57:02   MARKL
+// Updated version information.
+//***************************************************************************
+
+#include <windows.h>
+
+#ifndef MIRRORS
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define VR_FILEDESCRIPTION      "Norton AntiVirus Engine Callbacks"
+#define VR_INTERNALNAME         "CALLBACK"
+#define VR_ORIGINALFILENAME     "V32CALLBK.DLL"
+#include "vlib.ver"
+#endif
+
+
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_MESSAGE_BOX DIALOG DISCARDABLE  0, 0, 232, 117
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION
+CAPTION "AVAPI MessageBox"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Static text",IDC_TEXT,7,7,218,66,SS_SUNKEN
+    PUSHBUTTON      "1",IDC_BUTTON1,7,79,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "2",IDC_BUTTON2,63,79,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "3",IDC_BUTTON3,119,79,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "4",IDC_BUTTON4,175,79,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "5",IDC_BUTTON5,7,98,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "6",IDC_BUTTON6,63,98,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "7",IDC_BUTTON7,119,98,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "8",IDC_BUTTON8,175,98,50,14,NOT WS_VISIBLE
+END
+
+IDD_TEXT_EDIT_BOX DIALOG DISCARDABLE  0, 0, 232, 74
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION
+CAPTION "AVAPI Text Edit dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_EDIT,7,32,218,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,58,53,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,124,53,50,14
+    LTEXT           "message text here",IDC_MESSAGE,7,7,218,24
+END
+
+IDD_INFO_WINDOW DIALOG DISCARDABLE  0, 0, 211, 23
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Text Message here",IDC_TEXT,7,7,197,8
+END
+
+IDD_INFO_CANCEL_WINDOW DIALOG DISCARDABLE  0, 0, 230, 29
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,173,7,50,14
+    LTEXT           "Message here",IDC_TEXT,7,7,159,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_MESSAGE_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 225
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 110
+    END
+
+    IDD_TEXT_EDIT_BOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 225
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 67
+    END
+
+    IDD_INFO_WINDOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 16
+    END
+
+    IDD_INFO_CANCEL_WINDOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 22
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_OK                  "&OK"
+    IDS_CANCEL              "&Cancel"
+    IDS_CONTINUE            "Con&tinue"
+    IDS_YES                 "&Yes"
+    IDS_NO                  "&No"
+    IDS_PREVIOUS            "&Previous"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

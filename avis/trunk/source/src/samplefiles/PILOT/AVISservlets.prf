@@ -1,0 +1,99 @@
+#######################################################################
+# 
+# This profile contains configuration parameters for the
+# Immune System servlets located in the AVISservlets.DLL file on 
+# the gateway.
+# 
+# The servlets use the parameters in this file to locate the
+# sample and signature directories, and control tracing.
+# 
+#######################################################################
+
+#----------------------------------------------------------------------
+# When the postSuspectSample servlet accepts a new sample for
+# analysis, the scrambled and compressed sample content is enqueued on
+# the gateway.  The getSuspectSample servlet sends the sample content
+# to the analysis center when samples are imported into it.  
+#----------------------------------------------------------------------
+
+sampleDirectory = d:\samples
+
+#----------------------------------------------------------------------
+# When the postSuspectSample servlet accepts a new sample for
+# analysis, its response message directs the IcePack agent to send
+# status queries to this machine.
+#----------------------------------------------------------------------
+
+XAnalysisGateway = pilot.gateways.dis.symantec.com
+
+#----------------------------------------------------------------------
+# When the postSignatureSet servlet receives a new definition package,
+# it is stored on the gateway.  The getSignatureSet servlet sends
+# packages to IcePack agents when they request them.  
+#----------------------------------------------------------------------
+
+signatureDirectory = d:\signatures
+
+#----------------------------------------------------------------------
+# This parameter limits the number of connections to the database
+# that may be allocated for downloading definitions.
+#----------------------------------------------------------------------
+
+DBCP_Maximum_Connections = 100
+
+#----------------------------------------------------------------------
+# These parameters limit the maximum size of submissions.  The 
+# maximum sizes for the original file and the compressed content 
+# are specified separately.
+#----------------------------------------------------------------------
+
+maximumSubmissionSampleSize = 10000000
+maximumSubmissionContentSize = 10000000
+
+#----------------------------------------------------------------------
+# The servlets may create temporary files in this directory.
+#----------------------------------------------------------------------
+
+tempExpand = d:\temp
+
+#----------------------------------------------------------------------
+# The servlets will trace their activity in this log file.
+#----------------------------------------------------------------------
+
+LogFile = d:\log\AVISservlets.log
+
+#----------------------------------------------------------------------
+# This switch determines whether new log files are created every
+# hour or every day.
+#----------------------------------------------------------------------
+
+Trace_Rollover_Hourly  = on
+
+#----------------------------------------------------------------------
+# These switches determine which records will be written to the log.
+#----------------------------------------------------------------------
+
+Trace_Include_Msg        = on
+Trace_Include_Stack      = on
+Trace_Include_Debug      = on
+Trace_Include_Info       = on
+Trace_Include_Warning    = on
+Trace_Include_Error      = on
+Trace_Include_Critical   = on
+Trace_Include_GoHeaders  = off
+Trace_Include_EnvHeaders = off
+
+#----------------------------------------------------------------------
+# These switches determine which columns will be included in each
+# record written to the log.
+#----------------------------------------------------------------------
+
+Trace_Mode_Linenumbers = on
+Trace_Mode_Datestamp   = on
+Trace_Mode_Timestamp   = on
+Trace_Mode_Finetime    = on
+Trace_Mode_ThreadId    = on
+Trace_Mode_Severity    = on
+Trace_Mode_Source      = on
+Trace_Mode_Code        = off
+Trace_Mode_Message     = on

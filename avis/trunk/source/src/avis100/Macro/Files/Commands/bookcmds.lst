@@ -1,0 +1,42 @@
+#the aim of this command file is to infect one or more document
+#by using an infected template
+
+#clears the directories when the goats are stored
+#useful because left files from previous runs may 
+#prevent FileSaveAs commands to work properly
+[CLEARDIRS]
+
+#restauration of the files that need to be here, from their backup copy
+[RESTORE]Bala
+[RESTORE]Quotes
+[RESTORE]virus
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]Bala
+   [MOPEN]virus
+   [MOPEN]Quotes
+     [MSAVE]Quotes
+   [MCLOSE]Quotes
+   [MCLOSE]virus
+     [MSAVE]Bala
+   [MCLOSE]Bala
+[PICKUPFILES]{STARTUPDIR}\*.*
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[RESTORE]Quotes
+[RESTORE]Stock
+[RESTORE]virus
+[STARTAPP]
+   [MOPEN]Quotes
+   [MOPEN]virus
+   [MOPEN]Stock
+     [MSAVE]Stock
+   [MCLOSE]Stock
+   [MCLOSE]virus
+     [MSAVE]Quotes
+   [MCLOSE]Quotes
+[PICKUPFILES]{STARTUPDIR}\*.*
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+

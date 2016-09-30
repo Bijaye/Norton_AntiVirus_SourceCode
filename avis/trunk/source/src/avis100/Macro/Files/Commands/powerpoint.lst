@@ -1,0 +1,59 @@
+#for viruses that infect Blank Presentation.pot on showing (ex: Tristate)
+
+[RESTORE]virus
+[RESTORE]global1
+[ADDGOAT]global1
+[STARTAPP]
+   [MOPEN]virus
+     [MSHOW]virus
+   [MCLOSE]virus
+   [MOPEN]virus
+     [MSTARTSHOW]virus
+     [WAITAPPIDLE]5000
+     [CENTERLEFTCLICK]virus
+     [WAITAPPIDLE]5000
+     [SENDTEXT]virus|[ESC]
+   [MCLOSE]virus
+[MCLOSEAPP]
+
+[RESTORE]virus
+[RESTORE]global2
+[ADDGOAT]global2
+[STARTAPP]
+   [MOPEN]virus
+     [MSHOW]virus
+   [MCLOSE]virus
+   [MOPEN]virus
+     [MSTARTSHOW]virus
+     [CENTERLEFTCLICK]virus
+     [SENDTEXT]virus|[ESC]
+   [MCLOSE]virus
+[MCLOSEAPP]
+
+
+#in case virus infects presentations that are already open
+[RESTORE]present2
+[RESTORE]present3
+[RESTORE]present4
+[RESTORE]global3
+[ADDGOAT]global3
+[STARTAPP]
+   [MOPEN]present2
+   [MOPEN]present3
+   [MOPEN]present4
+   [MOPEN]virus
+     [MSHOW]virus
+   [MCLOSE]virus
+   [MCLOSE]present4
+   [MCLOSE]present3
+   [MCLOSE]present2
+[MCLOSEAPP]
+
+[RESTORE]virus
+[RESTORE]global4
+[ADDGOAT]global4
+[STARTAPP]
+   [MOPEN]virus
+   [MSHOW]virus
+   [MCLOSE]virus
+[MCLOSEAPP]

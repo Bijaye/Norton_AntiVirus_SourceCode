@@ -1,0 +1,34 @@
+;****************************************************************************
+; Copyright 1998 Symantec, Peter Norton Product Group
+;****************************************************************************
+; P97SIGS.WDF
+;
+; $Header:   S:/NAVEX/VCS/p97sigs.wdv   1.0   15 Dec 1998 11:58:36   DCHI  $
+;
+; This source file contains definitions for the PowerPoint 97 viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/p97sigs.wdv  $
+   
+      Rev 1.0   15 Dec 1998 11:58:36   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+[MacroSigStart]
+[Comment]       PM
+[ID]            MACRO_SIG_PM_USER_FORM
+[Signature]     "'<!--1nternal-->" 0x22
+[Signature]     ScanString(70,"Codemodule.InsertLines 1, Home.VBProject")
+[MacroSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       AM.Jaring.Intended
+[Type]          P97
+[QAStatus]      PASSED
+[ID]            VID_VICA
+[Signature]     MacroSig(MACRO_SIG_PM_USER_FORM)
+[Repair]        NoRepair
+[KnownVirusSigEnd]
+

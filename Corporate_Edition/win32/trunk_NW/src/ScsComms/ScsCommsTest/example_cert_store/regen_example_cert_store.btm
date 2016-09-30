@@ -1,0 +1,25 @@
+set HOST=BUGSBUNNY
+set GUID=00112233445566778899AABBCCDDEEFF
+
+call sg_env.btm
+rem create the SG root
+openssl req -config ./certs/ca_sg_gen.cfg -outform PEM -out ./certs/%GUID%.0.servergroupca.cer -keyform PEM -keyout ./private-keys/%GUID%.0.servergroupca.pvk -newkey rsa -nodes -x509 -days 1825
+rem copy the SG root to the roots directory
+copy /q "./certs/%GUID%.0.servergroupca.cer" "./roots/%GUID%.0.servergroupca.cer"
+rem create the Login CA CSR
+openssl req -config ./cert-signing-requests/req_login_ca.cfg -outform PEM -out ./cert-signing-requests/%HOST%.%GUID%.0.loginca.csr -keyform PEM -keyout ./private-keys/%HOST%.%GUID%.0.loginca.pvk -newkey rsa -nodes
+rem create the Server EE CSR
+openssl req -config ./cert-signing-requests/req_server.cfg -outform PEM -out ./cert-signing-requests/%HOST%.%GUID%.0.server.csr -keyform PEM -keyout ./private-keys/%HOST%.%GUID%.0.server.pvk -newkey rsa -nodes
+rem issue the Login CA
+openssl ca -config ./certs/ca_sg_issue.cfg -name scs_login_ca -in ./cert-signing-requests/%HOST%.%GUID%.0.loginca.csr -out ./certs/%HOST%.%GUID%.0.loginca.cer -batch -notext
+del /S /E /T "*.old"
+rem issue the Server EE
+openssl ca -config ./certs/ca_sg_issue.cfg -name scs_server -in ./cert-signing-requests/%HOST%.%GUID%.0.server.csr -out ./certs/%HOST%.%GUID%.0.server.cer -batch -notext
+del /S /E /T "*.old"
+rem create Login EE CSR
+openssl req -config ./cert-signing-requests/req_user_login.cfg -outform PEM -out user.csr -keyform PEM -keyout user.pvk -newkey rsa -nodes
+rem issue Login EEs
+openssl ca -config ./certs/ca_login_issue.cfg -name scs_admin_login -in user.csr -out user-admin.cer -batch -notext
+del /S /E /T "*.old"
+openssl ca -config ./certs/ca_login_issue.cfg -name scs_readonly_login -in user.csr -out user-readonly.cer -batch -notext
+del /S /E /T "*.old"

@@ -1,0 +1,612 @@
+##************************************************************************
+##
+## $Header:   S:/NAVEX/VCS/readme.nvv   1.8   05 Mar 1996 17:18:44   DCHI  $
+##
+## Description:
+##      Contains information about working with the NAVEX source.
+##
+## Notes:
+##      This document should be updated whenever changes are made
+##      to any components of NAVEX.
+##
+##************************************************************************
+## $Log:   S:/NAVEX/VCS/readme.nvv  $
+   
+      Rev 1.8   05 Mar 1996 17:18:44   DCHI
+   Added section on Win3.1 boot scanning and repair.
+##
+##    Rev 1.7   16 Feb 1996 13:01:18   DCHI
+## Updated file list and added sections for Word macro and Windows NE/PE
+## scan/repair engines.
+##
+##    Rev 1.6   20 Nov 1995 18:12:36   DCHI
+## Added information under Platform Specific Memory Issues about the
+## amount of memory available to each NAVEX module on the DOS platforms.
+##
+##    Rev 1.5   01 Nov 1995 11:35:06   DCHI
+## Updated information on navexshr.h and navexshr.cpp.
+##
+##    Rev 1.4   25 Oct 1995 17:52:48   DCHI
+## Added information about WORM project and NAVEX.H issues.
+##
+##    Rev 1.3   19 Oct 1995 17:55:16   CNACHEN
+## Added common programming problems section...
+##
+##    Rev 1.2   19 Oct 1995 15:52:44   DCHI
+## Many additions and changes.  Read it all over again.
+##
+##    Rev 1.1   16 Oct 1995 13:12:42   DCHI
+## Added information about use of navexhdr.h header file.
+##
+##    Rev 1.0   16 Oct 1995 10:46:24   DCHI
+## Initial revision.
+##
+##************************************************************************
+
+######################################################################
+#                                                                    #
+#             N A V E X   I n f o r m a t i o n   F i l e            #
+#                                                                    #
+######################################################################
+
+The topics in this text file are in the following order:
+
+  o Introduction
+  o Source files and supporting files
+  o Code compilation issues
+  o Monthly def updates
+  o Makefile operation issues
+  o Platform specific symbol usage
+  o Shared constants and routines: navexshr.h navexshr.cpp
+  o Platform specific memory usage issues
+  o Boot scanning under Win3.1
+  o Global variables
+  o DOS NAVEX overlay manager operation
+  o Microsoft Word macro virus detection and repair
+  o Windows NE/PE detection and repair
+  o Coding style suggestions and common bugs
+  o Further reference
+
+
+
+============
+Introduction
+============
+
+In order to extend the life of NAVEX on the DOS platforms, the
+NAVEX code is broken down into seven modules, corresponding
+to the seven functions of the NAVEX system:
+
+        1. EXTScanFile
+        2. EXTScanBoot
+        3. EXTScanPart
+        4. EXTScanMemory
+        5. EXTRepairFile
+        6. EXTRepairBoot
+        7. EXTRepairPart
+
+One source file exists for each module.  All functions local
+to a module should only be placed in the corresponding module.
+Routines that can be used by more than one module should be
+placed in the shared source file (described below).
+
+
+
+=================================
+Source files and supporting files
+=================================
+
+The NAVEX code base contains the following source files:
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Filename        Description
+------------    ------------------------------------------------
+navex.h         Header file.
+
+navexshr.h      Contains constants and function prototypes.
+navexshr.cpp    Contains functions and constant data shared by
+                all modules.
+
+navexsf.cpp     EXTScanFile module.
+navexsb.cpp     EXTScanBoot module.
+navexsp.cpp     EXTScanPart module.
+navexsm.cpp     EXTScanMemory module.
+navexrf.cpp     EXTRepairFile module.
+navexrb.cpp     EXTRepairBoot module.
+navexrp.cpp     EXTRepairPart module.
+
+navex.cpp       Used by non-DOS platforms.
+naventry.cpp    Contains DLL entrypoint for Windows DLL.
+
+[VXD]
+vavex.asm       VXD entrypoint code.
+
+[NLM]
+chk.asm         NLM stack checking code.
+nlmload.h       Defines NLM specific structures.
+nechild.cpp     NLM entry and exit code.
+
+[Worm]
+worm.cpp        Source file containing empty NAVEX functions
+                for use with WORM project which requires
+                just a stubbed DLL.
+
+[Word macro]
+docrepar.cpp    Inclusion of all source files for repair on DOS.
+docscan.cpp     Inclusion of all source files for scan on DOS.
+macrodel.h      
+macrodel.cpp    Word macro delete function.
+macrorep.h
+macrorep.cpp    Repair functionality.
+macrscan.h
+macrscan.cpp    Scan functionality.
+mcrrepdf.h
+mcrrepdf.cpp    Repair definitions.
+mcrscndf.h
+mcrscndf.cpp    Scan definitions.
+olewrite.h
+olewrite.cpp    OLE write functions.
+storobj.h
+storobj.cpp     OLE stream access functions.
+worddoc.h
+worddoc.cpp     Word Document stream access functions.
+
+[Windows NE/PE]
+neperep.h
+neperep.cpp     Repair.
+nepescan.h
+nepescan.cpp    Scan.
+nepeshr.h
+nepeshr.cpp     Shared functions between scan and repair.
+winconst.h
+winrep.cpp      Inclusion of all source files for repair on DOS.
+winscan.cpp     Inclusion of all source files for scan on DOS.
+winsig.h
+winsig.cpp      Scan signatures.
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+The NAVEX project contains the following supporting files:
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Filename        Description
+------------    ------------------------------------------------
+build.btm       Batch file for building NAVEX.
+navex.mak       Makefile for NAVEX on all platforms.
+
+navex16.def     Windows 16-bit DLL definitions file.
+navex32.d32     Windows 32-bit DLL definitions file.
+vavex.dvx       VXD definitions file.
+
+projhook.inf    NLM specific project hooks.
+nav.imp         NLM imports file.
+navex.den       NLM Linker definitions file.
+
+navexlnk.c      Source code for the DOS NAVEX.DAT linker.
+navexlnk.mak    Makefile for the DOS NAVEX.DAT linker.
+
+worm.mak        Makefile for the WORM project's stubbed DLL.
+
+readme.nvx      This information file.
+
+update.btm      NAVEX update batch file.
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+=======================
+Code compilation issues
+=======================
+
+1.  All master modifications to the source should be performed
+    by checking out and checking in only through the VIRLIB
+    NAVEX trunk.  No master modifications should ever be performed
+    on the branches.
+
+2.  All the global include directories will receive updated copies
+    of NAVEX.H whenever MKUPDATE is executed.  This ensures that
+    all projects have updated copies of NAVEX.
+
+    Although NAVEX.H is expected to remain relatively constant,
+    when modifications to NAVEX affect the entrypoints
+    (e.g. parameter type or cardinality changes, addition of modules,
+    etc.), it is important that all projects use the updated
+    NAVEX.H.
+
+3.  The only special consideration regarding item 2 is that the
+    QUAKE 2 VIRSCAN project requires a checked in version of NAVEX.H.
+    The checked in version should be an exact copy of the NAVEX.H
+    on the VIRLIB trunk except possibly for differences in the
+    version header.
+
+4.  The DOS platforms do not require a rebuild on the branches.
+
+5.  NAVEX.DAT, NAVEX.VXD, NAVEX16.DLL, NAVEX32.DLL, and NAVEX.NLM
+    should only be built on the trunk.  Building NAVEX on the
+    branches will not generate the NAVEX.DAT file because the
+    builtins file on the branches does not know how to construct
+    NAVEX.DAT.
+
+6.  Builds of complete products from the bare source for the WIN
+    and W32 platforms require the NAVEX16.LIB and NAVEX32.LIB
+    import libraries, respectively.  These import libraries should
+    be retrieved from the NOBUILDS SRC area on the trunk.  The
+    NOBUILDS SRC area should be updated monthly.
+
+
+
+===================
+Monthly def updates
+===================
+After QA has okayed the NAVEX externals, the following seven files
+should be checked in to the trunk VIRLIB NOBUILDS SRC area:
+
+        NAVEX.NLM
+        NAVEX.VXD
+        NAVEX.DAT
+        NAVEX16.DLL (and NAVEX16.LIB)
+        NAVEX32.DLL (and NAVEX32.LIB)
+
+After checkin, MKUPDATE should be run from NOBUILDS.  This copies
+the import libraries to all VIRLIB branches.
+
+When building disks, products should pull the appropriate external
+def binaries directly from the trunk VIRLIB NOBUILDS SRC so that
+the latest official NAVEX binaries are used.  This is the same
+procedure as for VIRSCAN.DAT.
+
+
+
+=========================
+Makefile operation issues
+=========================
+
+DOS:            The makefile compiles each source module into its own
+                COM file.  All COM modules are then concatenated into
+                a single NAVEX.DAT file in the order specified in the
+                makefile.  This order must be maintained because the
+                VIRSCAN DOS NAVEX overlay manager assumes that
+                ordering.
+
+Windows 16:     The makefile compiles the source into NAVEX16.DLL.
+
+Windows 32:     The makefile compiles the source into NAVEX32.DLL.
+
+VXD:            The makefile compiles the source into NAVEX.VXD.
+
+NLM:            The makefile compiles the source into NAVEX.NLM.
+
+
+
+==============================
+Platform specific symbol usage
+==============================
+
+DOS:            Use SYM_DOS
+
+                e.g.    #if defined(SYM_DOS)
+                                // DOS specific code
+                        #endif
+
+Windows 16:     Use SYM_WIN16 for Windows 16-bit (Windows 3.1).
+
+                e.g.    #if defined(SYM_WIN16)
+                                // Windows 16-bit specific code
+                        #endif
+
+Windows 32:     Use SYM_WIN32 for Windows 32-bit (Windows 95).
+
+                e.g.    #if defined(SYM_WIN32)
+                                // Windows 32-bit specific code
+                        #endif
+
+NLM:            Use SYM_NLM
+
+                e.g.    #if defined(SYM_NLM)
+                                // NLM specific code
+                        #endif
+
+
+
+======================================================
+Shared constants and routines: navexshr.h navexshr.cpp
+======================================================
+
+The navexshr.cpp source file should contain all routines and constant
+global data shared by all modules.  Depending on the nature of the
+shared routines (e.g. shared by only two modules), this policy may
+change (to conserve memory on the DOS platforms).
+
+The navexshr.h header file should contain function prototypes for all
+functions defined in navexshr.cpp as well as any #defines, typedefs,
+enums, etc., that rightfully belong in a header file.
+
+
+
+=====================================
+Platform specific memory usage issues
+=====================================
+
+DOS:            Make sure all module sizes remain within bounds.
+
+                For NIRVANA NAV, the buffer allocated for each
+                Navex module is a constant 40K (40*1024) bytes.
+
+                For LUIGI NAVBOOT, the buffer allocated for each
+                Navex module is the larger of 30000 bytes or the
+                size of the INSCANM.DAT file.  This provides a
+                backdoor for allocating larger than 30000 bytes
+                for Navex if that is required, simply by creating
+                a larger INSCANM.DAT with dummy definitions.
+
+Windows 16:     The physical disk access callbacks require a
+                buffer that is in conventional DOS memory.
+                EXTScanBoot and EXTScanPart guarantee that the
+                boot or partition buffer passed in is located
+                in conventional DOS memory.  EXTRepairBoot and
+                EXTRepairPart guarantee that the work buffer
+                passed in is located in conventional DOS memory.
+                (I believe this was fixed)
+
+Windows 32:     None currently.
+
+NLM:            None currently.
+
+
+
+======================================
+Boot scanning and repair under Win 3.1
+======================================
+The sector location passed in is invalid and should not be used.
+Check for a partition number of 0xFF and return EXTSTATUS_NO_REPAIR.
+
+
+
+================
+Global variables
+================
+Global variables are allowed, but should NOT be used to store temporary data.
+You may store constant data in these buffers at compile time.
+
+
+
+===================================
+DOS NAVEX overlay manager operation
+===================================
+
+The makefile generates a single COM file for each module and then
+concatenates, using the navexlnk.exe linker, all the COM modules
+into a single NAVEX.DAT file.
+
+During initialization, the overlay manager opens NAVEX.DAT
+and traverses it to retrieve the size of each module image,
+the location within NAVEX.DAT of the module image,
+and the entrypoint of each module.
+
+At the beginning of NAVEX.DAT is a 256-byte header containing
+the NAVEX signature text.  Following the header are the NAVEX
+modules.
+
+At the beginning of each module is a WORD (2-byte) value that
+gives the size of the module image immediately following.
+The location within NAVEX.DAT of the module image is the location
+immediately following the image size value.
+
+The entrypoint of a module is obtained by scanning the module image
+for the string "NAVEXPORTTABLE!" (which is NULL terminated).
+Immediately following the string is a value that indicates relative
+to 256 bytes before the beginning of the module image the location
+of the external NAVEX function in the module.
+
+At any time, only one module will be in memory.  When one of the
+external functions is called, the module image containing it is
+brought into memory and control is transferred to the external
+function.  To do this, the overlay manager opens NAVEX.DAT,
+performs a file seek to the location of the module image,
+reads in the module image, and then transfers control to the
+entrypoint of the module.
+
+
+
+===============================================
+Microsoft Word macro virus detection and repair
+===============================================
+The code to detect and repair macro viruses has been placed in separate
+source files from the main modules in order to ease maintanence of the
+NAVEX code.  The scan and repair definitions have been cleanly separated
+into separate source files apart from the macro virus engine.
+
+If the virus copies any of its macros under a different name to NORMAL.DOT,
+an additional separate definition should be added.  One detects the virus
+in NORMAL.DOT and the other detects it in all other document files.
+This is necessary for repair because the repair system deletes all the
+macros named in the repair definition.
+
+Scan
+----
+Definitions should be added to MCRSCNDF.CPP.
+
+- Signatures consist of a named macro, an offset in the macro,
+  the length of the signature to match, then the signature.
+- The signatures should be unencrypted.
+
+Repair
+------
+Definitions should be added to MCRREPDF.CPP.
+
+1. Add a case statement in NAVEXRF.CPP EXTRepairFile().
+2. Add definition containing list of macros to delete in MCRREPDF.CPP.
+
+
+
+==================================
+Windows NE/PE detection and repair
+==================================
+The code to detect and repair Windows NE/PE viruses has been placed in
+separate source files from the main modules in order to ease maintanence
+of the NAVEX code.  The scan definitions have been cleanly separated
+into separate source files apart from the Windows virus scan engine.
+
+A generic repair system is not currently implemented.
+
+
+
+========================================
+Coding style suggestions and common bugs
+========================================
+
+1. Do not use the constant -1 in your NAVEX source code.  Use 0xFFFFU when
+   comparing to WORD quantities or 0xFFFFFFFFLU when comparing to DWORDS.
+
+2. All global data should be constant and never changed during execution.
+
+3. Make sure that all formal arguments of a function are actually used by the
+   function.  If you want to pass in an argument which will not be used for
+   whatever reason, make sure to do the following:
+
+        void my_func(int a, int b, int c)
+        {
+            (void)c;                    // tell compiler to ignore c variable
+
+            printf("%d %d\n",a,b);      // a and b are used normally
+        }
+
+4. Make sure to build error/warning-free NAVEX modules for the following
+   platforms before checking in your changes: DOS, W32, NLM
+
+5. Make sure to delete all extraneous files in your C:\WORK\NAVEX directory
+   before building NAVEX for a new platform.
+
+6. If you open a file within a NAVEX function, make sure you close that file
+   before you exit from NAVEX.
+
+7. Never index an array outside of the defined bounds. For example:
+
+        EXTSTATUS EXTScanFileFOOVirus(LPCALLBACKREV1 lpCallBack,
+                                      LPBYTE         lpbyInfectionBuffer,
+                                      LPWORD         lpwVID)
+        {
+            int i;
+
+            for (i=0;i<256;i++)
+                if (lpbyInfectionBuffer[i] == 0xE2 &&
+                    lpbyInfectionBuffer[i-10] == 0x75)
+                {
+                    *lpwVID = 0x1234;
+                    return(EXTSTATUS_VIRUS_FOUND);
+                }
+
+            ...
+        }
+
+        In the above example, if an 0xE2 byte is located within the first 9
+        bytes of the FSTART buffer, this code will GPF on windows platforms,
+        since the second part of the if statement will examine data before the
+        beginning of the lpbyInfectionBuffer buffer.
+
+8. Remember that in C, expressions are evaulated from left to right.  Consider
+   a slightly modified function from #7.
+
+        EXTSTATUS EXTScanFileFOOVirus(LPCALLBACKREV1 lpCallBack,
+                                      LPBYTE         lpbyInfectionBuffer,
+                                      LPWORD         lpwVID)
+        {
+            int i;
+
+            for (i=0;i<256;i++)
+                if (lpbyInfectionBuffer[i] == 0xE2 &&
+                    lpbyInfectionBuffer[i-10] == 0x75 &&
+                    i >= 10)
+                {
+                    *lpwVID = 0x1234;
+                    return(EXTSTATUS_VIRUS_FOUND);
+                }
+
+            ...
+        }
+
+        In the above example, it appears that the bug described in #7 has been
+        fixed.  However, this is not the case!  When C evaluates the contents
+        of an if expression, it does so from left to right.  So:
+
+        1. lpbyInfectionBuffer[i] is checked for equality to 0xE2
+
+                Assuming i is equal to 0, and lpbyInfectionBuffer[0] is equal
+                to 0xE2, the next part of the if statment is checked:
+
+        2. lpbyInfectionBuffer[i-10] is checked for equality to 0x75
+
+                This will cause a GPF because i-10 (index #-10) refers to data
+                outside the bounds of the lpbyInfectionBuffer array.
+
+        3. i >= 10 will never be reached, because of the GPF in part 2.
+
+        This can be fixed by reording the expressions in the if statement.
+        Now, the array is never indexed with the "i-10" unless the counter
+        variable i is greater than or equal to 10.
+
+        EXTSTATUS EXTScanFileFOOVirus(LPCALLBACKREV1 lpCallBack,
+                                      LPBYTE         lpbyInfectionBuffer,
+                                      LPWORD         lpwVID)
+        {
+            int i;
+
+            for (i=0;i<256;i++)
+                if (lpbyInfectionBuffer[i] == 0xE2 &&
+                    i >= 10 &&
+                    lpbyInfectionBuffer[i-10] == 0x75)
+                {
+                    *lpwVID = 0x1234;
+                    return(EXTSTATUS_VIRUS_FOUND);
+                }
+
+            ...
+        }
+
+9. Never reference data past the end of an array, even if you are just reading
+   and not modifying its contents.  In the example below, assume that
+   lpbyBuffer points to an array which has exactly nBytesInBuffer elements:
+
+        WORD foo(BYTE *lpbyBuffer, int nBytesInBuffer)
+        {
+            int i, j;
+            BYTE virus_sig[7] = { 0x43, 0x41, 0x52, 0x45, 0x59, 0x21, 0x21 };
+
+            for (i=0;i<nBytesInBuffer;i++)
+            {
+                if (lpbyBuffer[i] == 0xE8)
+                {
+                    for (j=0;j<sizeof(virus_sig);j++)
+                    {
+                        if (lpbyBuffer[i+j+1] != virus_sig[j])
+                            break;
+                    }
+                    if (j == sizeof(virus_sig))
+                    {
+                        // we have a virus!
+                        return(TRUE);
+                    }
+                }
+            }
+
+            return(FALSE);
+        }
+
+        In the program above, if i > nBytesInBuffer-7, then the inner-most
+        for-loop may cause a GPF when i+j+1 becomes greater than the maximum
+        index value specified by nBytesInBuffer.
+
+10. When typecasting to, do not use the LONG data type.  Instead use the long
+    type.  LONG is actually unsigned long.
+
+11. Don't write any C++ specific code; this will not work under NLM.
+
+
+
+=================
+Further reference
+=================
+
+Please consult the NAVEX documentation for additional information.
+
+

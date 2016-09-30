@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title>X-ANALYSIS ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1>X-Analysis Attribute</H1>
+The proprietary X-Analysis attributes are included in messages from the analysis center to gateways, and from gateways to customers, as appropriate. They indicate the current status of a particular sample that has been submitted for analysis:
+<BR><BR>
+<a href="#cookie"><b>X-Analysis-Cookie</b></a>: cookie<BR>
+<a href="#issue"><b>X-Analysis-Issue</b></a>: issue tracking number<BR>
+<a href="#service"><b>X-Analysis-Service</b></a>: name of reporting service<BR>
+<a href="#state"><b>X-Analysis-State</b></a>: current state of sample<BR>
+<a href="#identifier"><b>X-Analysis-Virus-Identifier</b></a>: identifier of virus found in sample<BR>
+<a href="#name"><b>X-Analysis-Virus-Name</b></a>: name of virus found in sample 
+
+<P>
+<a name="cookie"></a>
+<B>X-Analysis-Cookie</b><BR>
+This attribute contains an arbitrary string assigned by a server when the sample is received. The value has no necessary syntax or meaning, and clients may not interpret the value in any way. Clients store the value returned by the server in a response, and use the value as an argument in subsequent requests for status sent to the same server.</P>
+<P>For example, a sample might be assigned this cookie value by a gateway:
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-Cookie: 00000123</P>
+<P>
+<a name="issue"></a>
+<B>X-Analysis-Issue</b><BR>
+This attribute contains an arbitrary string assigned by the analysis center for tracking the customer issue when a sample is imported. The value has no necessary syntax or meaning, and clients may not interpret the value in any way. Clients store the value assigned by the analysis center when it is included in a status report, and display the value for customer use when talking to technical support staff.</P>
+<P>For example, a sample might be assigned this customer issue tracking value by the analysis center:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-Issue: 00000042</P>
+
+<P><a name="service"></a>
+<B>X-Analysis-Service</b><BR>
+This attribute indicates that the results in the status message are from a special class of analysis service. The only supported value is:</P>
+<TABLE cols=2>
+<TR valign=top>
+    <TD width="99">&nbsp;&nbsp;&nbsp;&nbsp; <b>quickcheck</b></TD>
+    <TD width="172">for samples that were not fully analyzed</TD>
+</TR>
+</TABLE>
+<P>This value specifies that the sample was not fully analyzed and that the results are not definitive. </P>
+<P>For example, the final status message for a sample that is probably not infected with any virus, but has not been definitively found to be uninfected, might include this header:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-Service: quickcheck</P>
+
+<P><a name="state"></a>
+<B>X-Analysis-State</b><BR>
+  This attribute contains a text token that indicates the current state of the 
+  sample. See <a href="analysisStates.htm">Analysis States</a> for detailed 
+  information.</P>
+<P>For example, a sample that has currently being transferred from a gateway to the analysis center may be in this state:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-State: importing</P>
+<P>For another example, a sample that has successfully replicated and is ready for the code/data segregation stage may be in this state:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-State: replicated</P>
+
+<P>Note that state values are not intrinsically final or interim. It is the inclusion of an X-Date-Finished attribute in a status report, not the value of the X-Analysis-State attribute included with it, which indicates that status is final.</P>
+
+<P><a name="identifier"></a>
+<B>X-Analysis-Virus-Identifier</b><BR>
+This attribute contains the numerical identifier of a virus found in the sample.</P>
+<P>For example, this is the identifier of an especially odd virus:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-Virus-Identifier: 32767</P>
+
+<P><a name="name"></a>
+
+<B>X-Analysis-Virus-Name</b><BR>
+This attribute contains a text string with the name of a virus found in the sample.</P>
+<P>For example, this is an especially odd virus:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Analysis-Virus-Name: Morton.42</P>
+
+</BODY>
+</HTML>

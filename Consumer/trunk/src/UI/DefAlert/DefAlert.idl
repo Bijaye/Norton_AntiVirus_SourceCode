@@ -1,0 +1,55 @@
+// DefAlert.idl : IDL source for DefAlert.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DefAlert.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+	[
+		object,
+		uuid(658B0097-0F18-4FBA-9FB5-CB892E0DCC9D),
+		dual,
+		helpstring("ISymNavDefAlert Interface"),
+		pointer_default(unique)
+	]
+	interface ISymNavDefAlert : IDispatch
+	{
+		[id(1), helpstring("method LaunchLiveUpdate")] HRESULT LaunchLiveUpdate();
+		[id(2), helpstring("method SetSubExpiredCycle")] HRESULT SetSubExpiredCycle([in] long dwDays);
+		[id(3), helpstring("method SetDefsOutOfDateCycle")] HRESULT SetDefsOutOfDateCycle([in] long dwDays);
+		[propget, id(4), helpstring("property EnabledSubExpiredOption")] HRESULT SubExpiredOptionEnabled([out, retval] BOOL *pVal);
+		[propget, id(5), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+		[id(6), helpstring("method SetAlertDword")] HRESULT SetAlertDword([in] BSTR bstrName, [in] LONG iValue);
+		[id(7), helpstring("method GetAlertDword")] HRESULT GetAlertDword([in] BSTR bstrName, [in] LONG iDefaultValue, [out,retval] LONG* iValue);
+		[id(8), helpstring("method LaunchURL")] HRESULT LaunchURLFromBrandingResource([in] LONG iResId);
+		[id(9), helpstring("method GetStringFromBrandingResource")] HRESULT GetStringFromBrandingResource([in] LONG iResId, [in] BOOL bRemoveAmpersand, [out,retval] BSTR* pbstrBuffer);
+		[id(10), helpstring("method GetVirusDefSubDaysLeft")] HRESULT GetVirusDefSubDaysLeft([out,retval] ULONG* pnDaysLeft);
+		[id(11), helpstring("method IsHighContrast")] HRESULT IsHighContrast([out,retval] BOOL* pbRet);
+		[propget, id(12), helpstring("property VirusDefsThreatCount")] HRESULT VirusDefsThreatCount([out, retval] LONG* pVal);
+		[propget, id(13), helpstring("property ShowSSC")] HRESULT ShowSSC([out, retval] VARIANT_BOOL* pVal);
+		[id(14), helpstring("method WriteToWMI")] HRESULT WriteToWMI([in] VARIANT_BOOL pVal);
+		[propget, id(15), helpstring("property ALUStatus")] HRESULT ALUStatus([out, retval] LONG* pVal);
+		[propget, id(16), helpstring("property DefinitionsDate")] HRESULT DefinitionsDate([out, retval] BSTR* pVal);
+		[id(17), helpstring("method LaunchHelp")] HRESULT LaunchHelp([in] long lHelpTopic);
+		[propget, id(18), helpstring("property OptionsChangeAllowed")] HRESULT OptionsChangeAllowed([out, retval] VARIANT_BOOL* pVal);
+	};
+[
+	uuid(852C26A8-5C40-4EFB-9D81-096B21BF9D81),
+	version(1.0),
+	helpstring("DefAlert 1.0 Type Library")
+]
+library DEFALERTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		uuid(1B7C788B-E925-438F-88C4-FDCF166BF53D),
+		helpstring("SymNavDefAlert Class")
+	]
+	coclass SymNavDefAlert
+	{
+		[default] interface ISymNavDefAlert;
+	};
+};

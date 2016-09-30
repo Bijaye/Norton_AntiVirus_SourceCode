@@ -1,0 +1,33 @@
+; Microsoft DIAMOND Directive File (for MakeCAB)
+
+; Generate errors on variable typos
+.OPTION EXPLICIT
+
+; Note that regardless of the filename specified, MAKECAB will always place
+; it in a DATA1 subdirectory of the current directory.
+; Also, if you attempt to use a pathname here, Makecab will report:
+;   ERROR (FCIFlushCabinet)Failure creating or writing cabinet file:  invalid argument
+.Set CabinetNameTemplate=data1.cab
+; Enable cabinet creation, compression of files
+.Set Cabinet=on
+.Set Compress=on
+; Both of these must be 0 for cabinet sizes to be unlimited
+.Set MaxCabinetSize=0
+.Set MaxDiskSize=0
+
+; The files specified below are compressed into the cab.  They will be added
+; in the order listed.
+Global_Controls_COMCATDLL_f0.3207D1B0_80E5_11D2_B95D_006097C4DE24
+Global_VC_MFC42ANSICore_f0.51D569E2_8A28_11D2_B962_006097C4DE24
+Global_Vba_VBStockProp_f0.7EBEDD3E_AA66_11D2_B980_006097C4DE24
+Global_VC_IRT_f0.3CE1F932_C090_11D2_977B_006097C4DE24
+Global_VC_CPPRT60_f0.51D569E3_8A28_11D2_B962_006097C4DE24
+Global_VC_CRT_f0.51D569E0_8A28_11D2_B962_006097C4DE24
+_0C27E165F3244BB480519D330912955C.DFC262C728804BDA94761D430CA3AE8C
+_326B4A072B9045C1A098312F40278429.DFC262C728804BDA94761D430CA3AE8C
+_A6EA988D7BD7406CB07D5EB6BB178764.DFC262C728804BDA94761D430CA3AE8C
+_DBAE1459AF294F63890F8A0607388EA8.DFC262C728804BDA94761D430CA3AE8C
+Global_System_OLEPRO32_f0.8C0C59A0_7DC8_11D2_B95D_006097C4DE24
+Global_System_STDOLE_f1.8C0C59A0_7DC8_11D2_B95D_006097C4DE24
+Global_System_OLEAUT32_f2.8C0C59A0_7DC8_11D2_B95D_006097C4DE24
+Global_System_OLEAUT32_f3.8C0C59A0_7DC8_11D2_B95D_006097C4DE24

@@ -1,0 +1,61 @@
+QSINST.TXT
+
+
+=========================================================
+= Symantec Corporation					=
+= Symantec Anti-virus					=
+= Corporate						=
+= Quarantine server installation			=
+=========================================================
+= Edward E. Hopkins					=
+= Contract Consultant/programmer			=
+= XXCAL Technical Recruiting				=
+= For Symantec Corporation				=
+=========================================================
+= Last updated:						=
+= 4-7-99						=
+=========================================================
+
+
+Quarantine Server Installer
+===========================
+1.  Perforce Client spec (CM template for server mappings):
+
+	BUILD_QSERVER
+
+
+2.  Source files (binaries to install):
+
+	Defaults:
+		PERFORCE_ROOT="[local machine mapping]"
+
+	Files:
+		PERFORCE_ROOT\\QuarantineServer\Shared\BinIntelUnicodeWin32Release\QSERVER.EXE
+		PERFORCE_ROOT\\Norton_AntiVirus\Shared\BinIntelAnsiWin32Release\QSPAK32.DLL
+
+
+3.  Destination paths (files copied to end-user machine during installation):
+
+	Defaults:
+		<TARGETDIR>="C:\Program Files\Qserver\"
+
+	Files:
+		*=auto-registering file
+
+		<TARGETDIR>\QSERVER.EXE *
+		<TARGETDIR>\QSPAK32.DLL
+
+
+4.  System Registry Keys (to be created on end-user machine during installation):
+
+	None
+
+
+5.  Special instructions:
+
+	Minimum OS: NT 4.0 (SP3)
+
+	Check for user admin rights before copying files
+
+	Check for running service (Qserver.exe) before copying files
+	Set up newly-installed Qserver as auto-start service

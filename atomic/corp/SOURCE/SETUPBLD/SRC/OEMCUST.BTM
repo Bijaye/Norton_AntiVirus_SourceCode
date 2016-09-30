@@ -1,0 +1,84 @@
+@echo off
+if "%PROJNAME%" != "SETUPBLD" GOTO BAD_PROJ
+set TARGET=%1
+if "%1" == "" GOTO NO_ARG
+if NOT EXIST S:\NOBUILDS.OEM\SRC\%TARGET%spec.ini GOTO BAD_ARG
+if NOT DIREXIST %PROJ%\LIB%PLATFORM%\%TARGET% mkdir %PROJ%\LIB%PLATFORM%\%TARGET%
+attrib -R %PROJ%\SRC\setupbld.mdb
+msaccess.exe %PROJ%\SRC\setupbld.mdb /nostartup /x "Test OEM Full"
+delay 10
+
+::: It looks like the query "Test OEM Full" is executing quickly
+::: which results in setupbld.mdb being closed and consequently
+::: the error checking done using the following line stops the
+::: process and gives the impression of an error.  Increased the
+::: delay above to 10 to ensure that the CSV's are created.
+::
+::if NOT EXIST %PROJ%\SRC\SetupBld.ldb goto NO_ACCESS
+::
+::
+copy %PROJ%\SRC\CRos95.ins %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\CRosNT.ins %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\CTesla.ins %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\CTeslaA.ins %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\setup.exe %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\_isdel.exe %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\_setup.dll %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\_inst32i.ex_ %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\_setup.lib %PROJ%\LIB%PLATFORM%\%TARGET%
+copy %PROJ%\SRC\direct.txt %PROJ%\LIB%PLATFORM%\%TARGET%
+delay 8
+:RESTORE_ATTRIB
+attrib +R %PROJ%\SRC\setupbld.mdb
+goto EXIT
+:BAD_PROJ
+BEEP
+echo.
+echo ************* OEMCUST ERROR *****************
+echo You need to be ENV'd to ATOMIC or the current
+echo successor to ATOMIC, and you should be PROJ'd
+echo to the project SETUPBLD.  You are not 
+echo currently PROJ'd to SETUPBLD.  Change to the
+echo correct environment and project and try again.
+echo.
+goto EXIT
+:NO_ACCESS
+BEEP
+echo.
+echo ************ OEMCUST ERROR *****************
+echo Unable to launch Microsoft Access (MSACCESS.EXE).
+echo This can normally be remedied by changing your
+echo current directory to the directory that contains
+echo MSACCESS.EXE and launching OEMCUST using the
+echo following command line.  OEMCUST makes no changes
+echo to the current directory.
+echo.
+echo S:\SETUPBLD\SRC\OEMCUST.BTM 0010
+echo.
+goto RESTORE_ATTRIB
+:NO_ARG
+BEEP
+echo.
+echo ************ OEMCUST ERROR *****************
+echo You must provide a 4-digit OEM build ID when you invoke OEMCUST.
+echo The proper syntax is as follows:
+echo.
+echo OEMCUST 0010
+echo.
+echo if you are creating the OEM custom build with ID #10
+goto EXIT
+:BAD_ARG
+BEEP
+echo.
+echo ************ OEMCUST ERROR *****************
+echo You must provide a 4-digit OEM build ID when you invoke OEMCUST.
+echo The proper syntax is as follows:
+echo.
+echo OEMCUST 0010
+echo.
+echo if you are creating the OEM custom build with ID #10.  The ID
+echo you provided was either incorrectly formatted or no specification
+echo corresponding to the ID number was found in S:\NOBUILDS.OEM\SRC.
+goto EXIT
+:EXIT
+

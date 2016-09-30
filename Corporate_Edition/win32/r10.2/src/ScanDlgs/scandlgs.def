@@ -1,0 +1,23 @@
+; shellscan.def : Declares the module parameters for the DLL.
+
+LIBRARY      "SCANDLGS"
+
+EXPORTS
+    ; Explicit exports can go here
+
+	DllGetClassObject				PRIVATE
+	DllCanUnloadNow					PRIVATE
+	DllRegisterServer				PRIVATE
+	DllUnregisterServer				PRIVATE
+
+	CreateResultsView                  @100
+	AddProgressToResultsView           @101
+	AddLogLineToResultsView            @102
+	GetViewThreadHandleFromResultsView @104
+	ScanDoneToResultsView              @105
+	
+	CreateVirusFoundDlg                @112
+	AddLogLineToVirusFound             @113
+	AddLogLineToResultsViewEx          @114
+	GetWindowHandle                    @115
+	GetVirusFoundWindowHandle           @116

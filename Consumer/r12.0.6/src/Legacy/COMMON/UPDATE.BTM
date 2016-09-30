@@ -1,0 +1,34 @@
+::
+:: $Header:   S:/COMMON/VCS/update.btv   1.1   27 Mar 1997 16:14:18   DALLEE  $
+::
+::      This batch file updates the project area based on the PLATFORM and
+::      TARGET settings.
+::------------------------------------------------------------------------
+:: $Log:   S:/COMMON/VCS/update.btv  $
+:  
+:     Rev 1.1   27 Mar 1997 16:14:18   DALLEE
+:  Removed TARGET support.
+:  Since we no longer build NAVNET and BANKERS targets in this codebase,
+:  there's no longer a need to support multiple targets.
+:  
+:     Rev 1.0   06 Feb 1997 20:50:08   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   01 Mar 1996 18:26:56   BARRY
+:  Initial revision.
+:  
+:     Rev 1.3   11 Dec 1995 21:45:20   DALLEE
+:  aCk! Left out TARGET on the local lib update.
+:  
+:     Rev 1.2   11 Dec 1995 21:26:32   DALLEE
+:  Update for PROJVERS.
+:  
+:     Rev 1.1   25 Apr 1994 14:51:56   DALLEE
+:  Removed support for NAV and BANKERS subdirs of product lib areas.
+:  
+:     Rev 1.0   20 Apr 1994 14:41:08   DALLEE
+:  Initial revision.
+::------------------------------------------------------------------------
+
+if exist *.lib  copy *.lib  %PROJPRE%LEGACY\LIB%PROJVERS%%PLATFORM%
+if exist *.lib  copy *.lib  %PROJPRE%\LIB%PROJVERS%%PLATFORM%

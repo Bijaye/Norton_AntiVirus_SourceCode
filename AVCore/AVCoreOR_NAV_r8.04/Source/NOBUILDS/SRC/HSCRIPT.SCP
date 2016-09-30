@@ -1,0 +1,51 @@
+;  Script Command       Arguments
+;  --------------------------------------------------------
+;  "WaitForStr"         one to ten strings to match
+;  "WaitForChar"		a string of characters to match
+;  "SendStr"            a string
+;  "SendChar"           a character
+;  "SendPass"           an encrypted password
+;  "Sleep"              sleep time in milliseconds
+;  "Dial" or "Call"     phone number
+;  "Download"           starts Zmodem receive mode
+;  "HangUp"             none
+;  "Do" or "DoScript"   script label followed by up to ten string arguments
+;  "IfMatch"            one string - true if "WaitForStr" matched this string 
+;  "Else"               executes if last "IfMatch was false
+;  "Endif" 				end of "IfMatch
+;  "EndScript"			required last statement of a script
+;  "Error"				a number or a string that matches a script error message
+;
+; Strings can be enlosed in single or double quotes.
+; If a string is not enclosed in quotes the script processor assumes it is a single word.
+; Any string that starts with a ';' or '#' is treated as a comment line.
+; String or character matches are NOT case sensitive.
+
+
+
+
+SYMLogin:
+	waitforstring "otherwise"
+	sendstring %1
+	sendstring \r
+	waitforstring "B,Z"
+	sendstring B\r
+	endscript
+
+SYMDwnld:
+	waitforstring letter
+	sendstring D\r
+	waitforstring "file name to find"
+	sendstring %1
+	waitforstring "download option"
+	sendstring Z\r
+	download %2
+	endscript
+
+SYMLogoff:
+	waitforstring letter
+	sendstring X\r
+	waitforstring "re-logon"
+	sendstring Y\r
+	HangUp
+	endscript

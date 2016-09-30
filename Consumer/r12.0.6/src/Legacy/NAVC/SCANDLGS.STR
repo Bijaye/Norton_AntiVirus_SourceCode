@@ -1,0 +1,188 @@
+ // Copyright 1993-1996 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/NAVC/VCS/scandlgs.stv   1.2   09 Jun 1997 18:35:30   BGERHAR  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV scanner dialog.
+//
+// Contains:
+//
+// See Also:
+//************************************************************************
+// $Log:   N:/NAVC/VCS/scandlgs.stv  $
+// 
+//    Rev 1.2   09 Jun 1997 18:35:30   BGERHAR
+// Add AreDefsWild() and misc. clean-up
+// 
+//    Rev 1.1   08 Jun 1997 23:23:56   BGERHAR
+// Clean up filename output during scan
+// 
+//    Rev 1.0   06 Feb 1997 20:56:40   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   31 Dec 1996 15:21:58   MKEATIN
+// Initial revision.
+// 
+//    Rev 1.12   19 Dec 1996 13:15:46   JBELDEN
+// changed message for virus definitions not found to suggest
+// it may be insufficient disk space or a write error in createing
+// files.
+// 
+//    Rev 1.11   10 Dec 1996 12:36:20   JBELDEN
+// implemented documentations suggestions
+// 
+//    Rev 1.10   02 Dec 1996 10:21:40   JBELDEN
+// changed a string so it can be used with printf
+// 
+//    Rev 1.9   14 Nov 1996 15:05:08   JBELDEN
+// removed strings and cleaned up
+// 
+//    Rev 1.7   12 Nov 1996 18:04:10   JBELDEN
+// fixed another string for printf
+// 
+//    Rev 1.6   12 Nov 1996 17:49:28   JBELDEN
+// replaced more navdlgerror strings with ones that work with
+// printf
+//
+//    Rev 1.5   12 Nov 1996 17:00:40   JBELDEN
+// updated some strings to be used with printf
+//
+//    Rev 1.4   08 Nov 1996 14:31:38   JBELDEN
+// removed unused code
+//
+//    Rev 1.3   31 Oct 1996 18:11:22   JBELDEN
+// removed a lot of dialog box code
+// 
+//    Rev 1.2   14 Oct 1996 11:25:12   JBELDEN
+// removed ordinals from ttyscan strings for use with printf
+// instead of DOSPrint
+//
+//    Rev 1.1   09 Oct 1996 17:14:14   JBELDEN
+// added strings for drive read/write errors.
+//
+//    Rev 1.0   02 Oct 1996 14:07:00   JBELDEN
+// Initial revision.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    [];     // These externs are declared in
+extern char SZ_NO[];
+extern char SZ_DASH[];
+
+
+//************************************************************************
+// LOCAL VARIABLES
+//************************************************************************
+
+static char SCAN_GROUP_BEGIN    [] = " %58g";
+
+
+char SZ_NO_DAT_FILES [] =
+    {
+"\nUnable to find required virus definition files.\n\
+This may be caused by an incomplete install, insufficient disk\n\
+space or an error writing to disk."
+    };
+
+char SZ_ERR_WRITE_LOG [] =
+    {
+    "\nUnable to update activity log file."
+    };
+
+
+char SZ_SCANNING_FOR_VIRUSES        [] = "Scanning Files For Viruses...";
+char SZ_UNCOMPRESSING_FILE_FORMAT   [] = "Uncompressing file %s from %s";
+
+
+//------------------------------------------------------------------------
+// Select File to Scan file not found strings.
+//------------------------------------------------------------------------
+
+char SZ_FILE_NOT_FOUND [] =
+    {
+"\n%s\n\
+Cannot find this file.\n\
+Please verify that the correct path and filename\n\
+are given.\n"
+    };
+
+
+// Shared by NAVD:TOOLINOC.C via NAVD:NAVSTR.STR
+char   szScanProgressBarARG1 [] = "   %3a0%%%1a %O1 %3a100%%%1a";
+
+//------------------------------------------------------------------------
+// SCANUTIL Dialog Strings
+//------------------------------------------------------------------------
+
+char SZ_OUT_OF_FILE_HANDLES [] =
+    {
+"\nOut of file handles.\n\
+Unable to complete scan.\n\
+Please verify that the line 'FILES=15'\n\
+appears in your CONFIG.SYS file."
+    };
+
+#ifdef USE_ZIP
+char *LPSZ_DISABLE_ZIP_TO_SCAN[] =
+    {
+"\nOut of file handles.\n\
+Unable to scan within compressed files.\n\
+Please verify that the line 'FILES=15'.\n\
+appears in your CONFIG.SYS file. \n\
+Do you wish to continue without \n\
+scanning compressed files? "
+    };
+
+LPSTR LPSZ_ZIP_NO_MEM [] =
+    {
+    " Out of memory uncompressing files from ",
+    " %45p1 ",
+    DIALOG_EMPTY_LINE,
+    " Do you wish to continue scanning within ",
+    " compressed files? ",
+    };
+#endif  //USE_ZIP
+
+#ifndef NAVSCAN
+char SZ_ZIP_CANT_WRITE [] =
+    {
+"Unable to create a temporary file to permit scanning\n\
+within compressed files.\n\n\
+Scanning will proceed normally.  Compressed files will\n\
+not be scanned.\n\n\
+To enable scanning within compressed files, make sure \n\
+a TEMP variable is set and there is enough disk \n\
+space available to create a temporary file. "
+    };
+#endif
+
+// *****************************************************************
+// Items used for TTYSCAN below this line
+// ****************************************************************
+
+//------------------------------------------------------------------------
+// Error Reading Drive SkipDriveTimedErrDialog
+//------------------------------------------------------------------------
+
+char szBootReadError [] =
+    {
+    "\nUnable to read boot record on drive %c:.\nMake sure the drive is ready.\n"
+    } ;
+
+char szGeneralReadError [] =
+    {
+    "\nUnable to access drive %c:.\nMake sure the drive is ready.\n"
+    } ;
+
+char szWriteError [] =
+    {
+    "\nUnable to write to file on drive %c:.\nMake sure the drive is ready.\n"
+    };
+

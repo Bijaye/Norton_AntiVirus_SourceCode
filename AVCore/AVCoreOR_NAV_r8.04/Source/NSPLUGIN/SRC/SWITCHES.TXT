@@ -1,0 +1,105 @@
+NSPlugIn command line switches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Switches are NOT case-sensitive!!
+
+/i -- Install mode.  If this switch is present, the state of each checkbox
+      will depend on the INI file.  For each MIME type, if its INI file line
+      has the value "YES" (not case-sensitive), the box will be checked.  The
+      box will be unchecked if the value is anything else.
+
+/u -- Uninstall mode.  If this switch is present, all checkboxes will 
+      start off unchecked.
+
+Important NOTE:
+If both /i and /u are present, the LAST /i or /u will be honored, and all
+others will be ignored.
+
+/s -- Silent mode.  If this switch is present, no UI will be displayed at all.
+      This switch is only useful with /i or /u.
+
+/s /i Silent install mode.  Using these switches sets up the registry according
+      to the INI file without displaying any UI.
+
+/s /u Silent uninstall mode.  Using these switches removes NAV as a plugin
+      without displaying any UI.
+
+/f    INI Filename.  Use this switch to specify the full path to the INI file.
+      The format can be either "/f:file.ini" or "/ffile.ini".
+      If this switch is not present, NSPlugIn looks for a file called
+      "nsplugin.ini" in the same directory as the executable.  Actually,
+      "nsplugin.ini" is read from a string resource so it can be changed
+      easily.  This feature will let the user run the EXE as a stand-
+      alone app by just double-clicking it (as long as the INI file is
+      installed to the same dir, of course).
+      If the default INI file is not found, NSPlugIn falls back to
+      hard-coded initialization values that were current as of 5/1/97.
+
+/n    Signifies that the app was launched by NAV install/uninstall.  When
+      this switch is present, the dialog sets itself to be always on top,
+      and removes the minimize button.  This is done so the user can't
+      accidentally (or purposely) click on the install background and
+      hide the dialog, or minimize the dialog and continue with the
+      install/uninstall.
+
+/r    Registry key for output.  Use this switch to specify a reg key
+      relative to HKEY_LOCAL_MACHINE in which NSPlugIn will write a return
+      value.  The value is always a DWORD named "NSPlugIn".
+      The format of this switch can be either "/r:KeyName" or "/rKeyName".
+
+      The value written to the registry is calculated as:
+
+      bit 0 - 0 = The user clicked Cancel or the Close button.
+              1 = The user clicked Save.
+
+      If bit 0 is 1, then bit 1 is used:
+
+      bit 1 - 0 = All MIME types were unchecked.
+              1 = At least one MIME type was checked.
+
+      If bit 1 is 1, then bit 2 is used:
+
+      bit 2 - 0 = Some (but not all) MIME types were checked.
+              1 = All MIME types were checked.
+
+      If bit 0 is 1, then bit 3 is used:
+
+      bit 3 - 0 = No error in saving changes.
+              1 = Changes were not saved due to an error.
+
+
+Other NSPlugIn behavior
+~~~~~~~~~~~~~~~~~~~~~~~
+On startup, NSPlugIn checks if Netscape is installed.  If not, it displays
+an explanatory message and exits.
+
+NSPlugIn also checks if NAV is installed, by looking for the reg value
+
+HKLM\Software\Symantec\InstalledApps\NAVNT   or
+                                    \NAV95
+
+(the decision is made at runtime based on the OS).
+
+If the appropriate reg value does not exist, it is impossible to install
+NAV as a helper app since NSPlugIn needs to read NAV's install dir from
+the InstalledApps key.  NSPlugIn's behavior depends on what other switches
+were present:  
+
+-- Case 1 --
+
+If the /u /s switches are present, the behavior is the same as when NAV
+is installed -- all the helper app values are removed silently.
+
+-- Case 2 --
+
+If the /i /s switches are present, NSPlugIn sets bit 3 in its return 
+value to indicate a generic error, and exits.
+
+-- Case 3 --
+
+/i, /u, or neither:
+In this case, NSPlugIn ignores the switches and enters a forced-uninstall
+mode.  It displays an explanatory message and offers to remove NAV as a
+helper app.  This is done through message boxes, and the normal UI is
+never be displayed.
+

@@ -1,0 +1,483 @@
+@echo off
+rem Build Symantec AntiVirus Corporate Edition installs
+rem The installs are broken down into a series of merge modules which are included by
+rem a few central projects.  InstallShield lacks functionality similar to Visual Studios
+rem workspace for builds, so dependancies must be handled manually.
+rem By David Luxford, 2004 May 4
+rem 
+rem Assumptions:
+rem     1.  The user has configured CONFIG.BTM correctly for their system
+rem     2.  No perforce interaction necessary
+rem     3.  All needed tools installed
+rem
+rem Command line:
+rem     Build all installs, all configurations (release or debug, not both - auto determined from config.btm)
+rem         <no parameters>
+rem     Build all merge modules and a single specific install
+rem         <install type> [<licensing type>] [<binary type>] [NoCopy] [NoMM]
+rem             <install type>      := (SAV | SAV64 | SCS | All)
+rem             <licensing type>    := (Licensed | Unlicensed | Trial)
+rem             <binary type>       := (Release | Debug)
+rem             NoCopy              Do not copy binaries or SCF merge modules
+rem             NoMM                Do not build any merge modules, only the requested main install
+rem     Build only a specific merge module or install (no dependancies built)
+rem         module <module name>
+rem             <module name>       := filename of the merge module to build, excluding .ism extension
+rem
+rem Return values (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem     0 - Success
+rem     2 - Build failed while in process
+rem     3 - No 4DOS
+rem     4 - 4DOS too old
+rem     5 - CONFIG failed
+rem     6 - CLIENTROOT variable not specified
+rem     7 - CLIENTROOT invalid
+rem     8 - Invalid command line
+rem     9 - InstallShield standalone not found
+rem    10 - Can't build both release and debug
+rem
+rem Uses:
+rem     BUILDTOOLISSTANDALONE
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  "%_BATCHNAME" on %_DATE at %_TIME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+if not isdir "%BUILDTOOLISSTANDALONE%" goto ErrorBadInstallshield
+
+rem ** Parse command line
+set buildSAV=0
+set buildSAV64=0
+set buildLicensed=0
+set buildLicensedTrial=0
+set buildUnlicensed=0
+set buildRelease=0
+set buildDebug=0
+set buildCopyBins=1
+set buildSpecificModule=0
+set buildSpecificModuleName=
+set buildMergeModules=1
+iff "%@upper[%1]" = "MODULE" then
+    set buildSpecificModule=1
+    set buildSpecificModuleName=%@name[%2]
+else
+    do param = 2 to 127
+        shift 1
+        iff "%0" = "" then
+            shift -%param%
+            goto InitParseDone
+        endiff
+        iff "%@upper[%0]" = "ALL" then
+            set buildSAV=1
+            set buildSAV64=1
+        elseiff "%@upper[%0]" = "SAV" then
+            set buildSAV=1
+        elseiff "%@upper[%0]" = "SAV64" then
+            set buildSAV64=1
+        elseiff "%@upper[%0]" = "LICENSED" then
+            set buildLicensed=1
+        elseiff "%@upper[%0]" = "TRIAL" then
+            set buildLicensedTrial=1
+        elseiff "%@upper[%0]" = "UNLICENSED" then
+            set buildUnlicensed=1
+        elseiff "%@upper[%0]" = "RELEASE" then
+            set buildRelease=1
+        elseiff "%@upper[%0]" = "DEBUG" then
+            set buildDebug=1
+        elseiff "%@upper[%0]" = "NOCOPY" then
+            set buildCopyBins=0
+        elseiff "%@upper[%0]" = "NOMM" then
+            set buildMergeModules=0
+        endiff
+    enddo
+    shift -127
+    :InitParseDone
+endiff
+rem ** Auto-select defaults for arguments that weren't specified
+iff %buildSpecificModule% = 0 then
+    iff %buildSAV% = 0 .AND. %buildSAV64% = 0 then
+        set buildSAV=1
+        set buildSAV64=1
+    endiff
+    iff %buildLicensed% = 0 .AND. %buildLicensedTrial% = 0 .AND. %buildUnlicensed% = 0 then
+        set buildLicensed=1
+        set buildLicensedTrial=1
+        set buildUnlicensed=1
+    endiff
+    iff %buildRelease% = 0 .AND. %buildDebug% = 0 then
+        rem ** Figure out the default from config
+        iff %BuildReleaseTargets% = 1 then
+            set buildRelease=1
+        else
+            set buildDebug=1
+        endiff
+    endiff
+endiff
+rem ** Reject building both release and debug (for now)
+iff %buildRelease% = 1 .AND. %buildDebug% = 1 then
+    goto ErrorCantBuildReleaseAndDebug
+endiff
+rem ** Determine binary type to use
+iff %buildRelease% = 1 then
+    set binaryType=Release
+else
+    set binaryType=Debug
+endiff
+
+:Initialize
+rem ** Initialize
+cdd "%@PATH["%_BATCHNAME"]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+set installRoot=%_CWD
+
+rem ** Build specific merge module, if requested
+if %buildSpecificModule% = 1 goto BuildSpecificModule
+
+:StartBuild
+rem ** Build full install(s), if requested
+if %buildCopyBins% = 0 goto BuildInitialize
+echo ** Copying binary files...
+call "%installRoot%\CopyBins.btm" %binaryType%
+if %errorlevel% != 0 goto BuildFailed
+
+:BuildInitialize
+rem ** Initialize for build
+set DoBuildMergeModulePath="%installRoot%\MModules","%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\MergeModules","%CLIENTROOT%\Release\Norton_Internet_Security\Shared_Components\MergeModules"
+set DoBuildRelease=Release
+set DoBuildConfiguration=
+set DoBuildCopyFileA=
+set DoBuildCopyFileAtargetName=
+set DoBuildCopyFileB=
+set DoBuildCopyFileC=
+set DoBuildCopyFileD=
+set DoBuildPostTarget=
+
+rem ** Building other merge modules...
+if %buildMergeModules% = 0 goto BuildInstalls
+setlocal
+call "%installRoot%\SymEvent\build.btm" %binaryType%
+if %errorlevel% != 0 goto BuildFailed
+endlocal
+setlocal
+rem ** TODO:  convert this to take debug/release as a command line parameter
+call "%CLIENTROOT%\Norton_System_Center\src\Install\AMS\build.btm"
+if %errorlevel% != 0 goto BuildFailed
+endlocal
+
+echo ** Building main merge modules...
+set DoBuildISM=%installRoot%\LiveSubscribe.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\SAVRT_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\SAVRT64x86_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\Exchange_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\Notes_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\Quar_Client_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\UI_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\COH_Main_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\COH_UI_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\SAV_Main_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\SAV_Secure_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\SAV_Help_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\Pop3_Smtp_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\SAV_Server_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\Rtvscan_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\Webinst_MM.ism
+gosub DoBuild
+set DoBuildISM=%installRoot%\MSFT_DEBUG_RT_DLL_MM.ism
+gosub DoBuild
+
+:BuildInstalls
+rem ** Building installs...
+set resultsDirLicensed=%installRoot%\Finished\licensed
+set DoBuildConfiguration=
+
+set buildLoopNo=0
+set resultsDir=%resultsDirUnlicensed%
+do while %buildLoopNo% LE 3
+    set buildLoopNo=%@inc[%buildLoopNo%]
+    rem * Are we within loop boundaries (want test and increment at end, don't have it)
+    iff %buildLoopNo% LE 3 then
+        rem * Loop initialization
+        rem set DoBuildCopyFileA=%CLIENTROOT%\Release\defs\ushubb.int
+	set DoBuildCopyFileA=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\win32\src\nobuilds\temp\VDefHub.zip
+        set DoBuildCopyFileAtargetName=VDefHub.zip
+        set DoBuildCopyFileB=%CLIENTROOT%\Release\LiveUpdate\redist\Release\LUSETUP.EXE
+
+        rem * What configuration are we building?
+        iff %buildLoopNo% = 1 then
+            rem * Unlicensed
+            if %buildUnlicensed% = 0 iterate
+            set DoBuildRelease=Release
+            set resultsDir=%installRoot%\Finished\unlicensed
+        elseiff %buildLoopNo% = 2 then
+            rem * Licensed
+            if %buildLicensed% = 0 iterate
+
+            rem * Build licensed merged module
+            setlocal
+            set DoBuildCopyFileA=
+            set DoBuildCopyFileAtargetName=
+            set DoBuildCopyFileB=
+            set DoBuildCopyFileC=
+            set DoBuildCopyFileD=
+            set DoBuildPostTarget=
+            set DoBuildRelease=Release
+            set DoBuildConfiguration=
+            set DoBuildISM=%installRoot%\Rtvscan_Lic_MM.ism
+            gosub DoBuild
+            endlocal
+
+            set DoBuildRelease=Release_Lic
+            set DoBuildConfiguration=
+            set resultsDir=%resultsDirLicensed%
+        elseiff %buildLoopNo% = 3 then
+            rem * Licensed/Trial
+            if %buildLicensedTrial% = 0 iterate
+            rem * NOTE License File Rebuild Weirdness!!  Do this after Licensed build since it posts to the same directory
+            rem * and currently requires a rebuild of the rtvscan_lic_mm
+
+            rem * Rebuild rtvscan_lic_mm with correct EULA
+            rem * Backup the existing EULA and replace with the new one
+            copy /zq "%installRoot%\Data\RTVScan_Lic_MM\License_wi.rtf" "%TEMP%\License_wi.rtf"
+            if %errorlevel% != 0 goto BuildFailed
+            copy /zq "%CLIENTROOT%\norton_antivirus\corporate_edition\win32\src\nobuilds\bin.ira\License_Trial.rtf"      "%installRoot%\Data\RTVScan_Lic_MM\License_wi.rtf"
+            if %errorlevel% != 0 goto BuildFailed
+
+            rem * Rebuild rtvscan_lic_mm
+            setlocal
+            set DoBuildCopyFileA=
+            set DoBuildCopyFileAtargetName=
+            set DoBuildCopyFileB=
+            set DoBuildCopyFileC=
+            set DoBuildCopyFileD=
+            set DoBuildPostTarget=
+            set DoBuildConfiguration=
+            set DoBuildRelease=Release
+            set DoBuildISM=%installRoot%\Rtvscan_Lic_MM.ism
+            gosub DoBuild
+            endlocal
+
+            rem * Restore the license file
+            copy /z "%TEMP%\License_wi.rtf" "%installRoot%\Data\RTVScan_Lic_MM\License_wi.rtf"
+            if %errorlevel% != 0 goto BuildFailed
+            del /zq "%TEMP%\License_wi.rtf"
+            rem * Cleanup failure ignoreable
+
+            set DoBuildRelease=Release_Lic
+            set DoBuildConfiguration=
+            set resultsDir=%installRoot%\Finished\licensed_trial
+        endiff
+        set DoBuildConfiguration=
+
+        rem * Build the installs as requested
+        iff %buildSAV% = 1 then
+            set DoBuildISM=%installRoot%\Symantec AntiVirus.ism
+            set DoBuildPostTarget=%resultsDir%\SAV
+            gosub DoBuild
+        endiff
+        iff %buildSAV64% = 1 then
+            set DoBuildISM=%installRoot%\Symantec AntiVirus Win64.ism
+            set DoBuildPostTarget=%resultsDir%\SAV_x86
+            set DoBuildConfiguration=x86
+            set DoBuildCopyFileA=%CLIENTROOT%\Release\defs\ushubb.emt64ap
+            gosub DoBuild
+        endiff
+        
+        rem * Are we building trial?
+        iff %buildLoopNo% = 3 .AND. %buildLicensedTrial% = 1 then
+            rem * Yes, special fixup for the posting locations to fit with other batch files - they should be adjusted
+            rem * later to refer to a LicensedTrial directory, instead of this
+            iff not isdir "%resultsDirLicensed%" then
+                md /s "%resultsDirLicensed%"
+                if %errorlevel% != 0 goto BuildFailed
+            endiff
+
+            iff %buildSAV% = 1 then
+                xcopy /s /e /h /k /i /y "%resultsDir%\SAV" "%resultsDirLicensed%\SAVTrial"
+                if %errorlevel% != 0 goto BuildFailed
+            endiff
+            iff %buildSAV64% = 1 then
+                xcopy /s /e /h /k /i /y "%resultsDir%\SAV_x86" "%resultsDirLicensed%\SAV64Trial"
+                if %errorlevel% != 0 goto BuildFailed
+            endiff
+
+            iff exist "%resultsDir%\*.*" then
+                attrib -r -s -h /s /q "%resultsDir%\*.*" >& nul
+                del /s /x /y /q /z "%resultsDir%\*.*" >& nul
+            endiff
+        endiff
+    endiff
+enddo
+ 		
+:BuildComplete
+echo ===                                               ===
+echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+echo ===                                               ===
+set returnVal=0
+goto RealEnd
+
+
+:BuildSpecificModule
+set DoBuildMergeModulePath="%installRoot%\MModules","%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\MergeModules","%CLIENTROOT%\Release\Norton_Internet_Security\Shared_Components\MergeModules"
+set DoBuildRelease=Release
+set DoBuildConfiguration=
+set DoBuildCopyFileA=
+set DoBuildCopyFileAtargetName=
+set DoBuildCopyFileB=
+set DoBuildCopyFileC=
+set DoBuildCopyFileD=
+set DoBuildPostTarget=
+set DoBuildISM=%installRoot%\%buildSpecificModuleName%.ism
+gosub DoBuild
+goto BuildComplete
+
+:DoBuild
+rem * Builds an InstallShield 10 install project stored as an ISM.
+rem * Parameters:
+rem *   DoBuildISM                  Full pathname of the ISM file.
+rem *   DoBuildConfiguration        [Optional] Name of the configuration to build.
+rem *   DoBuildCopyFileA            [Optional] Full pathname of a file to copy to the output directory
+rem *   DoBuildCopyFileAtargetName  [Optional] If DoBuildCopyFileA specified, the new file node name in the output directory
+rem *   DoBuildCopyFileB            [Optional] Full pathname of a file to copy to the output directory
+rem *   DoBuildCopyFileC            [Optional] Full pathname of a file to copy to the output directory
+rem *   DoBuildCopyFileD            [Optional] Full pathname of a file to copy to the output directory
+rem *   DoBuildRelease              Name of the release to build.
+rem *   DoBuildMergeModulePath      Merge module search path to use (-o argument)
+rem *   DoBuildPostTarget           [Optional] Location to post the finished build to
+rem
+rem * Validate parameters
+echo ** Building %DoBuildISM%...
+if not exist "%DoBuildISM%" goto BuildFailed
+attrib -r -s -h /e /q "%DoBuildISM%"
+if %errorlevel% != 0 goto BuildFailed
+iff "%DoBuildConfiguration%" = "" then
+    "%BUILDTOOLISSTANDALONE%\IsSaBld.exe" -p "%DoBuildISM%" -r %DoBuildRelease% -o "%DoBuildMergeModulePath%" -x
+else
+    "%BUILDTOOLISSTANDALONE%\IsSaBld.exe" -p "%DoBuildISM%" -a %DoBuildConfiguration% -r %DoBuildRelease% -o "%DoBuildMergeModulePath%" -x
+endiff
+if %errorlevel% != 0 goto BuildFailed
+
+rem * Set Read-Only back for Perforce, but don't fail build if it fails.
+attrib +r /e /q "%DoBuildISM%"
+
+rem * Copy files as requested, if requested
+iff "%DoBuildConfiguration%" = "" then
+    set DoBuildOutputDirectory=%@PATH["%DoBuildISM%"]%@NAME["%DoBuildISM%"]\Releases\%DoBuildRelease%\DiskImages\DISK1
+else
+    set DoBuildOutputDirectory=%@PATH["%DoBuildISM%"]%@NAME["%DoBuildISM%"]\%DoBuildConfiguration%\%DoBuildRelease%\DiskImages\DISK1
+endiff
+iff "%DoBuildCopyFileA%" != "" then
+    iff "%DoBuildCopyFileAtargetName%" != "" then
+        copy "%DoBuildCopyFileA%" "%DoBuildOutputDirectory%\%DoBuildCopyFileAtargetName%"
+    else
+        copy "%DoBuildCopyFileA%" "%DoBuildOutputDirectory%"
+    endiff
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+iff "%DoBuildCopyFileB%" != "" then
+    copy "%DoBuildCopyFileB%" "%DoBuildOutputDirectory%"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+iff "%DoBuildCopyFileC%" != "" then
+    copy "%DoBuildCopyFileC%" "%DoBuildOutputDirectory%"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+iff "%DoBuildCopyFileD%" != "" then
+    copy "%DoBuildCopyFileD%" "%DoBuildOutputDirectory%"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+
+rem * Run CCFixer for SCS builds only
+if exist "%DoBuildOutputDirectory%\Symantec Client Security.msi" "%installRoot%\CCFixer\%binaryType%\CCFixer.exe" "%DoBuildOutputDirectory%\Symantec Client Security.msi"
+if %errorlevel% != 0 goto BuildFailed
+
+rem * Post result as directed
+iff "%DoBuildPostTarget%" != "" then
+    if exist "%DoBuildPostTarget%\*.*" attrib -r -s -h /s /q "%DoBuildPostTarget%\*.*" >& nul
+    if isdir "%DoBuildPostTarget%" del /s /x /y /q /z "%DoBuildPostTarget%\*.*" >& nul
+    md /s "%DoBuildPostTarget%"
+    if %errorlevel% != 0 goto BuildFailed
+    xcopy /s /e /h /k /i /y "%DoBuildOutputDirectory%" "%DoBuildPostTarget%"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+return
+
+
+:BuildFailed
+set returnVal=2
+echo ===                                               ===
+echo `!=*>` FAILED:  Code %returnVal%:  Error detected! `<*=!`
+echo `!=*>` INFO:  At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+echo ===                                               ===
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS not detected!  The 4DOS shell is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS too old!  Version 3.02B or later is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorConfig
+set returnVal=5
+echo `!=*>` FAILED:  Code %returnVal%:  CONFIG failed!  Unable to build. `<*=!`
+goto RealEnd
+
+:ErrorNoClientRoot
+set returnVal=6
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable not set! `<*=!`
+goto RealEnd
+
+:ErrorBadClientRoot
+set returnVal=7
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable invalid! `<*=!`
+goto RealEnd
+
+:ErrorBadCommandLine
+set returnVal=8
+echo `!=*>` FAILED:  Code %returnVal%:  Invalid command line. `<*=!`
+goto RealEnd
+
+:ErrorBadInstallshield
+set returnVal=9
+echo `!=*>` FAILED:  Code %returnVal%:  InstallShield Standalone not found in specified directory. `<*=!`
+goto RealEnd
+
+:ErrorCantBuildReleaseAndDebug
+set returnVal=10
+echo `!=*>` FAILED:  Code %returnVal%:  Cannot build both release and debug configurations `<*=!`
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  "%_BATCHNAME" on %_DATE at %_TIME
+quit %returnVal%

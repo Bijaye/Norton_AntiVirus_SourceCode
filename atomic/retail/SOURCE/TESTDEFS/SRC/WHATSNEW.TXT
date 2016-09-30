@@ -1,0 +1,486 @@
+**********************************************************************
+**                                                                  **
+**  What's New in the NAV Virus Definitions Files      WHATSNEW.TXT **
+**                                                                  **
+**  Symantec AntiVirus Research Center (SARC)    September 10, 1999 **
+**                                                                  **
+**********************************************************************
+This document contains the following topics:
+
+ * Virus Alerts
+ * New Technologies
+ * Changes Incorporated Into This Update
+ * Enabling/Disabling PowerPoint Scanning
+ * Additional Information
+
+**********************************************************************
+** Virus Alerts                                                     **
+**********************************************************************
+The ten most commonly reported viruses, worldwide:
+
+    1  W97M.Class
+    2  XM.Laroux
+    3  O97M.Tristate
+    4  W95.CIH
+    5  Happy99.Worm
+    6  WM.Cap
+    7  W97M.ColdApe
+    8  W97M.Ethan
+    9  W97M.Melissa
+   10  Worm.ExploreZip
+
+**********************************************************************
+** New Technologies 												**
+**********************************************************************
+
+DATE		 Technologies Added
+----		 ------------------
+8/19/98    * Excel heuristics which detect and repair new and unknown
+             macro viruses in Excel 95 & 97 documents.
+
+9/16/98    * Added repair for encrypted Excel 97 documents.
+
+10/21/98   * Heuristics to detect AOL Password Stealer Trojans.
+           * WORD Heuristics improvement to increase detection rate.
+
+12/17/98   * Macro Exclusion Engine to speed up the scanning for Word
+             and Excel documents.
+           * PowerPoint engine to scan PowerPoint related viruses.
+             To enable this technology please read "Enabling/Disabling
+             PowerPoint Scanning" section later in this document.
+
+02/18/99   * Detection and repair of macro viruses in Word and Excel
+             2000 documents.
+
+05/12/99   * Added repair for PowerPoint viruses.
+           * Improved heuristics to detect more WORD 97 related
+             viruses.
+
+06/10/99   * Menu repair technology for WORD macro viruses that change
+             command bar customizations in NORMAL.DOT.
+
+07/12/99   * Added support for scanning of Ichitaro 8/9 documents.
+             (Ichitaro is a Japanese word processing program).
+
+08/19/99   * Added detection and repair for embedded documents inside
+             PowerPoint 97.
+
+
+**********************************************************************
+** Changes Incorporated Into This Virus Definitions Update			**
+**********************************************************************
+New virus definitions:
+
+        Virus Name                Infection Type          Week added
+        ----------                --------------          ----------
+        Bat.Madmax                File infector           09/10/99
+        BO2K.Trojan Variant       File infector           08/09/99
+        Bony.1373                 File infector           09/10/99
+        Bumbee.480                File infector           09/10/99
+        Bumble.250                File infector           08/16/99
+        Chelle.2397               File infector           09/10/99
+        Chelle.2397 (2)           File infector           09/10/99
+        CLME.Ming.1528            File infector           08/09/99
+        Companion.Mad.82          File infector           08/16/99
+        Cosmin.1205               File infector           09/10/99
+        Cosmin.1205.B             File infector           09/10/99
+        DEADMAN.548               File infector           08/16/99
+        Dei.1792 (Gen)            File infector           08/19/99
+        DIKSHEV.COMP.48           File infector           08/09/99
+        DIKSHEV.COMP.49           File infector           08/09/99
+        DIKSHEV.COMP.50           File infector           08/09/99
+        DIKSHEV.COMP.52           File infector           08/09/99
+        DIKSHEV.COMP.53           File infector           08/09/99
+        DIKSHEV.COMP.54           File infector           08/09/99
+        DIKSHEV.COMP.55           File infector           08/09/99
+        DIKSHEV.COMP.56           File infector           08/30/99
+        Dikshev.Comp.57           File infector           09/10/99
+        Dikshev.Comp.59           File infector           09/10/99
+        DIKSHEV.COMP.60           File infector           08/30/99
+        Dikshev.Comp.63           File infector           09/10/99
+        Dikshev.Comp.64           File infector           09/10/99
+        DIKSHEV.COMP.66           File infector           08/30/99
+        EXE Infector              File infector           08/16/99
+        ExeBug.Dropper            File and Boot infector  08/30/99
+        FK.Overwriter             File infector           09/10/99
+        Gotcha.Trojan             File infector           08/16/99
+        HDKill.Trojan             File infector           09/10/99
+        HDKill.Trojan (2)         File infector           09/10/99
+        HG.450                    File infector           08/16/99
+        HLLC.70440                File infector           09/10/99
+        HLLC.70440 (2)            File infector           09/10/99
+        HLLC.Bye.6919             File infector           09/10/99
+        HLLC.Bye.6919 (2)         File infector           09/10/99
+        HLLC.Companion.6796       File infector           08/16/99
+        HLLC.Dpvg.6016            File infector           09/10/99
+        HLLC.Dpvg.6016 (2)        File infector           09/10/99
+        HLLC.Friend.4752          File infector           09/10/99
+        HLLC.Friend.4752 (2)      File infector           09/10/99
+        HLLC.James.24196          File infector           09/10/99
+        HLLC.James.24196 (2)      File infector           09/10/99
+        HLLO.13112                File infector           09/10/99
+        HLLO.13112 (2)            File infector           09/10/99
+        HLLO.Bat2Exec             File infector           09/10/99
+        HLLO.Bat2Exec (2)         File infector           09/10/99
+        HLLO.Pulled               File infector           09/10/99
+        HLLO.Pulled (2)           File infector           09/10/99
+        HLLP.4318                 File infector           08/16/99
+        HLLP.4318 (2)             File infector           08/16/99
+        HLLP.4318 (3)             File infector           08/16/99
+        HLLP.6880                 File infector           09/10/99
+        HLLP.6880 (2)             File infector           09/10/99
+        HLLP.8112                 File infector           09/10/99
+        HLLP.8112 (2)             File infector           09/10/99
+        HLLP.Ache.4921            File infector           09/10/99
+        HLLP.Ache.4921 (2)        File infector           09/10/99
+        HLLP.Dps.4768             File infector           09/10/99
+        HLLP.Dps.4768 (2)         File infector           09/10/99
+        HLLP.Dps.B.4768           File infector           09/10/99
+        HLLP.Dps.B.4768 (2)       File infector           09/10/99
+        HLLP.DUKE.4336            File infector           08/16/99
+        HLLP.DUKE.4336 (2)        File infector           08/16/99
+        HLLP.DUKE.4336 (3)        File infector           08/16/99
+        HLLP.DUKE.5200            File infector           08/16/99
+        HLLP.DUKE.5200 (2)        File infector           08/16/99
+        HLLP.DUKE.5200 (3)        File infector           08/16/99
+        HLLP.DUKE.5280            File infector           08/16/99
+        HLLP.DUKE.5280 (2)        File infector           08/16/99
+        HLLP.DUKE.5280 (3)        File infector           08/16/99
+        HLLP.Eva.4967             File infector           09/10/99
+        HLLP.Eva.4967 (2)         File infector           09/10/99
+        HLLP.Fabrice.10536        File infector           09/10/99
+        HLLP.Fabrice.10536 (2)    File infector           09/10/99
+        HLLP.HMOK.3783            File infector           08/16/99
+        HLLP.HMOK.3783 (2)        File infector           08/16/99
+        HLLP.HMOK.3783 (3)        File infector           08/16/99
+        HLLP.Kobr.8636            File infector           09/10/99
+        HLLP.Kobr.8636 (2)        File infector           09/10/99
+        HLLP.Kollo.7000           File infector           09/10/99
+        HLLP.Kollo.7000 (2)       File infector           09/10/99
+        HLLP.Kollo.B.7000         File infector           09/10/99
+        HLLP.Kollo.B.7000c        File infector           09/10/99
+        HLLP.Mlya.12978           File infector           09/10/99
+        HLLP.Mlya.12978 (2)       File infector           09/10/99
+        HLLP.Mutant.7489          File infector           08/16/99
+        HLLP.Mutant.7489 (2)      File infector           08/16/99
+        HLLP.Mutant.7489 (3)      File infector           08/16/99
+        HLLP.Mutant.7489 (v1)     File infector           08/16/99
+        HLLP.Mutant.7489 (v2)     File infector           08/16/99
+        HLLP.Mutant.7489 (v3)     File infector           08/16/99
+        HLLP.Niki.7412            File infector           09/10/99
+        HLLP.Niki.7412 (2)        File infector           09/10/99
+        HLLP.Pass.8942            File infector           09/10/99
+        HLLP.Pass.8942 (2)        File infector           09/10/99
+        HLLP.PowerPump            File infector           09/10/99
+        HLLP.PowerPump (2)        File infector           09/10/99
+        HLLP.PowerPump.B          File infector           09/10/99
+        HLLP.PowerPump.B (2)      File infector           09/10/99
+        HLLP.PowerPump.C          File infector           09/10/99
+        HLLP.PowerPump.C (2)      File infector           09/10/99
+        HLLP.Soul.5410            File infector           09/10/99
+        HLLP.Soul.5410 (2)        File infector           09/10/99
+        HLLP.Stealt.5410          File infector           09/10/99
+        HLLP.Stealt.5410 (2)      File infector           09/10/99
+        HLLP.Taras.4884           File infector           09/10/99
+        HLLP.Taras.4884 (2)       File infector           09/10/99
+        HLLP.Teterin.7528         File infector           09/10/99
+        HLLP.Teterin.7528 (2)     File infector           09/10/99
+        HLLP.Xenia                File infector           09/10/99
+        HLLP.Xenia (2)            File infector           09/10/99
+        HLLP.Xenia.Dropper        File infector           09/10/99
+        HLLP.Xenia.Dropper (2)    File infector           09/10/99
+        HLLP.Yarik.17194          File infector           09/10/99
+        HLLP.Yarik.17194 (2)      File infector           09/10/99
+        HLLT.6018                 File infector           09/10/99
+        HLLT.6018 (2)             File infector           09/10/99
+        HLLW.6010                 File infector           09/10/99
+        HLLW.6010 (2)             File infector           09/10/99
+        KE.627                    File infector           08/16/99
+        Kitana.114                Boot infector           08/16/99
+        Linux.Bliss.b             File infector           08/09/99
+        Mahon.1364                File infector           08/16/99
+        Mini.75                   File infector           09/10/99
+        Mini.75.B                 File infector           09/10/99
+        Mini.76                   File infector           09/10/99
+        Mini.81                   File infector           09/10/99
+        Mini.83                   File infector           09/10/99
+        Muny.1317                 File infector           09/10/99
+        Muny.655                  File infector           09/10/99
+        Muny.Boot                 Boot infector           09/10/99
+        MUZE.1796                 File infector           08/30/99
+        MUZE.1796 (x)             File infector           08/30/99
+        Muze.1853 (x)             File infector           09/10/99
+        Muze.1853 (x2)            File infector           09/10/99
+        Muze.1860                 File infector           09/10/99
+        Muze.1860 (2)             File infector           09/10/99
+        Muze.1863 (x)             File infector           09/10/99
+        Muze.1863 (x2)            File infector           09/10/99
+        Muze.2022 (x)             File infector           09/10/99
+        Muze.2022 (x2)            File infector           09/10/99
+        Muze.2029                 File infector           09/10/99
+        Muze.2029 (2)             File infector           09/10/99
+        Muze.2032 (x)             File infector           09/10/99
+        Muze.2032 (x2)            File infector           09/10/99
+        Muze.2165                 File infector           09/10/99
+        Muze.2165 (2)             File infector           09/10/99
+        Muze.2165 (x)             File infector           09/10/99
+        Muze.2165 (x2)            File infector           09/10/99
+        Muze.2175 (x)             File infector           09/10/99
+        Muze.2175 (x2)            File infector           09/10/99
+        MVF (2)                   File infector           09/10/99
+        MVF (2b)                  File infector           09/10/99
+        MVF (3)                   File infector           09/10/99
+        MVF (3b)                  File infector           09/10/99
+        NG.288                    File infector           09/10/99
+        November 17.855 (x)       File infector           09/10/99
+        November 17.880 (x)       File infector           09/10/99
+        November 17.880 (x2)      File infector           09/10/99
+        Nutc.Ab2.2000/3000        File infector           08/16/99
+        Nutcracker Family         File infector           08/16/99
+        Nutcracker Family (2)     File infector           08/16/99
+        Nutcracker Family (3)     File infector           08/16/99
+        Nutcracker Family (4)     File infector           08/16/99
+        Nutcracker.6000/7000      File infector           08/16/99
+        Nutcracker.Bhd            File infector           08/16/99
+        Prosiak.Trojan            File infector           08/30/99
+        PWSteal.4564              File infector           08/09/99
+        PWSteal.4564 (2)          File infector           08/09/99
+        PWSteal.Trojan.B          File infector           09/10/99
+        PWSteal.Trojan.B (2)      File infector           09/10/99
+        PWSteal.Trojan.B (3)      File infector           09/10/99
+        Rul.336                   File infector           08/16/99
+        Silk Rope Trojan          File infector           09/10/99
+        Silk Rope Trojan (3)      File infector           09/10/99
+        Silk Rope Trojan (4)      File infector           09/10/99
+        Silkrope Trojan (2)       File infector           09/10/99
+        Silly.Bat                 File infector           08/30/99
+        Termite.6810              File infector           08/30/99
+        Termite.7800              File infector           08/19/99
+        Termite.7800 (2)          File infector           08/19/99
+        Termite.7800 (ini)        File infector           08/30/99
+        Termite.7800.B            File infector           08/30/99
+        Termite.7800.B (2)        File infector           08/30/99
+        Ternop.Worm               File infector           08/30/99
+        TRIVIAL.NOX.255           File infector           08/16/99
+        Trivial.ow.60             File infector           08/30/99
+        Troj.Polygot              File infector           09/10/99
+        Trojan.Fixed              File infector           09/10/99
+        Trojan.KillAV             File infector           08/09/99
+        Trojan.KillAV (2)         File infector           08/09/99
+        Trojan.KillAV (3)         File infector           08/09/99
+        Trojan.KillAV (4)         File infector           08/09/99
+        Trojan.Shutdown           File infector           08/09/99
+        Trojan.Shutdown (2)       File infector           08/09/99
+        Trojan.Shutdown (3)       File infector           08/09/99
+        Typer.704                 File infector           08/19/99
+        VBS.Monopoly              File infector           08/09/99
+        VCG.805                   File infector           09/10/99
+        VCG.930                   File infector           09/10/99
+        VCS Generated             File infector           08/30/99
+        VCS Generated (2)         File infector           08/30/99
+        VCS Virus (Gen1)          File infector           08/30/99
+        VPP.681                   File infector           09/10/99
+        VPP.681 (2)               File infector           09/10/99
+        W32.Bolzano               File infector           08/09/99
+        W32.Bolzano.5396          File infector           09/10/99
+        W32.Bolzano.D             File infector           08/16/99
+        W32.Bolzano.E             File infector           08/30/99
+        W32.Bolzano.F             File infector           08/30/99
+        W32.Bolzano.G/J           File infector           08/30/99
+        W32.Bolzano.H/I           File infector           08/30/99
+        W32.Cholera               File infector           09/10/99
+        W32.CTX                   File infector           09/07/99
+        W32.Heathen               File infector           08/30/99
+        W32.Highway.B             File infector           08/16/99
+        W32.HLLO.12355            File infector           08/30/99
+        W32.HLLO.28471            File infector           08/30/99
+        W32.HLLP.Sneak            File infector           09/10/99
+        W32.HLLW.Randir           File infector           08/30/99
+        W32.HLLW.Randir           File infector           09/10/99
+        W32.HLLW.Randir 2         File infector           09/10/99
+        W32.HLLW.Randir 3         File infector           09/10/99
+        W32.HLLW.Randir 4         File infector           09/10/99
+        W32.Inrar                 File infector           08/30/99
+        W32.Kriz.3740             File infector           08/16/99
+        W32.Savior.1680           File infector           08/16/99
+        W32.Savior.1904           File infector           08/16/99
+        W32.Slow.8192             File infector           08/16/99
+        W95.Altar                 File infector           08/30/99
+        W95.Bumble.1738           File infector           08/16/99
+        W95.Chop                  File infector           09/10/99
+        W95.Evyl                  File infector           08/30/99
+        W95.Evyl.Intended         File infector           09/07/99
+        W95.Fabi.B                File infector           08/16/99
+        W95.Fix2001               File infector           09/10/99
+        W95.Gara                  File infector           08/30/99
+        W95.HLLC.Nan              File infector           08/30/99
+        W95.Hllp.Mtv              File infector           08/16/99
+        W95.Iced.1412             File infector           08/16/99
+        W95.Iced.1617             File infector           08/16/99
+        W95.Iced.2112             File infector           08/16/99
+        W95.Javel                 File infector           09/10/99
+        W95.Lud.Jadis.B           File infector           08/16/99
+        W95.Mad.2806              File infector           08/16/99
+        W95.Orez                  File infector           08/09/99
+        W95.SAB                   File infector           08/30/99
+        W95.Sab.512               File infector           08/09/99
+        W95.Score                 File infector           09/10/99
+        W95.Vip                   File infector           08/30/99
+        W95.Weird.Dropper         File infector           08/19/99
+        W95.Werther               File infector           08/19/99
+        W97M.Akuma.A              File infector           08/16/99
+        W97M.AntiSocial.E         File infector           08/30/99
+        W97M.Automat.H            File infector           08/09/99
+        W97M.Automat.I            File infector           08/09/99
+        W97M.Automat.K            File infector           08/16/99
+        W97M.Automat.L            File infector           08/19/99
+        W97M.Automat.N            File infector           08/19/99
+        W97M.Bablas               File infector           09/10/99
+        W97M.Fabi.B               File infector           08/16/99
+        W97M.Fabi.Dropper         File infector           08/16/99
+        W97M.Locale.B             File infector           08/16/99
+        W97M.Muffin               File infector           09/10/99
+        W97M.QBe                  File infector           09/10/99
+        W97M.Snrml                File infector           08/19/99
+        W97M.Wazzu.FR             File infector           08/09/99
+        WIN95.YOUD.1388           File infector           08/16/99
+        WM.Karatka                File infector           09/10/99
+        Worm.DmSetup.E            File infector           08/30/99
+        Worm.DmSetup.E            File infector           09/10/99
+        Worm.DmSetup.E (2)        File infector           09/10/99
+        Worm.DmSetup.F            File infector           09/10/99
+        Worm.DmSetup.F (2)        File infector           09/10/99
+        X97M.Automat.F            File infector           08/09/99
+        X97M.Automat.M            File infector           08/19/99
+        X97M.LifeBlood            File infector           09/10/99
+        X97M.VCX.F                File infector           08/16/99
+        X97M.Xlscan.b             File infector           08/09/99
+        XM.Automat.D              File infector           08/09/99
+        XM.Automat.G              File infector           08/09/99
+        XM.Automat.O              File infector           08/30/99
+        XM.Laroux.ET              File infector           08/09/99
+        XM.VCX.F                  File infector           08/30/99
+        ZORM.1120                 File infector           08/16/99
+        ZORM.1120 (2)             File infector           08/16/99
+        ZORM.1120 (x)             File infector           08/16/99
+        ZORM.1412                 File infector           08/30/99
+        ZORM.1412(x)              File infector           08/30/99
+        ZORM.1863                 File infector           08/30/99
+
+Name Changes:
+
+        Old Virus Name            New Virus Name          Date changed
+        --------------            --------------          ------------
+        Blankey.STCN           to Bloodhound.Unknown      08/09/99
+        HLLO.13112             to HLLO.13112 (x)          09/10/99
+        HLLO.13112(2)          to HLLO.13112 (x2)         09/10/99
+        W32.Bolzano            to W32.Bolzano.4096.a/b/c  09/10/99
+        W32.Bolzano.D          to W32.Bolzano.2716        09/10/99
+        W32.Bolzano.E          to W32.Bolzano.2664        09/10/99
+        W32.Bolzano.F          to W32.Bolzano.3120        09/10/99
+        W32.Bolzano.G/J        to W32.Bolzano.3192        09/10/99
+        W32.Bolzano.H/I        to W32.Bolzano.4096.d/e    09/10/99
+        W32.Kriz.3740          to W32.Kriz                08/19/99
+        W95.HLLC.Nan           to W32.HLLC.Nan            09/10/99
+        W95.Hllp.Mtv           to W95.HLLP.Mtv            09/10/99
+        W97M.Automat.A         to W97M.Desikrat.A         08/30/99
+        W97M.Automat.B         to W97M.Locale.A           08/09/99
+        W97M.Automat.I         to W97M.AntiSocial.D       08/30/99
+        W97M.Automat.K         to W97M.Thus.A             08/30/99
+        W97M.Automat.N         to W97M.VDNight.A          08/30/99
+        W97M.Automat.H         to W97M.Cont               08/19/99
+        X97M.PTH               to   XM.PTH                09/10/99
+        X97M.VCX.E             to XM.VCX.E (2)            08/30/99
+        X97M.XLSCAN.A          to X97M.VCX.E              08/30/99
+        X97M.Xlscan.b          to X97M.VCX.G              08/30/99
+        XM.Laroux.ET           to XM.Laroux.JI            08/30/99
+
+Deletions:
+
+        Virus Name                Infection Type          Date removed
+        ----------                --------------          ------------
+        HLLP.Taras.4884           File infector           09/10/99
+        HLLP.Taras.4884 (2)       File infector           09/10/99
+        MVF (2)                   File infector           09/10/99
+        November 17.855 (x)       File infector           09/10/99
+        VCS Generated             File infector           08/30/99
+        VCS Virus (Gen1)          File infector           08/30/99
+        W32.HLLW.Randir           File infector           09/10/99
+        Worm.DmSetup.E            File infector           09/10/99
+
+**********************************************************************
+**	Enabling/Disabling PowerPoint Scanning							**
+**********************************************************************
+PowerPoint Scanning is now enabled by default and can be optionally
+disabled.  However, you may want to verify that files with
+PowerPoint extensions will be scanned by making sure that your
+NAV options have both ".PPT" and ".POT" in the list of extensions
+to scan.
+
+To disable PowerPoint scanning in NAV for Windows 95/NT
+version 4.x or NAV for OS/2, a text file named NAVEX15.INF should
+be placed in the directory where NAV 4.x or NAV 5.x is installed
+(i.e., C:\Program Files\Norton AntiVirus).
+
+To disable PowerPoint scanning in NAV for Netware version 4.x, a text
+file named NAVEX15.INF should be placed in the directory where NAV
+4.x is installed (i.e., sys:system\navnlm).
+
+To disable PowerPoint scanning in NAV for Windows 95/NT version 2.0,
+NAV 4.x for Windows 3.1/DOS, NAVIEG 1.x, or NAVFW 1.x a text file
+named NAVEX.INF should be placed in the directory where NAV is
+installed (i.e., C:\NAV).
+
+The contents of the text file, NAVEX15.INF or NAVEX.INF, determine
+which components of NAV have PowerPoint scanning disabled.
+
+To disable PowerPoint scanning for a particular component, use the
+following table to determine the lines to add to the text file.
+PowerPoint scanning can be disabled for more than one component if
+needed by adding the required lines for the desired components.
+
++---------------------+--------------------------+--------------------+
+|Windows 95/NT scanner|Windows 95/NT auto-protect|DOS scanner         |
++---------------------+--------------------------+--------------------+
+|[NAVW32]             |[NAVAP]                   |[NAVDX]             |
+|PowerPointScanning=0 |PowerPointScanning=0 	 |PowerPointScanning=0|
++---------------------+--------------------------+--------------------+
+
++----------------------+--------------------+--------------------+
+|Windows 3.1 scanner/AP|Netware scanner         |OS/2 scanner/AP |
++----------------------+--------------------+--------------------+
+|[NAVWIN]              |[NAVNLM]            |[NAVOS2]            |
+|PowerPointScanning=0  |PowerPointScanning=0|PowerPointScanning=0|
++----------------------+--------------------+--------------------+
+
+To enable PowerPoint scanning for a component, delete the lines
+added for that component from the NAVEX15.INF or NAVEX.INF file.
+
+**********************************************************************
+**	Additional Information											**
+**********************************************************************
+SARC has equipped Norton AntiVirus with a new feature called
+"Infestation Mode."  If a large number of new or unknown viruses
+is found on the system during a scan, Norton AntiVirus will
+automatically enable its highest level of detection.  This gives
+users the most comprehensive protection in cases where a viral
+infestation may have been detected.  If you would like to disable
+this feature, you can do so by following these instructions:
+
+1. Create a text File called NAVEX15.INF in your Norton AntiVirus
+   directory,e.g., C:\Program Files\Norton AntiVirus. If this file
+   already exist go to step two.
+
+2. Place the following lines in this File on the left-hand margin:
+
+[NAVW32]
+infestmode=0
+
+[NAVDX]
+infestmode=0
+
+3. Save the File.
+
+
+Additional information regarding this virus definitions update can be
+found in UPDATE.TXT and TECHNOTE.TXT.

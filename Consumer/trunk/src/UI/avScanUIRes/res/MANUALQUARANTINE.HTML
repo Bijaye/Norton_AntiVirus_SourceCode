@@ -1,0 +1,59 @@
+﻿<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+	<title>Norton AntiVirus - Manual Quarantine</title>
+    	<link rel="stylesheet" type="text/css" href="common.css" />
+    	<link rel="stylesheet" type="text/css" href="MANUALQUARANTINE.CSS" />
+	</head>
+	<body id="body">
+        <div id="description">You can manually quarantine suspected security risks.</div>
+        <fieldset id="addform" class="GroupBox">
+    		<legend id="addlegend" class="GBLegend">File Details:</legend>
+            <table id="filedetailstable" border="0" cellspacing="0" cellpadding="0" class="FormTable">
+                <tr>
+                    <td id="desctitle" class="title"><u>D</u>escription:</td>
+                    <td id="descfield" class="field"><input type="text" id="desc" accesskey="d" maxlength="60"/></td>
+                </tr>
+                <tr>
+                    <td id="filetitle" class="title" width="70px"><u>F</u>ile:</td>
+                    <td id="filefield" class="field"><input type="text" id="filename" accesskey="f" maxlength="4096"/>&nbsp;<BUTTON id="browse" tabindex="1" title="Browse" accesskey="b"><u>B</u>rowse</BUTTON></td>
+                </tr>
+                <tr>
+                    <td id="remtitle" class="title">&nbsp;</td>
+                    <td id="remfield" class="field"><button type="checkbox" id="remove" accesskey="r"><u>R</u>emove file from disk</button></td>
+                </tr>
+                <tr>
+                    <td id="remtitle" class="title">&nbsp;</td>
+                    <td id="remfield" class="field">Removing a file from the disk terminates any running processes that are associated with the file. Save all open files and close all open programs before adding the file to Quarantine.</td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <fieldset id="statusform" class="GroupBox" hide="1">
+    		<legend id="statuslegend" class="GBLegend">Status:</legend>
+            <table id="statustable" border="0" cellspacing="0" cellpadding="0" class="FormTable">
+                <tr><td id="statustext" class="statfield">Pending...</td></tr>
+                <tr><td id="statusprog" class="title"><input type="progress" id="progress" maxvalue="100" value="37"/></td></tr>
+                <tr><td class="Fill"></td></tr>
+            </table>
+        </fieldset>
+
+		<div id="command-bar" class="command-bar">
+			<div id="command-bar-spacer"></div>
+			<div id="rbuttons" class="VCenter">
+    			<button id="add" tabindex="2" title="Add" accesskey="a"><u>A</u>dd</button>
+	    		<button id="cancel" tabindex="3" title="Cancel" accesskey="l">Cance<u>l</u></button>
+		    	<button id="close" tabindex="4" title="Close" accesskey="c" hide="1"><u>C</u>lose</button>
+		    </div>
+		</div>
+	</body>
+</html>

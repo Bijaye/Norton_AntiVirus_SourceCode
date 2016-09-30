@@ -1,0 +1,56 @@
+// vpshell2.idl : IDL source for vpshell2.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (vpshell2.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	[
+	
+		uuid(6F952B5D-BCEE-11D1-82D6-00A0C9749EEF),
+	
+		helpstring("IVpshellEx Interface"),
+		pointer_default(unique)
+	]
+	interface IVpshellEx : IUnknown
+	{
+	};
+	[
+		object,
+		uuid(150C8EB0-BDDF-11D1-82D7-00A0C9749EEF),
+		dual,
+		helpstring("IVPScann Interface"),
+		pointer_default(unique)
+	]
+	interface IVPScann : IDispatch
+	{
+	};
+[
+	uuid(6F952B50-BCEE-11D1-82D6-00A0C9749EEF),
+	version(1.0),
+	helpstring("vpshell2 1.0 Type Library")
+]
+library VPSHELL2Lib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(6F952B5E-BCEE-11D1-82D6-00A0C9749EEF),
+		helpstring("VpshellEx Class")
+	]
+	coclass VpshellEx
+	{
+		[default] interface IVpshellEx;
+	};
+	[
+		uuid(150C8EB1-BDDF-11D1-82D7-00A0C9749EEF),
+		helpstring("VPScann Class")
+	]
+	coclass VPScann
+	{
+		[default] interface IVPScann;
+	};
+};

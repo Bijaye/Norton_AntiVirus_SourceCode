@@ -1,0 +1,99 @@
+Release Notes for the Ataman TCP Remote Logon Services
+
+--------
+Version 2.0
+
+Intial version 2.0 release.
+
+--------
+Version 2.1
+
+Corrected typo in Advanced page.
+
+Usernames are no longer restricted to letters and digits.
+
+Improved verification of user name and domain.
+
+Fixed problems with automatic logons.
+
+Added setting of HOMEDRIVE and HOMEPATH [when home directory is local].
+
+Fixed problem with simple mode handling of "ESC" character.
+
+Numerous documentation clarifications.
+
+--------
+Version 2.2
+
+Documented several Windows NT bugs and workarounds in the
+troubleshooting section of the user's manual.
+
+Refined user editing dialog.
+
+Fixed memory corruption bug affecting banners and other string-based
+configuration parameters.
+
+Fixed it so banners could span more lines than show in the edit box.
+
+If you are waiting on the command prompt based configuration program
+or the group logon capabilities... my apologies... but new-baby-related
+absence of technical staff forced a delay in adding these features.
+We believe we will release them in version 2.3 by November 1st.
+
+--------
+Version 2.3
+
+Fixed bug in simple mode with output when input is totally raw.
+
+Corrected use of return value for WaitForSingleObject in rexec.c.
+
+User's manual gone over by a technical writer.
+
+Fixed bug in Advanced Page code that prevented disabling rexecd.
+
+Added programs for configuration from command-line.
+
+Validity checked HostList in user Control Panel screens.
+
+Added a success MessageBox when registration via Control Panel is successful.
+
+Added feature to allow logons by members of a specified local group without
+additional configuration.
+
+--------
+Version 2.4
+
+All of the below are document in the "Advanced Configuration" section of
+the User's Manual.
+
+Added a switch that allows any valid NT account on the machine to logon.
+
+Added a switch that allows KeepAlives to be disabled.
+
+Added a switch that suppresses character stripping to 7 bits even if
+XBIN mode hasn't been negotiated.
+
+Added a switch to make child cleanup optional.
+(Minor cleanup of code that kills a session.)
+
+Added the following to the instructions for upgrading the ATRLS:
+You will then need to copy the new control panel to the System32 directory:
+	copy atrls.cpl %SystemRoot%\System32
+
+Added a "-w" flag to fg.exe (causes fg to wait for command to exit.
+
+Changed rsh/rexec successful logon message to be similar.
+
+Added a switch to make the Registration Banner print AFTER logon.
+
+--------
+Version 2.4
+
+Added PromptAfterBannerAfterLogon option to aconfig to cause prompt after
+logon banner is printed.
+
+Fixed auseradm and aconfig to double %'s to allow for variable settings.
+
+Added missing eventlog message for LogonUser failure in telnetd/rlogind.
+
+Worked around a bug in Windows NT 4.0 that caused handles not to close.

@@ -1,0 +1,68 @@
+@echo off
+on break cancel
+setlocal
+echo Command line - %0 %&
+
+set temp_dir=%@full[%@path[%_batchname]]
+set current_dir=%@INSTR[0,%@dec[%@LEN[%temp_dir]],%temp_dir]
+set INSTALLSHIELD="%current_dir%\..\..\..\nobuilds\is553"
+set PATH="%INSTALLSHIELD%";"%INSTALLSHIELD%\Program";%PATH%
+
+:phase1
+	rem *** get "Advance Tools" files from release area and place them in appropriate data folder ***
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\SYMKRNLL.DLL %current_dir%\..\Data\Base9x\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\SYMKRNLL.VXD %current_dir%\..\Data\Base9x\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\SYMMONIT.VXD %current_dir%\..\Data\Base9x\	
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\N32USERL.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\NUABOUT.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\NUFONT.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\NUMISC.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\S32FATL.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\S32GUIL.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\S32KRNLL.DLL %current_dir%\..\Data\SharedDLLs\					
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\S32STAT.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\S32UTILL.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\SALTHK16.DLL %current_dir%\..\Data\SharedDLLs\	
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\SALTHK32.DLL %current_dir%\..\Data\SharedDLLs\	
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\TKKE16L.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\TKKE32L.DLL %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\bin.ira\AdvInst.dll %current_dir%\..\Data\SharedDLLs\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\NPROTECT.VXD %current_dir%\..\Data\UnErase9x\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NPDRIVER.SYS %current_dir%\..\Data\UnEraseNT\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NPROTECT.EXE %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\UE32.EXE %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NPCOMSVR.DLL %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\UE32.HLP %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\UE32.CNT %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NDRVEX.DLL %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\UEBMP32.DLL %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\USHELLEX.DLL %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\NU_Nobuilds\NUGLOSS.HLP %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\bin.ira\ADvChk.Exe %current_dir%\..\Data\UnEraseW\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\WIPINFSE.EXE %current_dir%\..\Data\WipeInfo\
+	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\WIPINFSE.HLP %current_dir%\..\Data\WipeInfo\
+    	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\WIPINFSE.CNT %current_dir%\..\Data\WipeInfo\
+    	xcopy %current_dir%\..\..\..\Nobuilds\AdvProt\ADV_PRTN.chm %current_dir%\..\Data\WipeInfo\
+	md %current_dir%\..\Data\BaseNT
+	md %current_dir%\Media\"New Media"\"disk images"	
+	md %current_dir%\Media\"New Media"\"disk images"\disk1
+	xcopy %current_dir%\..\..\bin.ira\AdvInst.dll "%current_dir%\Setup Files\Compressed Files\0009-English\Intel 32"
+		
+:phase2
+	rem *** Build "Advance Tools" (mini NU) Setup(PHASE2) ***
+	pushd
+	cdd %current_dir%
+	cdd .\"Script Files"
+	COMPILE /i"%INSTALLSHIELD%\Include;%current_dir%\Script Files" /v2 "%current_dir%\Script Files\Setup.rul"
+	cd ..
+	ISBUILD -p"%current_dir" -m"New Media"
+	popd
+    
+:phase3
+	rem *** Package for the Web (PHASE3) ***
+	rem attrib -r %current_dir%\NAVAdvPr.pfw
+	rem R:\ISHIELD\Pftw\300\pftwwiz.exe  %current_dir%\NAVAdvPr.pfw -a
+	
+endlocal
+
+quit 0

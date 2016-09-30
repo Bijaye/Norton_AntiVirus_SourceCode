@@ -1,0 +1,20 @@
+;This script file supports and has been tested with
+;McAfee Antivirus for 95 Version 4.02
+Platform=Win95
+
+getuninstallprogramname=HKEY_LOCAL_MACHINE,software\microsoft\windows\currentversion\uninstall\mcafee virusscan,uninstallstring
+GetUninstallProgramPath=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+SetUnInstallProgramName=WCMDR.EXE
+AddProgramParameters= -i
+GetUninstallScriptPath=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+SetUninstallScriptName=WCMDRSIL.INI
+runrobot=300
+
+
+;getuninstallprogramname=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+;GetUninstallProgramPath=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+;SetUnInstallProgramName=UNINST.EXE
+;AddProgramParameters= -a -y -f
+;GetUninstallScriptPath=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+;SetUninstallScriptName=DEISL1.ISU
+;runrobot=300

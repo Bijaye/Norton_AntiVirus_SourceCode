@@ -1,0 +1,23 @@
+HKCR
+{
+	Qserver.QServerSavInfo.1 = s 'QServerSavInfo Class'
+	{
+		CLSID = s '{D887D941-CEDE-452d-B0B5-B5472CF58B6C}'
+	}
+	Qserver.QServerSavInfo = s 'QServerSavInfo Class'
+	{
+		CLSID = s '{D887D941-CEDE-452d-B0B5-B5472CF58B6C}'
+		CurVer = s 'Qserver.QServerSavInfo.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {D887D941-CEDE-452d-B0B5-B5472CF58B6C} = s 'QuarantineServerII Class'
+		{
+			ProgID = s 'Qserver.QServerSavInfo.1'
+			VersionIndependentProgID = s 'Qserver.QuarantineServerII'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{C60B0154-894B-11D2-8E5F-2A0712000000}'
+			'TypeLib' = s '{C60B0153-894B-11D2-8E5F-2A0712000000}'
+		}
+	}
+}

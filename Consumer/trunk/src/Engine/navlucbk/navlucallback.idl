@@ -1,0 +1,29 @@
+// NavLUCallback.idl : IDL source for NavLUCallback.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NavLUCallback.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(3C2E74A0-887E-11D2-B40A-00600831DD76),
+	version(1.0),
+	helpstring("NavLUCallback 1.0 Type Library")
+]
+library NAVLUCALLBACKLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	importlib("ProductRegCOM.tlb");
+
+	[
+		uuid(09C9DBC1-893D-11D2-B40A-00600831DD76),
+		helpstring("luNavCallBack Class")
+	]
+	coclass luNavCallBack
+	{
+		[default] interface IluCallBack;
+	};
+};

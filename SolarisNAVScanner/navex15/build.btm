@@ -1,0 +1,152 @@
+::------------------------------------------------------------------------
+::
+:: $Header:   S:/NAVEX15/VCS/build.btv   1.10   03 Dec 1998 17:23:14   rpulint  $
+::
+:: Description:
+::   Build file for NAVEX15.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVEX15/VCS/build.btv  $
+:  
+:     Rev 1.10   03 Dec 1998 17:23:14   rpulint
+:  Added makefile for OS2 platform
+:  
+:     Rev 1.9   02 Jul 1998 18:18:32   DCHI
+:  Added make of NAVEX15.EXP with NOMACRO env var set.
+:  
+:     Rev 1.8   03 Dec 1997 17:07:04   RFULLER
+:  Update to copy NAVEX15.H to branch M
+:
+:     Rev 1.7   17 Oct 1997 20:30:14   STRILLI
+:  Need to have full path of skipped files.
+:
+:     Rev 1.6   01 Nov 1997 20:24:24   STRILLI
+:  Syntax change.
+:
+:     Rev 1.5   01 Nov 1997 20:22:34   STRILLI
+:  When copying NAVEX files to NAVEX15, don't copy any files which are
+:  already checked into NAVEX15.
+:
+:     Rev 1.4   16 Jul 1997 18:48:40   DCHI
+:  Added statement to copy symkrn.ark to symkrnl.lib for ARUK platform.
+:
+:     Rev 1.3   09 Jul 1997 17:57:24   DCHI
+:  Only build virscan6.dat under DX, no need to always build it.
+:
+:     Rev 1.2   09 Jul 1997 17:28:34   DCHI
+:  Added mk of virscan6.mak.
+:
+:     Rev 1.1   24 Jun 1997 18:02:16   DALLEE
+:  Use SYMKRN15.xxx for symkrnl.lib.
+:  Version used in shipping NAVEX automatically asserts on VxD string functions.
+:
+:     Rev 1.0   03 Jun 1997 17:25:16   DCHI
+:  Initial revision.
+::
+::------------------------------------------------------------------------
+@echo off
+
+@echo Updating ALL Virlib Global include areas with NAVEX.H
+
+rem Copy all the source from navex except for files already checked into NAVEX15
+except (s:\navex\src\build.btm s:\navex\src\projhook.inf s:\navex\src\update.btm) copy s:\navex\src\*.* s:\navex15\src\
+
+rem Copy NAVEX15.H to the trunk include directory.
+copy s:\navex\SRC\NAVEX15.H %PROJPRE%INCLUDE\SRC\*.*
+
+:: iff "%PLATFORM" NE ".NTK" then
+:: DATE <s:\source\nobuilds\src\date.txt
+:: endiff
+
+rem Copy NAVEX15.H to each branch include directory.
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G H I J K L M) gosub CopyToBranch15
+
+gosub BuildNAVEX15
+
+
+::
+::  nlm always builds w/ debug info.
+::  sve it as *.dbg and strip debug info from *.nlm
+::
+iff %PLATFORM% == .NLM then
+    if exist *.nlm copy *.nlm *.dbg
+    for %nlmfile in (*.nlm) gosub stripnlm15
+endiff
+
+goto done15
+
+
+
+::
+::  Strip debug information from the NLM.
+::
+
+:stripnlm15
+
+wstrip %nlmfile
+nukedbug %nlmfile
+
+return
+
+
+
+:CopyToBranch15
+
+if isdir %PROJPRE%INCLUDE\SRCQAK%d%  copy s:\navex\SRC\NAVEX15.H %PROJPRE%INCLUDE\SRCQAK%d%\*.*
+
+return
+
+
+
+:BuildNAVEX15
+
+iff "%PLATFORM" EQ ".NTK" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrn15.ntk symkrnl.lib > symkrnl.cpy
+endiff
+
+iff "%PLATFORM" EQ ".VXD" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrn15.vxd symkrnl.lib > symkrnl.cpy
+endiff
+
+iff "%PLATFORM" EQ ".ARUK" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrn15.ark symkrnl.lib > symkrnl.cpy
+endiff
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Building NAVEX15.EXP without the macro engine
+
+iff "%PLATFORM" EQ ".DX" then
+set NOMACRO=Y
+call mk navex15 %&
+set NOMACRO=
+ren navex15.exp nvx15nom.exp
+endiff
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Building all NAVEXes with the macro engine
+
+iff "%PLATFORM" NE ".OS2" then
+  call mk navex15 %&
+else
+  wmake /f s:navex15.wmk /L build.err
+endiff
+
+if exist make.err copy build.err+make.err build.err
+
+if exist symkrnl.cpy del symkrnl.cpy symkrnl.lib
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Building all VIRSCAN6.DAT once under DX
+
+iff "%PLATFORM" EQ ".DX" then
+call mk virscan6 %&
+endiff
+
+return
+
+
+:done15
+

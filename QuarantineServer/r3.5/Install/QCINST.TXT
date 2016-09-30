@@ -1,0 +1,114 @@
+QCINST.TXT
+
+
+=========================================================
+= Symantec Corporation					=
+= Symantec Anti-virus					=
+= Corporate						=
+= Quarantine console installation			=
+=========================================================
+= Edward E. Hopkins					=
+= Contract Consultant/programmer			=
+= XXCAL Technical Recruiting				=
+= For Symantec Corporation				=
+=========================================================
+= Last updated:						=
+= 4-7-99						=
+=========================================================
+
+
+Quarantine Console Installer
+============================
+1.  Perforce Client spec (CM template for server mappings):
+
+	BUILD_QSERVER
+
+
+2.  Source files (binaries to install):
+
+	Defaults:
+		PERFORCE_ROOT="[local machine mapping]"		// i.e. C:\
+
+	Files:
+		PERFORCE_ROOT\\QuarantineServer\Shared\BinIntelUnicodeWin32Release\QSCON.DLL
+		PERFORCE_ROOT\\Norton_AntiVirus\NavAPI\BinIntelAnsiWin32Release\NAVAPI32.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\bin.ira\SCANDLVR.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\bin.ira\SCANDRES.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\bin.ira\DEFANNTY.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\nobuilds\src\SDSOK32I.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\nobuilds\src\SDSTP32I.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\nobuilds\src\SDSND32I.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\nobuilds\src\SDPCK32I.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\nobuilds\src\SDFLT32I.DLL
+		\\Ussm-dev1\vol1\nav\avcore\source\nobuilds\src\FILTER.DAT
+		PERFORCE_ROOT\\tools\msvc6_sp2\redist\Mfc42u.dll
+		PERFORCE_ROOT\\tools\msvc6_sp2\redist\Msvcrt.dll
+		PERFORCE_ROOT\\QuarantineServer\Nobuilds\Immc.exe
+
+
+3.  Destination paths (files copied to end-user machine during installation):
+
+	Defaults:
+		<TARGETDIR>="C:\Program Files\Qconsole"
+		<WINSYSDIR>="C:\Winnt\System32\"
+
+	Files:
+		*=auto-registering file
+		+=may be locked
+
+		<TARGETDIR>\QSCON.DLL *
+		<TARGETDIR>\NAVAPI32.DLL
+		<TARGETDIR>\SCANDLVR.DLL *
+		<TARGETDIR>\SCANDRES.DLL
+		<TARGETDIR>\DEFANNTY.DLL
+		<TARGETDIR>\SDSOK32I.DLL
+		<TARGETDIR>\SDSTP32I.DLL
+		<TARGETDIR>\SDSND32I.DLL
+		<TARGETDIR>\SDPCK32I.DLL
+		<TARGETDIR>\SDFLT32I.DLL
+		<TARGETDIR>\FILTER.DAT
+		<WINSYSDIR>\Mfc42u.dll +
+		<WINSYSDIR>\Msvcrt.dll +
+
+
+4.  System Registry Keys (to be created on end-user machine during installation):
+
+	Defaults:
+		NAV_ROOT="My Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Symantec Antivirus"
+
+	Keys to create\overwrite:
+		NAV_ROOT\Qconsole
+		NAV_ROOT\Quarantine
+
+	Values to add\overwrite:
+		NAV_ROOT\Qconsole\InstallPath="<TARGETDIR>"
+		NAV_ROOT\Qconsole\Language="<LANGUAGE>"
+		NAV_ROOT\Quarantine\Corporate Features=1
+
+
+5.  Special instructions:
+
+	Minimum OS: NT 4.0 (SP3)
+
+	Check/update NAV's "Hawking ID's"
+		If not installed, install new def's + hub
+		Def files located (updated weekly):
+		\\Ussm-def3\quake\core\source\navdefs\src\navdefs.zip
+		Hub files located:
+		\\Ussm-def3\quake\core\source\crmthubs\
+		Must have def+hubs installed to run Hawking DLL calls
+
+		Hawking install procedure  (from CDefUtils class):
+			InitInstallApp(szAppID, NULL, NULL);
+			PreDefUpdate(szDir, nDirSize, UpdateType);  // UpdateType=CDefUtils::Install (?)
+			[Copy def and hub files to temp folder returned in szDir]
+			PostDefUpdate();
+			UseNewestDefs();
+			OK now do rest of install
+
+		Docs:
+		\\Ussm-admin1\shared\shared\hawking\hawkingAPIv15.rtf
+
+		Location of virus def's files:
+		C:\Program Files\Common Files\Symantec\Virus Defs
+		ex. usage.dat, 19990301.001, etc.

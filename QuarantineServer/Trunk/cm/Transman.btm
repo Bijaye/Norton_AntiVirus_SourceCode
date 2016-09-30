@@ -1,0 +1,88 @@
+on break cancel
+setlocal
+pushd
+
+
+
+cd ..\..\..\Norton_AntiVirus\Corporate_Edition
+
+REM  delete acta.h and acta.c then run makemsgs
+
+cd Common\src\PScan
+iff exist acta.h then
+	attrib /q -r acta.h
+	del /q /y acta.h
+endiff
+iff exist acta.c then
+	attrib /q -r acta.c
+	del /q /y acta.c
+endiff
+
+cd ..\MakeMsgs
+
+echo Running makemsgs...
+makemsgs h
+
+cd ..\PScan
+
+
+REM  delete msg.h, msg.rc and msg00001.bin and then run the message compiler on msg.mc
+
+iff exist msgs.h then
+        attrib /q -r msgs.h
+        del /q /y msgs.h
+endiff
+
+iff exist msgs.rc then
+        attrib /q -r msgs.rc
+        del /q /y msgs.rc
+endiff
+
+iff exist msg00001.bin then
+        attrib /q -r msg00001.bin
+        del /q /y msg00001.bin
+endiff
+
+echo .
+echo Running message compiler...
+mc msgs.mc
+echo .
+
+cd ..\..\..
+
+
+set make_err=..\..\..\..\..\QuarantineServer\cm\make.err
+set buildr_err=..\..\..\..\..\QuarantineServer\cm\buildr.err
+set buildd_err=..\..\..\..\..\QuarantineServer\cm\buildd.err
+
+
+if "%@upper[%1]" == "/DBG" goto Debug
+
+cd Win32\src\Pscan\Transman
+echo Building Transman - Release...
+
+devenv Transman.vcproj /rebuild Release /OUT "make.err" /
+type make.err >> %buildr_err
+
+cd ..
+echo ..
+echo *** Transman build complete ***
+
+goto AllDone
+
+:Debug
+
+cd Win32\src\Pscan\Transman
+echo Building Transman - Debug...
+
+msdev Transman.dsp /MAKE "ALL - Debug" /OUT "make.err" /REBUILD
+type make.err >> %buildd_err
+
+cd ..
+echo ..
+echo *** Transman build complete ***
+
+:AllDone
+
+popd
+endlocal

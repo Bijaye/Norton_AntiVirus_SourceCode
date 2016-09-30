@@ -1,0 +1,300 @@
+[COMPONENT]
+NAME=SVCLIENT
+
+
+[REG_DEF]
+!KEY!=$REGROOT$\LoginOptions
+DoScanOnWinNT=D0
+DoScanOnWin95=D0
+DoScanOn16Bit=D0
+DoInstallOnWinNT=SNONE
+DoInstallOnWin95=SNONE
+DoInstallOn16Bit=SNONE
+WinNTClientVersion=D1
+Win95ClientVersion=D1
+16BitClientVersion=D1
+
+!KEY!=$REGROOT$\ClientConfig
+!KEY!=$REGROOT$\ClientConfig\AdministratorOnly
+!KEY!=$REGROOT$\ClientConfig\AdministratorOnly\General
+DisplayOutdatedMessage=D0
+RunBrowser=D0
+ShowVPIcon=D0
+
+!KEY!=$REGROOT$\ClientConfig\AdministratorOnly\Security
+LockUnloadServices=D1
+NetScanPassword=S
+UseScanNetDrivePassword=D1
+UseVPUninstallPassword=D1
+VPUninstallPassword=S
+
+!KEY!=$REGROOT$\ClientConfig\Common
+MessageBox=D0
+RenameExt=SVIR
+AlertParent=D1
+NTEventLog=D1
+LDVPEventLog=D1
+ForwardLogs=D0
+AMSonLogEvents=D0
+
+!KEY!=$REGROOT$\ClientConfig\LocalScans\Idle scan options
+OnOff=D1
+Beep=D0
+FirstMacroAction=D5
+FirstAction=D5
+SecondAction=D4
+SecondMacroAction=D4
+
+;Files to scan
+FileType=D0
+Exts=SEXE,COM,BIN,OVL,SYS,DLL,OCX,XLS,DOT,DOC,XLT,HTML,HTT,HTM,VBS,JS,SHS,PPT,MSO
+Types=D6
+ZipDepth=D3
+ZipExts=SARJ,LHA,ZIP,MME,LZH,UUE
+ZipFile=D0
+
+!KEY!=$REGROOT$\ClientConfig\LocalScans\Idle scan options\Directories
+
+!KEY!=$REGROOT$\ClientConfig\LocalScans\ManualScan
+Checksum=D0
+DisplayStatusDialog=D1
+Logger=D1
+ScanMemory=D1
+Softmice=D1
+ScanBootSector=D1
+FirstMacroAction=D5
+FirstAction=D5
+SecondMacroAction=D4
+SecondAction=D4
+ScanAllDrives=D1
+MessageBox=D0
+
+;Files to scan
+FileType=D1
+Exts=SXLS,DOT,DOC,XLT,HTML,HTT,HTM,VBS,JS,SHS,PPT,MSO,POT,RTF,MDB,JTD,HLP,INF,INI,HTA,MP?,OBD,OBT,PPS,SMM,VSD,VST,XL?,VSS,JSE,VBE,SH,SHB,WSF,WSH,PL,PM,CSH,EXE,COM,BIN,OVL,SYS,DLL,OCX,VXD,BAT,BTM,CSC,PIF,386,CLA,OV?,DRV,SCR,ACM,ACV,ADT,AX,CPL
+Types=D6
+ZipDepth=D3
+ZipExts=SARJ,LHA,ZIP,MME,LZH,UUE
+ZipFile=D1
+
+!KEY!=$REGROOT$\ClientConfig\LocalScans\ManualScan\ChecksumConfig
+FirstAction=D4
+SecondAction=D4
+
+!KEY!=$REGROOT$\ClientConfig\PatternManager
+CheckConfigMinutes=D60
+LockUpdatePattern=D1
+SetClientFromServer=D1
+UpdateClients=D1
+
+!KEY!=$REGROOT$\ClientConfig\ProductControl
+ManageThisComputer=D0
+
+!KEY!=$REGROOT$\ClientConfig\Storages\FileSystem\RealTimeScan
+MessageBox=D1
+HoldOnClose=D1
+OnOff=D1
+DriveList=S
+Floppys=D1
+Networks=D1
+HardDisks=D1
+CDRoms=D0
+HaveExceptionDirs=D0
+DoCompressed=D0
+DenyAccess=D1
+CheckRemoveable=D1
+Reads=D1
+Writes=D1
+ClientDir=S$CHOME$\Alert
+Execs=D1
+Trap=D0
+CheckSum=D0
+Softmice=D1
+Cache=D1
+FirstMacroAction=D5
+FirstAction=D5
+SecondMacroAction=D1
+SecondAction=D1
+Logger=D2
+
+;Files to scan
+FileType=D0
+Exts=SXLS,DOT,DOC,XLT,HTML,HTT,HTM,VBS,JS,SHS,PPT,MSO,POT,RTF,MDB,JTD,HLP,INF,INI,HTA,MP?,OBD,OBT,PPS,SMM,VSD,VST,XL?,VSS,JSE,VBE,SH,SHB,WSF,WSH,PL,PM,CSH,EXE,COM,BIN,OVL,SYS,DLL,OCX,VXD,BAT,BTM,CSC,PIF,386,CLA,OV?,DRV,SCR,ACM,ACV,ADT,AX,CPL
+Types=D6
+ZipDepth=D3
+ZipExts=SARJ,LHA,ZIP,MME,LZH,UUE
+ZipFile=D0
+
+!KEY!=$REGROOT$\ClientConfig\Storages\FileSystem\RealTimeScan\ChecksumConfig
+FirstAction=D4
+SecondAction=D4
+
+
+[REG_REQ]
+!KEY!=$REGROOT$
+ManageClients=D1
+ClientsInstalled=D1
+DosInstDir=S$HOME$\CLT-INST\DOS
+WIN32InstDir=S$HOME$\CLT-INST\WIN32
+WIN16InstDir=S$HOME$\CLT-INST\WIN16
+
+!KEY!=$REGROOT$\LoginOptions
+ScannerName16=SVSCAND.EXE
+ScannerName32=SVSCAND.EXE
+ScannerOptions16=S/CM /V /C /SE
+ScannerOptions32=S/CM /V /C /SE
+ExecOptions=S/F
+
+!KEY!=$REGROOT$\ClientConfig
+LicenseNumber=S$LICENSE$
+Connected=D1
+FullGRCUpdateCounter=D1
+
+!KEY!=$REGROOT$\Clients
+
+
+[REG_WINNT_ONLY]{NT}
+!KEY!=$REGROOT$\ClientConfig
+AlertDirectory=S\\$FILE_SERVER$\VPALERT$
+RemoteHomeDirectory=S\\$FILE_SERVER$\VPHOME
+!KEY!=$REGROOT$\LoginOptions
+InstallProgram32=S\\$FILE_SERVER$\VPHOME\CLT-INST\WIN32\Setup.EXE
+
+
+[REG_REQ]{NW}
+!KEY!=$REGROOT$\ClientConfig
+AlertDirectory=S$UNCHOME$\ALERT
+RemoteHomeDirectory=S$UNCHOME$
+!KEY!=$REGROOT$
+LoginDir=SSYS:\LOGIN\NAV
+!KEY!=$REGROOT$\LoginOptions
+InstallProgram32=S$UNCHOME$\CLT-INST\WIN32\Setup.EXE
+
+
+
+;NW 4.x Container Login Script
+[DSPROFILE]{NDS}
+IF MEMBER OF ".CN=NortonAntiVirusUser.$OU$" THEN
+  MAP INS S1:=$FILE_SERVER$\SYS:\LOGIN\NAV
+  #OSVER
+  IF "%ERROR_LEVEL" = "0" THEN
+     IF "%OS" = "WIN95" OR "%OS" = "WIN98" THEN
+	   #VP_Log32 /p=\\$FILE_SERVER$\SYS\LOGIN\NAV
+     END
+  ELSE
+  IF "%ERROR_LEVEL" = "1" THEN
+; Not Client 32 -- do normal DOS things
+	 #PUSHPOP +T \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+	 MAP T:=$FILE_SERVER$\SYS:
+	 #LOGINVER
+	 #VP_Log16 /p=T:LOGIN\NAV /l=$LANG_ID$ /n="%ERROR_LEVEL"
+	 IF "%ERROR_LEVEL" = "1" THEN
+		 #TSRINIT /Q T:\LOGIN\NAV\VPSCAN16.BAT T:\LOGIN\NAV
+		 #TSRINIT /Q \\$FILE_SERVER$\SYS\LOGIN\NAV\PUSHPOP -T: \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+	 ELSE
+		 #PUSHPOP -T: \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+	 END
+  ELSE
+; In case it is Client 32 on Windows 3.1
+    IF "%ERROR_LEVEL"="3" OR  "%ERROR_LEVEL"="2" OR "%ERROR_LEVEL"="17" THEN
+      #\\$FILE_SERVER$\SYS\LOGIN\NAV\OSVER
+      IF "%ERROR_LEVEL" = "1" THEN
+; It is Client 32 on Windows 3.1
+        #PUSHPOP +T \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+        MAP T:=$FILE_SERVER$\SYS:
+        #VP_Log16 /p=T:LOGIN\NAV /l=enu /n="4"
+;        #VPSCAN16.BAT T:\LOGIN\NAV
+        #TSRINIT /Q \\$FILE_SERVER$\SYS\LOGIN\NAV\PUSHPOP -T: \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+      ELSE
+	   #VP_Log32 /p=\\$FILE_SERVER$\SYS\LOGIN\NAV
+	END
+	END
+  END
+  END
+  MAP DEL S1:
+END
+!END!
+
+
+[DIRECTORIES]
+$HOME$\CLT-INST
+
+
+[DIRECTORIES]{NW}
+$HOME$\LOGIN
+SYS:\LOGIN\NAV
+SYS:\LOGIN\NAV\VPTEMP
+SYS:\LOGIN\NAV\I2_LDVP.TMP
+SYS:\LOGIN\NAV\I2_LDVP.VDB
+
+
+[DSOBJECTS]{NDS}
+GROUPMEMBERS=NortonAntiVirusAdmin
+GROUPMEMBERS=NortonAntiVirusUser
+GROUPPRIMS=NortonAntiVirusAdmin,$HOME$,RWFCDSA
+GROUPPRIMS=NortonAntiVirusAdmin,SYS:\LOGIN\NAV,RWFCDSA
+GROUPPRIMS=NortonAntiVirusUser,$HOME$,RF
+GROUPPRIMS=NortonAntiVirusUser,$HOME$\ALERT,RWFC
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV,RWFCM
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV\VPTEMP,RWFCM
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV\I2_LDVP.TMP,RWFCM
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV\I2_LDVP.VDB,RWFCM
+
+
+[BINDERYOBJECTS]{BINDERY}
+GROUPMEMBERS=NortonAntiVirusAdmin
+GROUPMEMBERS=NortonAntiVirusUser
+GROUPPRIMS=NortonAntiVirusAdmin,$HOME$,RWFCDSA
+GROUPPRIMS=NortonAntiVirusAdmin,SYS:\LOGIN\NAV,RWFCDSA
+GROUPPRIMS=NortonAntiVirusUser,$HOME$,RF
+GROUPPRIMS=NortonAntiVirusUser,$HOME$\ALERT,RWFC
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV,RWFCM
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV\VPTEMP,RWFCM
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV\I2_LDVP.TMP,RWFCM
+GROUPPRIMS=NortonAntiVirusUser,SYS:\LOGIN\NAV\I2_LDVP.VDB,RWFCM
+
+
+[BINDERYLOGIN]{BINDERY}
+IF MEMBER OF "NortonAntiVirusUser" THEN
+  MAP INS S1:=$FILE_SERVER$\SYS:\LOGIN\NAV
+  #OSVER
+  IF "%ERROR_LEVEL" = "1" THEN
+; Not Client 32 -- do normal DOS things
+	 #PUSHPOP +T \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+	 MAP T:=$FILE_SERVER$\SYS:
+	 #LOGINVER
+	 #VP_Log16 /p=T:LOGIN\NAV /l=$LANG_ID$ /n="%ERROR_LEVEL"
+	 IF "%ERROR_LEVEL" = "1" THEN
+		 #TSRINIT /Q T:\LOGIN\NAV\VPSCAN16.BAT T:\LOGIN\NAV
+		 #TSRINIT /Q \\$FILE_SERVER$\SYS\LOGIN\NAV\PUSHPOP -T: \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+	 ELSE
+		 #PUSHPOP -T: \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+	 END
+  ELSE
+; In case it is Client 32 on Windows 3.1
+    IF "%ERROR_LEVEL"="3" OR  "%ERROR_LEVEL"="2" OR "%ERROR_LEVEL"="17" THEN
+      #\\$FILE_SERVER$\SYS\LOGIN\NAV\OSVER
+      IF "%ERROR_LEVEL" = "1" THEN
+; It is Client 32 on Windows 3.1
+        #PUSHPOP +T \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+        MAP T:=$FILE_SERVER$\SYS:
+        #VP_Log16 /p=T:LOGIN\NAV /l=enu /n="4"
+;        #VPSCAN16.BAT T:\LOGIN\NAV
+        #TSRINIT /Q \\$FILE_SERVER$\SYS\LOGIN\NAV\PUSHPOP -T: \\$FILE_SERVER$\SYS\LOGIN\NAV\VPTEMP
+      ELSE
+	   #VP_Log32 /p=\\$FILE_SERVER$\SYS\LOGIN\NAV
+	END
+  END
+  END     ; Added this end - this was missing in the script
+  MAP DEL S1:
+END
+!END!
+
+
+[REPLACEVARIABLES]{NW}
+$HOME$\LOGIN\VP5Login.DAT
+
+
+[CopyDirectories]{NW}
+SYS:\LOGIN\NAV=$HOME$\LOGIN
+

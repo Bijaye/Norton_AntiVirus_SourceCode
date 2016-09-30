@@ -1,0 +1,45 @@
+:: GenerateCLTVaults.btm
+:: This batch file generates 2 "flavors" of CLTVault.dll:
+:: NAV Standard and Emerging
+
+
+:: Get path of this batch file and call it root
+set root=%@path[%_batchname%]%
+echo ROOT = %root%
+rem If the last character in root is not a '\', then append one.
+iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+   set root=%root%\
+endiff
+
+:: Get product name
+set PROD=%1
+
+:: Resource replacement tool
+set RESOURCEUPDATER="%root%..\..\SDKs\ComponentFramework\bin.iru\ResourceUpdater.exe"
+
+:: Directory paths
+set PUT_PATH=%root%..\..\src\BIN\bin.iru\suiteowner\UnWrapped\%PROD%\
+set NAVSTANDARD_PATH=%PUT_PATH%Standard\
+set NAVEMERGING_PATH=%PUT_PATH%\Emerging\
+
+:: File paths
+set CLTVAULT=%root%..\..\src\BIN\bin.iru\suiteowner\UnWrapped\%PROD%\CLTVault.dll
+
+:: Strings to replace
+set NAVSTANDARD_GUID={188A069B-EF8F-4694-B8A8-9B8A3BF975FD}
+set NAVEMERGING_GUID={0A60CA58-E258-467d-A9E6-482297444359}
+
+mkdir %PUT_PATH%
+
+:: NAV Standard
+	:: Copy the built CLTVAULT
+	mkdir %NAVSTANDARD_PATH%
+	copy %CLTVAULT% %NAVSTANDARD_PATH%\CLTVault.dll
+	
+:: NAV Emerging
+	:: Copy CLTVAULT for modification
+	mkdir %NAVEMERGING_PATH%
+	copy %CLTVAULT% %NAVEMERGING_PATH%\CLTVault.dll
+	
+	:: Replace GUID
+	%RESOURCEUPDATER% /update %NAVEMERGING_PATH%CLTVault.dll /replace "%NAVSTANDARD_GUID=%NAVEMERGING_GUID"

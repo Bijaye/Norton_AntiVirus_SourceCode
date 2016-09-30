@@ -1,0 +1,103 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+        <title id="sys_ap_title">Norton Antivirus Real-Time Protection: Instant Messenger</title>
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <script language="javascript" src="options.js"></script>
+    </head>
+    <BODY class="clsDetails" id="body_rtp_im" onhelp="parent.CurrentPage.Help();"
+        tabIndex="-1" bottomMargin="0" leftMargin="5" topMargin="5" scroll="no" onLoad="parent.CurrentPage = new InstantMessengerPage();">
+        <IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+            SRC="options_errorid.htm"></IFRAME>
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script Language="JavaScript" src="options_rtp_im.js"></script>
+        <link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+        <!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+        <span id="ConfiguredGood" style="display:none">Successfully configured Instant Messenger clients.</span>
+        <!-- end of JavaScript text -->
+
+        <div class="optionpage_header">
+			REAL-TIME PROTECTION:&nbsp;Instant Messenger
+	   </div>
+
+        <form name="options_rtp_im">
+			<div class="optiongroup_header">
+				Which instant messengers to protect
+			</div>
+			<div class="optiongroup">
+				<div id="s_YIM_Enabled" class="rf_option">
+					<input type="checkbox"
+						id="YIM_Enabled"
+						name="YIM_Enabled"
+					onclick="ConfCheck()"
+						onpropertychange="ConfCheck()" accesskey="Y" />
+				<span id="n1"><u>Y</u>ahoo! Messenger</span>
+				</div>
+				<div id="s_AIM_Enabled" class="rf_option">
+					<input type="checkbox"
+						id="AIM_Enabled"
+						name="AIM_Enabled"
+					onclick="ConfCheck()"
+						onpropertychange="ConfCheck()" accesskey="A" />
+				<span id="n2"><u>A</u>OL Instant Messenger (requires version 4.7 or later)</span>
+				</div>
+				<div id="s_MSN_Enabled" class="rf_option">
+					<input type="checkbox"
+						id="MSN_Enabled"
+						name="MSN_Enabled"
+						onclick="ConfCheck()"
+						onpropertychange="ConfCheck()" accesskey="M" />
+				<span id="n3"><u>M</u>SN Messenger (requires version 6.0 or later)</span>
+				</div>
+				<div id="s_Configure_IM" class="rf_option" style="margin-top: 5px;">
+					<button id="Configure_IM"
+						name="Configure_IM"
+						onclick="ConfigureIM();"						
+						onMouseOver="ButtonMouseOver(this); return false;" 
+						onMouseOut="ButtonMouseOut(this); return false;" 
+						onMouseDown="ButtonMouseDown(this); return false;" 
+						onKeyDown="ButtonKeyDown(this);" 
+						onKeyUp="ButtonKeyUp(this);" 				
+						onFocus="ButtonFocus(this); return false;" 
+						onBlur="ButtonBlur(this); return false;" 				
+						class="stdbttn"
+						accesskey="e">
+						S<u>e</u>arch
+					</button>
+					<span id="Configure_IM_Label">Check for new instant messenger programs</span>
+				</div>
+			</div>
+			<br />
+			<div class="optiongroup_header">How to respond when a low security risk is found</div>
+			<div class="optiongroup">
+				<span id="txt_AutoRemove">(Medium-risk and high-risk items are automatically removed)</span><br />
+				<span id="s_RbAlertRemove" class="rf_option">
+					<input type="radio"
+						id="RbAlertRemove"
+						name="RbAlert" accesskey="R" />
+					<span id="n6">Automatically <u>r</u>emove low-risk items</span>
+				</span><br />
+				<span id="s_RbAlertIgnore" class="rf_option">
+					<input type="radio"
+						id="RbAlertIgnore"
+						name="RbAlert" accesskey="I" />
+					<span id="n7">Always <u>i</u>gnore low-risk items (recommended)</span>
+				</span><br />
+				<span id="s_RbAlertAsk" class="rf_option">
+					<input type="radio"
+						id="RbAlertAsk"
+						name="RbAlert" accesskey="W" />
+					<span id="n8">Ask me <u>w</u>hat to do</span>
+				</span>
+			</div>
+		</form>
+    </body>
+</html>

@@ -1,0 +1,55 @@
+::
+:: $Header:   S:/BVZIP/VCS/buildall.btv   1.1   30 Apr 1997 08:26:58   JBRENNA  $
+::
+:: This file performs mkupdate's for all targets in the BVFSV project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/BVZIP/VCS/buildall.btv  $
+:  
+:     Rev 1.1   30 Apr 1997 08:26:58   JBRENNA
+:  Replace W32 with IRA and IDA.
+:  
+:     Rev 1.0   06 Feb 1997 20:49:34   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:48:04   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 09:54:44   BARRY
+:  Initial revision.
+:  
+:     Rev 1.1   22 May 1995 15:23:50   BARRY
+:  Fix problems with names and targets
+:  
+:     Rev 1.0   08 May 1995 22:45:38   BARRY
+:  Initial revision.
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+                                        :: Build each target for each platform.
+for %__Plat in (IRA IDA) do gosub Build_It
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call proj bvzip %__Plat
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

@@ -1,0 +1,1008 @@
+@echo off
+if "%1"=="" goto USAGE
+
+set p4port=perforce:1666
+set _GENERIC=generic_cm_client
+set _PRODNAME=Navapi41 Windows
+set _INIT_DIR=%_cwd
+set _PRODCLIENT=navapi_r41_p4bldit_windows_cm_client
+set _BASEDIR=\bld_area\navapi41
+set _LABELBASE=navapi41_win32_cm
+
+echo.
+echo.
+echo.
+echo **********************************************
+echo Automated build script for %_PRODNAME
+echo **********************************************
+echo.
+delay 2
+
+echo.
+echo ********************************************************
+echo Setting database variables...
+echo ********************************************************
+echo.
+delay 2
+echo.
+echo Unsetting any environment vars...
+echo.
+
+call unset_bld_environment
+
+echo.
+echo Set some variables for cm bldhist database
+echo.
+
+cd %_INIT_DIR
+set cmtoolsdir=r:\cm\
+set bld_info_file=bldhist_info_file.txt
+set bld_insert=navapi_windows
+
+: Start putting stuff in bld_info_file
+
+echo bld_label_count=1                                    > %bld_info_file%
+echo bld_label_1="navapi41_win32_cm.%1"                  >> %bld_info_file%
+echo bld_client_1="navapi_r41_p4bldit_windows_cm_client" >> %bld_info_file%
+echo bld_client_2="release_navapi41_win32_cm_client"     >> %bld_info_file%
+echo bld_build_number=%1                                 >> %bld_info_file%
+echo bld_zipfile="navapi41_win32_%1.zip"                 >> %bld_info_file%
+echo bld_code_name="Navapi"                              >> %bld_info_file%
+echo bld_product="Navapi"                                >> %bld_info_file%
+echo bld_os="WIN9X"                                      >> %bld_info_file%
+echo bld_platform="X86"                                  >> %bld_info_file%
+echo bld_insert="navapi_windows"                         >> %bld_info_file%
+echo bld_version="R4.1"                                  >> %bld_info_file%
+echo bld_site="Santa Monica"                             >> %bld_info_file%
+echo bld_builder="Dwight Wilson"                         >> %bld_info_file%
+
+: Starting build!
+: Set the bld_start_time variable.
+
+echo.
+echo ********************************************************
+echo Setting start time for database...
+echo ********************************************************
+echo.
+delay 2
+
+call gettime start
+
+echo.
+echo.
+input Skip ahead to CORE error checking? (y or n)  %%check1
+echo.
+if "%check1" eq "y" goto check_build1
+echo.
+
+echo.
+input Skip ahead to AVCORE error checking? (y or n)  %%check2
+echo.
+if "%check2" eq "y" goto check_build2
+echo.
+
+echo.
+echo ****************************************************
+echo This is a local build.  Since it needs Windows 98,
+echo we are using a local copy of envset.inf.
+echo This process is automated.
+echo ****************************************************
+echo.
+delay 2
+
+echo.
+echo **********************************************
+echo Checking for cm-ftp...
+echo **********************************************
+echo.
+
+if isdir "g:\Unreleased_Builds" echo cm-ftp is mapped to g:.
+delay 2
+
+iff not isdir "g:\Unreleased_Builds" then
+    echo Can't find cm-ftp connection.  Attempting to map...
+    echo.
+    delay 2
+    net use g: /d /y
+    net use g: \\cm-ftp\ftproot
+    if %? ne 0 echo ERROR Unable to attach to cm-ftp.
+    if not isdir "g:\Unreleased_Builds" echo *** ERROR ***      Unable to attach to cm-ftp.
+    if not isdir "g:\Unreleased_Builds" quit
+endiff
+
+:next_delete
+
+echo.
+echo **********************************************
+echo If previous build exists, delete it...
+echo **********************************************
+echo.
+delay 2
+if not isdir %_BASEDIR echo Creating basedir...
+if not isdir %_BASEDIR delay 2
+if not isdir %_BASEDIR mkdir /s %_BASEDIR
+
+echo.
+echo del %_BASEDIR /sxzy
+delay 2
+del %_BASEDIR /sxzy
+delay 2
+
+:next_client
+
+echo.
+echo **********************************************
+echo Create generic cm Windows client spec...
+echo **********************************************
+echo.
+delay 2
+
+@echo Client:  %_GENERIC% > temp.cli
+@echo Description:  Generic CM Spec for Windows >> temp.cli
+@echo Root:  c:\depot >> temp.cli
+@echo Options:  allwrite clobber nocompress crlf unlocked modtime >> temp.cli
+@echo View: >> temp.cli
+@echo        //depot/... //%_GENERIC%/... >> temp.cli
+@echo.
+
+
+@call p4 client -i < temp.cli
+iff "%_?" ne "0" then 
+  set ERRORMSG=Failed to create generic client.
+  delay 2
+  goto /i errmsg
+endiff  
+del temp.cli
+delay 2
+echo.
+echo set P4CLIENT=%_GENERIC
+delay 2
+set P4CLIENT=%_GENERIC
+
+echo.
+echo ************************************************************
+echo Syncing and modifying the inf file for this build # %1...
+echo ************************************************************
+echo.
+delay 2
+
+if not isdir \depot mkdir \depot
+if not isdir \bld_area mkdir \bld_area
+echo p4 sync -f //depot/norton_antivirus/avcore/trunk/source/navapi/cm/navapi.inf
+delay 2
+p4 sync -f //depot/norton_antivirus/avcore/trunk/source/navapi/cm/navapi.inf
+delay 2
+echo.
+echo attrib -r navapi.inf
+delay 2
+attrib -r navapi.inf
+delay 2
+
+:pyth
+echo.
+echo **********************************************
+echo Using Python to edit build number...
+echo **********************************************
+echo.
+delay 2
+
+python r:\cm\sr.py \depot\norton_antivirus\avcore\trunk\source\navapi\cm\navapi.inf "stamp=navapi41_win32_cm.xx" "stamp=navapi41_win32_cm.%1"
+
+rem python r:\cm\sr.py \depot\norton_antivirus\avcore\trunk\source\navapi\cm\navapi.inf "build-path=c:\\bld_area\\navapi41.xx" "build-path=c:\\bld_area\\navapi41.%1"
+rem python r:\cm\sr.py \depot\norton_antivirus\avcore\trunk\source\navapi\cm\navapi.inf "quake-to-use=c:\\bld_area\\navapi41.xx\\core" "quake-to-use=c:\\bld_area\\navapi41.%1\\core"
+rem python r:\cm\sr.py \depot\norton_antivirus\avcore\trunk\source\navapi\cm\navapi.inf "sync-path=c:\\bld_area\\navapi41.*" "sync-path=c:\\bld_area\\navapi41.%1"
+
+delay 2
+
+:next_p4inf
+
+echo.
+echo **********************************************
+echo Running p4bldit against the inf file...
+echo **********************************************
+echo.
+delay 2
+
+echo cd \build
+cd \build
+del . /y
+del hold /y
+
+iff not isdir "\build\hold\envset" then
+    echo mkdir /s \build\hold\envset
+    delay 2
+    mkdir /s \build\hold\envset
+endiff
+
+delay 2
+echo if exist \build\navapi.inf del /f \build\navapi.inf
+delay 2
+if exist \build\navapi.inf del /f \build\navapi.inf
+echo xcopy \depot\norton_antivirus\avcore\trunk\source\navapi\cm\navapi.inf .
+delay 2
+xcopy \depot\norton_antivirus\avcore\trunk\source\navapi\cm\navapi.inf .
+delay 2
+
+echo.
+echo p4bldit navapi.inf /b
+delay 2
+p4bldit navapi.inf /b
+delay 2
+echo.
+echo move navapi.inf hold
+delay 2
+move navapi.inf hold
+echo cd hold
+delay 2
+cd hold
+
+echo.
+echo **********************************************
+echo Syncing the custom envset.inf file...
+echo **********************************************
+echo.
+delay 2
+
+echo p4 sync -f //depot/norton_antivirus/avcore/trunk/source/navapi/cm/envset.inf
+delay 2
+p4 sync -f //depot/norton_antivirus/avcore/trunk/source/navapi/cm/envset.inf
+delay 2
+echo.
+echo attrib -r \depot\norton_antivirus\avcore\trunk\source\navapi\cm\envset.inf
+delay 1
+attrib -r \depot\norton_antivirus\avcore\trunk\source\navapi\cm\envset.inf
+
+echo.
+echo copy the envset.inf file to \build\hold\envset
+echo.
+delay 1
+echo copy \depot\norton_antivirus\avcore\trunk\source\navapi\cm\envset.inf \build\hold\envset
+delay 1
+copy \depot\norton_antivirus\avcore\trunk\source\navapi\cm\envset.inf \build\hold\envset
+
+rem For some reason, I couldn't get LOCALINF to work in the depot location.
+
+
+delay 2
+
+
+echo.
+echo **********************************************
+echo Syncing the client...
+echo **********************************************
+echo.
+delay 2
+
+echo set p4client=%_PRODCLIENT
+set p4client=%_PRODCLIENT
+echo.
+delay 2
+echo p4 sync -f
+delay 2
+@call p4 sync -f
+
+echo.
+echo **********************************************
+echo Labeling...
+echo **********************************************
+echo.
+delay 2
+
+p4 label -o %_LABELBASE.%1 > temp.lab
+p4 label -i < temp.lab
+echo p4 labelsync -l %_LABELBASE.%1
+delay 2
+p4 labelsync -l %_LABELBASE.%1
+echo.
+@echo Label:	%_LABELBASE.%1 > new.lab
+@echo Owner: dwilson >> new.lab
+@echo Description:  Automatic CM Build of %_LABELBASE.%1 >> new.lab
+@echo Options: locked >> new.lab
+@echo View:       //depot/...>> new.lab
+@call p4 label -i < new.lab
+echo.
+delay 2
+del temp.lab
+del new.lab
+
+
+echo.
+echo **********************************************
+echo Preparing to run p4bldit batch files...
+echo **********************************************
+echo.
+echo cd \build\hold
+cd \build\hold
+delay 2
+
+echo.
+echo **********************************************
+echo Removing "@call env CORE" from batch files
+echo Removing "@call env AVCORE" from batch files
+echo **********************************************
+echo.
+delay 4
+
+echo.
+echo Python cannot handle the mixed-case "ENV" lines.  Therefore:
+echo.
+echo Please edit the following files:
+echo.
+echo c:\build\hold\NCORD.BAT
+echo c:\build\hold\NCORB.BAT
+echo c:\build\hold\NAVCD.BAT
+echo c:\build\hold\NAVCB.BAT
+echo.
+echo Remove the following line from each:
+echo.
+echo @call env CORE (or AVCORE as appropriate)
+echo.
+input When done, return to this batch file and press enter:  %%input
+
+
+echo.
+echo Setting the LANG variable to ENGLISH.  
+echo Otherwise, since we don't "env core" yet, the LANG 
+echo variable will be null and the "ENGLISH" dirs will 
+echo not be created.
+delay 6
+
+echo.
+echo set LANG=ENGLISH
+set LANG=ENGLISH
+delay 2
+
+echo.
+echo **********************************************
+echo Creating core dirs...
+echo **********************************************
+echo.
+echo call ncord
+delay 2
+call ncord
+iff "%_?" ne "0" then 
+  set ERRORMSG=Failed to run dirs batch file
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+
+echo.
+echo **********************************************
+echo Creating avcore dirs...
+echo **********************************************
+echo.
+echo call navcd
+delay 2
+call navcd
+iff "%_?" ne "0" then 
+  set ERRORMSG=Failed to run dirs batch file
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+
+:pickup
+
+echo.
+echo ****************************************************************
+echo Setting the LOCALINF variable to point to our local copy...
+echo ****************************************************************
+delay 6
+
+echo set LOCALINF=c:\build\hold\envset
+set LOCALINF=c:\build\hold\envset
+rem WAS:   set LOCALINF=c:\depot\norton_antivirus\avcore\trunk\source\navapi\cm\envset.inf
+delay 2
+
+echo LOCALINF=%LOCALINF
+delay 2
+
+echo.
+echo *****************************************************
+echo ENV to CORE with /nomap, and re-map the drive letters
+echo to the appropriate areas on the local hard drive...
+echo *****************************************************
+delay 2
+echo.
+echo cd \build
+cd \build
+
+delay 2
+echo call env core /nomap
+delay 2
+call env core /nomap
+delay 2
+echo.
+echo PRODHOOK = %PRODHOOK
+delay 2
+echo.
+iff "%PRODHOOK" ne "C:\BLD_AREA\NAVAPI41\CORE\SOURCE\INCLUDE\SRC" then 
+  set ERRORMSG=Failed to env to core
+  delay 2
+  goto /i errmsg
+endiff  
+
+echo net use
+delay 2
+net use
+delay 2
+
+echo.
+echo Try to subst drives...
+echo.
+
+delay 2
+echo subst s: /d
+delay 2
+subst s: /d
+echo net use s: /d
+delay 2
+net use s: /d
+echo.
+echo subst s: c:\bld_area\navapi41\core\source
+delay 2
+subst s: c:\bld_area\navapi41\core\source
+iff "%?" ne "0" then 
+  set ERRORMSG=Could not subst drive letter s: to build area
+  delay 2
+  goto /i errmsg
+endiff  
+
+echo.
+echo subst n: /d
+delay 2
+subst n: /d
+echo net use n: /d
+delay 2
+net use n: /d
+echo.
+echo subst n: c:\bld_area\navapi41\core\english
+delay 2
+subst n: c:\bld_area\navapi41\core\english
+iff "%?" ne "0" then 
+  set ERRORMSG=Could not subst drive letter n: to build area
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+
+echo.
+echo **********************************************
+echo Building %_LABELBASE.%1
+echo **********************************************
+echo.
+delay 4
+
+echo.
+echo **********************************************
+echo Building CORE...
+echo **********************************************
+echo.
+echo.
+echo cd \build\hold
+cd \build\hold
+echo call ncorb
+delay 2
+call ncorb
+iff "%_?" ne "0" then 
+  set ERRORMSG=Failed to run build batch file
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+
+
+:check_build1
+
+echo.
+echo ****************************************************
+echo Checking for errors in s:\errors\trunk\errors...
+echo ****************************************************
+echo.
+delay 2
+
+if %@files[%projpre%errors\trunk\errors\*.*] eq 3 echo No errors.
+if %@files[%projpre%errors\trunk\errors\*.*] eq 3 goto next_bavcore
+
+
+set ERRORMSG=Errors in CORE
+  delay 2
+  goto /i errmsg
+endiff  
+
+
+:next_bavcore
+
+echo.
+echo *****************************************************
+echo ENV to AVCORE with /nomap, and re-map the drive letters
+echo to the appropriate areas on the local hard drive...
+echo *****************************************************
+delay 2
+echo.
+echo cd \build\hold
+cd \build\hold
+
+delay 2
+echo call env avcore /nomap
+delay 2
+call env avcore /nomap
+delay 2
+echo.
+echo PRODHOOK = %PRODHOOK
+delay 2
+echo.
+iff "%PRODHOOK" ne "C:\BLD_AREA\NAVAPI41\AVCORE\SOURCE\INCLUDE\SRC" then 
+  set ERRORMSG=Failed to env to avcore
+  delay 2
+  goto /i errmsg
+endiff  
+
+echo net use
+delay 2
+net use
+delay 2
+
+echo.
+echo Try to subst drives...
+echo.
+
+delay 2
+echo subst s: /d
+delay 2
+subst s: /d
+echo net use s: /d
+delay 2
+net use s: /d
+echo.
+echo subst s: c:\bld_area\navapi41\avcore\source
+delay 2
+subst s: c:\bld_area\navapi41\avcore\source
+iff "%?" ne "0" then 
+  set ERRORMSG=Could not subst drive letter s: to build area
+  delay 2
+  goto /i errmsg
+endiff  
+
+echo.
+echo subst n: /d
+delay 2
+subst n: /d
+echo net use n: /d
+delay 2
+net use n: /d
+echo.
+echo subst n: c:\bld_area\navapi41\avcore\english
+delay 2
+subst n: c:\bld_area\navapi41\avcore\english
+iff "%?" ne "0" then 
+  set ERRORMSG=Could not subst drive letter n: to build area
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+echo.
+echo subst l: /d
+delay 2
+subst l: /d
+echo net use l: /d
+delay 2
+net use l: /d
+echo.
+echo subst l: c:\bld_area\navapi41\core
+delay 2
+subst l: c:\bld_area\navapi41\core
+iff "%?" ne "0" then 
+  set ERRORMSG=Could not subst drive letter l: to build area
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+
+echo.
+echo **********************************************
+echo Building AVCORE...
+echo **********************************************
+echo.
+echo.
+echo cd \build\hold
+cd \build\hold
+echo call navcb
+delay 2
+call navcb
+iff "%_?" ne "0" then 
+  set ERRORMSG=Failed to run build batch file
+  delay 2
+  goto /i errmsg
+endiff  
+
+delay 2
+
+
+:check_build2
+
+echo.
+echo ****************************************************
+echo Checking for errors in s:\errors\trunk\errors...
+echo ****************************************************
+echo.
+delay 2
+
+if %@files[%projpre%errors\trunk\errors\*.*] eq 3 echo No errors.
+if %@files[%projpre%errors\trunk\errors\*.*] eq 3 goto next_post
+
+
+set ERRORMSG=Errors in AVCORE
+  delay 2
+  goto /i errmsg
+endiff  
+
+
+:next_post
+
+:do_post
+
+echo.
+echo ***************************************************************
+echo Posting build to Perforce...
+echo ***************************************************************
+echo.
+delay 2
+
+
+
+echo ***************************************************************
+echo Setting releasing client spec...
+echo ***************************************************************
+echo.
+delay 2
+
+echo set p4client=release_navapi41_doswin_cm_client
+delay 2
+set p4client=release_navapi41_doswin_cm_client
+
+echo.
+echo ***************************************************************
+echo Here is what the client spec looks like...
+echo ***************************************************************
+echo.
+delay 2
+
+p4 client -o
+delay 4
+
+echo.
+echo ***************************************************************
+echo Flushing the current files from the depot...
+echo ***************************************************************
+echo.
+delay 4
+
+p4 flush -f
+
+delay 2
+
+echo ***************************************************************
+echo Posting the files into Perforce...
+echo ***************************************************************
+echo.
+delay 4
+
+cdd s:\navapi\latest.dev
+
+dir /s /b /a:-d > \add.lst
+p4 diff -se ... > \edit.lst
+p4 diff -sd ... > \delete.lst
+
+TEXT > \change.txt
+# A Perforce Change Specification.
+#
+#	Change:		 The change number. 'new' on a new changelist.	Read-only.
+#	Date:		 The date this specification was last modified.	 Read-only.
+#	Client:		 The client on which the changelist was created.  Read-only.
+#	User:		 The user who created the changelist. Read-only.
+#	Status:		 Either 'pending' or 'submitted'. Read-only.
+#	Description: Comments about the changelist.	 Required.
+#	Jobs:		 What opened jobs are to be closed by this changelist.
+#				 You may delete jobs from this list.  (New changelists only.)
+#	Files:		 What opened files from the default changelist are to be added
+#				 to this changelist.  You may delete files from this list.
+#				 (New changelists only.)
+
+Change: new
+
+Status: new
+
+Description:
+ Submit navapi Build cm_build_number into the Release tree.
+ENDTEXT
+
+python r:\cm\sr.py \change.txt "cm_build_number" "%1"
+
+p4 change -i < \change.txt > \change.num
+
+for %i in (@\change.num) do set changenum=%@word[1,%i]
+
+p4 -x \add.lst add -c %changenum%
+p4 -x \edit.lst edit -c %changenum%
+p4 -x \delete.lst delete -c %changenum%
+
+del \add.lst /qyz
+del \edit.lst /qyz
+del \delete.lst /qyz
+del \change.lst /qyz
+del \change.txt /qyz
+del \change.num /qyz
+
+p4 submit -c %changenum%
+
+delay 4
+echo ***************************************************************
+echo Done.
+echo ***************************************************************
+echo.
+delay 4
+
+
+:-------------------------------------------------------------------------
+: Zip up the build
+:-------------------------------------------------------------------------
+
+:do_zip
+echo.
+echo *****************************************************
+echo Creating a zip of build # %1 on CM-Archive\archives...
+echo *****************************************************
+echo.
+net use j: /d
+net use j: \\cm-archive\archives"
+j:
+cd \
+if isdir "temp" goto morezip
+echo.
+echo ********************************************************************************
+echo Unable to map the J: drive to \\cm-archive\archives.  Aborting...
+echo ********************************************************************************
+goto done
+
+:morezip
+
+echo.
+c:
+cd \bld_area\navapi41
+call pkzip25 -add -rec -path=root "j:\navapi41_win32_%1.zip" *.*
+
+
+
+echo.
+delay 4
+echo ********************************************************************************
+echo Copying archive from J: to cm-ftp for localization...
+echo ********************************************************************************
+echo.
+delay 4
+g:
+cd \build_environments
+mkdir navapi41
+cd navapi41
+mkdir %1
+cd %1
+xcopy "j:\navapi41_win32_%1.zip" .
+echo.
+delay 4
+echo.
+c:
+
+echo ***************************************************************
+echo Please run the metrics on a non-Windows 98 platform.
+echo ***************************************************************
+
+cdd c:
+
+goto done
+
+:USAGE
+:-------------------------------------------------------------------------
+: Error, display usage information
+:-------------------------------------------------------------------------
+cls
+echo.
+echo %0 starts the automated NAVAPI - DOSWin build
+echo.
+echo Usage:
+echo.
+echo %0 build_num 
+echo.
+echo build_num is required.
+echo.
+echo Example:
+echo            %0 15
+echo.
+echo It's hard-coded to use the c: drive.
+echo.
+goto DONE
+
+
+
+
+:ERRMSG
+echo.
+echo **********************************
+echo Error in build.
+echo **********************************
+echo.
+
+
+
+echo.
+echo ********************************************************
+echo Making database entry for bad build...
+echo ********************************************************
+echo.
+delay 2
+
+echo.
+echo ********************************************************
+echo Setting finish time...
+echo ********************************************************
+echo.
+delay 2
+
+echo cd %_INIT_DIR
+cd %_INIT_DIR
+delay 4
+
+call gettime finish
+
+echo.
+echo ********************************************************
+echo Adding database record for bad build...
+echo ********************************************************
+echo.
+delay 2
+
+
+: Execute this code on a bad build
+
+echo bld_pass_fail="fail"          >> %bld_info_file%
+echo bld_comments="%ERRORMSG%"     >> %bld_info_file%
+echo bld_milestone="N"             >> %bld_info_file%
+
+:: once you are done:
+:: call the driver script with create_insert as a parameter.  This tells it to create the sql insert file and names
+:: it based on the second parameter
+
+echo.
+echo Creating the insertion record...
+echo.
+delay 4
+
+echo python %cmtoolsdir%bldhist_driver.py create_insert %bld_insert%_%1.sql
+delay 2
+python %cmtoolsdir%bldhist_driver.py create_insert %bld_insert%_%1.sql
+
+:: check for error
+if errorlevel != 0 goto CREATE_INSERT_ERROR
+
+echo.
+echo Adding the record to the database...
+echo.
+delay 4
+
+echo python %cmtoolsdir%bldhist_driver.py perform_insert %bld_insert%_%1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+delay 2
+python %cmtoolsdir%bldhist_driver.py perform_insert %bld_insert%_%1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+
+:: check for error
+if errorlevel != 0 goto PERFORM_INSERT_ERROR
+
+:: It is a good idea to store the .sql file and your %bld_info_file% with your build archive to track 
+:: down things in the future
+
+del bldhist_info_file.txt
+del *.sql
+
+
+echo.
+echo ********************************************************
+echo Navapi build failed.
+echo ********************************************************
+echo.
+echo Error text:   %ERRORMSG%
+echo.
+cd %_INIT_DIR
+quit
+
+
+:CREATE_INSERT_ERROR
+echo Database create_insert failed.
+quit 1
+
+:PERFORM_INSERT_ERROR
+echo Perform_insert failed.
+quit 2
+
+
+
+
+:done
+
+echo.
+echo ********************************************************
+echo Making database entry for good build...
+echo ********************************************************
+echo.
+delay 2
+
+echo.
+echo ********************************************************
+echo Setting finish time...
+echo ********************************************************
+echo.
+delay 2
+
+echo cd %_INIT_DIR
+cd %_INIT_DIR
+delay 2
+call gettime finish
+
+echo.
+echo ********************************************************
+echo Adding database record for good build...
+echo ********************************************************
+echo.
+delay 2
+
+
+: Execute this code on a bad build
+
+echo bld_pass_fail="good"         >> %bld_info_file%
+echo bld_comments="No problems."  >> %bld_info_file%
+echo bld_milestone="N"            >> %bld_info_file%
+
+:: once you are done:
+:: call the driver script with create_insert as a parameter.  This tells it to create the sql insert file and names
+:: it based on the second parameter
+
+echo.
+echo Creating the insertion record...
+echo.
+delay 4
+
+python %cmtoolsdir%bldhist_driver.py create_insert %bld_insert%_%1.sql
+
+:: check for error
+if errorlevel != 0 goto CREATE_INSERT_ERROR
+
+echo.
+echo Adding the record to the database...
+echo.
+delay 4
+
+python %cmtoolsdir%bldhist_driver.py perform_insert %bld_insert%_%1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+
+:: check for error
+if errorlevel != 0 goto PERFORM_INSERT_ERROR
+
+:: It is a good idea to store the .sql file and your %bld_info_file% with your build archive to track 
+:: down things in the future
+
+del bldhist_info_file.txt
+del *.sql
+
+cd %_INIT_DIR
+
+echo.
+echo Done.
+
+quit
+
+:END
+

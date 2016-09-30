@@ -1,0 +1,45 @@
+@echo off
+@rem ***************************************************************
+@rem Usage: StmpBins.btm dd-mm-yy
+@rem
+@rem echo batch file to stamps files built as part of QServer/QConsole
+@rem ****************************************************************
+
+SET TIMESTAMP=02:01:00
+
+@if "%1" NE ""  goto letsrock
+@echo usage: StmpBins.btm dd-mm-yy
+@goto byebye
+
+:letsrock
+
+SET P4SOURCE=W:
+
+SET DATESTAMP=%1
+
+@Echo Stamping QConsole/QServer files release files...
+
+@FDWIN %P4SOURCE%\tech_pubs\quarantine\help\bin\release\Qscon.chm /D%DATESTAMP% /T%TIMESTAMP%
+
+@FDWIN %P4SOURCE%\Norton_System_Center\src\Shared\Bin\IntelAnsi\Win32\Release\InstallAMS.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_System_Center\Src\Shared\Bin\IntelAnsi\Win32\Release\DefCast.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_System_Center\Src\Shared\Bin\IntelAnsi\Win32\IntelAnsiRelease\_isuser.dll /D%DATESTAMP% /T%TIMESTAMP%
+
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelUnicodeWin32Release\qscon.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelAnsiWin32Release\qserverps.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelUnicodeWin32Release\AvisConsole.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Bell\HelpFiles\AvisConsole.chm /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelAnsiWin32Release\qcinst.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelAnsiWin32Release\IcePackTokens.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\shared\BinIntelUnicodeWin32Release\qserver.exe /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelAnsiWin32Release\qspak32.dll /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\QuarantineServer\Shared\BinIntelAnsiWin32Release\qsinst.dll /D%DATESTAMP% /T%TIMESTAMP%
+
+@FDWIN %P4SOURCE%\Norton_AntiVirus\Corporate_Edition\Win32\src\bin.ira\Transman.dll /D%DATESTAMP% /T%TIMESTAMP%
+
+@FDWIN %P4SOURCE%\Norton_AntiVirus\Corporate_Edition\Win32\src\bin.ira\SCANDLVR.DLL /D%DATESTAMP% /T%TIMESTAMP%
+@FDWIN %P4SOURCE%\Norton_AntiVirus\Corporate_Edition\Win32\src\bin.ira\SCANDRES.DLL /D%DATESTAMP% /T%TIMESTAMP%
+
+:byebye
+
+

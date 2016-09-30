@@ -1,0 +1,26 @@
+HKCR
+{
+	Status.NAVStatus.1 = s 'NAVStatus Class'
+	{
+		CLSID = s '{ED429095-AF99-41A1-BA88-D7E9459B3AF4}'
+	}
+	Status.NAVStatus = s 'NAVStatus Class'
+	{
+		CLSID = s '{ED429095-AF99-41A1-BA88-D7E9459B3AF4}'
+		CurVer = s 'Status.NAVStatus.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {ED429095-AF99-41A1-BA88-D7E9459B3AF4} = s 'NAVStatus Class'
+		{
+			ProgID = s 'Status.NAVStatus.1'
+			VersionIndependentProgID = s 'Status.NAVStatus'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{54CC4A82-E256-4AB1-BA85-F8FF36619969}'
+		}
+	}
+}

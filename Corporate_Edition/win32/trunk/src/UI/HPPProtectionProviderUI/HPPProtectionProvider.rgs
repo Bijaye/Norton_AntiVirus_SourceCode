@@ -1,0 +1,27 @@
+HKCR
+{
+	HPPProtectionProviderUI.HPPProtectionProvider.1 = s 'HPPProtectionProvider Class'
+	{
+		CLSID = s '{425DC6B2-28B6-41D2-AE94-0CE5E1CE7D9F}'
+	}
+	HPPProtectionProviderUI.HPPProtectionPr = s 'HPPProtectionProvider Class'
+	{
+		CLSID = s '{425DC6B2-28B6-41D2-AE94-0CE5E1CE7D9F}'
+		CurVer = s 'HPPProtectionProviderUI.HPPProtectionProvider.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {425DC6B2-28B6-41D2-AE94-0CE5E1CE7D9F} = s 'HPPProtectionProvider Class'
+		{
+			ProgID = s 'HPPProtectionProviderUI.HPPProtectionProvider.1'
+			VersionIndependentProgID = s 'HPPProtectionProviderUI.HPPProtectionPr'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{1C68BD0A-0264-4D90-904E-69D63F9090FC}'
+		}
+	}
+}

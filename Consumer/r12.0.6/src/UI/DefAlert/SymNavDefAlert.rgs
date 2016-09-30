@@ -1,0 +1,26 @@
+HKCR
+{
+	DefAlert.SymNavDefAlert.1 = s 'SymNavDefAlert Class'
+	{
+		CLSID = s '{1B7C788B-E925-438F-88C4-FDCF166BF53D}'
+	}
+	DefAlert.SymNavDefAlert = s 'SymNavDefAlert Class'
+	{
+		CLSID = s '{1B7C788B-E925-438F-88C4-FDCF166BF53D}'
+		CurVer = s 'DefAlert.SymNavDefAlert.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1B7C788B-E925-438F-88C4-FDCF166BF53D} = s 'SymNavDefAlert Class'
+		{
+			ProgID = s 'DefAlert.SymNavDefAlert.1'
+			VersionIndependentProgID = s 'DefAlert.SymNavDefAlert'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{852C26A8-5C40-4EFB-9D81-096B21BF9D81}'
+		}
+	}
+}

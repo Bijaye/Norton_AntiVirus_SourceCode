@@ -1,0 +1,1668 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FirewallData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="SCFPolicySchema-1.0.xdr">
+	<Rules>
+		<SystemRules>
+			<ClientRules/>
+			<AdminRules>
+				<Rule>
+					<Description>Default Non-Routable IPs</Description>
+					<LookupKey>NoAlert</LookupKey>
+					<DetailsKey>NoAlert</DetailsKey>
+					<SummaryKey>NoAlert</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>permit</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts />
+					<RemotePorts />
+					<LocalAddresses>
+						<AddressRange>127.0.0.0:127.255.255.255</AddressRange>
+						<AddressRange>10.0.0.0:10.255.255.255</AddressRange>
+						<AddressRange>172.16.0.0:172.16.255.255</AddressRange>
+						<AddressRange>192.168.0.0:192.168.255.255</AddressRange>
+						<AddressRange>169.254.0.0:169.254.255.255</AddressRange>
+					</LocalAddresses>
+					<RemoteAddresses>
+						<AddressRange>127.0.0.0:127.255.255.255</AddressRange>
+						<AddressRange>10.0.0.0:10.255.255.255</AddressRange>
+						<AddressRange>172.16.0.0:172.16.255.255</AddressRange>
+						<AddressRange>192.168.0.0:192.168.255.255</AddressRange>
+						<AddressRange>169.254.0.0:169.254.255.255</AddressRange>
+					</RemoteAddresses>
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Inbound ICMP</Description>
+					<LookupKey>NoAlert</LookupKey>
+					<DetailsKey>NoAlert</DetailsKey>
+					<SummaryKey>NoAlert</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>permit</Action>
+					<Protocol>icmp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Inbound DNS</Description>
+					<LookupKey>NoAlert</LookupKey>
+					<SummaryKey>NoAlert</SummaryKey>
+					<DetailsKey>NoAlert</DetailsKey>
+					<InUse>enabled</InUse>
+					<Action>permit</Action>
+					<Protocol>udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<RemotePorts>
+						<Port>53</Port>
+					</RemotePorts>
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Inbound NetBIOS</Description>
+					<LookupKey>NoAlert</LookupKey>
+					<DetailsKey>NoAlert</DetailsKey>
+					<SummaryKey>NoAlert</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>permit</Action>
+					<Protocol>udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>0</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>137</Port>
+						<Port>138</Port>
+		                  </LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Windows File Sharing</Description>
+					<LookupKey>NoAlert</LookupKey>
+					<DetailsKey>NoAlert</DetailsKey>
+					<SummaryKey>NoAlert</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>permit</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging</Logging>
+					<LogThreshold>0</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>139</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Inbound Bootp</Description>
+					<LookupKey></LookupKey>
+					<DetailsKey></DetailsKey>
+					<SummaryKey></SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>permit</Action>
+					<Protocol>udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>68</Port>
+					</LocalPorts>
+					<RemotePorts>
+						<Port>67</Port>
+					</RemotePorts>
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Microsoft Windows 2000 SMB</Description>
+					<LookupKey></LookupKey>
+					<DetailsKey></DetailsKey>
+					<SummaryKey></SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging</Logging>
+					<LogThreshold>0</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>445</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block EPMAP</Description>
+					<LookupKey>NoAlert</LookupKey>
+					<DetailsKey>NoAlert</DetailsKey>
+					<SummaryKey>NoAlert</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>135</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>UPNP Port 5000 Block Rule</Description>
+					<LookupKey></LookupKey>
+					<DetailsKey></DetailsKey>
+					<SummaryKey></SummaryKey>
+					<InUse></InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>0</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>5000</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>UPNP Port 1900 Block Rule</Description>
+					<LookupKey></LookupKey>
+					<DetailsKey></DetailsKey>
+					<SummaryKey></SummaryKey>
+					<InUse></InUse>
+					<Action>block</Action>
+					<Protocol>udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>none</Logging>
+					<LogThreshold>0</LogThreshold>
+					<CategoryReference>257</CategoryReference>
+					<LocalPorts>
+						<Port>1900</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+			</AdminRules>
+		</SystemRules>
+		<TrojanRules>
+			<ClientRules/>		
+			<AdminRules>
+				<Rule>
+					<Description>Default Block Back Orifice 2000 Trojan horse</Description>
+					<LookupKey>BO2K</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BO2K</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>31337</Port>
+						<Port>54321</Port>
+						<Port>54320</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block NetBus Trojan horse</Description>
+					<LookupKey>NBT</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>NBT</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>20034</Port>
+						<Port>12345</Port>
+						<Port>12346</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block GirlFriend Trojan horse</Description>
+					<LookupKey>GF</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>GF</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>21554</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block WinCrash Trojan horse</Description>
+					<LookupKey>WC</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>WC</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2583</Port>
+						<Port>3024</Port>
+						<Port>4092</Port>
+						<Port>5742</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block DeepThroat Trojan horse</Description>
+					<LookupKey>DT</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>DT</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2140</Port>
+						<Port>3150</Port>
+						<Port>41</Port>
+						<Port>60000</Port>
+						<Port>6670</Port>
+						<Port>6771</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Hack 'A' Tack Trojan horse</Description>
+					<LookupKey>HAT</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>HAT</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>31785</Port>
+						<Port>31787</Port>
+						<Port>31788</Port>
+						<Port>31789</Port>
+						<Port>31791</Port>
+						<Port>31792</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Backdoor/SubSeven Trojan horse</Description>
+					<LookupKey>BDSS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BDSS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1999</Port>
+						<Port>2773</Port>
+						<Port>54283</Port>
+						<Port>7215</Port>
+						<Port>1243</Port>
+						<Port>6776</Port>
+						<Port>27374</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Master Paradise Trojan horse</Description>
+					<LookupKey>MP</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>MP</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>3129</Port>
+						<Port>40421</Port>
+						<Port>40422</Port>
+						<Port>40423</Port>
+						<Port>40425</Port>
+						<Port>40426</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Bla Trojan horse</Description>
+					<LookupKey>BLA</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BLA</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1042</Port>
+						<Port>666</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Donald Dick Trojan horse</Description>
+					<LookupKey>DD</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>DD</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>23476</Port>
+						<Port>23477</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block NetSphere Trojan horse</Description>
+					<LookupKey>NS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>NS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<PortRange>30100:30102</PortRange>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block NetMonitor Trojan horse</Description>
+					<LookupKey>BNM</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BNM</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>7300</Port>
+						<Port>7301</Port>
+						<Port>7306</Port>
+						<Port>7307</Port>
+						<Port>7308</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block TransScout</Description>
+					<LookupKey>TS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>TS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<PortRange>1999:2005</PortRange>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Doly Trojan horse</Description>
+					<LookupKey>BD</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BD</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1010</Port>
+						<Port>1011</Port>
+						<Port>1012</Port>
+						<Port>1015</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block FC Infector Trojan horse</Description>
+					<LookupKey>FCI</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>FCI</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>146</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Dmsetup Trojan horse</Description>
+					<LookupKey>DMS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>DMS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>58</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block FireHotcker Trojan horse</Description>
+					<LookupKey>FH</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>FH</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>5321</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block RASmin Trojan horse</Description>
+					<LookupKey>RAS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>RAS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1045</Port>
+						<Port>531</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Stealth Spy Trojan horse</Description>
+					<LookupKey>SS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>555</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Attack FTP</Description>
+					<LookupKey>AFTP</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>AFTP</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>666</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Dark Shadow Trojan horse</Description>
+					<LookupKey>DS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>DS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>911</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Silencer Trojan horse</Description>
+					<LookupKey>S</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>S</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1001</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Netspy Trojan horse</Description>
+					<LookupKey>NSPY</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>NSPY</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1024</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Extreme Trojan horse</Description>
+					<LookupKey>EX</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>EX</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1090</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Ultor's Trojan horse</Description>
+					<LookupKey>ULT</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>ULT</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1234</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Whack-a-Mole Trojan horse</Description>
+					<LookupKey>BAM</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BAM</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<PortRange>12361:12363</PortRange>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block WhackJob Trojan horse</Description>
+					<LookupKey>WJ</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>WJ</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>12631</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block FTP99CMP Trojan horse</Description>
+					<LookupKey>FTP99</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>FTP99</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1492</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Shiva Burka Trojan horse</Description>
+					<LookupKey>SB</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SB</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1600</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Spy Sender Trojan horse</Description>
+					<LookupKey>SPS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SPS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1807</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block ShockRave Trojan horse</Description>
+					<LookupKey>SRV</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SRV</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1981</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Remote Explorer Trojan horse</Description>
+					<LookupKey>REXP</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>REXP</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2000</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Trojan Cow Trojan horse</Description>
+					<LookupKey>COW</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>COW</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2001</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Ripper Trojan horse</Description>
+					<LookupKey>RIP</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>RIP</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2023</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Bugs Trojan horse</Description>
+					<LookupKey>BUGS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BUGS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2115</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Striker Trojan horse</Description>
+					<LookupKey>STRK</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>STRK</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2565</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Phinneas Phucker Trojan horse</Description>
+					<LookupKey>PPK</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>PPK</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2801</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Rat Trojan horse</Description>
+					<LookupKey>RATT</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>RATT</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>2989</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Filenail Trojan horse</Description>
+					<LookupKey>FNL</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>FNL</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>4567</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Sokets de Trois v1. Trojan horse</Description>
+					<LookupKey>SDT1</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SDT1</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>5000</Port>
+						<Port>5001</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Blade Runner Trojan horse</Description>
+					<LookupKey>BRUN</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BRUN</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<PortRange>5400:5402</PortRange>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block SERV-Me Trojan horse</Description>
+					<LookupKey>SME</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SME</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>5555</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block BO-Facil Trojan horse</Description>
+					<LookupKey>BOF</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>BOF</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<PortRange>5556:5557</PortRange>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Robo-Hack Trojan horse</Description>
+					<LookupKey>ROBO</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>ROBO</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>5569</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block 'The Thing' Trojan horse</Description>
+					<LookupKey>THG</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>THG</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>6400</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Indoctrination Trojan horse</Description>
+					<LookupKey>NDOC</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>NDOC</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>6939</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block GateCrasher Trojan horse</Description>
+					<LookupKey>GTC</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>GTC</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>6969</Port>
+						<Port>6970</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Priority Trojan horse</Description>
+					<LookupKey>PRI</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>PRI</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>6969</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Remote Grab Trojan horse</Description>
+					<LookupKey>GRAB</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>GRAB</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>7000</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block ICKiller Trojan horse</Description>
+					<LookupKey>ICE</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>ICE</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>7789</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block iNi Killer Trojan horse</Description>
+					<LookupKey>INI</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>INI</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>9989</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Acid Shivers Trojan horse</Description>
+					<LookupKey>ACID</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>ACID</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>10520</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block COMA Trojan horse</Description>
+					<LookupKey>COMA</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>COMA</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>10607</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Senna Spy Trojan horse</Description>
+					<LookupKey>SENS</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SENS</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>11000</Port>
+						<Port>13000</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Progenic Trojan horse</Description>
+					<LookupKey>PRO</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>PRO</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>11223</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block GJammer Trojan horse</Description>
+					<LookupKey>GJAM</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>GJAM</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>12076</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Keylogger Trojan horse</Description>
+					<LookupKey>KLOG</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>KLOG</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>12223</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Proziack Trojan horse</Description>
+					<LookupKey>PROZ</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>PROZ</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>22222</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block EvilFTP, UglyFTP Trojan horse</Description>
+					<LookupKey>UGLY</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>UGLY</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>23456</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Delta Source Trojan horse</Description>
+					<LookupKey>DLTA</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>DLTA</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp-udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>26274</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block Trin00 DDoS Trojan horse</Description>
+					<LookupKey>TRN0</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>TRN0</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>udp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>34555</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block SubSeven 2.1/2.2 Trojan horse</Description>
+					<LookupKey>SUB7</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>SUB7</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>27374</Port>
+						<Port>2774</Port>
+						<Port>16959</Port>
+						<Port>4267</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Default Block QaZ Trojan horse</Description>
+					<LookupKey>QAZ</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>QAZ</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging,dialog</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>7597</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+				<Rule>
+					<Description>Unused Windows Services Block</Description>
+					<LookupKey>UWSB</LookupKey>
+					<DetailsKey>RAT</DetailsKey>
+					<SummaryKey>UWSB</SummaryKey>
+					<InUse>enabled</InUse>
+					<Action>block</Action>
+					<Protocol>tcp</Protocol>
+					<Direction>in</Direction>
+					<Logging>logging</Logging>
+					<LogThreshold>1</LogThreshold>
+					<CategoryReference>258</CategoryReference>
+					<LocalPorts>
+						<Port>1025</Port>
+						<Port>1026</Port>
+						<Port>1027</Port>
+						<Port>1028</Port>
+						<Port>1029</Port>
+						<Port>1030</Port>
+					</LocalPorts>
+					<RemotePorts />
+					<LocalAddresses />
+					<RemoteAddresses />
+					<LocationMap>-2</LocationMap>
+				</Rule>
+			</AdminRules>
+		</TrojanRules>
+	</Rules>
+	<Categories>
+		<Category>
+			<CategoryName>Administrative</CategoryName>
+			<CategoryValue>264</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Chat</CategoryName>
+			<CategoryValue>1</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Conferencing &amp; Collaboration</CategoryName>
+			<CategoryValue>2</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>E-mail</CategoryName>
+			<CategoryValue>3</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Education &amp; Family</CategoryName>
+			<CategoryValue>4</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>File Transfer</CategoryName>
+			<CategoryValue>5</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>General</CategoryName>
+			<CategoryValue>0</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Instant Messaging</CategoryName>
+			<CategoryValue>6</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Internet Advertising</CategoryName>
+			<CategoryValue>10</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Networked Games</CategoryName>
+			<CategoryValue>8</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Newsreaders</CategoryName>
+			<CategoryValue>7</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>NIS Medium Protection</CategoryName>
+			<CategoryValue>260</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>NIS Secure Sites</CategoryName>
+			<CategoryValue>262</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>NIS System Keeping</CategoryName>
+			<CategoryValue>257</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>NIS System Protection</CategoryName>
+			<CategoryValue>258</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>User Category 1</CategoryName>
+			<CategoryValue>240</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>User Category 2</CategoryName>
+			<CategoryValue>241</CategoryValue>
+		</Category>
+		<Category>
+			<CategoryName>Web Browsers</CategoryName>
+			<CategoryValue>9</CategoryValue>
+		</Category>
+	</Categories>
+	<ConnectionManagement>
+		<Locations>
+			<Location Name="Default" Priority="0">
+				<Connection>
+					<Other>RESV Default</Other>
+				</Connection>
+				<DisplayName>Default</DisplayName>
+				<ID>0</ID>
+				<AutoRuleCreation>1</AutoRuleCreation>
+				<EnableFirewall>0</EnableFirewall>
+				<FirewallExceptionHandling>2</FirewallExceptionHandling>
+				<AllowModifyConnections>1</AllowModifyConnections> 
+				<AllowDeleteLocation>0</AllowDeleteLocation>
+				<AllowNewZones>1</AllowNewZones>
+				<Precreated>1</Precreated>
+			</Location>
+	</Locations>
+		<Settings>
+			<AllowUserLocations>1</AllowUserLocations>
+			<NetSpecOrder>
+				<NetSpec1>GatewayMACAddress</NetSpec1>
+				<NetSpec2>GatewayIPAddress</NetSpec2>
+				<NetSpec3>SubnetMaskedAddress</NetSpec3>
+				<NetSpec4>Domain</NetSpec4>
+				<NetSpec5>SSID</NetSpec5>
+				<NetSpec6>DialupNumber</NetSpec6>
+				<NetSpec7>DialupEntryName</NetSpec7>
+				<NetSpec8>InterfaceDescription</NetSpec8>
+				<NetSpec9>InterfaceType</NetSpec9>
+				<NetSpec10>InterfaceIndex</NetSpec10>
+			</NetSpecOrder>
+		</Settings>
+	</ConnectionManagement>
+	<Actions>
+		<ResetAdminRules>1</ResetAdminRules>
+		<ResetUserRules>1</ResetUserRules>
+		<ResetAdminZones>1</ResetAdminZones>
+		<ResetUserZones>1</ResetUserZones>
+		<ResetAdminLocations>1</ResetAdminLocations>
+		<ResetUserLocations>1</ResetUserLocations>
+	</Actions>
+</FirewallData>

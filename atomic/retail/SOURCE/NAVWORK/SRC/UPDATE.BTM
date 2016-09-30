@@ -1,0 +1,44 @@
+:: $Header:   S:/navwork/VCS/update.btv   1.0   06 Feb 1997 21:02:40   RFULLER  $
+::
+:: Update Batch file for the NAVWORK source area.
+::------------------------------------------------------------------------
+: $Log:   S:/navwork/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 21:02:40   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:55:38   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 14:50:42   BARRY
+:  Initial revision.
+:  
+:     Rev 1.2   11 Dec 1995 23:57:02   DALLEE
+:  Updated for PROJVERS.
+:  
+:     Rev 1.1   25 Oct 1995 01:04:10   DALLEE
+:  Added TARGET support.
+:  
+:     Rev 1.0   25 Apr 1994 17:49:40   MFALLEN
+:  Initial revision.
+:  
+:     Rev 1.3   24 Mar 1994 00:52:06   KEITH
+:  Bankers Trust - Change entire build so LIB.%PLATFORM and BIN.%PLATFORM
+:  are split into NAV and BANKERS subdirectories.
+:  
+:     Rev 1.2   17 Feb 1994 17:56:06   DALLEE
+:  Put BANKERS DLL's in s:\source\bin.win\bankers.
+:  
+:     Rev 1.1   16 Feb 1994 16:34:00   DALLEE
+:  Support for BANKERS target.
+::------------------------------------------------------------------------
+
+::Update Batch file for the Norton AntiVirus for Windows
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+

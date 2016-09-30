@@ -1,0 +1,19 @@
+!define BLANK ""
+.cpp : $(%include)
+.h : $(%include)
+
+.cpp.obj :
+  if not exist $[&.cpp copy $[@ . > nul
+ *wpp386 $^&.cpp -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+xl5api.lib : xl5api.obj .AUTODEPEND
+            
+!ifneq BLANK "xl5api.obj"
+ @for %i in (xl5api.obj) do @%append xl5api.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append xl5api.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 xl5api.lib @ xl5api.lb1
+
+

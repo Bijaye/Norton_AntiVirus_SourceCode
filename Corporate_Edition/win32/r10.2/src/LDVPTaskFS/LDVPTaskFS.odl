@@ -1,0 +1,89 @@
+// LDVPTaskFS.odl : type library source for OLE Control project.
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (LDVPTaskFS.tlb) that will become a resource in
+// LDVPTaskFS.ocx.
+
+#include <olectl.h>
+#include <idispids.h>
+
+//[ uuid(BA0C6361-7218-11D0-8865-444553540000), version(1.0),
+[ uuid(64B4A5AB-0799-11d1-812A-00A0C95C0756), version(1.0),
+  helpstring("LDVPTaskFS OLE Control module"), control ]
+library LDVPTASKFSLib
+{
+	importlib(STDOLE_TLB);
+	importlib(STDTYPE_TLB);
+
+	//  Primary dispatch interface for CLDVPTaskFSCtrl
+
+//	[ uuid(BA0C6362-7218-11D0-8865-444553540000),
+	[ uuid(64B4A5AC-0799-11d1-812A-00A0C95C0756),
+	  helpstring("Dispatch interface for LDVPTaskFS Control"), hidden ]
+	dispinterface _DLDVPTaskFS
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CLDVPTaskFSCtrl)
+			[id(DISPID_CAPTION), bindable, requestedit] BSTR Caption;
+			[id(1)] boolean RecordingSchedule;
+			[id(2)] boolean SkipFirst;
+			[id(3)] BSTR HelpFilename;
+			[id(4)] boolean Recording;
+			[id(5)] BSTR TaskName;
+			[id(6)] BSTR TaskDescription;
+			[id(7)] BSTR TaskDescriptiveName;
+			//}}AFX_ODL_PROP
+
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CLDVPTaskFSCtrl)
+			[id(8)] boolean Deinitialize();
+			[id(9)] boolean EndTask();
+			[id(10)] boolean StartTask(long dwID);
+			[id(11)] boolean Initialize();
+			[id(12)] boolean DoModalSchedule(BSTR lpstrSubKey, short iKey);
+			[id(13)] boolean DoModalConfig(long dwPagemask);
+			[id(14)] boolean DeleteTask();
+			//}}AFX_ODL_METHOD
+	};
+
+	//  Event dispatch interface for CLDVPTaskFSCtrl
+
+//	[ uuid(BA0C6363-7218-11D0-8865-444553540000),
+	[ uuid(64B4A5AD-0799-11d1-812A-00A0C95C0756),
+	  helpstring("Event interface for LDVPTaskFS Control") ]
+	dispinterface _DLDVPTaskFSEvents
+	{
+		properties:
+			//  Event interface has no properties
+
+		methods:
+			// NOTE - ClassWizard will maintain event information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_EVENT(CLDVPTaskFSCtrl)
+			[id(1)] void CreateGroup(BSTR szGroup, boolean bScanningTasks, long lImageID);
+			[id(2)] void CreateTask(BSTR szGroupname, BSTR szTaskname, BSTR szTaskDescription, long dwTaskID, long dwImageID);
+			[id(3)] void TaskEnding();
+			[id(4)] void TaskStarting();
+			[id(5)] void ScanStarting();
+			[id(6)] void ScanEnding();
+			[id(7)] void SaveScan(BSTR szDescriptiveName, BSTR szDescription, BSTR szTaskName);
+			[id(8)] void BeginRecording();
+			//}}AFX_ODL_EVENT
+	};
+
+	//  Class information for CLDVPTaskFSCtrl
+
+//	[ uuid(BA0C6364-7218-11D0-8865-444553540000),
+	[ uuid(64B4A5AE-0799-11d1-812A-00A0C95C0756),
+	  helpstring("LDVPTaskFS Control"), control ]
+	coclass LDVPTaskFS
+	{
+		[default] dispinterface _DLDVPTaskFS;
+		[default, source] dispinterface _DLDVPTaskFSEvents;
+	};
+
+};

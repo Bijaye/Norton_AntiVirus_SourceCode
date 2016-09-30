@@ -1,0 +1,258 @@
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+set CCBUILD=PERFORCE
+set CCERASERBUILD=PERFORCE
+set SPBUILD=73
+set SYMSECCENTBUILD=NOTSET
+set NSCBUILD=2
+set WIN9XBUILD=NOTSET
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem look for parameters we recognize
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+    do param = 1 to 127
+        shift 1
+        iff "%0"=="" then
+             shift -%param%
+             goto continue
+        endiff
+        
+        set this_param=%@upper[%0]
+    
+        iff "%this_param"=="/CCBUILD" then
+            shift 1
+            set CCBUILD=%0
+        elseiff "%this_param"=="/SPBUILD" then
+            shift 1
+            set SPBUILD=Build %0
+        endiff
+    enddo
+    shift -127
+
+:continue
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem find the latest ccbuild
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%CCBUILD%" == "NOTSET" then
+	dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\CommonClient\CC20051\CommonClient20051.0.1\??? >> .\ccbuild.log
+	set CCBUILD=%@LINE[.\ccbuild.log, %@LINES[.\ccbuild.log]]
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem find the latest ccEraser build
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%CCERASERBUILD%" == "NOTSET" then
+	dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\CommonClient\CC20051\ccEraser20051.0.0\??? >> .\cceraserbuild.log
+	set CCERASERBUILD=%@LINE[.\cceraserbuild.log, %@LINES[.\cceraserbuild.log]]
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem find the latest spbuild
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%SPBUILD%" == "NOTSET" then
+	dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\BehaviorBlocking\Freud\LATEST_ACCEPTED >> .\spbuild.log
+	set SPBUILD=%@LINE[.\spbuild.log, %@LINES[.\spbuild.log]]
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Find the latest Symantec Security Center build  
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%SYMSECCENTBUILD%" == "NOTSET" then
+    dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\SymSecurityCenter\r1.2 >> .\SSCbuild.log
+    set SYMSECCENTBUILD=%@LINE[.\SSCbuild.log, %@LINES[.\SSCbuild.log]]
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Find the latest Norton Security Center build  
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%NSCBUILD%" == "NOTSET" then
+    dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\NSC\1.0\!Latest_Accepted >> .\NSCbuild.log
+    set NSCBUILD=%@LINE[.\NSCbuild.log, %@LINES[.\NSCbuild.log]]
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Find the latest NAV 11.2 build
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%WIN9XBUILD%" == "NOTSET" then
+    dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\NAV\r11.2\!LATEST_ACCEPTED >> .\Win9xbuild.log
+    set WIN9XBUILD=%@LINE[.\Win9xbuild.log, %@LINES[.\Win9xbuild.log]]
+endiff
+
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem setup remote paths
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+set ccpath=\\ussm-cpd\USSM-CPD\Unreleased_Builds\CommonClient\CC20051\CommonClient20051.0.1\%CCBUILD%
+set cceraserpath=\\ussm-cpd\USSM-CPD\Unreleased_Builds\CommonClient\CC20051\ccEraser20051.0.0\%CCERASERBUILD%
+set sppath=\\ussm-cpd\USSM-CPD\Unreleased_Builds\BehaviorBlocking\Freud\LATEST_ACCEPTED\BUILD 73
+set SymSecCentPath="\\ussm-cpd\USSM-CPD\Unreleased_Builds\SymSecurityCenter\r1.2\%SYMSECCENTBUILD%"
+set legacynavpath=\\ussm-cpd\USSM-CPD\Unreleased_Builds\NAV\KobeLegacy\01
+set SNDPath="\\ussm-cpd\USSM-CPD\Unreleased_Builds\ScanAndDeliver\SwissChamp\%SNDBUILD%\LAYOUTS\SND_FOR_RELEASE"
+set NSCPath=\\ussm-cpd\USSM-CPD\Unreleased_Builds\NSC\1.1\!Latest_Accepted\%NSCBUILD%
+
+iff x%DEVBLD NE x .AND. x%DEVBLD_CCBASE_LATEST NE x then
+    gosub SetupDevBld
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem setup local paths
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+set localCCSDKPath=%root%..\..\SDKs\CommonClient
+set localincludepath=%root%..\include
+set localnobuildspath=%root%..\nobuilds
+set locallibdvxpath=%root%..\lib.dvx
+set locallibdospath=%root%..\lib.dos
+set localbindospath=%root%..\bin.dos
+set localbindvxpath=%root%..\bin.dvx
+set localsppath=%root%..\..\SDKs\SymProtect
+set localSymSecCenter_SDKpath=%root%..\..\SDKs\SymSecCenter
+set localNSCPath=%root%..\..\SDKs\NSC
+set localDRMPath=%root%..\..\SDKs\Licensing
+set localDRM18Path=%root%..\..\SDKs\SuiteOwnerXL1.8
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy SDKs
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+xcopy /E /D /F /Y /C /I "%sppath%" %localsppath%
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy CC files
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%CCBUILD%" ne "PERFORCE" then
+	xcopy /E /D /F /Y /C /I %ccpath%\BIN %localCCSDKPath%\BIN
+	xcopy /E /D /F /Y /C /I %ccpath%\LIB %localCCSDKPath%\LIB
+	xcopy /E /D /F /Y /C /I %ccpath%\include %localCCSDKPath%\include
+	xcopy /E /D /F /Y /C /I %ccpath%\MergeModules %localCCSDKPath%\MergeModules
+	xcopy /E /D /F /Y /C /I %ccpath%\ConfigFiles %localnobuildspath%\ConfigFiles
+endiff
+
+iff "%CCERASERBUILD%" ne "PERFORCE then
+	xcopy /E /D /F /Y /C /I %cceraserpath%\BIN %localCCSDKPath%\BIN
+	xcopy /E /D /F /Y /C /I %cceraserpath%\include %localCCSDKPath%\include
+endiff
+
+copy %localincludepath%\DebugLog.h %localCCSDKPath%\include
+copy %localincludepath%\DebugLog.cpp %localCCSDKPath%\include
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy LegacyNAV
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+xcopy /E /D /F /Y /C /I %legacynavpath%\BIN.DOS %localbindospath%
+xcopy /E /D /F /Y /C /I %legacynavpath%\BIN.DVX %localbindvxpath%
+xcopy /E /D /F /Y /C /I %legacynavpath%\LIB.DOS %locallibdospath%
+xcopy /E /D /F /Y /C /I %legacynavpath%\LIB.DVX %locallibdvxpath%
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy Symantec Security Center
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+xcopy /E /D /F /Y /C /I %SymSecCentPath%\SDK\Include %localSymSecCenter_SDKpath%\Include
+xcopy /E /D /F /Y /C /I %SymSecCentPath%\Layout %localSymSecCenter_SDKpath%\MSI
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy Norton Security Center
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+xcopy /E /D /F /Y /C /I "%NSCPath%\BIN.IRA" %localNSCpath%\BIN.IRA
+xcopy /E /D /F /Y /C /I "%NSCPath%\SDK" %localNSCpath%
+copy %localNSCPath%\BIN.IRA\FeatureMaster.dll %root%..\BIN.IRA\avFMST.dll
+copy %localNSCPath%\BIN.IRA\FeatureProxy.dll %root%..\BIN.IRA\avFPXY.dll
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy NAV 2005 layouts for multi OS CD layouts
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+xcopy /E /D /F /Y /C /I "\\ussm-cpd\USSM-CPD\Unreleased_Builds\NAV\r11.2\!LATEST_ACCEPTED\%WIN9XBUILD%\Licensed\NAV\CD_STAGING\NV112005" %root%..\..\SDKs\NV112005
+xcopy /E /D /F /Y /C /I "\\ussm-cpd\USSM-CPD\Unreleased_Builds\NAV\r11.0.9\16h\OEM_CUSTOMIZE\16H\Unlicensed\NAV\NV11OEM" %root%..\..\SDKs\NV11OEM
+xcopy /E /D /F /Y /C /I "\\ussm-cpd\USSM-CPD\Unreleased_Builds\NAV\r11.0.9\16h\OEM_CUSTOMIZE\16H\Unlicensed\NAV\NV11OEM_NOIWP" %root%..\..\SDKs\NV11OEM_NOIWP
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy Licensing dependencies for building AVSTE XL1.8 
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+copy %localDRMPath%\Shareable_Code\Licensing\Include\XLOK_UiProperties.h  %localDRM18Path%\CCPD-LicensingTechnologies\DJS_Licensing\Include\XLOK_UiProperties.h
+copy %localDRMPath%\Shareable_Code\Licensing\Include\cltLicenseConstants.h  %localDRM18Path%\CCPD-LicensingTechnologies\DJS_Licensing\Include\DJSMAR00_Static.h
+copy %localDRMPath%\Shareable_Code\Licensing\Include\XTreamLok\LicensingObject\XtreamLokTrialWare18.h  %localDRM18Path%\CCPD-LicensingTechnologies\DJS_Licensing\Include\XTreamLok\LicensingObject\XtreamLokTrialWare.h
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem delete ScriptSafe headers
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+del /y /z %localCCSDKPath%\include\ScriptSafe.h
+del /y /z %localCCSDKPath%\include\ScriptSafeVerifyTrustCached.h
+
+iff EXIST %localCCSDKPath%\include\ScriptSafe.h then
+	@echo ERROR: %localCCSDKPath%\include\ScriptSafe.h still exists after attempting to delete
+	quit 0
+endiff
+iff EXIST %localCCSDKPath%\include\ScriptSafeVerifyTrustCached.h then
+	@echo ERROR: %localCCSDKPath%\include\ScriptSafeVerifyTrustCached.h still exists after attempting to delete
+	quit 0
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem copy ScriptSafe headers from NAV include
+rem Aaron doesn't like this (either does Joe) so we NEED to
+rem remove this as soon as NAV 12.0 ships
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+copy %root%..\include\ScriptSafe.h %localCCSDKPath%\include\ScriptSafe.h
+copy %root%..\include\ScriptSafeVerifyTrustCached.h %localCCSDKPath%\include\ScriptSafeVerifyTrustCached.h
+
+quit 0
+
+:SetupDevBld
+    set ccpath=%DEVBLD_CCBASE_LATEST\Latest
+
+    ::
+    :: Overwrite Integrator with dev build version.
+    :: This is a special case for dev builds only. CM builds use the symnetdrv
+    :: that is checked into Perforce and sync'ed as part of the CCBASE clientspec.
+    ::
+    set Integrator_Path=%@full[localNorton_IntegratorSDKpath]
+    del /y/s/x/z %Integrator_Path
+    md %Integrator_Path
+    xcopy /D/E/I/F/H/Y %DEVBLD_INTEGRATOR_LATEST%\%DEVBLD_INTEGRATOR_BUILDNUM %Integrator_Path
+
+    return

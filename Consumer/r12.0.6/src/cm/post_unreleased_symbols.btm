@@ -1,0 +1,114 @@
+::====================================================================
+::  UnreleasedSymbols.btm
+::====================================================================
+::
+@echo on
+@set LOG4NT=%@unique[%TMP]
+@set LOGNAME=%@name[%_batchname].log
+@log off
+@log /w %LOG4NT
+
+set WIN_DBG_VER=6.3.17.0
+set STORE_DIR=Unreleased
+set STORE_ROOT=\\ussm-cpd\symbol$
+set STORE_PATH=%STORE_ROOT\%STORE_DIR
+set _SYMSTORE=C:\depot\tools\WinDbg\x86\%WIN_DBG_VER\symstore.exe
+set LOCAL_ROOT_PATH=C:
+set SOURCE_SPEC1=%LOCAL_ROOT_PATH\bld_area\navcon_r12.0.6\Norton_AntiVirus\Consumer\src\BIN.IRA\*.pdb
+set SOURCE_SPEC2=%LOCAL_ROOT_PATH\bld_area\navcon_r12.0.6\Norton_AntiVirus\Consumer\src\BIN.IDA\*.pdb 
+set BLDNUM=%1
+set PRODUCT=NAV
+set VERSION=12.0.6
+set COMMENT=Build:%BLDNUM
+@set NULL=%@unique[%TMP]
+@echo.
+@delay 2
+
+set P4CLIENT=%COMPUTERNAME
+echo p4client=%p4client
+@echo.
+@delay 1
+
+@set COMMAND=p4 sync -f //depot/tools/WinDbg/x86/%WIN_DBG_VER/...
+@echo %COMMAND
+@echo.
+@delay 1
+
+@%COMMAND
+@set X=%?
+@iff %X == 0 then
+    @echo success(%X): %COMMAND
+@else
+    @echo error(%X): %COMMAND
+    @echo.
+    @delay 3
+    @goto QUIT_1
+@endiff
+@echo.
+@delay 1
+
+
+@set COMMAND="%_SYMSTORE" add /f "%SOURCE_SPEC1" /s "%STORE_PATH" /t "%PRODUCT" /v "%VERSION" /o /r /c "%COMMENT"
+
+@echo %COMMAND
+
+@%COMMAND
+@set X=%?
+@iff %X == 0 then
+    @echo success(%X): %COMMAND
+@else
+    @echo error(%X): %COMMAND
+    @echo.
+    @delay 3
+    @goto QUIT_1
+@endiff
+@echo.
+@delay 1
+
+
+@set COMMAND="%_SYMSTORE" add /f "%SOURCE_SPEC2" /s "%STORE_PATH" /t "%PRODUCT" /v "%VERSION" /o /r /c "%COMMENT"
+
+@echo %COMMAND
+
+@%COMMAND
+@set X=%?
+@iff %X == 0 then
+    @echo success(%X): %COMMAND
+@else
+    @echo error(%X): %COMMAND
+    @echo.
+    @delay 3
+    @goto QUIT_1
+@endiff
+@echo.
+@delay 1
+
+
+@log off
+move /u "%LOG4NT" "C:\bld_area\navcon_r12.0.6\Norton_AntiVirus\Consumer\src\cm\%LOGNAME"
+@echo.
+@del /yz %NULL
+quit 0
+
+
+:QUIT_1
+@log off
+move /u "%LOG4NT" "C:\bld_area\navcon_r12.0.6\Norton_AntiVirus\Consumer\src\cm\%LOGNAME"
+@echo.
+@del /yz %NULL
+quit 1
+
+
+@TEXT > %NULL
+/r		Add files or directories Recursively
+
+/f		Network path of Files or directories to add
+
+/s		The root directory for the symbol Store
+
+/t		Product name
+
+/v		Product Version
+
+/o		Verbose Output
+@ENDTEXT

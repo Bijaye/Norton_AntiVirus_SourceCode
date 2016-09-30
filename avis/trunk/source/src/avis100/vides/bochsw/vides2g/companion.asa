@@ -1,0 +1,221 @@
+/*
+  11/26/97, This VIDES2 module handles companion viruses using handles
+  
+  Problem: this does not handle resident companions -> change rules to trigger on any create -> we need system calls/disk access
+*/
+
+rule CreateHigherPriority(oldfull, oldname: string; priority, codeseg, ttl: integer);
+var
+cause: integer;
+callseg: integer;
+newname: string;
+newext: string;
+newfull: string;
+newpriority: integer;
+begin
+cause := strToInt(report_tag);
+if
+        ttl = 0
+        --> println('Giving up on CreateHigherPriority ', oldname);
+        
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21
+        and strToInt(rettick) > strToInt(calltick)
+        and strToInt(retcf) = 0
+        -->
+        begin
+        if
+                rh(eax) = 0x3C
+                or rh(eax) = 0x5B
+                -->
+                begin
+                if
+                        cause = 1  --> callseg := strToU(cs);
+                        cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+                fi;
+                if
+                        callseg = codeseg
+                        -->
+                        begin
+                        newfull := readASCIIZ(strToU(ds),rx(edx),256);
+                        newname := getnameoffile(newfull);
+                        newext :=  getextoffile(newfull);
+                        newpriority := priority(newext);
+                        if
+                                newname = oldname
+                                and newpriority > priority
+                                -->
+                                println(' *** Possible Companion infection on ', oldfull, ' with creation of file ', newfull);
+                        
+                                true
+                                --> trigger off for_next CreateHigherPriority(oldfull, oldname, newpriority, codeseg, ttl-1)
+                        fi
+                        end;
+                
+                        true
+                        --> trigger off for_next CreateHigherPriority(oldfull, oldname, newpriority, codeseg, ttl-1)
+                fi
+                end;
+        
+                true
+                --> trigger off for_next CreateHigherPriority(oldfull, oldname, newpriority, codeseg, ttl-1)
+        fi
+        end;
+        
+        true
+        --> trigger off for_next CreateHigherPriority(oldfull, oldname, newpriority, codeseg, ttl)
+fi
+end;
+
+rule DeleteReplace(oldfull: string; codeseg, ttl: integer);
+var
+cause: integer;
+callseg: integer;
+deltarget: string;
+oldname: string;
+begin
+cause := strToInt(report_tag);
+if
+        ttl = 0
+        --> println('Giving up on DeleteReplace ', oldfull);
+        
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21
+        and strToInt(rettick) > strToInt(calltick)
+        and strToInt(retcf) = 0
+        -->
+        begin
+        if
+                rh(eax) = 0x41
+                -->
+                begin
+                if
+                        cause = 1  --> callseg := strToU(cs);
+                        cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+                fi;
+                if
+                        callseg = codeseg
+                        -->
+                        begin
+                        deltarget := readASCIIZ(strToU(ds),rx(edx),256);
+                        if
+                                deltarget = oldfull
+                                -->
+                                begin
+                                println(' *** Unlink on ', oldfull);
+                                oldname := getnameoffile(oldfull);
+                                trigger off for_next CreateHigherPriority(oldfull, oldname, 0, codeseg, 50)
+                                end;
+                        
+                                true
+                                --> trigger off for_next DeleteReplace(oldfull, codeseg, ttl-1)
+                        fi
+                        end;
+                
+                        true
+                        --> trigger off for_next DeleteReplace(oldfull, codeseg, ttl-1)
+                fi
+                end;
+                
+                true
+                --> trigger off for_next DeleteReplace(oldfull, codeseg, ttl-1)
+        fi
+        end;
+        
+        true
+        --> trigger off for_next DeleteReplace(oldfull, codeseg, ttl)
+fi
+end;
+
+rule TargetSearchRename(DTAseg, DTAofs: integer);
+var
+cause: integer;
+func: integer;
+oldname: string;
+oldext: string;
+oldfull: string;
+newname: string;
+newext: string;
+newfull: string;
+oldpriority: integer;
+newpriority: integer;
+newDTAseg: integer;
+newDTAofs: integer;
+callseg: integer;
+begin
+newDTAseg := DTAseg;
+newDTAofs := DTAofs;
+cause := strToInt(report_tag);
+if
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x21
+        and strToInt(rettick) > strToInt(calltick)
+        and strToInt(retcf) = 0
+        -->
+        begin
+        if
+                cause = 1  --> callseg := strToU(cs);
+                cause = 13 --> callseg := readmemword(strToU(ss),rx(esp)+2)
+        fi;
+        func := rh(eax);
+        if
+                func = 0x56     /* rename */
+                -->
+                begin
+                oldfull := readASCIIZ(strToU(ds),rx(edx),256);
+                newfull := readASCIIZ(strToU(es),rx(edi),256);
+                
+                oldname := getnameoffile(oldfull);
+                oldext := getextoffile(oldfull);
+                newname := getnameoffile(newfull);
+                newext := getextoffile(newfull);
+                
+                oldpriority := priority(oldext);
+                newpriority := priority(newext);
+                
+                if
+                        newpriority < oldpriority
+                        -->
+                        trigger off for_next CreateHigherPriority(oldfull, oldname, newpriority, callseg, 50)
+                fi;
+                println('[C] Rename from ', oldfull, ' to ', newfull)
+                end;
+        
+                func = 0x1A     /* set DTA */
+                -->
+                begin
+                newDTAseg := strToU(ds);
+                newDTAofs := rx(edx);
+                println('DTA set to ',word2h(newDTAseg),':',word2h(newDTAofs))
+                end;
+                
+                (func = 0x4E or func = 0x4F)    /* findfirst/next */
+                and (DTAseg = callseg)          /* Read in PSP:0x80 if we don't known -> implement getPSP */
+                -->
+                begin
+                oldfull := readASCIIZ(DTAseg,DTAofs+0x1E,13);
+                oldname := getnameoffile(oldfull);
+                oldext := getextoffile(oldfull);
+                oldpriority := priority(oldext);
+                trigger off for_next CreateHigherPriority(oldfull, oldname, oldpriority, callseg, 50);
+                trigger off for_next DeleteReplace(oldfull, callseg, 50);
+                println('FindFirst/Next found ', oldfull)
+                end
+        fi
+        end
+fi;
+trigger off for_next TargetSearchRename(newDTAseg, newDTAofs)
+end;
+
+external rule DetectCompanion;
+begin
+start_watch_func(0x21,0x56,2);  /* rename */
+start_watch_func(0x21,0x4E,2);  /* findfirst */
+start_watch_func(0x21,0x4F,2);  /* findnext */
+start_watch_func(0x21,0x3C,2);  /* create */
+start_watch_func(0x21,0x41,2);  /* unlink */
+start_watch_func(0x21,0x1A,2);  /* set DTA */
+start_watch_func(0x21,0x5B,2);  /* create DOS 3.x+ */
+trigger off for_next TargetSearchRename(0,0);
+skip
+end;

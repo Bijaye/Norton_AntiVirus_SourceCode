@@ -1,0 +1,257 @@
+setlocal
+echo off
+
+rem set the root to the locaiton of this batch file.
+rem all relative paths are now relative to this 
+set bmmroot=%@path[%_batchname%]%
+rem If the last character in root is not a '\', then append one.
+iff %@SUBSTR[%bmmroot%,%@EVAL[%@LEN[%bmmroot%]-1],1] NE \ then 
+    set bmmroot=%bmmroot%\
+endiff
+
+set MSI_FOLDER=%bmmroot%..\msi\
+set SCRIPT_FOLDER=%bmmroot%..\msi\scripts\
+set SHARED_SRC=%@FULL[..\..\src]
+set OUT_FOLDER=%bmmroot%..\release\
+echo %OUT_FOLDER%
+set DO_TRIAL=TRIAL
+set ERROR_IN=
+set DEVBLD=
+
+rem -----------------------------
+rem check for known parameters
+rem -----------------------------
+do param = 1 to 127
+  shift 1
+  iff "%0"=="" then
+     shift -%param%
+     goto continue
+  endiff
+  iff "%@upper[%0]"=="/DEVBLD" then
+      set DEVBLD=/DEVBLD
+  endiff
+enddo
+shift -127
+
+:continue
+
+echo.
+echo.------------------------------------------------------------------
+echo Building Merge Modules for NAV Installers
+echo.------------------------------------------------------------------
+echo.
+
+:AP
+set MODULE_NAME=AP
+gosub buildmergemod
+
+:AutoProtectDrivers
+set MODULE_NAME=AutoProtectDrivers
+gosub buildmergemod
+
+:avFPXY
+set MODULE_NAME=avFPXY
+gosub buildmergemod
+
+:avFMST
+set MODULE_NAME=avFMST
+gosub buildmergemod
+
+:Quarantine
+set MODULE_NAME=Quarantine
+gosub buildmergemod
+
+:CommonUI
+set MODULE_NAME=CommonUI
+gosub buildmergemod
+
+:NAVProd
+set MODULE_NAME=NAVProd
+gosub buildmergemod
+
+:NAVLogV
+set MODULE_NAME=NAVLogV
+gosub buildmergemod
+
+:NAVEvent
+set MODULE_NAME=NAVEvent
+gosub buildmergemod
+
+:NAVERROR
+set MODULE_NAME=NAVError
+gosub buildmergemod
+
+:NAVLCOM
+set MODULE_NAME=NAVLCOM
+gosub buildmergemod
+
+:SymEvent
+set MODULE_NAME=Symevent
+gosub buildmergemod
+
+:NavInst
+set MODULE_NAME=NavInst
+gosub buildmergemod
+
+:DefInst
+set MODULE_NAME=DefInst
+gosub buildmergemod
+
+:MscFiles
+set MODULE_NAME=MscFiles
+gosub buildmergemod
+
+:navlucbk
+set MODULE_NAME=navlucbk
+gosub buildmergemod
+
+:DefAlert
+set MODULE_NAME=DefAlert
+gosub buildmergemod
+
+:Core
+set MODULE_NAME=core
+gosub buildmergemod
+
+:MiscDeps
+set MODULE_NAME=MiscDeps
+gosub buildmergemod
+
+:Options
+set MODULE_NAME=Options
+gosub buildmergemod
+
+:CfgWiz
+set MODULE_NAME=CfgWizRes
+gosub buildmergemod
+
+:ScanDlvr
+set MODULE_NAME=Scandlvr
+gosub buildmergemod
+
+:MainUI
+set MODULE_NAME=MainUI
+gosub buildmergemod
+
+:Scanners
+set MODULE_NAME=Scanners
+gosub buildmergemod
+
+:SCSSCommon
+set MODULE_NAME=SCSSCommon
+gosub buildmergemod
+
+:SNLog
+set MODULE_NAME=SNLog
+gosub buildmergemod
+
+:IWP
+set MODULE_NAME=IWP
+gosub buildmergemod
+
+:IWPLUCBK
+set MODULE_NAME=IWPLUCBK
+gosub buildmergemod
+
+:NPFMonitor
+set MODULE_NAME=NPFMonitor
+gosub buildmergemod
+
+:PatchInst
+set MODULE_NAME=PatchInst
+gosub buildmergemod
+
+:avNSCPlg
+set MODULE_NAME=avNSCPlg
+gosub buildmergemod
+
+:HPP
+set MODULE_NAME=HPP
+gosub buildmergemod
+
+:SOSDist
+set MODULE_NAME=SOSDist
+gosub buildmergemod
+
+:SOSDist_Staging
+set MODULE_NAME=SOSDist_Staging
+gosub buildmergemod
+
+:ParentDist
+set MODULE_NAME=ParentDist
+gosub buildmergemod
+
+rem ***********************************************************************
+rem * Exit function
+rem ***********************************************************************
+:exit
+endlocal
+quit 0
+
+rem ***********************************************************************
+rem * ERROR Exit function
+rem ***********************************************************************
+:errexit
+echo **********************************************************************
+echo *********** ERROR(S) While Compiling Merge Modules!! *****************
+echo **********************************************************************
+endlocal
+quit -1
+
+rem ***********************************************************************
+rem * Function to build a Merge Module, must set:
+rem * %MODULE_NAME% - .wsm file name without the .wsm
+rem ***********************************************************************
+:buildmergemod
+echo Building %MODULE_NAME% Merge Module
+if exist %OUT_FOLDER%%MODULE_NAME%.msm del /zqy %OUT_FOLDER%%MODULE_NAME%.msm
+attrib -r %MSI_FOLDER%%MODULE_NAME%.wsm
+if exist %MSI_FOLDER%%MODULE_NAME%.bak del /zqy %MSI_FOLDER%%MODULE_NAME%.bak
+copy %MSI_FOLDER%%MODULE_NAME%.wsm %MSI_FOLDER%%MODULE_NAME%.bak
+
+iff "%DEVBLD%" == "/DEVBLD" then
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%%MODULE_NAME%.wsm %OUT_FOLDER%%MODULE_NAME%.msm
+	iff %? != 0 then	  
+  		goto errexit
+	endiff
+
+else
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%%MODULE_NAME%.wsm %OUT_FOLDER%%MODULE_NAME%.msm
+	iff %? != 0 then	  
+  		goto errexit
+	endiff
+endiff
+
+del /zqy %MSI_FOLDER%%MODULE_NAME%.wsm
+ren %MSI_FOLDER%%MODULE_NAME%.bak %MODULE_NAME%.wsm
+attrib +r %MSI_FOLDER%%MODULE_NAME%.wsm
+iff not exist %OUT_FOLDER%%MODULE_NAME%.msm then
+	set ERROR_IN=%MODULE_NAME%.wsm
+	goto errorout
+endiff
+
+rem Make sure all of our "non-versioned" files show a verion of 1.0 in the version field so they are always installed
+rem over any existing file on the system if the machine is not clean.
+cscript.exe %SCRIPT_FOLDER%WiRunSQL.vbs %OUT_FOLDER%%MODULE_NAME%.msm "UPDATE `File` SET `Version`='1.0.0' WHERE `Version`=''"
+
+return
+
+
+rem ***********************************************************************
+rem * Function to print out an error in bright white on red, must set:
+rem * %ERROR_IN%  - .The error that occurred
+rem ***********************************************************************
+:errorout
+COLOR bright white on bright red
+echo.
+echo ==================================================================
+echo  Error while building %ERROR_IN%
+echo ==================================================================
+echo.
+COLOR white on black
+set QUIT_VAL=1
+echo ================================================================== >> %@FULL[%@PATH[%_batchname]%..\..]\cm\Master.log
+echo  Error while building %ERROR_IN% >> %@FULL[%@PATH[%_batchname]%..\..]\cm\Master.log
+echo ================================================================== >> %@FULL[%@PATH[%_batchname]%..\..]\cm\Master.log
+goto exit
+

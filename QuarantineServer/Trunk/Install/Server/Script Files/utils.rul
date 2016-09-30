@@ -1,0 +1,180 @@
+////////////////////////////////////////////////////////////////////////////////
+//    File Name:  utils.rul
+//
+//  Description:  common Utility scripts
+//
+//     Comments:  This file holds all utility functions that are not 
+//                specific to the install.  (i.e. functions to strip
+//                spaces from strings, if a string is a number, and so on)
+//
+////////////////////////////////////////////////////////////////////////////////
+
+    // function prototypes
+    prototype IsNum_Script(STRING);
+    prototype StripSpaces(BYREF STRING, INT);
+    prototype IsRegKeyEmpty(STRING);
+    
+/////////////////////////////////////////////////////////////////////////////
+// Function: IsRegKeyEmpty                                                 //
+// Purpose:  This function TRUE if the key has no values or subkeys under. //
+/////////////////////////////////////////////////////////////////////////////
+function IsRegKeyEmpty(sKey)
+LIST   listSubKeys, listNames;
+BOOL bResult;
+NUMBER d,f;
+begin
+        listSubKeys = ListCreate(STRINGLIST);
+        if(listSubKeys = LIST_NULL)then
+                return 0;
+        endif;
+        listNames = ListCreate(STRINGLIST);
+        if(listNames = LIST_NULL)then
+                return 0;
+        endif;
+
+        bResult = FALSE;
+        RegDBQueryKey ( sKey, REGDB_KEYS, listSubKeys );
+        RegDBQueryKey ( sKey, REGDB_NAMES, listNames );
+        d = ListCount(listSubKeys);
+        f = ListCount(listNames);
+        if( d = 0 && f = 0 ) then
+                bResult = TRUE;
+        endif;
+
+        ListDestroy (listSubKeys);
+        ListDestroy (listNames);
+
+        return bResult;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  IsNum_Script
+//
+// Purpose:  Checks to make sure all the characters in a string are digits	
+///////////////////////////////////////////////////////////////////////////////
+//	05/22/02 - Asher Siddiqui
+///////////////////////////////////////////////////////////////////////////////
+function IsNum_Script(svNum) 
+	INT iVal, iLen;
+	BOOL bResult;
+begin
+	// Assume success
+	bResult = TRUE;
+	
+	//set initial values 
+	iVal = 0;
+	iLen = StrLength (svNum);
+
+	// Loop through till we reach the end of the string or
+	// a non numeric character was found
+	while( (iVal < iLen) && bResult ) 
+		//is the current charater a digit
+		if( (svNum[iVal] = "0") ||
+			(svNum[iVal] = "1") ||
+			(svNum[iVal] = "2") ||
+			(svNum[iVal] = "3") ||
+			(svNum[iVal] = "4") ||
+			(svNum[iVal] = "5") ||
+			(svNum[iVal] = "6") ||
+			(svNum[iVal] = "7") ||
+			(svNum[iVal] = "8") ||
+			(svNum[iVal] = "9") ) then
+			//Yup - move to the next character
+			iVal++;
+		else
+			//Nope - set false return code
+			bResult = FALSE;
+		endif;
+	endwhile;                  
+	
+	return bResult;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  StripSpaces
+//
+// Purpose:  Removes Spaces from a string
+//
+// Parameters:
+//   svInput: The string to be modified (BYREF)
+//   nDirection: 0 Remove from both front and back
+//               1 Remove only from front
+//               2 Remove only from back
+///////////////////////////////////////////////////////////////////////////////
+//	05/27/02 - Asher Siddiqui
+///////////////////////////////////////////////////////////////////////////////
+function StripSpaces( svInput, nDirection ) 
+	INT		iPos, iLen;
+	STRING	svTemp;
+	BOOL	bContinue;
+begin
+	// Remove from back
+	if( (nDirection = 0) || ( nDirection = 2) ) then
+		//set initial values 
+		iLen = StrLength (svInput);
+		iPos = iLen - 1;
+		bContinue = TRUE;
+		
+		// Keep moving down the string till we reach
+		// the end or we hit a non space character.
+		while( (iPos > -1) && bContinue )
+			if (svInput[iPos] = " ") then
+				iPos = iPos - 1;
+			else
+				bContinue = FALSE;
+			endif;
+		endwhile;        
+		
+		// Check to how far down the string we moved
+		if( iPos < 0 ) then
+			// The whole string was spaces
+			// So set the input string to empty and exit
+			svInput = "";
+			return 0;
+		elseif( iPos < (iLen - 1) ) then
+			// Part of the string was spaces            
+			// So copy from the start of the string to where
+			// we stopped. Now set the new string as the input
+			// string
+			StrSub( svTemp, svInput, 0, (iPos + 1) );
+			svInput = svTemp;
+		endif;
+	endif;
+	
+	// Remove from front
+	if( (nDirection = 0) || ( nDirection = 1) ) then
+		//set initial values 
+		iLen = StrLength (svInput);
+		iPos = 0;
+		bContinue = TRUE;
+		
+		// Keep moving down the string till we reach
+		// the end or we hit a non space character.
+		while( (iPos < iLen) && bContinue )
+			if (svInput[iPos] = " ") then
+				iPos = iPos + 1;
+			else
+				bContinue = FALSE;
+			endif;
+		endwhile;        
+		
+		// Check to how far down the string we moved
+		if( iPos = iLen ) then
+			// The whole string was spaces
+			// So set the input string to empty and exit
+			svInput = "";
+			return 0;
+		elseif( (iPos > 0) && (iPos < (iLen - 1)) ) then
+			// Part of the string was spaces            
+			// So copy from where we stopped to the end of
+			// the string. Now set the new string as the input
+			// string
+			StrSub( svTemp, svInput, iPos, (iLen - iPos) );
+			svInput = svTemp;
+		endif;
+	endif;
+	
+	return 0;
+end;

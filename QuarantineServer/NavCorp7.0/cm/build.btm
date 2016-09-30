@@ -1,0 +1,85 @@
+@echo off
+color bright yellow on black
+
+rem
+rem Check for debug switch
+rem
+if "%@upper[%1]" == "/DBG" goto Debug
+
+echo *******************************************************
+echo *** Building Quarantine server and related projects ***
+echo ***                 Release Build                   ***
+echo *******************************************************
+msdev "..\Quarantine Server Build.dsw" /MAKE "ALL - Release" /OUT "make.err" /REBUILD
+
+echo *******************************************************
+echo ***                 Building Help                   ***
+echo *******************************************************
+cd ..\..\..\tech_pubs\Quarantine\cm
+call makehelp.btm
+if ERRORLEVEL GE 1 goto BuildErr
+cd ..\..\..\Norton_AntiVirus\QuarantineServer\cm
+
+color bright cyan on black
+echo *******************************************************
+echo ***          Copying custom install DLLs            ***
+echo ***                 Release Build                   ***
+echo *******************************************************
+
+rem call mdir.bat "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+
+if not exist "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32" md /s ..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32" md /s "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Server\Setup Files\Compressed Files\0009-English\Intel 32" md /s "..\Install\Server\Setup Files\Compressed Files\0009-English\Intel 32"
+if not exist "..\Install\Server\Setup Files\Compressed Files\0009-English\OS Independent" md /s "..\Install\Server\Setup Files\Compressed Files\0009-English\OS Independent"
+if not exist "..\Install\Server\Setup Files\Uncompressed Files\Language Independent\Intel 32" md /s "..\Install\Server\Setup Files\Uncompressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Server\Setup Files\Uncompressed Files\0009-English\Intel 32" md /s "..\Install\Server\Setup Files\Uncompressed Files\0009-English\Intel 32"
+if not exist "..\Install\Server\Setup Files\Uncompressed Files\0009-English\OS Independent" md /s "..\Install\Server\Setup Files\Uncompressed Files\0009-English\OS Independent"
+
+if not exist "..\Install\Console\Setup Files\Compressed Files\Language Independent\Intel 32" md /s "..\Install\Console\Setup Files\Compressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Console\Setup Files\Compressed Files\0009-English\Intel 32" md /s "..\Install\Console\Setup Files\Compressed Files\0009-English\Intel 32"
+if not exist "..\Install\Console\Setup Files\Compressed Files\0009-English\OS Independent" md /s "..\Install\Console\Setup Files\Compressed Files\0009-English\OS Independent"
+if not exist "..\Install\Console\Setup Files\Uncompressed Files\Language Independent\Intel 32" md /s "..\Install\Console\Setup Files\Uncompressed Files\Language Independent\Intel 32"
+if not exist "..\Install\Console\Setup Files\Uncompressed Files\0009-English\Intel 32" md /s "..\Install\Console\Setup Files\Uncompressed Files\0009-English\Intel 32"
+if not exist "..\Install\Console\Setup Files\Uncompressed Files\0009-English\OS Independent" md /s "..\Install\Console\Setup Files\Uncompressed Files\0009-English\OS Independent"
+copy /q "..\shared\BinIntelAnsiWin32Release\qsinst.dll" "..\Install\Server\Setup Files\Compressed Files\Language Independent\Intel 32"
+copy /q "..\nobuilds\immc.exe" "..\install\console\setup files\compressed files\language independent\intel 32"
+copy /q "..\nobuilds\navinstnt.dll" "..\install\console\setup files\compressed files\language independent\intel 32"
+
+attrib "..\Nobuilds\Hawking\Navdefs\*.*" -r
+attrib "..\Nobuilds\Hawking\Navhub\*.*" -r
+
+if ERRORLEVEL == 0 goto Complete
+goto BuildErr
+
+:Debug
+echo *******************************************************
+echo *** Building Quarantine server and related projects ***
+echo ***                  Debug Build                    ***
+echo *******************************************************
+msdev "..\Quarantine Server Build.dsw" /MAKE "ALL - Debug" /OUT "make.err" /REBUILD
+if ERRORLEVEL == 0 goto Complete
+goto BuildErr
+
+:BuildErr
+color bright red on black
+echo *******************************************************
+echo ***      Errors have occured durring the build      ***
+echo ***         See file MAKE.ERR for details           ***
+echo *******************************************************
+beep 440 2
+color white on black
+quit 1
+goto AllDone
+
+:Complete
+color bright green on black
+echo *******************************************************
+echo ***               Build successfull.                ***
+echo *******************************************************
+if exist make.err del make.err /qz
+goto AllDone
+
+:AllDone
+color white on black
+

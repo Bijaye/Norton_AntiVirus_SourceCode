@@ -1,0 +1,134 @@
+;**********************************************************************
+;
+; $Header: $
+;
+; This prodhook selects tools and does global setup for ODYSSEY (NAV 6.0).
+;
+;**********************************************************************
+; $Log: $
+;  
+;**********************************************************************
+
+; Prodhook for ODYSSEY
+
+[envset]
+set LANGPRE=n:\
+set PROJPRE=S:\
+set quakepre=L:\SOURCE
+set quake=
+set quakeinc=L:\SOURCE\INCLUDE\SRC%QUAKE%
+set quakesuf=N
+set globalinc=L:\SOURCE\INC\SRC
+set LANGDRIVE=N:
+set quakelangpre=L:\%LANG%
+set toolsdir=S:\TOOLS
+set dosx=-SWAPDIR %TEMP%
+set familyvers=
+set familypre=T:\SOURCE
+set familylangpre=T:\
+set familyinc=T:\SOURCE\INCLUDE\SRC%FAMILYVERS%
+
+[commonpre]
+platforms=ida,ira,idu,iru,idav,irav,iduk,iruk,ada,ara,adu,aru,aduk,aruk,wda,wra,DOS,DX,DSV,DVX,NEC,NCX,TSR,VXD,BIN
+set quakeinc=L:\SOURCE\INCLUDE\SRC%QUAKE%
+set libpre=
+set includepre=
+
+
+[ida]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[ira]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[idu]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[iru]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[idav]
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[irav]
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[IRUK]
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+[IDUK]
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+[ADA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ARA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC42MFCAXP
+
+[ARU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADUK]
+tools=MSVC42AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[ARUK]
+tools=MSVC50AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[WDA]
+set QUAKE_CUSTOM=NAV
+tools=msvc152;masm611
+
+[WRA]
+set QUAKE_CUSTOM=NAV
+tools=msvc152;masm611
+
+[DOS]
+tools=msvc152;winzipse;masm611
+set QUAKE_CUSTOM=
+
+[DSV]
+tools=msvc152;masm611
+
+[NEC]
+;tools=msc8;masm611
+tools=msvc152;masm611
+
+[DX]
+tools=dos16m.506;msvc152;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=R:\DOS16M.506
+
+[DVX]
+tools=dos16m.506;msvc152;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=R:\DOS16M.506
+set QUAKE_CUSTOM=
+
+[NCX]
+tools=dos16m.506;msvc152;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=R:\DOS16M.506
+set QUAKE_CUSTOM=
+
+[TSR]
+tools=msvc152;masm611
+
+[BIN]
+
+
+[]

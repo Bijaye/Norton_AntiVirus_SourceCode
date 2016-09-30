@@ -1,0 +1,30 @@
+[OPTIONS]
+ERRORLOG=SCHERROR.TXT           ; This can be changed to suit the project leader
+CONTENTS=NPS_HELP_CONTENTS    ; This can be changed to suit the project leader
+;ROOT=                          ; This can be changed to suit the project leader        
+;COMPRESS=FALSE                  ; Change to COMPRESS=TRUE for final build
+COMPRESS=HIGH
+TITLE=Norton Scheduler Help     ; This will be the title unless you specify a MAIN in the [WINDOWS] Section
+oldkeyphrase = false            ;
+REPORT=ON
+ICON=SCHEDULE.ICO                ; This can be changed to suit the project leader
+COPYRIGHT=Copyright (C) 1993-1996 Symantec Corp.
+
+[FILES]
+SCHMAIN.RTF
+
+[BITMAPS]
+
+
+[MAP]
+#include <nps_hlp.h>
+
+[CONFIG]
+BrowseButtons()
+CreateButton("quick_help_index", "&QuickHelp", "JI(`Schedule.hlp', `NPS_HELP_QUICK')")
+CreateButton("jump_glossary", "&Glossary", "JI(`Schedule.hlp>glossary', `Glossary_Contents')")
+
+[WINDOWS]
+main = "Norton Scheduler Help",(500,8,512,1000),,, (255,255,208 )
+glossary = "Norton Scheduler Help", (222,206,725,486 ),,, (192,192,192 )
+dialog="Dialog Box Controls", (500, 100, 400, 550),,,(255, 255, 208)

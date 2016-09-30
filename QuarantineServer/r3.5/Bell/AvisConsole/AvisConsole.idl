@@ -1,0 +1,43 @@
+/*
+ * PROPRIETARY/CONFIDENTIAL.  use of this product is subject to license terms.
+ * Copyright (c) 2005 Symantec Corporation.  All Rights Reserved.
+ *
+*/
+
+
+// AvisConsole.idl : IDL source for AvisConsole.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (AvisConsole.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(6A0B66FA-FE02-11D2-9798-00C04F688464),
+	version(1.0),
+	helpstring("AvisConsole 1.0 Type Library")
+]
+library AVISCONSOLELib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(6A0B6707-FE02-11D2-9798-00C04F688464),
+		helpstring("AvisCon Class")
+	]
+	coclass AvisCon
+	{
+		[default] interface IUnknown;
+	}
+	[
+		uuid(6A0B6708-FE02-11D2-9798-00C04F688464),
+		helpstring("AvisCon Class About")
+	]
+	coclass AvisConAbout
+	{
+		[default] interface IUnknown;
+	}
+};

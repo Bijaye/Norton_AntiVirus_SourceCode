@@ -1,0 +1,103 @@
+
+#=================================================
+# Directory Options
+#=================================================
+
+#------------------------------------------------
+# Root directory for signature storage
+#------------------------------------------------
+signatureDirectory = d:\avis\signatures
+
+#------------------------------------------------
+# Root directory for sample storage
+#------------------------------------------------
+sampleDirectory = d:\avis\samples
+
+#------------------------------------------------
+# Temp Directory for sample expansion
+#------------------------------------------------
+tempExpand = d:\avis\temp
+
+#=================================================
+# X-Analysis-Gateway is an optional parameter that
+# may be set to override the response attribute of 
+# the same name in submit sample transactions.
+# The format is a fully-qualified domain name
+#=================================================
+# X-Analysis-Gateway = gateway.dis.symantec.com
+#=================================================
+
+#=================================================
+# Trace options
+#=================================================
+# The following blocks of options (Trace_*)
+# are simple mode modifiers for the MTrace
+# class (and subsequently, dependent clients like
+# TraceClient & StackTrace)
+#------------------------------------------------
+# NOTE: These options are not picked up directly
+# by the MTrace class.  It does not require the
+# presence of a config file at all.  
+#------------------------------------------------
+
+#------------------------------------------------
+# Location of the primary log file
+#------------------------------------------------
+LogFile = c:\log\avisservlets.log
+
+#------------------------------------------------
+# General Trace Mode
+#------------------------------------------------
+# These flags are a little esoteric, but are 
+# hopefully well documented in MTrace.h
+#------------------------------------------------
+# Available values:
+#    on = Mode is flagged on
+#   off = Mode is flagged off        
+#------------------------------------------------
+# The default mode is:
+#-------------------------------
+# Trace_Mode_Linenumbers = off #
+# Trace_Mode_Datestamp   = on  #
+# Trace_Mode_Timestamp   = on  #
+# Trace_Mode_Severity    = on  #
+# Trace_Mode_Source      = on  #
+# Trace_Mode_Indent      = off #
+# Trace_Mode_VStack      = off #
+# Trace_Mode_Code        = off #
+# Trace_Mode_Message     = on  #
+#-------------------------------
+
+Trace_Mode_Linenumbers = on
+Trace_Mode_Datestamp   = on
+Trace_Mode_Timestamp   = on
+Trace_Mode_Severity    = on
+Trace_Mode_Source      = on
+Trace_Mode_Indent      = off
+Trace_Mode_VStack      = off
+Trace_Mode_Code        = off
+Trace_Mode_Message     = on
+Trace_Mode_ThreadId    = on
+
+#------------------------------------------------
+# Line Type Includes
+#------------------------------------------------
+# There are 8 different types of trace messages
+# These parameters allow them to be individually
+# switched on & off.  (Note that two of them:
+# 'enter' and 'exit' fall under the Trace_Include_Stack
+# label, making only 7 entries here)
+#------------------------------------------------
+# Available values:
+#    on = Line type is traced (default)
+#   off = Line type is ignored        
+#------------------------------------------------
+
+Trace_Include_Msg      = on
+Trace_Include_Stack    = off
+Trace_Include_Debug    = on
+Trace_Include_Info     = on
+Trace_Include_Warning  = on
+Trace_Include_Error    = on
+Trace_Include_Critical = on
+

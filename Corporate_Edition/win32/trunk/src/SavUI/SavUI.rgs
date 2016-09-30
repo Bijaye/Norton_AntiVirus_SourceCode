@@ -1,0 +1,14 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		'%APPID%' = s 'SavUI'
+		{
+		    val RunAs = s 'Interactive User'
+		}
+		'SavUI.EXE'
+		{
+			val AppID = s '%APPID%'
+		}
+	}
+}

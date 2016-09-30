@@ -1,0 +1,51 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+#ifdef DISPLAY_BUILD_NO
+ FILEVERSION      VER_NUM_PRODVERMAJOR,VER_NUM_PRODVERMINOR,VER_NUM_PRODVERSUBMINOR,VER_NUM_BUILDNUMBER
+ PRODUCTVERSION   VER_NUM_PRODVERMAJOR,VER_NUM_PRODVERMINOR,VER_NUM_PRODVERSUBMINOR
+#else
+ FILEVERSION      VER_NUM_PRODVERMAJOR,VER_NUM_PRODVERMINOR,VER_NUM_PRODVERSUBMINOR
+ PRODUCTVERSION   VER_NUM_PRODVERMAJOR,VER_NUM_PRODVERMINOR,VER_NUM_PRODVERSUBMINOR
+#endif
+ FILEFLAGSMASK    0x3fL
+#ifdef _DEBUG
+ FILEFLAGS        0x1L
+#else
+ FILEFLAGS        0x0L
+#endif
+ FILEOS           0x40004L
+ FILETYPE         0x1L
+ FILESUBTYPE      0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", VER_STR_COMPANYNAME             "\0"
+            VALUE "FileDescription", STR_FILEDESCRIPTION         "\0"
+            VALUE "FileVersion", NAV_RES_FILEVERSIONSTRING       "\0"
+            VALUE "InternalName", STR_INTERNALNAME               "\0"
+            VALUE "LegalCopyright", VER_STR_COPYRIGHT            "\0"
+            VALUE "OriginalFilename", STR_ORIGINALFILENAME       "\0"
+            VALUE "ProductName", VER_STR_PRODUCT_SIRNAME         "\0"
+            VALUE "ProductVersion", NAV_RES_PRODUCTVERSIONSTRING "\0"
+#ifdef DISPLAY_BUILD_DATE
+            VALUE "Product Date", VER_STR_BUILDDATETUPLE         "\0"
+#endif
+#ifdef VER_STR_FILEBLOCK_EXTRA
+            VER_STR_FILEBLOCK_EXTRA "\0"
+#endif
+#ifdef VER_STR_PRODUCTBLOCK_EXTRA
+            VER_STR_PRODUCTBLOCK_EXTRA "\0"
+#endif
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

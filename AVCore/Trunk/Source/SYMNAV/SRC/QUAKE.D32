@@ -1,0 +1,563 @@
+;************************************************************************
+;*                                                                      *
+;* $Header:   S:/SYMNAV/VCS/quake.d3v   1.65   11 Jun 1998 18:38:12   CEATON  $ *
+;*                                                                      *
+;* Description:                                                         *
+;*      In general, you NEVER need a DEF file for WIN32, but if you     *
+;*      want to export routines which are not being exported using      *
+;*      declspec(dllexport) (SYM_EXPORT), then you will need to         *
+;*      explicitly export them.   Note that this COMPLEMENTS the        *
+;*      declspec(dllexport) scheme, rather than replaces it.            *
+;*                                                                      *
+;************************************************************************
+;* $Log:   S:/SYMNAV/VCS/quake.d3v  $ *
+;
+;     Rev 1.65   11 Jun 1998 18:38:12   CEATON
+;  Added new export FileEnableFileSharing().
+;
+;     Rev 1.64   02 Jun 1998 16:01:28   DBuches
+;  Added more exports.
+;
+;     Rev 1.63   02 Mar 1998 14:26:58   TSmith
+;  Added exports for 'ConfigReadString' and 'ConfigReadValue'.
+;
+;     Rev 1.62   01 Oct 1997 19:25:36   GDZIECI
+;  Exported ConfigBlockFileGet() and ConfigBlockFileSet().
+;
+;     Rev 1.61   05 Aug 1997 13:20:44   MKEATIN
+;  Added ConvertPhySectorToLong().
+;
+;     Rev 1.60   20 Jun 1997 23:21:48   MKEATIN
+;  Added FileWipe().
+;
+;     Rev 1.59   06 Jun 1997 18:00:58   DBUCHES
+;  Added NameParseUNC
+;
+;     Rev 1.58   19 May 1997 20:02:18   ksackin
+;  Added 2 exports from the new dskfat32.cpp file.
+;
+;     Rev 1.57   26 Oct 1996 11:24:16   JBRENNA
+;  Export ConfigParamToUpperNonDbcs().
+;
+;     Rev 1.56   16 Oct 1996 19:54:24   DALLEE
+;  Added exports for new DBCS string routines.
+;
+;     Rev 1.55   10 Sep 1996 13:27:06   GWESTER
+;  Added DBCSGetByteType .
+;
+;     Rev 1.54   23 Aug 1996 15:14:18   DALLEE
+;  Sorted exports alphabetically (sorry for the big change, but this
+;  thing was just unreadable).
+;
+;  Added SystemWin95ShellPresent()
+;
+;     Rev 1.53   20 Aug 1996 09:55:08   JBRENNA
+;  Add CanSupportExtendedIO to export list
+;
+;     Rev 1.52   14 Aug 1996 15:08:22   JBRENNA
+;  Remove entry for FileCopySecurityInformation. It breaks the build when
+;  SYM_NTK is not defined. This is because the function only exists under
+;  SYM_NTK. Yet it is exported reguardless of SYM_NTK. If NT needs this exported
+;  use the SYM_EXPORT on the function definition.
+;
+;     Rev 1.51   12 Aug 1996 21:53:30   DSACKIN
+;  Added entry for FileCopySecurityInformation
+;
+;     Rev 1.50   05 Aug 1996 18:19:56   SEDWARD
+;  Added NG_SetFontInControl
+;
+;     Rev 1.49   28 Jun 1996 13:15:48   DALLEE
+;  LuigiPlus port:
+;  Added DirParsePath(), StringMaxCopy(), and some disk routines for
+;  updated rescue.
+;
+;     Rev 1.48   01 Apr 1996 20:41:52   AFREYLI
+;  Add NGStockBrushGet
+;
+;     Rev 1.47   28 Mar 1996 14:09:18   jworden
+;  Add export for DBCSSetInternalTable
+;
+;     Rev 1.46   22 Feb 1996 10:22:02   YVANG
+;  Renamed the functions prefixed with NavwHelp to the ones with StdHelpEx,
+;  which are the NAV versions of Quake's StdHelp.
+;
+;     Rev 1.45   16 Jan 1996 09:51:50   JWORDEN
+;  Add export for _ConvertStringToLong
+;
+;     Rev 1.44   10 Jan 1996 10:41:50   JWORDEN
+;  Add exports for WIN_File... functions
+;
+;     Rev 1.43   09 Jan 1996 16:33:28   JWORDEN
+;  Add export for ConfigRegSetValue
+;
+;     Rev 1.41.1.3   22 Sep 1995 09:25:02   YVANG
+;  Added 'PasswordChange'.
+;
+;     Rev 1.41.1.2   13 Sep 1995 10:28:24   BARRY
+;  Added ConfigFileFlush for Jim
+;
+;     Rev 1.41.1.1   17 Jul 1995 11:22:00   DALLEE
+;  Added ConfigRegQueryValue and ConfigRegSetValue to exports.
+;
+;     Rev 1.41   10 Jul 1995 20:20:18   MARKL
+;  Exported VxDIntBasedCall()
+;
+;     Rev 1.40   09 Jul 1995 18:12:36   RHAYES
+;  Added NameConvertFwdSlashes
+;
+;     Rev 1.39   02 Jul 1995 17:10:06   MARKL
+;  Added NG_DrawBitmap()
+;
+;     Rev 1.38   01 Jul 1995 16:18:46   GDZIECI
+;  Exported StdGuiltBoxCreate().
+;
+;     Rev 1.37   28 Jun 1995 13:08:58   RHAYES
+;  Added new export SYMstrpbrk located in DCBS.Obj which was already included.
+;
+;     Rev 1.36   26 Jun 1995 23:03:24   MARKL
+;  Added NGDrawMaskedBitmap
+;
+;     Rev 1.35   15 Jun 1995 15:58:36   GWESTER
+;  Added exports NavwHelpInfoDesk(), NavwHelpWhatsThisEx() .
+;
+;     Rev 1.34   02 Jun 1995 11:24:44   DALLEE
+;  Added PackedNameIsDevice() to exports, required by SYMRSQ.
+;
+;     Rev 1.33   02 Jun 1995 11:15:26   DALLEE
+;  Added HWIsPIC to exports so thunks don't blow up.
+;
+;     Rev 1.32   25 May 1995 18:32:54   KEITH
+;  Add ConfigSwitchGetValue to exports.
+;
+;     Rev 1.31   23 May 1995 11:30:18   BARRY
+;  Added SYMstrrchr for ZIP
+;
+;     Rev 1.30   21 May 1995 22:55:46   BARRY
+;  Added DirMakePath for ZIP
+;
+;     Rev 1.29   18 May 1995 21:24:44   BARRY
+;  Exported NavwHelpWhatsThis(), which is also
+;  StdHelpWhatsThis().  (Gary)
+;
+;     Rev 1.28   18 May 1995 17:27:34   BARRY
+;  Exported the Help functions properly.  ("StdHelpXXXXXXX"
+;  functions should be exported as "NavwHelpXXXXXXXX").  (Gary)
+;
+;     Rev 1.27   18 May 1995 14:52:16   BARRY
+;  More exports.  (Gary)
+;
+;
+;     Rev 1.26   18 May 1995 14:29:12   BARRY
+;  Added more exports (from util and gui segments).  (Gary)
+;
+;
+;     Rev 1.25   18 May 1995 12:49:28   BARRY
+;  Added even more exports so that nresq32.exe can
+;  compile.  (Gary)
+;
+;
+;     Rev 1.24   16 May 1995 18:36:44   BARRY
+;  Added a bunch of exported functions so that symrsq.dll
+;  can link them in.  (Gary)
+;
+;     Rev 1.23   04 May 1995 10:29:46   KEITH
+;  Add DBCSIsLeadByte to exports
+;
+;     Rev 1.22   03 May 1995 20:45:24   BRAD
+;  Added FileIsOpen2
+;
+;     Rev 1.21   03 May 1995 12:30:50   MFALLEN
+;  Still trying to make it work.
+;
+;     Rev 1.20   03 May 1995 10:09:56   MFALLEN
+;  Renamed StdHelp exported functions. We should now be using NavwHelp family.
+;
+;     Rev 1.19   02 May 1995 13:07:14   MFALLEN
+;  ShellLink...()
+;
+;     Rev 1.18   27 Apr 1995 11:51:18   MFALLEN
+;  Added DiskGetCurrentLockState()
+;
+;     Rev 1.17   26 Apr 1995 13:52:38   BRAD
+;  Added NG_SetGroupBoxSunken
+;
+;     Rev 1.16   20 Apr 1995 17:49:02   MFALLEN
+;  NameValidatePathEx
+;
+;     Rev 1.15   06 Apr 1995 20:21:10   MFALLEN
+;  ConfigSwitchCount()
+;
+;     Rev 1.14   06 Apr 1995 19:49:32   MFALLEN
+;  ConfigParamCount
+;
+;     Rev 1.13   06 Apr 1995 16:31:24   SZIADEH
+;  added FileGetDateTimeString() used in SYMINTEG.
+;
+;     Rev 1.12   29 Mar 1995 17:12:38   MFALLEN
+;  Replaced NameGetIllegalChars() with NameReturnIllegalChars()
+;
+;     Rev 1.11   27 Mar 1995 16:39:12   DALLEE
+;  Added NameReturnExtensionEx() - winmisc.cpp, FileIsDOSExecutable()
+;
+;     Rev 1.10   27 Mar 1995 16:38:24   MFALLEN
+;
+;     Rev 1.9   24 Mar 1995 09:36:26   MFALLEN
+;  StdHelpOnContextHelpEx()
+;
+;     Rev 1.8   23 Mar 1995 16:23:50   SZIADEH
+;  added NameReturnRoot() used in n_scan.cpp in the NAVWORK project.
+;
+;     Rev 1.7   16 Mar 1995 15:29:20   AMATIC
+;  Added StdhelpGetHelpInfo()
+;  quake.d32 -> S:\symnav\vcs\quake.d3v
+;  Enter description of changes made.
+;
+;     Rev 1.6   15 Mar 1995 20:11:18   MFALLEN
+;  Added SystemGetWindowsType()
+;
+;     Rev 1.5   15 Mar 1995 19:52:14   MFALLEN
+;  Added Ctl3dAutoSubclass and Ctl3dSubclassDlgEx
+;
+;     Rev 1.4   10 Mar 1995 14:07:56   AMATIC
+;
+;     Rev 1.3   10 Mar 1995 13:25:26   AMATIC
+;  Added New StdHelp Func: "StdHelpOnContextHelp()"
+;
+;     Rev 1.2   09 Mar 1995 17:34:20   BRIANF
+;
+;     Rev 1.1   08 Mar 1995 16:44:00   BARRY
+;  Added CPL_Dialog for NPS
+;
+;     Rev 1.0   02 Mar 1995 13:29:10   BRIANF
+;  Initial revision.
+;
+;************************************************************************
+
+EXPORTS
+
+
+CMOSRead
+CPL_ChangeDialog
+CPL_Dialog
+CPL_DialogDynamic
+CPL_EndDialog
+CPL_GetCplDlg
+CPL_GetCurDlg
+CPL_HitTestTabGlobal
+CRCFile
+CanSupportExtendedIO
+CharIsNumeric
+ConfigBlockFileGet
+ConfigBlockFileSet
+ConfigFileFlush
+ConfigFileInit
+ConfigFileReadString
+ConfigFileReadValue
+ConfigFileTerminate
+ConfigFileWriteString
+ConfigFileWriteValue
+ConfigParamCount
+ConfigParamGet
+ConfigParamToUpper
+ConfigParamToUpperNonDbcs
+ConfigReadString
+ConfigReadValue
+ConfigRegQueryValue
+ConfigRegSetValue
+ConfigSearchPath
+ConfigSearchPath
+ConfigSearchVarPath
+ConfigSwitchCount
+ConfigSwitchGetText
+ConfigSwitchGetValue
+ConfigSwitchSet
+ConvertClusterToSector
+ConvertDateToEncoded
+ConvertEncodedDateToNormal
+ConvertEncodedTimeToNormal
+ConvertLongToPhySector
+ConvertLongToString
+ConvertPhySectorToLong
+ConvertSectorToCluster
+ConvertSizeToCluster
+ConvertStringToLong
+ConvertStringToWord
+ConvertTimeToEncoded
+ConvertWordToString
+Ctl3dAutoSubclass
+Ctl3dColorChange
+Ctl3dCtlColorEx
+Ctl3dRegister
+Ctl3dSubclassCtl
+Ctl3dSubclassDlg
+Ctl3dSubclassDlgEx
+Ctl3dUnregister
+DBCSGetByteType
+DBCSInstalled
+DBCSIsLeadByte
+DBCSIsTrailByte
+DBCSSetInternalTable
+DOSGetDate
+DOSGetExtendedError
+DOSGetTime
+DOSGetVersion
+DOSGetVersion
+DateGetCurrentDateTime
+DirGet
+DirHasChildren
+DirMakePath
+DirParsePath
+DiskAbsOperation
+DiskBPBFromIndex
+DiskBPBTable
+DiskBPBToAbsDiskRec
+DiskBPBToDiskRec
+DiskBlockDevice
+DiskCacheGetDrivesByMask
+DiskCacheGetInfo
+DiskCacheUpdate
+DiskDiskRecToBPB
+DiskExists
+DiskFreeAvailGet
+DiskGenericIOCTL
+DiskGenericIOCTLError
+DiskGet
+DiskGetActiveFAT
+DiskGetAllocInfo
+DiskGetAllocInfo
+DiskGetBlockDeviceError
+DiskGetBootDrive
+DiskGetClusterSize
+DiskGetCurrentLockState
+DiskGetDASDType
+DiskGetDriveList
+DiskGetFATMirrStatus
+DiskGetFirstFixedDrive
+DiskGetFirstFloppyDrive
+DiskGetFloppyType
+DiskGetHDParams
+DiskGetInfo
+DiskGetPhysicalInfo
+DiskGetPhysicalType
+DiskGetPhysicalType
+DiskGetSerialNumber
+DiskGetType
+DiskHasBootRecord
+DiskIsAssigned
+DiskIsBlockDevice
+DiskIsCompressed
+DiskIsCompressed
+DiskIsDoubleSpace
+DiskIsDriveSpace
+DiskIsDriveSpace3
+DiskIsEncrypted
+DiskIsFixed
+DiskIsNetwork
+DiskIsPhantom
+DiskIsRemovable
+DiskIsStacker
+DiskIsSubst
+DiskIsValidBPB
+DiskLockLogicalVolume
+DiskLockLogicalVolume
+DiskLockPhysicalVolume
+DiskMapLogToPhyParams
+DiskPollWrites
+DiskRecToFloppyAbsDiskRec
+DiskReset
+DiskResetDOS
+DiskSet
+DiskUnlockLogicalVolume
+DiskUnlockLogicalVolume
+DiskUnlockPhysicalVolume
+DiskUnscrambleBIOSCoding
+DiskVCacheFlush
+DiskVCacheInvalidate
+DosTimeToFileTime
+FileCopy
+FileCreate
+FileCreateTemporary
+FileDelete
+FileEnableFileSharing
+FileExists
+FileFindClose
+FileFindFirst
+FileFindFirstAttr
+FileFindNext
+FileGetAttr
+FileGetDateTimeString
+FileGetTime
+FileIsOpen2
+FileKill
+FileLength
+FileOpen
+FileRename
+FileSetAttr
+FileSetSize
+FileSetTime
+FileTimeToDosTime
+FileWipe
+FreeVxD
+GetProtModePtr
+HWIsNEC
+HWIsPCI
+HugeOemToAnsiBuff
+IOCtlVWin32
+LoadVxD
+MathDiff
+MemAlloc
+MemAvail
+MemCopyPhysical
+MemFree
+MemReAlloc
+MessageDisplay
+NDL_DisplaySelectedDrives
+NDL_GetSelected
+NDL_InitDrives
+NDL_SelectByMask
+NDL_SelectByName
+NDL_TypeBoxCheck
+NDrvItemGetHeight
+NGDrawMaskedBitmap
+NGStockBrushGet
+NG_AddSpeedSearch
+NG_BrowseForFolder
+NG_CenterDialog
+NG_ColorChange
+NG_Done
+NG_Draw3DFrame
+NG_DrawBitmap
+NG_DrawCanvas
+NG_FontGet
+NG_Init
+NG_SetChildSmallFont
+NG_SetFontInControl
+NG_SetFontsInDialog
+NG_SetGroupBoxSunken
+NG_StdDlgLook
+NG_VListRegister
+NIntlGetValidDate
+NIntlGetValidTime
+NIntlInit
+NIntlTimeToLongString
+NMessageDisplay
+NMessageDisplayEx
+NMsgBox
+NMsgGet
+NPTPrintDialog
+NSetIntlDate
+NSetIntlLongDate
+NSetIntlTime
+NameAppendExtension
+NameAppendFile
+NameCompact
+NameConvertFwdSlashes
+NameConvertPath
+NameGetType
+NameIsDevice
+NameIsExecutableInitDir
+NameIsRoot
+NameIsValidFileChar
+NameIsWildcard
+NameParsePath
+NameParseUNC
+NameReturnExtension
+NameReturnExtensionEx
+NameReturnFile
+NameReturnIllegalChars
+NameReturnLongName
+NameReturnPath
+NameReturnRoot
+NameReturnShortName
+NameSeparatePath
+NameShortenFileName
+NameStripExtension
+NameStripFile
+NameToFull
+NameToPacked
+NameToUnpacked
+NameValidatePath
+NameValidatePathEx
+NameWildcardMatch
+PackedNameIsDevice
+PasswordChange
+PasswordVerify
+QuickSort
+SYMCheckVersions
+SYMKRNLCheckVersion
+SYMstrchr
+SYMstricmp
+SYMstrncpy
+SYMstrnicmp
+SYMstrpbrk
+SYMstrrchr
+SYMstrstr
+ShellLinkCreate
+ShellLinkDestroy
+ShellLinkExists
+StdAboutBox
+StdDirSelect
+StdExPopupHelpFromDialog
+StdGuiltBoxCreate
+StdGuiltBoxDestroy
+StdHelpActivate
+StdHelpContextMenu
+StdHelpExContextMenu
+StdHelpExFromHelpBtn
+StdHelpExGetHelpInfo
+StdHelpExInit
+StdHelpExOnContextHelp
+StdHelpExProcessContextMenu
+StdHelpExWhatsThis
+StdHelpFromDialog
+StdHelpFromHelp
+StdHelpFromHelpBtn
+StdHelpFromID
+StdHelpFromMenu
+StdHelpGetHelpFileID
+StdHelpInfoDesk
+StdHelpInit
+StdHelpProcessContextMenu
+StdHelpSetContext
+StdHelpSetHelpFileID
+StdHelpShutdown
+StdHelpWhatsThis
+StdHelpWhatsThisEx
+StdHelpWithParams
+StdPopupHelpFromDialog
+StringAppendChar
+StringAppendNChars
+StringMaxCopy
+StringRemoveTrailingSpaces
+StringRemoveTrailingSpaces
+StringSkipToWhite
+StringSkipToWhite
+StringSkipWhite
+StringSkipWhite
+StringStripChar
+StringStripSpaces
+SymGetRegBlock
+SystemGetWindowsType
+SystemWin95ShellPresent
+SzzFindNext
+SzzStripDuplicates
+VolumeLabelGet
+VolumeLabelSet
+VolumeSupportsLFN
+VxDIntBasedCall
+VxDServicesInit
+WIN_FileClose
+WIN_FileRead
+WIN_FileSeek
+WIN_FileWrite
+WinIniLoadAppend
+WinIniLoadCheck
+WinIniLoadRemove
+_CheckVersion@8
+_ConvertLongToString
+_ConvertStringToLong
+_ConvertWordToString
+_DiskIsDoubleSpace
+hstrcpy
+DiskGetRootSCN
+DiskSetRootSCN

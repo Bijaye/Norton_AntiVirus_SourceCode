@@ -1,0 +1,28 @@
+:: Get ROOT path
+set ROOT=%@path[%_batchname%]%
+echo ROOT = %ROOT%
+rem If the last character in root is not a '\', then append one.
+iff %@SUBSTR[%ROOT%,%@EVAL[%@LEN[%ROOT%]-1],1] NE \ then
+   set ROOT=%ROOT%\
+endiff
+
+set PRODUCT=NAV
+set VERSION=14.2
+set BUILD_NUMBER=%1
+
+set SYMSTORE_EXE=%ROOT%..\..\Nobuilds\WinDbg\symstore.exe
+set BIN_PATH=%ROOT%..\BIN
+set SYMBOL_STORE=\\ussm-cpd\symbol$\unreleased
+
+::---------------------------------------------
+:: post pdb symbols to IT managed symbol server
+::---------------------------------------------
+
+Echo Posting symbols to the symbol server...
+
+%SYMSTORE_EXE% add /r /f "%BIN_PATH%\bin.iru\*.pdb" /s "%SYMBOL_STORE%" /t "%PRODUCT% %VERSION%" /o /v "Build %BUILD_NUMBER%"
+%SYMSTORE_EXE% add /r /f "%BIN_PATH%\bin.ira\*.pdb" /s "%SYMBOL_STORE%" /t "%PRODUCT% %VERSION%" /o /v "Build %BUILD_NUMBER%"
+%SYMSTORE_EXE% add /r /f "%BIN_PATH%\bin.idu\*.pdb" /s "%SYMBOL_STORE%" /t "%PRODUCT% %VERSION%" /o /v "Build %BUILD_NUMBER%"
+%SYMSTORE_EXE% add /r /f "%BIN_PATH%\bin.ida\*.pdb" /s "%SYMBOL_STORE%" /t "%PRODUCT% %VERSION%" /o /v "Build %BUILD_NUMBER%"
+
+Echo Done posting symbols

@@ -1,0 +1,23 @@
+HKCR
+{
+	Qserver.EnumSavVirusInfo.1 = s 'EnumSavVirusInfo Class'
+	{
+		CLSID = s '{A746FC46-4FE4-4648-A4DA-4F0DF6718097}'
+	}
+	Qserver.EnumSavVirusInfo = s 'EnumSavVirusInfo Class'
+	{
+		CLSID = s '{A746FC46-4FE4-4648-A4DA-4F0DF6718097}'
+		CurVer = s 'Qserver.AvisConfig.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A746FC46-4FE4-4648-A4DA-4F0DF6718097} = s 'EnumSavVirusInfo Class'
+		{
+			ProgID = s 'Qserver.EnumSavVirusInfo.1'
+			VersionIndependentProgID = s 'Qserver.EnumSavVirusInfo'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{C60B0154-894B-11D2-8E5F-2A0712000000}'
+			'TypeLib' = s '{C60B0153-894B-11D2-8E5F-2A0712000000}'
+		}
+	}
+}

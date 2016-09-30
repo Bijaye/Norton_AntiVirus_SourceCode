@@ -1,0 +1,72 @@
+For help in writing netware scripts
+
+A. NAVEngineInit            B. NAVEngineClose
+defs path:
+navex.inf path:
+heur level:
+flags:
+
+C. NAVIsInfectableFile      D. NAVScanFile
+filename:                   filename:
+
+E. NAVScanBoot              F. NAVScanMasterBoot
+drive letter:               physical id (128):
+
+G. NAVScanMemory            H. NAVRepairFile
+                            filename:
+
+I. NAVRepairBoot            J. NAVRepairMasterBoot
+drive letter:               physical id (128):
+
+K. NAVDeleteFile            L. NAVFreeVirusHandle
+filename:                   
+
+M. NAVGetVirusInfo          N. NAVGetVirusDefCount
+vir info (0):               return 16105
+
+O. NAVGetVirusDefMaxCount   P. NAVGetVirusDefDetectCount
+return 65535                return 21724
+
+Q. NAVLoadVirusDef          R. NAVReleaseVirusDef
+entry # (int):              
+
+S. NAVGetVirusDefInfo       T. NAVLoadVirusDefTable
+vir info (1):               
+
+U. NAVReleaseVirusDefTable  V. NAVGetVirusDefTableCount
+
+W. NAVGetVirusDefTableInfo  X. NAVGetNavapiVersionString
+virtable index (0):         
+vir info (0):
+
+Y. NAVGetVirusDBInfo        Z. NAVGetVirusDBInfoEx
+returns 1,4/26/99           returns 1,4/26/99,0
+
+1. Scan and Repair directory
+
+2. Scan and Repair directory (delete unrepairable files)
+
+3. Multithreading
+
+4. Delete all files in a directory
+
+5. Quit
+
+Your command:5
+
+
+
+
+
+Netware Ghost from J:/
+sys, vol1 > volumes
+load vol1://stscan/stscan.nlm 
+     /s:vol1://stscan/script.txt
+     /o:vol1://stscan/script.out
+IPE: admin/root or admin/supervisor
+venom: supervisor/no password
+LDVP-411: supervisor/password
+G4NW5_US 155.64.158.43 - Tree: Ghost4nw_5_US
+     - bind. c.: .engineering
+FTP in: sarclab (192.0.0.53) - SARC - admin12
+exit NAV ent. pw - NORTON

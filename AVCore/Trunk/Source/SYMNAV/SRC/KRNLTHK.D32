@@ -1,0 +1,125 @@
+;------------------------------------------------------------------------
+; Copyright (c) Symantec 1994.  All rights reserved.
+;
+; $Header:   S:/SYMNAV/VCS/KRNLTHK.D3v   1.4   18 Sep 1997 11:15:04   JBRENNA  $
+;
+; This is the definition file for the Thunked Win32 library
+;
+;------------------------------------------------------------------------
+; $Log:   S:/SYMNAV/VCS/KRNLTHK.D3v  $
+;  
+;     Rev 1.4   18 Sep 1997 11:15:04   JBRENNA
+;  Enable thunking by updating the library name to the correct QUAKE letter.
+;  
+;     Rev 1.3   30 Aug 1996 17:30:32   GWESTER
+;  Updated letter in name from "D" to "F".
+;  
+;     Rev 1.2   08 Feb 1996 20:17:38   BARRY
+;  Change branch to D
+;  
+;     Rev 1.1   13 Jun 1995 18:58:34   BRIANF
+;  Used current SYMKRNL def files.
+;
+;     Rev 1.19   24 Apr 1995 22:02:50   SCOTTP
+;  bumped rev number to 8 ( did this twice accidentally because it
+;  was 6 )
+;
+;     Rev 1.18   24 Apr 1995 22:00:52   SCOTTP
+;  bumped to 8
+;
+;     Rev 1.17   04 Jan 1995 16:44:46   RGLENN
+;  Added StackerFlushDrive()
+;
+;     Rev 1.16   27 Dec 1994 16:27:10   BRUCE
+;  Removed NameReturnLongName()
+;
+;     Rev 1.15   21 Dec 1994 16:59:14   BRAD
+;  Renamed long/short, so more consistent with Quake APIs
+;
+;     Rev 1.14   09 Dec 1994 15:12:54   HENRI
+;  Added SystemHeapInfo and GetSystemResources thunks
+;
+;     Rev 1.13   21 Nov 1994 19:04:54   BRUCE
+;  Added NameGetLong/ShortName() functions and thunks to get to them
+;
+;     Rev 1.12   16 Nov 1994 18:20:12   BRAD
+;  No longer thunk for MemCopyPhysical()
+;
+;     Rev 1.11   01 Nov 1994 11:58:30   DBUCHES
+;  Added StackerDiskBlockDevice thunk
+;
+;     Rev 1.10   27 Oct 1994 15:34:02   RGLENN
+;  Added thunks for StackerGet/PutUnitData
+;
+;     Rev 1.9   04 Oct 1994 16:13:12   DBUCHES
+;  Added thunk for DiskGetDriverTable
+;
+;     Rev 1.8   03 Oct 1994 17:00:36   DBUCHES
+;  Added thunk for DiskGetDASDType()
+;
+;     Rev 1.7   28 Sep 1994 18:27:14   DBUCHES
+;  Added thunk for DiskGetLockedTable
+;
+;     Rev 1.6   15 Aug 1994 14:09:26   SCOTTP
+;  tunnk is now quake 6
+;
+;     Rev 1.5   27 Jul 1994 16:18:40   DBUCHES
+;  Added thunk for DiskRecToFloppyAbsDiskRec
+;
+;     Rev 1.4   25 Jul 1994 13:33:48   DBUCHES
+;  Added thunk for _DiskIsDoubleSpace()
+;
+;     Rev 1.3   07 Jul 1994 16:04:46   DBUCHES
+;  Added thunks for DiskIsStacker, DiskIsBlockDevice and DiskIsDriveSpace
+;
+;     Rev 1.2   06 Jul 1994 17:09:48   DBUCHES
+;  Added thunks for DiskGetPhysicalType, DiskIsCompressed,
+;  and DiskIsDoubleSpace.
+;
+;     Rev 1.1   29 Jun 1994 18:37:20   DBUCHES
+;  Added DiskGetHDParams32
+;
+;     Rev 1.0   24 Jun 1994 10:39:02   HENRI
+;  Initial revision.
+;
+
+LIBRARY TKNV32O
+
+DESCRIPTION 'Windows 4.0 Kernel Thunks, Copyright 1994-1997, Symantec Corporation'
+
+EXPORTS
+        thk_ThunkData32
+; Thunk layer functions
+
+        DiskGetPhysicalInfo32           @100    RESIDENTNAME
+        DiskAbsOperation32              @101    RESIDENTNAME
+        DiskBlockDevice32               @102    RESIDENTNAME
+        DiskMapLogToPhyParams32         @103    RESIDENTNAME
+        DiskGetInfo32                   @104    RESIDENTNAME
+        DiskGetBootDrive32              @105    RESIDENTNAME
+        DiskResetDOS32                  @106    RESIDENTNAME
+        DiskReset32                     @107    RESIDENTNAME
+        EISACMOSRead32                  @109    RESIDENTNAME
+        EISACMOSWrite32                 @110    RESIDENTNAME
+        CMOSRead32                      @111    RESIDENTNAME
+        CMOSWrite32                     @112    RESIDENTNAME
+        HWIsEISA32                      @113    RESIDENTNAME
+        HWIsMicroChannel32              @114    RESIDENTNAME
+        DiskGetHDParams32               @115    RESIDENTNAME
+        DiskGetPhysicalType32           @116    RESIDENTNAME
+        DiskIsCompressed32              @117    RESIDENTNAME
+        DiskIsDoubleSpace32             @118    RESIDENTNAME
+        DiskIsBlockDevice32             @119    RESIDENTNAME
+        DiskIsDriveSpace32              @120    RESIDENTNAME
+        DiskIsStacker32                 @121    RESIDENTNAME
+        _DiskIsDoubleSpace32            @122    RESIDENTNAME
+        DiskRecToFloppyAbsDiskRec32     @123    RESIDENTNAME
+        DiskGetLockedTable32            @124    RESIDENTNAME
+        DiskGetDASDType32               @125    RESIDENTNAME
+        DiskGetDriverTable32            @126    RESIDENTNAME
+        StackerGetUnitData32            @127    RESIDENTNAME
+        StackerPutUnitData32            @128    RESIDENTNAME
+        STK20DiskBlockDeviceThunk32     @129    RESIDENTNAME
+        GetFreeSystemResources32        @132    RESIDENTNAME
+        SystemHeapInfo32                @133    RESIDENTNAME
+        StackerFlushDrive32             @134    RESIDENTNAME

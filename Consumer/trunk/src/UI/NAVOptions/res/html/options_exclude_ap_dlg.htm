@@ -1,0 +1,79 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+	<head>
+		<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title id="exclude_title">Norton AntiVirus</title>
+		<IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="NO" HEIGHT="0" WIDTH="0" style="display:none"
+			SRC="options_errorid.htm"></IFRAME>
+		<script Language="JavaScript" src="DisplayScriptError.js"></script>
+		<script language="JavaScript" src="options.js"></script>
+		<script language="JavaScript" src="options_exclude_ap_dlg.js"></script>
+		<link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+	</head>
+	<body id="body_ed" leftmargin="0" topmargin="0" scroll="no"
+		onHelp="Help();" onLoad="initialize_options_exclude_ap_dlg();" TABINDEX="-1"
+		style="MARGIN:0px; PADDING:0px;">
+		<!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+		<span id="IlegalFile" style="display:none">Illegal file path specified!</span>
+		<span id="WildCardInPath" style="display:none">The path name includes an unsupported character or wildcard.  Unsupported characters include  * ? / " < > |. Colons (:) are supported as part of drive names only.</span>
+		<span id="AllPathsError" style="display:none">You cannot exclude all files from scanning (*.*). You can exclude all files in a folder (c:\excluded files) or all files with a specific extension (*.jpg).</span>
+		<span id="ExclusionError" style="display:none">Invalid exclusion!</span>
+		<span id="DuplicateExclusion" style="display:none">Duplicate exclusion!</span>
+		<!-- end of JavaScript text -->
+		<div id="headerarea" class="optionpage_header"
+		style="PADDING-LEFT: 20px; PADDING-RIGHT:20px; HEIGHT: 30px; BACKGROUND-COLOR:#7D92b2; COLOR:#FFFFFF">
+			<span style="float: left">Add Item</span>
+			<span style="float: right;" onmouseover="this.style.cursor='hand'" onclick="Help()" onkeydown="KeyboardNavigate(this)" tabindex="1">
+				<u>Help</u>
+			</span>
+		</div>
+		<form name="options_exclude_ap_dlg" onsubmit="return false">
+			<div id="BrowseArea" style="float:left; margin-left:6px;">
+				<input class="NavNormalText" id="Item" size="35" maxlength="256"
+					onKeyUp="OnKey();" onKeyPress="OnKey();" onpropertychange="OnKey();"
+					style="MARGIN-RIGHT: 5px; MARGIN-BOTTOM: 5px;">
+
+				<button id="Browse" class="NavNormalText" onClick="return BrowseExclusions();"
+					style="MARGIN-BOTTOM: 5px;">
+					<img id="ed_openfile" src="openfile.gif" style="WIDTH:16px; HEIGHT:16px;">
+				</button><br />
+
+				<input type="checkbox" id="IncludeSubfolders" name="checkbox" accesskey="s" style="MARGIN-LEFT:4px;">
+					<span class="NavNormalText">Include <u>s</u>ubfolders</span>
+
+			</div>
+			<div id="OKCancelArea" style="float:right; margin-right:10px;">
+				<button id="OK" class="stdbttn2" onClick="Save();"
+						onMouseOver="ButtonMouseOver(this); return false;"
+						onMouseOut="ButtonMouseOut(this); return false;"
+						onMouseDown="ButtonMouseDown(this); return false;"
+						onKeyDown="ButtonKeyDown(this);"
+						onKeyUp="ButtonKeyUp(this);"
+						onFocus="ButtonFocus(this); return false;"
+						onBlur="ButtonBlur(this); return false;">
+					<label id="OKLabel" accesskey="O" for="OK">
+         					<u>O</u>K</label>
+				</button>
+				<button id="Cancel" class="stdbttn2" onClick="location.href = 'closeme.xyz';"
+						onMouseOver="ButtonMouseOver(this); return false;"
+						onMouseOut="ButtonMouseOut(this); return false;"
+						onMouseDown="ButtonMouseDown(this); return false;"
+						onKeyDown="ButtonKeyDown(this);"
+						onKeyUp="ButtonKeyUp(this);"
+						onFocus="ButtonFocus(this); return false;"
+						onBlur="ButtonBlur(this); return false;">
+					<label id="CancelLabel" accesskey="C" for="Cancel">
+	                   			 <u>C</u>ancel</label>
+				</button>
+			</div>
+		</form>
+	</body>
+</html>

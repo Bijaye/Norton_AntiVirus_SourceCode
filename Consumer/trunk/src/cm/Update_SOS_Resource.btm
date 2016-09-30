@@ -1,0 +1,51 @@
+:: Update_SOS_Resource.btm
+:: This batch file replaces various resources in avStatus.loc
+:: (renamed to isStatus.loc) for SOS branding
+
+
+:: Get path of this batch file and call it root
+set root=%@path[%_batchname%]%
+echo ROOT = %root%
+rem If the last character in root is not a '\', then append one.
+iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+   set root=%root%\
+endiff
+
+
+:: Resource replacement tool
+set RESOURCEUPDATER="%root%..\..\SDKs\ComponentFramework\bin.iru\ResourceUpdater.exe"
+
+:: File and directory paths
+set AVSTATUS="%root%..\..\SDKs\ConsumerUI\BIN.IRU\UNSIGNED\avStatus.loc"
+set ISSTATUS="%root%..\BIN\BIN.IRU\SOS\isStatus.loc"
+set IMAGE_PATH=%root%..\UI\isStatusSOS\res\
+
+:: Strings to replace
+set PRODUCT_NAME=Norton AntiVirus
+set SOS_PRODUCT_NAME=Norton AntiVirus Online
+
+:: Images to replace
+:: !! Resource names are case-sensitive !!
+set COBRAND_GIF=COBRAND.GIF
+set SOS_COBRAND_GIF=%IMAGE_PATH%CoBrand.gif
+
+set TAB_LARGE_PNG=TAB-LARGE.PNG
+set SOS_TAB_LARGE_PNG=%IMAGE_PATH%nav-large.png
+
+set TAB_SMALL_PNG=TAB-SMALL.PNG
+set SOS_TAB_SMALL_PNG=%IMAGE_PATH%nav-small.png
+
+
+:: copy .loc for modification
+mkdir "%root%..\BIN\BIN.IRU\SOS\"
+copy %AVSTATUS% %ISSTATUS%
+
+:: String replacements
+:: Final output of the /replace parameter must be in the form of --> "searchString=replaceString"
+%RESOURCEUPDATER% /update %ISSTATUS% /replace "%PRODUCT_NAME=%SOS_PRODUCT_NAME"
+
+:: Image replacements
+:: Final output of the /replacehtml parameter must be in the form of --> "searchFile=replaceFile"
+%RESOURCEUPDATER% /update %ISSTATUS% /replacehtml "%COBRAND_GIF=%SOS_COBRAND_GIF"
+%RESOURCEUPDATER% /update %ISSTATUS% /replacehtml "%TAB_LARGE_PNG=%SOS_TAB_LARGE_PNG"
+%RESOURCEUPDATER% /update %ISSTATUS% /replacehtml "%TAB_SMALL_PNG=%SOS_TAB_SMALL_PNG"

@@ -1,0 +1,51 @@
+::
+:: $Header:   S:/SYMALOG/VCS/buildall.btv   1.3   29 Apr 1997 15:19:50   JBRENNA  $
+::
+:: This file performs mkupdate's for all platforms of the SYMALOG project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/SYMALOG/VCS/buildall.btv  $
+:  
+:     Rev 1.3   29 Apr 1997 15:19:50   JBRENNA
+:  Change WIN to WRA and WDA.
+:  
+:     Rev 1.2   28 Apr 1997 20:09:28   JBRENNA
+:  Convert to new CORE_* platform specification.
+:  
+:     Rev 1.1   20 Dec 1994 18:06:34   JMILLARD
+:  add nlm
+:  
+:     Rev 1.0   20 Dec 1994 17:19:48   MARKL
+:  Initial revision.
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+
+                                        :: Build each target for each platform.
+for %__Plat in (DOS DX NLM WDA WRA IRA IDA) do gosub Build_It
+
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call proj symalog %__Plat
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

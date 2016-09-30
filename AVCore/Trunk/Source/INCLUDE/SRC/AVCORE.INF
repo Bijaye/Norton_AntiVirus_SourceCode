@@ -1,0 +1,337 @@
+;
+; $Header:   S:/INCLUDE/VCS/AVCORE.INv   1.28   24 Jul 1998 17:02:58   dhertel  $
+;
+; Prodhook for VIRLIB
+;-------------------------------------------------------------------------
+; $Log:   S:/INCLUDE/VCS/AVCORE.INv  $
+;
+;     Rev 1.28   24 Jul 1998 17:02:58   dhertel
+;  Added NLM section
+;
+;     Rev 1.27   14 Jul 1998 18:57:28   mdunn
+;  Removed references to l:\source\inc.dev
+;
+;     Rev 1.26   10 Jul 1998 12:20:22   JBRENNA
+;  Update the ARA and ADA to use the MSVC 5.0 compiler. Note that Atomic
+;  is already on the N branch and is not picking this compiler change.
+;
+;     Rev 1.25   16 Jun 1998 17:58:28   spasnik
+;  Set includepre and libpre to null.  This is the clobber setting
+;  that will clear these when other projects fail to clean up
+;
+;     Rev 1.24   19 Mar 1998 22:35:50   tcashin
+;  Changed IRA and IDA to use MSVC 5.0.
+;
+;     Rev 1.23   17 Dec 1997 17:05:20   DBuches
+;  Changed DEC Alpha platforms to use MSVC5.0
+;
+;     Rev 1.22   17 Jul 1997 17:32:16   DDREW
+;  Moved NLM platform over to Watcom11
+;
+;     Rev 1.21   17 Jul 1997 12:47:56   mdunn
+;  Reinstated NTK as an available platform, for Gryphon NEC.
+;
+;     Rev 1.20   23 May 1997 15:55:12   KSACKIN
+;  Added BIN as an available platform.
+;
+;     Rev 1.19   09 May 1997 16:52:38   ksackin
+;  Added the platforms IRU,IDU,ARU,ADU.  This is for the UNICODE projects that
+;  need to be built in AVCORE.
+;
+;     Rev 1.18   02 May 1997 08:46:16   TCASHIN
+;  Use both INC.DEV and INC. SymStat.h only exists in INC.
+;
+;     Rev 1.17   02 May 1997 08:08:58   JBRENNA
+;  Replace S:\INC.DEV with L:\SOURCE\INC.DEV>
+;
+;     Rev 1.16   01 May 1997 18:57:42   ksackin
+;  Move globalinc to ??UK and ??AV platforms. Change globalinc to point
+;  to INC.DEV rather than INC.
+;
+;     Rev 1.15   29 Apr 1997 16:30:38   JBRENNA
+;  Remove r1.14 changes.
+;
+;     Rev 1.13   29 Apr 1997 14:08:18   JBRENNA
+;  Use WRA and WDA instead of WIN.
+;
+;     Rev 1.12   29 Apr 1997 12:56:48   JBRENNA
+;  Back changes that added W32 and VXD platforms. QAKF will have its own
+;  version of this file that defines W32 and VXD.
+;
+;     Rev 1.11   29 Apr 1997 11:41:12   JBRENNA
+;  Restore the VXD platform for QAKF. The VXD and W32 platforms should be
+;  removed when QAKF disappears.
+;
+;     Rev 1.10   29 Apr 1997 11:23:30   JBRENNA
+;  Add W32 platform back in for QAKF builds.
+;
+;     Rev 1.9   28 Apr 1997 15:45:56   bsobel
+;  Added vxd and kernel mode drivers
+;
+;     Rev 1.8   28 Apr 1997 14:55:10   bsobel
+;  Build system changes (still need to remove dead platforms)
+;
+;     Rev 1.7   09 Apr 1997 09:15:38   JBRENNA
+;  Upgrade [W32] to use the 4.2 compiler with MFC in the path.
+;
+;     Rev 1.6   13 Feb 1997 11:56:12   MKEATIN
+;  Ported changes from banch F
+;
+;     Rev 1.5   25 Oct 1996 12:10:40   JBRENNA
+;  Change [WIN] to use the msvc152 compiler to match core's [WIN] compiler.
+;  We should update [DOS] and [X86] to match core's version after Kirin
+;  finishes.
+;
+;     Rev 1.4   23 Oct 1996 13:29:16   RJACKSO
+;  Removed QAKF since a branch pointing to that now exists.
+;
+;     Rev 1.3   23 Oct 1996 10:40:26   GWESTER
+;  Changed Quake dependency from Core trunk to QAKF branch.
+;
+;     Rev 1.2   18 Sep 1996 15:04:14   JALLEE
+;  Added .DVX
+;
+;     Rev 1.1   13 Aug 1996 16:52:56   RFULLER
+;  Deleted QAKE Branch reference.
+;
+;     Rev 1.0   13 Aug 1996 16:49:28   RFULLER
+;  Initial revision.
+;
+;     Rev 1.9   12 Aug 1996 16:03:48   jmillar
+;  finish fixing the last problem
+;
+;     Rev 1.8   12 Aug 1996 15:54:08   jmillar
+;  change to pretend I am Quake e, even though we haven't branched.
+;
+;     Rev 1.7   01 Jul 1996 10:37:28   jmillar
+;  NTK platform overrides globalinc to l:\source\inc.dev\src until we resolve
+;  the symevent.h problems
+;
+;     Rev 1.6   11 Jun 1996 23:43:38   jmillar
+;  change back to msvc 4.0 for  NTK - 4.1 causes KD problems
+;
+;     Rev 1.5   16 May 1996 21:50:42   jmillar
+;  add NTSRCINC to ntk platform
+;
+;     Rev 1.4   23 Apr 1996 23:28:42   jmillar
+;
+;     Rev 1.3   10 Apr 1996 07:53:30   JMILLAR
+;  add NTK
+;
+;     Rev 1.2   05 Feb 1996 15:01:18   GDZIECI
+;  Removed QUAKE_CUSTOM from WIN platform.
+;
+;     Rev 1.1   01 Feb 1996 18:48:08   YVANG
+;  Add QUAKE_CUSTOM to WIN platform
+;
+;     Rev 1.0   30 Jan 1996 13:03:44   RJACKSO
+;  Initial revision.
+;
+;     Rev 1.0   29 Jan 1996 18:04:32   JREARDON
+;  Initial revision.
+;
+;     Rev 1.26   28 Nov 1995 14:44:12   GDZIECI
+;  Don't set QUAKE_CUSTOM for the WIN platform.
+;
+;     Rev 1.25   12 Jul 1995 21:12:04   JREARDON
+;  Removed references to QAK8
+;
+;     Rev 1.24   27 Jun 1995 23:10:24   JREARDON
+;  Updated for Branch 8
+;
+;     Rev 1.23   26 Jun 1995 16:50:06   BARRY
+;  Disabled PRERELEASE flag for all platforms
+;
+;     Rev 1.22   26 Jun 1995 15:37:38   SZIADEH
+;  chenged XOPTS for the VxD platform to avoid stack checking
+;  for under 10K.
+;
+;     Rev 1.21   12 Jun 1995 22:09:02   BARRY
+;  Disabled PRERELEASE for DOS platform to make NAVBOOT as small as possible
+;
+;     Rev 1.20   06 Mar 1995 20:11:48   BARRY
+;  Moved QUAKE_CUSTOM to W32 and WIN platforms
+;
+;     Rev 1.19   06 Mar 1995 19:40:38   BARRY
+;  Added QUAKE_CUSTOM define
+;
+;     Rev 1.18   02 Mar 1995 19:15:56   BRAD
+;  Added WIN95SDK
+;
+;     Rev 1.17   26 Jan 1995 16:40:26   DALLEE
+;  Oh boy... Added TSR platform for NAVTSR.
+;
+;     Rev 1.16   16 Jan 1995 14:01:38   JREARDON
+;  remove QAK6 stuff
+;
+;     Rev 1.15   14 Jan 1995 18:16:34   JMILLARD
+;  complete conversion to qak6
+;
+;     Rev 1.14   14 Jan 1995 17:45:02   JMILLARD
+;
+;  change to QAK6 for now - we need to branch this since we can't share
+;  with LUIGI who didn't branch - this will have to be officially fixed by
+;  one of the build guys
+;
+;     Rev 1.13   14 Dec 1994 16:16:30   RSTANEV
+;  New VxD linker.
+;
+;     Rev 1.12   01 Nov 1994 13:05:42   JMILLARD
+;  back to watcom10
+;
+;     Rev 1.11   01 Nov 1994 07:31:40   JMILLARD
+;
+;  try watcom 9
+;
+;     Rev 1.10   26 Oct 1994 12:55:28   JMILLARD
+;  set watcom10 flag to C for clarity
+;
+;     Rev 1.9   26 Oct 1994 12:48:20   JMILLARD
+;  make change to watcom10 more build-like
+;
+;     Rev 1.8   20 Oct 1994 15:20:46   JMILLARD
+;  change to WATCOM10 for NLM
+;
+;     Rev 1.7   29 Aug 1994 16:06:40   SCOTTP
+;  ADDED XOPTS OF /DPRERELEASE TO EVERYTING
+;  AT REQUEST OF BARRY/DAVE
+;
+;     Rev 1.6   25 Aug 1994 16:08:12   CAREY
+;  Added DX platform support. (missing SWAPDIR and DOSEXTENDER)
+;-------------------------------------------------------------------------
+
+[envset]
+set LANGPRE=n:\
+set PROJPRE=S:\
+set quakepre=l:\SOURCE
+set quake=
+set quakeinc=l:\SOURCE\INCLUDE\SRC%QUAKE%
+set globalinc=L:\SOURCE\INC\SRC
+set LANGDRIVE=N:
+set quakelangpre=l:\%lang%
+set toolsdir=s:\tools
+set dosx=-SWAPDIR %temp%
+
+[commonpre]
+platforms=ida,ira,IDAV,IRAV,iru,idu,IDUK,IRUK,ada,ara,adu,aru,ADUK,ARUK,dos,wra,wda,nlm,x86,BIN,ntk,NLM
+set quake=
+set quakeinc=L:\source\include\src%QUAKE%
+set includepre=
+set libpre=
+
+[IDA]
+set QUAKE_CUSTOM=NAV
+tools=msvc50x86;msvc50mfcx86;mstest40;masm611
+
+[IRA]
+set QUAKE_CUSTOM=NAV
+tools=msvc50x86;msvc50mfcx86;mstest40;masm611
+
+[IDAV]
+set xopts=/Gys10000
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[IRAV]
+set xopts=/Gys10000
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[IRU]
+set QUAKE_CUSTOM=NAV
+tools=msvc42path;masm611;msvc42;msvc42mfc;mstest40
+
+[IDU]
+set QUAKE_CUSTOM=NAV
+tools=msvc42path;masm611;msvc42;msvc42mfc;mstest40
+
+[IRUK]
+set globalinc=L:\SOURCE\INC\SRC;l:\source\symevntk.dev\src
+tools=winnt40srcinc;win95sdk;winntddk40;msvc60SP3X86;masm611
+
+[IDUK]
+set globalinc=L:\SOURCE\INC\SRC;l:\source\symevntk.dev\src
+tools=winnt40srcinc;win95sdk;winntddk40;msvc60SP3X86;masm611
+
+[ADA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ARA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ARU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADUK]
+set globalinc=L:\SOURCE\INC\SRC;l:\source\symevntk.dev\src
+tools=MSVC50AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[ARUK]
+set globalinc=L:\SOURCE\INC\SRC;l:\source\symevntk.dev\src
+tools=MSVC50AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[DOS]
+tools=msc8;masm611
+
+[WDA]
+; set QUAKE_CUSTOM=NAV
+;tools=msc8;masm611;windev31
+tools=msvc152;masm611;windev31
+
+[WRA]
+; set QUAKE_CUSTOM=NAV
+;tools=msc8;masm611;windev31
+tools=msvc152;masm611;windev31
+
+[X86]
+tools=msc8;masm611
+
+[NLM]
+tools=watcom11;masm611;nwnlm12
+set WATCOM11=C
+set WATCOM=R:\WATCOM11
+
+[dx]
+tools=dos16m.601;msc8;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=r:\dos16m.601
+
+[dvx]
+tools=dos16m.601;msc8;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=r:\dos16m.601
+
+[ncx]
+tools=dos16m.601;msc8;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=r:\dos16m.601
+
+[NTK]
+;set globalinc=l:\source\include\src
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+;[w32]
+;set QUAKE_CUSTOM=NAV
+;tools=msvc42;msvc42mfc;masm611
+
+;[32s]
+;set QUAKE_CUSTOM=NAV
+;tools=msvc20;masm611;winsdk32s
+
+[TSR]
+tools=msc8;masm611
+
+[BIN]
+
+[NLM]
+tools=watcom11;masm611;nwnlm12
+set WATCOM11=C
+set WATCOM=R:\WATCOM11
+
+[]
+

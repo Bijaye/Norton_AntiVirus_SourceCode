@@ -1,0 +1,40 @@
+// HPPEvents.idl : IDL source for HPPEvents
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (HPPEvents.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+#include "ccEventManagerClient.idl"
+
+[
+	object,
+	uuid(4DA7A2CB-1054-4e95-A5E6-29F0BBA6947B),
+	dual,
+	nonextensible,
+	helpstring("IHPPEventCommonImpl Interface"),
+	pointer_default(unique)
+]
+interface IHPPEventCommonImpl : ISerializableEventEx
+{
+};
+[
+	uuid(B1B54196-7252-478a-8142-04C402BD6F8E),
+	version(1.0),
+	helpstring("HPPEVT 1.0 Type Library")
+]
+library HPPEventsLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(4703E5A5-78D2-4cef-B592-268104B2601D),
+		helpstring("HPPEventCommonImpl Class"),
+        noncreatable
+	]
+	coclass HPPEventCommonImpl
+	{
+		[default] interface IHPPEventCommonImpl;
+	};
+};

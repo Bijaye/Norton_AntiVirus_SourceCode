@@ -1,0 +1,45 @@
+# A Perforce Client Specification.
+#
+#  Client:      The client name.
+#  Update:      The date this specification was last modified.
+#  Access:      The date this client was last used in any way.
+#  Owner:       The user who created this client.
+#  Host:        If set, restricts access to the named host.
+#  Description: A short description of the client (optional).
+#  Root:        The base directory of the client workspace.
+#  Options:     Client options:
+#                      [no]allwrite [no]clobber [no]compress
+#                      [un]locked [no]modtime [no]rmdir
+#  LineEnd:     Text file line endings on client: local/unix/mac/win/share.
+#  View:        Lines to map depot files into the client workspace.
+#
+# Use 'p4 help client' to see more about client views and options.
+
+Client:	cm_nav_consumer_trunk_legacy_cm_client
+
+Update:	2002/07/26 10:08:09
+
+Access:	2002/07/26 10:06:10
+
+Owner:	SINGRAM
+
+Description:
+	Client for LegacyNAV (KobeLegacy) build
+
+Root:	d:\bld_area\navconsumerLegacy_r9
+
+Options:	allwrite clobber nocompress unlocked modtime normdir
+
+LineEnd:	local
+
+View:
+	//depot/Norton_AntiVirus/Consumer/trunk/Legacy/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/Legacy/...
+	//depot/Norton_AntiVirus/Consumer/trunk/include/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/include/...
+	//depot/Norton_AntiVirus/Consumer/trunk/cm/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/cm/...
+	//depot/Norton_AntiVirus/Consumer/trunk/tools/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/tools/...
+	//depot/Common_Client/src/r1.0/Antivirus/Engine/NavOptions/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/Legacy/NavOptions/...
+	//depot/Common_Client/src/r1.0/Antivirus/Util/NavExclu/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/Legacy/NavExclu/...
+	//depot/Common_Client/src/r1.0/Common/include/... 	//cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/SDKs/CommonClient/Include/... 
+	//depot/Common_Client/src/r1.0/include/... 	//cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/SDKs/CommonClient/Include/... 
+	//depot/Common_Client/src/r1.0/AntiVirus/include/... //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/SDKs/CommonClient/Include/... 
+	//depot/Systems_Software/Products/AutoProtect/r9.1/src/include/APOptNames.h //cm_nav_consumer_trunk_legacy_cm_client/Norton_AntiVirus/Consumer/SDKs/CommonClient/Include/APOptNames.h 

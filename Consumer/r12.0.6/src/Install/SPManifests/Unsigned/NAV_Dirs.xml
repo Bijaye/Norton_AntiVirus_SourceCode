@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SymProtect-Manifest xmlns="urn:SymProtect-Manifest">
+    <configuration>
+        <client-info>
+            <name>NAV Directories</name>
+            <version>12.0</version>
+        </client-info>
+    </configuration>
+    <protected-resources>
+        <protected-paths>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\NAV%</path>
+            <path>%SHGetFolderPath:CSIDL_COMMON_APPDATA%\Symantec\Norton AntiVirus\Tasks</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\AVENGEDEFS%</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\Norton AntiVirus\Quarantine\QuarantinePath%</path>
+            <path subtree="false">%ShGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SymcData</path>
+            <xpath>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\NAV%\Savrt</xpath>
+            <xpath>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\Norton AntiVirus\Quarantine\IncomingPath%</xpath>
+        </protected-paths>
+    </protected-resources>
+</SymProtect-Manifest>

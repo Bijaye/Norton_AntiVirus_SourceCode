@@ -1,0 +1,11 @@
+@echo off
+
+call DecPlat.btm
+
+call mk apcomm %&
+if exist make.err copy build.err+make.err build.err
+
+iff "%CORE_WIN32" != "" .AND. "%CORE_SOFT" == "" then
+    call mk navap32 %&
+    if exist make.err copy build.err+make.err build.err
+endiff

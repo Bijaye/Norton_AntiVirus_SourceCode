@@ -1,0 +1,306 @@
+@echo off
+rem Symantec Antivirus Corporate Edition Client Product Module/Package Build
+rem By David Luxford, 2002 December 5
+rem
+rem Command line arguments:
+rem    <None>
+rem
+rem Return value:
+rem     0 - Success
+rem     Non-Zero - Failure of some kind
+rem
+rem Uses:
+rem     BUILDPACKAGERDIRECTORY
+rem     BUILDTOOLINSTALLSHIELD
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  %_BATCHNAME
+rem * Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorBadEnvironment
+if "%BUILDPACKAGERDIRECTORY%" = "" goto ErrorBadEnvironment
+
+echo * Initializing...
+set ProductModuleRoot=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Product Modules
+set SavClientProductModule=%ProductModuleRoot%\SAV Client
+set SavClientProductModuleFiles=%SavClientProductModule%\files
+set SavClientInstallImage=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\Install\NCClient\Build1\Release1\DiskImages\NAVCORP760
+set SavClientInstallData=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\Install\NCClient\Data
+
+echo * Uninstall/reinstall packager (this also uninstalls all product modules)...
+attrib -r -s -h /s /q "%BUILDPACKAGERDIRECTORY%\*.*" >nul
+del /s /q "%BUILDPACKAGERDIRECTORY%\Preppdt.exe" >&nul
+msiexec /x "%CLIENTROOT%\Release\Packager\Disk1\Symantec Packager.msi" /qn
+msiexec /i "%CLIENTROOT%\Release\Packager\Disk1\Symantec Packager.msi" /qn
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i "%CLIENTROOT%\Release\Packager\Tools" "%BUILDPACKAGERDIRECTORY%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Creating product module files directories...
+if exist "%SavClientProductModuleFiles%" attrib -r -s -h /s /q /e "%SavClientProductModuleFiles%"
+if exist "%SavClientProductModuleFiles%" del /s /y /x /q "%SavClientProductModuleFiles%"
+md /s "%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\9x"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\95_98"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\AMS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\LiveUpdt"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\SevInst"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Support"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\VirDefs"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\CmnDISNR"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\MSINotes"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgAT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgNEC"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Registry"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Symantec"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\Decomposers"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\NT"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\NT4"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\NT4_95_98"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\VirusDefs"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%SavClientProductModuleFiles%\PDF"
+if %errorlevel% != 0 goto BuildFailed
+
+echo `* Coping finished install files -> product module source...`
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program" 								"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-9x" 								"%SavClientProductModuleFiles%\9x"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS-9x" 							"%SavClientProductModuleFiles%\95_98"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\AMS2 Install" 								"%SavClientProductModuleFiles%\AMS"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program\dec*.*" 							"%SavClientProductModuleFiles%\Decomposers"
+if %errorlevel% != 0 goto BuildFailed
+copy                       "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\dec2http.dll"		"%SavClientProductModuleFiles%\Decomposers"
+if %errorlevel% != 0 goto BuildFailed
+copy                       "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\dec2rar.dll"		"%SavClientProductModuleFiles%\Decomposers"
+if %errorlevel% != 0 goto BuildFailed
+copy                       "%CLIENTROOT%\Release\Dec3\bin\IntelAnsi\release\rec2.dll"			"%SavClientProductModuleFiles%\Decomposers"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-NT" 					    		"%SavClientProductModuleFiles%\NT"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS-NT" 							"%SavClientProductModuleFiles%\NT4"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS" 								"%SavClientProductModuleFiles%\NT4_95_98"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\VirusDefinitions"                            "%SavClientProductModuleFiles%\VirusDefs"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\LiveUpdateAdmin"                            "%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Nav Program Self-Reg" 						"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\winsys" 							    		"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS" 								"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Mail Snapin-Exchange-OCX" 					"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\CommonDIS" 						    		"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\CommonDIS Not Registered" 					"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Mail Snapin-Notes-OCX" 			    		"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-NT" 					    		"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Mail Snapin-Notes"							"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Qconsole" 									"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Mail Snapin-Exchange" 						"%SavClientProductModuleFiles%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\New Settings" 								"%SavClientProductModuleFiles%\9X"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-AT" 					    		"%SavClientProductModuleFiles%\9X" 
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\winsock2" 									"%SavClientProductModuleFiles%\9X"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallImage%\Support\*.*"                                "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Support"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallImage%\LiveUpdt\*.*"                               "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\LiveUpdt"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallImage%\Sevinst\*.*"                                "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\SevInst"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallImage%\VirDefs\*.*"                                "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\VirDefs"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\CommonDIS Not Registered\mfc42.dll"          "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\CmnDISNR"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Mail Snapin-Notes\nlnvp.dll" 				"%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\MSINotes"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-AT\go.bat" 			    		"%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgAT"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-AT\NAVDX.exe" 					"%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgAT"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-AT\NAVDX.OVL" 					"%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgAT"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program-NEC\*.*" 						"%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgNEC"
+if %errorlevel% != 0 goto BuildFailed
+rename "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgNEC\navdx_n.ovl"    "NavDX.Ovl"
+if %errorlevel% != 0 goto BuildFailed
+rename "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\ProgNEC\navdx_n.exe"    "NavDX.Exe"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\Registry\*.*"                                "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Registry"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Symantec\s32stat.dll"                    "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\Symantec"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS\mfc42.dll"                      "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS\msvcirt.dll"                    "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV WinSysNS\msvcrt.dll"                     "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\Data\WinSysNS"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\virusdef nocopy\vdefmgmt.dat"                "%SavClientProductModuleFiles%\VirusDefs"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallData%\NAV Program Self-Reg\SCANDLVR.DLL" 															"%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\support"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallImage%\setup.wis"                                 "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /q /h /i /y "%SavClientInstallImage%\grc.dat"                                   "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files"
+if %errorlevel% != 0 goto BuildFailed
+copy /z "%CLIENTROOT%\tech_pubs\_FINAL_DOCS\SCS\SAV_CORP_Ed_8.1\Client_Guide\PDF\savce81c.pdf"											"%SavClientProductModuleFiles%\PDF\savce80c.pdf"
+if %errorlevel% != 0 goto BuildFailed
+rem Copy the MSI and CAB file to the Product Modules source directory
+copy                       "%SavClientInstallImage%\Symantec AntiVirus Corporate Edition.msi"   "%SavClientProductModule%"
+if %errorlevel% != 0 goto BuildFailed
+
+
+
+rem copy                       "%SavClientInstallImage%\data1.cab"                                  "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files"
+rem if %errorlevel% != 0 goto BuildFailed
+
+
+
+attrib -r -s -h /s /q /e "%SavClientProductModuleFiles%"
+
+echo * Creating reduced DATA1.CAB...
+set CabWorkDir=%SavClientProductModule%\CabWork
+if exist "%CabWorkDir%" del /s /q /y /x /z "%CabWorkDir%\*.*"
+if not exist "%CabWorkDir%" mkdir "%CabWorkDir%"
+if not exist "%CabWorkDir%\Original" mkdir "%CabWorkDir%\Original"
+if not exist "%CabWorkDir%\New" mkdir "%CabWorkDir%\New"
+copy "%SavClientInstallImage%\data1.cab" "%CabWorkDir%"
+rem CABARC X appears to ignore dest directory argument
+pushd
+cdd "%CabWorkDir%\Original"
+"%CLIENTROOT%\Tools\Platform.SDK\bin\cabarc.exe" -o X "%CabWorkDir%\data1.cab" *.* "%CabWorkDir%\Original"
+popd
+copy "%CabWorkDir%\Original\Global_*.*" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_0C27E165F3244BB480519D330912955C.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_326B4A072B9045C1A098312F40278429.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_A6EA988D7BD7406CB07D5EB6BB178764.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+copy "%CabWorkDir%\Original\_DBAE1459AF294F63890F8A0607388EA8.DFC262C728804BDA94761D430CA3AE8C" "%CabWorkDir%\New"
+echo Compressing new CAB...
+rem * The order of files in this CAB must be the same relative ordering as in the original
+rem * install's DATA1.CAB.  This huge command line ensures they are added in that order.
+rem * Alternately, you can use MakeCAB /F with a simple DDF file, but this requires an
+rem * external file.  See docs on MAKECAB, DIANTZ, or DIAMOND for more information.
+pushd
+cdd "%CabWorkDir%\New"
+"%ClientRoot%\Tools\Platform.SDK\bin\cabarc.exe" N "%CabWorkDir%\data1reduced.cab" Global_Controls_COMCATDLL_f0.3207D1B0_80E5_11D2_B95D_006097C4DE24 Global_System_OLEAUT32_f2.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_System_OLEAUT32_f3.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_System_OLEPRO32_f0.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_System_STDOLE_f1.8C0C59A0_7DC8_11D2_B95D_006097C4DE24 Global_Vba_VBStockProp_f0.7EBEDD3E_AA66_11D2_B980_006097C4DE24 Global_VC_CPPRT60_f0.51D569E3_8A28_11D2_B962_006097C4DE24 Global_VC_CRT_f0.51D569E0_8A28_11D2_B962_006097C4DE24 _0C27E165F3244BB480519D330912955C.DFC262C728804BDA94761D430CA3AE8C _326B4A072B9045C1A098312F40278429.DFC262C728804BDA94761D430CA3AE8C _A6EA988D7BD7406CB07D5EB6BB178764.DFC262C728804BDA94761D430CA3AE8C _DBAE1459AF294F63890F8A0607388EA8.DFC262C728804BDA94761D430CA3AE8C Global_VC_IRT_f0.3CE1F932_C090_11D2_977B_006097C4DE24 Global_VC_MFC42ANSICore_f0.51D569E2_8A28_11D2_B962_006097C4DE24
+set tempErrorLevel=%errorlevel%
+popd
+if not %tempErrorLevel% = 0 goto BuildFailed
+copy "%CabWorkDir%\data1reduced.cab" "%SavClientProductModuleFiles%\BinaryTable\CD_Install_Files\data1.cab"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Neutralizing language in MSI...
+"%CLIENTROOT%\Release\Packager\Tools\SetMsiCP" "%SavClientProductModule%\Symantec AntiVirus Corporate Edition.msi" 0
+if %errorlevel% != 0 goto BuildFailed
+attrib -r "%SavClientProductModule%\Symantec Anti-Virus For Windows.PDT"
+
+echo * Building PMI...
+attrib -r /q /e "%CLIENTROOT%\Release\Packager\Tools\*.*"
+if exist "%SavClientProductModule%\_prepPDTBackups" del /s /q /y /x /z "%SavClientProductModule%\_prepPDTBackups\*.*"
+rem ISDev703 will report error -2200 if the ISM is marked ReadOnly.  To be safe, remove this from all files in directory.
+attrib -r -s -h /q /e "%SavClientProductModule%\*.*"
+"%BUILDPACKAGERDIRECTORY%\PrepPDT" /s:2 "%SavClientProductModule%\Symantec Anti-Virus For Windows.PDT"
+if not exist "%SavClientProductModule%\PRODUCT.PDT" goto BuildFailed
+
+if exist "%SavClientProductModule%\Release" del /s /y /q "%SavClientProductModule%\Release\*.*"
+"%BUILDTOOLINSTALLSHIELD%\system\iscmdbld" -p "%SavClientProductModule%\SAV Product Module.ism" -f {0EFC6259-3AD8-4CD2-BC57-D4937AF5CC0E} -r "Product Module Install Images" -b "%SavClientProductModule%\Release" -e y -x
+if %errorlevel% != 0 goto BuildFailed
+rem * Additional validation is needed as ISDev does not always set errorlevel on a failure
+if %@FILESIZE["%SavClientProductModule%\Release\Product Module Install Images\Product Module Install Images\DiskImages\DISK1\Product Module.msi",b] LT 1048576 goto BuildFailed
+ren "%SavClientProductModule%\Release\Product Module Install Images\Product Module Install Images\DiskImages\DISK1\Product Module.msi" "Symantec AntiVirus Client.PMI"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Generating Symantec AntiVirus Client packages...
+set FinishedPackages=%SavClientProductModule%\Packages
+if exist "%FinishedPackages%" del /s /q /y /x /z "%FinishedPackages%\*.*"
+if not exist "%FinishedPackages%" md "%FinishedPackages%"
+rem Packager uninstall removes all product modules, so no need to uninstall them
+msiexec /i "%SavClientProductModule%\Release\Product Module Install Images\Product Module Install Images\DiskImages\DISK1\Symantec AntiVirus Client.pmi" /qn
+if %errorlevel% != 0 goto BuildFailed
+rem Current version of packager has a bug:  it will fail to generate a package unless a copy of the
+rem PKG and PCG exist in the All Users\Documents directory.
+if exist "C:\Documents and Settings\All Users\Documents\Packager" del /s /y /q "C:\Documents and Settings\All Users\Documents\Packager\*.*"
+if not exist "C:\Documents and Settings\All Users\Documents\Packager" md /s "C:\Documents and Settings\All Users\Documents\Packager"
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Client.p?g"                 "C:\Documents and Settings\All Users\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Client.pkg"                     "%FinishedPackages%\savceclt.exe"
+if not exist "%FinishedPackages%\savceclt.exe" goto BuildFailed
+
+echo `* ==>` %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<==`
+set returnVal=0
+goto RealEnd
+
+:BuildFailed
+set returnVal=2
+echo ERROR:  build FAILED!
+echo At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo ERROR - 4DOS not detected!  The 4DOS shell is required to run this script.
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo ERROR - 4DOS too old!  Version 3.02B or later is required to run this script.
+goto RealEnd
+
+:ErrorBadEnvironment
+set returnVal=6
+echo ERROR - environment not initialized (CLIENTROOT or BUILDPACKAGERDIRECTORY not set)!
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  %_BATCHNAME
+quit %returnVal%

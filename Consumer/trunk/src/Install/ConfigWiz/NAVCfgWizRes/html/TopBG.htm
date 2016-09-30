@@ -1,0 +1,45 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<HTML>
+	<HEAD>
+		<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link rel="stylesheet" type="text/css" href="cfgwizstyle.css">
+		<SCRIPT language="javascript">
+		<!--
+			function onLoad()
+			{
+				try
+				{
+					CfgWizMgrObj = window.external.ObjectArg("NAV_CFGWIZ_MGR_OBJ");
+				}
+				catch(err)
+				{
+					var msg = document.frames("Errors").document.all.ERR_INTERNAL_ERROR.innerText;
+					var id = document.frames("Errors").document.all.ERR_ID_NO_CFGWIZDLL.innerText;
+					g_ErrorHandler.DisplayNAVError (msg, id);
+				}
+
+			    try
+		        {
+					pictureBody.style.backgroundImage = "url(\'res://" + CfgWizMgrObj.NortonAntiVirusPath + "\\isres.dll/CfgWizTopArea.bmp\')";
+					titleBarProductName.innerHTML = CfgWizMgrObj.GetBrandingText(4);
+				}
+				catch(err)
+				{
+					CfgWizMgrObj.NAVError.LogAndDisplay(0);
+				}
+			}
+		-->
+		</SCRIPT>
+	</HEAD>
+	<body id="pictureBody" class="bodyTop" text="#333333" scroll="no" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="onLoad()">
+		<div id="titleBarProductName" class="title" style="margin-bottom: 5px; margin-top: 15px;">Norton AntiVirus</div>
+	</body>
+</HTML>

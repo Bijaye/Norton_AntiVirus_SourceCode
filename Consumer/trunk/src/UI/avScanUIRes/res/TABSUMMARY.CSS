@@ -1,0 +1,181 @@
+/*//////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////*/
+
+@media screen,contrast-screen
+{
+	body
+	{
+		color:#475467;
+	}
+	.summarybg
+	{
+		background-color:#DAEBFF;
+	}
+	.summaryline
+	{
+		flow:horizontal;
+		width:100%%;
+		height:20px;
+		font-size:13px;
+		font-weight:bold;
+		text-align:left;
+		vertical-align:middle;
+	}
+	.summarybg a
+	{
+		text-decoration:none;
+		color:#475467;
+		white-space:nowrap;
+	}
+	.summarybg a:hover
+	{
+		text-decoration:underline;
+	}
+	.summarybg a:focus
+	{
+		text-decoration:underline;
+		color:orange;
+	}
+	.summarybg[state="alert"]
+	{
+		background-color:#FFDDDD;
+	}
+	.summarybg[state="alert"] a
+	{
+		color:#4754AA;
+		text-decoration:underline;
+	}
+	.summarybg[state="alert"] a:focus
+	{
+		text-decoration:underline;
+		color:#BC191A;
+	}
+	.subline
+	{
+		flow:horizontal;
+		width:100%%;
+		height:20px;
+		padding-right: 1px;
+		padding-left: 10px;
+		font-size:10px;
+		font-weight:bold;
+		text-align:left;
+		vertical-align:middle;
+	}
+	.itemtitle
+	{
+		width:100%%;
+		height:100%%;
+		text-align:left;
+		vertical-align:middle;
+	}
+	.itemvalue
+	{
+		width:0%%;
+		height:100%%;
+		text-align:right;
+		vertical-align:middle;
+	}
+	.container
+	{
+		background:transparent;
+	}
+	.droplist
+	{
+		margin-left:57px;
+		width:466px;
+		height:100%%;
+		border:none;
+		background-image:none;
+		overflow:none;
+	}
+	options
+	{
+		padding-top:10px;
+		padding-bottom:10px;
+		padding-left:69px;
+		padding-right:59px;
+		foreground-image:url(icon_toggle_plus_open.png);
+		foreground-repeat: no-repeat;
+		foreground-position:48px 12px;
+		border-bottom:1px solid #475467;
+	}
+	options:expanded
+	{
+		foreground-image:url(icon_toggle_minus_close.png);
+	}
+	options:current > :first-child,
+	widget:focus options:current > :first-child,
+	select:focus options:current > :first-child,
+	option:current
+	{
+		background:transparent;
+		color:#475467;
+	}
+	widget:focus options:current > :first-child
+	{
+		outline:1px dotted black -1px; /* inside */
+	}
+	option
+	{
+		background-color:white;
+		color:#475467;
+	}
+}
+
+@media contrast-screen
+{
+	body
+	{
+		background-color:window;
+		color:windowtext;
+	}
+	.summarybg
+	{
+		background-color:window;
+	}
+	.summarybg a
+	{
+		color:inactivecaption;
+	}
+	.summarybg a:focus
+	{
+		color:activecaption;
+	}
+	.summarybg[state="alert"]
+	{
+		background-color:highlight;
+		color:highlighttext;
+	}
+	.summarybg[state="alert"] a
+	{
+		color:scrollbar;
+	}
+	.summarybg[state="alert"] a:focus
+	{
+		color:highlighttext;
+	}
+
+	options:current > :first-child,
+	widget:focus options:current > :first-child,
+	select:focus options:current > :first-child,
+	option:current
+	{
+		color:windowtext;
+	}
+	widget:focus options:current > :first-child
+	{
+		outline:1px dotted windowtext -1px; /* inside */
+	}
+	option
+	{
+		background-color:window;
+		color:windowtext;
+	}
+}

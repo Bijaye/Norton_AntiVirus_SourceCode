@@ -1,0 +1,111 @@
+
+  Stuff from DC in the Macros project:
+  (As of Feb 1999, this is somewhat obsolete!) .
+
+  manalysis.pl and mrepctrl.pl behave generally as expected by DataFlow.
+  Both are rather primitive and first-draft, and give up easily.
+
+  mrepctrl, for instance, assumes that if its first suggested set of
+  replications doesn't produce a usable set of forms, with at least
+  two samples of each form (and no more than two forms for any given
+  application/version), then all is lost and it should just give up.
+  This is probably the major thing that will have to be changed,
+  depending on how high-level and general the various available
+  strategies in mrep are.  Presently, it notices what application
+  and version (WD7, WD8, XL5, etc) have macros in the original
+  sample, it uses macro names to guess what language the original
+  sample might be in, and for each member of <apps> X <languages>
+  it schedules one replication (or actually one application for
+  each strategy that it associates with that app, but that's
+  always just one at the moment).
+
+  The various .pms (Mutils, Macrocrc, Mkdefs, Macrodb) behave as
+  documented in their headers.
+
+  The interface between manalysis.pl and mrepctrl.pl is done entirely
+  via macrodb.pm.  Macrodb itself makes very few assumptions about the
+  data it's working with.  The current implementation doesn't use the
+  DB2 database at all (it just uses Data::Dumper), but it's easily
+  changed if and when we want to.
+
+  manalysis and mrepctrl store and read the following things in Macrodb,
+  in the following formats.  (This is also documented in the .pm files
+  themselves; in case of disagreement, the pm files are likely to be
+  more correct.)
+
+    $db->VirusName()
+
+    is a string containing the name of the virus being worked on.  The
+    programs currently assume that this has been filled in by someone
+    else (probably the classifier).
+
+    $db->OriginalFileName()
+
+    is the (unc-relative) name of the original sample.  Macrodb has
+    special code to look in the place specified by AVIS::loca for
+    this case, if no one's filled in something else (which presumably
+    no one will).
+
+    $db->ReplicationTable()
+
+    is a reference to an array of references to arrays.  Each of the
+    bottom-level arrays has four elements; the first is the name of
+    the file to be replicated, the second is the application and version,
+    the third is the two-letter language code, and the fourth is the
+    strategy name.  For instance:
+
+      [ [ "foo.doc", "WD7", "EN", "whatever.lst" ],
+        [ "foo.doc", "WD7", "FR", "whatever.lst" ] ]
+
+    The --parameter passed toward mrep is an index (zero-origin) into
+    this array.
+
+    $db->Replications()
+
+    is a reference to an array of hashrefs.  Each of the bottom-level
+    hashes contains a Before key and an After key.  These are the
+    unc-relative filenames of the original goat, and the probably-infected
+    file.  For instance:
+
+      [ { "Before" => "foo.doc", "After" => "0/foo.voc" },
+        { "Before" => "goats/normal.dot", "After" => "0/normal1.vot" } ]
+
+|   When recording a set of replications, Macrodb stores the data in a
+|   file whose name is based on the $Parameter passed in at creation time.
+|   When returning a set of replications (no arguments given on the call),
+|   it gathers up all the replications that were recorded under any
+|   $Parameter, and returns the complete set.
+
+    $db->Forms()
+
+    is a reference to an array of hashrefs.  Each hash defines one form
+    that the virus can take.  The "Fname" key of the hash holds the
+    unc-relative name of one file that this form was found in, the
+    "App" key gives the application name and version, the "Mnames"
+    key references an array of macro-names that this form includes,
+    the "Crcvals" key references an array of CRCs of the corresponding
+    macros, and "Lengths" gives the lengths.  For instance:
+
+      [ { Fname => '6\fmcgoo.voc', App => "WD7",
+          Mnames => [qw(AutoOpen AAAZFS AAAZAO PayLoad)] ,
+          Lengths => [ 100, 200, 100, 50 ] ,
+          Crcvals => [qw(11111111 22222222 11111111 33333333)] } ,
+        { Fname => '6\fmcgoo.vot', App => "WD7",
+          Mnames => [qw(FileSave FileSaveAs AAAZFS AAAZAO PayLoad)] ,
+          Lengths => [ 200, 250, 200, 100, 50 ] ,
+          Crcvals => [qw(22222222 22222222 22222222 11111111 33333333)] } ]
+
+
+  Basic Flow:
+
+  The first time through, mrepctrl reads VirusName and OriginalFileName,
+  writes ReplicationTable, and schedules various mrep tasks.  When those
+  are done, mrepctrl reads Replications, and generates Forms, then
+  schedules manalysis.  manalysis reads Forms, and writes new NAV defs
+  to the appropriate directory.  (manalysis is able to handle forms in
+  which the Crcvals are missing, by filling them in itself via the Fname
+  and Mnames, but this ability will probably not be used in the real
+  system; that code could even be removed eventually.)
+
+
+l

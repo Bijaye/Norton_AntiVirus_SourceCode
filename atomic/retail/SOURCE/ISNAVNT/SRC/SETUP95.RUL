@@ -1,0 +1,4355 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+//  IIIIIII SSSSSS
+//    II    SS                          InstallShield (R)
+//    II    SSSSSS      (c) 1996-1997, InstallShield Software Corporation
+//    II        SS      (c) 1990-1996, InstallShield Corporation
+//  IIIIIII SSSSSS                     All Rights Reserved.
+//
+//
+//  This code is generated as a starting setup template.  You should
+//  modify it to provide all necessary steps for your setup.
+//
+//
+//    File Name:  Setup.rul
+//
+//  Description:  InstallShield script
+//
+//     Comments:  This script installs NAV for Windows 95.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+// Include header file
+#include "trial.h"
+#include "setup.h"
+#include "iscommon.h"
+#include "sdlang.h"
+#include "sddialog.h"
+#include "oem.h"
+#include "whatplat.h"
+
+
+//////////////////// installation declarations ///////////////////
+
+// global variables
+BOOL        g_bAutoProtectAtStartup;
+BOOL        g_bCorpVersion;
+BOOL        g_bCreateIconsAndMenuItems;
+BOOL        g_bHWIsNEC;
+BOOL        g_bInstallAborted;
+BOOL        g_bInstallLiveUpdate;
+BOOL        g_bInstallNetscapePlugins;
+BOOL        g_bIs32BitSetup;
+BOOL        g_bIsShellExplorer;
+BOOL        g_bIsWinNT;
+BOOL        g_bIsWin98;
+BOOL        g_bKeepSettings;
+BOOL        g_bLoadedS32navk;
+BOOL        g_bNAVLUForcedReboot;
+BOOL        g_bNetscapeInstalled;
+BOOL        g_bOverwriteScheduleDat;
+BOOL        g_bUseNPSOn98;
+BOOL        g_bPreAPVersionExists;
+BOOL        g_bPreviousVersionWithLiveUpdate;
+BOOL        g_bQuitIfNewerNavInstalled;
+BOOL        g_bRunLiveUpdateAfterInstall;
+BOOL        g_bRunRescueAfterInstall;
+BOOL        g_bScanAtStartup;
+BOOL        g_bScanMemoryDuringInstall;
+BOOL        g_bScanVirusesAfterInstall;
+BOOL        g_bScheduleScan;
+BOOL        g_bTempResult;
+BOOL        g_bUseHiColorBMPs;
+LIST        g_listSetupReview;
+NUMBER      g_nDisk;
+NUMBER      g_nTempResult;
+NUMBER      g_nvHawkingStatus;
+NUMBER      g_nvPrevVersionExists;
+NUMBER      g_nvRegSize;
+NUMBER      g_nvRegType;
+STRING      g_svCompany;
+STRING      g_svDefGroup;
+STRING      g_svName;
+STRING      g_svSerial;
+STRING      g_svSetupType;
+STRING      g_szAppPath;
+STRING      g_szDefUtilsDir[255];
+STRING      g_szInputConfigFilename;
+STRING      g_szInstallOptsFile;
+STRING      g_szLastDir;
+STRING      g_szLiveUpdate;
+STRING      g_szTempStr;
+STRING      g_szSymantecSharedDir;
+STRING      g_szPrevVerVersionNumber;
+// global variables
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//   MAIN PROGRAM
+//
+//      The setup begins here by hiding the visible setup
+//      window.  This is done to allow all the titles, images, etc. to
+//      be established before showing the main window.  The following
+//      logic then performs the setup in a series of steps.
+//
+///////////////////////////////////////////////////////////////////////////////
+    STRING sta;
+    STRING stb;
+    STRING svDir;
+    STRING szTestUpgradeVersion;
+    STRING szThisVersion;
+    BOOL   bUpgradeOK;
+program
+
+    // set things up
+    Disable(BACKGROUND);
+
+    CheckRequirements();
+
+    // DEBUG
+    //MessageBox("Replace the .dlls or virus defs now.", SEVERE );
+
+    g_nTempResult = Handler( EXIT, Label_AbortHandler);
+
+
+    // HP fix - the CommonFilesDir reg entry may be empty, so check that
+    // and set it to its proper value if necessary.
+    // Test the COMMONFILES variable, and if it isn't a proper path
+    // (ie, at least "x:\") then set the reg entry.  Note that if the
+    // entry is _missing_, IS handles it itself.
+
+    if ( StrLength ( COMMONFILES ) < 3 ) then
+        RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+        COMMONFILES = PROGRAMFILES ^ @COMMON_FILES_DIR;
+        Disable(LOGGING);
+        RegDBSetKeyValueEx ( MS_WINDOWS_CURRENT_VERSION_KEY,
+                             "CommonFilesDir", REGDB_STRING,
+                             COMMONFILES, -1 );
+        Enable(LOGGING);
+    endif;
+
+
+    SetupInstall();
+
+    // *** If you are debugging, NAVINST95.DLL will be loaded now,
+    //     so you can go set breakpoints in MSVC.
+
+    if ( !CreateNAVMutex ( NAV_MUTEX_NAME ) ) then
+        if ( SILENTMODE != MODE ) then
+            MessageBox ( @SETUP_ALREADY_RUNNING, SEVERE );
+        endif;
+
+        abort;
+    endif;
+
+    // Shutdown the agent.
+    g_bTempResult = RemoveAPUI();
+
+    // Shutdown scheduler.
+    g_bTempResult = RemoveSched();
+
+    // And then QConsole.
+    RemoveQConsole();
+
+    if( TRUE = g_bScanMemoryDuringInstall ) then
+        // scan memory -- If a virus is found, this function WILL shutdown the computer!
+        // For the navkrnlk.vxd load to succeed the current directory must
+        // be set to the install temporary directory.
+        ChangeDirectory( SUPPORTDIR );
+        sta = SUPPORTDIR ^ "Virscan1.dat";
+        stb = SUPPORTDIR ^ "Virscan.inf";
+        g_bTempResult = ScanMemory(sta, stb);
+
+        if g_bTempResult = FALSE then
+            MessageBox(@ERROR_MEMORY_SCAN_FAILED, SEVERE);
+        endif;
+        g_nTempResult = ChangeDirectory( SRCDIR );
+    endif;
+
+    SetupScreen();
+
+    // check to see if a previous version of NAV is currently installed to
+    // the target directory
+    g_nvPrevVersionExists = CheckPreviousVersion(svDir);
+
+    // If the user is installing an old version over a newer, warn them and
+    // confirm that they _really_ want to do the install.
+    // For silent mode installs, check g_bQuitIfNewerNavInstalled (read from
+    // CONFIG.INF and bail if it is TRUE.
+    if ( INSTALLING_OVER_NEWER_VERSION = g_nvPrevVersionExists )
+    then
+        if ( MODE != SILENTMODE )
+        then
+            if ( NO = AskYesNo ( @PROMPT_INSTALL_OVER_NEWER_VER, YES ) )
+            then
+                abort;
+            endif;
+        elseif ( g_bQuitIfNewerNavInstalled )
+        then
+            abort;
+        endif;
+    endif;
+
+    // if NAV is currently installed on the target system, default to its
+    // current location
+    if (CLEAN_INSTALL != g_nvPrevVersionExists) then
+        if "" != svDir then
+            // set the target directory and global app path variable
+            TARGETDIR = svDir;
+            g_szAppPath = svDir;
+        endif;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        // Don't allow the user to install us if there is a non-NEC
+        // version active on the system.  For Atomic 95, the only allowable
+        // products are Kirin NEC (v4.5.3) and Roswell (v5.0.1).
+
+        if ( svDir = "" ) then
+            // This isn't an upgrade at all, so carry on.
+            bUpgradeOK = TRUE;
+        else
+            bUpgradeOK = FALSE;
+
+            // Check for Kirin NEC.
+            BuildVersionString ( szTestUpgradeVersion,
+                                KIRIN_NEC_MAJOR,
+                                KIRIN_NEC_MINOR1,
+                                KIRIN_NEC_MINOR2 );
+
+            if ( INSTALLING_OVER_SAME_VERSION =
+                 CompareVersionNumbers ( szTestUpgradeVersion,
+                                         g_szPrevVerVersionNumber, 1 ) ) then
+                bUpgradeOK = TRUE;
+                goto label_EndNonNECCheck;
+            endif;
+
+            // Check for Roswell NEC.
+            BuildVersionString ( szTestUpgradeVersion,
+                                 ROSWELL_NEC_MAJOR,
+                                 ROSWELL_NEC_MINOR1,
+                                 ROSWELL_NEC_MINOR2 );
+
+            if ( INSTALLING_OVER_SAME_VERSION =
+                 CompareVersionNumbers ( szTestUpgradeVersion,
+                                         g_szPrevVerVersionNumber, 1 ) ) then
+                bUpgradeOK = TRUE;
+                goto label_EndNonNECCheck;
+            endif;
+
+            // Check for Atomic NEC.
+            BuildVersionString ( szTestUpgradeVersion,
+                                THIS_PRODUCT_MAJOR,
+                                THIS_PRODUCT_MINOR1,
+                                0 );
+
+            // NOTE!! I'm assuming that from now on, every inline/patch/whatever
+            // will be released for NEC as well, so therefore I'm ignoring the
+            // MINOR2 revision number.  This will let a user install, say,
+            // 5.3.1 over 5.3.0 w/o us having to change the script.
+
+            if ( INSTALLING_OVER_SAME_VERSION =
+                 CompareVersionNumbers ( szTestUpgradeVersion,
+                                         g_szPrevVerVersionNumber, 0 ) ) then
+                bUpgradeOK = TRUE;
+                goto label_EndNonNECCheck;
+            endif;
+        endif; // end else
+
+label_EndNonNECCheck:
+
+        // Check bUpgradeOK here, and if it's still FALSE, error out.
+        if ( !bUpgradeOK ) then
+            if ( MODE != SILENTMODE ) then
+                MessageBox ( @ERROR_CANT_INSTALL_OVER_NON_NEC, SEVERE );
+            endif;
+
+            abort;
+        endif;
+    endif;
+
+    // display the dialogs before the file copy
+     if (ShowPreCopyDialogs()<0) goto Label_EndIinstall;
+
+    ProcessBeforeDataMove();
+    MoveFileData();
+    ProcessAfterDataMove();
+
+    // TEMP location
+    g_bTempResult = SetupTrialVersion();
+
+    // display the dialogs after the file copy
+    if (ShowPostCopyDialogs()<0) goto Label_EndIinstall;
+
+    // create menu/folder entries
+    SetupFolders();
+
+Label_EndIinstall:
+    // perform any post-installation stuff
+    HandlePostInstallationTasks();
+
+    CleanUpInstall();
+
+    g_nTempResult = ChangeDirectory( SRCDIR );
+
+    // if an unrecoverable error occurred, clean up the partial installation,
+    // otherwise, exit normally
+    if (g_bInstallAborted) then
+        abort;
+    endif;
+
+    goto Label_FinalEnd;
+
+Label_AbortHandler:
+
+    // Let the user know that they have to exit.
+    SprintfBox(INFORMATION, @ABORT_TITLE, @ABORT_TEXT );
+
+    ReleaseNAVMutex();
+
+    g_bInstallAborted = TRUE;
+    CleanUpInstall();
+    abort;
+
+Label_FinalEnd:
+    g_bInstallAborted = g_bInstallAborted;
+    ReleaseNAVMutex();
+endprogram
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Supporting Functions
+//
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckRequirements
+//
+//  Purpose:  This function checks all minimum requirements for the
+//            application being installed.  If any fail, then the user
+//            is informed and the setup is terminated.
+//
+//            The following global variables are initialized in this
+//            function:
+//
+//              g_bIsWinNT
+//              g_bIsShellExplorer
+//              g_bIs32BitSetup
+//
+///////////////////////////////////////////////////////////////////////////////
+function    CheckRequirements()
+    NUMBER  nvDx;
+    NUMBER  nvDy;
+    NUMBER  nvResult;
+    STRING  svResult;
+begin
+
+    g_bIsWinNT = FALSE;
+    g_bIsWin98 = FALSE;
+    g_bIsShellExplorer = FALSE;
+
+    // if we're already running, have the user shut down first
+    if (TRUE = IsNavRunning()) then
+        MessageBox(@ERROR_NAV_ALREADY_RUNNING, INFORMATION);
+        abort;
+    endif;
+
+    // the user must have administrator rights
+    if (FALSE = Is(USER_ADMINISTRATOR, g_szTempStr)) then
+        MessageBox(@ERROR_ADMINISTRATIVE_RIGHTS, INFORMATION);
+        abort;
+    endif;
+
+    // set 'setup' operation mode
+    g_bIs32BitSetup = TRUE;
+    GetSystemInfo(ISTYPE, nvResult, svResult);
+    if (nvResult = 16) then
+        g_bIs32BitSetup = FALSE; // running 16-bit setup
+        return 0; // no additional information required
+    endif;
+
+    // --- 32-bit testing after this point ---
+
+    // determine the target system's operating system
+    GetSystemInfo(OS, nvResult, svResult);
+    if (nvResult =  IS_WINDOWSNT) then
+        // must be running Windows NT
+        g_bIsWinNT = TRUE;
+
+        PreventServerInstall();
+
+        // check to see if the shell being used is EXPLORER shell
+        if (GetSystemInfo(OSMAJOR, nvResult, svResult) = 0) then
+            if (nvResult >= 4) then
+            g_bIsShellExplorer = TRUE;
+            endif;
+        endif;
+
+    elseif (nvResult = IS_WINDOWS95) then
+        g_bIsShellExplorer = TRUE;
+
+        GetSystemInfo ( OSMINOR, nvResult, svResult );
+
+        if ( nvResult = 10 ) then
+            g_bIsWin98 = TRUE;
+        endif;
+    endif;
+
+end;    // CheckRequirements
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: CleanUpInstall
+//
+//  Purpose: This cleans up the setup.  Anything that should
+//           be released or deleted at the end of the setup should
+//           be done here.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    CleanUpInstall()
+begin
+
+    // Cleanup partial Hawking installations
+    if (g_bInstallAborted) then
+        // Clean up the Hwaking installation
+        if(HAWKING_NO_ACTIVITY != g_nvHawkingStatus) then
+            // Check to see if we need to remove the temp dir only
+            if(HAWKING_TEMP_DIR_ONLY = g_nvHawkingStatus) then
+                if( "" != g_szDefUtilsDir ) then
+                    // Delete the directory and all its contents
+                    DeleteDir(g_szDefUtilsDir, ALLCONTENTS);
+                endif;
+            endif;
+
+            // Call Stop using defs from the uninstaller.
+            UninstallVirusDefinitions();
+        endif;
+
+        // Clean up Symevent installs.
+        //LaunchAppAndWait(COMMONFILES ^ "Symantec Shared" ^ "sevinst.exe", "/Q /U NAV95", WAIT );
+    endif;
+
+    ListDestroy(g_listSetupReview);
+
+    // release the custom DLL
+    g_szTempStr = SUPPORTDIR ^ CUSTOM_DLLNAME;
+    UnUseDLL(g_szTempStr);
+
+    // release s32navk.dll
+    g_szTempStr = SUPPORTDIR ^ "InstScan.dll";
+    UnUseDLL(g_szTempStr);
+
+    // release s32navk.dll
+    g_szTempStr = SUPPORTDIR ^ "n32call.dll";
+    UnUseDLL(g_szTempStr);
+
+    // release s32navk.dll
+    g_szTempStr = SUPPORTDIR ^ QUAKE_DLL;
+    UnUseDLL(g_szTempStr);
+
+    // release any resources allocated for custom dialogs
+    ReleaseCustomDialogs();
+
+    if (g_bInstallAborted) then
+        return 0;
+    endif;
+
+    DialogShowSdFinishReboot();
+
+    // ensure locked files are properly written
+    if (BATCH_INSTALL) then
+        CommitSharedFiles(0);
+    endif;
+
+    return 0;
+
+end;    // CleanUpInstall
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: CopyUncompressedFiles
+//
+//  Purpose: This function copies any uncompressed files that are included in
+//           the setup.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function   CopyUncompressedFiles()
+    BOOL    bResult;
+    NUMBER  nResult;
+
+begin
+    XCopyFile("partnum.dat", "", COMP_NORMAL | LOCKEDFILE );
+    XCopyFile("readme.txt", "", COMP_NORMAL | LOCKEDFILE );
+
+#ifdef OEM_BUILD
+    XCopyFile("support.txt", "", COMP_NORMAL | LOCKEDFILE );
+#endif
+
+    if( "" != g_szInputConfigFilename ) then
+        XCopyFile(g_szInputConfigFilename, "", COMP_NORMAL | LOCKEDFILE);
+    endif;
+
+    // Copy the install options and config ini files to the support
+    // directory for use after disk1 has been removed.
+    VarSave(SRCTARGETDIR);
+    TARGETDIR = SUPPORTDIR;
+    XCopyFile(INSTALL_OPTIONS_FILE, "", COMP_NORMAL | LOCKEDFILE);
+    VarRestore(SRCTARGETDIR);
+
+end;    // CopyUncompressedFiles
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CreateLiveUpdateKeys
+//
+//  Purpose: This function creates the registry keys for LiveUpdate (this should
+//           pretty much work for all of NAV).
+//
+///////////////////////////////////////////////////////////////////////////////
+function    CreateLiveUpdateKeys()
+    NUMBER  nSize;
+    STRING  szKey[255];
+    STRING  szValue;
+    STRING  szValueName;
+
+begin
+
+    if ( !g_bInstallLiveUpdate ) then
+        return;
+    endif;
+
+
+    CreateRegistrySet ( "LiveUpdate" );
+
+    szKey = NAV_LIVE_UPDATE_REGKEY_PATH ^ "CmdLines\\CmdLine2";
+    //RegDBCreateKeyEx(szKey, "");
+    szValueName = "ProductName";
+    SetLUProductName ( "NAV95", szValue );
+
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+
+    szValueName = "ProductVersion";
+
+    if ( 0 > GetProfString ( g_szAppPath ^ "version.dat",
+                             "versions", "InternalRevision",
+                             szValue ) ) then
+        szValue = LU_DEFAULT_PUBLIC_REV;
+    endif;
+
+    RegDBSetKeyValueEx ( szKey, szValueName, REGDB_STRING, szValue, nSize );
+
+
+    // Remove any existing sequence numbers so the NAV being installed
+    // will pick up any patches the next time LU is run.
+    DeleteOldSequenceNumbers();
+
+end;  // CreateLiveUpdateKeys
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CreateRunOnceBatchFile
+//
+//  Purpose:  This function creates the batch file that is to be executed
+//            upon reboot.  If there are any files in use during the
+//            installation (ie, BATCH_INSTALL has a value of TRUE), then
+//            this function is called to create a batch file that will
+//            run LiveUpdate and/or NAV after the user has restarted the
+//            machine.  Once the batch file has been created, an entry is
+//            made to the "RunOnce" key in the registry so that the batch
+//            file is executed when the machine restarts.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    CreateRunOnceBatchFile()
+    BOOL    bResult;
+    NUMBER  nResult;
+    NUMBER  nSize;
+    NUMBER  nvFileHandle;
+    STRING  szCommand;
+    STRING  szFilename;
+    STRING  szKey;
+    STRING  szValue;
+    STRING  szValueName;
+    STRING  szRegistryCommand;
+    STRING  szNSCommandLine;
+    NUMBER  nNAVLUReturn;
+begin
+
+    bResult = TRUE;
+
+#ifdef OEM_BUILD
+    BATCH_INSTALL = TRUE;
+#endif
+
+    // Check to see if there is any reason to create the command
+    if( g_bRunLiveUpdateAfterInstall ||
+        g_bRunRescueAfterInstall ||
+        g_bScanVirusesAfterInstall  ||
+        (g_bNetscapeInstalled && g_bInstallNetscapePlugins)) then
+
+        // Check to see if a reboot is necessary
+        // If a reboot is necessary then reboot before any logic is performed.
+        if (BATCH_INSTALL) then
+            // create a fully-qualified path to the exe.
+            szFilename = TARGETDIR ^ "NAVRUNR.EXE";
+            nResult = LongPathToShortPath(szFilename);
+            szRegistryCommand = szFilename;
+
+            // Add a space between the file name and the arguments.
+            szRegistryCommand = szRegistryCommand + " (/nowait ";
+
+            szRegistryCommand = szRegistryCommand + szFilename + " ";
+
+            // Write the command to start live update.  No /setup switch here
+            // because this will be run after install and we want NAVLU to
+            // tell the user to reboot if it's necessary.
+            if (TRUE = g_bRunLiveUpdateAfterInstall) then
+                szCommand = "";
+                if (MODE = SILENTMODE) then
+                    g_szTempStr = TARGETDIR ^ "NavLu32.Exe /Silent";
+                else
+                    g_szTempStr = TARGETDIR ^ "NavLu32.Exe";
+                endif;
+
+                nResult = LongPathToShortPath(g_szTempStr);
+                szCommand = szCommand + g_szTempStr;
+                szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+            endif;
+
+            // write the command to start rescue
+            if (TRUE = g_bRunRescueAfterInstall) then
+                szCommand = "";
+                g_szTempStr = TARGETDIR ^ "NResq32.Exe";
+                nResult = LongPathToShortPath(g_szTempStr);
+                szCommand = szCommand + g_szTempStr;
+                szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+            endif;
+
+            // write the command to start NSPlugin
+            if (TRUE = (g_bNetscapeInstalled && g_bInstallNetscapePlugins ) ) then
+                szCommand = "";
+                g_szTempStr = TARGETDIR ^ NSPLUGIN_EXE;
+                nResult = LongPathToShortPath(g_szTempStr);
+                szCommand = szCommand + g_szTempStr + " " + NSPLUGIN_INSTALL_SWITCHES;
+
+                if (MODE = SILENTMODE) then
+                    szCommand = szCommand + " /s";
+                    if ("" != g_szInputConfigFilename) then
+                        // use the input configuration file instead of the default
+                        szCommand = szCommand + " /f.\\" + g_szInputConfigFilename;
+                    endif;
+                endif;
+
+                szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+            endif;
+
+            // write the command to start NAV
+            if (TRUE = g_bScanVirusesAfterInstall) then
+                szCommand = "";
+                g_szTempStr = TARGETDIR ^ @NAV_EXE_NAME;
+                nResult = LongPathToShortPath(g_szTempStr);
+                szCommand = szCommand + g_szTempStr + " /L /visible";
+                szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+            endif;
+
+            // Add the closing parentasis
+            szRegistryCommand = szRegistryCommand + ")";
+
+
+            // place an entry in the "run once" key so the batch file will be executed
+            // upon reboot.  Do not log this as it will be removed after the first run.
+            Disable(LOGGING);
+            RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+            szKey = MSWINDOWS_KEY ^ "CurrentVersion" ^ "RunOnce";
+            szValueName = "NavRunR";
+            szValue = szRegistryCommand;
+            RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+            Enable(LOGGING);
+        else
+
+            // Since a reboot is not necessary, we can launch scheduler.
+            if TRUE = g_bScheduleScan then
+                szCommand = "";
+                g_szTempStr = TARGETDIR ^ "Nsched32.Exe";
+                nResult = LongPathToShortPath(g_szTempStr);
+                nResult = LaunchApp(g_szTempStr," /min");
+            endif;
+
+            // If a reboot is not necessary then reboot after liveupdate and rescue
+            // create a fully-qualified path to the exe.
+            if( g_bRunLiveUpdateAfterInstall ||
+                g_bRunRescueAfterInstall ||
+                g_bNetscapeInstalled ) then
+
+                szFilename = TARGETDIR ^ "NAVRUNR.EXE";
+                nResult = LongPathToShortPath(szFilename);
+                szRegistryCommand = "";
+
+                // Add a space between the file name and the arguments.
+                //szRegistryCommand = szRegistryCommand + " ";
+
+                // We launch NAV LU ourselves (instead of using NAVRUNR) so we
+                // can get its exit code.  If it's 1, then we need to force
+                // a reboot at the end of install.
+
+                if (TRUE = g_bRunLiveUpdateAfterInstall) then
+                    if (MODE = SILENTMODE) then
+                        szCommand = TARGETDIR ^ "NavLu32.Exe /Silent /Setup";
+                    else
+                        szCommand = TARGETDIR ^ "NavLu32.Exe /Setup";
+                    endif;
+
+                    nResult = LongPathToShortPath(szCommand);
+                    if ( CreateProcessAndWait ( szCommand, nNAVLUReturn ) ) then
+                        if ( 1 = nNAVLUReturn ) then
+                                        // NAVLU indicated a reboot is needed
+                            BATCH_INSTALL = TRUE;
+                            g_bNAVLUForcedReboot = TRUE;
+                        endif;
+                    endif;
+                endif;
+
+                // write the command to start rescue
+                if (TRUE = g_bRunRescueAfterInstall) then
+                    szCommand = "";
+                    g_szTempStr = TARGETDIR ^ "NResq32.Exe";
+                    nResult = LongPathToShortPath(g_szTempStr);
+                    szCommand = szCommand + g_szTempStr;
+                    szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+                endif;
+
+                // write the command to start NSPlugin
+                if (TRUE = (g_bNetscapeInstalled && g_bInstallNetscapePlugins ) ) then
+                    szCommand = "";
+                    g_szTempStr = TARGETDIR ^ NSPLUGIN_EXE;
+                    nResult = LongPathToShortPath(g_szTempStr);
+                    szCommand = szCommand + g_szTempStr + " " + NSPLUGIN_INSTALL_SWITCHES;
+
+                    if (MODE = SILENTMODE) then
+                        szCommand = szCommand + " /s";
+                        if ("" != g_szInputConfigFilename) then
+                            // use the input configuration file instead of the default
+                            szCommand = szCommand + " /f.\\" + g_szInputConfigFilename;
+                        endif;
+                    endif;
+
+                    szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+                endif;
+
+                // Add the closing parentasis
+                szRegistryCommand = szRegistryCommand + ")";
+
+                SetCurrentDirectory(TARGETDIR);
+
+                // Launch the command
+                LaunchAppAndWait( szFilename, szRegistryCommand, WAIT );
+
+                SetCurrentDirectory(SRCDIR);
+
+            endif;
+
+            if( g_bScanVirusesAfterInstall ) then
+                szFilename = TARGETDIR ^ "NAVRUNR.EXE";
+                nResult = LongPathToShortPath(szFilename);
+                szRegistryCommand = szFilename;
+
+                // Add a space between the file name and the arguments.
+                szRegistryCommand = szRegistryCommand + " (/nowait ";
+
+                szRegistryCommand = szRegistryCommand + szFilename + " ";
+
+                // Add a space between the file name and the arguments.
+                //szRegistryCommand = szRegistryCommand + " ";
+
+                // write the command to start NAV
+                if (TRUE = g_bScanVirusesAfterInstall) then
+                    szCommand = "";
+                    g_szTempStr = TARGETDIR ^ @NAV_EXE_NAME;
+                    nResult = LongPathToShortPath(g_szTempStr);
+                    szCommand = szCommand + g_szTempStr + " /L /visible";
+                    szRegistryCommand = szRegistryCommand + "(" + szCommand + ") ";
+                endif;
+
+                // Add the closing parentasis
+                szRegistryCommand = szRegistryCommand + ")";
+
+                // place an entry in the "run once" key so the batch file will be executed
+                // upon reboot.  Do not log this as it will be removed after the first run.
+                Disable(LOGGING);
+                RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+                szKey = MSWINDOWS_KEY ^ "CurrentVersion" ^ "RunOnce";
+                szValueName = "NavRunR";
+                szValue = szRegistryCommand;
+                RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+                Enable(LOGGING);
+            endif;
+        endif;
+
+    else
+            // Check to see if Scheduler should be started
+            // Since a reboot is not necessary, we can launch scheduler.
+            if (!BATCH_INSTALL && TRUE = g_bScheduleScan) then
+                szCommand = "";
+                g_szTempStr = TARGETDIR ^ "Nsched32.Exe";
+                nResult = LongPathToShortPath(g_szTempStr);
+                nResult = LaunchApp(g_szTempStr," /min");
+            endif;
+
+    endif;
+
+    return (bResult);
+
+end;    // CreateRunOnceBatchFile
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DialogShowInitialSettings
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DialogShowInitialSettings()
+    NUMBER  nSilentValue;
+    NUMBER  nvDlgName;
+    NUMBER  retVal;
+    STRING  svSection;
+
+begin
+
+    // initialize the section name for the silent install file (.ISS)
+    svSection = SILENT_SECTION_INITIAL_SETTINGS;
+
+    // if we're running in silent mode, record data produced by this dialog
+    if (MODE = SILENTMODE) then
+        SdMakeName(svSection, IDS_INITIAL_SETTINGS, "", nvDlgName);
+        SilentReadData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , g_nTempResult);
+
+        // if we're moving forward...
+        if ((g_nTempResult != BACK) && (g_nTempResult != CANCEL)) then
+
+            // get the value for automatically starting AP
+            SilentReadData(svSection, SILENT_VALUE_NAME_START_AUTO_PROTECT
+                                                                , DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , nSilentValue);
+            if (1 = nSilentValue) then
+                g_bAutoProtectAtStartup = TRUE;
+            else
+                g_bAutoProtectAtStartup = FALSE;
+            endif;
+
+            // get the value for automatically scheduling scans
+            SilentReadData(svSection, SILENT_VALUE_NAME_SCHEDULE_SCAN
+                                                                , DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , nSilentValue);
+            if (1 = nSilentValue) then
+                g_bScheduleScan = TRUE;
+            else
+                g_bScheduleScan = FALSE;
+            endif;
+
+
+            // get the value for automatically scheduling scans
+            SilentReadData(svSection, SILENT_VALUE_NAME_SCAN_AT_STARTUP
+                                                                , DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , nSilentValue);
+            if (1 = nSilentValue) then
+                g_bScanAtStartup = TRUE;
+            else
+                g_bScanAtStartup = FALSE;
+            endif;
+
+
+        endif;
+
+        return (g_nTempResult);
+    endif;
+
+
+    g_bTempResult = FALSE;
+    while (g_bTempResult = FALSE)
+
+        retVal = WaitOnDialog(IDS_INITIAL_SETTINGS);
+        switch (retVal)
+
+            case  DLG_CLOSE:
+                g_bTempResult = TRUE;
+
+            case  DLG_ERR:
+                g_bTempResult = TRUE;
+
+            case  DLG_INIT:
+                // load auto-protect at startup
+                if (TRUE = g_bAutoProtectAtStartup) then
+                    CtrlSetState(IDS_INITIAL_SETTINGS, IDC_AUTO_PROTECT_CHECKBOX
+                                                            , BUTTON_CHECKED);
+                else
+                    CtrlSetState(IDS_INITIAL_SETTINGS, IDC_AUTO_PROTECT_CHECKBOX
+                                                            , BUTTON_UNCHECKED);
+                endif;
+
+                // schedule scans
+                if (TRUE = g_bScheduleScan) then
+                    CtrlSetState(IDS_INITIAL_SETTINGS, IDC_SCHEDULE_SCAN_CHECKBOX
+                                                            , BUTTON_CHECKED);
+                else
+                    CtrlSetState(IDS_INITIAL_SETTINGS, IDC_SCHEDULE_SCAN_CHECKBOX
+                                                            , BUTTON_UNCHECKED);
+                endif;
+
+                // Scan at Startup
+                if (TRUE = g_bScanAtStartup) then
+                    CtrlSetState(IDS_INITIAL_SETTINGS, IDC_BOOT_SCAN_CHECKBOX
+                                                            , BUTTON_CHECKED);
+                else
+                    CtrlSetState(IDS_INITIAL_SETTINGS, IDC_BOOT_SCAN_CHECKBOX
+                                                            , BUTTON_UNCHECKED);
+                endif;
+
+            case  BACK:
+                g_bTempResult = TRUE;
+
+            case  NEXT:
+                g_bTempResult = TRUE;
+
+            case  IDC_AUTO_PROTECT_CHECKBOX:
+                if (BUTTON_CHECKED = CtrlGetState(IDS_INITIAL_SETTINGS
+                                                , IDC_AUTO_PROTECT_CHECKBOX)) then
+                    g_bAutoProtectAtStartup = TRUE;
+                else
+                    g_bAutoProtectAtStartup = FALSE;
+                endif;
+
+            case  IDC_SCHEDULE_SCAN_CHECKBOX:
+                if (BUTTON_CHECKED = CtrlGetState(IDS_INITIAL_SETTINGS
+                                                , IDC_SCHEDULE_SCAN_CHECKBOX)) then
+                    g_bScheduleScan = TRUE;
+                else
+                    g_bScheduleScan = FALSE;
+                endif;
+
+            case  IDC_BOOT_SCAN_CHECKBOX:
+                if (BUTTON_CHECKED = CtrlGetState(IDS_INITIAL_SETTINGS
+                                                , IDC_BOOT_SCAN_CHECKBOX)) then
+                    g_bScanAtStartup = TRUE;
+                else
+                    g_bScanAtStartup = FALSE;
+                endif;
+
+            default:
+                // check standard handling
+                if ((SdIsStdButton(retVal)) && (SdDoStdButton(retVal))) then
+                    g_bTempResult = TRUE;
+                endif;
+        endswitch;
+    endwhile;
+
+    EndDialog(IDS_INITIAL_SETTINGS);
+
+    // record data produced by this dialog
+    SdMakeName(svSection, IDS_INITIAL_SETTINGS, "", nvDlgName);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_START_AUTO_PROTECT, DATA_NUMBER
+                                                , "", g_bAutoProtectAtStartup);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_SCHEDULE_SCAN, DATA_NUMBER
+                                                        , "", g_bScheduleScan);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_SCAN_AT_STARTUP, DATA_NUMBER
+                                                        , "", g_bScanAtStartup);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER, "", retVal);
+
+    return (retVal);
+
+end;   // DialogShowInitialSettings
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DialogShowScanForViruses
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DialogShowScanForViruses()
+    NUMBER  nSilentValue;
+    NUMBER  nvDlgName;
+    NUMBER  retVal;
+    STRING  svSection;
+
+begin
+
+
+    // initialize the section name for the silent install file (.ISS)
+    svSection = SILENT_SECTION_SCAN_FOR_VIRUSES;
+
+    // if we're running in silent mode, record data produced by this dialog
+    if (MODE = SILENTMODE) then
+        SdMakeName(svSection, IDS_SCAN_FOR_VIRUSES, "", nvDlgName);
+        SilentReadData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , g_nTempResult);
+
+        // if we're moving forward...
+        if ((g_nTempResult != BACK) && (g_nTempResult != CANCEL)) then
+            // get the value for running LiveUpdate immediately after reboot
+            SilentReadData(svSection, SILENT_VALUE_NAME_RUN_LIVEUPDATE
+                                                                , DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , nSilentValue);
+            if (1 = nSilentValue) then
+                g_bRunLiveUpdateAfterInstall = TRUE;
+            else
+                g_bRunLiveUpdateAfterInstall = FALSE;
+            endif;
+
+            // get the value for running Rescue immediately after reboot
+            if ( !g_bHWIsNEC ) then
+                SilentReadData(svSection, SILENT_VALUE_NAME_RUN_RESCUE,
+                               DATA_NUMBER, g_szTempStr, nSilentValue);
+
+                if (1 = nSilentValue) then
+                    g_bRunRescueAfterInstall = TRUE;
+                else
+                    g_bRunRescueAfterInstall = FALSE;
+                endif;
+            else
+                                        // No rescue at all for NECs.
+                g_bRunRescueAfterInstall = FALSE;
+            endif;
+
+
+            // get the value for running a scan immediately after reboot
+            SilentReadData(svSection, SILENT_VALUE_NAME_RUN_NAVSCAN
+                                                                , DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , nSilentValue);
+            if (1 = nSilentValue) then
+                g_bScanVirusesAfterInstall = TRUE;
+            else
+                g_bScanVirusesAfterInstall = FALSE;
+            endif;
+        endif;
+
+        return (g_nTempResult);
+    endif;
+
+
+    g_bTempResult = FALSE;
+    while (g_bTempResult = FALSE)
+
+        retVal = WaitOnDialog(IDS_SCAN_FOR_VIRUSES);
+        switch (retVal)
+
+            case  DLG_CLOSE:
+                g_bTempResult = TRUE;
+
+            case  DLG_ERR:
+                g_bTempResult = TRUE;
+
+            case  DLG_INIT:
+                if (TRUE = g_bScanVirusesAfterInstall) then
+                    CtrlSetState(IDS_SCAN_FOR_VIRUSES, IDC_RUN_NAV_CHECKBOX
+                                                            , BUTTON_CHECKED);
+                else
+                    CtrlSetState(IDS_SCAN_FOR_VIRUSES, IDC_RUN_NAV_CHECKBOX
+                                                            , BUTTON_UNCHECKED);
+                endif;
+
+                if ( !g_bHWIsNEC ) then
+                    if (TRUE = g_bRunRescueAfterInstall) then
+                        CtrlSetState(IDS_SCAN_FOR_VIRUSES, IDC_RESCUE_CHECKBOX,
+                                     BUTTON_CHECKED);
+                    else
+                        CtrlSetState(IDS_SCAN_FOR_VIRUSES, IDC_RESCUE_CHECKBOX,
+                                     BUTTON_UNCHECKED);
+                    endif;
+                else    // NEC
+                    g_bRunRescueAfterInstall = FALSE;
+                endif;
+
+                if (TRUE = g_bRunLiveUpdateAfterInstall) then
+                    CtrlSetState(IDS_SCAN_FOR_VIRUSES, IDC_RUN_LIVE_UPDATE_CHECKBOX
+                                                            , BUTTON_CHECKED);
+                else
+                    CtrlSetState(IDS_SCAN_FOR_VIRUSES, IDC_RUN_LIVE_UPDATE_CHECKBOX
+                                                            , BUTTON_UNCHECKED);
+                endif;
+
+            case  BACK:
+                g_bTempResult = TRUE;
+
+            case  NEXT:
+                g_bTempResult = TRUE;
+
+            case  IDC_RUN_NAV_CHECKBOX:
+                if (BUTTON_CHECKED = CtrlGetState(IDS_SCAN_FOR_VIRUSES
+                                                    , IDC_RUN_NAV_CHECKBOX)) then
+                    g_bScanVirusesAfterInstall = TRUE;
+                else
+                    g_bScanVirusesAfterInstall = FALSE;
+                endif;
+
+            case  IDC_RESCUE_CHECKBOX:
+                if (BUTTON_CHECKED = CtrlGetState(IDS_SCAN_FOR_VIRUSES
+                                                    , IDC_RESCUE_CHECKBOX)) then
+                    g_bRunRescueAfterInstall = TRUE;
+                else
+                    g_bRunRescueAfterInstall = FALSE;
+                endif;
+
+            case  IDC_RUN_LIVE_UPDATE_CHECKBOX:
+                if (BUTTON_CHECKED = CtrlGetState(IDS_SCAN_FOR_VIRUSES
+                                                , IDC_RUN_LIVE_UPDATE_CHECKBOX)) then
+                    g_bRunLiveUpdateAfterInstall = TRUE;
+                else
+                    g_bRunLiveUpdateAfterInstall = FALSE;
+                endif;
+
+            default:
+                // check standard handling
+                if ((SdIsStdButton(retVal)) && (SdDoStdButton(retVal))) then
+                    g_bTempResult = TRUE;
+                endif;
+        endswitch;
+    endwhile;
+
+    EndDialog(IDS_SCAN_FOR_VIRUSES);
+
+    // record data produced by this dialog
+    SdMakeName(svSection, IDS_SCAN_FOR_VIRUSES, "", nvDlgName);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RUN_LIVEUPDATE, DATA_NUMBER
+                                                , "", g_bRunLiveUpdateAfterInstall);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RUN_RESCUE, DATA_NUMBER
+                                                , "", g_bRunRescueAfterInstall);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RUN_NAVSCAN, DATA_NUMBER
+                                                , "", g_bScanVirusesAfterInstall);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER, "", retVal);
+
+    return (retVal);
+
+end;   // DialogShowScanForViruses
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DialogShowSdAskDestPath
+//
+//  Purpose:  This function gets the destination path from the user.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DialogShowSdAskDestPath()
+    NUMBER      nResult;
+    STRING      svDir;
+ begin
+
+    // display the dialog
+    svDir = g_szAppPath;
+    nResult = MySdAskDestPath(@NAV_PRODUCT_NAME, "", svDir, 0);
+
+    // if we're running in silent mode and the value fetched from the response
+    // file is 'DEFAULT', then use the value we derived in SetupInstall()
+    if ((MODE = SILENTMODE)  &&  (@ISS_DEFAULT = svDir)) then
+        svDir = g_szAppPath;
+    endif;
+
+    // set the target directory and global app path variable
+    TARGETDIR = svDir;
+    g_szAppPath = svDir;
+
+    // initialize the user-defined target variables (these are referenced in the
+    // InstallShield project for these components)
+    ComponentSetTarget(MEDIA, "<SYMREG>", COMMONFILES ^ "Symantec Shared");
+    ComponentSetTarget(MEDIA, "<WINSYS_NS>", SUPPORTDIR );
+
+    // if there is no previous version currently installed in the target
+    // directory, then there are no previous settings to keep
+    if (CLEAN_INSTALL = g_nvPrevVersionExists) then
+        g_bKeepSettings = FALSE;
+    endif;
+
+    return (nResult);
+
+ end;   // DialogShowSdAskDestPath
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: DialogShowSdFinishReboot
+//
+//  Purpose: This function will show the last dialog of the product.
+//           It will allow the user to reboot and/or show some readme text.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    DialogShowSdFinishReboot()
+    NUMBER  nDefOptions;
+    NUMBER  nResult;
+    STRING  szMsg1;
+    STRING  szMsg2;
+    STRING  szOption1;
+    STRING  szOption2;
+    STRING  szTitle;
+    NUMBER  bOpt1;
+    NUMBER  bOpt2;
+    BOOL    bTaskAdded;
+begin
+
+    bTaskAdded = FALSE;
+
+    nDefOptions = SYS_BOOTMACHINE;
+    szTitle     = "";
+    szMsg1 = @REBOOT_HEADER;
+
+    // Add the optional strings to the dialog
+    if( g_bAutoProtectAtStartup ||
+        g_bRunLiveUpdateAfterInstall ||
+        g_bRunRescueAfterInstall ||
+        g_bScanVirusesAfterInstall  ||
+        g_bNetscapeInstalled ) then
+
+        szMsg1 = szMsg1 + @REBOOT_NEEDED;
+
+        if(g_bAutoProtectAtStartup) then
+            szMsg1 = szMsg1 + SETUP_REVIEW_TAB + @REBOOT_AUTOPROTECT;
+            bTaskAdded = TRUE;
+        endif;
+
+        // BATCH_INSTALL may be TRUE because NAVLU indicated that a reboot is
+        // required because a patch was downloaded.  In that case, Rescue and
+        // NSPLUGIN already ran, so don't display those apps in the setup review
+        // if NAVLU forced the reboot.
+
+        if ( BATCH_INSTALL && !g_bNAVLUForcedReboot ) then
+            if(g_bRunLiveUpdateAfterInstall) then
+                szMsg1 = szMsg1 + SETUP_REVIEW_TAB + @REBOOT_LIVEUPDATE;
+                bTaskAdded = TRUE;
+            endif;
+
+            if(g_bRunRescueAfterInstall) then
+                szMsg1 = szMsg1 + SETUP_REVIEW_TAB + @REBOOT_RESCUE;
+                bTaskAdded = TRUE;
+            endif;
+
+            if(g_bInstallNetscapePlugins) then
+                szMsg1 = szMsg1 + SETUP_REVIEW_TAB + @REBOOT_NETSCAPE;
+                bTaskAdded = TRUE;
+            endif;
+        endif;
+
+        if(g_bScanVirusesAfterInstall) then
+            szMsg1 = szMsg1 + SETUP_REVIEW_TAB + @REBOOT_SCAN;
+            bTaskAdded = TRUE;
+        endif;
+    else
+        szMsg1 = szMsg1 + @REBOOT_INSTALL_DONE;
+        bTaskAdded = TRUE;
+    endif;
+
+    if ( !bTaskAdded ) then
+        szMsg1 = szMsg1 + SETUP_REVIEW_TAB + @REBOOT_INSTALL_DONE2;
+    endif;
+
+    szMsg2      = " ";
+    nResult     = SdFinishReboot(szTitle, szMsg1, nDefOptions, szMsg2, 0);
+
+    return nResult;
+
+end;    // DialogShowSdFinishReboot
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  HandlePostInstallationTasks
+//
+//  Purpose:  This function performs any tasks that need to be executed after
+//            the installation is complete.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    HandlePostInstallationTasks()
+    NUMBER  nResult;
+    STRING  szDir;
+    STRING  szKey;
+    STRING  szProgram;
+begin
+
+    // Set the batch install if the user wants to run navresq, scan, or loadap.
+//    BATCH_INSTALL = TRUE;
+
+    VarSave ( SRCTARGETDIR );
+    SRCDIR = TARGETDIR;
+
+    if ( g_bHWIsNEC ) then
+                                        // Modify CONFIG.SYS so that NAVDX
+                                        // will run.
+        FixUpNECConfigSys ( @NAV_EMM386_REMARK );
+
+                                        // Copy the NEC verions of NAVDX
+                                        // to their final filenames.
+        CopyFile ( "navdx_n.exe", "navdx.exe" );
+        CopyFile ( "navdx_n.ovl", "navdx.ovl" );
+    endif;
+
+                                        // Remove the NEC NAVDX files.
+    DeleteFile ( "navdx_n.exe" );
+    DeleteFile ( "navdx_n.ovl" );
+
+    VarRestore ( SRCTARGETDIR );
+
+
+                                        // Add or remove NAVDX from autoexec
+    UpdateScanAtStartup();
+
+
+    szDir = TARGETDIR ^ "Quarantine";
+
+                                        // Create Quarantine directories
+    if ( CreateDir ( szDir ^ "Portal" ) < 0      ||
+         CreateDir ( szDir ^ "incoming" ) < 0  ) then
+         if ( SILENTMODE != MODE ) then
+            MessageBox ( @ERROR_CREATE_QUAR_DIRS_FAILED, SEVERE );
+         endif;
+
+         abort;
+     endif;
+
+
+                                        // Store the migration DLL path in the
+                                        // registry.
+    Disable(LOGGING);
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+    RegDBCreateKeyEx ( MIGRATION_DLL_KEY, "" );
+    Enable(LOGGING);
+
+    RegDBSetKeyValueEx ( MIGRATION_DLL_KEY, MIGRATION_DLL_VALUE, REGDB_STRING,
+                         TARGETDIR ^ MIGRATION_DLL_FILENAME, -1 );
+
+
+    // update the "load AP at startup" option in the navstart data file
+    SetNavStartInfo(TARGETDIR ^ "navstart.dat", NAVSTART_OPTION_LOAD_AP_AT_STARTUP
+                                                        , g_bAutoProtectAtStartup);
+
+    SetupRestart();
+
+                                        // Add BACKLOG.EXE to the runonce key
+                                        // to backup the uninstall log
+
+    szKey = "\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
+    Disable( LOGGING );
+    RegDBCreateKeyEx( szKey, "" );
+    szProgram = TARGETDIR ^ "BACKLOG.EXE";
+    LongPathToQuote ( szProgram, TRUE );
+
+    szProgram = szProgram + " " + TARGETDIR ^ @NAV_UNINSTALL_FILENAME;
+    RegDBSetKeyValueEx( szKey, "BACKLOG", REGDB_STRING, szProgram, -1 );
+    Enable( LOGGING );
+
+end;    // HandlePostInstallationTasks
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: HandleError
+//
+//  Purpose: This function handles any errors that may happen in this
+//           module.  It uses the input argument to determine what kind of
+//           error has actually occurred.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    HandleError(nErrorID)
+begin
+
+    switch (nErrorID)
+
+        case  ERR_INPUT_CONFIG_FILE:
+            MessageBox(@ERROR_READING_CONFIG, WARNING);
+            abort;
+        default:
+            MessageBox(@ERROR_GENERAL, WARNING);
+            abort;
+    endswitch;
+
+end;   // HandleError
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  InitCustomDialogs
+//
+//  Purpose:  This function brings the custom dialogs into memory and
+//            registers them with InstallShield.
+//
+//  Input:    nothing
+//  Output:   a value of TRUE if all goes well, otherwise a value of FALSE
+//
+///////////////////////////////////////////////////////////////////////////////
+function    InitCustomDialogs()
+    BOOL    bResult;
+begin
+
+    bResult = TRUE;
+    if (0 > EzDefineDialog(IDS_INITIAL_SETTINGS, "", "", IDD_INITIAL_SETTINGS95)) then
+        bResult = FALSE;
+    endif;
+
+    if (0 > EzDefineDialog(IDS_EXIT_DIALOG, "", "", IDD_EXIT_DIALOG)) then
+        bResult = FALSE;
+    endif;
+
+    if (0 > EzDefineDialog(IDS_KEEP_SETTINGS, "", "", IDD_KEEP_SETTINGS)) then
+        bResult = FALSE;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        if (0 > EzDefineDialog(IDS_ADVO1, "", "", IDD_ADVOTEXT_1_NEC)) then
+            bResult = FALSE;
+        endif;
+    else
+        if (0 > EzDefineDialog(IDS_ADVO1, "", "", IDD_ADVOTEXT_1)) then
+            bResult = FALSE;
+        endif;
+    endif;
+
+    if (0 > EzDefineDialog(IDS_ADVO2, "", "", IDD_ADVOTEXT_2)) then
+        bResult = FALSE;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        if (0 > EzDefineDialog(IDS_SCAN_FOR_VIRUSES, "", "", IDD_SCAN_FOR_VIRUSES95_NEC)) then
+            bResult = FALSE;
+        endif;
+    else
+        if (0 > EzDefineDialog(IDS_SCAN_FOR_VIRUSES, "", "", IDD_SCAN_FOR_VIRUSES95)) then
+            bResult = FALSE;
+        endif;
+    endif;
+
+    return (bResult);
+
+end;    // InitCustomDialogs
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  InitGlobalVars
+//
+//  Purpose:  This function simply sets some key globals to know values.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    InitGlobalVars()
+    BOOL    bResult;
+    NUMBER  nvResult;
+    STRING  svResult;
+begin
+
+    g_bAutoProtectAtStartup = TRUE;
+    g_bKeepSettings = FALSE;
+    g_bInstallLiveUpdate = TRUE;
+    g_bRunLiveUpdateAfterInstall = TRUE;
+    g_bRunRescueAfterInstall = TRUE;
+    g_bScanAtStartup = TRUE;
+    g_bScanVirusesAfterInstall = TRUE;
+    g_bScheduleScan = TRUE;
+
+    g_bCreateIconsAndMenuItems = TRUE;
+    g_bInstallNetscapePlugins = FALSE;
+    g_bQuitIfNewerNavInstalled = FALSE;
+    g_bNAVLUForcedReboot = FALSE;
+    g_bNetscapeInstalled = NetscapeInstalled();
+    g_bOverwriteScheduleDat = FALSE;
+    g_bUseNPSOn98 = FALSE;
+    g_bPreviousVersionWithLiveUpdate = FALSE;
+    g_bScanMemoryDuringInstall = TRUE;
+    g_nvHawkingStatus = HAWKING_NO_ACTIVITY;
+    g_szDefUtilsDir = "";
+    g_szInstallOptsFile = SUPPORTDIR ^ INSTALL_OPTIONS_FILE;
+
+                                        // Get the current color depth.
+    GetSystemInfo ( COLORS, nvResult, svResult );
+
+    if ( nvResult > 256 ) then
+        g_bUseHiColorBMPs = TRUE;
+    else
+        g_bUseHiColorBMPs = FALSE;
+    endif;
+end;    // InitGlobalVars
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  IsNavRunning
+//
+//  Purpose:  This function checks to see if NAV is running by looking for
+//            the NAV main window.  If it's found, we return a value of
+//            TRUE, else a value of FALSE is returned.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    IsNavRunning()
+    BOOL    bResult;
+
+begin
+
+    bResult = FALSE;
+
+    if (NULL != FindWindow(NAV_WIN_CLASS_NAME, @NAV_WIN_CAPTION)) then
+        bResult = TRUE;
+    elseif ( NULL != FindWindow(NAV_WIN_CLASS_NAME, @NAV5_WIN_CAPTION)) then
+        bResult = TRUE;
+    endif;
+
+    return (bResult);
+
+end;    // IsNavRunning
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  MoveFileData
+//
+//  Purpose:  This function handles the data movement for
+//            the setup.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    MoveFileData()
+    NUMBER  nResult;
+    NUMBER  nvError;
+    STRING  svComponent;
+    STRING  svFile;
+    STRING  svFileGroup;
+    STRING  svMedia;
+
+begin
+
+    // Copy the uncompressed files.
+    CopyUncompressedFiles();
+
+    // Work around bug in IS that always copies the settings files even though
+    // all the New Settings components have been deselected.
+    if ( g_bKeepSettings ) then
+        SaveSettingsFilesBeforeISBlowsThemAway();
+    endif;
+
+    g_nDisk = 1;
+    Disable(DIALOGCACHE);
+    nResult = Enable(STATUS);
+    nResult = Enable(INDVFILESTATUS);
+    SetStatusWindow(0, @NAV_COPY_FILES_MESSAGE);
+    StatusUpdate(ON, 100);
+
+    // place all self-registering files in the internal queue
+    // (NOTE: this must be done before the file copy)
+    nResult = Enable(SELFREGISTERBATCH);
+
+    // perform the file copy
+    nResult = ComponentMoveData(MEDIA, g_nDisk, 0);
+
+    // Restore settings files if the user is keeping settings.
+    if ( g_bKeepSettings ) then
+        RestoreBlownAwaySettingsFiles();
+    endif;
+
+    // copy over the "non-shared" files
+    MoveNonSharedFiles();
+
+    SetStatusWindow(100, "");
+
+    if(nResult < 0) then
+        ComponentError(svMedia, svComponent, svFileGroup, svFile, nvError);
+        SprintfBox(INFORMATION, @ERROR_COMPONENT_MOVE_DATA_INFO,
+                @ERROR_COMPONENT_MOVE_DATA,
+                svMedia, svComponent, svFileGroup, svFile, nvError);
+        abort;
+    else
+        nResult = Do(SELFREGISTRATIONPROCESS);
+    endif;
+
+    // copy the virus definitions to their final location
+    nResult = CopyVirusDefinitionFiles ( g_szDefUtilsDir );
+    g_nvHawkingStatus = HAWKING_USING_DEFS;
+
+    Disable(STATUS);
+    return nResult;
+
+end;   // MoveFileData
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: MoveNonSharedFiles
+//
+//  Purpose: This function moves any "non-shared" files (files for which we do not
+//           want any usage counts maintained and we want full control over) to
+//           their final location, and removes from the TARGETDIR.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    MoveNonSharedFiles()
+    BOOL    bResult;
+    NUMBER  nResult;
+
+begin
+    // disable logging so InstallShield won't try to remove these files during
+    // uninstall
+    Disable(LOGGING);
+
+    if ( g_bInstallLiveUpdate ) then
+        bResult = CreateProcessAndWait ( WINDIR ^ "lusetup.exe -s", nResult );
+
+        if ( !bResult ) then
+            MessageBox ( @ERROR_INSTALLING_LU, SEVERE );
+        elseif ( nResult = 1 ) then
+            BATCH_INSTALL = TRUE;
+        endif;
+      endif;
+
+    // Move the files for program files\symantec
+    VarSave(SRCTARGETDIR);
+    SRCDIR = TARGETDIR;
+    TARGETDIR = g_szSymantecSharedDir;
+    XCopyFile("S32STAT.DLL", "",  COMP_UPDATE_VERSION | COMP_UPDATE_SAME | LOCKEDFILE );
+    TARGETDIR = SRCDIR;
+    DeleteFile("S32STAT.DLL");
+    VarRestore(SRCTARGETDIR);
+
+    // move the windows system NS ("non-shared") files over and delete them from TARGETDIR
+    VarSave(SRCTARGETDIR);
+    SRCDIR = SUPPORTDIR;
+    TARGETDIR = WINSYSDIR;
+    //nResult = XCopyFile("mfc42.dll", "", COMP_UPDATE_VERSION | COMP_UPDATE_SAME | LOCKEDFILE);
+    DoCopyMFC42DLLs();
+    nResult = XCopyFile("msvcp50.dll", "", COMP_UPDATE_VERSION | COMP_UPDATE_SAME | LOCKEDFILE);
+    nResult = XCopyFile("msvcrt.dll", "", COMP_UPDATE_VERSION | COMP_UPDATE_SAME | LOCKEDFILE);
+    nResult = XCopyFile("msvcirt.dll", "", COMP_UPDATE_VERSION | COMP_UPDATE_SAME | LOCKEDFILE);
+    nResult = XCopyFile("lzexpand.dll", "", COMP_UPDATE_VERSION | COMP_UPDATE_SAME | LOCKEDFILE);
+
+
+    TARGETDIR = SRCDIR;
+    nResult = DeleteFile("mfc42.dll");
+    nResult = DeleteFile("msvcp50.dll");
+    nResult = DeleteFile("msvcrt.dll");
+    nResult = DeleteFile("msvcirt.dll");
+    nResult = DeleteFile("lzexpand.dll");
+
+    TARGETDIR = WINDIR;
+    nResult = DeleteFile ( "lusetup.exe" );
+
+    VarRestore(SRCTARGETDIR);
+
+    // re-enable logging
+    Enable(LOGGING);
+
+end;    // MoveNonSharedFiles
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    DoCopyMFC42DLLs()
+//
+// Description:
+//  Does manual version-checking on MFC42.DLL, and copies our file to
+//  WINSYSDIR if its version is the same or newer than the existing file,
+//  or if the file isn't on the system yet.
+//
+// Input:
+//  Nothing.
+//
+// Returns:
+//  Nothing.
+//
+// Note:
+//  This function is here because we've had reports of newer DLLs being
+//  overwritten by our install.  I've implemented this with the assumption
+//  that InstallShield's version checking ain't working right (that's why
+//  I'm not using VerCompare).
+//
+//////////////////////////////////////////////////////////////////////////
+// 10/26/98  Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function DoCopyMFC42DLLs()
+    STRING szOurMFCVer;
+    STRING szExistingMFCVer;
+    NUMBER nDummy;
+    BOOL   bDoCopy;
+begin
+
+    bDoCopy = TRUE;
+
+    // Get version of the existing MFC42.DLL.  If this call fails then there
+    // is no existing copy of the file so we can install ours.
+
+    if ( ! GetFileVersionString ( WINSYSDIR  ^ "mfc42.dll",
+                                  szExistingMFCVer ) )
+        goto docopy;
+
+    // Get the version of our file.
+    ComponentFileInfo ( MEDIA, "Norton AntiVirus for Windows 95\\NAV WinsysNS",
+                        "NAV WinsysNS\\mfc42.dll",
+                        COMPONENT_INFO_VERSIONSTR, nDummy,
+                        szOurMFCVer );
+
+    // Compare the files' versions.  If the existing file is newer, then we
+    // don't copy ours to the system dir.
+
+    if ( 1 == CompareFileVersions ( szExistingMFCVer, szOurMFCVer ) )
+    then
+        bDoCopy = FALSE;
+    endif;
+
+docopy:
+    if ( bDoCopy )
+    then
+        XCopyFile("mfc42.dll", "", COMP_NORMAL | LOCKEDFILE);
+    endif;
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: ProcessAfterDataMove
+//
+//  Purpose: This function performs any necessary operations needed after
+//           all data has been moved.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    ProcessAfterDataMove()
+    BOOL    bInstalled;
+    STRING  szReferenceFile;
+    STRING  svValue;
+    STRING  szNTaskMgrCmd;
+    NUMBER  nvDaEnabled;
+    NUMBER  nvDaConfirmationNumber;
+    NUMBER  nvDaFreeLength;
+    NUMBER  nvDaSubscriptionLength;
+    NUMBER  nvDaFreeEndWarning;
+    NUMBER  nvDaSubscriptionEndWarning;
+    NUMBER  nvDaEnableSysWorks;
+begin
+
+    // TODO : update self-registered files and other processes that
+    //        should be performed after the data has been moved.
+
+    // DeinstallSetReference specifies a file to be checked before
+    // uninstallation. If the file is in use, uninstallation will not proceed.
+    szReferenceFile = TARGETDIR ^ @NAV_EXE_NAME;
+    DeinstallSetReference(szReferenceFile);
+
+    // Uninstall the previous version if any.
+    LaunchAppAndWait(COMMONFILES ^ "Symantec Shared" ^ "sevinst.exe", "/Q /U NAV95 /NODEL", WAIT );
+    // Need to create symevent.386 before the registry keys are created.
+    LaunchAppAndWait(COMMONFILES ^ "Symantec Shared" ^ "sevinst.exe", "/Q NAV95", WAIT );
+
+    // create registry entries
+    CreateRegDBEntries();
+
+    IncrementSymantecSharedKey();
+
+    // Update virus defs from external archive.
+    UpdateVirusDefs();
+
+    // Update NAV options from external archive.
+    UpdateNavOpts();
+
+    SetInocDirRegEntry ( TARGETDIR );
+
+    // Update LiveUpdate hosts file from external archive.
+    if ( g_bInstallLiveUpdate ) then
+        UpdateLiveUpdate();
+    endif;
+
+    // finally, make sure  our "installed entry in the registry exists
+    SetInstalledRegEntry();
+
+    // based on the major version of NT, launch the appropriate version
+    // of "wintdist" to install wininet.dll and inloader.dll
+    HandleMSSelfExtractors();
+
+    // Find out if we should handle NetscapePlugins during install
+    if (0 <= GetProfString(g_szInstallOptsFile, NETSCAPE_INTEGRATION_SECTION, NETSCAPE_PLUGIN_SWITCH, svValue)) then
+        if(0=StrCompare("1",svValue)) then
+            g_bInstallNetscapePlugins = TRUE;
+        else
+            g_bInstallNetscapePlugins = FALSE;
+        endif;
+    endif;
+
+    // Find out if we should use NPS on 98 (default it not to use it)
+    if ( 0 <= GetProfString ( g_szInstallOptsFile, INSTALL_OPTIONS_SECTION,
+                              FORCE_NPS_ON_98_SWITCH, svValue ) ) then
+        if ( 0 = StrCompare ( "1", svValue ) ) then
+            g_bUseNPSOn98 = TRUE;
+        endif;
+    endif;
+
+    szNTaskMgrCmd = "";
+
+    // Convert NPS events to Win98 Task Scheduler events on 98.
+    if ( g_bIsWin98  &&  !g_bUseNPSOn98 ) then
+        szNTaskMgrCmd = szNTaskMgrCmd + NTASKMGR_CONVERT_NPS_EVENTS_SWITCH;
+    endif;
+
+    // Add a weekly scan event if the user chose to do so.
+    if ( g_bScheduleScan ) then
+        szNTaskMgrCmd = szNTaskMgrCmd + NTASKMGR_ADD_SCAN_SWITCH;
+
+        // On Win98, use the Windows Task Scheduler (unless overridden by the
+        // install switch that forces use of NPS).
+        if ( g_bIsWin98  &&  !g_bUseNPSOn98 ) then
+            szNTaskMgrCmd = szNTaskMgrCmd + NTASKMGR_USE_98_SCHED_SWITCH;
+        endif;
+    endif;
+
+    if ( MODE = SILENTMODE ) then
+        szNTaskMgrCmd = szNTaskMgrCmd + NTASKMGR_SILENT_MODE_SWITCH;
+    endif;
+
+    if ( "" != szNTaskMgrCmd ) then
+        LaunchAppAndWait ( TARGETDIR ^ NTASKMGR_EXE_NAME, szNTaskMgrCmd, WAIT );
+    endif;
+
+    // Remove NPS files that aren't needed on 98.
+    if ( g_bIsWin98  &&  !g_bUseNPSOn98 ) then
+        DeleteFile ( "nsched32.exe" );
+        DeleteFile ( "nsched32.cnt" );
+        DeleteFile ( "nsched32.hlp" );
+        DeleteFile ( "schedule.dat" );
+    endif;
+
+    DeleteFile( "schedule.new");
+
+    // set up def annuity.
+
+    // We will support the Roswell "Enabled" switch, as well as a new
+    // "CorporateFeatures".  Setting "Enabled" to 0 *or* "CorporateFeatures"
+    // to 1 turns off paid defs nag screens and enables corp. features in
+    // Scan 'n' Deliver.
+
+    nvDaEnabled = 1;
+    g_bCorpVersion = FALSE;
+
+    if (0 <= GetProfString(g_szInstallOptsFile, DEFANNUITY_SECTION, DEFANNUITY_ENABLED_SWITCH, svValue)) then
+        if(0=StrCompare("0",svValue)) then
+            nvDaEnabled = 0;
+            g_bCorpVersion = TRUE;
+        endif;
+    endif;
+
+    if ( !g_bCorpVersion ) then
+        if (0 <= GetProfString(g_szInstallOptsFile, INSTALL_OPTIONS_SECTION,
+                               CORPORATE_VERSION_SWITCH, svValue)) then
+            if(0!=StrCompare("0",svValue)) then
+                nvDaEnabled = 0;
+                g_bCorpVersion = TRUE;
+            endif;
+        endif;
+    endif;
+
+
+    nvDaConfirmationNumber = 1;
+
+    if (0 <= GetProfString(g_szInstallOptsFile, DEFANNUITY_SECTION, DEFANNUITY_CONFIRMATION_SWITCH, svValue)) then
+        if(0=StrCompare("0",svValue)) then
+            nvDaConfirmationNumber = 0;
+        endif;
+    endif;
+
+    GetProfInt(g_szInstallOptsFile, DEFANNUITY_SECTION, DEFANNUITY_FREELENGTH_SWITCH, nvDaFreeLength);
+    GetProfInt(g_szInstallOptsFile, DEFANNUITY_SECTION, DEFANNUITY_SUBLENGTH_SWITCH, nvDaSubscriptionLength);
+    GetProfInt(g_szInstallOptsFile, DEFANNUITY_SECTION, DEFANNUITY_FREEENDWARNING_SWITCH, nvDaFreeEndWarning);
+    GetProfInt(g_szInstallOptsFile, DEFANNUITY_SECTION, DEFANNUITY_SUBENDWARNING_SWITCH, nvDaSubscriptionEndWarning);
+
+    if (UseDLL(TARGETDIR ^ DEFANNUITY_DLL)=0) then
+        DefAnnuityInitialize ( 0, 0x05000000, nvDaEnabled, nvDaConfirmationNumber, nvDaFreeLength, nvDaSubscriptionLength, nvDaFreeEndWarning, nvDaSubscriptionEndWarning );
+        UnUseDLL(TARGETDIR ^ DEFANNUITY_DLL);
+    endif;
+
+
+    // Set up the corp version reg entry
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+
+    if ( g_bCorpVersion ) then
+        RegDBSetKeyValueEx ( NAV_KEY, CORP_FEATURES_VALUENAME, REGDB_NUMBER,
+                             "1", -1 );
+    else
+        RegDBDeleteValue ( NAV_KEY, CORP_FEATURES_VALUENAME );
+    endif;
+
+
+    // Disable the splash screen for corp versions.
+    if ( g_bCorpVersion ) then
+        RegDBSetKeyValueEx ( DISABLE_SPLASH_KEY, DISABLE_SPLASH_VALUE,
+                             REGDB_NUMBER, "1", -1 );
+    endif;
+
+
+    // Enable/Disable SystemWorks Upsell
+	if( !g_bCorpVersion ) then
+		RegDBSetDefaultRoot ( HKEY_CURRENT_USER );
+	endif;
+
+    GetProfInt(g_szInstallOptsFile, SYSTEMWORKS_SECTION, SYSTEMWORKS_ENABLED_SWITCH, nvDaEnableSysWorks);
+
+	// Need to change NAV_OEM_SYSWORKS_KEY to be in sync with the information from
+	// "version.dat"
+
+#ifdef OEM_BUILD
+    if ( nvDaEnableSysWorks = 0) then
+      RegDBSetKeyValueEx(NAV_OEM_SYSWORKS_KEY, NAV_SYSWORKS_VALUENAME, REGDB_NUMBER, "0", -1 );
+    else
+      RegDBSetKeyValueEx(NAV_OEM_SYSWORKS_KEY, NAV_SYSWORKS_VALUENAME, REGDB_NUMBER, "1", -1 );
+	endif;
+#else
+    if ( nvDaEnableSysWorks = 0) then
+      RegDBSetKeyValueEx(NAV_SYSWORKS_KEY, NAV_SYSWORKS_VALUENAME, REGDB_NUMBER, "0", -1 );
+	else
+      RegDBSetKeyValueEx(NAV_SYSWORKS_KEY, NAV_SYSWORKS_VALUENAME, REGDB_NUMBER, "1", -1 );
+    endif;
+#endif
+
+    return 0;
+
+end;    // ProcessAfterDataMove
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  ProcessBeforeDataMove
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    ProcessBeforeDataMove()
+    NUMBER  nResult;
+    NUMBER  nvType;
+    NUMBER  nvSize;
+    STRING  svLogFile;
+    STRING  svTargetDir;
+    STRING  svUninstFilename;
+    STRING  svValue;
+    STRING  svProductKey;
+    STRING  szComponent;
+    STRING  szProgram;
+    STRING  szProgramFolder;
+    STRING  szTemp;
+
+begin
+
+    // Backup the system files that we are about to modify
+    BackupSystemFiles();
+
+
+    // if we're about to install over a previous version, first do some cleanup
+    if (CLEAN_INSTALL != g_nvPrevVersionExists) then
+        RemovePreviousVersion();
+    endif;
+
+    // setup the registry product information
+    SdProductName(@NAV_PRODUCT_NAME);
+    nResult = InstallationInfo(@COMPANY_NAME, @NAV_PRODUCT_NAME
+                                                , @NAV_PRODUCT_VERSION
+                                                , @NAV_EXE_NAME);
+
+    // initialize variables and start the uninstallation log (the call to
+    // DeinstallStart also creates the uninstall string in the registry)
+    svTargetDir = TARGETDIR;
+    svUninstFilename = @NAV_UNINSTALL_FILENAME;
+    svProductKey = @NAV_UNINSTALL_DISPLAY_NAME;
+    nResult = DeinstallStart(svTargetDir, svUninstFilename, svProductKey, 0);
+
+    if (nResult < 0) then
+        MessageBox(@ERROR_UNINSTSETUP, WARNING);
+    endif;
+
+    if ((g_bIs32BitSetup) && (g_bIsShellExplorer)) then
+       g_szAppPath = svTargetDir;
+       RegDBSetItem(REGDB_APPPATH, svTargetDir);
+       RegDBSetItem(REGDB_APPPATH_DEFAULT, svTargetDir ^ svProductKey);
+       RegDBSetItem(REGDB_UNINSTALL_NAME, @NAV_ADD_REMOVE_DISPLAY_NAME);
+    endif;
+
+    // setup the command for the custom DLL to be used during uninstall;
+    // first get the current uninstall value...
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    if (0 = RegDBGetKeyValueEx(MSUNINSTALL_KEY ^ @NAV_UNINSTALL_DISPLAY_NAME
+                                                        , "UninstallString"
+                                                        , nvType
+                                                        , svValue
+                                                        , nvSize)) then
+
+        // ... then append the command for the custom DLL to the current string value
+        g_szTempStr = TARGETDIR ^ CUSTOM_DLLNAME;
+        svValue = "\"" + WINDIR ^ "NAVUSTUB.EXE\" " + svValue + " -c\"" +
+                    g_szTempStr + "\"";
+        RegDBSetKeyValueEx(MSUNINSTALL_KEY ^ @NAV_UNINSTALL_DISPLAY_NAME
+                                , "UninstallString", REGDB_STRING, svValue, -1);
+    endif;
+
+
+    // select only the components associated with NAV
+    nResult = ComponentSelectItem(MEDIA, @NAV_COMPONENT_NAME, TRUE);
+
+    // Deselect AT components if we're on a NEC, and vice-versa.
+    // &^ This really should be cleaned up, it's ugly!  It should
+    // involve just removing the common components and using only
+    // the AT/NEC components as appropriate.
+    // Doing that would also clean up the free-space calculation code!!
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + NEW_SETTINGS_COMPONENT_NEC,
+                          g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + PROGRAM_COMPONENT_NEC,
+                          g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + SCHEDULED_SCAN_COMPONENT_NEC,
+                          g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + WINDOWS_COMPONENT_NEC,
+                          g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + NEW_SETTINGS_COMPONENT_AT,
+                          !g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + PROGRAM_COMPONENT_AT,
+                          !g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + SCHEDULED_SCAN_COMPONENT_AT,
+                          !g_bHWIsNEC );
+
+    ComponentSelectItem ( MEDIA,
+                          ROOT_COMPONENT + "\\" + WINDOWS_COMPONENT_AT,
+                          !g_bHWIsNEC );
+
+
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-Common", TRUE );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-AT only", !g_bHWIsNEC );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-QConsole", TRUE );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-LiveUpdate", g_bInstallLiveUpdate );
+
+#ifdef OEM_BUILD
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-OEM only", TRUE );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-nonOEM AT only", FALSE );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-nonOEM only", FALSE );
+#else
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-OEM only", FALSE );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-nonOEM AT only", !g_bHWIsNEC );
+    ComponentSelectItem ( MEDIA, "ShellObjTrigger-nonOEM only", TRUE );
+#endif
+
+    // if we're keeping current settings deslect that component.
+    if TRUE = g_bKeepSettings then
+        szComponent = ROOT_COMPONENT + "\\" + NEW_SETTINGS_COMPONENT;
+        nResult = ComponentSelectItem(MEDIA, szComponent, FALSE);
+
+        szComponent = ROOT_COMPONENT + "\\" + NEW_SETTINGS_COMPONENT_NEC;
+        nResult = ComponentSelectItem(MEDIA, szComponent, FALSE);
+
+        szComponent = ROOT_COMPONENT + "\\" + NEW_SETTINGS_COMPONENT_AT;
+        nResult = ComponentSelectItem(MEDIA, szComponent, FALSE);
+    endif;
+
+    // The LiveUpdate component is obsolete, since we're using the Shared Tech
+    // installer now.
+    ComponentSelectItem ( MEDIA, ROOT_COMPONENT + "\\" + LIVEUPDATE_COMPONENT, FALSE );
+
+    // if the user is keeping the current settings, see if we're to start
+    // auto-protect when loading NAV (the value determined here is to be
+    // used after we copy the files)
+    if (TRUE = g_bKeepSettings) then
+        g_nTempResult = GetNavStartInfo(TARGETDIR ^ "navstart.dat"
+                                        , NAVSTART_OPTION_LOAD_AP_AT_STARTUP);
+        if (TRUE = g_nTempResult) then
+            g_bAutoProtectAtStartup = TRUE;
+        elseif (FALSE  = g_nTempResult) then
+            g_bAutoProtectAtStartup = FALSE;
+        else
+            MessageBox(@ERROR_NAVSTART_READ, WARNING);
+        endif;
+    endif;
+
+    // if the user wants to automatically schedule a weekly scan, select the
+    // corresponding component
+    if (FALSE = g_bKeepSettings) then
+        szComponent = ROOT_COMPONENT + "\\" + SCHEDULED_SCAN_COMPONENT;
+        nResult = ComponentSelectItem(MEDIA, szComponent, g_bScheduleScan);
+
+        if ( g_bHWIsNEC ) then
+            szComponent = ROOT_COMPONENT + "\\" + SCHEDULED_SCAN_COMPONENT_NEC;
+        else
+            szComponent = ROOT_COMPONENT + "\\" + SCHEDULED_SCAN_COMPONENT_AT;
+        endif;
+
+        nResult = ComponentSelectItem(MEDIA, szComponent, g_bScheduleScan);
+    endif;
+
+    // Check for the INSTOPTS.INI switch that prevents the Q console from
+    // being installed.
+    if ( 0 = GetProfString ( SRCDIR ^ INSTALL_OPTIONS_FILE,
+                             INSTALL_OPTIONS_SECTION,
+                             DISABLE_QCONSOLE_SWITCH,
+                             svValue ) ) then
+        if ( "1" = svValue ) then
+            ComponentSelectItem ( MEDIA,
+                                  ROOT_COMPONENT + "\\" + QCONSOLE_COMPONENT,
+                                  FALSE );
+
+            ComponentSelectItem ( MEDIA,
+                                  "ShellObjTrigger-QConsole",
+                                  FALSE );
+        endif;
+    endif;
+
+
+    // setup the target location for the virus definitions component
+    SetupVirusDefs();
+
+    // any final adjustments before the data move
+    PreDataMoveHook();
+
+    return 0;
+
+end;    // ProcessBeforeDataMove
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: PreventServerInstall
+//
+//  Purpose: This function is used by Roswell NT to prevent the user from
+//           installing it to NT servers.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    PreventServerInstall()
+    NUMBER  nvType;
+    NUMBER  nvSize;
+    NUMBER  nvResult;
+    STRING  svNTString;
+    STRING  svResult;
+
+begin
+
+#ifdef  WORKSTATION_BUILD
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+    RegDBGetKeyValueEx( "\\System\\CurrentControlSet\\Control\\ProductOptions" , "ProductType" , nvType , svNTString , nvSize );
+
+    // For debugging only.  So I can check the string value.
+    // MessageBox ( "NT Type string value: (" + svNTString + ")", SEVERE );
+
+    // If this computer is not running NTW then abort the install
+    if( StrCompare(svNTString,"WinNT") != 0 ) then
+       MessageBox ( @ERROR_NT_WORKSTATIONS_ONLY, SEVERE );
+        abort;
+    endif;
+
+    // must be running Windows NT
+    g_bIsWinNT = TRUE;
+
+    // check to see if the shell being used is EXPLORER shell
+    if (GetSystemInfo(OSMAJOR, nvResult, svResult) = 0) then
+        if (nvResult >= 4) then
+        g_bIsShellExplorer = TRUE;
+        endif;
+    endif;
+#endif  // WORKSTATION_BUILD
+
+end;    // PreventServerInstall
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: ProcessCommandLine
+//
+//  Purpose:
+//
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    ProcessCommandLine()
+    BOOL    bRetValue;
+    BOOL    validSwitchChar;
+    LIST    cmdLineListID;
+    NUMBER  nResult;
+    NUMBER  nStrLen;
+    STRING  cmdlineDelimiters;
+    STRING  svString;
+    STRING  svLowerString;
+
+begin
+
+    // initialize the return value
+    bRetValue = TRUE;
+
+    // if there are no user command-line switches, leave this function
+    if (CMDLINE = "") then
+        goto  ExitFunction;
+    endif;
+
+    // parse the user command-line switches into a list of strings
+    cmdLineListID = ListCreate(STRINGLIST);
+    cmdlineDelimiters = "\t ";
+    if (StrGetTokens(cmdLineListID, CMDLINE, cmdlineDelimiters) < 0) then
+        MessageBox(@ERR_STR_GET_TOKENS, SEVERE);
+        bRetValue = FALSE;
+        abort;
+    endif;
+
+    // loop through the user command-line switches and set variables accordingly
+    nResult = ListGetFirstString(cmdLineListID, svString);
+    while (nResult != END_OF_LIST)
+        // get the switch part of the string (must test for both hyphens and
+        // forward slashes)
+        if (svString[0] = "-")  ||  (svString[0] = "/") then
+            validSwitchChar = TRUE;
+        else
+            validSwitchChar = FALSE;
+        endif;
+
+        if (TRUE = validSwitchChar) then
+            StrToLower(svLowerString,svString);
+            switch (svLowerString[1])
+                case  "w":              // input configuration filename
+                    if (MODE = SILENTMODE) then
+                        nStrLen = StrLength(svString);
+                        StrSub(g_szInputConfigFilename, svString, 2, nStrLen - 2);
+                    endif;
+
+                default:
+                    validSwitchChar = FALSE;
+
+            endswitch;
+        endif;
+
+        // fetch the next string
+        nResult = ListGetNextString(cmdLineListID, svString);
+    endwhile;
+
+    // destroy the list
+    ListDestroy(cmdLineListID);
+
+
+ExitFunction:
+
+    return (bRetValue);
+
+end;    // ProcessCommandLine
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: ReadConfigInfo
+//
+//  Purpose: This function reads the input configuration file and uses it to
+//           initialize some variables specific to this module.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    ReadConfigInfo(szConfigFile)
+    BOOL    bResult;
+    BOOL    bRetValue;
+    STRING  svResult;
+    STRING  szTempFilename;
+begin
+
+    // bail if the input filename is bogus
+    if (szConfigFile = "") then
+        bResult = -1;
+        goto  CleanupAndExit;
+    else
+        // Config.inf is now assumed to be only a filename.
+        szTempFilename = SRCDIR ^ szConfigFile;
+    endif;
+
+    // Set up a temporary copy of config.inf
+    VarSave(SRCTARGETDIR);
+    TARGETDIR     = SUPPORTDIR;
+    g_nTempResult = XCopyFile(szConfigFile, "", COMP_NORMAL | LOCKEDFILE);
+    VarRestore(SRCTARGETDIR);
+
+    // set the filename to point to the one in the supportdir.
+    szTempFilename = SUPPORTDIR ^ szConfigFile;
+    // now set the variables...
+
+    // target directory
+    // install LiveUpdate
+
+    bResult = GetProfString(szTempFilename, CONFIG_SECTION_NAME_NAV
+                                        , @INF_INSTALL_LU, svResult);
+    if (@INF_TRUE = svResult) then
+        g_bInstallLiveUpdate = TRUE;
+    else
+        g_bInstallLiveUpdate = FALSE;
+    endif;
+
+    bResult = GetProfString(szTempFilename, CONFIG_SECTION_NAME_NAV
+                                        , @INF_SCANMEM_DURING_INSTALL, svResult);
+    if (@INF_TRUE = svResult) then
+        g_bScanMemoryDuringInstall = TRUE;
+    else
+        g_bScanMemoryDuringInstall = FALSE;
+    endif;
+
+    // create program manager icons / startup menu items
+    bResult = GetProfString(szTempFilename, CONFIG_SECTION_NAME_NAV
+                                        , @INF_CREATEICONS, svResult);
+    if (@INF_TRUE = svResult) then
+        g_bCreateIconsAndMenuItems = TRUE;
+    else
+        g_bCreateIconsAndMenuItems = FALSE;
+    endif;
+
+    // Bailout if installing over a newer version of NAV?
+    bResult = GetProfString ( szTempFilename, CONFIG_SECTION_NAME_NAV,
+                              @INF_QUIT_IF_NEWER_NAV_INSTALLED, svResult );
+
+    if ( @INF_TRUE = svResult )
+    then
+        g_bQuitIfNewerNavInstalled = TRUE;
+    else
+        g_bQuitIfNewerNavInstalled = FALSE;
+    endif;
+
+
+CleanupAndExit:
+    if (bResult < 0) then
+        bRetValue = FALSE;  // error
+    else
+        bRetValue = TRUE;   // success
+    endif;
+
+    return bRetValue;
+
+end;   // ReadConfigInfo
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: RemovePreviousVersion
+//
+//  Purpose: This function creates all the folders and shortcuts for the
+//           setup.  This includes program groups and items for Windows 3.1.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    RemovePreviousVersion()
+
+begin
+
+    // decrement shared usage counts (seeDecrementUsageCounts() in siwnav16.cpp)
+    DecrementPrevVerSharedUsageCounts();
+
+    // remove previous version registry entries
+    RemovePrevVerRegEntries();
+
+    // remove previous version files
+    RemovePrevVerFiles();
+
+end;    // RemovePreviousVersion
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetInstalledRegEntry
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    SetInstalledRegEntry()
+    BOOL    bInstalled;
+    BOOL    bResult;
+    NUMBER  nSize;
+    STRING  szKey;
+    STRING  szValue;
+    STRING  szValueName;
+begin
+
+    // see if the "installed" key exists
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    if (RegDBGetKeyValueEx(NAV_INSTALL_KEY, "Installed", g_nvRegType
+                                    , g_szTempStr, g_nvRegSize) = 0) then
+        bInstalled = TRUE;
+    else
+        bInstalled = FALSE;
+    endif;
+
+    if (TRUE != bInstalled) then
+        // [HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus\Install\4.0]
+        // "Installed"="1"
+        // "LiveUpdate1"="1"
+        szKey = NAV_INSTALL_KEY;
+        RegDBCreateKeyEx(szKey, "");
+        szValueName = "Installed";
+        szValue = "1";
+        RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+        szValueName = "LiveUpdate1";
+        szValue = "1";
+        RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    endif;
+
+end;    // SetInstalledRegEntry
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: SetupInstall
+//
+//  Purpose: This will setup the installation.  Any general initialization
+//           needed for the installation should be performed here.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    SetupInstall()
+    BOOL    bResult;
+    NUMBER  nResult;
+
+begin
+
+    // if we're not running in the target OS, bail!
+    if ( !CheckValidOS ( IS_WINDOWS95 ) ) then
+        MessageBox(@ERROR_INVALID_OS, SEVERE);
+        abort;
+    endif;
+
+    // initialize some global variables
+    InitGlobalVars();
+
+    // enable InstallShield to handle core component files (ie, SHARED) as
+    // defined in the "corecomp.ini" file
+    nResult = Enable(CORECOMPONENTHANDLING);
+
+    //MessageBox("About to load the .dll files, replace them now!", SEVERE );
+
+    // Load the s32navk.dll file first
+    g_szTempStr = SUPPORTDIR ^ QUAKE_DLL;
+    if(0 != UseDLL(g_szTempStr)) then
+        MessageBox(@ERROR_LOADING_S32NAVK_DLL, SEVERE);
+        abort;
+    endif;
+
+    // Load the n32call.dll file first
+    g_szTempStr = SUPPORTDIR ^ "n32call.dll";
+    if(0 != UseDLL(g_szTempStr)) then
+        MessageBox(@ERROR_LOADING_N32CALL_DLL, SEVERE);
+        abort;
+    endif;
+
+    // Load the InstScan.dll
+    g_szTempStr = SUPPORTDIR ^ "InstScan.dll";
+    if(0 != UseDLL(g_szTempStr)) then
+        MessageBox(@ERROR_LOADING_INSTSCAN_DLL, SEVERE);
+        abort;
+    endif;
+
+    // load the custom DLL
+    g_szTempStr = SUPPORTDIR ^ CUSTOM_DLLNAME;
+    if(0 != UseDLL(g_szTempStr)) then
+        MessageBox(@ERROR_LOADING_CUSTOM_DLL, SEVERE);
+        abort;
+    endif;
+
+    // Determine what hardware we're running on.
+    g_bHWIsNEC = MachineIsNEC();
+
+    // bring custom dialogs into memory
+    if (FALSE = InitCustomDialogs()) then
+        return (FALSE);
+    endif;
+
+    // process any user-defined command-line arguments
+    ProcessCommandLine();
+
+    // initialize the setup review string list
+    g_listSetupReview = ListCreate(STRINGLIST);
+    ListAddString(g_listSetupReview, @SETUP_REVIEW, AFTER);
+
+    // enable "DIALOGCACHE" so there's no screen flicker between dialogs
+    Enable(DIALOGCACHE);
+
+    // setup the target directory
+    TARGETDIR  = PROGRAMFILES ^ @NAV_DEST_FOLDER;
+    g_szAppPath = TARGETDIR;
+
+    // setup the symantec shared directory
+    g_szSymantecSharedDir = PROGRAMFILES ^ "Symantec";
+
+    // if we're running in silent mode and an input configuration file was
+    // specified on the command line, use it to set some flags
+    if (MODE = SILENTMODE)  &&  (g_szInputConfigFilename != "") then
+        bResult = ReadConfigInfo(g_szInputConfigFilename);
+        if (bResult = FALSE) then
+            HandleError(ERR_INPUT_CONFIG_FILE);
+            // SCOTT
+            // do MIF stuff here?
+        endif;
+    endif;
+
+    g_bInstallAborted = FALSE;
+
+    // setup the target directory
+    TARGETDIR  = PROGRAMFILES ^ @NAV_DEST_FOLDER;
+    g_szAppPath = TARGETDIR;
+
+    // initialize the "%P place holder" so it's available to Sd dialog boxes
+    SdProductName(@NAV_PRODUCT_NAME);
+
+    return 0;
+
+ end;   // SetupInstall
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetupRestart
+//
+//  Purpose:  This function sets things up in case it has been determined that
+//            the system should be restarted (ie, BATCH_INSTALL has a value of
+//            TRUE).
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    SetupRestart()
+
+begin
+
+    CreateRunOnceBatchFile();
+
+end;    // SetupRestart
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetupTrialVersion
+//
+//  Purpose:  This function brings up the online registration stuff.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    SetupTrialVersion()
+    BOOL        bResult;
+    NUMBER      nResult;
+    STRING      szCommandLine;
+    STRING      szDllPath;
+    STRING      szNULL;
+    STRING      szKey;
+    STRING      szValue;
+    STRING      szValueName;
+    STRING      szTrialLength;
+    NUMBER      nTrialLength;
+    NUMBER      nType;
+    NUMBER      nSize;
+
+begin
+    bResult = TRUE;
+
+#ifdef NAV_TRIAL_VERSION
+    szNULL = "";
+
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+    // This code reads a special key used by Symantec SEs.  If the key
+    // exists, we use the length specified in the key rather than the
+    // default specified in trialon.h.
+    g_nTempResult = RegDBGetKeyValueEx(TRIAL_OVERRIDE_KEY, TRIAL_OVERRIDE_VAL,
+        nType, szTrialLength, nSize);
+
+    // If the key did not exist or the value is the wrong type,
+    // read the INSTOPTS.INI file for the TrialType switch.
+
+    if ((g_nTempResult != 0) || (nType != REGDB_NUMBER)) then
+        ReadTrialLengthSwitch ( szTrialLength );
+    endif;
+
+    StrToNum ( nTrialLength, szTrialLength );
+
+    szKey = NAV_KEY + "\\5.3";
+    RegDBCreateKeyEx( szKey, "" );
+    szValueName = "TrialType";
+    szValue = "1";
+    g_nTempResult = RegDBSetKeyValueEx (szKey, szValueName, REGDB_NUMBER, szValue, -1);
+
+    // load iratrial.dll
+    szDllPath = COMMONFILES ^ "Symantec Shared" ^ "iratrial.dll";
+    nResult = UseDLL(szDllPath);
+
+    // initialize the command-line
+    szCommandLine = "Symantec,Norton AntiVirus,5,3,"
+                        + szTrialLength
+                        + ","
+                        + TRIAL_EXPIRATION_DATE;
+
+    // call the SymTrial SetupTrialWare function
+    SetupTrialWare(szNULL, szNULL, szCommandLine, 0);
+
+    // Create the NAVDX trial info file
+    SetUpNAVDXTrialInfo ( TARGETDIR, nTrialLength );
+
+    // Store the trial length in the registry for use by other components.
+    // This is used in their trial-expired messages.
+    RegDBSetKeyValueEx ( NAV_KEY, "TrialLength", REGDB_NUMBER, szTrialLength, -1 );
+
+    // release the DLL and return
+    nResult = UnUseDLL(szDllPath);
+
+#endif  // ifdef NAV_TRIAL_VERSION
+
+    return (bResult);
+
+end;    // SetupTrialVersion
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  ShowPreCopyDialogs
+//
+//  Purpose:  This function manages the display and navigation
+//            the standard dialogs that exist in a setup.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    ShowPreCopyDialogs()
+    NUMBER      nResult;
+    NUMBER      nvSize;
+    NUMBER      nvType;
+    STRING      szKey;
+    STRING      szValue;
+    STRING      szValueName;
+begin
+
+    Dlg_Start:
+        // beginning of dialogs label
+
+    Dlg_SdWelcome:
+        // welcome the user
+        SetDialogBitmap(1);
+
+        nResult = DialogShowSdWelcome();
+        if (nResult = BACK) goto Dlg_Start;
+
+    Dlg_SdLicense:
+        // display the license agreement
+        nResult = DialogShowSdLicense();
+        if (nResult = BACK) goto Dlg_SdWelcome;
+
+        if ( !g_bHWIsNEC ) then
+            // Do not perform the NU check during silent installs.
+            if ( SILENTMODE != MODE ) then
+                // Check to see if NU is installed.
+                // We also check for VIRSCAN.DAT because Asian-lang NU doesn't
+                // have scanning, and checking for VIRSCAN is a quick way to see
+                // if the NU has scanning w/o getting the language.
+
+                RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+                // Use the version information in the registry to decide what kind of an
+                // install this is.
+                szKey = SYMANTEC_INSTALLED_APPS_KEY;
+                szValueName = "NU10.0";
+                nResult = RegDBGetKeyValueEx(szKey, szValueName, nvType, szValue, nvSize);
+
+                if ( 0 = nResult  &&
+                     Is ( FILE_EXISTS, szValue ^ "virscan.dat" ) ) then
+                    // Display a MessageBox letting the user know that NU
+                    // Will barf
+                    SprintfBox( INFORMATION, @INFO_OLD_NU_DETECTED_TITLE,
+                                @INFO_OLD_NU_DETECTED1 + '\n' +
+                                @INFO_OLD_NU_DETECTED2 + '\n' +
+                                @INFO_OLD_NU_DETECTED3);
+                else
+                    szValueName = "NU3.0";
+                    nResult = RegDBGetKeyValueEx ( szKey, szValueName, nvType,
+                                                   szValue, nvSize );
+
+                    if ( 0 = nResult ) then
+                        // Borg is installed.  Check for a VIRSCAN.DAT as above,
+                        // but also check the version of Borg.  If the
+                        // DAT file exists *and* Borg is 3.0.5 or earlier,
+                        // then show the notification message.
+
+                        if ( Is ( FILE_EXISTS, szValue ^ "virscan.dat" ) &&
+                             TRUE = BorgUsingOldVirusDefs() ) then
+                            SprintfBox ( INFORMATION,
+                                         @INFO_NU3_DETECTED_TITLE,
+                                         @INFO_NU3_DETECTED1 + '\n' +
+                                           @INFO_NU3_DETECTED2 + '\n' +
+                                           @INFO_NU3_DETECTED3 );
+                        endif;
+                    endif;
+                endif;
+            endif;
+        endif;
+
+    Dlg_SdAskDestPath:
+        // get the destination path from the user
+        // NOTE: this function also sets the global boolean indicating if a
+        //       previous version of NAV is currently installed to the
+        //       target directory
+        SetDialogBitmap(2);
+
+        nResult = DialogShowSdAskDestPath();
+        if (nResult = BACK) goto Dlg_SdLicense;
+
+    Dlg_KeepSettings:
+        SetDialogBitmap(3);
+
+        if (INSTALLING_OVER_SAME_VERSION = g_nvPrevVersionExists)
+        then
+            // does the user wish to keep the current NAV settings?
+            // NOTE: this function also sets the global boolean indicating if
+            //       the user wishes to keep the current settings
+            nResult = DialogShowKeepSettings();
+            if (nResult = BACK) goto Dlg_SdAskDestPath;
+        endif;
+
+    Dlg_InitialSettings:
+        SetDialogBitmap(4);
+
+        if (FALSE = g_bKeepSettings) then
+            // selection of schedule and auto-protect
+            nResult = DialogShowInitialSettings();
+            if (BACK = nResult) then
+                if (INSTALLING_OVER_SAME_VERSION = g_nvPrevVersionExists)  then
+                    goto Dlg_KeepSettings;
+                else
+                    goto Dlg_SdAskDestPath;
+                endif;
+            endif;
+        endif;
+
+    Dlg_SdStartCopy:
+        // setup review
+        SetDialogBitmap(5);
+
+        nResult = DialogShowSdStartCopy();
+        if (nResult = BACK) then
+            if (FALSE = g_bKeepSettings) then
+                goto  Dlg_InitialSettings;
+            else
+                if (INSTALLING_OVER_SAME_VERSION = g_nvPrevVersionExists) then
+                    goto  Dlg_KeepSettings;
+                else
+                    goto  Dlg_SdAskDestPath;
+                endif;
+            endif;
+        endif;
+
+    return 0;
+
+end;    // ShowPreCopyDialogs
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateSetupReviewList
+//
+//  Purpose:  This function updates the contents of the setup review list so
+//            it is ready to be displayed to the user.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    UpdateSetupReviewList()
+    NUMBER  nRetVal;
+    NUMBER  nTempNum;
+    STRING  szTempStr;
+begin
+
+    // if the list currently has any items in it, destroy and start over
+    nRetVal = 0;
+    nTempNum = ListCount(g_listSetupReview);
+    if (nTempNum > 0) then
+        ListDestroy(g_listSetupReview);
+        g_listSetupReview = ListCreate(STRINGLIST);
+        if (LIST_NULL = g_listSetupReview) then
+            nRetVal = -1;   // error condition
+            goto ExitFunction;
+        endif;
+    elseif (nTempNum < 0) then
+        nRetVal = -1;   // error condition
+        goto ExitFunction;
+    endif;
+
+    // insert some header info
+    ListAddString(g_listSetupReview, @SETUP_REVIEW, AFTER);
+
+    // TODO: add additional strings to the setup review list
+
+    //OLD!
+    //szTempStr = SETUP_REVIEW_TAB + @NAV_PRODUCT_NAME + " " + @REVIEW_INSTALLED_TO + " " + TARGETDIR;
+    //ListAddString(g_listSetupReview, szTempStr, AFTER);
+    //szTempStr = SETUP_REVIEW_TAB + @REVIEW_SYMSHARED + " " + PROGRAMFILES ^ "Symantec";
+    //ListAddString(g_listSetupReview, szTempStr, AFTER);
+
+    // main program directory
+    szTempStr = SETUP_REVIEW_TAB + @NAV_PRODUCT_NAME + @REVIEW_INSTALLED_TO;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = SETUP_REVIEW_TAB + SETUP_REVIEW_TAB + TARGETDIR;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = "";
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+
+    // shared symantec directory
+    szTempStr = SETUP_REVIEW_TAB + @REVIEW_SYMSHARED;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = SETUP_REVIEW_TAB + SETUP_REVIEW_TAB + g_szSymantecSharedDir;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = SETUP_REVIEW_TAB + SETUP_REVIEW_TAB + COMMONFILES ^ "Symantec Shared";
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = "";
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+
+    // additional info
+    szTempStr = SETUP_REVIEW_TAB + @REVIEW_STR_NAV_TASKS;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = SETUP_REVIEW_TAB + SETUP_REVIEW_TAB + @REVIEW_STR_NAV_TASK1;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+    szTempStr = SETUP_REVIEW_TAB + SETUP_REVIEW_TAB + @REVIEW_STR_NAV_TASK2;
+    ListAddString(g_listSetupReview, szTempStr, AFTER);
+
+ExitFunction:
+    return (nRetVal);
+
+end;    // UpdateSetupReviewList
+
+
+// -=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-                            =*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=- PRODUCT SPECIFIC FUNCTIONS =*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-                            =*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-
+// -=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-=*=-
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  AddVirusDefsLocationKey
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    AddVirusDefsLocationKey()
+    BOOL    bResult;
+    NUMBER  nSize;
+    STRING  szKey;
+    STRING  szValue;
+    STRING  szValueName;
+begin
+
+    // set registry root to HKEY_LOCAL_MACHINE
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+    // let InstallShield set data sizes for us
+    nSize = -1;
+
+    // first remove old virus defs key values
+    RegDBDeleteValue(SYMANTEC_INSTALLED_APPS_KEY, "NAVDEFS");
+
+    return TRUE;
+
+end;    // AddVirusDefsLocationKey
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  BackupSystemFiles
+//
+//  Purpose:  This function is used to store a copy of all the system files
+//            that we may modify during install.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    BackupSystemFiles()
+    STRING      szResult;
+    STRING      szRootDir;
+    STRING      szSourceFile;
+    STRING      szSourceFileName;
+    NUMBER      nvSytemAttr;
+    NUMBER      nvUserAttr;
+    NUMBER      nType;
+begin
+
+    GetBootDir(szRootDir, 6);
+    szRootDir = szRootDir ^ "\\";
+
+    // Store the current SOURCEDIR and TARGETDIR
+    VarSave (SRCTARGETDIR);
+
+    // Set the SOURCEDIR and TARGETDIR
+    SRCDIR = szRootDir;
+    TARGETDIR = SRCDIR;
+
+    // Copy the autoexec.bat file to the backup directory.
+    CopyFile( "autoexec.bat", "autoexec.nav");
+
+    // restore the SOURCEDIR and TARGETDIR
+    VarRestore (SRCTARGETDIR);
+
+    // Backup the registry
+    g_bTempResult = BackupRegistry();
+
+end;    // BackupSystemFiles
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    BorgUsingOldVirusDefs
+//
+// Description:
+//  Checks the version of Borg on the system, and determines if it is
+//  using the old format of defs.
+//
+// Input:
+//  Nothing.
+//
+// Returns:
+//  TRUE if the version of Borg installed is using the old format, or
+//  FALSE if it uses Avenge, or -1 if an error occurs during the
+//  process.
+//
+// Notes:
+//  Borg is NU 95 3.0.  Versions 3.0 thru 3.0.5 use the old format, so
+//  this function just checks the version number.  This fn assumes that
+//  the caller has already verified that Borg is actually installed.
+//
+//////////////////////////////////////////////////////////////////////////
+// 5/29/98  Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function BorgUsingOldVirusDefs()
+    STRING svValue;
+    NUMBER nvType;
+    NUMBER nvSize;
+    STRING szInline;
+    NUMBER nInline;
+begin
+
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+
+    if ( 0 > RegDBGetKeyValueEx ( BORG_VERSION_KEY, BORG_VERSION_VALUE,
+                                  nvType, svValue, nvSize ) ) then
+        return -1;
+    endif;
+
+    if ( nvSize < 5 ) then
+        return TRUE;                    // The version was "3.0"
+    endif;
+
+                                        // Determine the inline number by
+                                        // grabbing everything after the
+                                        // decimal point.  Inlines are
+                                        // stored in the reg entry as
+                                        // "3.xy"
+    CopyBytes ( szInline, 0, svValue, 2, nvSize - 2 );
+
+    if ( 0 > StrToNum ( nInline, szInline ) ) then
+        return -1;
+    endif;
+
+                                        // Now nInline holds the inline
+                                        // number, e.g. 5 for "3.05"
+    if ( nInline <= 5 ) then
+        return TRUE;                    // 3.05 or earlier.
+    else
+        return FALSE;                   // 3.06 or later, using Avenge.
+    endif;
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: CheckDiskSpace
+//
+//  Purpose: This function checks to see if there is enough free disk space on
+//           the target system.  It takes into account the fact that several
+//           components are first copied to the system and later moved manually
+//           (ie, in this script), and that the target disk and windows drive
+//           are not necessarily the same physical drive.  If there is enough
+//           free space to accomodate NAV, a value of TRUE is returned; else, a
+//           value of FALSE is returned.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    CheckDiskSpace(szTestTargetdir)
+    BOOL    bRetVal;
+    NUMBER  nFreeTargetSpace;
+    NUMBER  nFreeWinSpace;
+    NUMBER  nResult;
+    NUMBER  nSizeLiveUpdateNs;
+    NUMBER  nSizeNavWinsysNs;
+    NUMBER  nSizeVirusDefs;
+    NUMBER  nComponentSpace;
+    NUMBER  nTotalTargetdriveSpaceNeeded;
+    NUMBER  nTotalNavSpace;
+    NUMBER  nTotalWindriveSpaceNeededNeededNeeded;
+    STRING  szComponentName;
+    STRING  szTargetDisk;
+
+begin
+
+    VarSave(SRCTARGETDIR);
+    TARGETDIR = szTestTargetdir;
+
+    // initialize some variables
+    bRetVal = TRUE;
+    nTotalTargetdriveSpaceNeeded = 0;
+    nTotalWindriveSpaceNeededNeededNeeded = 0;
+    szTargetDisk[0] = TARGETDIR[0];
+    szTargetDisk[1] = TARGETDIR[1];
+
+    szComponentName = ROOT_COMPONENT + "\\" +  NAV_WINSYS_NS_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nSizeNavWinsysNs);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalWindriveSpaceNeededNeededNeeded = nTotalWindriveSpaceNeededNeededNeeded + (nSizeNavWinsysNs * 2);
+    endif;
+
+    szComponentName = ROOT_COMPONENT + "\\" +  VIRUS_DEFS_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nSizeVirusDefs);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalWindriveSpaceNeededNeededNeeded = nTotalWindriveSpaceNeededNeededNeeded + (nSizeVirusDefs * 2);
+    endif;
+
+
+    // derive the total amount of additional space needed on the windows drive
+    szComponentName = ROOT_COMPONENT + "\\" +  WINDOWS_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalWindriveSpaceNeededNeededNeeded = nTotalWindriveSpaceNeededNeededNeeded + nComponentSpace;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        szComponentName = ROOT_COMPONENT + "\\" +  WINDOWS_COMPONENT_NEC;
+    else
+        szComponentName = ROOT_COMPONENT + "\\" +  WINDOWS_COMPONENT_AT;
+    endif;
+
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalWindriveSpaceNeededNeededNeeded = nTotalWindriveSpaceNeededNeededNeeded + nComponentSpace;
+    endif;
+
+    szComponentName = ROOT_COMPONENT + "\\" +  SYMREG_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalWindriveSpaceNeededNeededNeeded = nTotalWindriveSpaceNeededNeededNeeded + nComponentSpace;
+    endif;
+
+    // derive the total amount of additional space needed on the target drive
+    szComponentName = ROOT_COMPONENT + "\\" +  PROGRAM_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + nComponentSpace;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        szComponentName = ROOT_COMPONENT + "\\" +  PROGRAM_COMPONENT_NEC;
+    else
+        szComponentName = ROOT_COMPONENT + "\\" +  PROGRAM_COMPONENT_AT;
+    endif;
+
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + nComponentSpace;
+    endif;
+
+    szComponentName = ROOT_COMPONENT + "\\" +  NEW_SETTINGS_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + nComponentSpace;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        szComponentName = ROOT_COMPONENT + "\\" +  NEW_SETTINGS_COMPONENT_NEC;
+    else
+        szComponentName = ROOT_COMPONENT + "\\" +  NEW_SETTINGS_COMPONENT_AT;
+    endif;
+
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + nComponentSpace;
+    endif;
+
+    szComponentName = ROOT_COMPONENT + "\\" +  SCHEDULED_SCAN_COMPONENT;
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + nComponentSpace;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        szComponentName = ROOT_COMPONENT + "\\" +  SCHEDULED_SCAN_COMPONENT_NEC;
+    else
+        szComponentName = ROOT_COMPONENT + "\\" +  SCHEDULED_SCAN_COMPONENT_AT;
+    endif;
+
+    nResult = ComponentGetItemSize(MEDIA, szComponentName, nComponentSpace);
+    if (0 != nResult) then
+        bRetVal = FALSE;
+    else
+        nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + nComponentSpace;
+    endif;
+
+
+    // add extra megs just to be safe...
+    nTotalWindriveSpaceNeededNeededNeeded = nTotalWindriveSpaceNeededNeededNeeded + EXTRA_WINDISK_MEGS * 1024 * 1024;
+    nTotalTargetdriveSpaceNeeded = nTotalTargetdriveSpaceNeeded + EXTRA_TARGETDISK_MEGS * 1024 * 1024;
+
+    // fetch the amount of free space on the target and windows drives
+    nFreeWinSpace = GetDiskSpace(WINDISK);
+    nFreeTargetSpace = GetDiskSpace(szTargetDisk);
+
+    // calculate the total amount of space needed for NAV
+    nTotalNavSpace = nTotalWindriveSpaceNeededNeededNeeded + nTotalTargetdriveSpaceNeeded;
+
+
+    // if the windows disk and target disk are the same disk, calculate the ranges
+    // accordingly; else, inspect each disk individually
+    if (WINDISK = szTargetDisk) then
+        if (nFreeWinSpace <= nTotalNavSpace) then
+            bRetVal = FALSE;
+        else
+            bRetVal = TRUE;
+        endif;
+    else
+        if  ((nFreeTargetSpace <= nTotalTargetdriveSpaceNeeded)
+        ||  (nFreeWinSpace <= nTotalWindriveSpaceNeededNeededNeeded)) then
+            bRetVal = FALSE;
+        else
+            bRetVal = TRUE;
+        endif;
+    endif;
+
+    VarRestore(SRCTARGETDIR);
+    return (bRetVal);
+
+end;    // CheckDiskSpace
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckPreviousVersion
+//
+//  Purpose:  This function attempts to determine if a previous version of
+//            NAV is currently installed to the target directory.  This
+//            determination is used in turn to ask the user whether or not
+//            to keep the current settings.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    CheckPreviousVersion(szPrevVerPathPtr)
+    BOOL        bRetVal;
+    BOOL        bCheckForOEM;
+    NUMBER      nResult;
+    NUMBER      nvSize;
+    NUMBER      nvType;
+    STRING      svValue;
+    STRING      szKey;
+    STRING      szValue;
+    STRING      szValueName;
+    STRING      szInstallingVersion;
+
+begin
+
+    // assume a fresh install
+    bRetVal = CLEAN_INSTALL;
+    g_szPrevVerVersionNumber = "";
+
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+    // Use the version information in the registry to decide what kind of an
+    // install this is.
+    szKey = NAV_KEY;
+    szValueName = "CurrentVersion";
+    nResult = RegDBGetKeyValueEx(szKey, szValueName, nvType, szValue, nvSize);
+
+    // Check to make sure that there was a previous version istalled.
+    if( nResult = 0 ) then
+        // Store the version number for later use
+        BuildVersionString ( g_szPrevVerVersionNumber,
+                             szValue[0], szValue[1], szValue[2] );
+
+        // Now compare this value vs the currently installing software.
+        BuildVersionString ( szInstallingVersion,
+                             THIS_PRODUCT_MAJOR,
+                             THIS_PRODUCT_MINOR1,
+                             THIS_PRODUCT_MINOR2 );
+
+        // Number compare here
+        bRetVal = CompareVersionNumbers( szValue, szInstallingVersion, 1 );
+
+    else
+        bRetVal = CLEAN_INSTALL;
+    endif;
+
+    // get the data from the NAV_INSTALLDIR_VALUENAME value under HKLM\NAV_INSTALLKEY
+    nResult = RegDBGetKeyValueEx(SYMANTEC_INSTALLED_APPS_KEY, "NAV95"
+                                                    , nvType, szValue, nvSize);
+
+    // if NAV is not on the system, set the function argument to NULL; otherwise,
+    // initialize it with the location of the current installation
+    if (CLEAN_INSTALL = bRetVal) || (nResult != 0) then
+        szPrevVerPathPtr = "";
+    else
+        szPrevVerPathPtr = szValue;
+    endif;
+
+    return (bRetVal);
+
+end;    // CheckPreviousVersion
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CreateNortonRescueKeys
+//
+//  Purpose: This function creates the registry keys for Norton Rescue
+//
+///////////////////////////////////////////////////////////////////////////////
+function    CreateNortonRescueKeys()
+    NUMBER  nSize;
+    STRING  szKey[255];
+    STRING  szValue;
+    STRING  szValueName;
+
+begin
+
+    // rsqshare.reg
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton Rescue\1.0\Files\Norton AntiVirus Definitions Disk]
+    szKey = SYMANTEC_KEY ^ "Norton Rescue\\1.0\\Files\\Norton AntiVirus Definitions Disk";
+    RegDBDeleteKey(szKey);
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton Rescue\1.0\Files\Norton AntiVirus Program Disk]
+    szKey = SYMANTEC_KEY ^ "Norton Rescue\\1.0\\Files\\Norton AntiVirus Program Disk";
+    RegDBDeleteKey(szKey);
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton Rescue\1.0\Files\Rescue\autoexec\Norton AntiVirus]
+    szKey = SYMANTEC_KEY ^ "Norton Rescue\\1.0\\Files\\Rescue\\autoexec\\Norton AntiVirus";
+    RegDBDeleteKey(szKey);
+
+end;  // CreateNortonRescueKeys
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: CreateRegDBEntries
+//
+//  Purpose: This function creates most of the product-specific registry keys
+//           for setup.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    CreateRegDBEntries()
+    NUMBER  nvReturn;
+    NUMBER  nSize;
+    STRING  szKey;
+    STRING  szProgram;
+    STRING  szPath;
+    STRING  szValue;
+    STRING  szValueName;
+    STRING  szBinString[255];
+    BOOL    bKeyExists;
+    NUMBER      nCount;
+    NUMBER      nType;
+    STRING      szUsage;
+
+begin
+
+    Enable(LOGGING);
+
+#ifndef NAV_TRIAL_VERSION
+                                        // This key is created automagically
+                                        // by IS but we don't want it in the
+                                        // non-trial versions.  This key
+                                        // also holds the trial info, so
+                                        // deleting this key will wipe out
+                                        // traces of the trial version when
+                                        // the retail is installed over the
+                                        // trial.
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+    RegDBDeleteKey ( NAV_KEY ^ "5.3" );
+#endif
+
+    CreateRegistrySet ( "Common" );
+
+    CreateRegistrySet ( "Common2" );
+
+    if ( !g_bHWIsNEC ) then
+        CreateRegistrySet ( "Non-OEM AT only" );
+    endif;
+
+    // 5.30.01 inline change!
+    // Create the reg entry that disables the AP's message box when doing the
+    // shutdown floppy scan.
+
+    RegDBSetKeyValueEx ( NAV_KEY ^ "Auto-Protect\\InternalSettings",
+                         "ShowUIWhileScanningBoot", REGDB_NUMBER, "0", -1 );
+
+
+                                        // If we're on 98, remove the NPS
+                                        // AppPath and help reg keys.
+    if ( g_bIsWin98  &&  !g_bUseNPSOn98 ) then
+        RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+        RegDBDeleteKey ( "Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\nsched32.exe" );
+        RegDBDeleteValue ( "software\\Microsoft\\Windows\\Help",
+                           "nsched32.hlp" );
+    endif;
+
+
+                                        // And now do some stuff that can't be
+                                        // done with the IS 5.1 method.  Most of
+                                        // these are values created under keys
+                                        // which mustn't be uninstalled.
+
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+
+    // Make sure that the run registry key exists
+    Disable(LOGGING);
+    szKey = MS_WINDOWS_CURRENT_VERSION_KEY ^ "Run";
+    RegDBCreateKeyEx(szKey, "");
+    Enable(LOGGING);
+
+    szKey = SYMANTEC_INSTALLED_APPS_KEY;
+    Disable(LOGGING);
+    RegDBCreateKeyEx(szKey, "");
+    Enable(LOGGING);
+    szValueName = "NAV95";
+    szValue = TARGETDIR;
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+    // New for something LiveUpdate-related (ask Tim & Tigran).  We now have
+    // a "NAV" value that holds the same string as "NAV95".
+    szValueName = "NAV";
+    RegDBSetKeyValueEx(szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+
+    // [HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage]
+    // "Location1"="%s" ~SIWSUBST, TARGET3             *** TARGET = <PROGRAMFILES>\Symantec
+    Disable(LOGGING);
+    szKey = SYMANTEC_SHAREDUSAGE_KEY;
+    szValueName = "Location1";
+    szValue = PROGRAMFILES ^ "Symantec";
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    Enable(LOGGING);
+
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symevnt.386]
+    //"NAV95"="%s" ~SIWSUBST, TARGET
+    //@="%s" ~SIWSUBST, TARGET3
+    szKey = SYMANTEC_SHAREDUSAGE_KEY ^ "symevnt.386";
+    szValueName = "NAV95";
+    szValue = TARGETDIR;
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    szValueName = "";
+    szValue = PROGRAMFILES ^ "Symantec";
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symevnt1.dll]
+    //"NAV95"="%s" ~SIWSUBST, TARGET
+    //@="%s" ~SIWSUBST, TARGET3
+    szKey = SYMANTEC_SHAREDUSAGE_KEY ^ "symevnt1.dll";
+    szValueName = "NAV95";
+    szValue = TARGETDIR;
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    szValueName = "";
+    szValue = PROGRAMFILES ^ "Symantec";
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\s32evnt1.dll]
+    //"NAV95"="%s" ~SIWSUBST, TARGET
+    //@="%s" ~SIWSUBST, TARGET3
+    szKey = SYMANTEC_SHAREDUSAGE_KEY ^ "s32evnt1.dll";
+    szValueName = "NAV95";
+    szValue = TARGETDIR;
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    szValueName = "";
+    szValue = PROGRAMFILES ^ "Symantec";
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\s32stat.dll]
+    //"NAV95"="%s" ~SIWSUBST, TARGET
+    //@="%s" ~SIWSUBST, TARGET3
+    szKey = SYMANTEC_SHAREDUSAGE_KEY ^ "s32stat.dll";
+    szValueName = "NAV95";
+    szValue = TARGETDIR;
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    szValueName = "";
+    szValue = PROGRAMFILES ^ "Symantec";
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+    // Add symevent.386 and make sure it is not automatically removed.
+    Disable(LOGGING);
+    //[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VxD\SYMEVNT]
+    //"StaticVxD"="%s\symevnt.386" ~SIWSUBST, TARGET5
+    szKey = SYSTEM_SERVICES_KEY ^ "SYMEVNT";
+    RegDBCreateKeyEx(szKey, "");
+    szValueName = "StaticVxD";
+    szValue = PROGRAMFILES ^ "Symantec\\symevnt.386";
+    LongPathToShortPath( szValue );
+    MyCharToOem( szValue, g_szTempStr );
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, g_szTempStr, nSize);
+
+    Enable(LOGGING);
+
+    // If autoprotect is enabled than create the reg key.  If it is not, remove
+    // the old reg key if it exists.
+    if ( TRUE = g_bAutoProtectAtStartup ) then
+        //[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VxD\NAVAP]
+        //"StaticVxD"="%s\navap.vxd" ~SIWSUBST, TARGET5
+        szKey = SYSTEM_SERVICES_KEY ^ "NAVAP";
+        RegDBCreateKeyEx(szKey, "");
+        szValueName = "StaticVxD";
+        szValue = TARGETDIR ^ "navap.vxd";
+        LongPathToShortPath( szValue );
+        MyCharToOem( szValue, g_szTempStr );
+        RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, g_szTempStr, nSize);
+
+        //[HKEY_LOCAL_MACHINE\Software\microsoft\currentversion\run]
+        //"Norton Auto-Protect"= TARGETDIR\navapw32.exe /LOADQUIET
+        szKey = MS_WINDOWS_CURRENT_VERSION_KEY ^ "Run";
+        szValueName = "Norton Auto-Protect";
+        szValue = TARGETDIR ^ "navapw32.exe";
+        LongPathToShortPath( szValue );
+        szValue = szValue + " /LOADQUIET";
+        MyCharToOem( szValue, g_szTempStr );
+        RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, g_szTempStr, nSize);
+
+    else
+        //[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\VxD\NAVAP]
+        //"StaticVxD"="%s\navap.vxd" ~SIWSUBST, TARGET5
+        szKey = SYSTEM_SERVICES_KEY ^ "NAVAP";
+        RegDBDeleteKey(szKey);
+
+        //[HKEY_LOCAL_MACHINE\Software\microsoft\currentversion\run]
+        //"Norton Auto-Protect"= TARGETDIR\navapw32.exe /LOADQUIET
+        szKey = MS_WINDOWS_CURRENT_VERSION_KEY ^ "Run";
+        szValueName = "Norton Auto-Protect";
+        RegDBDeleteValue (szKey, szValueName);
+    endif;
+
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Help]
+    //"Navw32.hlp"="%s" ~SIWSUBST, TARGET2
+    szKey = WINDOWS_HELP_KEY;
+//    RegDBCreateKeyEx(szKey, "");
+    szValueName = "Navw32.hlp";
+    szValue = TARGETDIR;
+    RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+
+    //[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\Help]
+    //"Nsched32.hlp"="%s" ~SIWSUBST, TARGET2
+    if ( !( g_bIsWin98 && !g_bUseNPSOn98 )) then
+        szKey = WINDOWS_HELP_KEY;
+        //RegDBCreateKeyEx(szKey, "");
+        szValueName = "Nsched32.hlp";
+        szValue = TARGETDIR;
+        RegDBSetKeyValueEx (szKey, szValueName, REGDB_STRING, szValue, nSize);
+    endif;
+
+
+    // Insert the NortonRescue keys
+    if ( !g_bHWIsNEC ) then
+        CreateNortonRescueKeys();
+    endif;
+
+    // insert the LiveUpdate keys
+    if ( g_bInstallLiveUpdate ) then
+        CreateLiveUpdateKeys();
+    endif;
+
+    // finally, make sure the virus definitions location is up to date
+    AddVirusDefsLocationKey();
+
+end;  // CreateRegDBEntries
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DecrementPrevVerSharedUsageCounts
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    DecrementPrevVerSharedUsageCounts()
+    LIST        listShared;
+    LIST        listResults;
+    NUMBER      nCount;
+    NUMBER      nNumValues;
+    NUMBER      nResult;
+    NUMBER      nSize;
+    NUMBER      nType;
+    STRING      szKey;
+    STRING      szSymantecShared;
+    STRING      szTempStr;
+    STRING      szUsage;
+    STRING      szValueName;
+
+begin
+    // set the default root
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+    // get the symantec shared directory
+    szSymantecShared = PROGRAMFILES ^ "Symantec";
+
+    // We need to compose the file list for decrementing based apon the type
+    // of install we are doing.
+
+    // Installing over a newer version
+    // Do not assume anything
+    if( INSTALLING_OVER_NEWER_VERSION = g_nvPrevVersionExists ) then
+        return;
+    endif;
+
+    // initialize a list with the target filenames
+    // add the shared components IDs under our shared usage key
+    listShared = ListCreate(STRINGLIST);
+
+    // Same version or older files
+    ListAddString(listShared, "S32STAT.DLL", AFTER);
+
+    // Same version only files
+    if( INSTALLING_OVER_SAME_VERSION = g_nvPrevVersionExists ) then
+
+    endif;
+
+    // Installing over a Previous version only files
+    if( INSTALLING_OVER_OLDER_VERSION = g_nvPrevVersionExists ) then
+        ListAddString(listShared, "INFODESK.DLL", AFTER);
+        ListAddString(listShared, "INFODESK.CNT", AFTER);
+        ListAddString(listShared, "INFODESK.HLP", AFTER);
+        ListAddString(listShared, "SYMGLOSS.HLP", AFTER);
+        ListAddString(listShared, "SYMANTEC.CNT", AFTER);
+    endif;
+
+    // loop through the list and process entries
+    nResult = ListGetFirstString(listShared, g_szTempStr);
+    while(nResult = 0)
+        szValueName = szSymantecShared ^ g_szTempStr;
+
+        // get the shared file's usage count
+        if (RegDBGetKeyValueEx(MSSHARED_DLL_KEY, szValueName, nType, szUsage
+                                                            , nSize) = 0) then
+            StrToNum(nCount, szUsage);
+            if (nCount > 1) then
+                nCount = nCount - 1;
+                NumToStr(szUsage, nCount);
+                RegDBSetKeyValueEx(MSSHARED_DLL_KEY, szValueName, REGDB_STRING
+                                                                , szUsage, -1);
+            else
+                // remove the registry key
+                RegDBDeleteValue(MSSHARED_DLL_KEY, szValueName);
+
+                // remove the corresponding file
+                VarSave(SRCTARGETDIR);
+                TARGETDIR = szSymantecShared;
+                g_nTempResult = DeleteFile(g_szTempStr);
+                VarRestore(SRCTARGETDIR);
+            endif;
+        endif;
+
+        // remove this file's entry under the symantec shared usage key
+        szTempStr = SYMANTEC_SHAREDUSAGE_KEY + "\\" + g_szTempStr;
+        if (0 = RegDBGetKeyValueEx(szTempStr, SYMANTEC_SHARED_NAV_VALUENAME
+                                                , nType, g_szTempStr, nSize))  then
+            RegDBDeleteValue(szTempStr, SYMANTEC_SHARED_NAV_VALUENAME);
+
+            listResults = ListCreate(STRINGLIST);
+
+            // if the key has no more values under it, remove the key
+            if (0 = RegDBQueryKey(szTempStr, REGDB_NAMES, listResults)) then
+                nNumValues = ListCount(listResults);
+                if (1 = nNumValues) then
+                    // if only the default value is left, remove the registry key
+                    RegDBDeleteKey(szTempStr);
+                endif;
+            endif;
+
+            ListDestroy(listResults);
+
+        endif;
+
+        nResult = ListGetNextString(listShared, g_szTempStr);
+
+    endwhile;
+
+    ListDestroy(listShared);
+
+end;    // DecrementPrevVerSharedUsageCounts
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  HandleMSSelfExtractors
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    HandleMSSelfExtractors()
+    NUMBER nExists;
+begin
+
+    VarSave ( SRCTARGETDIR );
+    TARGETDIR = WINDIR;
+
+    // Get the dlls out of the self-extracting archive.
+
+    // Before installing the WinInet DLLs, we need to check for IE 3+
+    // on the system.  Running this installer has caused problems on
+    // some systems.  See MB KB article Q185375 for more info.
+    // The file SHDOCVW.DLL (which implements the browser) will exist
+    // only if IE 3+ is on the system, so we check for that file and
+    // act accordingly.
+
+    nExists = Is ( FILE_EXISTS, WINSYSDIR ^ "shdocvw.dll" );
+
+    if ( nExists != TRUE ) then         // FALSE or error
+        if ( g_bHWIsNEC ) then
+            LaunchAppAndWait(WINDIR ^ "jawint.exe", "/q", WAIT );
+        else
+            LaunchAppAndWait(WINDIR ^ "wintdist.exe", "/q", WAIT );
+        endif;
+    endif;
+
+    if ( g_bHWIsNEC ) then
+        DeleteFile("jawint.exe");
+    else
+        DeleteFile("wintdist.exe");
+    endif;
+
+    // Launch the COMCTL32.DLL updater.  Note that we delete COMCTL32.BAK first,
+    // since the updater backs up the current COMCTL32 to *.bak, and if that
+    // .BAK file exists, the updater will throw up a message box even though
+    // we're running it with the silent mode switch /q (nice silent mode
+    // there, MS!).
+    TARGETDIR = WINSYSDIR;
+    DeleteFile ( "comctl32.bak" );
+
+    LaunchAppAndWait ( WINDIR ^ COMCTL32_UPDATER, "/r:n /q:a", WAIT );
+
+    TARGETDIR = WINDIR;
+    DeleteFile ( COMCTL32_UPDATER );
+
+
+    VarRestore ( SRCTARGETDIR );
+
+end;    // HandleMSSelfExtractors
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  IncrementSymantecSharedKey
+//
+//  Purpose:  This function will handle the symantec shared usage key and
+//            it's components.
+//
+//    Input:  none
+//  Returns:  0 always
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    IncrementSymantecSharedKey()
+    LIST        listShared;
+    NUMBER      nCount;
+    NUMBER      nvFileHandle;
+    NUMBER      nvReturn;
+    NUMBER      nvSize;
+    NUMBER      nvType;
+    STRING      szKey;
+    STRING      szTempStr;
+    STRING      szUsage;
+    STRING      szValue;
+begin
+
+    // set registry root to HKEY_LOCAL_MACHINE
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    Disable(LOGGING);
+
+    // open/create the symantec shared usage key and
+    szKey = SYMANTEC_SHAREDUSAGE_KEY;
+    RegDBCreateKeyEx(szKey, "");
+    RegDBSetKeyValueEx(szKey, "", REGDB_STRING
+                                            , g_szSymantecSharedDir, -1);
+    if ( g_bInstallLiveUpdate ) then
+        RegDBSetKeyValueEx(szKey, "LiveUpdate1", REGDB_STRING,
+                           g_szSymantecSharedDir ^ "LiveUpdate", -1);
+    endif;
+    RegDBSetKeyValueEx(szKey, "Location1", REGDB_STRING
+                                            , g_szSymantecSharedDir, -1);
+
+    // delete the uninstall log file if it exists
+    DeleteFile(ULOGFILE_NAME);
+    OpenFileMode(FILE_MODE_APPEND);
+    if (CreateFile(nvFileHandle, TARGETDIR, ULOGFILE_NAME) = 0) then
+        WriteLine(nvFileHandle, "[SymShared]");
+        CloseFile(nvFileHandle);
+    endif;
+
+    Enable(LOGGING);
+
+    // add the shared components IDs under our shared usage key
+    listShared = ListCreate(STRINGLIST);
+    ListAddString(listShared, "S32STAT.DLL",  AFTER);
+
+    nvReturn = ListGetFirstString(listShared, g_szTempStr);
+
+    while(nvReturn = 0)
+        szKey = SYMANTEC_SHAREDUSAGE_KEY + "\\" + g_szTempStr;
+
+        Disable(LOGGING);
+
+        RegDBCreateKeyEx(szKey, "");
+        RegDBSetKeyValueEx(szKey, SYMANTEC_SHARED_NAV_VALUENAME, REGDB_STRING
+                                                                , TARGETDIR, -1);
+
+        // build the full path to this file
+        szValue = g_szSymantecSharedDir ^ g_szTempStr;
+        RegDBSetKeyValueEx(szKey, "", REGDB_STRING, g_szSymantecSharedDir, -1);
+
+        if (RegDBGetKeyValueEx(MSSHARED_DLL_KEY, szValue, nvType,
+                                szUsage, nvSize) < 0) then
+            nCount = 1;
+        else
+            StrToNum(nCount, szUsage);
+            nCount = nCount + 1;
+        endif;
+
+        NumToStr(szUsage, nCount);
+        RegDBSetKeyValueEx(MSSHARED_DLL_KEY, szValue, REGDB_STRING, szUsage, -1);
+
+        // write to uninstall log
+        if (OpenFile(nvFileHandle, TARGETDIR, ULOGFILE_NAME) = 0) then
+            WriteLine(nvFileHandle, szValue);
+            CloseFile(nvFileHandle);
+        endif;
+
+        Enable(LOGGING);
+
+        nvReturn = ListGetNextString(listShared, g_szTempStr);
+    endwhile;
+
+    ListDestroy(listShared);
+
+end;  // IncrementSymantecSharedKey
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: PreDataMoveHook
+//
+//  Purpose: This function selects either workstation or server components,
+//           depending on which version we're installing to.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    PreDataMoveHook()
+    BOOL    bResult;
+    NUMBER  nResult;
+    STRING  szComponent;
+
+begin
+    return (TRUE);
+end;    // PreDataMoveHook
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  RemovePrevVerFiles
+//
+//  Purpose:
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    RemovePrevVerFiles()
+    LIST        filesList;
+    NUMBER      nResult;
+
+begin
+
+    // initialize a list with the target filenames
+    // NOTE: all of the files added to this list are assumed to exist
+    //       under TARGETDIR (the 'DeleteFile' primitive insists on this)
+    filesList = ListCreate(STRINGLIST);
+
+    // Add the files from TARGETDIR
+
+    // First, files common to the AT and NEC versions.
+
+    ListAddString(filesList, "DISKS.INF", AFTER);
+    ListAddString(filesList, "END-USER.TXT", AFTER);
+    ListAddString(filesList, "FILES.TXT", AFTER);
+    ListAddString(filesList, "INSCANB.DAT", AFTER);
+    ListAddString(filesList, "INSCANF.DAT", AFTER);
+    ListAddString(filesList, "INSCANM.DAT", AFTER);
+    ListAddString(filesList, "INST32.EXE", AFTER);
+    ListAddString(filesList, "INSTALL.INF", AFTER);
+    ListAddString(filesList, "INTSRB.DAT", AFTER);
+    ListAddString(filesList, "INTSRF.DAT", AFTER);
+    ListAddString(filesList, "N32OPTS.NCP", AFTER);
+    ListAddString(filesList, "SETUP.EXE", AFTER);
+    ListAddString(filesList, "SIWDLL32.DLL", AFTER);
+    ListAddString(filesList, "SIWFMOD.EXE", AFTER);
+    ListAddString(filesList, "SIWNAV32.DLL", AFTER);
+    ListAddString(filesList, "TECHNOTE.TXT", AFTER);
+    ListAddString(filesList, "UNINSTAL.INF", AFTER);
+    ListAddString(filesList, "VIRSCAN.DAT", AFTER);
+    ListAddString(filesList, "VIRSCAN.INF", AFTER);
+    ListAddString(filesList, "VIRSCAN2.DAT", AFTER);
+    ListAddString(filesList, "_SYMINST.EXE", AFTER);
+    ListAddString(filesList, "_SYMINST.PIF", AFTER);
+    ListAddString(filesList, "_SYMSHEL.EXE", AFTER);
+    ListAddString(filesList, "System" ^ "LIVEUPDT.REG", AFTER);
+    ListAddString(filesList, "System" ^ "NAV95.REG", AFTER);
+    ListAddString(filesList, "System" ^ "NAVAPW32.REG", AFTER);
+    ListAddString(filesList, "System" ^ "NAVSAGE.REG", AFTER);
+    ListAddString(filesList, "System" ^ "NAVW32.HLP", AFTER);
+    ListAddString(filesList, "System" ^ "NAVW32.REG", AFTER);
+    ListAddString(filesList, "System" ^ "NSCHED32.HLP", AFTER);
+    ListAddString(filesList, "System" ^ "NSCHED32.REG", AFTER);
+    ListAddString(filesList, "System" ^ "SETUP.REG", AFTER);
+    ListAddString(filesList, "Backup" ^ "AUTOEXEC.BAT", AFTER);
+    ListAddString(filesList, "Backup" ^ "SYSTEM.DAT", AFTER);
+    ListAddString(filesList, "Backup" ^ "USER.DAT", AFTER);
+    ListAddString(filesList, "genwild.exe", AFTER);
+    ListAddString(filesList, "s32alogk.dll", AFTER);
+    ListAddString(filesList, "s32navk.dll", AFTER);
+    ListAddString(filesList, "symnavk.dll", AFTER);
+    ListAddString(filesList, "tknv16k.dll", AFTER);
+    ListAddString(filesList, "tknv32k.dll", AFTER);
+    ListAddString(filesList, "navkrnlk.vxd", AFTER);
+
+
+    // Files only in the AT versions
+    if ( !g_bHWIsNEC ) then
+        ListAddString(filesList, "MAILBUSI.CTL", AFTER);
+        ListAddString(filesList, "NAVBLOG.CMB", AFTER);
+        ListAddString(filesList, "NAVBMSG.CMB", AFTER);
+        ListAddString(filesList, "NAVBOOT.EXE", AFTER);
+        ListAddString(filesList, "NAVBOOT.HLP", AFTER);
+        ListAddString(filesList, "NAVBOOT.OVL", AFTER);
+        ListAddString(filesList, "NAVBREPF.OVL", AFTER);
+        ListAddString(filesList, "NAVBRES.EXE", AFTER);
+        ListAddString(filesList, "NAVBRES7.OVL", AFTER);
+        ListAddString(filesList, "NAVBSCNF.OVL", AFTER);
+        ListAddString(filesList, "NAVBSWP1.OVL", AFTER);
+        ListAddString(filesList, "NAVKRNL8.VXD", AFTER);
+        ListAddString(filesList, "PIPELINE.DLL", AFTER);
+        ListAddString(filesList, "PIPELINE.INI", AFTER);
+        ListAddString(filesList, "S32ALOG8.DLL", AFTER);
+        ListAddString(filesList, "S32NAV8.DLL", AFTER);
+        ListAddString(filesList, "S32RSQ8.DLL", AFTER);
+        ListAddString(filesList, "SIWPIPL.EXE", AFTER);
+        ListAddString(filesList, "SYMcfg.bin", AFTER);
+        ListAddString(filesList, "SYMNAV8.DLL", AFTER);
+        ListAddString(filesList, "TKNV168.DLL", AFTER);
+        ListAddString(filesList, "TKNV328.DLL", AFTER);
+        ListAddString(filesList, "System" ^ "NAVRSQ32.REG", AFTER);
+        ListAddString(filesList, "System" ^ "NRESQ32.REG", AFTER);
+        ListAddString(filesList, "System" ^ "RSQSHARE.REG", AFTER);
+        ListAddString(filesList, "System" ^ "UNNAV95.REG", AFTER);
+        ListAddString(filesList, "navstnec.dat", AFTER);
+        ListAddString(filesList, "schednec.dat", AFTER);
+        ListAddString(filesList, "s32rsqk.dll", AFTER);
+    endif;
+
+
+    // Files only in the NEC versions
+    if ( g_bHWIsNEC ) then
+        ListAddString(filesList, "INWILDB.DAT", AFTER);
+        ListAddString(filesList, "INWILDF.DAT", AFTER);
+        ListAddString(filesList, "INWILDM.DAT", AFTER);
+        ListAddString(filesList, "NAVC.EXE", AFTER);
+        ListAddString(filesList, "NAVKRNLF.VXD", AFTER);
+        ListAddString(filesList, "S32ALOGF.DLL", AFTER);
+        ListAddString(filesList, "S32NAVF.DLL", AFTER);
+        ListAddString(filesList, "SYMNAVF.DLL", AFTER);
+        ListAddString(filesList, "TKNV16F.DLL", AFTER);
+        ListAddString(filesList, "TKNV32F.DLL", AFTER);
+        ListAddString(filesList, "VIRWILD.DAT", AFTER);
+    endif;
+
+
+    // loop through the list and remove files
+    nResult = ListGetFirstString(filesList, g_szTempStr);
+    while(nResult = 0)
+        // remove the file from the target directory
+        nResult = DeleteFile(g_szTempStr);
+        nResult = ListGetNextString(filesList, g_szTempStr);
+    endwhile;
+
+    // release the list
+    ListDestroy(filesList);
+
+    // Remove the two directories that we no longer use if they are empty
+    DeleteDir(TARGETDIR ^ "System", ONLYDIR);
+    DeleteDir(TARGETDIR ^ "Backup", ONLYDIR);
+
+    VarSave(SRCTARGETDIR);
+    TARGETDIR = PROGRAMFILES ^ "Symantec";
+    g_nTempResult = DeleteFile("navw32.cnt");
+    g_nTempResult = DeleteFile("nsched32.cnt");
+    VarRestore(SRCTARGETDIR);
+
+
+end;    // RemovePrevVerFiles
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  RemovePrevVerRegEntries
+//
+//  Purpose:  This function cleans up the registry entries for the
+//            pre-auto-protect versions of NAVNT (namely, Gargoyle and
+//            Sphinx).
+//
+///////////////////////////////////////////////////////////////////////////////
+function    RemovePrevVerRegEntries()
+
+begin
+/*
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    RegDBDeleteKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\App Paths\\N32SCANW.EXE");
+    RegDBDeleteKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\N32SCANW.EXE");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus NT\\Install\\4.0\\Components");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus NT\\Install\\4.0");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus NT\\Install");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus NT\\Virus Defs\\LastUpdate");
+
+    RegDBDeleteValue("SOFTWARE\\Symantec\\InstalledApps", "NAVNT");
+
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus Scanner\\Install\\4.0\\Components");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus Scanner\\Install\\4.0");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus Scanner\\Install");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus Scanner\\Clinic");
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Norton AntiVirus Scanner");
+
+    RegDBDeleteValue("SOFTWARE\\Symantec\\InstalledApps", "NAVSCAN");
+    RegDBDeleteValue("SOFTWARE\\Microsoft\\Windows\\Help", "Navwscn.hlp");
+*/
+end;    // RemovePrevVerRegEntries
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: SetupFolders
+//
+//  Purpose: This function creates all the folders and shortcuts for the
+//           setup.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    SetupFolders()
+    NUMBER  nFlag;
+    NUMBER  nIcon;
+    NUMBER  nvSize;
+    NUMBER  nvType;
+    STRING  szCommandLine;
+    STRING  szIconPath;
+    STRING  szItemName;
+    STRING  szParam;
+    STRING  szProgram;
+    STRING  szProgramFolder;
+    STRING  szSupportFolder;
+    STRING  szShortCutKey;
+    STRING  szValue;
+    STRING  szWorkingDir;
+    LIST    listPreservedGroupItems;
+begin
+
+    // generic values
+    szWorkingDir  = "";
+    szIconPath    = "";
+    nIcon         = 0;
+    szShortCutKey = "";
+    nFlag         = REPLACE;
+    szParam       = "";
+
+    szProgramFolder = FOLDER_PROGRAMS ^ "\\Norton AntiVirus";
+    szSupportFolder = szProgramFolder ^ "\\" + @START_PRODUCT_SUPPORT;
+
+    // Initialize the group items list.
+    listPreservedGroupItems = ListCreate(STRINGLIST);
+
+    // List creation failure usually means very low memory so abort install.
+    if (LIST_NULL = listPreservedGroupItems) then
+        MessageBox(@ERROR_CREATING_PROGRAM_ITEM_LIST, SEVERE);
+        abort;
+    endif;
+
+    // Setup the list of group items and folders to preserve from the INSTOPTS.INF file.
+    ComposeGroupItemExceptionList(SUPPORTDIR ^ INSTALL_OPTIONS_FILE, listPreservedGroupItems);
+    RemoveFolderContentsExceptList(szProgramFolder, listPreservedGroupItems);
+
+    if ( g_bCreateIconsAndMenuItems ) then
+        CreateShellObjects("");
+
+                                        // Add the uninstall NAV icon
+        RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+        if ( 0 = RegDBGetKeyValueEx ( MSUNINSTALL_KEY ^ @NAV_UNINSTALL_DISPLAY_NAME,
+                                      "UninstallString", nvType, szCommandLine,
+                                      nvSize)) then
+            szItemName = @START_UNINSTALL;
+            szWorkingDir  = "";
+
+            AddFolderIcon ( szProgramFolder, szItemName, szCommandLine,
+                            WINDIR, UNINST, 0, "", REPLACE );
+        endif;
+
+                                        // Remove NPS icons on 98.
+        if ( g_bIsWin98  &&  !g_bUseNPSOn98 ) then
+            DeleteFolderIcon ( FOLDER_PROGRAMS ^ @NAV_PRODUCT_NAME,
+                               @NPS_SHORTCUT_NAME );
+            DeleteFolderIcon ( FOLDER_STARTUP, @NPS_SHORTCUT_NAME );
+        else
+                                        // Remove the Win 98 scheduler shortcut
+            DeleteFolderIcon ( FOLDER_PROGRAMS ^ @NAV_PRODUCT_NAME,
+                               @WIN98_SCHED_SHORTCUT_NAME );
+        endif;
+    endif;
+
+    // If the user did not want to schedule a scan, then remove this icon.
+    // Creating it and then removing it with loggin disabled will make it
+    // automatically be removed during uninstall.
+    if FALSE = g_bScheduleScan then
+        Disable(LOGGING);
+        VarSave(SRCTARGETDIR);
+        szProgramFolder = FOLDER_STARTUP;
+        StrRemoveLastSlash(szProgramFolder);
+        g_nTempResult = ChangeDirectory(szProgramFolder);
+        TARGETDIR = szProgramFolder;
+        szItemName    = "Norton Program Scheduler";
+        szItemName = szItemName + ".lnk";
+        g_nTempResult = LongPathToShortPath(szItemName);
+        g_nTempResult = DeleteFile(szItemName);
+        g_nTempResult = ChangeDirectory( SRCDIR );
+        VarRestore(SRCTARGETDIR);
+        Enable(LOGGING);
+    endif;
+    ListDestroy(listPreservedGroupItems);
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateScanAtStartup
+//
+//  Purpose:  This function is used to Add a line to autoexec.bat that will
+//            scan for viruses at startup.  All lines containing navboot and
+//            navc.exe are removed.  If the global variable
+//            g_bScanAtStartup is true it adds the scan at boot command.
+//            If there is no autoexec.bat it will be created.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    UpdateScanAtStartup()
+    NUMBER      nFlag;
+    NUMBER      nvLineNumber;
+    STRING      svReturnLine;
+    STRING      szFileName;
+    STRING      szScanCommandLine;
+    STRING      szScanCommandLineOem;
+    STRING      szBootDir;
+    STRING      szMsg;
+    STRING      szTitle;
+    STRING      szJunk;
+    STRING      szAutoexecPath;
+begin
+    // Store the current SOURCEDIR and TARGETDIR
+    VarSave (SRCTARGETDIR);
+
+    GetBootDir(szBootDir, 6);
+    szFileName = szBootDir ^ "autoexec.bat";
+
+    // Set the SOURCEDIR and TARGETDIR
+    SRCDIR = szBootDir;
+
+    // Create the command line for launching navc.exe startup scan
+    szScanCommandLine = TARGETDIR ^ "NAVDX.EXE";
+    LongPathToShortPath( szScanCommandLine );
+    MyCharToOem( szScanCommandLine, szScanCommandLineOem );
+    // Add the startup command line argument
+    szScanCommandLineOem = "@" + szScanCommandLineOem + " /Startup";
+
+    // Only do the line removal functions if the file exists
+    if( FindFile( SRCDIR, "autoexec.bat", g_szTempStr ) = 0 ) then
+        // Remove all the possible previous scan commands from autoexec.bat
+        RemoveLine(szFileName, "navboot");
+        RemoveLine(szFileName, "navc");
+        RemoveLine(szFileName, "navdx");
+    endif;
+
+    // Autoexec.bat does not exist create it and add our command line.
+    if (TRUE = g_bScanAtStartup) then
+        g_nTempResult = BatchFileLoad( "" );
+
+        if ( 0 = BatchFind ( "keyb", szJunk, COMMAND | RESTART ) ) then
+            g_nTempResult = BatchFileSave("");
+            BatchGetFileName ( szAutoexecPath );
+            UpdateEastEuropeanAutoexec ( szAutoexecPath, szScanCommandLineOem );
+        else
+            g_nTempResult = BatchAdd("", szScanCommandLineOem, "", COMMAND | RESTART | BEFORE );
+            g_nTempResult = BatchFileSave("");
+        endif;
+   endif;
+
+    // restore the SOURCEDIR and TARGETDIR
+    VarRestore (SRCTARGETDIR);
+
+end;        // UpdateScanAtStarup
+
+
+#include "iscommon.rul"
+
+
+// --- include script file section ---
+
+ /*------------------------------------------------------------------------*/
+ /*                                                                        */
+ /*   NOTE: This is a copy of InstallShield's "SdAskDestPath" function.    */
+ /*         The reason it's over-ridden is they forgot to save the value of*/
+ /*         svDirLoc in svDir when the Back button is selected (compare    */
+ /*         with the SD_PBUT_CONTINUE case).                               */
+ /*                                                                        */
+ /*                                                                        */
+ /*   Function: MySdAskDestPath                                            */
+ /*                                                                        */
+ /*   Descrip:  This dialog will ask user for the destination directory    */
+ /*             for installation.                                          */
+ /*   Misc:                                                                */
+ /*                                                                        */
+ /*------------------------------------------------------------------------*/
+function MySdAskDestPath(szTitle, szMsg, svDir, nStyle)
+          STRING  szDlg, svDirLoc, szTemp, szTempDirPath;
+          INT     nId, nTemp, nSelectDirResponse;
+          HWND    hwndDlg;
+          BOOL    bDone;
+          BOOL    bContinue;
+          BOOL    bCheckDiskSpace;
+          BOOL    bDBCSDir;
+          BOOL    bValidDir;
+        begin
+
+          szDlg     = SD_DLG_ASKDESTPATH;
+          nSdDialog = SD_NDLG_ASKDESTPATH;
+          svDirLoc = svDir;
+
+          // record data produced by this dialog
+          if (MODE=SILENTMODE) then
+            SdMakeName( szAppKey, szDlg, szTitle, nSdAskDestPath );
+            SilentReadData( szAppKey, "Result", DATA_NUMBER, szTemp, nId );
+            if ((nId != BACK) && (nId != CANCEL)) then
+               SilentReadData( szAppKey, "szDir", DATA_STRING, svDir, nTemp );
+            endif;
+
+            return nId;
+          endif;
+
+          // ensure general initialization is complete
+          if (!bSdInit) then
+             SdInit();
+          endif;
+
+         if (EzDefineDialog( szDlg, "", "", SD_NDLG_ASKDESTPATH ) = DLG_ERR) then
+            return -1;
+          endif;
+
+          // Loop in dialog until the user selects a standard button
+          bDone = FALSE;
+
+          while (!bDone)
+
+             nId = WaitOnDialog( szDlg );
+
+             switch (nId)
+             case DLG_INIT:
+                  CtrlSetText( szDlg, 0x80000000 | SD_STA_DESTDIR, svDirLoc );
+
+                  if(szMsg != "") then
+                      SdSetStatic( szDlg, SD_STA_CHANGEDIRMSG, szMsg );
+                  endif;
+
+                  hwndDlg = CmdGetHwndDlg( szDlg );
+                  SdGeneralInit( szDlg, hwndDlg, nStyle, szSdProduct );
+
+                  if(szTitle != "") then
+                      SetWindowText( hwndDlg, szTitle );
+                  endif;
+
+
+             case SD_PBUT_CHANGEDIR:
+Try_Again:
+                  nTemp = MODE;
+                  MODE  = NORMALMODE;
+                  szTempDirPath = TARGETDIR;
+
+                  if( TRUE = g_bIsWin98 ) then
+                    // prevent multiple calls to this dialog from creating many directories
+                    // just delete the last directory.
+                    if( StrLength( g_szLastDir ) > 0 ) then
+                        g_nTempResult = DeleteDir(g_szLastDir, ONLYDIR);
+                    endif;
+
+                    bValidDir = ShellBrowseFolder( hwndDlg, @BROWSE_CAPTION, szTempDirPath );
+                    szTempDirPath = szTempDirPath ^ @NAV_PROGRAM_FOLDER_NAME;
+                    g_szLastDir = szTempDirPath;
+                    bContinue = bValidDir;
+                  else
+                      nSelectDirResponse = SelectDir( "", "", szTempDirPath, TRUE );
+                      if (CANCEL != nSelectDirResponse) then
+                        bContinue = TRUE;
+                      else
+                        bContinue = FALSE;
+                      endif;
+                  endif;
+
+                  if (TRUE = bContinue) then
+                      // Prevent the user from installing to a DBCS directory.
+                      g_bTempResult = StringContainsDBCSChars(szTempDirPath);
+                      if(TRUE = g_bTempResult) then
+                          if (MODE = SILENTMODE) then
+                              abort;
+                          else
+                              MessageBox(@ERROR_DBCS_DIRECTORY, SEVERE);
+                              // Clean up the DBCS directory
+                              g_nTempResult = DeleteDir(szTempDirPath, ONLYDIR);
+                              MODE = nTemp;
+                              goto  Try_Again;
+                          endif;
+                      endif;
+
+                    // make sure that there's enough free disk space to complete
+                    // the installation
+                    if (FALSE = CheckDiskSpace(szTempDirPath)) then
+                        if (MODE = SILENTMODE) then
+                            abort;
+                        else
+                            MessageBox(@ERROR_NOT_ENOUGH_DISK_SPACE, SEVERE);
+                            MODE = nTemp;
+                            goto  Try_Again;
+                        endif;
+                    endif;
+
+                    if( TRUE = g_bIsWin98 ) then
+                        // Create the target directory
+                        CreateDir( szTempDirPath );
+                    endif;
+
+                    // update the dialog display
+                    svDirLoc = szTempDirPath;
+                    CtrlSetText( szDlg, 0x80000000 | SD_STA_DESTDIR, svDirLoc );
+
+                  endif;
+
+                  MODE = nTemp;
+
+
+             case SD_PBUT_CONTINUE:
+                // Prevent the user from installing to a DBCS directory.
+                bDBCSDir = StringContainsDBCSChars(svDirLoc);
+                if(TRUE = bDBCSDir) then
+                    if (MODE = SILENTMODE) then
+                        abort;
+                    else
+                        MessageBox(@ERROR_DBCS_DIRECTORY, SEVERE);
+                    endif;
+                endif;
+
+                bCheckDiskSpace = CheckDiskSpace(svDirLoc);
+                if (FALSE = bCheckDiskSpace) then
+                    if (MODE = SILENTMODE) then
+                        abort;
+                    else
+                        MessageBox(@ERROR_NOT_ENOUGH_DISK_SPACE, SEVERE);
+                    endif;
+                endif;
+
+                if( TRUE = bCheckDiskSpace &&
+                    FALSE = bDBCSDir ) then
+                      svDir = svDirLoc;
+                      nId   = NEXT;
+                      bDone = TRUE;
+                  endif;
+
+
+             case BACK:
+                  svDir  = svDirLoc;    // this line was missing in the original
+                  nId    = BACK;
+                  bDone  = TRUE;
+
+             case DLG_ERR:
+                  SdError( -1, "MySdAskDestPath" );
+                  nId   = -1;
+                  bDone = TRUE;
+
+             case DLG_CLOSE:
+                  SdCloseDlg( hwndDlg, nId, bDone );
+
+             default:
+                  // check standard handling
+                  if (SdIsStdButton( nId ) && SdDoStdButton( nId )) then
+                      bDone = TRUE;
+                  endif;
+             endswitch;
+
+          endwhile;
+
+          EndDialog( szDlg );
+          ReleaseDialog( szDlg );
+
+          SdUnInit( );
+
+          // record data produced by this dialog
+          SdMakeName( szAppKey, szDlg, szTitle, nSdAskDestPath );
+          SilentWriteData( szAppKey, "szDir", DATA_STRING, svDir, 0 );
+          SilentWriteData( szAppKey, "Result", DATA_NUMBER, "", nId );
+
+          return nId;
+        end;
+
+
+#define SD_SINGLE_DIALOGS   1
+#define SD_PRODUCTNAME      1
+#define SD_FINISH           1
+#define SD_FINISHREBOOT     1
+#define SD_WELCOME          1
+#define SD_STARTCOPY        1
+#define SD_LICENSE          1
+
+#include "sddialog.rul"
+
+
+
+
+
+
+
+

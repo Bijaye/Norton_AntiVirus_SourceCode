@@ -1,0 +1,160 @@
+:: Copyright 1995 Symantec, Peter Norton Product Group
+::************************************************************************
+::
+:: $Header:   S:/NOBUILDS/VCS/build.btv   1.12   07 Oct 1998 13:54:44   TCASHIN  $
+::
+:: Description:
+::      Bogus way to put Beaverton's zip dll into Luigi.
+::
+:: Contains:
+::
+:: See Also:
+::************************************************************************
+:: $Log:   S:/NOBUILDS/VCS/build.btv  $
+:  
+:     Rev 1.12   07 Oct 1998 13:54:44   TCASHIN
+:  Added copy instructions for navoptx.dat.
+:  
+:     Rev 1.11   01 May 1998 11:55:38   mdunn
+:  Now creating OEM versions of NAVOPTS/NAVDEF.DAT
+:  
+:     Rev 1.10   23 Mar 1998 16:49:56   MKEATIN
+:  Reverted back to revision 1.7 - we now get our libs and dlls on 
+:  "r:\avcomp\.."
+:  
+:     Rev 1.7   01 Aug 1997 09:28:48   JBRENNA
+:  No longer run striprem.awk on the install / uninstall .INF files. We do
+:  not use them anymore.
+:  
+:     Rev 1.6   14 Jul 1997 14:58:14   KSACKIN
+:  Added an updated for our static tools such as NavCRC, StartLst, and NavBin.
+:  These are all now checked in here, and will be copied to s:\tools.
+:
+:     Rev 1.5   09 Jul 1997 19:26:14   JBRENNA
+:  Move generation of NAVOPTS.DAT and NAVDEFS.DAT such that they both end
+:  up in the s:\nobuilds\src directory instead of the s:\nobuilds\lib.bin.
+:
+:     Rev 1.4   09 Jun 1997 11:09:58   KSACKIN
+:  Integrated the NavBin32.exe utility to create our NavOpts.Dat and NavDef.Dat
+:  files.
+:
+:     Rev 1.3   24 May 1997 02:17:32   JTAYLOR
+:  Added code to update the language area's lib.bin directories.
+:
+:     Rev 1.2   23 May 1997 16:15:38   KSACKIN
+:  Copying all souce files to the lib.bin directory and removing the read-only
+:  attribute on all of these files for Install Shield.
+:
+:     Rev 1.1   29 Apr 1997 09:36:46   JBRENNA
+:  Convert W32 to new IRA/IDA platform spec.
+:
+:     Rev 1.0   06 Feb 1997 21:06:30   RFULLER
+:  Initial revision
+:
+:     Rev 1.8   14 Jan 1997 17:42:32   JBRENNA
+:  No longer generate VIRWILD.DAT. The SARC people will include it in their
+:  builds.
+:
+:     Rev 1.7   13 Jan 1997 15:50:32   MKEATIN
+:  Woops...use "del" - not "delete".
+:
+:     Rev 1.6   13 Jan 1997 15:49:04   MKEATIN
+:  Delete the utility genwild.exe so it doesn't get copied to the bin and lib
+:  directories.
+:
+:     Rev 1.5   13 Jan 1997 15:43:30   MKEATIN
+:  We now create virwild.dat out of the virscan.dat at l:\source\navdefs\src
+:
+:     Rev 1.4   07 Aug 1996 15:58:48   MKEATIN
+:  Copied from LUIGI/NOBUILDS
+:
+:     Rev 1.10   30 Apr 1996 17:49:08   MKEATIN
+:  SYMMAL32.DLL doesn't need to be copied after all
+:
+:     Rev 1.9   30 Apr 1996 11:09:18   MKEATIN
+:  That's 'BIN' not 'LIB'
+:
+:     Rev 1.8   30 Apr 1996 10:58:22   MKEATIN
+:  Copy symmal32.dll (the onramp dll from shared tech) to the bin dir
+:
+:     Rev 1.7   27 Feb 1996 15:58:52   DALLEE
+:  Added obfuscation for new install scripts sphinxin.inf and sphinxun.inf
+:  which are the Netscape specific versions of the sphinx install.
+:  Garginst.inf and gargunin.inf are the non-Netscape sphinx install which
+:  replaces gargoyle.
+:
+:     Rev 1.6   12 Dec 1995 00:07:16   DALLEE
+:  Updated for PROJVERS.
+:
+:     Rev 1.5   05 Dec 1995 00:14:08   GWESTER
+:  Added nntlib01.lib and nntxutil.lib to handle NT's circular references.
+:
+:     Rev 1.4   21 Nov 1995 15:05:40   BARRY
+:  Remove references to obsolete files
+:
+:     Rev 1.3   19 Nov 1995 15:18:34   DALLEE
+:  Add scary awk script for Gargoyle install scripts, too.  ;-)
+:
+:     Rev 1.2   14 Jul 1995 03:48:30   BARRY
+:  add scary awk script
+:
+:     Rev 1.1   30 May 1995 17:05:30   JJOHNSON
+:  Added n32inoc.lib and n32xutil.lib to handle circular dependencies
+:
+:     Rev 1.0   28 Mar 1995 17:42:40   DALLEE
+:  Initial revision.
+::************************************************************************
+
+copy %PROJ%\SRC%PROJVERS%\n32inoc.lib     %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\n32inoc.lib     %PROJPRE%\LIB%PROJVERS%.IDA
+copy %PROJ%\SRC%PROJVERS%\n32xutil.lib    %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\n32xutil.lib    %PROJPRE%\LIB%PROJVERS%.IDA
+
+copy %PROJ%\SRC%PROJVERS%\nntlib01.lib    %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\nntlib01.lib    %PROJPRE%\LIB%PROJVERS%.IDA
+copy %PROJ%\SRC%PROJVERS%\nntxutil.lib    %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\nntxutil.lib    %PROJPRE%\LIB%PROJVERS%.IDA
+
+: Copy unchanging DOS tools to the tools directory.
+
+md %PROJPRE%\tools
+copy %PROJ%\SRC%PROJVERS%\navbin.exe   %PROJPRE%\tools
+copy %PROJ%\SRC%PROJVERS%\navcrc.exe   %PROJPRE%\tools
+copy %PROJ%\SRC%PROJVERS%\startlst.exe %PROJPRE%\tools
+
+: Obfuscate our install scripts.
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\install.inf > %PROJPRE%\BIN%PROJVERS%.IRA\install.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\uninstal.inf > %PROJPRE%\BIN%PROJVERS%.IRA\uninstal.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\garginst.inf > %PROJPRE%\BIN%PROJVERS%.IRA\garginst.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\gargunin.inf > %PROJPRE%\BIN%PROJVERS%.IRA\gargunin.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\sphinxin.inf > %PROJPRE%\BIN%PROJVERS%.IRA\sphinxin.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\sphinxun.inf > %PROJPRE%\BIN%PROJVERS%.IRA\sphinxun.inf
+
+: Ensure non read-only files for the Install Shield projects.
+IFF NOT EXIST %PROJ%\LIB%PROJVERS%.BIN\NUL  THEN
+    md %PROJ%\LIB%PROJVERS%.BIN
+ENDIFF
+
+copy %PROJ%\SRC%PROJVERS%\*.* %PROJ%\LIB%PROJVERS%.BIN
+attrib -r %PROJ%\LIB%PROJVERS%.BIN\*.*
+
+: Update the language area as well.
+IFF NOT EXIST %LANGPROJ%\LIB%PROJVERS%.BIN\NUL  THEN
+    md %LANGPROJ%\LIB%PROJVERS%.BIN
+ENDIFF
+
+copy %LANGPROJ%\SRC%PROJVERS%\*.* %LANGPROJ%\LIB%PROJVERS%.BIN
+attrib -r %LANGPROJ%\LIB%PROJVERS%.BIN\*.*
+
+: Build NavOpts.Dat file.
+%PROJPRE%BIN%PROJVERS%.IRA\NAVBIN32.EXE %PROJPRE%NAVBIN32\SRC%PROJVERS%\navopts.ini %PROJ%\lib%PROJVERS%.bin\navopts.dat
+copy %PROJ%\lib%PROJVERS%.bin\navopts.dat %PROJ%\lib%PROJVERS%.bin\navdef.dat
+
+: Build OEM version of NAVOPTS.DAT
+%PROJPRE%BIN%PROJVERS%.IRA\NAVBIN32.EXE %PROJPRE%NAVBIN32\SRC%PROJVERS%\oemopts.ini %PROJ%\lib%PROJVERS%.bin\oemopts.dat
+copy %PROJ%\lib%PROJVERS%.bin\oemopts.dat %PROJ%\lib%PROJVERS%.bin\oemdef.dat
+
+: Copy NavOptX.Dat file.
+copy %PROJ%\SRC%PROJVERS%\navoptx.dat %PROJPRE%\LIB%PROJVERS%.IRA
+copy %PROJ%\SRC%PROJVERS%\navoptx.dat %PROJPRE%\LIB%PROJVERS%.IDA
+

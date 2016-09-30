@@ -1,0 +1,189 @@
+;**********************************************************************
+;
+; $Header:   S:/INCLUDE/VCS/atomic.inv   1.19   08 Jan 1999 14:15:34   dwilson  $
+;
+; This prodhook selects tools and does global setup for ATOMIC (NAV 5.0).
+;
+;**********************************************************************
+; $Log:   S:/INCLUDE/VCS/atomic.inv  $
+;  
+;     Rev 1.19   08 Jan 1999 14:15:34   dwilson
+;  Revert ara, aruk, etc to msvc50axp, msvc50mfcaxp from 60-Prelim.
+;  
+;     Rev 1.18   23 Dec 1998 14:38:20   spasnik
+;  Removed qakn from familyvers just like quake vers
+;  
+;     Rev 1.17   25 Nov 1998 11:13:22   dwilson
+;  Switch to MSVC6 for DEC Alpha platforms.  Testing only.
+;  
+;     Rev 1.16   09 Nov 1998 14:39:50   HKIM
+;  For use in PVCS system
+;
+;     Rev 1.15   09 Nov 1998 14:13:42   HKIM
+;  For use in PVCS system
+;
+;     Rev 1.14   06 Nov 1998 14:43:48   hkim
+;  Changed back.
+;
+;
+;     Rev 1.13   06 Nov 1998 13:49:02   RJACKSO
+;
+;     Rev 1.12   05 Nov 1998 22:31:36   RJACKSO
+;
+;     Rev 1.11   21 Jul 1998 13:18:34   dwilson
+;  Set QUAKE_CUSTOM to null for DOS, DVX, and NCX platforms because
+;  PROJ does not clean up this variable.
+;
+;     Rev 1.10   10 Jul 1998 15:49:42   mdunn
+;  Removed reference to l:\source\inc.dev
+;
+;     Rev 1.9   23 Jun 1998 09:39:16   rfuller
+;  Pointed ATOMIC Dev Area to CORE(N) and AVCORE(N)
+;
+;     Rev 1.8   12 Jun 1998 16:36:40   spasnik
+;  Set includepre and libpre to null for everybody
+;  Then anyone specifically setting it will be unaffected
+;  and anyone not wanting them will have a them cleaned on the
+;  incoming proj.
+;
+;     Rev 1.7   11 Mar 1998 13:41:46   DWILSON
+;  Revert back to version 1.3, no NEF drive mapping required.
+;
+;     Rev 1.3   27 Feb 1998 15:02:42   DBuches
+;  Changed to use MSVC50 for Win32 platforms.
+;
+;     Rev 1.2   20 Feb 1998 17:43:10   mdunn
+;  Now setting QUAKESUF=N, since that variable is needed by the setup
+;  builder when constructing some filenames.
+;
+;     Rev 1.1   13 Jan 1998 11:36:54   DWILSON
+;  Atomic now builds on CORE and AVCORE TRUNK, per Jim Brennan.
+;
+;     Rev 1.0   08 Jan 1998 11:13:30   DWILSON
+;  Initial revision.
+;
+;**********************************************************************
+
+; Prodhook for ATOMIC
+
+[envset]
+set LANGPRE=n:\
+set PROJPRE=S:\
+set quakepre=L:\SOURCE
+set quake=
+set quakeinc=L:\SOURCE\INCLUDE\SRC%QUAKE%
+set quakesuf=N
+set globalinc=L:\SOURCE\INC\SRC
+set LANGDRIVE=N:
+set quakelangpre=L:\%LANG%
+set toolsdir=S:\TOOLS
+set dosx=-SWAPDIR %TEMP%
+set familyvers=
+set familypre=T:\SOURCE
+set familylangpre=T:\
+set familyinc=T:\SOURCE\INCLUDE\SRC%FAMILYVERS%
+
+[commonpre]
+platforms=ida,ira,idu,iru,idav,irav,iduk,iruk,ada,ara,adu,aru,aduk,aruk,wda,wra,DOS,DX,DSV,DVX,NEC,NCX,TSR,VXD,BIN
+set quakeinc=L:\SOURCE\INCLUDE\SRC%QUAKE%
+set libpre=
+set includepre=
+
+
+[ida]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[ira]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[idu]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[iru]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50X86;MSVC50MFCX86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[idav]
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[irav]
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[IRUK]
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+[IDUK]
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+[ADA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ARA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC42MFCAXP
+
+[ARU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADUK]
+tools=MSVC42AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[ARUK]
+tools=MSVC50AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[WDA]
+set QUAKE_CUSTOM=NAV
+tools=msvc152;masm611
+
+[WRA]
+set QUAKE_CUSTOM=NAV
+tools=msvc152;masm611
+
+[DOS]
+tools=msvc152;winzipse;masm611
+set QUAKE_CUSTOM=
+
+[DSV]
+tools=msvc152;masm611
+
+[NEC]
+;tools=msc8;masm611
+tools=msvc152;masm611
+
+[DX]
+tools=dos16m.506;msvc152;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=R:\DOS16M.506
+
+[DVX]
+tools=dos16m.506;msvc152;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=R:\DOS16M.506
+set QUAKE_CUSTOM=
+
+[NCX]
+tools=dos16m.506;msvc152;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=R:\DOS16M.506
+set QUAKE_CUSTOM=
+
+[TSR]
+tools=msvc152;masm611
+
+[BIN]
+
+
+[]

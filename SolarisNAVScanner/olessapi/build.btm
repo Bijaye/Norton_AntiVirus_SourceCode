@@ -1,0 +1,73 @@
+: Copyright 1997 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+: $Header:   S:/OLESSAPI/VCS/BUILD.BTv   1.7   03 Dec 1998 12:13:26   rpulint  $
+:
+: Build file for:
+:   OLESSAPI.LIB
+:   WD7API.LIB
+:   O97API.LIB
+:   XL5API.LIB
+:   PPAPI.LIB
+:   ACSAPI.LIB
+:   MSOAPI.LIB
+:------------------------------------------------------------------------
+: $Log:   S:/OLESSAPI/VCS/BUILD.BTv  $
+:  
+:     Rev 1.7   03 Dec 1998 12:13:26   rpulint
+:  Use different set of makefiles for OS2 platform
+:  
+:     Rev 1.6   17 Nov 1998 11:49:28   DCHI
+:  Added mk msoapi.
+:  
+:     Rev 1.5   17 Apr 1998 13:41:30   DCHI
+:  Added mk acsapi.
+:  
+:     Rev 1.4   24 Nov 1997 17:37:40   DCHI
+:  Added mk ppapi.
+:  
+:     Rev 1.3   02 Oct 1997 17:32:10   DCHI
+:  Added mk xl5api.
+:  
+:     Rev 1.2   05 May 1997 14:29:16   DCHI
+:  Added mk o97api.
+:  
+:     Rev 1.1   05 May 1997 14:00:06   DCHI
+:  Added call to mk wd7api.
+:  
+:     Rev 1.0   23 Apr 1997 15:13:32   DCHI
+:  Initial revision.
+:  
+:------------------------------------------------------------------------
+
+iff "%PLATFORM" NE ".OS2" then
+
+call mk olessapi %1
+if exist make.err copy build.err+make.err build.err
+
+call mk wd7api %1
+if exist make.err copy build.err+make.err build.err
+
+call mk o97api %1
+if exist make.err copy build.err+make.err build.err
+
+call mk xl5api %1
+if exist make.err copy build.err+make.err build.err
+
+call mk ppapi %1
+if exist make.err copy build.err+make.err build.err
+
+call mk acsapi %1
+if exist make.err copy build.err+make.err build.err
+
+call mk msoapi %1
+if exist make.err copy build.err+make.err build.err
+
+else
+    wmake /f s:olessapi.wmk /L build.err
+    wmake /f s:wd7api.wmk /L build.err
+    wmake /f s:o97api.wmk /L build.err
+    wmake /f s:xl5api.wmk /L build.err
+    wmake /f s:ppapi.wmk /L build.err
+    wmake /f s:acsapi.wmk /L build.err
+endiff
+

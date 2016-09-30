@@ -1,0 +1,31 @@
+::------------------------------------------------------------------------
+::
+:: $Header:   S:/APWUI/VCS/update.btv   1.2   31 Jul 1997 13:07:42   DALLEE  $
+::
+:: Temporary update batch file.
+:: We need to keep an NT version of NAVAPW32.EXE in BIN.IRA and
+:: save this project's 95 version in BIN.IRA\WIN95
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/APWUI/VCS/update.btv  $
+:  
+:     Rev 1.2   31 Jul 1997 13:07:42   DALLEE
+:  Added TARGET support.
+:  
+:     Rev 1.1   02 Jun 1997 14:03:16   DALLEE
+:  Oops! I did a cut and paste first rev, and forgot to add handling for 
+:  .EXE's going to the global BIN dir. Fixed now.
+:  
+:     Rev 1.0   02 Jun 1997 13:57:38   DALLEE
+:  Initial revision.
+::------------------------------------------------------------------------
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+:: For now, don't blow away NT version of NAVAPW32.EXE
+
+if exist *.exe copy *.exe %PROJPRE%\BIN%PROJVERS%%PLATFORM%\WIN95\*.exe
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\WIN95\*.dll
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\WIN95\*.map
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\WIN95\*.sym
+

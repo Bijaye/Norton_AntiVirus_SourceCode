@@ -1,0 +1,449 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "Resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include <winver.h>\r\n"
+    "#include ""nav.ver""\r\n"
+    "#include ""LocVerMsg.rc""\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LDVPVIEW            BITMAP                  "..\\..\\LDVPViewCtl.bmp"
+IDB_OBJECTS             BITMAP                  "..\\..\\bitmap1.bmp"
+IDB_ASCENDING           BITMAP                  "..\\..\\ascend.bmp"
+IDB_DESCENDING          BITMAP                  "..\\..\\descendi.bmp"
+IDB_NONE                BITMAP                  "..\\..\\none.bmp"
+IDB_HISTORY_IMAGES      BITMAP                  "..\\..\\HistoryImages.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPPAGE_LDVPVIEW DIALOGEX 0, 0, 250, 62
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+END
+
+IDD_RTS_MONITOR DIALOGEX 0, 0, 256, 179
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Files scanned:",IDC_STATIC,11,54,68,8
+    LTEXT           "1000000000",IDC_TOTAL_SCANED,81,54,127,8
+    LTEXT           "Filename:",IDC_STATIC,11,92,44,8
+    LTEXT           "Files infected:",IDC_STATIC,11,65,68,8
+    LTEXT           "",IDC_LAST_USER,63,114,145,10,NOT WS_VISIBLE
+    LTEXT           "Virus name:",IDC_STATIC,11,132,60,8
+    LTEXT           "Accessed by:",IDC_STATIC,11,114,49,8,NOT WS_VISIBLE
+    LTEXT           "Filename:",IDC_STATIC,11,143,60,8
+    LTEXT           "",IDC_LAST_VIRUS_FOUND,73,132,134,8
+    LTEXT           "0",IDC_VIRUSES_FOUND,81,65,127,8
+    GROUPBOX        "Last file scanned",IDC_SCANNED_GROUP,3,83,210,33,
+                    WS_GROUP
+    GROUPBOX        "Virus infection",IDC_VIRUSES_GROUP,3,123,210,53
+    LTEXT           "Action taken:",IDC_STATIC,11,154,60,8
+    LTEXT           "",IDC_LAST_VIRUS_ACTION,73,154,134,8
+    GROUPBOX        "Status",IDC_STATUS_GROUP,3,34,210,43
+    LTEXT           "Started:",IDC_STARTED_STATUS,11,43,68,8
+    LTEXT           "",IDC_TIME_STARTED,81,43,127,8
+    LTEXT           "Location:",IDC_LOCATION_TEXT,11,103,44,8
+    LTEXT           "",IDC_TITLE,3,0,251,31
+    LTEXT           "Time:",IDC_STATIC,11,165,60,8
+    LTEXT           "",IDC_TIME_OF_LAST_INFECTION,73,165,134,8
+    EDITTEXT        IDC_LAST_FILE_SCANED,57,92,152,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_LOCATION,57,103,152,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_LAST_VIRUS_FOUND_FILE,71,143,136,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_TASK_SCHEDULE DIALOGEX 0, 0, 220, 155
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_SORTASCENDING | LVS_AUTOARRANGE | WS_BORDER | 
+                    WS_TABSTOP,0,22,220,130
+    LTEXT           "",IDC_TITLE,0,0,219,17
+END
+
+IDD_VIRUS_HISTORY DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,1,1,219,20
+END
+
+IDD_EVENT_LOG DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,0,0,219,17
+END
+
+IDD_VIRUS_BIN DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,1,1,219,23
+END
+
+IDD_SELECT_FOLDER DIALOGEX 0, 0, 242, 132
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Select items"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,185,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,185,24,50,14
+    CONTROL         "",IDC_FOLDERS,"{91581CB1-0E7B-11D1-9D93-00A0C95C1762}",
+                    WS_TABSTOP,7,7,163,118
+END
+
+IDD_SCAN_HISTORY DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,1,1,219,20
+END
+
+IDD_BACKUP DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,1,1,219,23
+END
+
+IDD_REPAIRED_ITEMS DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,1,1,219,23
+END
+
+IDD_LICENSING DIALOGEX 0, 0, 255, 173
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "License",IDC_TITLE,0,3,207,16
+    LTEXT           "Status:",IDC_STATIC,10,30,75,8
+    LTEXT           "License Number:",IDC_STATIC,10,49,75,8
+    LTEXT           "Start Date:",IDC_STATIC,10,63,75,8
+    LTEXT           "<license instructions>",IDC_INSTRUCTIONS_TEXT,10,95,209,
+                    40
+    PUSHBUTTON      "Install &License",IDC_INSTALL_LICENSE,154,155,65,14
+    LTEXT           "<status>",IDC_LIC_STATUS,85,30,170,16
+    LTEXT           "<serial id>",IDC_LIC_SERIAL_NUM,85,49,170,8
+    LTEXT           "<expiry date>",IDC_LIC_EXPIRY_DATE,85,77,170,8
+    LTEXT           "Expiration Date:",IDC_STATIC,10,77,75,8
+    LTEXT           "<start date>",IDC_LIC_START_DATE,85,63,170,8
+    LTEXT           "<link>",IDC_INSTRUCTIONS_LINK,10,146,209,8
+END
+
+IDD_LS_LICENSING DIALOGEX 0, 0, 255, 173
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "License",IDC_TITLE,0,3,207,16
+    LTEXT           "Status:",IDC_STATIC,10,30,75,8
+    LTEXT           "Start Date:",IDC_STATIC,10,48,68,8
+    LTEXT           "<license instructions>",IDC_INSTRUCTIONS_TEXT,7,83,215,
+                    42
+    PUSHBUTTON      "Install &License",IDC_INSTALL_LICENSE,140,156,84,14
+    LTEXT           "<status>",IDC_LIC_STATUS,83,30,127,20
+    LTEXT           "<expiry date>",IDC_LIC_EXPIRY_DATE,83,65,118,8
+    LTEXT           "Expiration Date:",IDC_STATIC,10,65,63,8
+    LTEXT           "<start date>",IDC_LIC_START_DATE,83,48,121,8
+    LTEXT           "Symantec Licensing Website",IDC_INSTRUCTIONS_LINK,10,
+                    138,141,13
+    LTEXT           "Venice ID:",IDC_STATIC,10,46,34,8,NOT WS_VISIBLE
+    LTEXT           "<venice id>",IDC_LIC_VENICE_ID,74,46,168,20,NOT 
+                    WS_VISIBLE
+    PUSHBUTTON      "&Sync with Server",IDC_SYNC,43,156,92,14,NOT WS_VISIBLE | 
+                    WS_DISABLED
+END
+
+IDD_TAMPERBEHAVIOR_HISTORY DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,1,1,219,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_RTS_MONITOR, DIALOG
+    BEGIN
+        RIGHTMARGIN, 255
+        BOTTOMMARGIN, 168
+        HORZGUIDE, 31
+    END
+
+    IDD_SELECT_FOLDER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
+
+    IDD_LICENSING, DIALOG
+    BEGIN
+        VERTGUIDE, 10
+        VERTGUIDE, 85
+        HORZGUIDE, 30
+        HORZGUIDE, 50
+        HORZGUIDE, 70
+        HORZGUIDE, 90
+        HORZGUIDE, 110
+    END
+
+    IDD_LS_LICENSING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 242
+        TOPMARGIN, 7
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SELECT_FOLDER DLGINIT
+BEGIN
+    IDC_FOLDERS, 0x376, 16, 0
+0x0000, 0x0000, 0x0202, 0x0000, 0x1952, 0x0000, 0x13d8, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_LANGUAGE_LOCAL      "English"
+    IDS_SERVICE_CANT_START  "The Symantec AntiVirus Service cannot be started."
+    IDS_LDVPVIEW_PPG_CAPTION "General"
+    IDS_GROUP_HEADER        "&View----View"
+    IDS_TRANSLATION_NOTE1   "NOTE TO TRANSLATORS Strings with '----' embedded in them are actually two seperate strings. "
+    IDS_TRANSLATION_NOTE2   "NOTE TO TRANSLATORS (continued) The one with '&' is for the menu the second is for display in the taskpad.  Both need to be translated."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LDVPVIEW            "LDVPView control"
+    IDS_LDVPVIEW_PPG        "LDVPView property page"
+    IDS_CLOSE               "&Close"
+    IDS_FAILED              "Failed"
+    IDS_MOVE                "Quarantined"
+    IDS_RENAME              "Renamed"
+    IDS_DELETE              "Deleted"
+    IDS_LEAVEALONE          "Left Alone"
+    IDS_CLEAN               "Cleaned"
+    IDS_INVALID             "Invalid action ( %1)"
+    IDS_ENABLED             "Auto-Protect is Enabled"
+    IDS_DISABLED            "Auto-Proect is Enabled"
+    IDS_DATE_AT             "%1 at %2"
+    IDS_TASK_VIRUS_HISTORY  "&Risk History----Risk History"
+    IDS_TASK_VIRUS_HISTORY_DESCRIPTION 
+                            "View a history of infected files on this computer."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STARTING            "Initializing Scan"
+    IDS_STOPPING            "Stopping Scan"
+    IDS_SCANNING_DIRS       "Scanning Folders"
+    IDS_SCANNING_BOOT       "Scanning Boot Sector"
+    IDS_SCANNING_MEM        "Scanning Memory"
+    IDS_STARTED             "Started"
+    IDS_SCANNING_FILES      "Scanning Files"
+    IDS_NONE                "Disabled"
+    IDS_DAY                 "Daily"
+    IDS_WEEK                "Weekly"
+    IDS_MONTH               "Monthly"
+    IDS_SELEXT              "Selected Exts"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_BY_ADMIN            "Administrator"
+    IDS_BY_USER             "Client"
+    IDS_SCANDLVR            "File %s sent to Symantec Security Response"
+    IDS_TASK_BACKUP         "&Backup Items----Backup Items"
+    IDS_TASK_REPAIRED       "Re&paired Items----Repaired Items"
+    IDS_TASK_BACKUP_DESCRIPTION 
+                            "Use this task to view backup files created before cleaning."
+    IDS_TASK_REPAIR_DESCRIPTION 
+                            "Use this task to view files that have been automatically cleaned."
+    IDS_NEW_DEFS            "Updated virus definition files have been delivered to the computer.\nSymantec AntiVirus may be able to repair infected items in Quarantine. "
+    IDS_REPAIRED_ITEMS      "Quarantine items have been automatically repaired and saved in the Repaired Items folder.\nYou will need to return these items to their original location before they can be used."
+    IDS_SCANNING_LOADPOINTS "Scanning System Loadpoints"
+    IDS_SCANNING_ERASER_DEFS "Scanning Specific Security Risks"
+    IDS_STARTED2            "Started:"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_SHELLSEL_NONE_SELECTED 
+                            "There must be at least one selected item."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_READ_DIRECTORY 
+                            "The application is unable to read the directory structure of server %s. Ensure that the network is working correctly and Symantec AntiVirus is active on the server."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERR_CREATE_SHELLSEL "The application is unable to read the directory tree for %s. Ensure that the server is working correctly and try again."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TASK_RTS            "&Auto-Protect Scan Statistics----Auto-Protect Scan Statistics"
+    IDS_TASK_RTS_DESCRIPTION 
+                            "Use this task to monitor the Auto-Protect scan statistics."
+    IDS_TASK_SCHEDULE       "&Scheduled Scans----Scheduled Scans"
+    IDS_TASK_SCHEDULE_DESCRIPTION 
+                            "Use this task to view the scheduled scans for this computer."
+    IDS_ALLEXT              "All Exts"
+    IDS_NEVER               "Never"
+    IDS_SUBS                "(SUBS)"
+    IDS_NOT_RUNNING         "Not Running"
+    IDS_ABORTED             "Aborted"
+    IDS_NEVER_RUN           "Never Run"
+    IDS_COL_NAME            "Name"
+    IDS_COL_WHEN            "Schedule"
+    IDS_COL_ORIGIN          "Origin"
+    IDS_STATUS              "Status:"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_WHATS_THIS_HELP  "Could not initialize What's This? Help."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_SCANDLVR_START "Error starting Scan & Deliver"
+    IDS_SCANDLVR_ITEMS_ALREADY_SUBMITTED 
+                            "The selected items have already been submitted to Symantec Security Response."
+    IDS_TASK_LICENSING      "&License----License"
+    IDS_TASK_LICENSING_DESCRIPTION 
+                            "Use this task to manage licenses for downloading Symantec AntiVirus virus definitions."
+    IDS_LICENSE_ADMINTEXT   "Licenses for Symantec AntiVirus and Symantec Client Security are for product content only.  To update your license, contact your system administrator or visit the Symantec Enterprise Licensing web site by clicking the link below."
+    IDS_LICENSE_LINK        "http://licensing.symantec.com"
+    IDS_LS_LICENSE_ADMINTEXT 
+                            "License for Symantec AntiVirus and Symantec Client Security are for product content only. To update your license, contact your system administrator or visit the Symantec co-branded web site by clicking the link below."
+    IDS_LS_LICENSE_LINK     "http://licensing.symantec.com"
+    IDS_NO_VENICEID         "Please click ""Sync with Server"" button to display Venice ID."
+    IDS_COBRANDED_WEBSITE   "Symantec Licensing Website"
+    IDS_LICENSE_RENEW_LINK  "http://www.symantecstore.com/renew"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TASK_EVENT_LOG      "&Event Log----Event Log"
+    IDS_TASK_EVENT_LOG_DESCRIPTION 
+                            "Use this task to view the event log on this computer."
+    IDS_TASK_VIRUS_BIN      "&Quarantine----Quarantine"
+    IDS_TASK_VIRUS_BIN_DESCRIPTION 
+                            "Use this task to view the contents of Quarantine."
+    IDS_GROUP_HISTORIES     "H&istories----Histories"
+    IDS_TASK_SCAN_HISTORY   "&Scan Histories----Scan Histories"
+    IDS_TASK_SCAN_HISTORY_DESCRIPTION 
+                            "Use this task to view the scan histories on this computer."
+    IDS_SCAN_PROMPT_DAILY   "Daily at %1"
+    IDS_SCAN_PROMPT_MONTHLY "On day %1 of each month at %2"
+    IDS_SCAN_PROMPT_WEEKLY  "Every %1 at %2"
+    IDS_APP_NAME            "Symantec AntiVirus Corporate Edition"
+    IDS_SCANDIALOGS_ERROR   "Symantec AntiVirus could not communicate with ScanDlgs.dll. You may need to re-install the application."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TASK_TAMPERBEHAVIOR_HISTORY "T&amper History----Tamper History"
+    IDS_TASK_TAMPERBEHAVIOR_HISTORY_DESCRIPTION 
+                            "Use this task to view the tamper protection history on this computer."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include <winver.h>
+#include "nav.ver"
+#include "LocVerMsg.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

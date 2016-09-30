@@ -1,0 +1,88 @@
+/*
+  11/20/97 this VIDES2 module detects bevahiours that may indicate a resident virus
+  
+        - interrupts hooked used INT21 or directly in the interrupt table
+        - memory writes at interrupt entry points
+        - blockmoves to high memory
+*/
+
+external rule ResDetect(targetaddr, nummodif: integer);
+var
+func: integer;
+vec: integer;
+newaddr: integer;
+newnum: integer;
+begin
+newaddr := targetaddr;
+newnum := nummodif;
+if
+        strToInt(report_tag) = 1
+        and strToU(imm) = 0x21
+        -->
+                begin
+                func := rh(eax);
+                vec := rl(eax);
+                if
+                        /*
+                        func = 0x35
+                        -->
+                                println(word2h(strToU(cs)),': Get Vector ', byte2h(vec));
+                        */
+                        func = 0x25
+                        and (vec = 0x21 or vec = 0x13)
+                        -->
+                                println(word2h(strToU(cs)),': Set Vector ',byte2h(vec),' To ',word2h(strToU(ds)),':',word2h(rx(edx)));
+                                
+                        func = 0x31
+                        -->
+                                println(word2h(strToU(cs)),': TSR using function 31h');
+                                
+                        func = 0x48
+                        or func = 0x49
+                        or func = 0x4A
+                        -->
+                                println(word2h(strToU(cs)),': Memory manipulation (48h,49h,4Ah)')
+                fi
+                end;
+        
+        strToInt(report_tag) = 3        /* memory access */
+        and strToInt(wr) = 1            /* write access */
+        and strToInt(size) < 5
+        -->
+                begin
+                if
+                        targetaddr = -1
+                        -->
+                        begin
+                        newaddr := strToInt(addr);
+                        println(' *** ',word2h(strToU(cs)),': Modifies mem at ', str2h(addr), ' - new value: ', str2h(data))
+                        end;
+                        
+                        targetaddr = strToInt(addr)
+                        -->
+                        begin
+                        newnum := newnum+1;
+                        if newnum = 1000 --> begin newnum := 0; println(' *** 1000 modif at ', str2h(addr)) end fi
+                        end
+                fi
+                end;
+
+        strToInt(report_tag) = 15       /* Tag indicates a MOVS instruction -> imm is granularity */
+        and rx(ecx) > 0x100
+        and strToU(es) > 0x9000
+        -->
+                begin
+                print(' *** ', word2h(strToU(cs)), ': Moving ',rx(ecx),' bytes to High Memory');
+                println(' (',word2h(strToU(es)),':',word2h(rx(edi)),')')
+                end
+fi;
+trigger off for_next ResDetect(newaddr, newnum)
+end;
+
+init_action;
+begin
+        /* This is used for residency check */
+        start_watch_func(0x21,0x35,1); /* Get vector */
+        start_watch_func(0x21,0x25,1); /* Set vector */
+        skip
+end.

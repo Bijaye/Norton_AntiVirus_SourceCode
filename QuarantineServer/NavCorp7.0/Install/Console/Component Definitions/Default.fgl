@@ -1,0 +1,66 @@
+[USERDEFINED\<WINSYS_NS>]
+DISPLAYTEXT=
+TYPE=TEXTSUB
+fulldirectory=
+
+[<PROGRAMFILES>\<COMMONFILES>]
+DISPLAYTEXT=Common Files Folder
+SubDir0=<PROGRAMFILES>\<COMMONFILES>\Symantec Shared
+TYPE=TEXTSUBFIXED
+fulldirectory=
+
+[<WINDIR>\<WINSYSDIR>]
+DISPLAYTEXT=Windows System Folder
+TYPE=TEXTSUBFIXED
+fulldirectory=
+
+[USERDEFINED]
+DISPLAYTEXT=Script-defined Folders
+SubDir0=USERDEFINED\<WINSYS_NS>
+TYPE=USERSTART
+fulldirectory=
+
+[<PROGRAMFILES>]
+DISPLAYTEXT=Program Files Folder
+SubDir0=<PROGRAMFILES>\<COMMONFILES>
+SubDir1=<PROGRAMFILES>\Norton AntiVirus
+TYPE=TEXTSUBFIXED
+fulldirectory=
+
+[<TARGETDIR>]
+DISPLAYTEXT=General Application Destination
+TYPE=TEXTSUBFIXED
+fulldirectory=
+
+[<PROGRAMFILES>\Norton AntiVirus]
+DISPLAYTEXT=
+SubDir0=<PROGRAMFILES>\Norton AntiVirus\Qconsole
+TYPE=FOLDER
+fulldirectory=
+
+[<PROGRAMFILES>\Norton AntiVirus\Qconsole]
+DISPLAYTEXT=
+TYPE=FOLDER
+fulldirectory=
+
+[<WINDIR>]
+DISPLAYTEXT=Windows Operating System
+SubDir0=<WINDIR>\<WINSYSDIR>
+TYPE=TEXTSUBFIXED
+fulldirectory=
+
+[TopDir]
+SubDir0=<WINDIR>
+SubDir1=<PROGRAMFILES>
+SubDir2=<TARGETDIR>
+SubDir3=USERDEFINED
+
+[<PROGRAMFILES>\<COMMONFILES>\Symantec Shared]
+DISPLAYTEXT=
+TYPE=FOLDER
+fulldirectory=
+
+[General]
+Type=FILELIST
+Version=1.10.000
+

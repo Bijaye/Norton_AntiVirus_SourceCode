@@ -1,0 +1,288 @@
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define VR_FILEDESCRIPTION      "Norton AntiVirus Virus List"
+#define VR_INTERNALNAME         "N32VLIST"
+#define VR_ORIGINALFILENAME     "N32VLIST.DLL"
+#include "vlib.ver"
+
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+#include "virusstb.h"
+#include "virusdlg.h"
+#include "stdhelp.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_CHECKMARK           BITMAP  DISCARDABLE     "CHECK.BMP"
+IDB_CHECKMARK_MASK      BITMAP  DISCARDABLE     "CHECKM.BMP"
+IDB_NOWAYJOSE           BITMAP  DISCARDABLE     "NOWAY.BMP"
+IDB_NOWAYJOSE_MASK      BITMAP  DISCARDABLE     "NOWAYM.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_VIRUSLIST DIALOG DISCARDABLE  18, 18, 236, 192
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK | DS_CONTEXTHELP
+CAPTION "Virus List"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Infects",IDI_VL_INFTXT,103,32,60,12
+    LTEXT           "&Virus Name",IDI_VL_VNAMETXT,5,32,95,12
+    CONTROL         "",IDI_VL_LISTBOX,"VList",WS_VSCROLL | WS_TABSTOP | WS_EX_CLIENTEDGE | WS_BORDER |
+                    0x2081,5,46,165,121
+    CTEXT           "",IDI_VL_TEXT1,7,169,163,10,SS_NOPREFIX
+    CTEXT           "",IDI_VL_TEXT2,7,180, 163,10,SS_NOPREFIX
+    DEFPUSHBUTTON   "&Close",IDOK,181,7,46,15,WS_GROUP
+    PUSHBUTTON      "&Info...",IDI_VL_INFO,181,26,46,15
+    PUSHBUTTON      "&Print...",IDI_VL_PRINT,181,45,46,15
+    PUSHBUTTON      "&Help",9,181,64,46,15
+
+	PUSHBUTTON		"&Find...",IDI_VL_SEARCH,181,83,46,15
+	PUSHBUTTON      "Find &next",IDI_VL_SEARCHAGAIN,181,102,46,15
+
+    RTEXT           "Di&splay:",IDI_VL_DISPTXT,5,8,48,13
+    COMBOBOX        IDI_VL_COMBOX,55,6,115,50,CBS_DROPDOWNLIST | WS_VSCROLL |
+                    WS_TABSTOP
+END
+
+
+
+IDD_DELVIRUS DIALOG DISCARDABLE  18, 18, 220, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Delete Virus Definition"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDI_DV_FRAME,"Static",SS_BLACKFRAME,5,5,154,51
+    LTEXT           "",IDI_DV_RAP,14,11,136,40,SS_NOPREFIX
+    DEFPUSHBUTTON   "&Yes",IDOK,170,5,44,15,WS_GROUP
+    PUSHBUTTON      "&No",IDCANCEL,170,24,44,15
+    PUSHBUTTON      "&Help",9,170,43,44,15
+END
+
+IDD_VIRINFO DIALOG DISCARDABLE  7, 17, 292, 221
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK | DS_CONTEXTHELP
+CAPTION "Virus Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,230,6,50,15,WS_GROUP
+    PUSHBUTTON      "P&rint...",IDI_VI_PRINT,230,26,50,15
+    PUSHBUTTON      "&Help",9,230,46,50,15
+    PUSHBUTTON      "<< &Previous Virus",IDI_VI_PREV,40,200,85,15,WS_GROUP
+    PUSHBUTTON      "&Next Virus >>",IDI_VI_NEXT,165,200,85,15
+    RTEXT           "Virus Name:",IDI_VI_VNAMETXT,5,6,55,10
+    LTEXT           "",IDI_VI_VNAME,65,6,155,10,SS_NOPREFIX
+    RTEXT           "Aliases:",IDI_VI_ALIASTXT,5,18,55,10
+    LTEXT           "",IDI_VI_ALIAS,65,18,155,10,SS_NOPREFIX
+    RTEXT           "Infects:",IDI_VI_INFECTSTXT,5,30,55,10
+    LTEXT           "",IDI_VI_INFECTS,65,30,155,10,SS_NOPREFIX
+    RTEXT           "Likelihood:",IDI_VI_LIKETXT,5,42,55,10
+    LTEXT           "",IDI_VI_LIKE,65,42,155,10,SS_NOPREFIX
+    RTEXT           "Length:",IDI_VI_LENGTHTXT,5,54,55,10
+    LTEXT           "",IDI_VI_LENGTH,65,54,155,10,SS_NOPREFIX
+    GROUPBOX        "Characteristics",IDI_VI_TYPEGRP,5,74,280,54
+    PUSHBUTTON      "",IDI_VI_MACVIR,35,84,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Mac Virus",IDI_VI_MACVIRTXT,45,84,90,10
+    PUSHBUTTON      "",IDI_VI_MEMRES,35,84,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Memory Resident",IDI_VI_MEMRESTXT,45,84,90,10
+    PUSHBUTTON      "",IDI_VI_SIZESTLTH,35,98,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Size Stealth",IDI_VI_STEALTHTXT,45,98,90,10
+    PUSHBUTTON      "",IDI_VI_FULLSTLTH,35,112,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Full Stealth",IDI_VI_SLFENCRTXT,45,112,90,10
+    PUSHBUTTON      "",IDI_VI_TRIGGER,145,84,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Triggered Event",IDI_VI_OVERWRTXT,155,84,90,10
+    PUSHBUTTON      "",IDI_VI_ENCRYPT,145,98,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Encrypting",IDI_VI_COMPTXT,155,98,90,10
+    PUSHBUTTON      "",IDI_VI_POLYMORHP,145,112,8,10, WS_DISABLED | BS_OWNERDRAW
+    LTEXT           "Polymorphic",IDI_VI_PARASTXT,155,112,90,10
+    GROUPBOX        "Comments",IDI_VI_COMMGRP,5,138,280,51
+    LTEXT           "",IDI_VI_COMMENT,15,148,260,35,SS_NOPREFIX
+END
+
+
+IDD_VIRSEARCH DIALOG DISCARDABLE  18, 18, 220, 50  
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find a virus"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "P&lease enter the name of a virus to search for:",IDI_VI_SEARCHLABEL,14,11,236,10
+	EDITTEXT         IDI_VL_SEARCHTEXT,14,21,142,15  
+    DEFPUSHBUTTON   "OK",IDOK,170,5,44,15,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,170,24,44,15
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""virusstb.h""\r\n"
+    "#include ""virusdlg.h""\r\n"
+    "#include ""stdhelp.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE
+BEGIN
+    IDD_VIRINFO, DIALOG
+    BEGIN
+        RIGHTMARGIN, 238
+        BOTTOMMARGIN, 196
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NAVDBF              "Virus List"
+    IDS_ALLVIRUSES          "All Viruses"
+    IDS_COMMONVIRUSES       "Common Viruses"
+    IDS_PROGINFECTORS       "Program Viruses"
+    IDS_BOOTINFECTORS       "Boot Viruses"
+    IDS_STEALTH             "Stealth Viruses"
+    IDS_POLYMORPHIC         "Polymorphic Viruses"
+    IDS_MULTIPARTY          "Multipartite Viruses"
+    IDS_MACVIRUSES          "Macintosh Viruses"
+    IDS_N30                 "Unable to view Virus List\n\nVirus List is missing or damaged"
+    IDS_MEMALLOC            "Couldn't allocate enough memory"
+    IDS_FILEREAD            "File read error"
+    IDS_FILEWRITE           "File write error"
+    IDS_LISTBOXCREATE       "Error creating list boxes."
+    IDS_INTERNAL            "Application Error. Please call Symantec."
+    IDS_WRONGPARENT         "Application Error. The given window handle is not of the virus list."
+    IDS_MACRO               "Macro Viruses"
+    IDS_WINDOWS             "Windows Viruses"
+    IDS_AGENT               "Malicious Programs"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_DEF_VIRUSFILE       "virlist.txt"
+    IDS_DEF_INFOFILE        "virinfo.txt"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_VIRUSDEF            "%u Viruses Displayed"
+    IDS_NEWESTDEF           "Definitions Date: %s"
+    IDS_DELAREYOUSURE       "Are you sure you want to delete the virus definition for the virus '%s'?"
+    IDS_PRINTVIRUS          "Print Virus Information"
+    IDS_PRINTVIRUSLST       "Print Virus List"
+    IDS_INPD                "Common"
+    IDS_NOTINPD             "Rare"
+    IDS_YES                 "Yes"
+    IDS_NO                  "No"
+    IDS_PROGRAMS            "Programs"
+    IDS_BOOTRECORDS         "Boot Records"
+    IDS_BOOTANDPROGS        "Boot/Programs"
+    IDS_FLOPPY              "Floppy"
+    IDS_HARDDISK            "Hard Disk"
+    IDS_MASTER              "Master"
+    IDS_COM                 ".COM"
+	IDS_TITLE1				"Information"
+	IDS_MESSAGE				"Norton AntiVirus could not find a virus containing the search text you specified."
+	IDS_CANT_GET_NAV_DIR    "Unable to locate the Norton AntiVirus directory.  You may need to reinstall Norton AntiVirus."
+	IDS_NAV                 "Norton AntiVirus"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_EXE                 ".EXE"
+    IDS_SYS                 ".SYS"
+    IDS_1FILE               "%s Files"
+    IDS_2FILE               "%s and %s Files"
+    IDS_3FILE               "%s, %s, and %s Files"
+    IDS_1BOOT               "%s Boot Records"
+    IDS_2BOOT               "%s and %s Boot Records"
+    IDS_3BOOT               "%s, %s, and %s Boot"
+    IDS_BYTES               "%u bytes"
+    IDS_NA_BYTES            "N/A"
+    IDS_PRINTNOTOK          "Error Printing."
+    IDS_DISPLAY             "Display:"
+    IDS_VIRUS_NAME          "Virus Name"
+    IDS_STARS               "*********************************************************************"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_DOCUMENTS           "Documents"
+    IDS_NOTAPPLICABLE       "N/A" 
+END
+
+
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

@@ -1,0 +1,1100 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "qconres.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "NAVVer.h"
+#include "filever.h"
+#include "verinc.rc"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "qconres.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""NAVVer.h""\r\n"
+    "#include ""filever.h""\r\n"
+    "#include ""verinc.rc""\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "RES\\Toolbar.bmp"
+IDB_VIRUS_CHARS         BITMAP                  "RES\\viruschars.bmp"
+IDB_TREE_BITMAPS        BITMAP                  "RES\\tree_bit.bmp"
+IDB_BITMAP_RISK_LEVEL   BITMAP                  "RES\\RiskLevel.BMP"
+IDB_INTRODLG_BITMAP     BITMAP                  "RES\\IntroHeader.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  20, 20
+BEGIN
+    BUTTON      ID_FILE_ADD
+    SEPARATOR
+    BUTTON      ID_ACTION_PROPERTIES
+    BUTTON      ID_ACTION_REPAIR
+    BUTTON      ID_ACTION_RESTORE
+    BUTTON      ID_ACTION_DELETEITEM
+    BUTTON      ID_ACTION_SUBMITTOSARC
+    SEPARATOR
+    BUTTON      ID_VIEW_LIVEUPDATE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Add Item...\tCtrl+A",        ID_FILE_ADD
+        MENUITEM SEPARATOR
+        MENUITEM "&Create Report...\tCtrl+C",   ID_FILE_EXPORT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Action"
+    BEGIN
+        MENUITEM "D&etails...\tEnter",          ID_ACTION_PROPERTIES
+        MENUITEM SEPARATOR
+        MENUITEM "&Repair\tCtrl+R",             ID_ACTION_REPAIR
+        MENUITEM "Res&tore\tCtrl+T",            ID_ACTION_RESTORE
+        MENUITEM "&Delete\tDel",                ID_ACTION_DELETEITEM
+        MENUITEM "&Submit Item\tCtrl+S", ID_ACTION_SUBMITTOSARC
+    END
+    POPUP "&View"
+    BEGIN
+        POPUP "S&how"
+        BEGIN
+            MENUITEM "&Security Risks - Spyware, adware, and other security risks", 
+                                                    ID_VIEW_SHOW_EXPANDED_THREATS
+
+            MENUITEM "Security &Threats - Viruses and other security threats", 
+                                                    ID_VIEW_SHOW_VIRAL_THREATS
+
+        END
+        POPUP "Sort &Items"
+        BEGIN
+            MENUITEM "by &Name",                    ID_VIEW_ARRANGEICONS_BYTHREATNAME
+
+            MENUITEM "by &Quarantine Date",         ID_VIEW_ARRANGEICONS_BYQUARANTINEDATE
+
+            MENUITEM "by T&ype",                    ID_VIEW_ARRANGEICONS_BYTYPE
+
+            MENUITEM "by Risk &Impact",             ID_VIEW_ARRANGEICONS_BYRISK_LEVEL
+
+            MENUITEM "by &Dependencies",            ID_VIEW_ARRANGEICONS_BYDEPENDENCIES
+
+            MENUITEM "by &Submitted Date",          ID_VIEW_ARRANGEICONS_BYSUBMITTEDDATE
+
+            MENUITEM "by S&tatus",                  ID_VIEW_ARRANGEICONS_BYSTATUS
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Refresh\tF5",                ID_VIEW_REFRESH
+        MENUITEM "Live &Update...",             ID_VIEW_LIVEUPDATE
+        MENUITEM SEPARATOR
+        MENUITEM "&Options...\tCtrl+O",         ID_VIEW_OPTIONS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents and Index",         ID_VIEW_CONTENTS
+        MENUITEM SEPARATOR
+        MENUITEM "&About %s",                   ID_APP_ABOUT
+    END
+END
+
+IDR_VIEW_CONTEXT MENU 
+BEGIN
+    POPUP "View"
+    BEGIN
+        POPUP "Show"
+        BEGIN
+            MENUITEM "&Security Risks - Spyware, adware, and other security risks", 
+                                                    ID_VIEW_SHOW_EXPANDED_THREATS
+
+            MENUITEM "Security &Threats - Viruses and other security threats", 
+                                                    ID_VIEW_SHOW_VIRAL_THREATS
+
+        END
+        POPUP "Sort &Items"
+        BEGIN
+            MENUITEM "by &Name",                    ID_VIEW_ARRANGEICONS_BYTHREATNAME
+
+            MENUITEM "by &Quarantine Date",         ID_VIEW_ARRANGEICONS_BYQUARANTINEDATE
+
+            MENUITEM "by T&ype",                    ID_VIEW_ARRANGEICONS_BYTYPE
+
+            MENUITEM "by Risk &Impact",             ID_VIEW_ARRANGEICONS_BYRISK_LEVEL
+
+            MENUITEM "by &Dependencies",            ID_VIEW_ARRANGEICONS_BYDEPENDENCIES
+
+            MENUITEM "by &Submitted Date",          ID_VIEW_ARRANGEICONS_BYSUBMITTEDDATE
+
+            MENUITEM "by S&tatus",                  ID_VIEW_ARRANGEICONS_BYSTATUS
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Help &Contents and Index",    ID_VIEW_CONTENTS
+    END
+    POPUP "ViewOnItem"
+    BEGIN
+        MENUITEM "D&etails...",                 ID_ACTION_PROPERTIES
+        MENUITEM SEPARATOR
+        MENUITEM "&Repair\tCtrl+R",             ID_ACTION_REPAIR
+        MENUITEM "Res&tore\tCtrl+T",            ID_ACTION_RESTORE
+        MENUITEM "&Delete\tDel",                ID_ACTION_DELETEITEM
+        MENUITEM "&Submit Item\tCtrl+S", ID_ACTION_SUBMITTOSARC
+        MENUITEM SEPARATOR
+        POPUP "Show"
+        BEGIN
+            MENUITEM "&Security Risks - Spyware, adware, and other security risks", 
+                                                    ID_VIEW_SHOW_EXPANDED_THREATS
+
+            MENUITEM "Security &Threats - Viruses and other security threats", 
+                                                    ID_VIEW_SHOW_VIRAL_THREATS
+
+        END
+        POPUP "Sort &Items"
+        BEGIN
+            MENUITEM "by &Name",                    ID_VIEW_ARRANGEICONS_BYTHREATNAME
+
+            MENUITEM "by &Quarantine Date",         ID_VIEW_ARRANGEICONS_BYQUARANTINEDATE
+
+            MENUITEM "by T&ype",                    ID_VIEW_ARRANGEICONS_BYTYPE
+
+            MENUITEM "by Risk &Impact",             ID_VIEW_ARRANGEICONS_BYRISK_LEVEL
+
+            MENUITEM "by &Dependencies",            ID_VIEW_ARRANGEICONS_BYDEPENDENCIES
+
+            MENUITEM "by &Submitted Date",          ID_VIEW_ARRANGEICONS_BYSUBMITTEDDATE
+
+            MENUITEM "by S&tatus",                  ID_VIEW_ARRANGEICONS_BYSTATUS
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Help &Contents and Index",    ID_VIEW_CONTENTS
+    END
+END
+
+IDR_VIEW_CONTEXT_NO_EXPANDED_THREAT MENU 
+BEGIN
+    POPUP "View"
+    BEGIN
+        POPUP "Sort &Items"
+        BEGIN
+            MENUITEM "by &Name",                    ID_VIEW_ARRANGEICONS_BYTHREATNAME
+
+            MENUITEM "by &Quarantine Date",         ID_VIEW_ARRANGEICONS_BYQUARANTINEDATE
+
+            MENUITEM "by T&ype",                    ID_VIEW_ARRANGEICONS_BYTYPE
+
+            MENUITEM "by Risk &Impact",             ID_VIEW_ARRANGEICONS_BYRISK_LEVEL
+
+            MENUITEM "by &Submitted Date",          ID_VIEW_ARRANGEICONS_BYSUBMITTEDDATE
+
+            MENUITEM "by S&tatus",                  ID_VIEW_ARRANGEICONS_BYSTATUS
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Help &Contents and Index",    ID_VIEW_CONTENTS
+    END
+    POPUP "ViewOnItem"
+    BEGIN
+        MENUITEM "D&etails...",                 ID_ACTION_PROPERTIES
+        MENUITEM SEPARATOR
+        MENUITEM "&Repair\tCtrl+R",             ID_ACTION_REPAIR
+        MENUITEM "Res&tore\tCtrl+T",            ID_ACTION_RESTORE
+        MENUITEM "&Delete\tDel",                ID_ACTION_DELETEITEM
+        MENUITEM "&Submit Item\tCtrl+S", ID_ACTION_SUBMITTOSARC
+        MENUITEM SEPARATOR
+        POPUP "Sort &Items"
+        BEGIN
+            MENUITEM "by &Name",                    ID_VIEW_ARRANGEICONS_BYTHREATNAME
+
+            MENUITEM "by &Quarantine Date",         ID_VIEW_ARRANGEICONS_BYQUARANTINEDATE
+
+            MENUITEM "by T&ype",                    ID_VIEW_ARRANGEICONS_BYTYPE
+
+            MENUITEM "by Risk &Impact",             ID_VIEW_ARRANGEICONS_BYRISK_LEVEL
+
+            MENUITEM "by &Submitted Date",          ID_VIEW_ARRANGEICONS_BYSUBMITTEDDATE
+
+            MENUITEM "by S&tatus",                  ID_VIEW_ARRANGEICONS_BYSTATUS
+
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Help &Contents and Index",    ID_VIEW_CONTENTS
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    VK_DELETE,      ID_ACTION_DELETEITEM,   VIRTKEY, NOINVERT
+    VK_RETURN,      ID_ACTION_PROPERTIES,   VIRTKEY, NOINVERT
+    "R",            ID_ACTION_REPAIR,       VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_ACTION_RESTORE,      VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_ACTION_SUBMITTOSARC, VIRTKEY, CONTROL, NOINVERT
+    "A",            ID_FILE_ADD,            VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_FILE_EXPORT,         VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_F1,          ID_VIEW_CONTENTS,       VIRTKEY, NOINVERT
+    "O",            ID_VIEW_OPTIONS,        VIRTKEY, CONTROL, NOINVERT
+    VK_F5,          ID_VIEW_REFRESH,        VIRTKEY, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_GENERAL_PAGE DIALOGEX 0, 0, 228, 194
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,7,
+                    7,25,23
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,7,33,
+                    214,1
+    LTEXT           "Type:",IDC_STATIC,7,39,59,8
+    LTEXT           "Size:",IDC_STATIC,7,88,59,8
+    LTEXT           "Static",IDC_NAME_EDIT,42,12,177,12,WS_TABSTOP
+    EDITTEXT        IDC_SIZE_EDIT,71,88,151,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    EDITTEXT        IDC_TYPE_EDIT,71,39,151,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Quarantined:",IDC_STATIC,7,100,59,8
+    EDITTEXT        IDC_QUARANTINE_EDIT,71,100,151,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Submitted:",IDC_STATIC,7,112,59,8
+    EDITTEXT        IDC_SUBMITTED_EDIT,71,112,151,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    GROUPBOX        "Recommendation",IDC_STATIC,7,126,214,61
+    LTEXT           "Static",IDC_INFORMATION_EDIT,13,138,202,43
+    CONTROL         "",IDC_STATIC,"Static",SS_BLACKFRAME | SS_SUNKEN,6,83,
+                    214,1
+    LTEXT           "Risk Impact:",IDC_DETAILS_GENERAL_HEADING_RISK_LEVEL,7,
+                    51,59,8,NOT WS_VISIBLE
+    LTEXT           "Dependencies:",IDC_DETAILS_GENERAL_HEADING_DEPENDENCIES,
+                    7,63,59,8,NOT WS_VISIBLE
+    LTEXT           "Static",IDC_DETAILS_GENERAL_RISK_LEVEL,71,51,151,8,NOT 
+                    WS_VISIBLE | WS_TABSTOP
+    LTEXT           "Static",IDC_DETAILS_GENERAL_DEPENDENCIES,72,63,150,18,
+                    NOT WS_VISIBLE
+END
+
+IDD_VIRUS_PAGE DIALOG  0, 0, 228, 194
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Virus Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Risk name:",IDC_STATIC,7,7,49,8
+    LTEXT           "Aliases:",IDC_STATIC,7,18,49,8
+    LTEXT           "Infects:",IDC_STATIC,7,29,49,8
+    LTEXT           "Likelihood:",IDC_STATIC,7,40,49,8
+    LTEXT           "Length:",IDC_STATIC,7,51,49,8
+    GROUPBOX        "Characteristics",IDC_STATIC,7,67,214,49
+    GROUPBOX        "Comments",IDC_STATIC,7,121,214,66
+    LTEXT           "Virus comments here",IDC_COMMENTS_STATIC,13,130,201,51
+    LTEXT           "Static",IDC_VIRUS_NAME_STATIC,63,7,158,8
+    LTEXT           "Static",IDC_ALIASES_STATIC,63,18,158,8
+    LTEXT           "Static",IDC_INFECTS_STATIC,63,29,158,8
+    LTEXT           "Static",IDC_LIKELIHOOD_STATIC,63,40,158,8
+    LTEXT           "Static",IDC_LENGTH_STATIC,63,51,158,8
+    LTEXT           "Memory resident",IDC_STATIC,27,80,84,8
+    LTEXT           "Size stealth",IDC_STATIC,27,90,84,8
+    LTEXT           "Full stealth",IDC_STATIC,27,100,84,8
+    LTEXT           "Triggered event",IDC_STATIC,132,80,84,8
+    LTEXT           "Encrypting",IDC_STATIC,132,90,84,8
+    LTEXT           "Polymorphic",IDC_STATIC,132,100,84,8
+    CONTROL         "",IDC_MEMORY_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,14,81,10,10
+    CONTROL         "",IDC_SIZE_STEALTH_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,14,91,10,10
+    CONTROL         "",IDC_FULL_STEALTH_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,14,101,10,10
+    CONTROL         "",IDC_TRIGGER_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,119,81,10,10
+    CONTROL         "",IDC_ENCRYPTING_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,119,91,10,10
+    CONTROL         "",IDC_POLY_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    119,101,10,10
+END
+
+IDD_MOVE_FILE_TEMPLATE DIALOG  0, 0, 403, 21
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,0,0,404,1
+    CONTROL         "&Remove file from original location",IDC_DELETE_CHECK,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,6,119,10
+END
+
+IDD_RESULTS_DIALOG DIALOGEX 0, 0, 297, 151
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Restore results"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,240,130,50,14
+    CONTROL         "List1",IDC_ITEM_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | 
+                    WS_BORDER | WS_TABSTOP,8,7,282,117
+    DEFPUSHBUTTON   "&Details",IDC_BTN_DETAILS,8,130,50,14
+END
+
+IDD_PROGRESS_DIALOG DIALOG  0, 0, 183, 60
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,68,39,50,14
+    CONTROL         "Progress1",IDC_PROGDLG_PROGRESS,"msctls_progress32",
+                    WS_BORDER,12,18,158,13
+    LTEXT           " 0 %",IDC_PROGDLG_PERCENT,86,7,18,8
+END
+
+IDD_OPTIONS_GENERAL_PAGE DIALOGEX 0, 0, 225, 138
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "P&rompt when new virus definitions are present.",
+                    IDC_SCAN_PROMPT_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,13,19,199,10
+    GROUPBOX        "Startup scan",IDC_STATIC,7,7,211,29
+    GROUPBOX        "Welcome window",IDC_INTRO_GROUP,7,41,211,29,NOT 
+                    WS_VISIBLE
+    CONTROL         "Display &Welcome window.",IDC_INTRO_CHECK,"Button",
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_DISABLED | 
+                    WS_TABSTOP,14,54,199,10
+END
+
+IDD_EXPORT_DIALOG DIALOGEX 0, 0, 355, 68
+STYLE DS_SETFONT | DS_3DLOOK | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "&All items",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,13,20,114,10
+    CONTROL         "&Current view only",IDC_RADIO2,"Button",
+                    BS_AUTORADIOBUTTON,13,33,118,10
+    LTEXT           "Static",IDC_NAME_STATIC,25,45,107,8
+    CONTROL         "Stan&dard",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,149,20,118,10
+    CONTROL         "C&omma delimited",IDC_RADIO4,"Button",
+                    BS_AUTORADIOBUTTON,149,33,118,10
+    GROUPBOX        "What to export",IDC_STATIC,7,7,130,53
+    GROUPBOX        "Formatting",IDC_STATIC,143,7,130,53
+END
+
+IDD_SE_PAGE DIALOGEX 0, 0, 228, 194
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Side Effect Info"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Risk name:",IDC_STATIC,7,14,49,8
+    LTEXT           "Static",IDC_VIRUS_NAME_STATIC,61,14,158,8
+    LTEXT           "Registry Side Effects:",IDC_STATIC,7,34,72,8
+    EDITTEXT        IDC_FILES_EDIT,7,121,212,66,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_VSCROLL | WS_HSCROLL
+    EDITTEXT        IDC_REGKEYS_EDIT,7,44,212,57,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
+                    WS_VSCROLL | WS_HSCROLL
+    LTEXT           "File Side Effects:",IDC_STATIC,7,110,72,8
+END
+
+IDD_REMEDIATION_PAGE DIALOGEX 0, 0, 228, 194
+STYLE DS_SETFONT | WS_CHILD | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Affected Areas"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Name:",IDC_STATIC,7,14,49,8
+    LTEXT           "Static",IDC_VIRUS_NAME_STATIC,61,14,158,8
+    LTEXT           "Affected Areas",IDC_STATIC,7,34,212,8
+    LTEXT           "Details",IDC_STATIC,7,110,72,8
+    CONTROL         "",IDC_LST_COMPONENTS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_TABSTOP,7,42,212,63
+    CONTROL         "",IDC_LST_DETAILS,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_TABSTOP,7,118,212,63
+END
+
+IDD_RISK_MATRIX_PAGE DIALOGEX 0, 0, 228, 194
+STYLE DS_SETFONT | WS_CHILD | WS_CAPTION
+CAPTION "Risk Impact"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Security risk impact is based on Performance, Privacy, Removal and Stealth impact.  Click a category for more details.",
+                    IDC_STATIC,7,7,213,25
+    CONTROL         "",IDC_RISK_MATRIX_PICTURE_OVERALL,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,98,35,29,9
+    LTEXT           "Overall Risk Impact:",IDC_RISK_LINK_OVERALL,7,33,85,8,
+                    SS_NOTIFY | WS_TABSTOP
+    LTEXT           "Static",IDC_RISK_MATRIX_LEVEL_OVERALL,134,33,86,8
+    LTEXT           "Performance:",IDC_RISK_LINK_PERFORMANCE,27,44,76,8,
+                    SS_NOTIFY | WS_TABSTOP
+    LTEXT           "Privacy:",IDC_RISK_LINK_PRIVACY,27,55,76,8,SS_NOTIFY | 
+                    WS_TABSTOP
+    LTEXT           "Removal:",IDC_RISK_LINK_REMOVAL,27,66,77,8,SS_NOTIFY | 
+                    WS_TABSTOP
+    LTEXT           "Stealth:",IDC_RISK_LINK_STEALTH,27,77,77,8,SS_NOTIFY | 
+                    WS_TABSTOP
+    CONTROL         "",IDC_RISK_MATRIX_PICTURE_PERFORMANCE,"Button",
+                    BS_OWNERDRAW | WS_DISABLED,98,46,29,9
+    CONTROL         "",IDC_RISK_MATRIX_PICTURE_PRIVACY,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,98,57,29,9
+    CONTROL         "",IDC_RISK_MATRIX_PICTURE_REMOVAL,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,98,68,29,9
+    LTEXT           "Static",IDC_RISK_MATRIX_LEVEL_PERFORMANCE,134,44,86,8
+    LTEXT           "Static",IDC_RISK_MATRIX_LEVEL_PRIVACY,134,55,86,8
+    LTEXT           "Static",IDC_RISK_MATRIX_LEVEL_REMOVAL,134,66,86,8
+    GROUPBOX        "<Name> Risk Impact",IDC_RISK_MATRIX_DETAIL_HEADER,7,91,
+                    213,96,BS_NOTIFY
+    CONTROL         "",IDC_RISK_MATRIX_PICTURE_STEALTH,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,98,79,29,9
+    LTEXT           "Static",IDC_RISK_MATRIX_LEVEL_DETAIL,50,101,170,8
+    LTEXT           "Static",IDC_RISK_MATRIX_DETAIL_DESCRIPTION,15,113,197,
+                    67
+    CONTROL         "",IDC_RISK_MATRIX_PICTURE_DETAIL,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,15,102,29,9
+    LTEXT           "Static",IDC_RISK_MATRIX_LEVEL_STEALTH,134,77,86,8
+END
+
+IDD_INTRO_DIALOG DIALOGEX 0, 0, 275, 171
+STYLE DS_SETFONT | WS_POPUP | WS_BORDER
+FONT 10, "Arial", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "&OK",IDOK,116,136,50,14
+    CONTROL         "Check1",IDC_INTRODLG_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,154,261,10
+    LTEXT           "Staticq",IDC_INTRODLG_INTRO,7,42,261,18
+    LTEXT           "Staticq",IDC_INTRODLG_EXPANDED_THREAT_HEADING,7,64,261,
+                    8
+    LTEXT           "Static",IDC_INTRODLG_EXPANDED_THREAT_DESCRIPTION,7,72,
+                    261,25
+    LTEXT           "Staticq",IDC_INTRODLG_VIRAL_HEADING,7,101,261,8
+    LTEXT           "Static",IDC_INTRODLG_VIRAL_DESCRIPTION,7,109,261,25
+    CONTROL         182,IDC_INTRODLG_GRAPHIC,"Static",SS_BITMAP,7,7,261,26
+END
+
+IDD_RESTORE_DIALOG DIALOGEX 0, 0, 243, 68
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "&Yes",IDYES,67,47,50,14
+    PUSHBUTTON      "&No",IDNO,126,47,50,14
+    LTEXT           "Static",IDC_RESTOREDLG_TEXT,35,7,201,25
+    ICON            "",IDC_RESTOREDLG_ICON,7,7,21,20
+    CONTROL         "Check1",IDC_RESTOREDLG_CHECK,"Button",BS_AUTOCHECKBOX | 
+                    BS_TOP | BS_MULTILINE | NOT WS_VISIBLE | WS_TABSTOP,7,32,
+                    229,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_GENERAL_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 221
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_VIRUS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 221
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_MOVE_FILE_TEMPLATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 396
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 14
+    END
+
+    IDD_RESULTS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 8
+        RIGHTMARGIN, 290
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 144
+    END
+
+    IDD_PROGRESS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 176
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 53
+    END
+
+    IDD_OPTIONS_GENERAL_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_EXPORT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 348
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 60
+    END
+
+    IDD_SE_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_REMEDIATION_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 219
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_RISK_MATRIX_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_INTRO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 268
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 164
+    END
+
+    IDD_RESTORE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 236
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 61
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_FILE_SIDE_EFFECTS "No file side effects"
+    IDS_NO_REG_SIDE_EFFECTS "No registry key side effects"
+    IDS_REMEDIATION_TYPE_REGISTRY "Registry Entries"
+    IDS_REMEDIATION_TYPE_FILE "Files"
+    IDS_REMEDIATION_TYPE_UNKNOWN "Unknown Component (0x%1!04X!)"
+    IDS_REMEDIATION_TYPE_RUNNING_PROCESS "Running Processes"
+    IDS_REMEDIATION_TYPE_BATCH_FILE "Batch File Entries"
+    IDS_REMEDIATION_TYPE_INI_FILE "INI File Entries"
+    IDS_REMEDIATION_TYPE_RUNNING_SERVICE "Running Services"
+    IDS_REMEDIATION_TYPE_FILE_INFECTION "Infected Files"
+    IDS_REMEDIATION_TYPE_COM_ENTRY "COM Objects"
+    IDS_RESULT_ACTION_ERROR "There were errors."
+    IDS_RESULTS_DETAILS     "Details"
+    IDS_THREAT_BACKUP_FILES "Security Risks"
+    IDS_LOG_DESCRIPTION_HEADER "Affected Areas:"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    IDS_UNABLE_TO_INITIALIZE_DEFUTILS 
+                            "Your virus protection files are missing or corrupt. Please run LiveUpdate to download new ones."
+    IDS_RESULT_ACTION_DELETED "Deleted"
+    IDS_OEH_SOURCE          "Suspicious email worm"
+    IDS_RESULT_ACTION_CANCELLED "Restore cancelled"
+    IDS_UNKNOWN_THREAT_CATEGORY "Unknown"
+    IDS_DEFAULT_REMEDIATION_TYPE "Additional Areas"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FILE_NAME           "File Name"
+    IDS_QUARANTINE_DATE     "Date"
+    IDS_ORIG_LOCATION       "Original Location"
+    IDS_LAST_SCAN_DATE      "Last scanned"
+    IDS_TOOLBAR_TITLE       "Main toolbar"
+    IDS_PROP_TITLE_FORMAT   "Details for %s"
+    IDS_CATEGORY_NAME       "Type"
+    IDS_FILE_TYPE_FORMAT    "%s File"
+    IDS_FILE                "File"
+    IDS_APPLICATION         "Application"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Norton Quarantine and Restore"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RESTORE_ITEMS       "Restore items"
+    IDS_CLOSE               "&Close"
+    IDS_ALT                 "Alt+"
+    IDS_CTRL                "Ctrl+"
+    IDS_SHIFT               "Shift+"
+    IDS_DEL                 "Del"
+    IDS_RECOMMEND_COMPRESSED_FILE 
+                            "Compressed files can be held in Quarantine and isolated from the rest of your system.  Decompress the files within this file to repair or submit them."
+    IDS_ERROR_STARTING_SCANANDDELIVER 
+                            "Error starting Scan and Deliver.  You may have to uninstall and re-install %s."
+    IDS_WARCHILD_SOURCE     "Suspicious script"
+    IDS_ERR_DEFS_OLD        "Your virus protection files are more than 2 weeks old. Your security risk may be a known risk\nthat is repaired by the latest virus definitions. Please run LiveUpdate to get the latest\nvirus definitions before submitting your infected file to Symantec Security Response."
+    IDS_ERR_SUBSCRIPTION_EXPIRED 
+                            "Your subscription to virus protection updates has expired. Please renew now."
+    IDS_ERROR_RETURNING_SELECTED_RESOURCE_NAME 
+                            "Error occurred when retrieving network selection."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUS_TEXT_QUARANTINED 
+                            "You should attempt to repair this item and return it to its original location."
+    IDS_STATUS_TEXT_SUBMITTED 
+                            "This item was submitted to Symantec Security Response on %s."
+    IDS_STATUS_TEXT_BACKUP  "This is an infected back-up copy of a repaired item."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RECOMMEND_QUARANTINE 
+                            "Select ""Repair Item"" to return an uninfected copy of this file to its original location.  If the file cannot be repaired, you should consider submitting it to Symantec for analysis."
+    IDS_RECOMMEND_SUBMITTED "This item has been submitted to Symantec.  Symantec will respond with instructions on how to proceed.  If you have not received a response within two weeks, contact technical support."
+    IDS_RECOMMEND_BACKUP    "This is a Backed-Up copy of a file that has been repaired.  When you are confident that the repaired item is working properly, delete this item."
+    IDS_USERNAME            "User name"
+    IDS_ADD_BUTTON          "&Add"
+    IDS_ERROR_NO_ITEMS_IN_VIEW "There are no items to report."
+    IDS_FILE_IN_USE         "Error restoring file.\n\nThe file %s is in use by another process."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_READING_OPTIONS 
+                            "Error reading options file.  You may have to uninstall and re-install %s."
+    IDS_NEW_DEFS_AVAILIABLE "New virus definitions available"
+    IDS_NEW_DEFS_AVAILIABLE_TEXT 
+                            "New virus definitions have been installed since the last\ntime you were here.  Would you like to attempt repairs on\nitems in quarantine?"
+    IDS_ERROR_DISK_SPACE    "Out of disk space on drive %c:.  Please free up some disk space and then retry this operation."
+    IDS_RESULT_ACTION_COMPRESSED 
+                            "Cannot repair compressed file.  No action taken."
+    IDS_EXPORT_FILE_TITLE   "Create Report"
+    IDS_EXPORT_FILTER_STRING "Text Files (*.TXT)|*.TXT||"
+    IDS_EXPORT_FILENAME     "Quarantine.txt"
+    IDS_ERROR_EXPORTING_FILE 
+                            "Error creating report.  Make sure you have enough disk space and have access to the drive you are saving to."
+    IDS_EXPORT_DELIMIT_DESC """Name"",""Location"",""Size"",""Date Quarantined"",""Submitted to Symantec"",""Status"",""User Name"",""Machine Name"",""Domain Name"",""Risk Name"""
+    IDS_EXPORT_HEADER_FORMAT "%s Report\nCreated:  %s"
+    IDS_EXPORT_ITEM_HEADER  "File Name\nLocation\nStatus                     Size                         Risk Name\nUser Name                  Machine Name                 Domain\nDate Quarantined\nSubmitted to Symantec\n"
+    IDS_MULTIPLE_RESTORE_WARNING_VIRAL 
+                            "Warning: You are about to restore potentially infected items.\nAre you sure you want to restore these %d items?"
+    IDS_RESTORE_WARNING_VIRAL 
+                            "Warning: You are about to restore a potentially infected item.\nAre you sure you want to restore this item?"
+    IDS_MULTIPLE_REPAIR_WARNING 
+                            "You are about to repair and restore these %d items.  Are you sure you want to continue?"
+    IDS_REPAIR_WARNING      "You are about to repair and restore this item.  Are you sure you want to continue?"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROPERTIES_BTN_TEXT "Details"
+    IDS_REPAIR_BTN_TEXT     "Repair Item"
+    IDS_RESTORE_BTN_TEXT    "Restore Item"
+    IDS_DELETE_BTN_TEXT     "Delete Item"
+    IDS_SUBMIT_BTN_TEXT     "Submit Item"
+    IDS_RESULT_REPAIR_FAILED "Repair failed"
+    IDS_OPTIONS_TITLE       "%s options"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COLNAME_RESULTS     "Results"
+    IDS_RESULT_ACTION_NOACTION "No action taken."
+    IDS_RESULT_ACTION_RESTORED "Restored"
+    IDS_RESTORE_OVERWRITE_TITLE "Overwrite warning"
+    IDS_RESTORE_OVERWRITE_FORMAT 
+                            "The file: %s\nalready exists.  Do you want to overwrite this file?"
+    IDS_PROGRESS_CAPTION    "Processing"
+    IDS_REPAIR_RESULTS      "Repair results"
+    IDS_RESTORE_RESULTS     "Restore results"
+    IDS_RESULT_ACTION_REPAIRED "Repaired"
+    IDS_UNKNOWN_THREAT_NAME "Unknown (%1!s!)"
+    IDS_STATUS_QUARANTINED  "Quarantined"
+    IDS_STATUS_SUBMITTED    "Submitted"
+    IDS_STATUS_BACKUP       "Backup of an infected file"
+    IDS_ADD_BTN_TEXT        "Add Item"
+    IDS_REFRESH_BTN_TEXT    "Refresh"
+    IDS_LU_BTN_TEXT         "LiveUpdate"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_ADDING_TO_QUARANTINE 
+                            "Error adding file to quarantine.\n\nThis file may be in use by another process or you may be out of disk space."
+    IDS_KILOBYTES           "KB"
+    IDS_MEGABYTES           "MB"
+    IDS_GIGABYTES           "GB"
+    IDS_BYTES_STRING_FORMAT "%d bytes"
+    IDS_SUBMITTED_DATE      "Submitted to Symantec"
+    IDS_NOT_SUBMITTED       "Not submitted"
+    IDS_MULTIPLE_DELETE_WARNING 
+                            "Warning: You are about to delete these items permanently.\nAre you sure you want to continue?"
+    IDS_DELETE_WARNING      "Warning: You are about to delete this item permanently.\nAre you sure you want to continue?"
+    IDS_ERROR_DELETING_FILE "Unable to remove %s from its current location.\n\nThis file may be in use by another process."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ADD_FILTER_STRING   "All Files (*.*)|*.*||"
+    IDS_ADD_FILE_TITLE      "Add to quarantine"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_REFRESH         "Refresh the contents of the window.\nRefresh"
+    ID_VIEW_OPTIONS         "Change quarantine options.\nOptions"
+    ID_VIEW_WHATSTHIS       "Displays context sensitive help"
+    ID_VIEW_CONTENTS        "Display the table of contents for the online documentation\nContents"
+    ID_ACTION_RESTORE       "Restore selected items without repairing.\nRestore selected items without repairing."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_ACTION_REPAIR        "Scan and repair selected items.\nScan and repair selected items."
+    ID_ACTION_DELETEITEM    "Permanently remove selected items from your computer.\nPermanently remove selected items from your computer."
+    ID_ACTION_PROPERTIES    "Display details of the selected item.\nDisplay details of the selected item."
+    ID_ACTION_SUBMITTOSARC  "Send this item to Symantec Security Response.\nSend this item to Symantec Security Response."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FILE_SIZE_FORMAT    "%d Bytes"
+    IDS_THREAT_NAME         "Name"
+    IDS_STATUS              "Status"
+    IDS_ERROR_CREATING_QUARANTINE_OBJECT 
+                            "Error creating quarantine object.  You may have to uninstall and re-install %s."
+    IDS_NA                  "N/A"
+    IDS_1FILE               "%s Files"
+    IDS_2FILE               "%s and %s Files"
+    IDS_3FILE               "%s, %s, and %s Files"
+    IDS_1BOOT               "%s Boot Records"
+    IDS_2BOOT               "%s and %s Boot Records"
+    IDS_3BOOT               "%s, %s, and %s Boot"
+    IDS_NA_BYTES            "N/A"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_LIVEUPDATE      "Perform product update via Live Update.\nLive Update"
+    ID_HELP_CONTENTS        "Display the table of contents for the online documentation\nContents"
+    ID_VIEW_TREE            "Shows or hides the tree view\nTree"
+    ID_FILE_ADD             "Add an item to Quarantine manually\nAdd an item to Quarantine manually"
+    ID_VIEW_ARRANGEICONS_BYNAME "Sort items alphabetically by name.\nBy Name"
+    ID_VIEW_ARRANGEICONS_BYLOCATION 
+                            "Sort items alphabetically by original location.\nBy Location"
+    ID_VIEW_ARRANGEICONS_BYQUARANTINEDATE 
+                            "Sort items by quarantined date, oldest to newest.\nBy Quarantine Date"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_HARDDISK            "Hard Disk"
+    IDS_MASTER              "Master"
+    IDS_COM                 ".COM"
+    IDS_EXE                 ".EXE"
+    IDS_SYS                 ".SYS"
+    IDS_FLOPPY              "Floppy"
+    IDS_COMMON              "Common"
+    IDS_RARE                "Rare"
+    IDS_BYTES_FORMAT        "%u bytes"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_ARRANGEICONS_BYDEPENDENCIES 
+                            "Sort items by dependencies.\nBy Dependencies"
+    ID_VIEW_ARRANGEICONS_BYRISK_LEVEL 
+                            "Sort items by Risk Impact.\nBy Risk Impact"
+    ID_VIEW_ARRANGEICONS_BYSUBMITTEDDATE 
+                            "Sort items by submitted date, oldest to newest.\nBy Submitted Date"
+    ID_VIEW_ARRANGEICONS_BYSTATUS "Sort items by status.\nBy Status"
+    ID_VIEW_ARRANGEICONS_BYTYPE "Sort items alphabetically by type.\nBy Type"
+    ID_VIEW_ARRANGEICONS_BYTHREATNAME 
+                            "Sort items alphabetically by name.\nBy Name"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_EXPORT          "Creates a report of quarantined and backed-up items.\nCreate Report"
+    ID_WHATS_THIS           "Displays context sensitive help."
+    IDS_STATUS_THREAT_BACKUP "Backup"
+    IDS_RECOMMEND_THREAT_BACKUP 
+                            "This is a backed-up copy of a security risk program that has been removed. You can restore the security risk program if another program needs it in order to function. Delete this item if no other programs were affected by its removal."
+    IDS_STATUS_TEXT_THREAT_BACKUP 
+                            "This is a back-up copy of a deleted security risk."
+    ID_VIEW_SHOW_VIRAL_THREATS 
+                            "Show Viruses and Other Security Threats.\nSecurity Threats"
+    ID_VIEW_SHOW_EXPANDED_THREATS 
+                            "Show Spyware and Other Security Risks.\nSecurity Risks"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TREE_ROOT_EXPANDED_THREATS 
+                            "Security Risks - Spyware, adware, and other security risks"
+    IDS_COLNAME_THREAT_NAME "Risk Name"
+    IDS_COLNAME_ITEM_NAME   "Item Detail"
+    IDS_ADMIN_RIGHTS        "Administrative rights are required to run this component.\n\n%s will now exit."
+    IDS_TREE_ROOT_VIRAL_THREATS 
+                            "Security Threats - Viruses and other security threats"
+    IDS_ERR_SAFEMODE_STARTING_SCANANDDELIVER 
+                            "Submitting items to Symantec Security Response is not available in Safe Mode."
+    IDS_ERROR_PROBLEM_LOADING_VIRUS_DEFS 
+                            "Error creating quarantine object - corrupted definitions.  Please follow the link below for directions."
+    IDS_THREAT_MATRIX_LOW   "Low"
+    IDS_THREAT_MATRIX_MED   "Medium"
+    IDS_THREAT_MATRIX_HIGH  "High"
+    IDS_THREAT_MATRIX_DESC_OVERALL_HIGH 
+                            "A high overall risk impact means that your personal information and computing activity are severely affected and possibly difficult or impossible to remove without assistance."
+    IDS_THREAT_MATRIX_DESC_OVERALL_MED 
+                            "A medium overall risk impact means that your personal information and computing activity are noticeably affected. Your Web browser might open an unexpected Web page, or you might see pop-up windows more frequently. These programs might track your activity and report it to a third party."
+    IDS_THREAT_MATRIX_DESC_OVERALL_LOW 
+                            "A low overall risk impact means that a program might be tracking your Web browsing activity and personal information, but it is not sending that information to a third party. Your Web browser and computer's performance are not noticeably affected, and the program can be removed easily."
+    IDS_THREAT_MATRIX_DESC_PERF_HIGH 
+                            "Indicates how much a security risk is affecting your computer's performance.\n\nYour computer slows down or crashes, and it might allow the risk to download and install additional security risks. There is a measurable impact on system stability and/or performance."
+    IDS_THREAT_MATRIX_DESC_PERF_MED 
+                            "Indicates how much a security risk is affecting your computer’s performance.\n\nFrequent pop-up windows, home page replacement, redirection of Web pages and search results."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_THREAT_MATRIX_DESC_PERF_LOW 
+                            "Indicates how much a security risk is affecting your computer's performance.\n\nLittle or no impact on performance."
+    IDS_THREAT_MATRIX_DESC_PRIV_HIGH 
+                            "Privacy Impact measures the extent to which a security risk releases your private information to remote systems.\n\nRelease of bank and credit card, and social security numbers, passwords and other sensitive or confidential information."
+    IDS_THREAT_MATRIX_DESC_PRIV_MED 
+                            "Privacy Impact measures the extent to which a security risk releases your private information to remote systems.\n\nRelease of less sensitive information, such as tracking your Web browsing; having an unannounced privacy policy (for example, in a license agreement), having a privacy policy inconsistent with its behavior."
+    IDS_THREAT_MATRIX_DESC_PRIV_LOW 
+                            "Privacy Impact measures the extent to which a security risk releases your private information to remote systems.\n\nMinimal or no privacy use of private or confidential information."
+    IDS_THREAT_MATRIX_DESC_REMOVE_HIGH 
+                            "Removal measures how easy it is to remove a given security risk from computer systems.\n\nApparent avoidance of uninstall, including unsolicited re-install and techniques to restart user-terminated processes; Non-functional or incomplete uninstall such that security risk continues to operate; Lack of uninstall."
+    IDS_THREAT_MATRIX_DESC_REMOVE_MED 
+                            "Removal measures how easy it is to remove a given security risk from computer systems.\n\nLack of uninstall or self-guided uninstall instructions."
+    IDS_THREAT_MATRIX_DESC_REMOVE_LOW 
+                            "Removal measures how easy it is to remove a given security risk from computer systems.\n\nSecurity risk can be effectively removed such that it no longer operates."
+    IDS_THREAT_MATRIX_DESC_STEALTH_HIGH 
+                            "Stealth measures the number of tactics that a security risk uses to conceal itself from your notice.\n\nUses a number of camouflage techniques such as installing itself silently, displaying no visible dialog boxes or windows, and concealing its processes from the Windows operating system. It might also use obscure file or process names, or re-use common Windows program names."
+    IDS_THREAT_MATRIX_DESC_STEALTH_MED 
+                            "Stealth measures the number of tactics that a security risk uses to conceal itself from your notice.\n\nExhibits some but not all behaviors such as silent install, no user interface or concealment."
+    IDS_THREAT_MATRIX_DESC_STEALTH_LOW 
+                            "Stealth measures the number of tactics that a security risk uses to conceal itself from your notice.\n\nNormal install and application behaviors."
+    IDS_OVERALL             "Overall Risk Impact"
+    IDS_PERFORMANCE         "Performance"
+    IDS_PRIVACY             "Privacy"
+    IDS_REMOVAL             "Removal"
+    IDS_STEALTH             "Stealth"
+    IDS_DEPENDENCIES        "Dependencies"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RISK_LEVEL          "Risk Impact"
+    IDS_DEPENDENCIES_YES    "Yes (Other programs may require this item to function.)"
+    IDS_DEPENDENCIES_NO     "No known dependencies"
+    IDS_TREE_ROOT_EXPANDED_THREATS_FORMAT 
+                            "Security Risks (%d) - Spyware, adware, and other security risks"
+    IDS_TREE_ROOT_VIRAL_THREATS_FORMAT 
+                            "Security Threats (%d) - Viruses and other security threats"
+    IDS_ONLINE_VIRUS_INFO_FORMAT 
+                            "http://securityresponse.symantec.com/avcenter/cgi-bin/virauto.cgi?vid=%u"
+    IDS_INTRODLG_INTRO      "%s protects your computer from security risks and threats."
+    IDS_INTRODLG_EXPANDED_THREAT_HEADING "Security Risks"
+    IDS_INTRODLG_EXPANDED_THREAT_DESCRIPTION 
+                            "Includes items such as spyware and adware that are generally low risk and that may have dependencies. You can restore these items if another program requires them to function."
+    IDS_INTRODLG_VIRAL_HEADING "Security Threats"
+    IDS_INTRODLG_VIRAL_DESCRIPTION 
+                            "Includes viruses and other high-risk items."
+    IDS_INTRODLG_CHECK      "Don't display this message again."
+    IDS_RESTORE_WARNING_EXPANDED_THREAT 
+                            "Warning: This item is a security risk.\nAre you sure you want to restore it?"
+    IDS_MULTIPLE_RESTORE_WARNING_EXPANDED_THREAT 
+                            "Warning: These items are security risks. \nAre you sure you want to restore these %d items?"
+    IDS_RESTORE_EXCLUSION_CHECK "Exclude item from future scans."
+    IDS_MULTIPLE_RESTORE_EXCLUSION_CHECK 
+                            "Exclude selected items with known threats from future scans."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_REMEDIATION_TYPE_DIRECTORY "Directories"
+    IDS_REMEDIATION_TYPE_HOSTS "Host File Entries"
+    IDS_REMEDIATION_TYPE_LSP "Layered Service Providers"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

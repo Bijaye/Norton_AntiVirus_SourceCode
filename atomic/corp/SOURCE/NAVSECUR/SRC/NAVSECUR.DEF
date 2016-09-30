@@ -1,0 +1,27 @@
+;***********************************************************************
+;*                                                                      
+;* $Header:   S:/navsecur/VCS/navsecur.dev   1.0   06 Feb 1997 20:59:48   RFULLER  $
+;*                                                                      
+;* Description:                                                         
+;*
+;*  Scanning related functions
+;*
+;***********************************************************************
+
+LIBRARY         NAVSECUR
+DESCRIPTION     'Security DLL.  Copyright 1990-1995 Symantec Corporation.'
+EXETYPE         WINDOWS
+STUB            'WINSTUB.EXE'
+CODE            MOVEABLE DISCARDABLE
+DATA            MOVEABLE SINGLE
+
+HEAPSIZE        1024
+
+EXPORTS         WEP                             @1  RESIDENTNAME PRIVATE
+                PasswordCheck                   @2
+                AskPassword                     @3
+                RemoveProtection                @4
+                DestroyPasswordWindow           @5
+                ResetPassword                   @6
+
+

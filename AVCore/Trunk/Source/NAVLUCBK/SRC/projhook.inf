@@ -1,0 +1,14 @@
+; NOTE that there is a short term hack in the IRA platform ...
+; Even tho we are building for IRA, we are linking to the IDA version of 
+; defutils.lib (in r:\avcomp\defutils\release.004\lib.IDA). Linking to the
+; IRA version of this LIB causes strange bugs.
+
+[IRA]
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib.IDA;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%;s:\3rdparty\defannty\release
+tools=MSVC60SP3X86;MSVC60MFCSP3X86;ATL30SP3;LU15
+
+[IDA]
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%;s:\3rdparty\defannty\debug
+tools=MSVC60SP3X86;MSVC60MFCSP3X86;ATL30SP3;LU15

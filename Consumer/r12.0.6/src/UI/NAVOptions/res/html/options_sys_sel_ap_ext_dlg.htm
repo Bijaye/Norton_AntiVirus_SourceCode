@@ -1,0 +1,113 @@
+<html>
+	<head>
+		<title id="sys_sel_ap_ext_title">Norton AntiVirus</title>
+		<IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="NO" HEIGHT="0" WIDTH="0" style="display:none"
+			SRC="options_errorid.htm"></IFRAME>
+		<script Language="JavaScript" src="DisplayScriptError.js"></script>
+		<script language="JavaScript" src="options_sys_sel_ap_ext_dlg.js"></script>
+		<!--<script Language="JavaScript" src="DisplayScriptError.js"></script>-->
+		<link rel="stylesheet" type="text/css" href="navstyle.css">
+			<script language='JavaScript'>
+// Prevent crash after adding an extesion
+// & saving options on Hebrew Win98, IE4;SP1
+if ('he' == navigator.systemLanguage)
+  document.write('<meta id="charset_he_sys_sel_ap_ext_dlg" http-equiv="Content-Type" content="text/html; iso8859-8">');
+else
+  document.write('<meta id="charset_sys_sel_ap_ext_dlg" http-equiv="Content-Type" content="text/html; charset=iso8859-1">');
+			</script>
+	</head>
+	<body id="body_sys_sel_ap_ext_dlg" scroll="no" leftmargin="0" topmargin="0" onHelp="Help();"
+		onLoad="initialize_options_sys_sel_ap_ext_dlg();" TABINDEX="-1">
+		<!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+		<span id="TooManyExt" style="display:none">Maximum number of extensions exceeded!</span>
+		<!-- end of JavaScript text -->
+		<form name='options_sys_sel_ap_ext_dlg'>
+			<table id="table1" width="100%" height="100%" bgcolor="#FFFFFF">
+				<tr>
+					<td id="table1_cell1" valign="top" width="90%" height="90%">
+						<table id="table11" width="100%" height="20" border="0" cellspacing="0" cellpadding="0"
+							style="background-image: url('topbg.gif'); background-repeat: no-repeat;">
+							<tr>
+								<td id="table11_cell1" height="2">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="table11_cell2" width="70%" valign="center">
+									<b>
+										<span class="cutitleb" id="ext_dlg_NAV">
+			      <span id="table11_space1">&nbsp;&nbsp;</span>File Extensions</span>
+									</b>
+									<br>
+								</td>
+								<td id="table11_cell3" align="right" valign="center" width="30%">
+									<a href='' onClick="Help(); return false;">
+										<span id="ext_dlg_help" class="cuhelp">more info</span>
+									</a>
+									<span id="table2_space1">&nbsp;&nbsp;&nbsp;</span>
+								</td>
+							</tr>
+						</table>
+						<table id="table12" width="100%">
+							<tr>
+								<td id="table12_cell1" height="2">&nbsp;</td>
+							</tr>
+							<tr>
+								<td id="table12_cell2" colspan="2">
+									<p id="table12_para1">
+									<p>
+										<label for="Extensions" accesskey="w" id="Ext_AccessKey">
+											<b>
+												<span id="table12_space1">&nbsp;&nbsp;</span>
+												<span class="indent10" id="ext_dlg_programfile">What files to scan:</span></b>
+										</label><br>
+								</td>
+							</tr>
+							<tr>
+								<td id="table12_cell4" width="58%" height="100%">
+									<select size="12" class="normal" id="Extensions" style="width: 100%; font-family: Arial"
+										onChange="enable_buttons();" name="select">
+									</select>
+								</td>
+								<td id="table12_cell5" width="42%" valign="top" height="100%">
+									<button class="goldnav1" id="Create" onClick="add_extension();">
+										<label for="Create" accesskey="n" id="Create_AccessKey">
+											<span class="indent10" id="ext_dlg_new"><u>N</u>ew...</span>
+										</label>
+									</button>
+									<br>
+									<IMG id="btnspace1" SRC="arrow_dots_blank.gif" width="3" height="3"><br>
+									<button class="goldnav1" id="Remove" onClick="remove_extension()" DISABLED>
+										<label for="Remove" accesskey="r" id="Remove_AccessKey">
+											<span class="indent10" id="ext_dlg_remove"><u>R</u>emove</span>
+										</label>
+									</button>
+									<br>
+									<IMG id="btnspace2" SRC="arrow_dots_blank.gif" width="3" height="3"><br>
+									<button id="Defaults" class="goldnav1" onClick="default_extension()">
+										<label for="Defaults" accesskey="d" id="Defaults_AccessKey">
+											<span class="indent10" id="ext_dlg_defaults"><u>D</u>efaults</span>
+										</label>
+									</button>
+								</td>
+							</tr>
+							<tr align="center" id="table12_tr">
+								<td id="table12_cell6">
+									<span class="large">
+										<button id="OK" style="width: 97;" class="goldnav1" OnClick="window.returnValue = true; location.href = 'closeme.xyz';">
+											<label for="OK" accesskey="o" id="OK_AccessKey">
+												<span class="indent10" id="ext_dlg_ok"><u>O</u>K</span>
+											</label>
+										</button>
+										<button id="Cancel" style="width: 97;" class="goldnav1" OnClick="location.href = 'closeme.xyz';">
+											<label for="Cancel" accesskey="c" id="Cancel_AccessKey">
+												<span class="indent10" id="ext_dlg_cancel"><u>C</u>ancel</span>
+											</label>
+										</button>
+									</span></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>

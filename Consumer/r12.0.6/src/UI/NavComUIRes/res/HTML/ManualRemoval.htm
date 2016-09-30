@@ -1,0 +1,43 @@
+<html>
+	<head>
+		<BASE HREF="res://navcomui.loc">
+		<link rel="stylesheet" type="text/css" href="NavScan.css" />
+		<META HTTP-EQUIV="MSThemeCompatible" CONTENT="Yes" />
+		<meta id="charset_ScanProg" http-equiv="Content-Type" content="text/html; charset=iso8859-1" />
+			<script language="JavaScript" src="res://navcomui.dll/Symbutton.js"></script>
+			<script language="javascript">
+		function OnLoad()
+		{ 
+			InitSymButton( Cancel );
+		}
+			</script>
+	</head>
+	<body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0"
+		marginwidth="0" marginheight="0" scroll="no" onLoad="OnLoad()">
+		<!-------------------------------------- Header ------------------------------------------------>
+		<H1 id="title">Risks - Manual Removal</H1>
+		<a id="MoreInfo" href="#" tabindex="3" class="headerLink">more info</a> 
+		<!-------------------------------------- Text Discription ------------------------------------------------>
+		<div id="ScanState" class="BlueScanState"></div>
+		<H2 id="description" class="ManualRemovalDescription">The following risks require manual removal. For more information, visit the Symantec website.</H2>
+		<!--------------------------------------- Risk List Area ------------------------------------------------>
+		<Div id = "1div" class="TabActiveXControl" style="POSITION:absolute; TOP:145px; width:550px; height:200px"> <!-- Working area -->
+			<OBJECT id="AxListCtrl" width="100%" height="100%" tabIndex="2" classid="clsid:0A398EE6-277C-480D-BD4F-3288EA3AB8E2"
+				viewastext>
+				<PARAM NAME="_cx" VALUE="15663">
+				<PARAM NAME="_cy" VALUE="35">
+				<PARAM NAME="Enabled" VALUE="-1">
+			</OBJECT>
+                        </DIV>
+		<!-- End Working Area -->
+		<DIV></DIV>
+		<!-- End Tab Area -->
+		<!-------------------------------------- Footer (Buttons) ------------------------------------------------>
+		<Div class="buttonArea">
+			<span id="spanCancelButton" class="symButton" style="MARGIN-TOP:5px; RIGHT:8px; MARGIN-LEFT:8px; WIDTH:96px; MARGIN-RIGHT:0px; POSITION:absolute; HEIGHT:24px">
+				<button id="Cancel" accesskey="C" type="submit" class="symButton" tabindex="1" style="BACKGROUND-IMAGE:url(btn96x22set.jpg)"><u class="hotkey">
+						C</u>lose</button>
+			</span>
+		</Div>
+	</body>
+</html>

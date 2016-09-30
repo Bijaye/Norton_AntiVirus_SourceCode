@@ -1,0 +1,698 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""res\\DFGui.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AVISDFMGR.ICO"
+IDR_DFGUITYPE           ICON    DISCARDABLE     "res\\DFGuiDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+#if defined(APSTUDIO_INVOKED) || !defined(NEWBMP)
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+#endif
+#if defined(APSTUDIO_INVOKED) || defined(NEWBMP)
+#if defined(APSTUDIO_INVOKED)
+IDR_MAINFRAME$(NEWBMP)  BITMAP  MOVEABLE PURE   "res\\mainfram.bmp"
+#else
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\mainfram.bmp"
+#endif
+#endif
+IDB_BITMAP1             BITMAP  DISCARDABLE     "res\\bitmap1.bmp"
+IDB_BITMAP4             BITMAP  DISCARDABLE     "res\\bitmap4.bmp"
+IDB_BITMAP5             BITMAP  DISCARDABLE     "res\\bitmap5.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+#if defined(APSTUDIO_INVOKED) || !defined(NEWBMP)
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_PRINT
+END
+#endif
+
+#if defined(APSTUDIO_INVOKED) || defined(NEWBMP)
+#if defined(APSTUDIO_INVOKED)
+IDR_MAINFRAME$(NEWBMP) TOOLBAR DISCARDABLE  19, 15
+#else
+IDR_MAINFRAME TOOLBAR DISCARDABLE  19, 15
+#endif
+BEGIN
+    BUTTON      ID_FILE_PRINT
+END
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "&Resource Locator ...",       ID_LAUNCHER_SHOW
+        MENUITEM "St&atistics...",              ID_STATISTICS
+        MENUITEM "Sa&mple Attributes...",       ID_SAMPLEATTRIBUTES
+    END
+    POPUP "&Actions"
+    BEGIN
+        MENUITEM "&Hold ",                      ID_HOLD
+        MENUITEM "&Immediate hold",             ID_STOP
+        MENUITEM "&Resume",                     ID_RESUME
+        MENUITEM SEPARATOR
+        MENUITEM "&Defer",                      ID_DEFER
+        MENUITEM SEPARATOR
+        MENUITEM "Hold &all",                   ID_HOLDALL
+        MENUITEM "R&esume all",                 ID_RESUMEALL
+        MENUITEM "&Block analysis",             ID_DISABLE
+        MENUITEM "Re&start analysis",           ID_ENABLE
+        MENUITEM "&Change priority...",         ID_CHANGEPRIORITY, GRAYED
+    END
+    POPUP "&BackOffice"
+    BEGIN
+        MENUITEM "&Stop Importer",              ID_STOPIMPORT
+        MENUITEM "Stop &Undeferrer",            ID_STOPUNDEFERRER
+        MENUITEM "Stop U&pdater",               ID_STOPUPDATER
+        MENUITEM "Stop Attribute&Collector ",   ID_STOPATTRCOLLECTOR
+    END
+    POPUP "&Setup"
+    BEGIN
+        MENUITEM "&Configure...",               ID_CONFIGURE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About AVISDF - Manager...",  ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS PRELOAD MOVEABLE PURE 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 217, 70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About AVISDF - Manager"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "AVISDF - Manager  ",IDC_STATIC,40,7,65,8,SS_NOPREFIX
+    LTEXT           "(C) Copyright  1989 - 1999, IBM Corporation",IDC_STATIC,
+                    40,33,163,13
+    DEFPUSHBUTTON   "OK",IDOK,178,7,32,14,WS_GROUP
+    LTEXT           "Static",IDC_BUILDNUMBER,40,19,133,8
+    LTEXT           "All rights reserved",IDC_STATIC,39,49,101,8
+END
+
+IDD_CONFIGURE_DIALOG DIALOG DISCARDABLE  0, 0, 354, 194
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_NOFAILCREATE | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "AVISDF -  DataFlow Configuration "
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,297,6,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,297,25,50,14
+    EDITTEXT        IDC_MAX_SAMPLES,191,6,101,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_SUBMISSION_INTERVAL,191,20,101,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_ARRIVAL_INTERVAL,191,34,101,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_DATABASE_RESCAN_INTERVAL,191,48,101,14,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_DEF_IMPORT_INTERVAL,191,62,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_STATUS_UPDATE_INTERVAL,191,76,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_UNDEFERRER_INTERVAL,191,90,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_ATTRIBUTE_INTERVAL,191,104,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_UNC,191,118,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BUILD_DEF_FILENAME,191,131,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DEF_BASE_DIR,191,144,101,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DEF_IMPORTER_DIR,191,157,101,14,ES_AUTOHSCROLL
+    LTEXT           "UNC path to the sample directory",IDC_STATIC0,7,119,182,
+                    12,NOT WS_GROUP
+    LTEXT           "Database rescan interval (sec) [1-60]",IDC_STATIC6,7,48,
+                    182,14,NOT WS_GROUP
+    LTEXT           "Sample arrival check interval (sec) [1-60]",IDC_STATIC4,
+                    7,34,182,14,NOT WS_GROUP
+    LTEXT           "Definition base directory",IDC_STATIC2,7,145,182,12,NOT 
+                    WS_GROUP
+    LTEXT           "Build definition filename",IDC_STATIC1,7,132,182,11,NOT 
+                    WS_GROUP
+    LTEXT           "Sample submission interval (sec) [1-30]",IDC_STATIC,7,
+                    20,182,14
+    LTEXT           "BackOffice definition import interval (min) [0-60]",
+                    IDC_STATIC,7,62,180,14
+    LTEXT           "Status update interval (min) [0-60]",IDC_STATIC,7,76,
+                    182,14
+    LTEXT           "BackOffice definition importer directory ",IDC_STATIC,7,
+                    159,182,14
+    LTEXT           "Concurrent number of samples to be processed  [0-1000]",
+                    IDC_STATIC5,7,6,182,14,NOT WS_GROUP
+    LTEXT           "UnDeferrer interval (min) [0-60]",IDC_STATIC,7,91,182,
+                    12
+    LTEXT           "Samples attributes interval (min) [0-60]",IDC_STATIC,7,
+                    105,152,12
+END
+
+IDD_STATISTICS_DIALOG DIALOG DISCARDABLE  0, 0, 325, 191
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_NOFAILCREATE | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "AVISDF  -  DataFlow Statistics"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,261,13,50,14
+    LTEXT           "Average processing time per sample (hh:mm:ss) :",
+                    IDC_STATIC,21,153,197,16
+    LTEXT           "System has been active since: ",IDC_STATIC,19,15,98,12
+    LTEXT           "Number of virus definitions produced since the system started :",
+                    IDC_STATIC,23,65,197,16
+    GROUPBOX        "",IDC_STATIC,13,34,290,142
+    LTEXT           "xxx",IDC_NUMBER_OF_SAMPLES,233,43,58,8
+    LTEXT           "XXX",IDC_AVERAGE_TIME,233,153,66,8
+    LTEXT           "xxx",IDC_START_TIME,125,15,100,12
+    LTEXT           "Number of deferred samples:",IDC_STATIC,23,106,197,17
+    LTEXT           "xxx",IDC_NUMBER_OF_RESCANNED_SAMPLES,233,88,58,8
+    LTEXT           "xxx",IDC_NUMBER_OF_DEFERRED_SAMPLES,233,108,58,8
+    LTEXT           "Number of samples started since the system started :",
+                    IDC_STATIC,23,43,197,16
+    LTEXT           "Number of successfully rescanned samples:",IDC_STATIC,
+                    23,85,197,16
+    LTEXT           "xxx",IDC_NUMBER_OF_SUCCESS_SAMPLES,233,66,58,8
+END
+
+IDD_CHANGE_PRIORITY DIALOG DISCARDABLE  0, 0, 186, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Change priority"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+    LTEXT           "Tracking number",IDC_STATIC,15,14,64,8
+    EDITTEXT        IDC_TRACKING_NUMBER,15,24,63,14,ES_AUTOHSCROLL
+    LTEXT           "Priority",IDC_STATIC,15,45,61,8
+    EDITTEXT        IDC_PRIORITY,15,55,64,14,ES_AUTOHSCROLL
+END
+
+IDD_SAMPLEATTRIBUTES DIALOGEX 0, 0, 294, 167
+STYLE DS_MODALFRAME | DS_SETFOREGROUND | DS_NOFAILCREATE | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "AVISDF - Sample Attributes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,7,146,50,14
+    EDITTEXT        IDC_EDIT1,7,19,280,119,ES_MULTILINE | ES_READONLY | 
+                    WS_VSCROLL | WS_HSCROLL,WS_EX_ACCEPTFILES
+    LTEXT           "Static",IDC_SAMPLEID,7,6,112,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "000004b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "ibm\0"
+            VALUE "FileDescription", "avisdf\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "avisdf\0"
+            VALUE "LegalCopyright", "Copyright © 1999\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "avisdf.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "ibm avisdf\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "DFGui MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "DFGui\0"
+            VALUE "LegalCopyright", "Copyright (C) 1998\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "DFGui.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "DFGui Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0, 1200, 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+
+    IDD_CONFIGURE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 347
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 186
+    END
+
+    IDD_STATISTICS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 317
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 184
+    END
+
+    IDD_CHANGE_PRIORITY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_SAMPLEATTRIBUTES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 287
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 160
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "l:"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "DFGui"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide  toolbar\nToggle toolbarr"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+    IDS_OPEN_FILE_ERROR     "Cannot open a file "
+    IDS_LIST_SAMPLE         "CustomerIssueTrackingNumber"
+    IDS_LIST_CURRENT_STATE  "State"
+    IDS_LIST_STATUS         "Status"
+    IDS_LIST_NEXT_STATE     "Next state"
+    IDS_LIST_JOBS           "Jobs(Total/Comp/Inprogress)"
+    IDS_LIST_SAMPLE_TIP     "Infected sample identification. Press the header to sort the samples."
+    IDS_LIST_CURRENT_STATE_TIP 
+                            "The state the sample is waiting to enter or is in    "
+    IDS_LIST_STATUS_TIP     "The status of the sample"
+    IDS_LIST_NEXT_STATE_TIP "The state the sample will go to "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_LAUNCHER_SHOW        "Show or hide Launcher\nToggle Launcher"
+    ID_SAMPLE_HOLD          "Pause the processing of selected samples"
+    ID_SAMPLE_IGNORE        "Delete selected samples from processing "
+    ID_RESUME               "Resume the processing of the samples put in ""Hold"" "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_LIST_JOBS_TIP       "The number of the state total, completed and inprogress jobs "
+    IDS_AVIS_TITLE          "AntiVirus Immune System DataFlow  -  Manager"
+    IDS_EVALUATOR_ERROR     "Internal error. Please check for the AVISDFEV.DAT file or errors in it. "
+    IDS_TEMP_STATUS         "Wait--InProgress"
+    IDS_INDICATOR_COUNT     """ xx/xx/xx"""
+    IDS_INDICATOR_SAMPLECOUNT "Samples Update :  XX/XX/XX"" "
+    IDS_INDICATOR_SAMPLE    "Samples Update: "
+    IDS_LIST_HOLD           "User's request to control the processing"
+    IDS_DATAFLOW_STATUS     "                             "
+    IDS_INDICATOR_DATAFLOWSTATUS "Status: Enable"
+    IDS_STATUS_ENABLE       "ENABLED"
+    IDS_STATUS_DISABLE      "DISABLED"
+    IDS_REPOSITORY          "Key"
+    IDS_PATH                "Value"
+    IDS_NAME                "Name"
+    IDS_CONFIG_FILE_ERROR   "Internal error. Please check for the AVISDF.CFG file or errors in it . "
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_IMPORTED            "imported"
+    IDS_AFTERDEFQUEUE       "AfterDefQueue"
+    IDS_AFTERDEFBUILDER     "AfterDefBuilder"
+    IDS_RESULT              "Result"
+    IDS_UNCPATH             "UNCPATH"
+    IDS_CFG_FILE            "avisdf.cfg"
+    IDS_CONFIRM_MSG1        "The processing of the samples will be stopped. "
+    IDS_CONFIRM_MSG2        "Do you want to close the application?  "
+    IDS_CHECK_CASH_INT      "CacheCheckInterval"
+    IDS_CHECK_DIR_INT       "DirectoryCacheExpiryTime"
+    IDS_TIMER_INTERVAL      "SampleSubmissionInterval"
+    IDS_SAMPLE_REQUEST_DELAY "SampleArrivalCheckInterval"
+    IDS_MAX_SAMPLES         "ConcurrentNumberOfSamplesToBeProcessed"
+    IDS_MAX_SAMPLES2        "ConcurrentNumberOfSamplesToBeProcessed"
+    IDS_CONFIG_FILE_CREATE_ERROR 
+                            "Internal error. File AVISDF.CFG was not found. Attempt to create it failed. "
+    IDS_CONFIG_FILE_CREATE_WARNING 
+                            "File AVISDF.CFG has been created with the default values. Please enter the four required paths using Setup->Configure menu option .  All four of them are mandatory!."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_CONFIG_FILE_EMPTY_FIELDS 
+                            "Required directories are not supposed to be empty. Please check the pathes.  "
+    IDS_CONFIG_FILE_SAVE_INFO 
+                            "Data was not saved. Please enter ALL necessary info."
+    IDS_DATABASE_OPEN_ERROR "Connection to the database failed.  "
+    IDS_DATABASE_CLOSE_ERROR "Disconnection from the database failed.  "
+    IDS_PRIORITY            "Priority "
+    IDS_LIST_PRIORITY       "Priority of a sample. Press the header for sorting.  "
+    IDS_DEFER               "Defer"
+    IDS_DABASE_ADD_NEW_STATE_ERROR 
+                            "Adding a new record to the Analysis State Info table failed."
+    IDS_HOLD                "ManualAction"
+    IDS_DATABASE_UPDATE_PRIORITY_ERROR 
+                            "Failed to get a record  from AnalysisRequest table."
+    IDS_WAIT                "Wait"
+    IDS_DATABASE_GET_RECORD_ERROR "Failed to get records from database. "
+    IDS_DATABASE_UPDATE_RECORD_ERROR "Failed to updata a record"
+    IDS_DATABASE_ADD_NEW_STATE_ERROR 
+                            "Failed to add a new state to the Analysis State table."
+    IDS_SUCCESS             "Success"
+    IDS_INPROGRESS          "InProgress"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_FAIL                "Fail"
+    IDS_FINAL               "Final"
+    IDS_BUILD_DEF_FILENAME  "BuildDefFilename"
+    IDS_DEF_BASE_DIR        "DefBaseDir"
+    IDS_RESCAN_STRING       "DataFlowScanFilter"
+    IDS_DATABASE_GET_LATEST_SIGNATURE_ERROR 
+                            "Failed to get the latest signature record "
+    IDS_RESCAN_FILTER       "DataFlowRescanFilter"
+    IDS_INITIAL_RESCAN      "DataFlowInitialRescan"
+    IDS_CRITICAL_ERROR      "CriticalError"
+    IDS_MAIL_STRING         " Attention:  Please check the DataFlow Manager's list in machine <%s> for sample %s that encountered a critical error. The automated analysis has been stopped for all the samples.            "
+    IDS_MAIL_STRING1        "Attention:  Please check the Definition Importer  in machine <%s>. It encountered a critical error while importing the definition sequence  %s. The automated analysis has been stopped for all the samples.            "
+    IDS_DEFER_MSG           "Sample %s is in critical error. If you want to resume the automated analysis,  the sample will again go to SerializeBuild if it was there before; otherwise, it  will be deferred for manual analysis. To restart the system,  select YES. Otherwise, select NO."
+    IDS_BLOCK_MSG           "Sample %s encountered a critical error.The automated analysis has been stopped for all the samples. If you want to resume the analysis, select Actions -> RestartAnalysis menu option.           "
+    IDS_DATABASE_RESCAN_INTERVAL "DatabaseRescanInterval"
+    IDS_DEF_IMPORT_INTERVAL "DefImportInterval"
+    IDS_STATUS_UPDATE_INTERVAL "StatusUpdateInterval"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_DEF_IMPORTER_DIR    "DefImporterDir"
+    IDS_UNDEFERRER_INTERVAL "UndeferrerInterval"
+    IDS_BLOCK_MSG1          "DefinitionImporter  encountered a critical error while importing the definition sequence %s.The automated analysis has been stopped for all the samples. If you want to resume the analysis, select Actions -> RestartAnalysis menu option.           "
+    IDS_SCHED_TASKS_IND     "Importer/UnDeferrer/Updater/AttributeCollector:"
+    IDS_SCHED_TASKS_IND1    "Importer/UnDeferrer/Updater/AttributeCollector: I/I/I/I   "
+    IDS_STOP_IMPORTER       "Are you sure that you want to stop the  Importer? "
+    IDS_STOP_UNDEFERRER     "Are you sure that you want to stop the UnDeferrer?  "
+    IDS_STOP_ATTRIBUTECOLLECTOR 
+                            "Are you sure that you want to stop the AttributeCollector? "
+    IDS_SAMPLE_DEFER_QST    "Are you sure that you want to defer a sample(s)? "
+    IDS_ATTRIBUTE_FILE_ERROR 
+                            "There is no attribute.txt file in the directory. "
+    IDS_SELECTION_ERROR     "No item is selected."
+    IDS_ATTRIBUTE_INTERVAL  "SamplesAttributesInterval"
+    IDS_STOP_UPDATER1       "Are you sure that you want to stop the Updater? "
+    IDS_WAIT_FOR_NEWDEF_MSG "Your request to close the window has been accepted. The new definition  is being built at the present time . The window will be closed after the build is finished.  "
+    IDS_CFG_PROLOG          "#######################################################################\n# \n# Target file: AVISdf.cfg\n# \n# Target directory: D:\\avis\n# \n# Target machine: 'Rainier' executive machine in the analysis center\n# \n# Target application: AVISdf.exe\n# \n# Please refer to the 'AnalysisCenterOperations.doc' file for more\n# information on how to configure the Dataflow program. The document\n# file mentioned here can be found in the 'avis200.xxx\\src\\docs'\n# subdirectory of the AVIS source tree.\n# \n#######################################################################\n"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "res\DFGui.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

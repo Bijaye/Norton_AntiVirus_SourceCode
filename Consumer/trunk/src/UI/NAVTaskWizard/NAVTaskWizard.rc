@@ -1,0 +1,202 @@
+////////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""NAVVer.h""\r\n"
+    "#include ""filever.h""\r\n"
+    "#include ""verinc.rc""\r\n"
+    "\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SCAN_FOLDER_CHECKBOXES BITMAP                  "..\\NavTaskWizard\\res\\scan_fol.bmp"
+IDB_WIZ256_0            BITMAP                  "..\\NavTaskWizard\\res\\Wz256_0.bmp"
+IDB_WIZ256_3            BITMAP                  "..\\NavTaskWizard\\res\\Wz256_3.bmp"
+IDB_WIZ256_2            BITMAP                  "..\\NavTaskWizard\\res\\Wz256_2.bmp"
+IDB_SCANITEM_IMGLIST    BITMAP                  "..\\NavTaskWizard\\res\\scan_img.bmp"
+IDB_WIZ16_0             BITMAP                  "..\\NavTaskWizard\\res\\wiz16_0.bmp"
+IDB_WIZ16_2             BITMAP                  "..\\NavTaskWizard\\res\\wiz16_2.bmp"
+IDB_WIZ16_3             BITMAP                  "..\\NavTaskWizard\\res\\wiz16_3.bmp"
+IDB_DRIVE_LIST_CHECKBOXES BITMAP                  "..\\NavTaskWizard\\res\\drivelistchecks.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TW_INTRO DIALOGEX 0, 0, 287, 145
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s",IDC_STATIC_TW_INTRO,81,0,206,32
+    LTEXT           "%s",IDC_STATIC_BEGIN_CREATE_SCAN,81,41,205,20
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+END
+
+IDD_TW_SAVEEDITEDTASK DIALOGEX 0, 0, 287, 145
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s",IDC_STATIC_CLICK_FINISH,81,1,199,24
+    LTEXT           "%s",IDC_STATIC_CLICK_BACK,81,33,184,16
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+END
+
+IDD_TW_SAVETASK DIALOGEX 0, 0, 287, 145
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+    LTEXT           "%s",IDC_STATIC_ENTER_NAME,81,0,199,16
+    LTEXT           "%s",IDC_STATIC_SCAN_NAME,81,23,199,8
+    EDITTEXT        IDC_TASK_NAME,91,39,156,14,ES_AUTOHSCROLL
+    LTEXT           "%s",IDC_STATIC_PROMPT_SAVE,81,129,184,16
+END
+
+IDD_TW_SELECTITEMS DIALOGEX 0, 0, 287, 145
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s",IDC_STATIC_SELECTITEMS_INTO,81,0,205,24
+    LTEXT           "%s",IDC_STATIC_ITEMS_TO_SCAN,81,30,205,8
+    CONTROL         "List2",IDC_ITEMLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_TABSTOP,81,46,206,55
+    PUSHBUTTON      "%s",IDC_SCAN_FOLDER,164,107,58,14
+    PUSHBUTTON      "%s",IDC_SCAN_FILE,229,107,58,14
+    PUSHBUTTON      "%s",IDC_REMOVE,229,130,58,14
+    LTEXT           "%s",IDC_STATIC_PROMPT_REMOVE,81,129,132,16
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+END
+
+IDD_SELECT_SCAN_FOLDERS DIALOGEX 0, 0, 220, 186
+STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Scan Folders"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s",IDC_TREE_HEADER,7,7,206,16
+    CONTROL         "Tree1",IDC_FOLDER_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,7,30,206,127
+    DEFPUSHBUTTON   "%s",IDC_SCAN,109,165,50,14,WS_GROUP
+    PUSHBUTTON      "%s",IDCANCEL,163,165,50,14,WS_GROUP
+END
+
+IDD_SELECT_SCAN_DRIVES DIALOGEX 0, 0, 220, 126
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Scan Drives"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "%s",IDC_TREE_HEADER,7,7,206,16
+    CONTROL         "List1",IDC_DRIVE_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHAREIMAGELISTS | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_GROUP | WS_TABSTOP,7,30,206,65
+    DEFPUSHBUTTON   "%s",IDC_SCAN,109,105,50,14,WS_GROUP
+    PUSHBUTTON      "%s",IDCANCEL,163,105,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_TW_SAVEEDITEDTASK, DIALOG
+    BEGIN
+        VERTGUIDE, 81
+    END
+
+    IDD_SELECT_SCAN_DRIVES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "NAVVer.h"
+#include "filever.h"
+#include "verinc.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

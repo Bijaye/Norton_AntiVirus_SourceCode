@@ -1,0 +1,87 @@
+;
+; $Header:   S:/NAVXUTIL/VCS/projhook.inv   1.8   03 Jun 1998 18:58:14   RStanev  $
+;
+; NAVXUTIL projhook - set TARGET env var.
+;
+;-------------------------------------------------------------------------
+; $Log:   S:/NAVXUTIL/VCS/projhook.inv  $
+;
+;     Rev 1.8   03 Jun 1998 18:58:14   RStanev
+;  Removed PRERELEASE and PARANOID defines.
+;
+;     Rev 1.7   01 Mar 2000 23:31:16   KSACKIN
+;  Added %FAMILYVERS% to our include path for our Family directories.
+;
+;     Rev 1.6   30 Apr 1997 16:27:16   JBRENNA
+;  Correct the LIBPREs such that IDA -> IDU, ADA -> ADU, ARA -> ARU, etc.
+;
+;     Rev 1.5   29 Apr 1997 20:54:32   JBRENNA
+;  This is gross. You have to put any 'set' commands in the target specific
+;  section in order for them to work. Moved the LIBPRE settings to a
+;  specific platform/target section.
+;
+;     Rev 1.4   29 Apr 1997 19:52:40   JBRENNA
+;  Shift the LIBPRE lines such that the build environment actually recognizes
+;  them.
+;
+;     Rev 1.3   29 Apr 1997 19:42:00   JBRENNA
+;  Add a LIBPRE to each platform. This enables NAVXUTIL to pick up the Unicode
+;  libs (our libs anyway).
+;
+;     Rev 1.2   29 Apr 1997 19:40:30   JBRENNA
+;  Try setting LIBPRE in [] section ... hoping that is set for all platforms.
+;
+;     Rev 1.1   29 Apr 1997 19:24:26   JBRENNA
+;  Add platforms for new platform specifications.
+;
+;     Rev 1.0   06 Feb 1997 21:05:06   RFULLER
+;  Initial revision
+;
+;     Rev 1.5   14 Aug 1996 15:11:22   DALLEE
+;  Changed default target to NAVW for KIRIN.
+;
+;     Rev 1.4   20 May 1996 23:18:18   jmillar
+;  default target is navwnt
+;
+;     Rev 1.3   24 Apr 1996 01:03:26   JMILLAR
+;  change default target to navscanw for now
+;
+;     Rev 1.2   11 Apr 1996 09:51:28   JMILLAR
+;  add NTK
+;
+;     Rev 1.1   06 Feb 1996 22:30:42   BARRY
+;  Changed default target to NAVW
+;
+;     Rev 1.0   30 Jan 1996 15:56:20   BARRY
+;  Initial revision.
+;
+;     Rev 1.0   30 Jan 1996 14:51:20   BARRY
+;  Initial revision.
+;
+;     Rev 1.2   14 Jan 1996 16:58:10   DALLEE
+;  Changed #ifdef NAVWNT to NAVSCANW.
+;
+;     Rev 1.1   18 Dec 1995 15:26:06   DALLEE
+;  Set def target to Gargoyle.
+;
+;     Rev 1.0   04 Dec 1995 22:44:06   GWESTER
+;  Initial revision.
+;
+;-------------------------------------------------------------------------
+
+[IRA]
+set libpre=%PROJPRE%LIB.IRU;%FAMILYPRE%\LIB%FAMILYVERS%.IRU
+deftarget=navw
+
+[IDA]
+set libpre=%PROJPRE%LIB.IDU;%FAMILYPRE%\LIB%FAMILYVERS%.IDU
+deftarget=navw
+
+[ARA]
+set libpre=%PROJPRE%LIB.ARU;%FAMILYPRE%\LIB%FAMILYVERS%.ARU
+deftarget=navw
+
+[ADA]
+set libpre=%PROJPRE%LIB.ADU;%FAMILYPRE%\LIB%FAMILYVERS%.ADU
+
+[]

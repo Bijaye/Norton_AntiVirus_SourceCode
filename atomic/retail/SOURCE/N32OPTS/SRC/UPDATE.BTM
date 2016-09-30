@@ -1,0 +1,23 @@
+::
+:: $Header:   S:/N32OPTS/VCS/update.btv   1.1   20 May 1997 22:24:12   KSACKIN  $
+::
+::      This batch file updates the project area based on the TARGET
+::      setting.  The TARGET is set up as part of PROJ and the project's
+::      personalized PROJHOOK.
+::------------------------------------------------------------------------
+:: $Log:   S:/N32OPTS/VCS/update.btv  $
+:  
+:     Rev 1.1   20 May 1997 22:24:12   KSACKIN
+:  Fixed update to put dll's into bin directory instead of lib.
+:
+:     Rev 1.0   20 May 1997 19:55:56   KSACKIN
+:  Initial revision.
+::------------------------------------------------------------------------
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.exe copy *.exe %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*

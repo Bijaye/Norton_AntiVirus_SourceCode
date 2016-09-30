@@ -1,0 +1,105 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+	<BASE href="res://navcomui.loc">
+	<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" type="text/css" href="NavScan.css" />
+	<title>Scan Progress</title>
+	
+	<script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+	<script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( StopScan ); 
+			InitSymButton( ResumeScan ); 
+			InitSymButton( PauseScan ); 
+		}
+	</script>		
+
+</head>
+
+<body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" scroll="no" onLoad="OnLoad()">
+
+ <!-------------------------------------- Scan Animation Area ------------------------------------------------>
+ 
+  <div class="ScanAnimation"> 
+		<img id="AnimationImage" src="scan3.gif">
+  </div>
+
+  <!-------------------------------------- Header ------------------------------------------------>
+
+  <H1 id="title">Scanning</h1>
+
+  <!-------------------------------------- Text Discription ------------------------------------------------>
+
+  <h2 id="TitleDescription">Scanning for viruses, spyware, and other</h2>
+  
+
+  <!-------------------------------------- Current Item Area ------------------------------------------------>
+  <h3 id="CurrentItemDescription">File being scanned:</h3>	
+
+  <div class="CurrentItemArea" style="word-wrap:break-word; overflow:hidden">
+  	<p id="Currentitem">Loading Scanner...</p>
+  </div>
+
+  <!--------------------------------------- Stats  Area ------------------------------------------------>
+    
+  <div class="StatsArea"> 
+          <table id = "table1" cellspacing="8px" cellpadding="0px" style="position:absolute; top:45px;">
+		<tr>
+                        <td nowrap class="tdDescription">Total files scanned</td>
+			<td id="TotalScanned" class="tdValue">0</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="tdRowSpacer" id="scanprogress_td1"></td>
+		</tr>
+		<tr>
+                        <td nowrap class="tdDescription">Virus threats detected</td>
+			<td id="ThreatsDeteced" class="tdValue">0</td>
+		</tr>
+		<tr>
+                        <td id="RisksSpacer" colspan="2" class="tdRowSpacer"></td>
+		</tr>
+		<tr>
+                        <td id="RisksLabel" nowrap class="tdDescription">Spyware and other security risks detected</td>
+			<td id="OtherThreatsDetected" class="tdValue">0</td>
+		</tr>
+        </table>
+        <table id = "table2" cellspacing="8px" cellpadding="0px" style="position:absolute; top:145px;">
+                <tr id="AdditionalScan">
+                       <td><img id="AdditionalScanImage" src="about.gif"></img></td>
+                       <td VALIGN=TOP id="scanprog_td1"><span id="AdditionalScanText"></span></td>
+                </tr>
+	</table>
+  </div>
+  <DIV>
+  </div>
+  
+  <!--------------------------------------- Button  Area ------------------------------------------------>
+  
+  <div class="buttonArea">
+	<span id="spanPauseScan" class="symButton" style="position:absolute; right:103px; margin-top:5px; margin-right:10px; margin-left:8px; width:96px; height:24px;">
+		<button id="PauseScan" accesskey="P" type="SUBMIT" class="symButton" tabindex="2" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">P</u>ause</button>
+	</span>
+	
+	<span id="spanResumeScan" class="symButton" style="position:absolute; right:103px; margin-top:5px; margin-right:10px; margin-left:8px; width:96px; height:24px; display:none">
+		<button id="ResumeScan" accesskey="R" type="SUBMIT" class="symButton" tabindex="3" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">R</u>esume</button>
+	</span>
+	
+	<span id="spanStopScan" class="symButton" style="position:absolute; right:8px; margin-top:5px; margin-right:0px; margin-left:8px; width:96px; height:24px;">
+		<button id="StopScan" accesskey="S" type="SUBMIT" class="symButton" tabindex="4" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">S</u>top Scan</button>
+	</span>
+	
+ </div>
+  
+</body>
+</html>

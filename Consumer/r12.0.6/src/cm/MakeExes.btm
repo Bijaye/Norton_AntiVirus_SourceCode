@@ -1,0 +1,56 @@
+@echo off
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+rem Set Self-Exes output folder
+md %root%..\Final\SelfExtractExes
+
+
+:NAV80ESD
+set LAYOUT=NAV80ESD
+set SAVELAYOUT=ESD
+gosub MakeSelfExtractFile
+
+:NV8ESDIE
+set LAYOUT=NV8ESDIE
+set SAVELAYOUT=ESD
+gosub MakeSelfExtractFile
+
+:NV8ESDIN
+set LAYOUT=NV8ESDIN
+set SAVELAYOUT=ESD
+gosub MakeSelfExtractFile
+goto DONE
+
+
+:MakeSelfExtractFile
+net use U: /d
+SUBST U: /D
+SUBST U: %root%..\Final\%LAYOUT%
+
+copy %root%..\Nobuilds\MakeSfx\SymFiles\zipinfo-%SAVELAYOUT%.sym u:\zipinfo.sym
+%root%..\Nobuilds\MakeSfx\MAKESFX /OVERWRITE %root%..\Final\SelfExtractExes\%LAYOUT%.EXE U:\*.*
+
+del U:\zipinfo.sym
+SUBST U: /D
+return
+
+:errParameter
+echo.
+echo Incorrect Parameter. The correct parameter is:
+echo <MakeExes.btm> <Layout Type>
+
+:DONE
+echo.
+echo *********************************************************
+echo ******************** FINISHED ***************************
+echo *********************************************************
+quit

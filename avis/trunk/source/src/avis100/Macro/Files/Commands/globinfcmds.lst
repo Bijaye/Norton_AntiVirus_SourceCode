@@ -1,0 +1,66 @@
+#the aim of this command file is to infect one or more global templates
+#by using an infected document
+
+#restauration of the files that need to be here, from their backup copy
+#for viruses that infect on fileopen/autoopen
+[RESTORE]virus
+[RESTORE]main
+[RESTORE]JanaInt
+[RESTORE]normal1
+[ADDGOAT]normal1
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]virus
+   [MOPEN]main
+     [MSAVE]main
+   [MCLOSE]main
+   [MOPEN]JanaInt
+     [MSAVE]JanaInt
+   [MCLOSE]JanaInt
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+#for viruses that infect on filenew/autonew
+[RESTORE]virus
+[RESTORE]normal2
+[ADDGOAT]normal2
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]virus
+   [MNEWDOC]new1
+#     [GOTO]new1|END
+     [SENDTEXT]new1|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+     [MSAVEAS]new1|newgoat1
+     [SENDTEXT]newgoat1|And I think we will bE![ENTER][ENTER]
+   [MCLOSE]newgoat1
+   [PICKUPFILES]{STARTUPDIR}|NEW|OLE2
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+#viruses that infect on fileclose/autoclose
+[RESTORE]virus
+[RESTORE]normal3
+[ADDGOAT]normal3
+[STARTAPP]
+   [MOPEN]virus
+   [MCLOSE]virus
+[MCLOSEAPP]
+
+#viruses that infect on filesave/filesaveas
+[RESTORE]virus
+[RESTORE]normal4
+[ADDGOAT]normal4
+[STARTAPP]
+   [MOPEN]virus
+#      [GOTO]virus|END
+      [SENDTEXT]virus|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+     [MSAVE]virus
+#   [MCLOSE]virus
+#   [MOPEN]virus
+#      [GOTO]virus|END
+      [SENDTEXT]virus|And I think we will bE![ENTER][ENTER]
+     [MSAVEAS]virus|vircopy
+   [MCLOSE]vircopy
+[MCLOSEAPP]
+

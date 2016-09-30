@@ -1,0 +1,12 @@
+; ScanDlvr.def : Declares the module parameters for the DLL.
+
+LIBRARY      "ScanDlvr"
+DESCRIPTION  'ScanDlvr Windows Dynamic Link Library'
+
+EXPORTS
+    ; Explicit exports can go here
+    DllGetClassObject   @2 PRIVATE
+    DllCanUnloadNow     @3 PRIVATE
+    DllRegisterServer   @4 PRIVATE
+    DllUnregisterServer @5 PRIVATE
+    StartSarcDeliver

@@ -1,0 +1,33 @@
+;Auto-Configuration File for Symantec Antivirus Corporate Edition
+;created for NAVCE, modified 01312003
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec Antivirus Corporate Edition
+DisplayName=VPDN_LU01
+File:Name=vpdn_lu.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=http.alc:HTTP,RULE1,RULE2
+
+[RULE:HTTP]
+Category=0
+RuleName=Symantec Antivirus Corporate Edition HTTP Outbound Rule
+
+[RULE:RULE1]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+Protocol=UDP
+RemotePorts=53
+RuleName=Symantec Antivirus Corporate Edition LiveUpdate Outbound Rule
+
+[RULE:RULE2]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+Protocol=UDP
+RemotePorts=53
+RuleName=Symantec Antivirus Corporate Edition LiveUpdate Inbound Rule
+
+
+

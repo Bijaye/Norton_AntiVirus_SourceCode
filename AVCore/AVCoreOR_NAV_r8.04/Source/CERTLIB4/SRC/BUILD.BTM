@@ -1,0 +1,32 @@
+:: BUILD.BAT
+::
+iff "%platform%" == ".NLM" then
+    call mk certlib4 %1
+    if exist make.err copy build.err+make.err build.err
+else
+    call mk certliba %1
+    if exist make.err copy build.err+make.err build.err
+    scan ': error' 'fatal error' 'error in' BUILD.ERR > nul
+    iff %? != 0 then
+        call mk certlibb %1
+        if exist make.err copy build.err+make.err build.err
+        scan ': error' 'fatal error' 'error in' BUILD.ERR > nul
+        iff %? != 0 then
+            call mk certlibc %1
+            if exist make.err copy build.err+make.err build.err
+            scan ': error' 'fatal error' 'error in' BUILD.ERR > nul
+            iff %? != 0 then
+                call mk certlibd %1
+                if exist make.err copy build.err+make.err build.err
+                scan ': error' 'fatal error' 'error in' BUILD.ERR > nul
+                iff %? != 0 then
+                    call mk certlib4 -a %1
+                    if exist make.err copy build.err+make.err build.err
+                     call mk certlibe %1
+                     call mk certlib5 %1
+                endiff
+            endiff
+        endiff
+    endiff
+endiff
+

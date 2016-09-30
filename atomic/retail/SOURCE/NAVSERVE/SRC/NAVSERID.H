@@ -1,0 +1,16 @@
+#define IDS_CONSOLETEMPLATE             1
+#define IDS_ALERT_VIRUSALERT            2
+#define IDS_ALERT_INOC_CHANGE           3
+#define IDS_ALERT_END_SCAN              4
+#define IDS_ALERT_VIRLIST_CHANGE        5
+#define IDS_ALERT_BOOT_INOC_CHANGE      6
+#define IDS_ALERT_MBOOT_INOC_CHANGE     7
+#define IDS_BOOT                        8
+#define IDS_FILE                        9
+#define IDS_BOOTRECORD                 10
+#define IDS_MEMORY                     11
+#define IDS_NLMDATA_FILE_NAME			12
+#define IDS_SERVER_ALL 					13
+#define IDS_NAV							14
+#define IDS_SEPERATOR					15
+#define IDS_STR_NETWARE             16

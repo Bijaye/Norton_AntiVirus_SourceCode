@@ -1,0 +1,292 @@
+::
+:: $Header:   S:/NOBUILDS.NT/VCS/ADMINBLD.BTv   1.0   25 Apr 1997 11:37:12   ksackin  $
+::
+:: file for building the self-extracting administration piece
+::
+::------------------------------------------------------------------------
+::
+:: $Log:   S:/NOBUILDS.NT/VCS/ADMINBLD.BTv  $
+:  
+:     Rev 1.0   25 Apr 1997 11:37:12   ksackin
+:  Initial revision.
+:  
+:     Rev 1.0   13 Mar 1997 15:17:18   RFULLER
+:  Initial revision
+:  
+:     Rev 1.4   13 Feb 1997 16:01:38   ksackin
+:  Uncommented code that stamps all of the files with the NAV ship date and time
+:  of the version of this product from this batch file.  We are now stamping all
+:  of the files within this batch file, as well as the exe itself.
+:
+:     Rev 1.3   10 Feb 1997 21:38:30   ksackin
+:  Added the LUhost directory to the self extracting zip file.  Also added a
+:  contents directory under the luhost directory with a contents.txt file
+:  within that.
+:
+:     Rev 1.2   11 Dec 1996 15:30:38   jmillar
+:  update from luigi
+:
+:     Rev 1.1   09 Dec 1996 20:49:38   jmillar
+:  put in working order
+:
+:     Rev 1.0   09 Dec 1996 20:53:32   jmillar
+:  Initial revision.
+::
+::------------------------------------------------------------------------
+
+@ECHO OFF
+
+@REM --------------------------------------------------------------------------
+@REM Batch file to create the trial version self extracting zip files
+@REM
+@REM The process of this file is as follows:
+@REM
+@REM 1 - Copies all the files to the %PROJPRE%\NAVNET32 directory.
+@REM 2 - Stamps the files with the time and date hard-coded below.
+@REM 3 - Zips the files into one zip called _ZIPNAME
+@REM 4 - Runs the WINZIPSE.EXE program from the NOBUILDS area to create the
+@REM     self-extracting executable called _EXENAME.
+@REM 5 - Stamps the resulting executable with the hard-coded date and time
+@REM     below.
+@REM --------------------------------------------------------------------------
+
+SET _SOURCE_FILES=%PROJ_PRE%\DISTRIB\SRC
+SET _ZIPNAME=NAVADMIN.ZIP
+SET _EXENAME=NAVADMIN.EXE
+SET _SOURCE_DATE=02/21/97
+SET _SOURCE_TIME=02:01a
+
+PUSHD
+
+IFF "%PROJPRE%" == "" THEN
+    GOTO noprojerr
+ENDIFF
+
+IFF NOT EXIST %PROJPRE%NAVNET32\NUL THEN
+    MD %PROJPRE%NAVNET32
+ENDIFF
+
+@ECHO The date/time on the self-extracting executable will be set to %_SOURCE_DATE% %_SOURCE_TIME%
+CHOICE /C:YN Is this correct?
+IF ERRORLEVEL 2 GOTO BATCHEND
+@ECHO.
+
+@REM --------------------------------------------------------------------------
+@REM Copy the files over to the final directory
+@REM --------------------------------------------------------------------------
+
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVADMIN\NUL THEN
+    md %PROJPRE%NAVNET32\NAVADMIN
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAV95SRC\NUL THEN
+    md %PROJPRE%NAVNET32\NAV95SRC
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVNTSRC\NUL THEN
+    md %PROJPRE%NAVNET32\NAVNTSRC
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVDEFS\NUL THEN
+    md %PROJPRE%NAVNET32\NAVDEFS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAV95OPT\NUL THEN
+    md %PROJPRE%NAVNET32\NAV95OPT
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVNTOPT\NUL THEN
+    md %PROJPRE%NAVNET32\NAVNTOPT
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVLOG\NUL THEN
+    md %PROJPRE%NAVNET32\NAVLOG
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\LUHOST\NUL THEN
+    md %PROJPRE%NAVNET32\LUHOST
+ENDIFF
+
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVADMIN\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAVADMIN\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAV95SRC\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAV95SRC\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVNTSRC\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAVNTSRC\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVDEFS\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAVDEFS\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAV95OPT\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAV95OPT\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVNTOPT\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAVNTOPT\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\NAVLOG\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\NAVLOG\CONTENTS
+ENDIFF
+IFF NOT EXIST %PROJPRE%NAVNET32\LUHOST\CONTENTS\NUL THEN
+    md %PROJPRE%NAVNET32\LUHOST\CONTENTS
+ENDIFF
+
+@REM --------------------------------------------------------------------------
+@REM the following is a semi-kludge to get winzip to build all the empty
+@REM directories. Having a content.txt file looks reasonable enough and
+@REM doesn't need to be cleaned up. We put it in a contents subdirectory
+@REM so that the copy *.* directives in the scripts don't copy these text
+@REM files around.
+@REM --------------------------------------------------------------------------
+
+copy %LANGPRE%NOBUILDS\SRC\NAVADMIN.TXT %PROJPRE%NAVNET32\NAVADMIN\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAV95SRC.TXT %PROJPRE%NAVNET32\NAV95SRC\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAVNTSRC.TXT %PROJPRE%NAVNET32\NAVNTSRC\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAVDEFS.TXT  %PROJPRE%NAVNET32\NAVDEFS\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAV95OPT.TXT %PROJPRE%NAVNET32\NAV95OPT\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAVNTOPT.TXT %PROJPRE%NAVNET32\NAVNTOPT\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAVLOG.TXT   %PROJPRE%NAVNET32\NAVLOG\CONTENTS\contents.txt
+copy %LANGPRE%NOBUILDS\SRC\NAVHOST.TXT   %PROJPRE%NAVNET32\LUHOST\CONTENTS\contents.txt
+
+@REM --------------------------------------------------------------------------
+@REM Set the current drive/directory to the final area
+@REM --------------------------------------------------------------------------
+
+%PROJPRE%
+CD %PROJPRE%NAVNET32/NAVADMIN
+
+FOR %a IN (@%PROJPRE%NOBUILDS\SRC\admnfils.txt) DO GOSUB copysub
+
+@REM --------------------------------------------------------------------------
+@REM Make sure the files all got copied
+@REM --------------------------------------------------------------------------
+
+FOR %a IN (@%PROJPRE%NOBUILDS\SRC\admnfils.txt) DO IF NOT EXIST %a GOTO missfileerr
+
+@REM --------------------------------------------------------------------------
+@REM Time and date stamp the files
+@REM --------------------------------------------------------------------------
+
+SET _SOURCE_CMD=FD /D:%_SOURCE_DATE% /T:%_SOURCE_TIME%
+FOR %a IN (@%PROJPRE%NOBUILDS\SRC\admnfils.txt) DO %_SOURCE_CMD% %a
+
+cd ..
+
+@REM --------------------------------------------------------------------------
+@REM clean up residue from the last run
+@REM --------------------------------------------------------------------------
+
+IFF EXIST %_EXENAME% THEN
+    DEL %_EXENAME%
+ENDIFF
+
+IFF EXIST %PROJPRE%NAVNET32\NAVNET32.TXT THEN
+    del %PROJPRE%NAVNET32\NAVNET32.TXT
+ENDIFF
+
+IFF EXIST %PROJPRE%NAVNET32\ADMINBLD.INP THEN
+    del %PROJPRE%NAVNET32\ADMINBLD.INP
+ENDIFF
+
+@REM --------------------------------------------------------------------------
+@REM Zip up the files
+@REM --------------------------------------------------------------------------
+
+IFF EXIST %_ZIPNAME% THEN
+    DEL %_ZIPNAME%
+ENDIFF
+
+@REM --------------------------------------------------------------------------
+@rem Zip all files at once, including all subdirectories
+@REM --------------------------------------------------------------------------
+
+pkzip -ex -rP %_ZIPNAME% *.*
+
+@REM The following files are just used for the self-extracting portion
+@REM and are not put into the zip file, nor installed
+
+COPY %LANGPRE%NOBUILDS\SRC\NAVNET32.TXT %PROJPRE%NAVNET32
+COPY %PROJPRE%NOBUILDS\SRC\ADMINBLD.INP %PROJPRE%NAVNET32
+
+@REM --------------------------------------------------------------------------
+@REM Create the self-extracting zip
+@REM --------------------------------------------------------------------------
+
+WINZIPSE.EXE %_ZIPNAME% @ADMINBLD.INP
+
+@REM @ECHO.
+@REM @ECHO When WINZIPSE has finished,
+
+@REM --------------------------------------------------------------------------
+@REM Stamp the date/time for the self-extracting zip
+@REM --------------------------------------------------------------------------
+
+FD /D:%_SOURCE_DATE /T:%_SOURCE_TIME %_EXENAME%
+@ECHO zipfile %_EXENAME% created successfully
+@ECHO.
+
+@REM --------------------------------------------------------------------------
+@REM clean up the interim files that I create
+@REM --------------------------------------------------------------------------
+
+del %PROJPRE%NAVNET32\NAVNET32.TXT
+del %PROJPRE%NAVNET32\ADMINBLD.INP
+del %PROJPRE%NAVNET32\%_ZIPNAME%
+
+GOTO BATCHEND
+
+@REM --------------------------------------------------------------------------
+@REM Subroutine to copy the files from the various locations
+@REM --------------------------------------------------------------------------
+
+:copysub
+
+IFF EXIST %_SOURCE_FILES%\%a THEN
+    COPY %_SOURCE_FILES%\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %FAMILYPRE%\NOBUILDS\SRC%FAMILYVERS%\%a THEN
+    COPY %FAMILYPRE%\NOBUILDS\SRC%FAMILYVERS%\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %FAMILYPRE%\BIN%FAMILYVERS%.W32\%a THEN
+         COPY %FAMILYPRE%\BIN%FAMILYVERS%.W32\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %FAMILYPRE%\BIN%FAMILYVERS%.WIN\%a THEN
+         COPY %FAMILYPRE%\BIN%FAMILYVERS%.WIN\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %PROJPRE%BIN.W32\%a THEN
+    COPY %PROJPRE%BIN.W32\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %PROJPRE%BIN.WIN\%a THEN
+    COPY %PROJPRE%BIN.WIN\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %PROJPRE%BIN.DOS\%a THEN
+    COPY %PROJPRE%BIN.DOS\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %PROJPRE%BIN.VXD\%a THEN
+    COPY %PROJPRE%BIN.VXD\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %PROJPRE%WINZINST\SRC\%a THEN
+    COPY %PROJPRE%WINZINST\SRC\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST %PROJPRE%NOBUILDS\SRC\%a THEN
+    COPY %PROJPRE%NOBUILDS\SRC\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST L:\SOURCE\BIN%QUAKE%.W32\%a THEN
+    COPY L:\SOURCE\BIN%QUAKE%.W32\%a %PROJPRE%NAVNET32\NAVADMIN
+ELSEIFF EXIST L:\SOURCE\BIN%QUAKE%.VXD\%a THEN
+    COPY L:\SOURCE\BIN%QUAKE%.VXD\%a %PROJPRE%NAVNET32\NAVADMIN
+ENDIFF
+
+RETURN
+
+
+:noprojerr
+ECHO.
+ECHO You must use env to set the product before using this batchfile
+ECHO.
+GOTO BATCHEND
+
+:nofinalerr
+ECHO.
+ECHO Error - %PROJPRE%NAVNET32 directory does not exist
+ECHO.
+GOTO BATCHEND
+
+:missfileerr
+ECHO.
+ECHO Not all files were copied.  File %a is missing. Terminating...
+ECHO.
+GOTO BATCHEND
+
+:batchend
+POPD
+SET _SOURCE_DATE=
+SET _SOURCE_TIME=
+SET _SOURCE_CMD=
+SET _SOURCE_FILES=
+SET _ZIPNAME=
+SET _EXENAME=

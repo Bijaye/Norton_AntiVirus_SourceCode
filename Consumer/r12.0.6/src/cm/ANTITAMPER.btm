@@ -1,0 +1,177 @@
+rem @echo off
+on break cancel
+setlocal
+echo Command line - %0 %&
+
+rem we cant autowrap right now. bail.
+rem quit 0
+
+rem
+rem Clear out evidence of a previous run.
+rem
+
+set VENDORCMD=/V 130
+set USERCMD=/U CM-SM
+set PASSWORDCMD=/P WrapMaster2004
+REM We need to set a SKU to AntiTamper with Rover 2.  The SKU does not matter as long as its valid
+set SKUCOMMAND=/S 27
+set SKUID=
+set DBG_BTM=
+set DEVBLD=
+set send_mail=TRUE
+set cm_dir=%@full[%@path[%_batchname]]
+set bldlog=%cm_dir%ANTITAMPER.log
+set ANTITAMPER_err=%cm_dir%ANTITAMPER.err
+set root=%@full[%cm_dir%..]
+set CLICFG=
+set RoverCLICommand=%@full[%cm_dir%..\..\nobuilds\Rover\AntiTamper\rovercli.exe]
+set PHASE=0
+
+rem
+rem If the last character in root is not a '\', then append one.
+rem
+iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then
+    set root=%root%\
+endiff
+
+rem Clear this file out.
+>%bldlog
+
+timer on /1
+set a= **** NavConsumer build started %_date - %_time ****
+gosub logthis
+
+
+rem Prepare to build.  Parse command-line parameters.
+
+   do param = 1 to 127
+      shift 1
+      iff "%0"=="" then
+         shift -%param%
+         goto continue
+      endiff
+
+      set this_param=%@upper[%0]
+
+      iff "%@upper[%0]"=="/PHASE" then
+		shift 1 
+		set PHASE=%0
+      elseiff "%@upper[%0]"=="/DBG_BTM" then
+         	set DBG_BTM=/DBG_BTM
+      endiff
+   enddo
+   shift -127
+
+:continue
+    if "%DBG_BTM" NE "" echo on
+
+goto PHASE%phase
+:phase0
+    @gosub logblank
+    @set a=*** Preparing for the xlok wrap (PHASE0) ***
+    @gosub logthis
+    @gosub logblank
+
+:phase1
+    @gosub logblank
+    @set a=*** XLOK Wrap AntiTamper NAVOptRF Licensed ***
+    @gosub logthis
+    @gosub logblank
+    pushd
+
+    set CLICFG=%@full[%cm_dir%..\Licensing\Skus\XLOK\AntiTamper\Licensed\NAVOptRF\clicfg.ini]
+    gosub ANTITAMPER
+    type %ANTITAMPER_err >> %bldlog
+    
+:phase2
+    @gosub logblank
+    @set a=*** XLOK Wrap AntiTamper NAVLUCBK Licensed ***
+    @gosub logthis
+    @gosub logblank
+    pushd
+
+    set CLICFG=%@full[%cm_dir%..\Licensing\Skus\XLOK\AntiTamper\Licensed\NAVLUCBK\clicfg.ini]
+    gosub ANTITAMPER
+    type %ANTITAMPER_err >> %bldlog
+
+:phase2
+    @gosub logblank
+    @set a=*** XLOK Wrap AntiTamper AVCOMPBR Licensed ***
+    @gosub logthis
+    @gosub logblank
+    pushd
+
+    set CLICFG=%@full[%cm_dir%..\Licensing\Skus\XLOK\AntiTamper\Licensed\AVCOMPBR\clicfg.ini]
+    gosub ANTITAMPER
+    type %ANTITAMPER_err >> %bldlog
+
+:phaseCompletion
+    SET BUILD_STATUS=PASS
+    
+    
+    @echo ************************************************************
+    @echo ********************* summary ******************************
+    @echo ************************************************************
+    @echo (Look for errors.)
+	find /i "failed" < %bldlog
+    
+    @set a=*** NavConsumer build time %@timer[1] (%_DATE - %_TIME) ***
+    @gosub logthis
+    
+    popd *
+    endlocal
+    
+    quit 0
+
+:logthis
+    @echo %a
+    @echo %a >> %bldlog
+    return
+
+:logblank
+    @echo ..
+    @echo .. >> %bldlog
+    return
+
+:errexit
+    SET BUILD_STATUS=FAIL
+    @set a=*** NavConsumer build time %@timer[1] (%_DATE - %_TIME) ***
+    @gosub logthis
+    
+    @echo **********************************************************************
+    @echo ********************************************************************** >> %bldlog
+    @echo ******************** ERROR(S) IN BUILD!! *****************************
+    @echo ******************** ERROR(S) IN BUILD!! ***************************** >> %bldlog
+    @echo **********************************************************************
+    @echo ********************************************************************** >> %bldlog
+    @echo (Refer to %bldlog for more info on errors.)
+    
+    iff %send_mail = TRUE then
+    iff exist %_windir%\wsendmail.ini then
+        set dont_del=true
+    else
+        copy wsendmail.ini %_windir
+    endiff
+    wsendmail -s"Build Errors!" -f%username%@symantec.com @developer.lst < %bldlog
+    if "%dont_del" == "" del %_windir%\wsendmail.ini
+    endiff
+    
+    endlocal
+    quit 1
+
+:ANTITAMPER
+   pushd
+   @echo wrapping %CLICFG%
+
+   @echo %RoverCLICommand% %USERCMD% %PASSWORDCMD% %VENDORCMD% /D 2 /I %CLICFG% %SKUCOMMAND% | tee %ANTITAMPER_err
+   %RoverCLICommand% %USERCMD% %PASSWORDCMD% %VENDORCMD% /I %CLICFG% %SKUCOMMAND% | tee %ANTITAMPER_err
+   set ret1=%?
+   :: Double-check for errors...
+   find /I /C "Error" %ANTITAMPER_err
+   set ret2=%?
+   popd
+   
+   if %ret1 != 0 goto errexit
+   if %ret2 == 0 goto errexit
+
+   return

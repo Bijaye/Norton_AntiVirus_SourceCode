@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title> X-PLATFORM ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1> X-Platform Attributes</H1>
+The proprietary X-Platform attributes are included in all messages that contain samples. They describe the hardware and software of the machine that captured the sample:<BR><BR>
+
+<a href="#Address"><B>X-Platform-Address</b></a>: list of IP and IPX addresses<BR>
+<a href="#Correlator"><B>X-Platform-Correlator</b></a>: unique correlator<BR>
+<a href="#Distributor"><B>X-Platform-Distributor</b></a>: network name of distribution server<BR>
+<a href="#Domain"><B>X-Platform-Domain</b></a>: name of administrative domain<BR>
+<a href="#GUID"><B>X-Platform-GUID</b></a>: unique identifier for managed client machines<BR>
+<a href="#Host"><B>X-Platform-Host</b></a>: network name of machine<BR>
+<a href="#Language"><B>X-Platform-Language</b></a>: national language of operating system<BR>
+<a href="#Owner"><B>X-Platform-Owner</b></a>: registered owner and organization<BR>
+<a href="#Processor"><B>X-Platform-Processor</b></a>: processor vendormake and model and clockrate<BR>
+<a href="#Scanner"><B>X-Platform-Scanner</b></a>: antivirus vendor, product, and version<BR>
+<a href="#System"><B>X-Platform-System</b></a>: operating systemvendor and version<BR>
+<a href="#User"><B>X-Platform-User</b></a>: network name of logged-in user<BR>
+
+<P><a name="Address"></a>
+<B>X-Platform-Address</b><BR>
+This attribute specifies the IP and IPX addresses of the machine that captured the sample. The value is a list of numeric IP addresses and IPX addresses, separated by blanks. </P>
+<P>For example, the address of the author's workstation are:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Address: 9.2.18.13 </P>
+<P>When a machine has multiple IP addresses and/or multiple NetBIOS addresses, all addresses are included in the value. This is particularly common for servers.</P>
+
+<P><a name="Correlator"></a>
+<B>X-Platform-Correlator</b><BR>
+This attribute specifies a value that correlates all samples submitted from a particular platform. The value is a text string of at most 32 bytes.</P>
+<P>The value is arbitrary and obscure, and must unique for each possible platform. The value is used to correlate samples submitted from the same platform for the purpose of limiting the number of samples a particular platform can submit. The value is not used to identify the platform or individual or customer. The value must be difficult to forge.</P>
+<P>For example, the correlator assigned to the author's workstation is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Correlator: 0123456789ABCDEF0123456789ABCDEF</P>
+
+<P><a name="Distributor"></a>
+<B>X-Platform-Distributor</b><BR>
+This attribute specifies the network name of the distribution server from which the machine obtains signature updates. The value is a string specifying the network name of the machine hosting the Distribution service.</P>
+<P>For example, the distribution service for the author's workstation is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Distributor: AVFILES</P>
+<P>This attribute is omitted if no administration domain is available.</P>
+
+<P><a name="Domain"></a>
+<B>X-Platform-Domain</b><BR>
+This attribute specifies the administrative domain of the machine that captured the sample. The value is a string specifying the LanDesk administration domain to which the machine that captured the sample belongs. </P>
+<P>For example, the administration domain of the author's workstation is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Domain: AVBUILD</P>
+<P>This attribute is omitted if no administration domain is available.</P>
+
+<P><a name="GUID"></a>
+<B>X-Platform-GUID</b><BR>
+This attribute specifies a unique identifier for a client machine assigned by a network management application. The value is a text representation of a "globally unique identifier (GUID)" stripped of all punctuation characters.</P>
+<P>For example, a network management application might assign this identifier to a client machine:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-GUID: 0123456789ABCDEF0123456789ABCDEF</P>
+<P>This attribute is omitted if the machine is not a managed client.</P>
+
+<P><a name="Host"></a>
+<B>X-Platform-Host</b><BR>
+This attribute specifies the network identity of the machine that captured the sample. The value is a fully-qualified TCP/IP name or a NetBIOS name. </P>
+<P>For example, the TCP/IP name of the author's workstation is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Host: rafael.watson.ibm.com</P>
+<P>This attribute is omitted if no TCP/IP or NetBIOS host name is available.</P>
+
+<P><a name="Language"></a>
+<B>X-Platform-Language</b><BR>
+This attribute specifies the national language of the machine that captured the sample. The value is a text string identifying the national language and locale. </P>
+<P>For example, the national language and locale of the author's workstation is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Language: English (United States)</P>
+
+<P><a name="Owner"></a>
+<B>X-Platform-Owner</b><BR>
+This attribute specifies the owner of the machine that captured the sample. The value is a string naming the owner and organization. </P>
+<P>For example, the registered owner of the author's workstation, as recorded in its registry at SOFTWARE\Microsoft\WindowsNT\CurrentVersion, is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Owner: Edward Pring IBM Research </P>
+
+<P><a name="Processor"></a>
+<B>X-Platform-Processor</b><BR>
+This attribute describes the processor in the machine that captured the sample. The value is a string naming the vendormake and model and clock-rate of the processor. </P>
+<P>For example, the processor in the author's workstation, as recorded in its registry at HARDWARE\DESCRIPTION\System\CentralProcessor\0, is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Processor: GenuineIntel 165 MHz x86 Family 5 Model 2 Stepping 12</P>
+
+<P><a name="Scanner"></a>
+<B>X-Platform-Scanner</b><BR>
+This attribute describes the antivirus protection in the machine that captured the sample. The value is a string naming the vendor and version and signature sequence number of the antivirus product.product and version. </P>
+<P>For example, the antivirus protection installed on a workstation might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-Scanner: Symantec AntiVirus for Windows version 5.0</P>
+
+<P><a name="System"></a>
+<B>X-Platform-System</b><BR>
+This attribute describes the operating system in the machine that captured the sample. The value is a string naming thevendor and version of the operating system and version. </P>
+<P>For example, the operating system installed on the author's workstation, as recorded in its registry at SOFTWARE\Microsoft\WindowsNT\CurrentVersion\, is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-System: Windows NT 4.0 build 1381 Service Pack 3</P>
+
+<P><a name="User"></a>
+<B>X-Platform-User</b><BR>
+This attribute specifies the network identity of the user logged onto the machine that captured the sample. The value is a string specifying the user's Windows or NetBIOS login name. </P>
+<P>For example, the author's NetBIOS login name is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Platform-User: PRING</P>
+<P>This attribute is omitted if no Windows or NetBIOS login name is available.</P>
+
+</BODY>
+</HTML>

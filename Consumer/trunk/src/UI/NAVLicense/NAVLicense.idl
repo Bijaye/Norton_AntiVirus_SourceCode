@@ -1,0 +1,77 @@
+// NAVLicense.idl
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+cpp_quote("#if !defined(_DJSMAR00_STATIC_H__C8D02EF4_FD04_4bd5_B6F7_261E6799ABC9__INCLUDED_)")
+cpp_quote("#define _DJSMAR00_STATIC_H__C8D02EF4_FD04_4bd5_B6F7_261E6799ABC9__INCLUDED_")
+#include "cltLicenseConstants.h"
+cpp_quote("#endif // !defined(_DJSMAR00_STATIC_H__C8D02EF4_FD04_4bd5_B6F7_261E6799ABC9__INCLUDED_)")
+
+	[
+		object,
+		uuid(F7F6216C-15E6-40ab-87FA-94DF81B71677),
+		dual,
+		helpstring("INAVLicenseInfo Interface"),
+		pointer_default(unique)
+	]
+	interface INAVLicenseInfo: IDispatch
+	{
+		[id(1), helpstring("method RenewLicense")] HRESULT RenewLicense([in] BSTR bstrClsWndName, [out, retval] BOOL *pbSuccess);
+		[id(2), helpstring("method ActivateLicense")] HRESULT ActivateLicense([in] BSTR bstrClsWndName, [out, retval] BOOL* pbSuccess);
+		[id(3), helpstring("method LaunchRentalMoreInfo")] HRESULT LaunchRentalMoreInfo();
+		[id(4), helpstring("method LaunchRentalTechSupport")] HRESULT LaunchRentalTechSupport();
+		[id(5), helpstring("method LaunchRentalProductReg")] HRESULT LaunchRentalProductReg();
+		[id(6), helpstring("method UpdateLicense")] HRESULT UpdateLicense([in] BSTR bstrClsWndName, [out, retval] BOOL *pbSuccess);
+		[propget, id(8), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+		[id(9), helpstring("method ActivateLicense2")] HRESULT ActivateLicense2([in] long hWndParent, [out, retval] BOOL* pbSuccess);
+		[id(10), helpstring("method RefreshLicensing")] HRESULT RefreshLicensing();
+		[id(11), helpstring("method GetLicenseType")] HRESULT GetLicenseType([out, retval] DJSMAR_LicenseType* pType);
+		[id(12), helpstring("method GetLicenseState")] HRESULT GetLicenseState([out,retval] DJSMAR00_LicenseState *pState);
+		[id(13), helpstring("method GetLicenseZone")] HRESULT GetLicenseZone([out,retval]long* plZone);
+		[id(14), helpstring("method GetLicenseSubType")] HRESULT GetLicenseSubType([out, retval] long* plSubType);
+		[propget, id(15), helpstring("property DaysRemaining")] HRESULT LicenseDaysRemaining([out, retval] LONG* pVal);
+		[propget, id(16), helpstring("property ProductName")] HRESULT ProductName([out, retval] BSTR* pVal);
+		[propget, id(17), helpstring("property ProductExpirationDate")] HRESULT LicenseExpirationDate([out, retval] BSTR* pVal);
+		[propget, id(19), helpstring("property LicenseVendorId")] HRESULT LicenseVendorId([out, retval] LONG* pVal);
+		[id(20), helpstring("method LaunchActivationWizard")] HRESULT LaunchActivationWizard([in] long hWndParent, [in] long nFlag);
+		[id(21), helpstring("method GetLicenseStateEx")] HRESULT GetLicenseStateEx([in] DJSMAR00_QueryMode mode, [out,retval] DJSMAR00_LicenseState *pState);
+		[id(22), helpstring("method LaunchActivationWizardEx")] HRESULT LaunchActivationWizardEx([in] LONG hWndParent, [in] LONG nParam, [in] LONG nFlag);
+		[propget, id(23), helpstring("property ProductBrandingId")] HRESULT ProductBrandingId([out, retval] LONG* pVal);
+		[propget, id(24), helpstring("property ShouldCheckSubscription")] HRESULT ShouldCheckSubscription([out, retval] BOOL* pbVal);
+		[propget, id(25), helpstring("property CanRenewSubscription")] HRESULT CanRenewSubscription([out, retval] BOOL* pbVal);
+		[propget, id(26), helpstring("property CancelCode")] HRESULT CancelCode([out, retval] LONG* pVal);
+		[propget, id(27), helpstring("property SubscriptionExpirationDate")] HRESULT SubscriptionExpirationDate([out, retval] BSTR* pVal);
+		[propget, id(28), helpstring("property SubscriptionRemaining")] HRESULT SubscriptionRemaining([out, retval] LONG* pVal);
+		[propget, id(29), helpstring("property SubscriptionLength")] HRESULT SubscriptionLength([out, retval] LONG* pVal);
+		[id(30), helpstring("method LaunchSubscriptionWizard")] HRESULT LaunchSubscriptionWizard([in] LONG hwndParent);
+		[propput, id(31), helpstring("property OwnerSeed")] HRESULT OwnerSeed([in] BSTR newVal);
+		[propget, id(32), helpstring("property VendorName")] HRESULT VendorName([out, retval] BSTR* pVal);
+        [propget, id(33), helpstring("property SubscriptionDateDW")] HRESULT SubscriptionDateDW([out,retval] DWORD* pVal);
+        [propget, id(34), helpstring("property SubscriptionExpired")] HRESULT SubscriptionExpired([out,retval] BOOL* pVal);
+        [propget, id(35), helpstring("property SubscriptionWarning")] HRESULT SubscriptionWarning([out,retval] BOOL* pVal);
+        [propget, id(36), helpstring("property CfgWizFinished")] HRESULT CfgWizFinished([out,retval] BOOL* pVal);
+        [propget, id(37), helpstring("property HasUserAgreedToEULA")] HRESULT HasUserAgreedToEULA([out,retval] BOOL* pVal);
+		[propget, id(38), helpstring("property SubscriptionCanAutoRenew")] HRESULT SubscriptionCanAutoRenew([out, retval] BOOL* pVal);
+		[propget, id(39), helpstring("property SubscriptionAutoRenewReady")] HRESULT SubscriptionAutoRenewReady([out, retval] BOOL* pVal);
+	};
+
+[
+	uuid(1C3159CA-948C-4290-A920-4C804DF9FB7D),
+	version(1.0),
+	helpstring("NAVLicense 1.0 Type Library")
+]
+library NAVLICENSELib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(049BD180-1EEB-4881-84BB-2A6AC3304005),
+		helpstring("NAVLicenseInfo Class")
+	]
+	coclass NAVLicenseInfo
+	{
+		[default] interface INAVLicenseInfo;
+	};
+};

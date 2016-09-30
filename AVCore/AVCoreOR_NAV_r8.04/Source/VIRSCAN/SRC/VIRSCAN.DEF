@@ -1,0 +1,36 @@
+;***********************************************************************
+;*                                                                      
+;* $Header:   S:/VIRSCAN/VCS/virscan.dev   1.15   28 Jun 1996 11:47:02   JBRENNA  $
+;*                                                                      
+;* Description:                                                         
+;*
+;*  Scanning related functions
+;*
+;***********************************************************************
+
+LIBRARY         VIRSCAN
+DESCRIPTION     'Virus Scanner.  Copyright (C) Symantec Corp. 1990-1993.'
+EXETYPE         WINDOWS
+STUB            'WINSTUB.EXE'
+CODE            MOVEABLE DISCARDABLE
+DATA            MOVEABLE SINGLE
+
+HEAPSIZE        1024
+
+EXPORTS         WEP                             @1  RESIDENTNAME PRIVATE
+                VirusScanMasterBoot             @2
+                VirusScanEnd                    @3
+                VirusScanFile                   @4
+                VirusScanRepairFile             @5
+                VirusScanDeleteFile             @6
+                VirusScanInit                   @7
+                VirusScanMemory                 @8
+                VirusScanDriveDir               @9
+                VirusScanWildcard               @10
+                VirusScanBoot                   @11
+                VirusScanGetDatFile             @12
+                VirusScanGetInfFile             @13
+                VirusScanRepairBoot             @14
+                CreateInScan                    @15
+                VirusScanDatFileGetComment      @16
+				VirusScanMapLogicalToPhysical   @17

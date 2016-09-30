@@ -1,0 +1,25 @@
+LIBRARY         CLISCAN
+
+EXPORTS
+
+    DllGetClassObject      PRIVATE
+	DllCanUnloadNow        PRIVATE
+	DllRegisterServer      PRIVATE
+	DllUnregisterServer    PRIVATE
+	
+	ActOnInfection         @100
+	GlobalLog              @104
+	ScanOneFile            @109
+	StartScanEngine        @110
+	StopScanEngine         @111
+	ManualScanOneFile      @112
+	ManualScanDir          @113
+	GetScanStatus          @114
+	StopScan               @115
+	GetCurrentVEHandle     @116
+	CreateCopyOfEvent      @215
+	DestroyCopyOfEvent     @216
+	CreateEventFromLogLine @217
+    GenerateLogLine        @218
+	StartScan
+	QueryDriveList         @221

@@ -1,0 +1,22 @@
+::Build file for the SCAN Dynamic Link Library of the 
+:: QUAKE project
+
+
+if "%@upper[%platform%]" == ".DOS" .OR. "%@upper[%platform%]" == ".X86" gosub killcv
+
+call mk symintg %1
+if exist make.err copy make.err build.err
+
+
+quit
+
+:killcv
+    iff not "%CV%" == "" then
+	set CV=
+	beep
+	echo.
+	echo ** Your CV environment variable has been unset because DOS
+	echo ** libraries should never be MKUPDATE'd with debug info!
+	echo.
+    endiff
+return

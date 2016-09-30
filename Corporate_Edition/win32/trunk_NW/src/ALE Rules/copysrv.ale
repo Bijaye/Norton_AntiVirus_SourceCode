@@ -1,0 +1,39 @@
+;Auto-Configuration File for Symantec AntiVirus Corporate Edition Copy Server
+;created for copysrv.exe  05072002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec AntiVirus Corporate Edition Copy Server
+DisplayName=COPYSRV0
+File:Name=copysrv.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=UDP-IN,UDP-OUT
+
+[MATCH:SECTION002]
+ApplicationDescription=Symantec AntiVirus Corporate Edition Copy Server
+DisplayName=COPYSRV1
+File:Name=copysrv.exe
+RequiredDigest=87bc772a59c431df20970a0899d1aa85708c759e
+Rules=UDP-IN,UDP-OUT
+
+[MATCH:SECTION003]
+ApplicationDescription=Symantec AntiVirus Corporate Edition Copy Server
+DisplayName=COPYSRV
+File:Name=copysrv.exe
+Rules=UDP-IN,UDP-OUT
+
+[RULE:UDP-IN]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+Protocol=UDP
+RuleName=Symantec AntiVirus Corporate Edition Copy Server UDP Inbound
+
+[RULE:UDP-OUT]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+Protocol=UDP
+RuleName=Symantec AntiVirus Corporate Edition Copy Server UDP Outbound
+
+

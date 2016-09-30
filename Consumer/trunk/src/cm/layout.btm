@@ -1,0 +1,1130 @@
+ rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+md %root%..\Final
+set AVSTE_DLL =
+set ISRES_DLL =
+set ISBTPLG_DLL =
+set NAVOPTRF_DLL =
+set SCSS=0
+set CDSTART=0
+set AUTORUN=0
+set IWP=1
+set EXTERNAL_FILES=
+set BASE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Instopts_Base.dat
+set LICENSE_INSTOPTS=
+set SKU_DAT=
+set CUSTOM_INSTOPTS=
+set TOOLS_FOLDER=%root%tools\
+set THREATCAT=
+set OEM=
+set PDF_HELP=
+set CHM_HELP=
+set SELFEXTRATING_DEST=%root%..\Final\Layouts\ESD\self-extracts\
+set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+set YAHOOTOOLBAR=%root%..\..\Nobuilds\Yahoo_Toolbar\2006\
+set NOYTB_DAT=%root%..\Nobuilds\configfiles\Custom\NOYTB.dat
+set BUILD_TYPE = %1
+set ISSPYWARELAYOUT=NO
+
+call %root%..\Install\MSI\GetBuild.btm %root%..\include\build.h
+
+:: Build ESD config file to extract to path based on version of this build
+
+set ESD_CONFIG_FILE=%root%..\Nobuilds\7-Zip\SFX\NAV_7z.diz
+set ESD_SFX_FILE=%root%..\Nobuilds\7-Zip\SFX\NAV_7z.sfx
+attrib -R %ESD_CONFIG_FILE%
+attrib -R %ESD_SFX_FILE%
+echo ;!@Install@!UTF-8!>>%ESD_CONFIG_FILE%
+echo Title="Norton AntiVirus">>%ESD_CONFIG_FILE%
+echo RunProgram="NAVSetup.exe">>%ESD_CONFIG_FILE%
+echo TempDirName="NAV%major_num%.%minor_num%.%sub_ver%.%build_num%">>%ESD_CONFIG_FILE%
+echo ;!@InstallEnd@!>>%ESD_CONFIG_FILE%
+
+iff %BUILD_TYPE=DEV then
+	rem RETAIL
+	set NV142007_LAYOUT=YES
+	set NV142007_NOIWP_LAYOUT=NO
+	set NV14_03U_LAYOUT=NO
+	set NV142007_NOAS_LAYOUT=NO
+
+	rem TRY-DIE
+	set NV14TD30_LAYOUT=NO
+	set NV14BETA_LAYOUT=NO
+
+	rem ESD
+	set NAV071400_LAYOUT=YES
+	set NAV071400_NOIWP_LAYOUT=NO
+	set NAV071400_30d_LAYOUT=NO
+	
+	rem OEM
+	set OEM30_LAYOUT=NO
+	set OEM60_LAYOUT=NO
+	set OEM90_LAYOUT=NO
+	set OEM180_LAYOUT=NO
+	set OEM30_NOIWP_LAYOUT=NO
+	set PP_OEM_LAYOUT=NO
+	
+	rem CTO
+	set NV14CTO_LAYOUT=NO
+
+	rem SOS
+	set NV14SOS_LAYOUT=NO
+	set NV14SOS_NOAS_LAYOUT=NO
+
+	rem NortonAntiSpyware
+	set NASpy_LAYOUT=NO
+elseiff %BUILD_TYPE=CM then
+	rem RETAIL
+	set NV142007_LAYOUT=YES
+	set NV142007_NOIWP_LAYOUT=NO
+	set NV14_03U_LAYOUT=NO
+	set NV142007_NOAS_LAYOUT=NO
+
+	rem TRY-DIE
+	set NV14TD30_LAYOUT=YES
+	set NV14BETA_LAYOUT=YES
+
+	rem ESD
+	set NAV071400_LAYOUT=YES
+	set NAV071400_NOIWP_LAYOUT=NO
+	set NAV071400_30d_LAYOUT=NO
+	
+	rem OEM
+	set OEM30_LAYOUT=YES
+	set OEM60_LAYOUT=NO
+	set OEM90_LAYOUT=NO
+	set OEM180_LAYOUT=NO
+	set OEM30_NOIWP_LAYOUT=NO
+	set PP_OEM_LAYOUT=YES
+	
+	rem CTO
+	set NV14CTO_LAYOUT=YES
+
+	rem SOS
+	set NV14SOS_LAYOUT=YES
+	set NV14SOS_NOAS_LAYOUT=NO
+
+	rem NortonAntiSpyware
+	set NASpy_LAYOUT=NO
+
+endiff
+
+::==================================================================
+::------------------------R E T A I L-------------------------------
+::==================================================================
+:RETAIL
+
+iff %NV142007_LAYOUT=YES then
+	set NAME=NVVERSION2007
+	set LAYOUT_DEST=%root%..\Final\Layouts\CD_Retail\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=1
+	set DRMINST=1
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Retail\NVUS_RET_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Retail_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\Activation\Standard\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %NV142007_NOIWP_LAYOUT=YES then
+	set NAME=NVVERSION2007_NOIWP
+	set LAYOUT_DEST=%root%..\Final\Layouts\CD_Retail\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=1
+	set DRMINST=1
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=0
+	set THREATCAT=1
+	set CDSTART=0
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Retail\NIWP_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Retail_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\Activation\Standard\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %NV14_03U_LAYOUT=YES then
+	set NAME=NVVERSION_03U
+	set LAYOUT_DEST=%root%..\Final\Layouts\CD_Retail\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=1
+	set DRMINST=1
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Retail\NVUS_03U_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Retail_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\Activation\Standard\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %NV142007_NOAS_LAYOUT=YES then
+	set NAME=NVVERSION2007_NOAS
+	set LAYOUT_DEST=%root%..\Final\Layouts\CD_Retail\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=1
+	set DRMINST=1
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Retail\NVUS_NOAS_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Retail_License.dat
+	set CUSTOM_INSTOPTS=%root%..\Nobuilds\configfiles\Custom\noantispyware.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV_NOAS\Activation\Standard\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL2
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+endiff
+
+::==============================================================
+::---------------------T R Y - D I E----------------------------
+::==============================================================
+:TRYDIE
+
+iff %NV14TD30_LAYOUT=YES then
+	set NAME=NV14TD30
+	set LAYOUT_DEST=%root%..\Final\Layouts\ESD\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=0
+	set YAHOO_FOLDER=0
+	set DRMINST=1
+	set ACROBAT=0
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=0
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\TryDie\TRYDIE_SKU30.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\TryDie_License.dat
+	set CUSTOM_INSTOPTS=%root%..\Nobuilds\configfiles\Custom\ET.dat
+	set PARENT=%root%..\Install\Release\Parent_NOCASHBOX.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\TRYDIE\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+gosub Make7Zip
+endiff
+
+::==============================================================
+::---------------------   Beta      ----------------------------
+::==============================================================
+:BETA
+
+iff %NV14BETA_LAYOUT=YES then
+	set NAME=NV14Beta
+	set LAYOUT_DEST=%root%..\Final\Layouts\ESD\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=0
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=0
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=0
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Beta\BETA_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Beta_License.dat
+	set CUSTOM_INSTOPTS=%root%..\Nobuilds\configfiles\Custom\Beta.dat
+	set PARENT=%root%..\Install\Release\Parent_NOCASHBOX.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\Beta\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+gosub Make7Zip
+endiff
+
+
+::==================================================================
+::----------------------------E S D---------------------------------
+::==================================================================
+
+iff %NAV071400_LAYOUT=YES then
+	set NAME=NAV07VERSION00
+	set LAYOUT_DEST=%root%..\Final\Layouts\ESD\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=0
+	set YAHOO_FOLDER=1
+	set DRMINST=0
+	set ACROBAT=0
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist_ESD.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=0
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Trial\ESD_SKU15_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\TryBuy_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_TRIAL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_TRY.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_TRY\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\EHNTrial\EHNTrial_15DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+gosub Make7Zip
+endiff
+
+iff %NAV071400_NOIWP_LAYOUT=YES then
+	set NAME=NAV07VERSION00_NOIWP
+	set LAYOUT_DEST=%root%..\Final\Layouts\ESD\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=0
+	set YAHOO_FOLDER=1
+	set DRMINST=0
+	set ACROBAT=0
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist_ESD.ini
+	set IWP=0
+	set THREATCAT=1
+	set CDSTART=0
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Trial\ESD_SKU15_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\TryBuy_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_TRIAL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_TRY.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_TRY\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\EHNTrial\EHNTrial_15DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %NAV071400_30d_LAYOUT=YES then
+	set NAME=NAV07VERSION00_30d
+	set LAYOUT_DEST=%root%..\Final\Layouts\ESD\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=0
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=0
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist_ESD.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=0
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Trial\ESD_SKU30_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Trial_ESD_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_TRIAL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_TRY.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_TRY\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\EHNTrial\EHNTrial_30DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+gosub Make7Zip
+endiff
+
+::==================================================================
+::----------------------------O E M---------------------------------
+::==================================================================
+
+iff %OEM30_LAYOUT=YES then
+	set NAME=30D
+	set LAYOUT_DEST=%root%..\Final\Layouts\OEM_Limited\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\OEM_030D_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\OEM_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\OEM_SB.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_OEM.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_OEM\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\OEM\OEM_LIMITED_30DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_oem\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVOEM1
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVO1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %OEM60_LAYOUT=YES then
+	set NAME=60D
+	set LAYOUT_DEST=%root%..\Final\Layouts\OEM_Limited\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\OEM_060D_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\OEM_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\OEM_SB.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_OEM.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_OEM\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\OEM\OEM_LIMITED_60DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_oem\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVOEM1
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVO1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %OEM90_LAYOUT=YES then
+	set NAME=90D
+	set LAYOUT_DEST=%root%..\Final\Layouts\OEM_Limited\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\OEM_090D_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\OEM_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\OEM_SB.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_OEM.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_OEM\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\OEM\OEM_LIMITED_90DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_oem\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVOEM1
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVO1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %OEM180_LAYOUT=YES then
+	set NAME=180D
+	set LAYOUT_DEST=%root%..\Final\Layouts\OEM_Limited\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\OEM_180D_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\OEM_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\OEM_SB.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_OEM.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_OEM\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\OEM\OEM_LIMITED_180DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_oem\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVOEM1
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVO1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %OEM30_NOIWP_LAYOUT=YES then
+	set NAME=30D_NOIWP
+	set LAYOUT_DEST=%root%..\Final\Layouts\OEM_Limited\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=0
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\OEM_NOIWP_030D_01U_1YR.dat
+	set LICENSE_INSTOPTS%@FULL[..]\Nobuilds\configfiles\License\OEM_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\OEM_SB_NOIWP.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK_OEM.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK_OEM\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\OEM\OEM_LIMITED_30DAY\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_oem\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVOEM3
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVO1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %PP_OEM_LAYOUT=YES then
+	set NAME=NVVERSIONPPO
+	set LAYOUT_DEST=%root%..\Final\Layouts\Prepaid_OEM\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\PPOEM_01U_1YR.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\OEM_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\PPOEM_SB.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\OEM\OEM_PREPAID\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVPP1
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVP1UG.pdf
+gosub CopyFiles
+endiff
+
+::==================================================================
+::--------------------------C T O---------------------------------
+::==================================================================
+:CTO
+
+iff %NV14CTO_LAYOUT=YES then
+	set NAME=NVVERSION2007
+	set LAYOUT_DEST=%root%..\Final\Layouts\CTO\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=1
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Retail\NVUS_RET_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Retail_License.dat
+	set CUSTOM_INSTOPTS=%root%..\Nobuilds\configfiles\Custom\CTO\CTO.dat
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\ActivationCTO\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\CTO.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+gosub CopyFiles
+endiff
+
+::==================================================================
+::--------------------------S O S---------------------------------
+::==================================================================
+:SOS
+
+iff %NV14SOS_LAYOUT=YES then
+	set NAME=NVVERSIONSOS
+	set LAYOUT_DEST=%root%..\Final\Layouts\SOS\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=1
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist_SOS.ini
+	set IWP=1
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\SCSS\SCSS.dat
+	set LICENSE_INSTOPTS=%root%..\Nobuilds\configfiles\License\Rental_License.dat
+	set CUSTOM_INSTOPTS=%root%..\Nobuilds\configfiles\Custom\SCSS\Generic.dat
+	set PARENT=%root%..\Install\Release\Parent_SOS.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_SCSS_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\SCSSXLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\SOS\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_sos\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\SCSS\AVSTE_SOS.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\SCSS\Generic.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user_scss.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVSOS1
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVS1UG.pdf
+gosub CopyFiles
+endiff
+
+iff %NV14SOS_NOAS_LAYOUT=YES then
+	set NAME=NVVERSIONSOS_NOAS
+	set LAYOUT_DEST=%root%..\Final\Layouts\SOS\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=0
+	set DRMINST=0
+	set ACROBAT=1
+	set SCSS=1
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist_SOS.ini
+	set IWP=1
+	set THREATCAT=0
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\SCSS\SCSS.dat
+	set LICENSE_INSTOPTS=%root%..\Nobuilds\configfiles\License\Rental_License.dat
+	set CUSTOM_INSTOPTS=%root%..\Nobuilds\configfiles\Custom\SCSS\Generic_NOTC.dat
+	set PARENT=%root%..\Install\Release\Parent_SOS.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_SCSS_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\SCSSXLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\SOS\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_sos\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\SCSS\AVSTE_SOS.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\SCSS\Generic.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user_scss.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVSOS2
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVS1UG.pdf
+gosub CopyFiles
+endiff
+
+::==================================================================
+::------------------------NORTONANTISPYWARE-------------------------------
+::==================================================================
+:NORTONANTISPYWARE
+
+iff %NASpy_LAYOUT=YES then
+	set NAME=NASPYVERSION2007
+	set LAYOUT_DEST=%root%..\Final\Layouts\Norton_AntiSpyware\
+	set MSI_NAME=NASpy_RETAIL
+	set CD_LAYOUT=1
+	set YAHOO_FOLDER=1
+	set DRMINST=1
+	set ACROBAT=1
+	set SCSS=0
+	set CLTDIST_INI=%@FULL[%root%..]\Nobuilds\DistFiles\CLTDist.ini
+	set IWP=0
+	set THREATCAT=1
+	set CDSTART=1
+	set AUTORUN=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\Retail\NVUS_RET_SKU.dat
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Retail_License.dat
+	set CUSTOM_INSTOPTS=
+	set PARENT=%root%..\Install\Release\Parent_RETAIL.MSI
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set AVSTE_DLL="%root%..\BIN\BIN.IRU\SuiteOwner\Wrapped\NAV\Activation\Standard\CLTVault.dll"
+	set ISRES_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\branding\nav_retail\isres.dll"
+	set ISBTPLG_DLL="%root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\BTPlugin\NAV\Standard\ISBTPlg.dll"
+	set AVSTE_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVSTE\Licensed\Activation\NAV.dat
+	set NAVOPTRF_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\NAVOPTRF\Licensed.dat
+	set AVRES_DAT=%@FULL[..]\Nobuilds\configfiles\DRM_Components\AVRES\NAV\Licensed.dat
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	set CHM_HELP=%root%..\..\Nobuilds\Help\HTML\bin\NAVRETAIL
+	set PDF_HELP=%root%..\..\Nobuilds\pdf\NAVR1UG.pdf
+	set ISSPYWARELAYOUT=YES
+gosub CopyFiles
+endiff
+
+
+:SDKFiles
+xcopy /E /D /F /Y /C /I %root%..\Include %root%..\Final\SDK\Include\
+rem xcopy /E /D /F /Y /C /I %root%..\..\SDKs\CommonClient\Include %root%..\Final\SDK\CommonClient\Include\
+xcopy /E /D /F /Y /C /I %root%..\Install\MSI %root%..\Final\SDK\MSI\
+
+:: SOS team needs these 2 MSIs from NAV for their vendor builds
+:: (This is because some vendors may want to go with legacy name and other with the cobranded name) 
+md /s %root%..\Final\SDK\MSI\Release
+copy /ZQ %root%..\Install\Release\ShortCut_SCSS.msi %root%..\Final\SDK\MSI\Release\
+copy /ZQ %root%..\Install\Release\ShortCut_SCSS_LEGACY.msi %root%..\Final\SDK\MSI\Release\
+
+:: copy SKU.dat files to SDK
+md /s %root%..\Final\SDK\SKU
+xcopy /E /D /F /Y /C /I %root%..\Nobuilds\configfiles\SKU %root%..\Final\SDK\SKU\
+
+xcopy /E /D /F /Y /C /I %root%..\BIN\BIN.IRU %root%..\Final\SDK\BIN\BIN.IRU\
+xcopy /E /D /F /Y /C /I %root%..\BIN\BIN.IDU %root%..\Final\SDK\BIN\BIN.IDU\
+xcopy /E /D /F /Y /C /I %root%..\LIB\LIB.IRU %root%..\Final\SDK\LIB\LIB.IRU\
+xcopy /E /D /F /Y /C /I %root%..\LIB\LIB.IDU %root%..\Final\SDK\LIB\LIB.IDU\
+rem xcopy /E /D /F /Y /C /I %root%..\..\SDKs %root%..\Final\SDK\SDKs\
+
+::Copy non Anti-tampered files forDebugging
+md /s %root%..\Final\SDK\ForDebugging
+xcopy /D /F /Y /C /I %root%..\..\SDKs\ComponentFramework\bin.iru\cftesting\*.dll %root%..\Final\SDK\ForDebugging\
+xcopy /D /F /Y /C /I %root%..\..\SDKs\Licensing\CLT\Bin.iru\CLTTesting\*.dll %root%..\Final\SDK\ForDebugging\
+copy /ZQ %root%..\..\SDKs\Norton_Internet_Security\Shared_Components\Extras\BIN\Bin.iru\ISBTPlgS.dll %root%..\Final\SDK\ForDebugging\
+copy /ZQ %root%..\BIN\BIN.IRU\NAVLuCbk.dll %root%..\Final\SDK\ForDebugging\
+
+echo.
+echo *********************************************************
+echo ******************** FINISHED ***************************
+echo *********************************************************
+quit
+
+
+
+
+
+:CopyFiles
+rem --------------------------------------------------------------------------------------------------
+rem GENERIC LAYOUT GENERATION SUBROUTINE
+rem --------------------------------------------------------------------------------------------------
+
+	set LAYOUT_NAME=%@REPLACE[VERSION,14,%NAME%]%
+
+	rem Make the folders needed for all layouts
+	md /s %LAYOUT_DEST%%LAYOUT_NAME%
+	md %LAYOUT_DEST%%LAYOUT_NAME%\NAV
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSI
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\Help
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\LUpdate
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SEVINST
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon\ccCommon
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist\MSRedist
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet\SymNet
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymLnch
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\Reporter
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SPBBC
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SPBBC\SPBBC32
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\PreScan
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\AppCore
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SRTSP
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\uiNPC
+	
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SEVINST
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\ccCommon
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\ccCommon\ccCmn64
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SymNet
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SymNet\SND_x64
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SPBBC
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SPBBC\SPBBC64
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SRTSP
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SRTSP\SRTSPx64
+
+
+	rem Create and copy instopst.dat to layout
+	gosub create_instopts
+	
+	rem Copy the files needed on all layouts
+	copy /S %root%..\Install\release\External %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External
+	copy /S %EXTERNAL_FILES% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\SymLT
+	copy %EULA_TXT% "%LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\Norton\APP\end_user.txt"
+	
+	iff %ISSPYWARELAYOUT=YES then
+		copy %root%..\install\release\%MSI_NAME%.msi %LAYOUT_DEST%%LAYOUT_NAME%\NAV\NASpy.msi
+	else
+		copy %root%..\install\release\%MSI_NAME%.msi %LAYOUT_DEST%%LAYOUT_NAME%\NAV\NAV.msi
+	endiff
+	copy %root%..\..\SDKs\CommonClient\MergeModules\ccCommon.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon
+	xcopy %root%..\..\SDKs\CommonClient\MergeModules\ccCommon\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon\ccCommon\
+	
+	copy %root%..\..\SDKs\CommonClient\MergeModules\ccCmn64.msi %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\ccCommon
+	xcopy %root%..\..\SDKs\CommonClient\MergeModules\ccCmn64\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\ccCommon\ccCmn64\
+	
+	copy %root%..\..\SDKs\SymNetDrv\MSI\SymNet.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet\SymNet.msi
+	xcopy %root%..\..\SDKs\SymNetDrv\MSI\SymNet\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet\SymNet\
+	copy %root%..\..\SDKs\SymNetDrv\MSI\SND_x64.msi %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SymNet\SND_x64.msi
+	xcopy %root%..\..\SDKs\SymNetDrv\MSI\SND_x64\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SymNet\SND_x64\
+	copy %root%..\install\release\MSRedist.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist
+	xcopy %root%..\install\release\MSRedist\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist\MSRedist\
+	xcopy %root%..\..\SDKs\SymProtect\MSI\SPBBC32\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\SPBBC\SPBBC32\
+	copy %root%..\..\SDKs\SymProtect\MSI\SPBBC32.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\SPBBC\
+	xcopy %root%..\..\SDKs\SymProtect\MSI\SPBBC64\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SPBBC\SPBBC64\
+	copy %root%..\..\SDKs\SymProtect\MSI\SPBBC64.msi %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SPBBC\
+	copy %root%..\BIN\BIN.IRU\NAVsetup.exe %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\bin\bin.iru\NAVsetup.loc %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\InstallToolBox\BIN.IRA\SymLnch.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymLnch
+	copy %root%..\..\SDKs\InstallToolBox\BIN.IRU\Reporter.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\Reporter
+	copy %root%..\..\SDKs\InstallToolBox\BIN.IRU\Reporter.loc %LAYOUT_DEST%%LAYOUT_NAME%\Support\Reporter
+	copy "%SKU_DAT%" %LAYOUT_DEST%%LAYOUT_NAME%\NAV\SKU.dat
+	copy %root%..\nobuilds\version.dat %LAYOUT_DEST%%LAYOUT_NAME%\NAV\version.dat
+	copy %root%..\..\Nobuilds\MSI\NT\wiupdate.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSI\wiupdate.exe
+	xcopy %root%..\..\Nobuilds\LiveUpdate\redist\Release\Uncompressed\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\LUpdate\
+	copy %root%..\..\SDKs\SymEvent\bin.ira\SEVINST.EXE %LAYOUT_DEST%%LAYOUT_NAME%\Support\SEVINST
+	copy %root%..\..\SDKs\SymEvent\bin.sra\Sevenx64.exe %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SEVINST
+	copy %root%..\BIN\BIN.IRU\AvPreScn.dll %LAYOUT_DEST%%LAYOUT_NAME%\Support\PreScan\AvPreScn.dll
+	copy %root%..\BIN\BIN.IRU\AvPreScn.loc %LAYOUT_DEST%%LAYOUT_NAME%\Support\PreScan\AvPreScn.loc
+	copy %root%..\..\SDKs\InstallToolBox\BIN.IRU\InteScan.dll %LAYOUT_DEST%%LAYOUT_NAME%\Support\PreScan\InteScan.dll
+	copy %root%..\..\SDKs\InstallToolBox\BIN.IRU\InteScan.loc %LAYOUT_DEST%%LAYOUT_NAME%\Support\PreScan\InteScan.loc
+        copy %root%..\..\SDKs\AppCore\MSI\AppCore.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\AppCore
+	xcopy %root%..\..\SDKs\AppCore\MSI\AppCore\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\AppCore\AppCore\
+
+	copy %root%..\..\SDKs\AVComponent\MSI\AV.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV
+	xcopy %root%..\..\SDKs\AVComponent\MSI\AV\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\
+	
+	copy %root%..\..\SDKs\AutoProtect\MSI\SRTSP.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\SRTSP
+	xcopy %root%..\..\SDKs\AutoProtect\MSI\SRTSP\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\SRTSP\SRTSP\
+	copy %root%..\..\SDKs\AutoProtect\MSI\SRTSPx64.msi %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SRTSP
+	xcopy %root%..\..\SDKs\AutoProtect\MSI\SRTSPx64\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Suport64\SRTSP\SRTSPx64\
+	
+	copy %root%..\..\SDKs\ConsumerUI\MSI\uiNPC.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\uiNPC
+	xcopy %root%..\..\SDKs\ConsumerUI\MSI\uiNPC\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\uiNPC\uiNPC\
+	
+	:: copying all help files
+	xcopy %CHM_HELP%\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\Help\
+	iff "%PDF_HELP%" ne "" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Manual
+		copy %PDF_HELP% %LAYOUT_DEST%%LAYOUT_NAME%\Manual\*.*
+	endiff
+	
+	md  %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent
+	copy %PARENT% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent.msi
+	xcopy %root%..\install\release\Parent\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\
+	copy %AVSTE_DLL% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\NORTON\CLTVault.dll
+	copy %ISRES_DLL% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\NORTON\App\ISRes.dll
+	copy %ISBTPLG_DLL% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\NORTON\App\ISBTPlg.dll
+	
+	copy %SYMLT% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\SYMLT.msi
+
+	iff "%IWP%" == "1" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP
+		copy %root%..\install\release\IWP.MSI %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP.MSI
+		xcopy %root%..\install\release\IWP\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP\
+		copy %root%..\IWP\DefRules.xml %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP\App\DefRules.xml
+		del /q /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP\APP\IDSDefs\*		
+		xcopy /s /y %root%..\..\SDKs\ClientIDS\IDSDefs\* %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP\APP\IDSDefs\
+	endiff
+	
+	
+	rem copy over navsetup.exe dependancies
+	copy %root%..\Install\release\MSRedist\System32\msvcr71.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\Install\release\MSRedist\System32\msvcp71.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\CommonClient\BIN\ccL60U.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\nobuilds\defutils\bin.ira\defutdcd.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\SymHTML\bin\iru\SymHTML.dll %LAYOUT_DEST%%LAYOUT_NAME%
+
+	rem delete the existing virus defs
+	del /sxyzq %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusDef
+	del /sxyzq %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusD64
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusDef
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusD64
+	
+	
+	rem Unzip the latest virus definitions
+	rem For 32-bit defs
+	%root%..\..\Nobuilds\Defs\eei32.EXE /EXTRACT %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusDef /Q
+	rem For 64-bit defs
+	%root%..\..\Nobuilds\Defs\eei64.EXE /EXTRACT %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusD64 /Q
+	rem Commenting out for unreleased pkzip25 -ext -dir -over %root%..\..\Nobuilds\Defs\CRNTESRb.zip %LAYOUT_DEST%%LAYOUT_NAME%\Support\AV\AV\VirusD64
+	
+	rem Copy readme.txt	and shortcut
+	iff "%SCSS%" == "1" then
+		rem copy the SCSS Specify readme.txt
+		copy /z %root%..\nobuilds\README_SCSS.txt %LAYOUT_DEST%%LAYOUT_NAME%\readme.txt
+		copy /z %root%..\nobuilds\README_SCSS.txt %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\NORTON\APP\readme.txt
+		copy /z %root%..\BIN\BIN.IRU\SOS\isStatus.loc %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\NORTON\isStatus.loc
+	else
+		copy %root%..\nobuilds\readme.txt %LAYOUT_DEST%%LAYOUT_NAME%\readme.txt
+	endiff
+
+	rem copy upsell URL configuration file
+	copy /z %CLTDIST_INI% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\CLTDIST.INI		
+
+	iff "%CDSTART%" == "1" then
+		copy %root%..\BIN\BIN.IRA\CDStart.exe %LAYOUT_DEST%%LAYOUT_NAME%\CDStart.exe
+		copy %root%..\BIN\BIN.IRA\CDStart.loc %LAYOUT_DEST%%LAYOUT_NAME%\CDStart.loc
+		copy %root%..\Nobuilds\Autorun\CDSTART.INF %LAYOUT_DEST%%LAYOUT_NAME%\autorun.inf
+	endiff	
+	
+	iff "%AUTORUN%" == "1" then
+		copy %root%..\BIN\BIN.IRA\CDStart.exe %LAYOUT_DEST%%LAYOUT_NAME%\Autorun.exe
+		copy %root%..\BIN\BIN.IRA\CDStart.loc %LAYOUT_DEST%%LAYOUT_NAME%\Autorun.loc
+		copy %root%..\nobuilds\Autorun\AUTORUN.inf %LAYOUT_DEST%%LAYOUT_NAME%\autorun.inf
+	endiff	
+
+	rem Copy over CD layout specific files.
+	iff "%CD_LAYOUT%" == "1" then
+
+		rem we should give users adobe acrobat reader on CD only
+		rem The Manual folder will exist if a PDF help document is specified for this layout
+		iff "%ACROBAT%" == "1" then
+			md %LAYOUT_DEST%%LAYOUT_NAME%\Manual\Adobe
+			copy %root%..\..\nobuilds\Acrobat\AR70ENU.exe %LAYOUT_DEST%%LAYOUT_NAME%\Manual\Adobe\AR70ENU.exe
+		endiff
+	endiff
+	
+	iff "%DRMINST%" == "1" then
+		copy %root%..\..\Nobuilds\XtreamLok\SDK\BIN.IRA\symlctnk.dll %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\NORTON\symlctnk.dll
+	endiff
+	
+	rem Adding Yahoo Toolbar to only Retail/OEM layouts
+	iff "%YAHOO_FOLDER%" == "1" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\YahooToolbar
+		copy %root%..\..\nobuilds\Yahoo_Toolbar\2006\YTB.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\YahooToolbar\YTB.exe
+	endiff
+
+	iff %ISSPYWARELAYOUT=YES then
+		del /sxyzq %LAYOUT_DEST%%LAYOUT_NAME%\Support\YahooToolbar\*.*
+	endiff
+
+return
+
+:: ###################################################
+:: Create final instopts.dat by merging multiple files
+:: ###################################################
+
+:create_instopts
+	echo creating instopts.dat
+
+	rem Must use absolute path for dat files since 
+	rem NavOpt may not be able to handle relative path.
+	
+	set TEMP1_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp1instopts.dat
+	set TEMP2_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp2instopts.dat
+	set TEMP3_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp3instopts.dat
+	set TEMP4_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp4instopts.dat
+	set TEMP5_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp5instopts.dat
+	set TEMP6_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp6instopts.dat
+	
+	rem Clear the temp instopts used to store previous dat files	
+	del /zqey %TEMP1_INSTOPTS%
+	del /zqey %TEMP2_INSTOPTS%
+	del /zqey %TEMP3_INSTOPTS%
+	del /zqey %TEMP4_INSTOPTS%
+	del /zqey %TEMP5_INSTOPTS%
+	del /zqey %TEMP6_INSTOPTS%
+	del /zqey %LAYOUT_DEST%%LAYOUT_NAME%\NAV\instopts.dat
+		
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 1 - Merge base dat with LICENSE dat
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	%TOOLS_FOLDER%mergedatfiles.exe /dat1:%BASE_INSTOPTS% /dat2:%LICENSE_INSTOPTS% /final:%TEMP1_INSTOPTS%
+	
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 2 - Merge resulting temp dat from step 1 with CUSTOM.dat
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	iff "%CUSTOM_INSTOPTS%" ne "" then
+		%TOOLS_FOLDER%mergedatfiles.exe /dat1:%TEMP1_INSTOPTS% /dat2:%CUSTOM_INSTOPTS% /final:%TEMP2_INSTOPTS%
+	else
+		copy %TEMP1_INSTOPTS% %TEMP2_INSTOPTS%
+	endiff	
+	
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 3 - Merge resulting temp dat from step 2 with AVSTE.dat
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	iff "%AVSTE_DAT%" ne "" then
+		%TOOLS_FOLDER%mergedatfiles.exe /dat1:%TEMP2_INSTOPTS% /dat2:%AVSTE_DAT% /final:%TEMP3_INSTOPTS%
+	else
+		copy %TEMP2_INSTOPTS% %TEMP3_INSTOPTS%
+	endiff	
+
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 4 - Merge resulting temp dat from step 3 with NAVOPTRF.dat
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	iff "%NAVOPTRF_DAT%" ne "" then
+		%TOOLS_FOLDER%mergedatfiles.exe /dat1:%TEMP3_INSTOPTS% /dat2:%NAVOPTRF_DAT% /final:%TEMP4_INSTOPTS%
+	else
+		copy %TEMP3_INSTOPTS% %TEMP4_INSTOPTS%
+	endiff	
+	
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 5 - Merge resulting temp dat from step 4 with AVRES.dat
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	iff "%AVRES_DAT%" ne "" then
+		%TOOLS_FOLDER%mergedatfiles.exe /dat1:%TEMP4_INSTOPTS% /dat2:%AVRES_DAT% /final:%TEMP5_INSTOPTS%
+	else
+		copy %TEMP4_INSTOPTS% %TEMP5_INSTOPTS%
+	endiff	
+	
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 6 - Merge resulting temp dat from step 5 with NOYTB.dat
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	iff %YAHOO_FOLDER% eq 0 then
+		%TOOLS_FOLDER%mergedatfiles.exe /dat1:%TEMP5_INSTOPTS% /dat2:%NOYTB_DAT% /final:%TEMP6_INSTOPTS%
+	else
+		copy %TEMP5_INSTOPTS% %TEMP6_INSTOPTS%
+	endiff	
+	
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	:: STEP 7 - Copy final instopts.dat to layout
+	:: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	copy %TEMP6_INSTOPTS% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\instopts.dat
+return
+
+:: #########################################################################################################
+:: MakeWinRAR subroutine -- makes the WinRAR self-extracting executable for the layout that we just created.
+:: #########################################################################################################
+
+:MakeWinRAR
+
+md %SELFEXTRATING_DEST%
+%root%..\Nobuilds\WinRAR\winrar a -afrar -r -s -ep1 -m5 -sfx%root%..\Nobuilds\WinRAR\NAV.SFX -iicon%root%..\Nobuilds\WinRAR\Setup.ico %SELFEXTRATING_DEST%%LAYOUT_NAME% %LAYOUT_DEST%%LAYOUT_NAME%\*.*
+%root%..\Nobuilds\WinRAR\winrar c -z%root%..\Nobuilds\WinRAR\comment.txt %SELFEXTRATING_DEST%%LAYOUT_NAME%.exe
+
+return
+
+:Make7Zip
+
+md %SELFEXTRATING_DEST%
+PUSHD %LAYOUT_DEST%%LAYOUT_NAME%
+%root%..\Nobuilds\7-Zip\7z a -r -mx9 -ms=on %SELFEXTRATING_DEST%%LAYOUT_NAME%.7z * 
+POPD
+
+:: update ESD version number
+set RESOURCEUPDATER="%root%..\..\SDKs\ComponentFramework\bin.iru\ResourceUpdater.exe"
+%RESOURCEUPDATER% /update "%root%..\Nobuilds\7-Zip\SFX\NAV_7z.sfx" /updatefileversion %major_num%.%minor_num%.%sub_ver%.%build_num%
+
+copy /b %root%..\Nobuilds\7-Zip\SFX\NAV_7z.sfx + %root%..\Nobuilds\7-Zip\SFX\NAV_7z.diz + %SELFEXTRATING_DEST%%LAYOUT_NAME%.7z %SELFEXTRATING_DEST%%LAYOUT_NAME%.exe
+
+:: sign the ESD
+set DIGISIGN=DigiSign.btm
+call %DIGISIGN% /FILELIST:%root%..\Final\Layouts\ESD\self-extracts\%LAYOUT_NAME%.exe
+
+del %SELFEXTRATING_DEST%%LAYOUT_NAME%.7z
+return

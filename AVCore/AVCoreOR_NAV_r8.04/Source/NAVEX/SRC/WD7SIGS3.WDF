@@ -1,0 +1,5595 @@
+;****************************************************************************
+; Copyright 1996 Symantec, Peter Norton Product Group
+;****************************************************************************
+; WD7SIGS3.WDF
+;
+; $Header:   S:/NAVEX/VCS/wd7sigs3.wdv   1.88   15 May 1997 19:40:00   ECHIEN  $
+;
+; This source file contains definitions for the heuristic Word viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/wd7sigs3.wdv  $
+   
+      Rev 1.88   15 May 1997 19:40:00   ECHIEN
+   MODIFY Niceday.A detection for WD8 to include a slightly different PAYLOAD
+   
+      Rev 1.87   15 May 1997 16:37:34   AOONWAL
+   Added WM.DMV.E
+   
+      Rev 1.86   15 May 1997 13:21:12   AOONWAL
+   Added WM.Johnny.K
+   
+      Rev 1.85   14 May 1997 23:18:16   RELNITI
+   ADD WM.Bandung.O & Bandung.AE
+   
+      Rev 1.84   14 May 1997 21:57:32   JWILBER
+   Uncommented sig for WM.NiceDay.G, and fixed it up.  VID is 4ebb,
+   and it's for CI#11828.
+ 
+      Rev 1.83   14 May 1997 20:26:18   RELNITI
+   FIX Wrong CRC on WM.Concept.AP
+ 
+      Rev 1.82   14 May 1997 19:51:30   RELNITI
+   ADD WM.Concept.AP
+ 
+      Rev 1.81   14 May 1997 19:10:56   JWILBER
+   Added sigs for NiceDay.G - Work in progress - commented out
+   for now.
+ 
+      Rev 1.80   14 May 1997 16:50:14   JWILBER
+   Added sig for WM.Divina.F for CI#11815.
+ 
+      Rev 1.79   14 May 1997 15:22:02   ECHIEN
+   Added Twolines.H Colors.AT
+ 
+      Rev 1.78   14 May 1997 14:59:32   CFORMUL
+   Added Colors.AS
+ 
+      Rev 1.77   14 May 1997 14:42:34   AOONWAL
+   Added WM.MDMA.O
+ 
+      Rev 1.76   14 May 1997 13:27:50   ECHIEN
+   Added Wm.Showoff.AT
+ 
+      Rev 1.75   14 May 1997 11:46:26   RELNITI
+   CHANGE all occurances of _BANDUNGD => _BANDUNGA
+ 
+      Rev 1.74   14 May 1997 10:58:42   RELNITI
+   ADD WM.ShowOff.AS
+ 
+      Rev 1.73   13 May 1997 19:33:44   RELNITI
+   ADD WM.Rapi.AF1, AF2, AG, AG1, AG2
+ 
+      Rev 1.72   13 May 1997 17:59:38   AOONWAL
+   Removed syntax error from WM.Npad.BA
+ 
+      Rev 1.71   13 May 1997 17:20:48   AOONWAL
+   Added WM.NPAD.BA
+ 
+      Rev 1.70   13 May 1997 15:07:04   AOONWAL
+   ADDED WM.dzt.C for WORD 97
+ 
+      Rev 1.69   13 May 1997 14:56:34   ECHIEN
+   Added Frenzy.A and Sparkle.A for WD8 only
+ 
+      Rev 1.68   13 May 1997 13:29:16   AOONWAL
+   Added WM.Dzt.C
+ 
+      Rev 1.67   13 May 1997 11:18:56   AOONWAL
+   Added WM.ShowOff.AR
+ 
+      Rev 1.66   13 May 1997 11:08:18   RELNITI
+   ADD WM.Wazzu.CB
+ 
+      Rev 1.65   13 May 1997 10:04:22   RELNITI
+   ADD WM.Minimal.O, Alien.D, E, Bandung.AC, Colors.AR, Irish.L
+ 
+      Rev 1.64   12 May 1997 18:39:28   AOONWAL
+   Added WM.Bandung.AD
+ 
+      Rev 1.63   12 May 1997 13:29:20   DANG
+   Added Concept.AO for CI#11792
+ 
+      Rev 1.62   12 May 1997 11:58:50   RELNITI
+   MODIFY Npad.AU => Npad.AV
+   ADD WM.Npad.AU, AY, AZ, Concept.AJ, ShareFun.B, Minimal.N,
+          Wazzu, BU, BV, BW, BX, BY, BZ, CA, MDMA.N, Cap.L, Rapi.AE1, AE2,
+          Bandung.AA, AB, ShowOff.AM, AQ
+       all based on VMACRO Posting
+ 
+      Rev 1.61   12 May 1997 11:36:34   AOONWAL
+   Added WORD97 CRC for WM.Appder.D
+ 
+      Rev 1.60   09 May 1997 16:30:28   AOONWAL
+   ADDED WM.Appder.D
+ 
+      Rev 1.59   08 May 1997 16:58:42   DANG
+   Added Concept.AN for CI#11781
+ 
+      Rev 1.58   08 May 1997 15:53:50   RELNITI
+   ADD missing [NAMEDCRCSigEnd]
+ 
+      Rev 1.57   08 May 1997 15:45:30   DANG
+   Added NOP.K for CI#11781
+ 
+      Rev 1.56   08 May 1997 12:00:40   JWILBER
+   Added [QAStatus] to Concept.AM sig.
+ 
+      Rev 1.55   07 May 1997 22:17:28   JWILBER
+   Added sig for WM.Concept.AM, 4e85.
+ 
+      Rev 1.54   07 May 1997 20:46:44   RELNITI
+   ADD WM.Nuclear.M & WM.TwoLines.G
+ 
+      Rev 1.53   07 May 1997 10:56:20   RELNITI
+   FIXING Johnny.J: too many AND
+ 
+      Rev 1.52   07 May 1997 10:48:56   RELNITI
+   MOVE a NamedCRCSig to Repair in Johnny.J
+ 
+      Rev 1.51   07 May 1997 10:06:10   RELNITI
+   FIX a typo in Johnny.J signature
+ 
+      Rev 1.50   07 May 1997 10:01:26   AOONWAL
+   Added WM.NiceDay.F
+ 
+      Rev 1.49   07 May 1997 09:24:10   RELNITI
+   ADD Johnny.J
+ 
+      Rev 1.48   06 May 1997 17:02:14   CFORMUL
+   Added Bandung.Z
+ 
+      Rev 1.47   06 May 1997 12:02:10   AOONWAL
+   Added detection for WORD97 version of WM.Wazzu.BS
+ 
+      Rev 1.46   06 May 1997 11:07:20   ECHIEN
+   Modified Wm.Nuclear.M -> Wm.Nuclear.L and VID_NUCLEARM -> VID_NUCLEARL
+ 
+      Rev 1.45   06 May 1997 10:23:58   RELNITI
+   ADD WM.NJ-WMDLK1.A d&r
+ 
+      Rev 1.44   05 May 1997 15:59:48   ECHIEN
+   Added Wm.Nuclear.M
+ 
+      Rev 1.43   05 May 1997 13:36:36   AOONWAL
+   Added WM.Npad.AA
+ 
+      Rev 1.42   05 May 1997 13:23:22   ECHIEN
+   Added Wm.Concept.AL
+ 
+      Rev 1.41   05 May 1997 12:57:12   AOONWAL
+   Added WM.Rapi.AD2 and renamed old WM.RAPI.AD2 to WM.Rapi.AZ2
+ 
+      Rev 1.40   05 May 1997 08:17:50   RELNITI
+   ADD D&R for WM.GoodNight.B (and .B1 implicitly) for #11707
+ 
+      Rev 1.39   04 May 1997 14:24:40   ECHIEN
+   Added Wm.Random.A Wm.Spiral.A Wm.Goggles.A
+ 
+      Rev 1.38   03 May 1997 12:49:12   ECHIEN
+   Added Phardera.B Divina.E
+ 
+      Rev 1.37   03 May 1997 11:37:40   ECHIEN
+   Added Wm.Talon.H Wm.Talon.H1 Wm.Talon.H2 Wm.Talon.B Wm.Talon.C
+ 
+      Rev 1.36   03 May 1997 10:22:52   ECHIEN
+   Added Wm.Badboy.A Wm.Talon.A Wm.Dub.A
+ 
+      Rev 1.35   02 May 1997 14:32:14   AOONWAL
+   Added WD8 detection for WM.Irish.K
+ 
+      Rev 1.34   02 May 1997 13:12:06   AOONWAL
+   Added WM.Irish.K
+ 
+      Rev 1.33   02 May 1997 12:36:04   RELNITI
+   ADD WM.Johnny.H, Eraser.P:Tw, Lunch.C, Nop.J, Hider.A, TestArea.A,
+          Imposter.C, Concept.AK, Dave.A, Atom.I, Nop.I, CountTen.D,
+          CeeFour.B, GoldFish.B, CVCK1.B, Nuclear.J
+ 
+      Rev 1.32   02 May 1997 10:49:30   ECHIEN
+   Added Wm.Shuffle.A with XXXXX, AutoOpen and FileSaveas
+ 
+      Rev 1.31   02 May 1997 10:28:56   RELNITI
+   ADD WM.Colors.AM, Wazzu.BD, Helper.C, D, E
+ 
+      Rev 1.30   01 May 1997 17:32:54   ECHIEN
+   Added Wm.Bandung.Y
+ 
+      Rev 1.29   01 May 1997 17:20:34   RELNITI
+   MODIFY ShowOff.AJ => .AN
+          ShowOff.AO => .AP
+   ADD ShowOff.AJ, AK, AL, AO
+ 
+      Rev 1.28   01 May 1997 14:47:06   ECHIEN
+   Added WM.Npad.Ax
+ 
+      Rev 1.27   01 May 1997 13:13:06   CFORMUL
+   Added Colors.AQ
+ 
+      Rev 1.26   01 May 1997 10:52:12   RELNITI
+   MODIFY WM.Rapi.Z2 => .AB2
+   ADD WM.Wazzu.BT, WM.Toten.A
+ 
+      Rev 1.25   01 May 1997 09:42:42   RELNITI
+   MODIFY MDMA.N => MDMA.M
+   ADD RAPI.X, RAPI.Y, RAPI.Y1, NOP.H, Simple.A, Simple.B
+   RE-arrange Rapi Family block
+ 
+      Rev 1.24   30 Apr 1997 21:18:00   DANG
+   Added MDMA.N for CI#11688
+ 
+      Rev 1.23   30 Apr 1997 17:53:34   AOONWAL
+   Modified WM.Colors.AN
+ 
+      Rev 1.22   30 Apr 1997 17:34:46   AOONWAL
+   Added WM.Colors.AP
+ 
+      Rev 1.21   30 Apr 1997 15:33:14   AOONWAL
+   Added WM.NiceDay.E
+ 
+      Rev 1.20   30 Apr 1997 14:21:56   CFORMUL
+   Added Rapi.AD2
+ 
+      Rev 1.19   30 Apr 1997 12:18:42   RELNITI
+   ADD WM.Date.B, HiAC.A, Npad.AP, Cap.G, H, I
+   RE-order some variants into their family block
+ 
+      Rev 1.18   29 Apr 1997 22:03:42   JWILBER
+   Added def for Twolines.F for Customer Issue 11648.
+ 
+      Rev 1.17   29 Apr 1997 17:08:26   AOONWAL
+   Added WM.Rapi.AC
+ 
+      Rev 1.16   29 Apr 1997 14:45:04   DANG
+   Modifed sig on Cap.J yet once again.
+ 
+      Rev 1.15   29 Apr 1997 14:35:06   DANG
+   Changed sig for Cap.J to use FILESAVE1 instead of FILESAVE0 of Cap.A
+ 
+      Rev 1.14   29 Apr 1997 14:16:52   DANG
+   Fixed typo.  For some reason, I added Cap.J as Cap.F.
+
+      Rev 1.13   29 Apr 1997 14:04:36   DANG
+   Added Cap.J for CI#11679
+ 
+      Rev 1.12   29 Apr 1997 13:32:54   DANG
+   Added Showoff.AO for CI#11679
+ 
+      Rev 1.11   28 Apr 1997 13:30:10   DANG
+   Added TwoLines.E for CI#11656
+ 
+      Rev 1.10   28 Apr 1997 12:25:20   CFORMUL
+   Added Rapi.AA2
+ 
+      Rev 1.9   25 Apr 1997 17:41:48   DANG
+   Added NPad.AU for CI#11646
+ 
+      Rev 1.8   25 Apr 1997 17:16:40   AOONWAL
+   Modified during MAY97 update
+ 
+      Rev MAY97   24 Apr 1997 17:26:46   ECHIEN
+   Added Wm.Rapi.Z2
+ 
+      Rev MAY97   23 Apr 1997 18:03:50   CFORMUL
+   Added Irish.J
+ 
+      Rev MAY97   23 Apr 1997 15:11:38   ECHIEN
+   Added WM.Showoff.AJ
+ 
+      Rev MAY97   23 Apr 1997 14:44:48   ECHIEN
+   Added NJ-WMDLK1.G
+ 
+      Rev MAY97   23 Apr 1997 11:14:30   RELNITI
+   RENAME WM.Npad.AO => AQ
+          WM.Npad.AP => AR
+   ADD WM.Npad.AO
+       WM.Wazzu.BS
+ 
+      Rev MAY97   23 Apr 1997 00:06:32   JWILBER
+   Modified WM.Colors.AN to work right.
+ 
+      Rev MAY97   22 Apr 1997 21:58:58   RELNITI
+   SWAP the ordering of Colors.AN (JW) and Colors.AO since the former
+    false-id on the other.
+    note: the detection for Colors.AN looks similar to Colors.Remnant
+     detection (in WDVARSIG.WDF)
+ 
+      Rev MAY97   22 Apr 1997 21:40:00   RELNITI
+   ADD WM.Nuclear.K & TwoLines.D for #11590
+       WM.Colors.AO & ShowOff.AI for #11589
+ 
+      Rev MAY97  22 Apr 1997 21:21:20   JWILBER
+   Added WM.Colors.AN, 4e21 and WM.Concept.AJ, 4e22.
+ 
+      Rev MAY97  22 Apr 1997 16:21:30   ECHIEN
+   Added Npad.AT
+ 
+      Rev MAY97  22 Apr 1997 16:12:04   AOONWAL
+   Added WM.Npad.AS
+ 
+      Rev MAY97  22 Apr 1997 14:27:12   ECHIEN
+   Added JOHNNYI
+ 
+      Rev MAY97  22 Apr 1997 13:04:28   ECHIEN
+   Modified W8 CRCs for new scanning Questions? See Eric
+ 
+      Rev MAY97  21 Apr 1997 14:05:48   ECHIEN
+   Added Showoff.AH
+ 
+      Rev MAY97  21 Apr 1997 13:06:48   DANG
+   Added Colors.AL for CI#11549
+ 
+      Rev MAY97  21 Apr 1997 13:02:20   RELNITI
+   ADD Bandung.X
+ 
+      Rev 1.1   18 Apr 1997 17:49:48   AOONWAL
+   Modified during DEV1 malfunction
+ 
+      Rev ABID   16 Apr 1997 18:45:22   RELNITI
+   ADD WM.Npad.AO, AP
+ 
+      Rev ABID   16 Apr 1997 15:13:30   DANG
+   Added WM.Cap.F for CI#11536.  It's a Japanese document with this sample.
+ 
+      Rev ABID   16 Apr 1997 13:46:14   CFORMUL
+   Added ShowOff.AG
+ 
+      Rev ABID   16 Apr 1997 11:48:14   RELNITI
+   ADD WM.CVCK1, CVCK1.A, Drugs.A:De, Bandung.T, Concept.AI:Jp,
+          Irish.H, MDMA.I, Satanic.B, Oval.A, Cap.E, Bandung.V,
+          Bandung.W, Eraser.O:Tw, MDMA.J, MDMA.K, No-F.B, ShowOff.AF
+ 
+      Rev ABID   15 Apr 1997 17:27:12   CFORMUL
+   Changed Bandung.T to Bandung.U
+ 
+      Rev ABID   15 Apr 1997 16:02:32   CFORMUL
+   Added Bandung.T
+ 
+      Rev ABID   14 Apr 1997 12:57:04   CFORMUL
+   Added Irish.I
+ 
+      Rev 1.0   07 Apr 1997 14:38:38   CFORMUL
+   Initial revision.
+
+;
+;****************************************************************************
+
+#################################################################
+#
+# K n o w n   V i r u s   S i g n a t u r e s
+#
+#################################################################
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Irish.H: WORDHELPNT
+[ID]                CRC_WORDHELPNT_IRISHH
+[CRCWD7]            0x30CC903E
+[Signature]         NameSig(NAME_ONLY_WORDHELPNT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Irish.H corrupted WORDHELPNT
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_IRISHH
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_IRISH) and
+[Signature]      NamedCRCSig(CRC_ANTIVIRUS_IRISH)  or
+[Signature]      NamedCRCSig(CRC_FILESAVE_IRISH) and
+[Signature]      NamedCRCSig(CRC_ANTIVIRUS2_IRISH) )and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Irish.I: WORDHELPNT
+[ID]                CRC_WORDHELPNT_IRISHI
+[CRCWD7]            0x6861108D
+[Signature]         NameSig(NAME_ONLY_WORDHELPNT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Irish.I
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_IRISHI
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS_IRISH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHI) or
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS2_IRISH) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Irish.J: WORDHELPNT
+[ID]                CRC_WORDHELPNT_IRISHJ
+[CRCWD7]            0xC40470D5
+[CRCWD8]            0x90D70869
+[Signature]         NameSig(NAME_ONLY_WORDHELPNT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Irish.J
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_IRISHJ
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHJ) and
+[Signature]     (NamedCRCSig(CRC_ANTIVIRUS_IRISH) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_IRISH) or
+[Signature]      NamedCRCSig(CRC_ANTIVIRUS2_IRISH) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_IRISH))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]	  WM.Bandung.O: AutoExec
+[ID]		  CRC_AUTOEXEC_BANDUNGO
+[CRCWD7]	  0xFA12DCB0
+[Signature]	  NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]	  WM.Bandung.O
+[Type]        WD7
+[QAStatus]	  PASSED
+[ID]		  VID_BANDUNGO
+[Signature]	  NamedCRCSig(CRC_AUTOEXEC_BANDUNGO) and
+[Signature]	  NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]	  NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]   NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]   NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]   NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA)
+[Repair]	  UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.T: AUTOEXEC
+[ID]                CRC_AUTOEXEC_BANDUNGT
+[CRCWD7]            0x2AC1470F
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.T diff. corruption on AutoExec
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGT
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGT) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.U: AutoExec
+[ID]                CRC_AUTOEXEC_BANDUNGU
+[CRCWD7]            0x83D290C7
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.U
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGU
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGU) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.V: AUTOEXEC
+[ID]                CRC_AUTOEXEC_BANDUNGV
+[CRCWD7]            0xCD92C9B0
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.V: FILESAVEAS
+[ID]                CRC_FILESAVEAS_BANDUNGV
+[CRCWD7]            0x7AC483DC
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.V: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_BANDUNGV
+[CRCWD7]            0xEB457E54
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.V: TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGV
+[CRCWD7]            0x7A30639B
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.V corruption on all but AUTOOPEN & FILESAVE
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGV
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGV) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGV) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGV) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.W: AUTOEXEC
+[ID]                CRC_AUTOEXEC_BANDUNGW
+[CRCWD7]            0x7AA88CEE
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.W: FILESAVEAS
+[ID]                CRC_FILESAVEAS_BANDUNGW
+[CRCWD7]            0xF2AC436B
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.W: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_BANDUNGW
+[CRCWD7]            0x067C1841
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.W: TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGW
+[CRCWD7]            0xAE7B4817
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.W snatched-AUTOEXEC + corruption
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGW
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGW) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGW) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGW) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGW)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.X: FILESAVEAS
+[ID]                CRC_FILESAVEAS_BANDUNGX
+[CRCWD7]            0x661B4AA1
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.X: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_BANDUNGX
+[CRCWD7]            0xE116AB44
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.X: TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGX
+[CRCWD7]            0x1E7A98E8
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.X corrupted FILESAVEAS, TOOLSMACRO, TOOLSCUSTOMIZE
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGX
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGX) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGX) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.Y: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_BANDUNGY
+[CRCWD7]            0x4E5984DC
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.Y: TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGY
+[CRCWD7]            0x729F5DD1
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.Y diff ToolsMacro and ToolsCustomize
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGY
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGI) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGY) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.Z: AUTOEXEC
+[ID]                CRC_AUTOEXEC_BANDUNGZ
+[CRCWD7]            0x2B4D3147
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.Z Bundung.A w/ corrupted AutoExec
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGZ
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGZ) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_AUTOEXEC_BANDUNGAA
+[CRCWD7]            0xB5366BC8
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_TOOLSMACRO_BANDUNGAA
+[CRCWD7]            0xB44BF04A
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGAA
+[CRCWD7]            0x6A31EFB7
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.AA
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGAA
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGAA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGAA) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGAA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_AUTOEXEC_BANDUNGAB
+[CRCWD7]            0xD1C8C73A
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_TOOLSMACRO_BANDUNGAB
+[CRCWD7]            0x96441EF3
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGAB
+[CRCWD7]            0xF3F39FE9
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.AB
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGAB
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGAB) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGAB) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGAB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.AC: AUTOEXEC
+[ID]                CRC_AUTOEXEC_BANDUNGAC
+[CRCWD7]            0x1609A5B5
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.AC diff. AUTOEXEC f/ .AB
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGAC
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGAC) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGAB) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGAB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Bandung.AD
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGAD
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Bandung.AE: TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSCUSTOMIZE_BANDUNGAE
+[CRCWD7]            0xC2CC5527
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]	  WM.Bandung.AE diff. TOOLSCUSTOMIZE f/ .O
+[Type]        WD7
+[QAStatus]	  PASSED
+[ID]		  VID_BANDUNGAE
+[Signature]	  NamedCRCSig(CRC_AUTOEXEC_BANDUNGO) and
+[Signature]	  NamedCRCSig(CRC_AUTOOPEN_BANDUNGA) and
+[Signature]	  NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]   NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]   NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]   NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGAE)
+[Repair]	  UseSignature
+[KnownVirusSigEnd]
+
+#Bandung.AF is in wd7sigs.wdf
+
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AI:Jp: AAAZAO
+[ID]                CRC_AAAZAO_CONCEPTAI
+[CRCWD7]            0x6DAC7AEB
+[Signature]         NameSig(NAME_ONLY_AAAZAO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AI:Jp: AAAZFS
+[ID]                CRC_AAAZFS_CONCEPTAI
+[CRCWD7]            0xBF3A8F9E
+[Signature]         NameSig(NAME_ONLY_AAAZFS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AI:Jp: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CONCEPTAI
+[CRCWD7]            0x6DAC7AEB
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AI:Jp: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CONCEPTAI
+[CRCWD7]            0xBF3A8F9E
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AI:Jp .A translated into Japanese
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAI
+[Signature]     NamedCRCSig(CRC_AAAZAO_CONCEPTAI) and
+[Signature]     NamedCRCSig(CRC_AAAZFS_CONCEPTAI) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_CONCEPTAI) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_CONCEPTAI))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AJ: AAAZAO
+[ID]                CRC_AAAZAO_CONCEPTAJ
+[CRCWD7]            0x92CF69E0
+[Signature]         NameSig(NAME_ONLY_AAAZAO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AJ: AAAZFS
+[ID]                CRC_AAAZFS_CONCEPTAJ
+[CRCWD7]            0x45FBB3C1
+[Signature]         NameSig(NAME_ONLY_AAAZFS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AJ: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CONCEPTAJ
+[CRCWD7]            0x45FBB3C1
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AJ: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CONCEPTAJ
+[CRCWD7]            0x92CF69E0
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AJ modified Concept.A, same Payload
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAJ
+[Signature]     NamedCRCSig(CRC_AAAZAO_CONCEPTAJ) and
+[Signature]     NamedCRCSig(CRC_AAAZFS_CONCEPTAJ) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_CONCEPTAJ) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_CONCEPTAJ))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AK: AOP
+[ID]                CRC_AOP_CONCEPTAK
+[CRCWD7]            0xD7D9CD67
+[Signature]         NameSig(NAME_ONLY_AOP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AK: FSA
+[ID]                CRC_FSA_CONCEPTAK
+[CRCWD7]            0xC3A8609E
+[Signature]         NameSig(NAME_ONLY_FSA)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AK: PAYLOAD
+[ID]                CRC_PAYLOAD_CONCEPTAK
+[CRCWD7]            0x5527CBB6
+[Signature]         NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AK: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CONCEPTAK
+[CRCWD7]            0xD7D9CD67
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AK: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CONCEPTAK
+[CRCWD7]            0xC3A8609E
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AK
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAK
+[Signature]     NamedCRCSig(CRC_AOP_CONCEPTAK) and
+[Signature]     NamedCRCSig(CRC_FSA_CONCEPTAK) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTAK) and
+[Signature]     (NamedCRCSig(CRC_FILESAVEAS_CONCEPTAK) or
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_CONCEPTAK))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AL: AO
+[ID]                CRC_AO_CONCEPTAL
+[CRCWD7]            0xE3DAE18B
+[Signature]         NameSig(NAME_ONLY_AO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AL: FSA
+[ID]                CRC_FSA_CONCEPTAL
+[CRCWD7]            0x0D4314F5
+[Signature]         NameSig(NAME_ONLY_FSA)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AL: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CONCEPTAL
+[CRCWD7]            0xE3DAE18B
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AL: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CONCEPTAL
+[CRCWD7]            0x0D4314F5
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AL
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAL
+[Signature]     NamedCRCSig(CRC_AO_CONCEPTAL) and
+[Signature]     NamedCRCSig(CRC_FSA_CONCEPTAL) and
+[Signature]     (NamedCRCSig(CRC_FILESAVEAS_CONCEPTAL) or
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_CONCEPTAL))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.MDMA.I: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_MDMAI
+[CRCWD7]            0xAFB91744
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.MDMA.I
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MDMAI
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_MDMAI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.MDMA.J: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_MDMAJ
+[CRCWD7]            0x17008AEB
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.MDMA.J
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MDMAJ
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_MDMAJ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.MDMA.K: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_MDMAK
+[CRCWD7]            0xF4F6E2A2
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.MDMA.K
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MDMAK
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_MDMAK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.MDMA.M: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_MDMAM
+[CRCWD7]            0xD55B5117
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.MDMA.M
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MDMAM
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_MDMAM)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.MDMA.N: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_MDMAN
+[CRCWD7]            0x64CBDD10
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.MDMA.N
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MDMAN
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_MDMAN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: ACTION
+[ID]                CRC_ACTION_CVCK1
+[CRCWD7]            0x512A1D07
+[Signature]         NameSig(NAME_ONLY_ACTION)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: STDOPEN
+[ID]                CRC_STDOPEN_CVCK1
+[CRCWD7]            0xE7B2DFF9
+[Signature]         NameSig(NAME_ONLY_STDOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: STEALTH
+[ID]                CRC_STEALTH_CVCK1
+[CRCWD7]            0x4920050A
+[Signature]         NameSig(NAME_ONLY_STEALTH)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CVCK1
+[CRCWD7]            0x60A7C49B
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: DEFEATAV
+[ID]                CRC_DEFEATAV_CVCK1
+[CRCWD7]            0x512A1D07
+[Signature]         NameSig(NAME_ONLY_DEFEATAV)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: STDCLOSE
+[ID]                CRC_STDCLOSE_CVCK1
+[CRCWD7]            0x0E5612EA
+[Signature]         NameSig(NAME_ONLY_STDCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: STLHOPEN
+[ID]                CRC_STLHOPEN_CVCK1
+[CRCWD7]            0x2C0105B8
+[Signature]         NameSig(NAME_ONLY_STLHOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: ABOUTCVCK
+[ID]                CRC_ABOUTCVCK_CVCK1
+[CRCWD7]            0x43EA53EA
+[Signature]         NameSig(NAME_ONLY_ABOUTCVCK)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: INSTALLME
+[ID]                CRC_INSTALLME_CVCK1
+[CRCWD7]            0x56D97DFE
+[Signature]         NameSig(NAME_ONLY_INSTALLME)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: STLHCLOSE
+[ID]                CRC_STLHCLOSE_CVCK1
+[CRCWD7]            0xFC606E47
+[Signature]         NameSig(NAME_ONLY_STLHCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: ACTIONDATE
+[ID]                CRC_ACTIONDATE_CVCK1
+[CRCWD7]            0xC799D8DC
+[Signature]         NameSig(NAME_ONLY_ACTIONDATE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: CREATEVIRII
+[ID]                CRC_CREATEVIRII_CVCK1
+[CRCWD7]            0x429D9053
+[Signature]         NameSig(NAME_ONLY_CREATEVIRII)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: HELPPSSHELP
+[ID]                CRC_HELPPSSHELP_CVCK1
+[CRCWD7]            0x457D6FF2
+[Signature]         NameSig(NAME_ONLY_HELPPSSHELP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: UNINSTALLME
+[ID]                CRC_UNINSTALLME_CVCK1
+[CRCWD7]            0x020120BE
+[Signature]         NameSig(NAME_ONLY_UNINSTALLME)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1: HELPTIPOFTHEDAY
+[ID]                CRC_HELPTIPOFTHEDAY_CVCK1
+[CRCWD7]            0xCA5B249A
+[Signature]         NameSig(NAME_ONLY_HELPTIPOFTHEDAY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.CVCK1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CVCK1
+[Signature]     NamedCRCSig(CRC_ACTION_CVCK1) and
+[Signature]     NamedCRCSig(CRC_STDOPEN_CVCK1) and
+[Signature]     NamedCRCSig(CRC_STEALTH_CVCK1) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CVCK1) and
+[Signature]     NamedCRCSig(CRC_DEFEATAV_CVCK1) and
+[Signature]     NamedCRCSig(CRC_STDCLOSE_CVCK1) and
+[Signature]     NamedCRCSig(CRC_STLHOPEN_CVCK1) and
+[Signature]     NamedCRCSig(CRC_ABOUTCVCK_CVCK1) and
+[Signature]     NamedCRCSig(CRC_INSTALLME_CVCK1) and
+[Signature]     NamedCRCSig(CRC_STLHCLOSE_CVCK1) and
+[Signature]     NamedCRCSig(CRC_ACTIONDATE_CVCK1) and
+[Signature]     NamedCRCSig(CRC_CREATEVIRII_CVCK1) and
+[Signature]     NamedCRCSig(CRC_HELPPSSHELP_CVCK1) and
+[Signature]     NamedCRCSig(CRC_UNINSTALLME_CVCK1) and
+[Signature]     NamedCRCSig(CRC_HELPTIPOFTHEDAY_CVCK1)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: ACTION
+[ID]                CRC_ACTION_CVCK1A
+[CRCWD7]            0xAD3F8647
+[Signature]         NameSig(NAME_ONLY_ACTION)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: ACTION2
+[ID]                CRC_ACTION2_CVCK1A
+[CRCWD7]            0x751592EE
+[Signature]         NameSig(NAME_ONLY_ACTION2)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: AUTOEXEC
+[ID]                CRC_AUTOEXEC_CVCK1A
+[CRCWD7]            0x512A1D07
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CVCK1A
+[CRCWD7]            0x8CBFDB20
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: STDOPEN
+[ID]                CRC_STDOPEN_CVCK1A
+[CRCWD7]            0x8CBFDB20
+[Signature]         NameSig(NAME_ONLY_STDOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_CVCK1A
+[CRCWD7]            0x809ABD7A
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: STDCLOSE
+[ID]                CRC_STDCLOSE_CVCK1A
+[CRCWD7]            0x809ABD7A
+[Signature]         NameSig(NAME_ONLY_STDCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: HELPABOUT
+[ID]                CRC_HELPABOUT_CVCK1A
+[CRCWD7]            0x66489A0B
+[Signature]         NameSig(NAME_ONLY_HELPABOUT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: ORGANIZER
+[ID]                CRC_ORGANIZER_CVCK1A
+[CRCWD7]            0x92631588
+[Signature]         NameSig(NAME_ONLY_ORGANIZER)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: ACTIONDATE
+[ID]                CRC_ACTIONDATE_CVCK1A
+[CRCWD7]            0x67615E0D
+[Signature]         NameSig(NAME_ONLY_ACTIONDATE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_CVCK1A
+[CRCWD7]            0x92631588
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: FILETEMPLATES
+[ID]                CRC_FILETEMPLATES_CVCK1A
+[CRCWD7]            0x92631588
+[Signature]         NameSig(NAME_ONLY_FILETEMPLATES)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.A: TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSCUSTOMIZE_CVCK1A
+[CRCWD7]            0x92631588
+[Signature]         NameSig(NAME_ONLY_TOOLSCUSTOMIZE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.CVCK1.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CVCK1A
+[Signature]     NamedCRCSig(CRC_ACTION_CVCK1A) and
+[Signature]     NamedCRCSig(CRC_ACTION2_CVCK1A) and
+[Signature]     (NamedCRCSig(CRC_AUTOEXEC_CVCK1A) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_CVCK1A) and
+[Signature]      NamedCRCSig(CRC_STDCLOSE_CVCK1A) or
+[Signature]      NamedCRCSig(CRC_STDOPEN_CVCK1A) and
+[Signature]      NamedCRCSig(CRC_DEFEATAV_CVCK1) and
+[Signature]      NamedCRCSig(CRC_AUTOCLOSE_CVCK1A)) and
+[Signature]     NamedCRCSig(CRC_HELPABOUT_CVCK1A) and
+[Signature]     NamedCRCSig(CRC_ORGANIZER_CVCK1A) and
+[Signature]     NamedCRCSig(CRC_ACTIONDATE_CVCK1A) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CVCK1A) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CVCK1A) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_CVCK1A)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: ACTION
+[ID]                CRC_ACTION_CVCK1B
+[CRCWD7]            0x7C528E80
+[Signature]         NameSig(NAME_ONLY_ACTION)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: AUTOEXEC
+[ID]                CRC_AUTOEXEC_CVCK1B
+[CRCWD7]            0xE7C62CFB
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CVCK1B
+[CRCWD7]            0x59937859
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: STDCLOSE
+[ID]                CRC_STDCLOSE_CVCK1B
+[CRCWD7]            0xD9DDCF57
+[Signature]         NameSig(NAME_ONLY_STDCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: FILEPRINT
+[ID]                CRC_FILEPRINT_CVCK1B
+[CRCWD7]            0x1991D7D8
+[Signature]         NameSig(NAME_ONLY_FILEPRINT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: ACTIONDATE
+[ID]                CRC_ACTIONDATE_CVCK1B
+[CRCWD7]            0x0C3CECEE
+[Signature]         NameSig(NAME_ONLY_ACTIONDATE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_CVCK1B
+[CRCWD7]            0x6E875EA2
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: EDITAUTOTEXT
+[ID]                CRC_EDITAUTOTEXT_CVCK1B
+[CRCWD7]            0x666DAFD2
+[Signature]         NameSig(NAME_ONLY_EDITAUTOTEXT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: FILETEMPLATES
+[ID]                CRC_FILETEMPLATES_CVCK1B
+[CRCWD7]            0x6E875EA2
+[Signature]         NameSig(NAME_ONLY_FILETEMPLATES)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: FILEPRINTDEFAULT
+[ID]                CRC_FILEPRINTDEFAULT_CVCK1B
+[CRCWD7]            0x183FD9B7
+[Signature]         NameSig(NAME_ONLY_FILEPRINTDEFAULT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: STDOPEN
+[ID]                CRC_STDOPEN_CVCK1B
+[CRCWD7]            0x59937859
+[Signature]         NameSig(NAME_ONLY_STDOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: DEFEATAV
+[ID]                CRC_DEFEATAV_CVCK1B
+[CRCWD7]            0xE7C62CFB
+[Signature]         NameSig(NAME_ONLY_DEFEATAV)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CVCK1.B: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_CVCK1B
+[CRCWD7]            0xD9DDCF57
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.CVCK1.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CVCK1B
+[Signature]     NamedCRCSig(CRC_ACTION_CVCK1B) and
+[Signature]     NamedCRCSig(CRC_ACTIONDATE_CVCK1B) and
+[Signature]     NamedCRCSig(CRC_FILEPRINT_CVCK1B) and
+[Signature]     NamedCRCSig(CRC_FILEPRINTDEFAULT_CVCK1B) and
+[Signature]     NamedCRCSig(CRC_EDITAUTOTEXT_CVCK1B) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CVCK1B) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CVCK1B) and
+[Signature]     (NamedCRCSig(CRC_AUTOEXEC_CVCK1B) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_CVCK1B) and
+[Signature]      NamedCRCSig(CRC_STDCLOSE_CVCK1B) or
+[Signature]      NamedCRCSig(CRC_STDOPEN_CVCK1B) and
+[Signature]      NamedCRCSig(CRC_AUTOCLOSE_CVCK1B) and
+[Signature]      NamedCRCSig(CRC_DEFEATAV_CVCK1B))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Dave.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_DAVEA
+[CRCWD7]            0x90E86982
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Dave.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_DAVEA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_DAVEA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_DRUGSA
+[CRCWD7]            0x61304F71
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: EXTRASMAKRO
+[ID]                CRC_EXTRASMAKRO_DRUGSA
+[CRCWD7]            0x6E8402B7
+[Signature]         NameSig(NAME_ONLY_EXTRASMAKRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DATEIDRUCKEN
+[ID]                CRC_DATEIDRUCKEN_DRUGSA
+[CRCWD7]            0x11181925
+[Signature]         NameSig(NAME_ONLY_DATEIDRUCKEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DATEISCHLIEáEN
+[ID]                CRC_DATEISCHLIEBEN_DRUGSA
+[CRCWD7]            0x6511F570
+[Signature]         NameSig(NAME_ONLY_DATEISCHLIEBEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DATEISPEICHERN
+[ID]                CRC_DATEISPEICHERN_DRUGSA
+[CRCWD7]            0xAE580A0C
+[Signature]         NameSig(NAME_ONLY_DATEISPEICHERN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DATEIDOKVORLAGEN
+[ID]                CRC_DATEIDOKVORLAGEN_DRUGSA
+[CRCWD7]            0x363E1289
+[Signature]         NameSig(NAME_ONLY_DATEIDOKVORLAGEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DOKUMENTSCHLIEáEN
+[ID]                CRC_DOKUMENTSCHLIEBEN_DRUGSA
+[CRCWD7]            0xE6FE7BCB
+[Signature]         NameSig(NAME_ONLY_DOKUMENTSCHLIEBEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DATEISPEICHERNUNTER
+[ID]                CRC_DATEISPEICHERNUNTER_DRUGSA
+[CRCWD7]            0x322CCFEB
+[Signature]         NameSig(NAME_ONLY_DATEISPEICHERNUNTER)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Drugs.A: DATEIDRUCKENSTANDARD
+[ID]                CRC_DATEIDRUCKENSTANDARD_DRUGSA
+[CRCWD7]            0x5AF1F3DC
+[Signature]         NameSig(NAME_ONLY_DATEIDRUCKENSTANDARD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Drugs.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_DRUGSA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_EXTRASMAKRO_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DATEIDRUCKEN_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DATEISCHLIEBEN_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DATEISPEICHERN_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DATEIDOKVORLAGEN_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DOKUMENTSCHLIEBEN_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DATEISPEICHERNUNTER_DRUGSA) and
+[Signature]     NamedCRCSig(CRC_DATEIDRUCKENSTANDARD_DRUGSA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Satanic.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_SATANICB
+[CRCWD7]            0xD8E0C739
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Satanic.B just 1 byte diff. in AUTOOPEN
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SATANICB
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SATANICB) and
+[Signature]     NamedCRCSig(CRC_AUTONEW_SATANIC) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SATANIC) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_SATANIC) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SATANIC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Oval.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_OVALA
+[CRCWD7]            0x389DA048
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Oval.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_OVALA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_OVALA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: GAME
+[ID]                CRC_GAME_ERASERO
+[CRCWD7]            0xEE6D1226
+[Signature]         NameSig(NAME_ONLY_GAME)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: GUESS
+[ID]                CRC_GUESS_ERASERO
+[CRCWD7]            0x4783B95D
+[Signature]         NameSig(NAME_ONLY_GUESS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: FILENEW
+[ID]                CRC_FILENEW_ERASERO
+[CRCWD7]            0x0BD50B95
+[Signature]         NameSig(NAME_ONLY_FILENEW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: AUTOOPEN
+[ID]                CRC_AUTOOPEN_ERASERO
+[CRCWD7]            0x9DB03280
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: FILEOPEN
+[ID]                CRC_FILEOPEN_ERASERO
+[CRCWD7]            0x02F656CE
+[Signature]         NameSig(NAME_ONLY_FILEOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: FILECLOSE
+[ID]                CRC_FILECLOSE_ERASERO
+[CRCWD7]            0xAEAFBD87
+[Signature]         NameSig(NAME_ONLY_FILECLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.O:Tw: FILETEMPLATES
+[ID]                CRC_FILETEMPLATES_ERASERO
+[CRCWD7]            0x94AFE4EB
+[Signature]         NameSig(NAME_ONLY_FILETEMPLATES)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Eraser.O:Tw
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_ERASERO
+[Signature]     NamedCRCSig(CRC_GAME_ERASERO) and
+[Signature]     NamedCRCSig(CRC_GUESS_ERASERO) and
+[Signature]     NamedCRCSig(CRC_FILENEW_ERASERO) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_ERASERO) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_ERASERO) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE_ERASERO) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_ERASERO) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_ERASERE) and
+[Signature]     NamedCRCSig(CRC_ZLOCKMACRO_ERASERA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.P:Tw: GAME
+[ID]                CRC_GAME_ERASERP
+[CRCWD7]            0xED17A769
+[Signature]         NameSig(NAME_ONLY_GAME)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.P:Tw: GUESS
+[ID]                CRC_GUESS_ERASERP
+[CRCWD7]            0x26CF0E0F
+[Signature]         NameSig(NAME_ONLY_GUESS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Eraser.P:Tw: FILECLOSE
+[ID]                CRC_FILECLOSE_ERASERP
+[CRCWD7]            0x38AC94DD
+[Signature]         NameSig(NAME_ONLY_FILECLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Eraser.P:Tw similar to .O
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_ERASERP
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_ERASERO) and
+[Signature]     NamedCRCSig(CRC_GAME_ERASERP) and
+[Signature]     NamedCRCSig(CRC_GUESS_ERASERP) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE_ERASERP)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.No-F.B: FILECLOSE
+[ID]                CRC_FILECLOSE_NO_FB
+[CRCWD7]            0x6F8F6D25
+[Signature]         NameSig(NAME_ONLY_FILECLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.No-F.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NO_FB
+[Signature]     NamedCRCSig(CRC_FILECLOSE_NO_FB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AO: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAO
+[CRCWD7]            0x60E1B4A3
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AO
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAO
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AP: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAP
+[CRCWD7]            0x0B8CFCF6
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AP
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAP
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAP)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AQ: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAQ
+[CRCWD7]            0x65D63D71
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AQ
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAQ
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAQ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AR: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAR
+[CRCWD7]            0xA0BCE84B
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AR
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAR
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAR)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AS : AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAS
+[CRCWD7]            0x6B90382D
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AS
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAS
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AT : AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAT
+[CRCWD7]            0xCBC73F48
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AT
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAT
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAT)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AU: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAU
+[CRCWD7]            0xF11A1E58
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AU
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAU
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AV: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAV
+[CRCWD7]            0x4420031C
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AV
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAV
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AX: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAX
+[CRCWD7]            0xE5F36132
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AX
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAX
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AY: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAY
+[CRCWD7]            0x47C4852B
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AY
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAY
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Npad.AZ: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAZ
+[CRCWD7]            0x853FB8E6
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AZ
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAZ
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAZ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AF: SHOW
+[ID]                CRC_SHOW_SHOWOFFAF
+[CRCWD7]            0x3B87B139
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AF: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAF
+[CRCWD7]            0x3B87B139
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AF corruption AUTOEXEC/SHOW
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAF
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AG: SHOW
+[ID]                CRC_SHOW_SHOWOFFAG
+[CRCWD7]            0x1C9041C8
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AG: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAG
+[CRCWD7]            0x1C9041C8
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AG corruption AUTOEXEC/SHOW
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAG
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAG) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAG) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AH: SHOW
+[ID]                CRC_SHOW_SHOWOFFAH
+[CRCWD7]            0x1398FA52
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AH: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAH
+[CRCWD7]            0x1398FA52
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AH corrupted AUTOEXEC/SHOW
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAH
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAH) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AI: SHOW
+[ID]                CRC_SHOW_SHOWOFFAI
+[CRCWD7]            0xD58EFA13
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AI: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAI
+[CRCWD7]            0xD58EFA13
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AI only AUTOEXEC/SHOW diff. from .A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAI
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAI) and
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAI) and
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AJ: SHOW
+[ID]                CRC_SHOW_SHOWOFFAJ
+[CRCWD7]            0xC5787387
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AJ: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAJ
+[CRCWD7]            0xC5787387
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AJ corrupted SHOW/AUTOEXEC
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAJ
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAJ) and
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAJ) and
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AK: SHOW
+[ID]                CRC_SHOW_SHOWOFFAK
+[CRCWD7]            0xFC31864B
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AK: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAK
+[CRCWD7]            0xFC31864B
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AK corrupted SHOW/AUTOEXEC
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAK
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAK) and
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAK) and
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AL: SHOW
+[ID]                CRC_SHOW_SHOWOFFAL
+[CRCWD7]            0xCECA21CF
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AL: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAL
+[CRCWD7]            0xCECA21CF
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AL corrupted SHOW/AUTOEXEC
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAL
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAL) and
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAL) and
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AM: SHOW
+[ID]                CRC_SHOW_SHOWOFFAM
+[CRCWD7]            0x6C0A3F66
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AM: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAM
+[CRCWD7]            0x6C0A3F66
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AM corruption AUTOEXEC/SHOW
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAM
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAM) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAM) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AN: SHOW
+[ID]                CRC_SHOW_SHOWOFFAN
+[CRCWD7]            0x69DC03B6
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AN: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAN
+[CRCWD7]            0x69DC03B6
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AN only AUTOEXEC/SHOW diff. from .A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAN
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAN) and
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAN) and
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AO: SHOW
+[ID]                CRC_SHOW_SHOWOFFAO
+[CRCWD7]            0xF94488AE
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AO: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAO
+[CRCWD7]            0xF94488AE
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AO corrupted SHOW/AUTOEXEC
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAO
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAO) and
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAO) and
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AP: SHOW
+[ID]                CRC_SHOW_SHOWOFFAP
+[CRCWD7]            0x14450B31
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AP: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAP
+[CRCWD7]            0x14450B31
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AP corruption AUTOEXEC/SHOW
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAP
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAP) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAP) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AQ: SHOW
+[ID]                CRC_SHOW_SHOWOFFAQ
+[CRCWD7]            0x7307CC13
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AQ snatched AUTOEXEC/SHOW f/ Rapi.E
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAQ
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAQ) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_RAPIE) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AR: SHOW
+[ID]                CRC_SHOW_SHOWOFFAR
+[CRCWD7]            0x1DE56730
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AR: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAR
+[CRCWD7]            0x1DE56730
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AR
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAR
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAR) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAR) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AS: SHOW
+[ID]                CRC_SHOW_SHOWOFFAS
+[CRCWD7]            0xDCF95A90
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AS: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAS
+[CRCWD7]            0xDCF95A90
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AS
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAS
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAS) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAS) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AT: SHOW
+[ID]                CRC_SHOW_SHOWOFFAT
+[CRCWD7]            0xE572AB27
+[Signature]         NameSig(NAME_ONLY_SHOW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.ShowOff.AT: AUTOEXEC
+[ID]                CRC_AUTOEXEC_SHOWOFFAT
+[CRCWD7]            0xE572AB27
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShowOff.AT
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHOWOFFAT
+[Signature]     NamedCRCSig(CRC_CFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_SHOW_SHOWOFFAT) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHOWOFF) or
+[Signature]     NamedCRCSig(CRC_OFXX_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFAT) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.E: CAP
+[ID]                CRC_CAP_CAPE
+[CRCWD7]            0x89BB1574
+[Signature]         NameSig(NAME_ONLY_CAP)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Cap.E
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPE
+[Signature]     NamedCRCSig(CRC_CAP_CAPE) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CAPD) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CAPA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.F: CAP
+[ID]                CRC_CAP_CAPF
+[CRCWD7]            0xF9695053
+[Signature]         NameSig(NAME_ONLY_CAP)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Cap.F
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPF
+[Signature]     NamedCRCSig(CRC_CAP_CAPF) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_CAPA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CAPD) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CAPA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.G: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CAPG
+[CRCWD7]            0x7457EDC2
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Cap.G
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPG
+[Signature]     NamedCRCSig(CRC_CAP_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CAPG) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_CAPA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CAPD) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CAPA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Cap.H
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPH
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHOWOFFC) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_SHOWOFF) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CAPD) and
+[Signature]     NamedCRCSig(CRC_CAP_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CAPA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.I: ABBNEW
+[ID]                CRC_ABBNEW_CAPI
+[CRCWD7]            0xCD737461
+[Signature]         NameSig(NAME_ONLY_ABBNEW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.I: FILEOPEN
+[ID]                CRC_FILEOPEN_CAPI
+[CRCWD7]            0x87A5CBD9
+[Signature]         NameSig(NAME_ONLY_FILEOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.I: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CAPI
+[CRCWD7]            0x7C383218
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.I: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_CAPI
+[CRCWD7]            0xF470E53C
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.I: FILETEMPLATES
+[ID]                CRC_FILETEMPLATES_CAPI
+[CRCWD7]            0xC0F78CDC
+[Signature]         NameSig(NAME_ONLY_FILETEMPLATES)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.I: FILECLOSEORCLOSEALL
+[ID]                CRC_FILECLOSEORCLOSEALL_CAPI
+[CRCWD7]            0xD7BC9C46
+[Signature]         NameSig(NAME_ONLY_FILECLOSEORCLOSEALL)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Cap.I
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPI
+[Signature]     NamedCRCSig(CRC_CAP_CAPA) and
+[Signature]     NamedCRCSig(CRC_ABBNEW_CAPI) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_CAPI) and
+[Signature]     NamedCRCSig(CRC_FILESAVE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_CAPI) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CAPI) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CAPI) and
+[Signature]     NamedCRCSig(CRC_FILECLOSEORCLOSEALL_CAPI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Cap.J
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPJ
+[Signature]     NamedCRCSig(CRC_CAP_CAPD) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE1_CAPA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE0_CAPA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_CAPA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CAPD) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CAPA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CAP.L: CAP
+[ID]                CRC_CAP_CAPL
+[CRCWD7]            0xFB291D34
+[Signature]         NameSig(NAME_ONLY_CAP)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.CAP.L
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CAPL
+[Signature]     NamedCRCSig(CRC_CAP_CAPL) and
+[Signature]     (CRC(0xd7bc9c46) or
+[Signature]      CRC(0xcd737461) or
+[Signature]      CRC(0x578af9e1) or
+[Signature]      CRC(0x097f8957) or
+[Signature]      CRC(0x87a5cbd9) or
+[Signature]      CRC(0x63e2b176) or
+[Signature]      CRC(0xdcb24ed5))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AL similar to .V with Rapi.A's AUTOOPEN
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAL
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_RAPIA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AM: FILESAVEAS
+[ID]                CRC_FILESAVEAS_COLORSAM
+[CRCWD7]            0x0C38C2E3
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AM: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_COLORSAM
+[CRCWD7]            0xBB4DEA35
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AM
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAM
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CONCEPTA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSAM) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSAM)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#AO: Move AUTOOPEN and AUTOCLOSE from repair to signature. to avoid false id
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AN
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAN
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_CONCEPTAF)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_AAAZAO_CONCEPTAF),
+[Repair]        NamedCRCSig(CRC_AAAZFS_CONCEPTA)
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AO  .AD with ToolsMacro of .A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAO
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_COLORSAD) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AP:AUTOOPEN
+[ID]                CRC_AUTOOPEN_COLORSAP
+[CRCWD7]            0x4CC3F2CD
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AP:AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_COLORSAP
+[CRCWD7]            0x4CC3F2CD
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AP
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAP
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_COLORSAP) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSAP) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AQ:AUTOOPEN
+[ID]                CRC_AUTOOPEN_COLORSAQ
+[CRCWD7]            0x91FEBBBF
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AQ:AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_COLORSAQ
+[CRCWD7]            0x42DDD230
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AQ
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAQ
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_COLORSAQ) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSAQ) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AR: AUTOOPEN
+[ID]                CRC_AUTOOPEN_COLORSAR
+[CRCWD7]            0x6EE1F903
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AR
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAR
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_COLORSAR) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AS: AUTOOPEN
+[ID]                CRC_AUTOOPEN_COLORSAS
+[CRCWD7]            0x2B1F348F
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AS
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAS
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_COLORSAS) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AT: FILENEW
+[ID]                CRC_FILENEW_COLORSAT
+[CRCWD7]            0x8BB4F407
+[Signature]         NameSig(NAME_ONLY_FILENEW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AT: AUTOEXEC
+[ID]                CRC_AUTOEXEC_COLORSAT
+[CRCWD7]            0x65A0C635
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AT: FILEEXIT
+[ID]                CRC_FILEEXIT_COLORSAT
+[CRCWD7]            0x9243E080
+[Signature]         NameSig(NAME_ONLY_FILEEXIT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Colors.AT: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_COLORSAT
+[CRCWD7]            0x935FD486
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Colors.AT  Double infection with Twolines.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSAT
+[Signature]     NamedCRCSig(CRC_MACROS_TWOLINESA_SAMPLE) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSAT) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSAT) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSAT) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_COLORSAT)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_MSRUN_TWOLINESA)
+[KnownVirusSigEnd]
+
+
+# This Rapi block was put in for May Build using given samples
+# It should probably be a new Rapi variant, but a new VID was
+# not created because we were in Freeze.
+# This block should probably eventually be redone with W7->W8
+# samples and catalog'd under its appropiate Rapi Variant name -ECC
+[NamedCRCSigStart]
+[Comment]           WM.Rapi: FILESAVEAS diff CRCWD8 from RPFSA and RapiD
+[ID]                CRC_FILESAVEAS_RAPI
+[CRCWD8]            0xCA09E75F
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi  ; Added by ECC 4/21/97
+[Type]          WD8
+[QAStatus]      PASSED
+[ID]            VID_RAPI
+[Signature]     (NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_FILESAVEAS_RAPIA) or
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_RAPI))) or
+[Signature]     (NamedCRCSig(CRC_RPAE_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPID) or
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_RAPIM2)))
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_RPAE_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPFO_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPFO_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPAO_RAPID),
+[Repair]        NamedCRCSig(CRC_AUTOEXEC_RAPIA),
+[Repair]        NamedCRCSig(CRC_FILEOPEN_RAPIA),
+[Repair]        NamedCRCSig(CRC_FILESAVE_RAPID)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.X: RPFO
+[ID]                CRC_RPFO_RAPIX
+[CRCWD7]            0x033F6AC8
+[Signature]         NameSig(NAME_ONLY_RPFO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.X: FILEOPEN
+[ID]                CRC_FILEOPEN_RAPIX
+[CRCWD7]            0x033F6AC8
+[Signature]         NameSig(NAME_ONLY_FILEOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.X diff. FileOpen/RpFO
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIX
+[Signature]     NamedCRCSig(CRC_RPFO_RAPIX) and
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_RPTC_RAPIA) and
+[Signature]      NamedCRCSig(CRC_RPTM_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_FILEOPEN_RAPIX) and
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_RAPIA) and
+[Signature]      NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]      NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.Y: RPTM it's the same as RPTC now
+[ID]                CRC_RPTM_RAPIY
+[CRCWD7]            0x94ED9EB0
+[Signature]         NameSig(NAME_ONLY_RPTM)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.Y: TOOLSMACRO it's the same as TOOLSCUSTOMIZE
+[ID]                CRC_TOOLSMACRO_RAPIY
+[CRCWD7]            0x94ED9EB0
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.Y the RPTM/ToolsMacro = RPTC/ToolsCustomize
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIY
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_RPTC_RAPIA) and
+[Signature]      NamedCRCSig(CRC_RPTM_RAPIY) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILEOPEN_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_RAPIA) and
+[Signature]      NamedCRCSig(CRC_TOOLSMACRO_RAPIY) and
+[Signature]      NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# Z is still on debate on VMACRO, might be remnant of .I
+# No AA, there's only AA2
+# No AB, there's only AB2
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AC: RPAE
+[ID]                CRC_RPAE_RAPIAC
+[CRCWD7]            0x097CD83E
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AC: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAC
+[CRCWD7]            0x097CD83E
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AC
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAC
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAC) and
+[Signature]     NamedCRCSig(CRC_RPFO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_RPAO_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPTC_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPTM_RAPIA),
+[Repair]        NamedCRCSig(CRC_AUTOOPEN_RAPIA),
+[Repair]        NamedCRCSig(CRC_AUTOEXEC_RAPIAC),
+[Repair]        NamedCRCSig(CRC_FILEOPEN_RAPIA),
+[Repair]        NamedCRCSig(CRC_FILESAVE_RAPIA),
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_RAPIA),
+[Repair]        NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA),
+[Repair]        NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA),
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AD2: RPAE
+[ID]                CRC_RPAE_RAPIAD2
+[CRCWD7]            0xD378FDD0
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AD2: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAD2
+[CRCWD7]            0xD378FDD0
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+# No AD, there's only AD2
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AE: RPAE
+[ID]                CRC_RPAE_RAPIAE
+[CRCWD7]            0xBD3ED1E2
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AE: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAE
+[CRCWD7]            0xBD3ED1E2
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+# No AE, there's only AE1, AE2
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AF: RPAE
+[ID]                CRC_RPAE_RAPIAF
+[CRCWD7]            0x1D5D491E
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AF: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAF
+[CRCWD7]            0x1D5D491E
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+# No AF, there's only AF1, AF2
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AG: RPAE
+[ID]                CRC_RPAE_RAPIAG
+[CRCWD7]            0x990EB9DE
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Rapi.AG: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAG
+[CRCWD7]            0x990EB9DE
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AG diff. RPAE/AUTOEXEC f/ .G
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAG
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAG) and
+[Signature]     NamedCRCSig(CRC_RPFO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_RPTC_RAPIG) and
+[Signature]      NamedCRCSig(CRC_RPTM_RAPIG) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAG) and
+[Signature]      NamedCRCSig(CRC_FILEOPEN_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_RAPIA) and
+[Signature]      NamedCRCSig(CRC_TOOLSCUSTOMIZE_RAPIG) and
+[Signature]      NamedCRCSig(CRC_TOOLSMACRO_RAPIG) )
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+#### Rapi.?1 starts here #####
+
+# X1 = A1
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.Y1 only differs f/ .A1 in DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIY1
+[Signature]     NamedCRCSig(CRC_RPTM_RAPIY) and
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPTC_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_RAPIA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# z1 is still on debate on VMACRO
+# No AA1, there's only AD2
+# No AB1, there's only AB2
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AC1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAC1
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAC) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_RPAO_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPTC_RAPIA),
+[Repair]        NamedCRCSig(CRC_RPTM_RAPIA),
+[Repair]        NamedCRCSig(CRC_AUTOOPEN_RAPIA),
+[Repair]        NamedCRCSig(CRC_AUTOEXEC_RAPIAC),
+[Repair]        NamedCRCSig(CRC_FILESAVE_RAPIA),
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_RAPIA),
+[KnownVirusSigEnd]
+
+# No AD1, there's only AD2
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AE1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAE1
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAE) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_RPTC_RAPIG) and
+[Signature]      NamedCRCSig(CRC_RPTM_RAPIG) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAE) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_RAPIA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AF1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAF1
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAF) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_RPTC_RAPIG) and
+[Signature]      NamedCRCSig(CRC_RPTM_RAPIG) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAF) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_RAPIA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AG1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAG1
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAG) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     NamedCRCSig(CRC_RPFSA_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_RPTC_RAPIG) and
+[Signature]      NamedCRCSig(CRC_RPTM_RAPIG) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAG) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_RAPIA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+#### Rapi.?2 starts here #####
+
+# X2 = A2
+# Y2 = A2
+# Z2 is still on debate on VMACRO
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AZ2: RPAE
+[ID]                CRC_RPAE_RAPIAZ2
+[CRCWD7]            0x52D85E07
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AZ2: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAZ2
+[CRCWD7]            0x52D85E07
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AZ2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAZ2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAZ2) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]     (NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_RAPIAZ2) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_RAPIA)))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AA2: RPAE
+[ID]                CRC_RPAE_RAPIAA2
+[CRCWD7]            0xF7B7D23C
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AA2: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAA2
+[CRCWD7]            0xF7B7D23C
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AA2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAA2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAA2) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]     (NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_RAPIAA2) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_RAPIA)))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AB2: RPAE
+[ID]                CRC_RPAE_RAPIAB2
+[CRCWD7]            0x5D08A453
+[Signature]         NameSig(NAME_ONLY_RPAE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Rapi.AB2: AUTOEXEC
+[ID]                CRC_AUTOEXEC_RAPIAB2
+[CRCWD7]            0x5D08A453
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AB2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAB2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAB2) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]     (NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_RAPIAB2) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_RAPIA)))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AC2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAC2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAC) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_RPAO_RAPIA),
+[Repair]        NamedCRCSig(CRC_AUTOOPEN_RAPIA),
+[Repair]        NamedCRCSig(CRC_AUTOEXEC_RAPIAC),
+[Repair]        NamedCRCSig(CRC_FILESAVE_RAPIA),
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AD2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAD2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAD2) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]     (NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_RAPIAD2) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_RAPIA)))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AE2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAE2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAE) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAE) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AF2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAF2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAF) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAF) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Rapi.AG2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPIAG2
+[Signature]     NamedCRCSig(CRC_RPAE_RAPIAG) and
+[Signature]     NamedCRCSig(CRC_RPFS_RAPIA) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_RAPIA) or
+[Signature]      NamedCRCSig(CRC_RPAO_RAPIA) and
+[Signature]      NamedCRCSig(CRC_AUTOEXEC_RAPIAG) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Johnny.H: FILESAVE corrupted
+[ID]                CRC_FILESAVE_JOHNNYH
+[CRCWD7]            0x3A66F585
+[Signature]         NameSig(NAME_ONLY_FILESAVE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Johnny.H: PRESENTZ corrupted
+[ID]                CRC_PRESENTZ_JOHNNYH
+[CRCWD7]            0x3A66F585
+[Signature]         NameSig(NAME_ONLY_PRESENTZ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Johnny.H
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_JOHNNYH
+[Signature]     NamedCRCSig(CRC_VGOJOHNNY_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTV_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTW_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTZ_JOHNNYH) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_JOHNNY) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_JOHNNY) or
+[Signature]      NamedCRCSig(CRC_FILESAVE_JOHNNYH))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Johnny.I : PRESENTW
+[ID]                CRC_PRESENTW_JOHNNYI
+[CRCWD7]            0xD66E5814
+[Signature]         NameSig(NAME_ONLY_PRESENTW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Johnny.I : FILESAVEAS
+[ID]                CRC_FILESAVEAS_JOHNNYI
+[CRCWD7]            0xD66E5814
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.Johnny.I
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_JOHNNYI
+[Signature]     NamedCRCSig(CRC_PRESENTV_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTW_JOHNNYI) and
+[Signature]     NamedCRCSig(CRC_PRESENTZ_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_VGOJOHNNY_JOHNNY) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_JOHNNY) or
+[Signature]      NamedCRCSig(CRC_FILESAVE_JOHNNY) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_JOHNNYI))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Johnny.J : PRESENTV
+[ID]                CRC_PRESENTV_JOHNNYJ
+[CRCWD7]            0xFBD4DD2C
+[Signature]         NameSig(NAME_ONLY_PRESENTV)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Johnny.J : AUTOOPEN
+[ID]                CRC_AUTOOPEN_JOHNNYJ
+[CRCWD7]            0xFBD4DD2C
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Johnny.J diff. AutoOpen/PresentV
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_JOHNNYJ
+[Signature]     NamedCRCSig(CRC_PRESENTV_JOHNNYJ) and
+[Signature]     NamedCRCSig(CRC_PRESENTW_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTZ_JOHNNY)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_AUTOOPEN_JOHNNYJ),
+[Repair]        NamedCRCSig(CRC_FILESAVE_JOHNNY),
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_JOHNNY),
+[Repair]        NamedCRCSig(CRC_VGOJOHNNY_JOHNNY)
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.J: PAYLOAD
+[ID]                CRC_PAYLOAD_NUCLEARJ
+[CRCWD7]            0x6AD46A44
+[Signature]         NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.J: AUTOEXEC
+[ID]                CRC_AUTOEXEC_NUCLEARJ
+[CRCWD7]            0x712525D8
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.J: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NUCLEARJ
+[CRCWD7]            0xD74B8F53
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.J: FILESAVEAS
+[ID]                CRC_FILESAVEAS_NUCLEARJ
+[CRCWD7]            0x9A6CEFCA
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.J: INSERTPAYLOAD
+[ID]                CRC_INSERTPAYLOAD_NUCLEARJ
+[CRCWD7]            0xDCB24ED5
+[Signature]         NameSig(NAME_ONLY_INSERTPAYLOAD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Nuclear.J
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NUCLEARJ
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NUCLEARJ) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_NUCLEARJ) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NUCLEARJ) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_NUCLEARJ) and
+[Signature]     NamedCRCSig(CRC_INSERTPAYLOAD_NUCLEARJ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.K: AUTOEXEC
+[ID]                CRC_AUTOEXEC_NUCLEARK
+[CRCWD7]            0x4531BD05
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Nuclear.K  .G W/ corrupted AutoExec
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NUCLEARK
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_NUCLEARK) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NUCLEARG) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_DROPSURIV_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEPRINT_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_INSERTPAYLOAD_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEPRINTDEFAULT_NUCLEARA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.L: DropSuriv
+[ID]                CRC_DROPSURIV_NUCLEARL
+[CRCWD7]            0x42F61F96
+[Signature]         NameSig(NAME_ONLY_DROPSURIV)
+[NamedCRCSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.Nuclear.L  .A W/ corrupted DropSuriv
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NUCLEARL
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_DROPSURIV_NUCLEARL) and
+[Signature]     NamedCRCSig(CRC_FILEPRINT_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_INSERTPAYLOAD_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEPRINTDEFAULT_NUCLEARA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nuclear.M: DropSuriv
+[ID]                CRC_DROPSURIV_NUCLEARM
+[CRCWD7]            0x50458A4F
+[Signature]         NameSig(NAME_ONLY_DROPSURIV)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Nuclear.M  .A W/ corrupted DropSuriv
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NUCLEARM
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_DROPSURIV_NUCLEARM) and
+[Signature]     NamedCRCSig(CRC_FILEPRINT_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_INSERTPAYLOAD_NUCLEARA) and
+[Signature]     NamedCRCSig(CRC_FILEPRINTDEFAULT_NUCLEARA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.D: AUTOEXEC
+[ID]                CRC_AUTOEXEC_TWOLINESD
+[CRCWD7]            0xF594D718
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TwoLines.D & D1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TWOLINESD
+[Signature]     NamedCRCSig(CRC_MSRUN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_TWOLINESD) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_TWOLINESA)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.E: MSRUN
+[ID]                CRC_MSRUN_TWOLINESE
+[CRCWD7]            0xBEBDE87D
+[Signature]         NameSig(NAME_ONLY_MSRUN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.E: AUTOEXEC
+[ID]                CRC_AUTOEXEC_TWOLINESE
+[CRCWD7]            0xB28A4106
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TwoLines.E & E1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TWOLINESE
+[Signature]     NamedCRCSig(CRC_MSRUN_TWOLINESE) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_TWOLINESE) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_TWOLINESA)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.F: AUTOEXEC
+[ID]                CRC_AUTOEXEC_TWOLINESF
+[CRCWD7]            0xa22d7a19
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+# AutoOpen and AutoClose have same WD7 sigs as Twolines.A, different WD8's
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.F: AUTOOPEN
+[ID]                CRC_AUTOOPEN_TWOLINESF
+[CRCWD7]            0x129EB5B2
+[CRCWD8]            0xd20b157c
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.F: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_TWOLINESF
+[CRCWD7]            0x6B315A58
+[CRCWD8]            0xeb16e71b
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Twolines.F
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TWOLINESF
+[Signature]     NamedCRCSig(CRC_MSRUN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_TWOLINESF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESF)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_COLORSA)
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Twolines.F
+[Type]          WD8
+[QAStatus]      PASSED
+[ID]            VID_TWOLINESF
+[Signature]     NamedCRCSig(CRC_MSRUN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TwoLines.G: AUTOEXEC
+[ID]                CRC_AUTOEXEC_TWOLINESG
+[CRCWD7]            0XC7F34A08
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TwoLines.G & G1 diff AutoExec f/ .E
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TWOLINESG
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_TWOLINESG) and
+[Signature]     NamedCRCSig(CRC_MSRUN_TWOLINESE) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_TWOLINESA)
+[KnownVirusSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.TwoLines.H Autoexec of ColorsAT
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TWOLINESH
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_COLORSAT) and
+[Signature]     NamedCRCSig(CRC_MSRUN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TWOLINESA) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TWOLINESA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_FILESAVEAS_TWOLINESA)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BD: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBD
+[CRCWD7]            0x6EE0A78F
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BD the last of the missing Wazzu's Posting
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBD
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BS: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBS
+[CRCWD7]            0x280C366E
+[CRCWD8]            0xFB1867D6
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BS
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBS
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BT: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBT
+[CRCWD7]            0x5113F297
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BT
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBT
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBT)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BU: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBU
+[CRCWD7]            0x8982F2FD
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BU
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBU
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BV: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBV
+[CRCWD7]            0x241DFCEF
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BV
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBV
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BW: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBW
+[CRCWD7]            0xA5B96C2E
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BW
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBW
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBW)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BX: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBX
+[CRCWD7]            0xD4EDB2DF
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BX
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBX
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BY: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBY
+[CRCWD7]            0xEEA8915A
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BY
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBY
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.BZ: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUBZ
+[CRCWD7]            0x6C6893D0
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.BZ
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUBZ
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUBZ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.CA: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUCA
+[CRCWD7]            0x209ED5CA
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.CA
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUCA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUCA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Wazzu.CB: AUTOOPEN
+[ID]                CRC_AUTOOPEN_WAZZUCB
+[CRCWD7]            0x69A00E36
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Wazzu.CB
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZUCB
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_WAZZUCB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[KnownVirusSigStart]
+[Comment]       WM.NJ-WMDLK1.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NJWMDLK1A
+[Signature]     CRC(0xD3E99C83) and
+[Signature]     CRC(0xB1E76E45)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NJ-WMDLK1.G: TZ
+[ID]                CRC_TZ_NJWMDLK1G
+[CRCWD7]            0xA73DDC41
+[Signature]         NameSig(NAME_ONLY_TZ)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NJ-WMDLK1.G: AUTONEW
+[ID]                CRC_AUTONEW_NJWMDLK1G
+[CRCWD7]            0xC5C99BA8
+[Signature]         NameSig(NAME_ONLY_AUTONEW)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NJ-WMDLK1.G: AUTOEXEC
+[ID]                CRC_AUTOEXEC_NJWMDLK1G
+[CRCWD7]            0xE29A9571
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NJ-WMDLK1.G: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NJWMDLK1G
+[CRCWD7]            0x1B81149C
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NJ-WMDLK1.G: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_NJWMDLK1G
+[CRCWD7]            0xC5C99BA8
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.NJ-WMDLK1.G
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NJWMDLK1G
+[Signature]     NamedCRCSig(CRC_TZ_NJWMDLK1G) and
+[Signature]     NamedCRCSig(CRC_AUTONEW_NJWMDLK1G) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_NJWMDLK1G) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NJWMDLK1G) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_NJWMDLK1G)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Date.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_DATEB
+[CRCWD7]            0xC2AACB04
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Date.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_DATEB
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_DATEB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Helper.C: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_HELPERC
+[CRCWD7]            0x93E99880
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Helper.C
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_HELPERC
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_HELPERC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Helper.D: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_HELPERD
+[CRCWD7]            0xD3442298
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Helper.D
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_HELPERD
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_HELPERD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Helper.E: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_HELPERE
+[CRCWD7]            0xB25A0F2A
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Helper.E
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_HELPERE
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_HELPERE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.HiAC.A: AC
+[ID]                CRC_AC_HIAC
+[CRCWD7]            0x3DB49971
+[Signature]         NameSig(NAME_ONLY_AC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.HiAC.A: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_HIAC
+[CRCWD7]            0xBA978D26
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.HiAC.A: HI
+[ID]                CRC_HI_HIAC
+[CRCWD7]            0xBA978D26
+[Signature]         NameSig(NAME_ONLY_HI)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.HiAC.A: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE2_HIAC
+[CRCWD7]            0x3DB49971
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.HiAC.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_HIAC
+[Signature]     NamedCRCSig(CRC_AC_HIAC) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_HIAC) or
+[Signature]     NamedCRCSig(CRC_HI_HIAC) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE2_HIAC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Hider.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_HIDERA
+[CRCWD7]            0xB39F4AA4
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Hider.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_HIDERA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_HIDERA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Lunch.C: NEWAO
+[ID]                CRC_NEWAO_LUNCHC
+[CRCWD7]            0xB3ADB709
+[Signature]         NameSig(NAME_ONLY_NEWAO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Lunch.C: NEWFS
+[ID]                CRC_NEWFS_LUNCHC
+[CRCWD7]            0x30EBB55A
+[Signature]         NameSig(NAME_ONLY_NEWFS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Lunch.C: AUTOOPEN
+[ID]                CRC_AUTOOPEN_LUNCHC
+[CRCWD7]            0xB3ADB709
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Lunch.C: FILESAVE
+[ID]                CRC_FILESAVE_LUNCHC
+[CRCWD7]            0x30EBB55A
+[Signature]         NameSig(NAME_ONLY_FILESAVE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Lunch.C
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_LUNCHC
+[Signature]     NamedCRCSig(CRC_NEWAO_LUNCHC) and
+[Signature]     NamedCRCSig(CRC_NEWFS_LUNCHC) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_LUNCHC) or
+[Signature]      NamedCRCSig(CRC_FILESAVE_LUNCHC))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.NiceDay.E: AUTOEXIT
+[ID]                CRC_AUTOEXIT_NICEDAYE
+[CRCWD7]            0x519C52DD
+[Signature]         NameSig(NAME_ONLY_AUTOEXIT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NiceDay.E: PAYLOAD
+[ID]                CRC_PAYLOAD_NICEDAYE
+[CRCWD7]            0x9447A071
+[Signature]         NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.NiceDay.E
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NICEDAYE
+[Signature]     NamedCRCSig(CRC_VOPEN_NICEDAY) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NICEDAYE) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_NICEDAYE) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_NICEDAY) or
+[Signature]     NamedCRCSig(CRC_VCLOSE_NICEDAY) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NICEDAYE) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_NICEDAYE) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NICEDAY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.H:Fr: NOP
+[ID]                CRC_NOP_NOPH
+[CRCWD7]            0x0D4F1141
+[Signature]         NameSig(NAME_ONLY_NOP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.H:Fr: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NOPH
+[CRCWD7]            0x870A4DC5
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.H:Fr: NOP
+[ID]                CRC_NOP2_NOPH
+[CRCWD7]            0x870A4DC5
+[Signature]         NameSig(NAME_ONLY_NOP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.H:Fr: FICHIERENREGISTRER
+[ID]                CRC_FICHIERENREGISTRER_NOPH
+[CRCWD7]            0x0D4F1141
+[Signature]         NameSig(NAME_ONLY_FICHIERENREGISTRER)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Nop.H:Fr
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NOPH
+[Signature]     NamedCRCSig(CRC_NOP_NOPH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NOPH) or
+[Signature]     NamedCRCSig(CRC_NOP2_NOPH) and
+[Signature]     NamedCRCSig(CRC_FICHIERENREGISTRER_NOPH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.I: NOP
+[ID]                CRC_NOP_NOPI
+[CRCWD7]            0xE0297C49
+[Signature]         NameSig(NAME_ONLY_NOP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.I: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NOPI
+[CRCWD7]            0xE11D7917
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.I: NOP
+[ID]                CRC_NOP2_NOPI
+[CRCWD7]            0xE11D7917
+[Signature]         NameSig(NAME_ONLY_NOP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.I: FILESAVE
+[ID]                CRC_FILESAVE_NOPI
+[CRCWD7]            0xE0297C49
+[Signature]         NameSig(NAME_ONLY_FILESAVE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Nop.I
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NOPI
+[Signature]     NamedCRCSig(CRC_NOP_NOPI) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NOPI) or
+[Signature]     NamedCRCSig(CRC_NOP2_NOPI) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_NOPI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.J: NOP
+[ID]                CRC_NOP2_NOPJ
+[CRCWD7]            0x2C69D3EA
+[Signature]         NameSig(NAME_ONLY_NOP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Nop.J: DATEISPEICHERN
+[ID]                CRC_DATEISPEICHERN_NOPJ
+[CRCWD7]            0x2C69D3EA
+[Signature]         NameSig(NAME_ONLY_DATEISPEICHERN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Nop.J
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NOPJ
+[Signature]     NamedCRCSig(CRC_NOP_NOPA) and
+[Signature]     NamedCRCSig(CRC_DATEISPEICHERN_NOPJ) or
+[Signature]     NamedCRCSig(CRC_NOP2_NOPJ) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NOPA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           NOP.K: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NOPK
+[CRCWD7]            0xF16E246A
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           NOP.K: COPYOPEN
+[ID]                CRC_COPYOPEN_NOPK
+[CRCWD7]            0xF16E246A
+[Signature]         NameSig(NAME_ONLY_COPYOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           NOP.K: FILESAVEAS
+[ID]                CRC_FILESAVEAS_NOPK
+[CRCWD7]            0xB851C68B
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           NOP.K: COPYSAVEAS
+[ID]                CRC_COPYSAVEAS_NOPK
+[CRCWD7]            0xB851C68B
+[Signature]         NameSig(NAME_ONLY_COPYSAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.NOP.K
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NOPK
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NOPK) and
+[Signature]     NamedCRCSig(CRC_COPYSAVEAS_NOPK) or
+[Signature]     NamedCRCSig(CRC_COPYOPEN_NOPK) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_NOPK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Imposter.C: PAYLOAD
+[ID]                CRC_PAYLOAD_IMPOSTERC
+[CRCWD7]            0x7DD8950D
+[Signature]         NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Imposter.C: AUTOOPEN
+[ID]                CRC_AUTOOPEN_IMPOSTERC
+[CRCWD7]            0xC2FDB386
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Imposter.C: PAYLOAD
+[ID]                CRC_PAYLOAD2_IMPOSTERC
+[CRCWD7]            0xC2FDB386
+[Signature]         NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Imposter.C: FILESAVEAS
+[ID]                CRC_FILESAVEAS_IMPOSTERC
+[CRCWD7]            0x7DD8950D
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+[KnownVirusSigStart]
+[Comment]       WM.Imposter.C
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_IMPOSTERC
+[Signature]     NamedCRCSig(CRC_PAYLOAD_IMPOSTERC) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_IMPOSTERC) or
+[Signature]     NamedCRCSig(CRC_PAYLOAD2_IMPOSTERC) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_IMPOSTERC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Simple.A: SIMPLE
+[ID]                CRC_SIMPLE_SIMPLEA
+[CRCWD7]            0x1C778A27
+[Signature]         NameSig(NAME_ONLY_SIMPLE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Simple.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_SIMPLEA
+[CRCWD7]            0xF055E393
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Simple.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN2_SIMPLEA
+[CRCWD7]            0x1C778A27
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Simple.A: SIMPLE
+[ID]                CRC_SIMPLE2_SIMPLEA
+[CRCWD7]            0xF055E393
+[Signature]         NameSig(NAME_ONLY_SIMPLE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Simple.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SIMPLEA
+[Signature]     NamedCRCSig(CRC_SIMPLE_SIMPLEA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SIMPLEA) or
+[Signature]     NamedCRCSig(CRC_SIMPLE2_SIMPLEA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN2_SIMPLEA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Simple.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_SIMPLEB
+[CRCWD7]            0x4D950DF4
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Simple.B: SIMPLE
+[ID]                CRC_SIMPLE_SIMPLEB
+[CRCWD7]            0x4D950DF4
+[Signature]         NameSig(NAME_ONLY_SIMPLE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Simple.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SIMPLEB
+[Signature]     NamedCRCSig(CRC_SIMPLE_SIMPLEA) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SIMPLEB) or
+[Signature]     NamedCRCSig(CRC_SIMPLE_SIMPLEB) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN2_SIMPLEA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.TestArea.A: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_TESTAREA
+[CRCWD7]            0xFEEF9C8B
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TestArea.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TESTAREA
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TESTAREA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Toten.A: README
+[ID]                CRC_README_TOTEN
+[CRCWD7]            0xB8426F7E
+[Signature]         NameSig(NAME_ONLY_README)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Toten.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_TOTEN
+[CRCWD7]            0x80548A4B
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Toten.A: README on NORMAL.DOT
+[ID]                CRC_README2_TOTEN
+[CRCWD7]            0x80548A4B
+[Signature]         NameSig(NAME_ONLY_README)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Toten.A: DATEISPEICHERN
+[ID]                CRC_DATEISPEICHERN_TOTEN
+[CRCWD7]            0xB8426F7E
+[Signature]         NameSig(NAME_ONLY_DATEISPEICHERN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Toten.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TOTEN
+[Signature]     NamedCRCSig(CRC_README_TOTEN) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TOTEN) or
+[Signature]     NamedCRCSig(CRC_README2_TOTEN) and
+[Signature]     NamedCRCSig(CRC_DATEISPEICHERN_TOTEN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Shuffle.A : AUTOOPEN
+[ID]                CRC_AUTOOPEN_SHUFFLEA
+[CRCWD7]            0x4BE60C4E
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Shuffle.A : XXXXX
+[ID]                CRC_XXXXX_SHUFFLEA
+[CRCWD7]            0x4BE60C4E
+[Signature]         NameSig(NAME_ONLY_XXXXX)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Shuffle.A : FileSaveAs
+[ID]                CRC_FILESAVEAS_SHUFFLEA
+[CRCWD7]            0x1F774A09
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Shuffle.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHUFFLEA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHUFFLEA) or
+[Signature]     NamedCRCSig(CRC_XXXXX_SHUFFLEA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_SHUFFLEA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Alien.D: AUTOOPEN
+[ID]                CRC_AUTOOPEN_ALIEND
+[CRCWD7]            0x5A5B38DA
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Alien.D diff. AutoOpen f/ .C
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_ALIEND
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_ALIEND) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_ALIENC) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_ALIENC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Alien.E Alien.A + Colors.A's AutoClose
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_ALIENE
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_ALIEN) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_ALIEN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Atom.I: FILESAVEAS
+[ID]                CRC_FILESAVEAS_ATOMI
+[CRCWD7]            0x351E6579
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Atom.I .C w/ corrupted FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_ATOMI
+[Signature]     NamedCRCSig(CRC_ATOM_ATOMF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_ATOMC) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_ATOMA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_ATOMI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_FILESAVEAS_COUNTTEND
+[CRCWD7]            0xF666986C
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.CountTen.D
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COUNTTEND
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_COUNTTENB) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COUNTTENB) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COUNTTEND)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: CFFSA
+[ID]                CRC_CFFSA_CEEFOURB
+[CRCWD7]            0x7C613699
+[Signature]         NameSig(NAME_ONLY_CFFSA)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: CEEFOUR
+[ID]                CRC_CEEFOUR_CEEFOURB
+[CRCWD7]            0x30C6EFE0
+[Signature]         NameSig(NAME_ONLY_CEEFOUR)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: FILEOPEN
+[ID]                CRC_FILEOPEN_CEEFOURB
+[CRCWD7]            0x3EC06F2A
+[Signature]         NameSig(NAME_ONLY_FILEOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: FILESAVE
+[ID]                CRC_FILESAVE_CEEFOURB
+[CRCWD7]            0x41E4EE5E
+[Signature]         NameSig(NAME_ONLY_FILESAVE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_CEEFOURB
+[CRCWD7]            0x3A27FFBF
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: FILETEMPLATES
+[ID]                CRC_FILETEMPLATES_CEEFOURB
+[CRCWD7]            0x3A27FFBF
+[Signature]         NameSig(NAME_ONLY_FILETEMPLATES)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: CFFO
+[ID]                CRC_CFFO_CEEFOURB
+[CRCWD7]            0x3EC06F2A
+[Signature]         NameSig(NAME_ONLY_CFFO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: CFFS
+[ID]                CRC_CFFS_CEEFOURB
+[CRCWD7]            0x41E4EE5E
+[Signature]         NameSig(NAME_ONLY_CFFS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.CeeFour.B: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CEEFOURB
+[CRCWD7]            0x7C613699
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.CeeFour.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CEEFOURB
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_CEEFOURB) and
+[Signature]     NamedCRCSig(CRC_CEEFOUR_CEEFOURB) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_CEEFOURB) and
+[Signature]     (NamedCRCSig(CRC_CFFSA_CEEFOURB) and
+[Signature]      NamedCRCSig(CRC_FILEOPEN_CEEFOURB) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_CEEFOURB) or
+[Signature]      NamedCRCSig(CRC_CFFO_CEEFOURB) and
+[Signature]      NamedCRCSig(CRC_CFFS_CEEFOURB) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_CEEFOURB))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.GoldFish.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_GOLDFISHB
+[CRCWD7]            0x0AF66BD4
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.GoldFish.B: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_GOLDFISHB
+[CRCWD7]            0x0AF66BD4
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.GoldFish.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_GOLDFISHB
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_GOLDFISHB) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_GOLDFISHB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Irish.K: WORDHELPNT /corrupted WORDHELPNT
+[ID]                CRC_WORDHELPNT_IRISHK
+[CRCWD7]            0x344bF665
+[CRCWD8]            0xBD7C7683
+[Signature]         NameSig(NAME_ONLY_WORDHELPNT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Irish.k
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_IRISHK
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS_IRISH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHK) or
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS2_IRISH) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.IrishK: AUTOOPEN
+[ID]                CRC_AUTOOPEN_IRISHK
+[CRCWD8]            0x80F4B7A7
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Irish.K: ANTIVIRUS
+[ID]                CRC_ANTIVIRUS_IRISHK
+[CRCWD8]            0xC01D752C
+[Signature]         NameSig(NAME_ONLY_ANTIVIRUS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Irish.k
+[Type]          WD8
+[QAStatus]      PASSED
+[ID]            VID_IRISHK
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS_IRISH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_IRISHK) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHK) or
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS_IRISHK) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Irish.L: WORDHELPNT
+[ID]                CRC_WORDHELPNT_IRISHL
+[CRCWD7]            0x35639EBC
+[Signature]         NameSig(NAME_ONLY_WORDHELPNT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Irish.L differently corrupted WORDHELPNT again
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_IRISHL
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHL) or
+[Signature]     NamedCRCSig(CRC_FILESAVE_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELP_IRISH) and
+[Signature]     NamedCRCSig(CRC_ANTIVIRUS2_IRISH) and
+[Signature]     NamedCRCSig(CRC_WORDHELPNT_IRISHL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Badboy.A: BADBOY
+[ID]                CRC_BADBOY_BADBOYA
+[CRCWD7]            0x01610E76
+[Signature]         NameSig(NAME_ONLY_BADBOY)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Badboy.A: AUTOEXEC
+[ID]                CRC_AUTOEXEC_BADBOYA
+[CRCWD7]            0x085342C5
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Badboy.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_BADBOYA
+[CRCWD7]            0xA0D7C480
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Badboy.A: FILESAVEAS
+[ID]                CRC_FILESAVEAS_BADBOYA
+[CRCWD7]            0x9FD36893
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Badboy.A: FILENEW in dropper only
+[ID]                CRC_FILENEW_BADBOYA
+[CRCWD7]            0x2FEFBD43
+[Signature]         NameSig(NAME_ONLY_FILENEW)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Badboy.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BADBOYA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_BADBOYA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BADBOYA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BADBOYA) and
+[Signature]     NamedCRCSig(CRC_BADBOY_BADBOYA)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_FILENEW_BADBOYA)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: AEDUB
+[ID]                CRC_AEDUB_DUBA
+[CRCWD7]            0x5C0823E9
+[Signature]         NameSig(NAME_ONLY_AEDUB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: FCDUB
+[ID]                CRC_FCDUB_DUBA
+[CRCWD7]            0x17719DE6
+[Signature]         NameSig(NAME_ONLY_FCDUB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: KILLIT
+[ID]                CRC_KILLIT_DUBA
+[CRCWD7]            0x147BEFF2
+[Signature]         NameSig(NAME_ONLY_KILLIT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: MESSAGE
+[ID]                CRC_MESSAGE_DUBA
+[CRCWD7]            0x109ADC3B
+[Signature]         NameSig(NAME_ONLY_MESSAGE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: AUTOEXEC
+[ID]                CRC_AUTOEXEC_DUBA
+[CRCWD7]            0xE0C59FCE
+[Signature]         NameSig(NAME_ONLY_AUTOEXEC)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: AUTOEXIT
+[ID]                CRC_AUTOEXIT_DUBA
+[CRCWD7]            0x5C0823E9
+[Signature]         NameSig(NAME_ONLY_AUTOEXIT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: EXEKILLER
+[ID]                CRC_EXEKILLER_DUBA
+[CRCWD7]            0x8B508D85
+[Signature]         NameSig(NAME_ONLY_EXEKILLER)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: FILECLOSE
+[ID]                CRC_FILECLOSE_DUBA
+[CRCWD7]            0x17719DE6
+[Signature]         NameSig(NAME_ONLY_FILECLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_DUBA
+[CRCWD7]            0xDA561735
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: ANNIHILATOR
+[ID]                CRC_ANNIHILATOR_DUBA
+[CRCWD7]            0xE3C46DBF
+[Signature]         NameSig(NAME_ONLY_ANNIHILATOR)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: NEWDOCINSERT
+[ID]                CRC_NEWDOCINSERT_DUBA
+[CRCWD7]            0xCBA18757
+[Signature]         NameSig(NAME_ONLY_NEWDOCINSERT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: FILETEMPLATES
+[ID]                CRC_FILETEMPLATES_DUBA
+[CRCWD7]            0x9FC83BC5
+[Signature]         NameSig(NAME_ONLY_FILETEMPLATES)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dub.A: SEARCHDESTROYER
+[ID]                CRC_SEARCHDESTROYER_DUBA
+[CRCWD7]            0x48236E5A
+[Signature]         NameSig(NAME_ONLY_SEARCHDESTROYER)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Dub.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_DUBA
+[Signature]     NamedCRCSig(CRC_AEDUB_DUBA) and
+[Signature]     NamedCRCSig(CRC_FCDUB_DUBA) and
+[Signature]     NamedCRCSig(CRC_KILLIT_DUBA) and
+[Signature]     NamedCRCSig(CRC_MESSAGE_DUBA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_DUBA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_DUBA) and
+[Signature]     NamedCRCSig(CRC_EXEKILLER_DUBA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE_DUBA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_DUBA) and
+[Signature]     NamedCRCSig(CRC_ANNIHILATOR_DUBA) and
+[Signature]     NamedCRCSig(CRC_NEWDOCINSERT_DUBA) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_DUBA)
+[Repair]        UseSignature,
+[Repair]     NamedCRCSig(CRC_SEARCHDESTROYER_DUBA)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: AOB
+[ID]                CRC_AOB_TALONA
+[CRCWD7]            0x6CC5EBC1
+[Signature]         NameSig(NAME_ONLY_AOB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: DEED
+[ID]                CRC_DEED_TALONA
+[CRCWD7]            0xE974ED19
+[Signature]         NameSig(NAME_ONLY_DEED)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: FSAB
+[ID]                CRC_FSAB_TALONA
+[CRCWD7]            0x9E2B3A8F
+[Signature]         NameSig(NAME_ONLY_FSAB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: INFO
+[ID]                CRC_INFO_TALONA
+[CRCWD7]            0xE4122061
+[Signature]         NameSig(NAME_ONLY_INFO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: AUTOOPEN
+[ID]                CRC_AUTOOPEN_TALONA
+[CRCWD7]            0x6CC5EBC1
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_TALONA
+[CRCWD7]            0x4B17751E
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.A: FILESAVEAS
+[ID]                CRC_FILESAVEAS_TALONA
+[CRCWD7]            0x9E2B3A8F
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Talon.A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TALONA
+[Signature]     NamedCRCSig(CRC_AOB_TALONA) and
+[Signature]     NamedCRCSig(CRC_DEED_TALONA) and
+[Signature]     NamedCRCSig(CRC_FSAB_TALONA) and
+[Signature]     NamedCRCSig(CRC_INFO_TALONA) and
+[Signature]     (NamedCRCSig(CRC_FILESAVEAS_TALONA) or
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TALONA)) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_TALONA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: AOB
+[ID]                CRC_AOB_TALONB
+[CRCWD7]            0xE76FC5C3
+[Signature]         NameSig(NAME_ONLY_AOB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: FSAB
+[ID]                CRC_FSAB_TALONB
+[CRCWD7]            0xC747F19D
+[Signature]         NameSig(NAME_ONLY_FSAB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: INFO
+[ID]                CRC_INFO_TALONB
+[CRCWD7]            0x099F0B07
+[Signature]         NameSig(NAME_ONLY_INFO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: AUTOOPENDRP of the Dropper
+[ID]                CRC_AUTOOPENDRP_TALONB
+[CRCWD7]            0x8F623766
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_TALONB
+[CRCWD7]            0xE76FC5C3
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_TALONB
+[CRCWD7]            0xBD16A570
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: FILESAVEAS
+[ID]                CRC_FILESAVEAS_TALONB
+[CRCWD7]            0xC747F19D
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.B: PASSWORD
+[ID]                CRC_PASSWORD_TALONB
+[CRCWD7]            0xFD47E300
+[Signature]         NameSig(NAME_ONLY_PASSWORD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TALON.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TALONB
+[Signature]     NamedCRCSig(CRC_AOB_TALONB) and
+[Signature]     NamedCRCSig(CRC_FSAB_TALONB) and
+[Signature]     NamedCRCSig(CRC_INFO_TALONB) and
+[Signature]     (NamedCRCSig(CRC_FILESAVEAS_TALONB) or
+[Signature]     NamedCRCSig(CRC_AUTOOPENDRP_TALONB) or
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TALONB)) and
+[Signature]     NamedCRCSig(CRC_PASSWORD_TALONB) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_TALONB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: AOB
+[ID]                CRC_AOB_TALONC
+[CRCWD7]            0xA17B3863
+[Signature]         NameSig(NAME_ONLY_AOB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: FSAB
+[ID]                CRC_FSAB_TALONC
+[CRCWD7]            0xCDE82F34
+[Signature]         NameSig(NAME_ONLY_FSAB)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: INFO
+[ID]                CRC_INFO_TALONC
+[CRCWD7]            0x03891703
+[Signature]         NameSig(NAME_ONLY_INFO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: AUTOOPEN
+[ID]                CRC_AUTOOPEN_TALONC
+[CRCWD7]            0xA17B3863
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: TOOLSMACRO
+[ID]                CRC_TOOLSMACRO_TALONC
+[CRCWD7]            0x41D2389D
+[Signature]         NameSig(NAME_ONLY_TOOLSMACRO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: FILESAVEAS
+[ID]                CRC_FILESAVEAS_TALONC
+[CRCWD7]            0xCDE82F34
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.C: TOOLSSPELLING
+[ID]                CRC_TOOLSSPELLING_TALONC
+[CRCWD7]            0xFEF5F57D
+[Signature]         NameSig(NAME_ONLY_TOOLSSPELLING)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TALON.C
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TALONC
+[Signature]     NamedCRCSig(CRC_AOB_TALONC) and
+[Signature]     NamedCRCSig(CRC_FSAB_TALONC) and
+[Signature]     NamedCRCSig(CRC_INFO_TALONC) and
+[Signature]     (NamedCRCSig(CRC_FILESAVEAS_TALONC) or
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TALONC)) and
+[Signature]     NamedCRCSig(CRC_TOOLSSPELLING_TALONC) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_TALONC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.H: CRUD
+[ID]                CRC_CRUD_TALONH
+[CRCWD7]            0xC9582A56
+[Signature]         NameSig(NAME_ONLY_CRUD)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.H: AUTOOPEN
+[ID]                CRC_AUTOOPEN_TALONH
+[CRCWD7]            0x74B432FE
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.H: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_TALONH
+[CRCWD7]            0x8EA9F8A3
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.TALON.H: FILESAVEAS
+[ID]                CRC_FILESAVEAS_TALONH
+[CRCWD7]            0x21D9B860
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TALON.H
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TALONH
+[Signature]     NamedCRCSig(CRC_CRUD_TALONH) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TALONH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TALONH) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_TALONH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TALON.H1
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TALONH1
+[Signature]     Not NameSig(NAME_ONLY_CRUD) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_TALONH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TALONH) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_TALONH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.TALON.H2
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TALONH2
+[Signature]     Not NameSig(NAME_ONLY_AUTOCLOSE) and
+[Signature]     NamedCRCSig(CRC_CRUD_TALONH) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_TALONH) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_TALONH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       WM.PHARDERA.B: FILEOPEN
+[ID]            CRC_FILEOPEN_PHARDERAB
+[CRCWD7]        0xB05D8CDD
+[Signature]     NameSig(NAME_ONLY_FILEOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.PHARDERA.B
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_PHARDERAB
+[Signature]     NamedCRCSig(CRC_FILEOPEN_PHARDERAB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       WM.DIVINA.E: AUTOCLOSE
+[ID]            CRC_AUTOCLOSE_DIVINAE
+[CRCWD7]        0x202FA174
+[Signature]     NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.DIVINA.E
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_DIVINAE
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_DIVINAE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Goggles.A : PolyName
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_GOGGLESA
+[Signature]     CRC(0x7572ACD3)
+[Repair]        UseSignature,
+[Repair]        CRC(0x13368F1D)
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Random.A : PolyName
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RANDOMA
+[Signature]     CRC(0x6BF11414)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Spiral.A : PolyName
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SPIRALA
+[Signature]     CRC(0xEE0395A1) and
+[Signature]     CRC(0x83C4668F) and
+[Signature]     CRC(0x9D883CEC) and
+[Signature]     CRC(0x460530FC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.GoodNight.B: EXIT
+[ID]                CRC_EXIT_GOODNIGHTB
+[CRCWD7]            0x46A57EBA
+[Signature]         NameSig(NAME_ONLY_EXIT)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.GoodNight.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_GOODNIGHTB
+[CRCWD7]            0x970D83D0
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.GoodNight.B: FILEOPEN
+[ID]                CRC_FILEOPEN_GOODNIGHTB
+[CRCWD7]            0x28E2388E
+[Signature]         NameSig(NAME_ONLY_FILEOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.GoodNight.B diff. EXIT, AUTOOPEN, FILEOPEN from .A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_GOODNIGHTB
+[Signature]     NamedCRCSig(CRC_EXIT_GOODNIGHTB) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_GOODNIGHTB) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_GOODNIGHTB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_GOODNIGHT) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_GOODNIGHT) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_GOODNIGHT) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_GOODNIGHT) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE_GOODNIGHT) and
+[Signature]     NamedCRCSig(CRC_FILECLOSEALL_GOODNIGHT)
+[Repair]        UseSignature,
+[Repair]        NameSig(NAME_ONLY_FILESAVEAS)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           Npad.AA: AUTOOPEN
+[ID]                CRC_AUTOOPEN_NPADAA
+[CRCWD7]            0xCB2E8553
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.AA
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADAA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADAA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.NiceDay.F: AUTOEXIT
+[ID]                CRC_AUTOEXIT_NICEDAYF
+[CRCWD7]            0xB28AD503
+[Signature]         NameSig(NAME_ONLY_AUTOEXIT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.NiceDay.F
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NICEDAYF
+[Signature]     NamedCRCSig(CRC_VCLOSE_NICEDAY) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_NICEDAYF) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NICEDAY) or
+[Signature]     NamedCRCSig(CRC_VOPEN_NICEDAY) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTA) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_NICEDAYF) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_NICEDAY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AM: AAAAAC
+[ID]                CRC_AAAAAC_CONCEPTAM
+[CRCWD7]            0x6347ce43
+[Signature]         NameSig(NAME_ONLY_AAAAAC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AM
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAM
+[Signature]     (NamedCRCSig(CRC_AAAAAB_CONCEPTZ) and
+[Signature]      NamedCRCSig(CRC_AAAAAC_CONCEPTAM) and
+[Signature]      NamedCRCSig(CRC_AAAAAD_CONCEPTAC) and
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_CONCEPTZ)) or
+[Signature]     (NamedCRCSig(CRC_AAAAAA_CONCEPTZ) and
+[Signature]      NamedCRCSig(CRC_FILESAVE_RAPIA) and
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_CONCEPTZ) and
+[Signature]      NamedCRCSig(CRC_TOOLSMACRO_CONCEPTAC))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AN: AAAZAOR
+[ID]                CRC_AAAZAOR_CONCEPTAN
+[CRCWD7]            0x00DF2E71
+[Signature]         NameSig(NAME_ONLY_AAAZAOR)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AN: AAAZFSR
+[ID]                CRC_AAAZFSR_CONCEPTAN
+[CRCWD7]            0x5F17408D
+[Signature]         NameSig(NAME_ONLY_AAAZFSR)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AN: AUTOOPEN
+[ID]                CRC_AUTOOPEN_CONCEPTAN
+[CRCWD7]            0x00DF2E71
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AN: FILESAVEAS
+[ID]                CRC_FILESAVEAS_CONCEPTAN
+[CRCWD7]            0x5F17408D
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AN: PAYLOADR
+[ID]                CRC_PAYLOADR_CONCEPTAN
+[CRCWD7]            0x096726A0
+[Signature]         NameSig(NAME_ONLY_PAYLOADR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AN
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAN
+[Signature]     NamedCRCSig(CRC_AAAZAOR_CONCEPTAN) and
+[Signature]     NamedCRCSig(CRC_AAAZFSR_CONCEPTAN) and
+[Signature]     NamedCRCSig(CRC_PAYLOADR_CONCEPTAN) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_CONCEPTAN) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_CONCEPTAN))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AO: PAYLOAD
+[ID]                CRC_PAYLOAD_CONCEPTAO
+[CRCWD7]            0x567B6E96
+[Signature]         NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AO
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAO
+[Signature]     NamedCRCSig(CRC_AAAZAO_CONCEPTA) and
+[Signature]     NamedCRCSig(CRC_AAAZFS_CONCEPTA) and
+[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTAO) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_CONCEPTA) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_CONCEPTA))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.AP: ÎPAYLOAD
+[ID]                CRC_CEPAYLOAD_CONCEPTAP
+[CRCWD7]            0x0CC725B9
+[Signature]         NameSig(NAME_ONLY_CEPAYLOAD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Concept.AP diff. ÎPAYLOAD f/ .I; infectious; incomplete set
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPTAP
+[Signature]     NamedCRCSig(CRC_DOCCLOSE_CONCEPTI) and
+[Signature]     NamedCRCSig(CRC_CEPAYLOAD_CONCEPTAP)
+[Repair]        UseSignature,
+[Repair]        NameSig(NAME_ONLY_AAACBCAD0),
+[Repair]        NameSig(NAME_ONLY_AAAD9DBD2),
+[Repair]        NameSig(NAME_ONLY_TOOLSSPELLING)
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Appder.D: APPDERD
+[ID]                CRC_APPDER_APPDERD
+[CRCWD7]            0x38E7967E
+[CRCWD8]            0x6E485EA0
+[Signature]         NameSig(NAME_ONLY_APPDER)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Appder.D: AUTOOPEN
+[ID]                CRC_AUTOOPEN_APPDERD
+[CRCWD7]            0x38E7967E
+[CRCWD8]            0x6E485EA0
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Appder.D: AUTOCLOSE
+[ID]                CRC_AUTOCLOSE_APPDERD
+[CRCWD7]            0xBF459E56
+[CRCWD8]            0x8EE5CA7A
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Appder.D
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_APPDERD
+[Signature]     NamedCRCSig(CRC_APPDER_APPDERD) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_APPDERD)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_AUTOOPEN_APPDERD)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Appder.E: APPDERE
+[ID]                CRC_APPDER_APPDERE
+[CRCWD7]            0xA0FFB77B
+[CRCWD8]            0xB716EF79
+[Signature]         NameSig(NAME_ONLY_APPDER)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Appder.E: AUTOOPEN
+[ID]                CRC_AUTOOPEN_APPDERE
+[CRCWD7]            0xA0FFB77B
+[CRCWD8]            0xB716EF79
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Appder.E
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_APPDERE
+[Signature]     NamedCRCSig(CRC_APPDER_APPDERE) and
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_APPDERD)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_AUTOOPEN_APPDERE)
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.ShareFun.B: AUTOOPEN
+[ID]                CRC_AUTOOPEN_SHAREFUNB
+[CRCWD7]            0xCCA91A95
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.ShareFun.B diff. AUTOOPEN f/ .A
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_SHAREFUNB
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_SHAREFUNB) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_SHAREFUNA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_SHAREFUNA) and
+[Signature]     NamedCRCSig(CRC_FILEOPEN_SHAREFUNA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_SHAREFUNA) and
+[Signature]     NamedCRCSig(CRC_FILECLOSE_SHAREFUNA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_SHAREFUNA) and
+[Signature]     NamedCRCSig(CRC_FILETEMPLATES_SHAREFUNA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Minimal.N: AUTOOPEN
+[ID]                CRC_AUTOOPEN_MINIMALN
+[CRCWD7]            0xBBC87DD9
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Minimal.N
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MINIMALN
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_MINIMALN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_AUTOOPEN_MINIMALO
+[CRCWD7]            0x1817DF8D
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Minimal.O
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MINIMALO
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_MINIMALO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]           WM.Dzt.C: AUTOOPEN
+[ID]                CRC_AUTOOPEN_DZTC
+[CRCWD7]            0x790E779C
+[CRCWD8]            0x7EF24DD5
+[Signature]         NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dzt.C: FILESAVEAS
+[ID]                CRC_FILESAVEAS_DZTC
+[CRCWD7]            0xE5E3EAB1
+[CRCWD8]            0xEC219B8A
+[Signature]         NameSig(NAME_ONLY_FILESAVEAS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Dzt.C: FILESAVE
+[ID]                CRC_FILESAVE_DZTC
+[CRCWD7]            0x790E779C
+[CRCWD8]            0x5A0F4C02
+[Signature]         NameSig(NAME_ONLY_FILESAVE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Dzt.C
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_DZTC
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_DZTC) and
+[Signature]     (NamedCRCSig(CRC_FILESAVE_DZTC) or
+[Signature]      NamedCRCSig(CRC_AUTOOPEN_DZTC))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for FRENZY
+[ID]            CRC_FRENZY_FRENZYA
+[CRCWD8]        0xAB49DE61
+[Signature]     NameSig(NAME_ONLY_FRENZY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       Frenzy.A
+[Type]          WD8
+[QAStatus]      PASSED
+[ID]            VID_FRENZYA
+[Signature]     NamedCRCSig(CRC_FRENZY_FRENZYA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for USERFORM999
+[ID]            CRC_USERFORM999_SPARKLEA
+[CRCWD8]        0x49DD12D5
+[Signature]     NameSig(NAME_ONLY_USERFORM999)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for SPARKLE
+[ID]            CRC_SPARKLE_SPARKLEA
+[CRCWD8]        0x6F750333
+[Signature]     NameSig(NAME_ONLY_SPARKLE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for USERFORM900
+[ID]            CRC_USERFORM900_SPARKLEA
+[CRCWD8]        0x4C2456D9
+[Signature]     NameSig(NAME_ONLY_USERFORM900)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       Sparkle.A
+[Type]          WD8
+[QAStatus]      PASSED
+[ID]            VID_SPARKLEA
+[Signature]     NamedCRCSig(CRC_USERFORM999_SPARKLEA) and
+[Signature]     NamedCRCSig(CRC_SPARKLE_SPARKLEA) and
+[Signature]     NamedCRCSig(CRC_USERFORM900_SPARKLEA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for NAPD.BA
+[ID]            CRC_AUTOOPEN_NPADBA
+[CRCWD7]        0x12FC2234
+[Signature]     NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.BA
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADBA
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADBA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for NAPD.BB
+[ID]            CRC_AUTOOPEN_NPADBB
+[CRCWD7]        0x16C7CD10
+[Signature]     NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Npad.BB
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPADBB
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NPADBB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MDMA.O
+[ID]            CRC_AUTOCLOSE_MDMAO
+[CRCWD7]        0xCDFBC813
+[CRCWD8]        0x96B593EF
+[Signature]     NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.MDMA.O
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_MDMAO
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_MDMAO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# Divina.F by JJW 14 May 97
+
+[NamedCRCSigStart]
+[Comment]       Divina.F: AUTOCLOSE
+[ID]            CRC_AUTOCLOSE_DIVINAF
+[CRCWD7]        0x566bbf32
+[CRCWD8]        0x90ed5321
+[Signature]     NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Divina.F
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_DIVINAF
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_DIVINAF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# NiceDay.G by JJW 14 May 97
+
+[NamedCRCSigStart]
+[Comment]       NiceDay.G: PAYLOAD
+[ID]            CRC_PAYLOAD_NICEDAYG
+[CRCWD7]        0xfa5199e4
+[Signature]     NameSig(NAME_ONLY_PAYLOAD)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       NiceDay.G: AUTOEXIT
+[ID]            CRC_AUTOEXIT_NICEDAYG
+[CRCWD7]        0xe6a8204e
+[Signature]     NameSig(NAME_ONLY_AUTOEXIT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.NiceDay.G
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NICEDAYG
+[Signature]     NamedCRCSig(CRC_PAYLOAD_NICEDAYG) and
+[Signature]     NamedCRCSig(CRC_AUTOEXIT_NICEDAYG) and
+[Signature]     ((NamedCRCSig(CRC_VCLOSE_NICEDAY) and
+[Signature]       NamedCRCSig(CRC_AUTOOPEN_NICEDAY)) or
+[Signature]      (NamedCRCSig(CRC_AUTOCLOSE_NICEDAY) and
+[Signature]       NamedCRCSig(CRC_VOPEN_NICEDAY)))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# These WD8 CRCs are different, WD7 CRCs are the same
+
+[NamedCRCSigStart]
+[Comment]       NiceDay.G: VCLOSE
+[ID]            CRC_VCLOSE_NICEDAYG
+[CRCWD8]        0x548ba77b
+[Signature]     NameSig(NAME_ONLY_VCLOSE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       NiceDay.G: AUTOOPEN
+[ID]            CRC_AUTOOPEN_NICEDAYG
+[CRCWD8]        0x396be61e
+[Signature]     NameSig(NAME_ONLY_AUTOOPEN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.NiceDay.G
+[Type]          WD8
+[QAStatus]      PASSED
+[ID]            VID_NICEDAYG
+[Signature]     NamedCRCSig(CRC_VCLOSE_NICEDAYG) and
+[Signature]     NamedCRCSig(CRC_AUTOOPEN_NICEDAYG)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_VGOJOHNNY_JOHNNYK
+[CRCWD7]            0xD791F02C
+[Signature]         NameSig(NAME_ONLY_VGOJOHNNY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.Johnny
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_JOHNNYK
+[Signature]     NamedCRCSig(CRC_PRESENTV_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTW_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_PRESENTZ_JOHNNY) and
+[Signature]     NamedCRCSig(CRC_VGOJOHNNY_JOHNNYK) and
+[Signature]     (NamedCRCSig(CRC_AUTOOPEN_JOHNNY) or
+[Signature]      NamedCRCSig(CRC_FILESAVE_JOHNNY) or
+[Signature]      NamedCRCSig(CRC_FILESAVEAS_JOHNNY))
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           CRC and name signature association
+[ID]                CRC_AUTOCLOSE_DMVE
+[CRCWD7]            0x0EDC2D47
+[CRCWD8]            0x834E0255
+[Signature]         NameSig(NAME_ONLY_AUTOCLOSE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       WM.DMV.E
+[Type]          WD7 WD8
+[QAStatus]      PASSED
+[ID]            VID_DMVE
+[Signature]     NamedCRCSig(CRC_AUTOCLOSE_DMVE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+

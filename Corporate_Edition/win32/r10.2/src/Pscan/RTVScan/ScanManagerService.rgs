@@ -1,0 +1,23 @@
+HKCR
+{
+	Rtvscan.ScanManagerService.1 = s 'ScanManagerService Class'
+	{
+		CLSID = s '{98694799-6891-4FD7-A91D-FB43B78AEC8C}'
+	}
+	Rtvscan.ScanManagerService = s 'ScanManagerService Class'
+	{
+		CLSID = s '{98694799-6891-4FD7-A91D-FB43B78AEC8C}'
+		CurVer = s 'Rtvscan.ScanManagerService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {98694799-6891-4FD7-A91D-FB43B78AEC8C} = s 'ScanManagerService Class'
+		{
+			ProgID = s 'Rtvscan.ScanManagerService.1'
+			VersionIndependentProgID = s 'Rtvscan.ScanManagerService'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{9BDC812A-6973-438E-A2D0-19BA66D2161F}'
+		}
+	}
+}

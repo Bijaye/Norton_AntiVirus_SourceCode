@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>Viruses and Security Risks</title>
+		<meta http-equiv="Content-Language" content="en-us">
+		<meta http-equiv="MSThemeCompatible" content="Yes" />
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<link rel="stylesheet" type="text/css" href="nav2005.css">
+		
+		<iframe id="resErr" src="navErrors.htm" class="hidden" name="NAV_Errors"></iframe>
+		
+		<script language="JavaScript" src="DisplayScriptError.js"></script>
+		<script language="JavaScript" src="scan.js"></script>
+	</head>
+	<body id="oBody" class="navPanelBody" scroll="no" onload="OnLoad()">
+		<!-- Main table. Helps to keep the panel layout in the editor -->
+		<table id="tableNAVScanPanel" width="418" height="320" cellSpacing="0" cellPadding="0" border="0">
+			<tr>
+				<!-- Title -->
+				<td class="navPanelTitleTD" height="28" id="scan_td1">
+					<span id="scanPanelTitle" class="navPanelTitle">Scans</span>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top" id="scan_td2">
+					<table id="tableScanTasks" width="100%" height="100%" cellSpacing="0" cellPadding="0" border="0">
+						<tr>
+							<td height="32" valign="top" style="padding-top: 8px" id="scan_td3">
+								<span>Select an item to launch a scan</span>
+							</td>
+						</tr>
+						<tr>
+							<td height="226" valign="top" class="navListBox" id="scan_td4">
+								<iframe id="oTaskList" height="100%" name="frameTasksList" src="scan_list.htm"
+									width="100%" border="0" frameborder="0"></iframe>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" align="right" style="padding-top: 8px" id="scan_td5">
+								<table id="tableNewScan" cellSpacing="0" cellPadding="0" border="0">
+									<tr>
+										<td width="20" id="scan_td6"><img onclick="OnNewTask()" class="navScanActionIcon" border="0" src="new.gif" width="20" height="20" id="scan_img4"></td>
+										<td><a id="oNewScan" class="navTask" onclick="OnNewTask();return false" href="#">Create custom scan</a></td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table> <!-- tableScanTasks -->
+				</td>
+			</tr>
+		</table> <!-- tableNAVScanPanel -->
+		<!-- NAV Scan page resources -->
+		<div style="display:none"><br>
+			<br>
+			<div id="oAreYouSure">Are you sure you want to delete this task permanently?</div>
+			<div id="oNAV">Norton AntiVirus</div>
+			<div id="oScheduled">Scheduled</div>
+			<div id="oNotScheduled">Not scheduled</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+# A Perforce Client Specification.
+#
+#  Client:      The client name.
+#  Update:      The date this specification was last modified.
+#  Access:      The date this client was last used in any way.
+#  Owner:       The user who created this client.
+#  Host:        If set, restricts access to the named host.
+#  Description: A short description of the client (optional).
+#  Root:        The base directory of the client workspace.
+#  AltRoots:    Up to two alternate client workspace roots.
+#  Options:     Client options:
+#                      [no]allwrite [no]clobber [no]compress
+#                      [un]locked [no]modtime [no]rmdir
+#  LineEnd:     Text file line endings on client: local/unix/mac/win/share.
+#  View:        Lines to map depot files into the client workspace.
+#
+# Use 'p4 help client' to see more about client views and options.
+
+Client:	qsclient_r3.3_solaris_cm_client
+
+Update:	2003/07/21 20:00:03
+
+Access:	2003/07/29 14:33:20
+
+Owner:	tcashin
+
+Host:	
+
+Description:
+	Created by tcashin.
+
+Root:	/users/tcashin/work/qsclient
+
+Options:	noallwrite noclobber compress unlocked modtime rmdir
+
+LineEnd:	local
+
+View:
+	//depot/Norton_AntiVirus/QuarantineServer/Trunk/cm/... //qsclient_r3.3_solaris_cm_client/QuarantineServer/cm/...
+	//depot/Norton_AntiVirus/QuarantineServer/Trunk/Include/... //qsclient_r3.3_solaris_cm_client/QuarantineServer/Include/...
+	//depot/Norton_AntiVirus/QuarantineServer/Trunk/qscomm32/... //qsclient_r3.3_solaris_cm_client/QuarantineServer/qscomm32/...
+	//depot/Norton_AntiVirus/QuarantineServer/Trunk/qspak32/... //qsclient_r3.3_solaris_cm_client/QuarantineServer/qspak32/...
+	//depot/Norton_AntiVirus/QuarantineServer/Trunk/shared/include/... //qsclient_r3.3_solaris_cm_client/QuarantineServer/shared/include/...

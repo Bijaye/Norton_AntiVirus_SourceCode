@@ -1,0 +1,42 @@
+:: Copyright 1995 Symantec, Peter Norton Product Group
+::************************************************************************
+::
+:: $Header:   S:/NOBUILDS.NT/VCS/AWKSCR.BTv   1.2   01 Aug 1997 09:39:18   JBRENNA  $
+::
+:: Description:
+::
+:: Contains:
+::
+:: See Also:
+::************************************************************************
+:: $Log:   S:/NOBUILDS.NT/VCS/AWKSCR.BTv  $
+:  
+:     Rev 1.2   01 Aug 1997 09:39:18   JBRENNA
+:  Comment out the call to striprem.awk. We no longer use the INF files for Install / Uninstall
+:  
+:     Rev 1.1   29 Apr 1997 09:47:24   JBRENNA
+:  Convert W32 to new IRA/IDA platform specification.
+:  
+:     Rev 1.0   25 Apr 1997 11:37:40   ksackin
+:  Initial revision.
+:  
+:     Rev 1.0   13 Mar 1997 15:17:28   RFULLER
+:  Initial revision
+:  
+:     Rev 1.1   04 Mar 1997 15:46:44   TSmith
+:  Added PRVUNIN.INF.
+:  
+:     Rev 1.0   13 Feb 1997 17:53:52   TSmith
+:  Initial revision.
+::************************************************************************
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\install.inf > %PROJPRE%\BIN%PROJVERS%.IRA\install.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\uninstal.inf > %PROJPRE%\BIN%PROJVERS%.IRA\uninstal.inf
+
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\garginst.inf > %PROJPRE%\BIN%PROJVERS%.IRA\garginst.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\gargunin.inf > %PROJPRE%\BIN%PROJVERS%.IRA\gargunin.inf
+
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\grypinst.inf > %PROJPRE%\BIN%PROJVERS%.IRA\grypinst.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\grypunin.inf > %PROJPRE%\BIN%PROJVERS%.IRA\grypunin.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\previnst.inf > %PROJPRE%\BIN%PROJVERS%.IRA\previnst.inf
+: unused awk -F; -f %PROJ%\SRC%PROJVERS%\striprem.awk %PROJ%\SRC%PROJVERS%\prvunin.inf > %PROJPRE%\BIN%PROJVERS%.IRA\prvunin.inf
+

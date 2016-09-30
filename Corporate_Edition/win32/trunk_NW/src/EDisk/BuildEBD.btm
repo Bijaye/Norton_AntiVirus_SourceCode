@@ -1,0 +1,119 @@
+@echo off
+
+:========================================================================
+: Emergency Disk 1
+:========================================================================
+echo.
+echo Creating 'Norton AntiVirus Corporate Edition' Emergency Disk 1
+echo.
+
+format a: /V:Emergency /S /F:1.44
+
+
+echo.
+echo Modifying system file attributes...
+echo.
+attrib -r -s -h  a:\*.*
+del a:\drvspace.bin
+del a:\command.com
+
+ 
+echo.
+echo Copying files...
+echo.
+
+copy /k /z /q .\EBD\Disk1\*.* a:
+
+echo.
+echo Resetting system file attributes...
+echo.
+
+fd a:io.sys /d04-23-99 /t22:22:00
+attrib +r +s +h  a:\io.sys
+attrib +r +s +h  a:\msdos.sys
+
+copy /k /z /q .\Startup.exe a:
+
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo 'Norton AntiVirus Corporate Edition' Emergency Disk 1 image.
+echo.
+
+..\..\..\..\..\Release\EDisk\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Disk 1"
+
+echo.
+echo 'Norton AntiVirus Corporate Edition' Emergency Disk 1 completed!
+echo.
+
+
+:========================================================================
+: Emergency Disk 2
+:========================================================================
+echo.
+echo Creating 'Norton AntiVirus Corporate Edition' Emergency Disk 2
+echo.
+
+format a: /V:Emergency /F:1.44
+
+echo.
+echo Copying files...
+echo.
+
+copy /k /z /q .\EBD\Disk2\*.* a:
+copy /k /z /q ..\Nobuilds\rescue\pc\navdx.exe a:
+copy /k /z /q ..\Nobuilds\rescue\pc\navdx.ovl a:
+copy /k /z /q ..\Nobuilds\rescue\pc\navstart.dat a:
+copy /k /z /q ..\Nobuilds\rescue\pc\navopts.dat a:
+copy /k /z /q ..\Nobuilds\rescue\pc\exclude.dat a:
+copy /k /z /q ..\Nobuilds\rescue\pc\excludel.dat a:
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo 'Norton AntiVirus Corporate Edition' Emergency Disk 2 image.
+echo.
+
+..\..\..\..\..\Release\EDisk\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Disk 2"
+
+echo.
+echo 'Norton AntiVirus Corporate Edition' Emergency Disk 2 completed!
+echo.
+
+:========================================================================
+: Definition Disk
+:========================================================================
+echo.
+echo Creating 'Norton AntiVirus Corporate Edition' Definition Disk
+echo.
+
+format a: /V:Emergency /F:1.44
+
+echo.
+echo Copying files...
+echo.
+
+copy /k /z /q .\EBD\Disk3\*.* a:
+copy /k /z /q ..\Nobuilds\rescue\pc\navstart.dat a:
+copy /k /z /q ..\Nobuilds\rescue\pc\navopts.dat a:
+copy /k /z /q ..\Nobuilds\rescue\pc\exclude.dat a:
+copy /k /z /q ..\Nobuilds\rescue\pc\excludel.dat a:
+
+:========================================================================
+:  Create the Norton Emergency Disk (NED) image 
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo 'Norton AntiVirus Corporate Edition' Definition Disk image.
+echo.
+
+..\..\..\..\..\Release\EDisk\ned.exe /SILENT /STORE "Norton AntiVirus Definition Disk"
+
+echo.
+echo 'Norton AntiVirus Corporate Edition' Emergency disk set completed successfully!
+echo.

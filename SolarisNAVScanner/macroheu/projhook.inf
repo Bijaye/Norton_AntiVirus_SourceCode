@@ -1,0 +1,33 @@
+; Copyright 1997 Symantec Corporation
+;****************************************************************************
+; 
+; $Header:   S:/MACROHEU/VCS/PROJHOOK.INv   1.2   02 Dec 1998 16:19:28   rpulint  $
+; 
+; Description:
+;    Project Hook for MACROHEU
+;
+; See Also:
+;
+;****************************************************************************
+; $Log:   S:/MACROHEU/VCS/PROJHOOK.INv  $
+;  
+;     Rev 1.2   02 Dec 1998 16:19:28   rpulint
+;  Added section for OS2 (use Watcom11 compiler)
+;  
+;     Rev 1.1   12 Nov 1997 16:33:52   STRILLI
+;  Remove CV=YES from NLM section.
+;  
+;     Rev 1.0   30 Jun 1997 16:20:42   DCHI
+;  Initial revision.
+;  
+;****************************************************************************
+
+[NLM]
+set PATHPRE=%projpre%BIN%projvers%%platform%
+set LIBPRE=R:\NWNLM\3.01\NOVI
+
+[DOS]
+TOOLS=MSVC15
+
+[OS2]
+TOOLS=OS2WATCOM11

@@ -1,0 +1,158 @@
+<html>
+	<head>
+		<title id="sys_ap_title">Norton Antivirus System AutoProtect Options</title>
+		<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	</head>
+	<BODY class="clsDetails" id="body_options_sys_ap" onhelp="parent.CurrentPage.Help();"
+		tabIndex="-1" bottomMargin="0" leftMargin="5" topMargin="5" scroll="no" onload="Load();">
+		<IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+			SRC="options_errorid.htm"></IFRAME>
+		<script Language="JavaScript" src="DisplayScriptError.js"></script>
+		<script language="JavaScript" src="options_sys_ap.js"></script>
+		<link rel="stylesheet" type="text/css" href="navstyle.css">
+			<form name="options_sys_ap">
+				<table id="table1" width="425" border="0" height="372" bgcolor="#ffffff" cellspacing="0"
+					cellpadding="0">
+					<tr>
+						<td id="table1_cell1" height="172" rowspan="4" valign="top">
+							<table id="table11" width="425" height="41" border="0" cellspacing="0" cellpadding="0"
+                                style="BACKGROUND-IMAGE: url(topbg.gif); BACKGROUND-REPEAT: no-repeat;">
+								<tr>
+									<td id="table11_cell1" width="415" height="4" valign="top" align="right" colspan="2">&nbsp;</td>
+								</tr>
+								<tr valign="top" id="table11_tr">
+									<td id="table11_cell2" align="left" height="12" valign="top" width="300">&nbsp;&nbsp;<span class="cutitleb" id="ap_AutoProtect">Auto-Protect</span></td>
+									<td id="table11_cell3" align="right"><a href='' onClick="parent.CurrentPage.Help(); return false;"><span class="cuhelp" id="ap_help">more info</span></a>&nbsp;&nbsp;&nbsp;</td>
+								</tr>
+							</table>
+							<table id="table12" width="387" height="26" border="0" cellspacing="0" cellpadding="0"
+                                style="margin-top:10px">
+								<tr>
+									<td id="table12_cell1"><span class="culinkhead" id="ap_startup"><b>How to stay protected</b></span></td>
+								</tr>
+							</table>
+							<table id="table13" width="387" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td id="table13_cell5">
+										&nbsp;<input type="checkbox" id="idchk_EnableAutoProtect" onclick="OnEnableAPClick()" onpropertychange="OnEnableAPChanged(this.checked)"
+											name="checkbox3">
+									</td>
+									<td id="table13_cell6" width="361"><label for="idchk_EnableAutoProtect" accesskey="T" id="table13_text1" class="indent10"><u>T</u>urn 
+              Auto-Protect on (recommended)</label></td>
+								</tr>
+								<tr>
+									<td id="table13_cell1">
+										&nbsp;<input type="checkbox" id="When2StartAutoProtect" onClick="enable_all();" name="checkbox">
+									</td>
+									<td id="table13_cell2" width="361"><span class="indent10"><label id="label_When2StartAutoProtect" for="When2StartAutoProtect" accesskey="s"><u>S</u>tart 
+              Auto-Protect when Windows starts up (recommended)</label>
+										</span></td>
+								</tr>
+								<tr id="APHideIconRow">
+									<td id="table13_cell3">
+										&nbsp;<input type="checkbox" id="ShowAutoProtectIcon" name="checkbox2">
+									</td>
+									<td id="table13_cell4" width="361"><label for="ShowAutoProtectIcon" accesskey="h" id="ShowIcon_AccessKey" disabled="true"><span class="indent10" id="ap_iconintray">S<u>h</u>ow 
+              the Auto-Protect icon in the tray</span>
+										</label></td>
+								</tr>
+							</table>
+							<table border="0" cellspacing="0" cellpadding="0">
+									<td id="separator1" align="center" width="423">
+										<img align="middle" border="0" height="1" src="dots.gif" width="303" id="options_ap_seperator1_dots">
+									</td>
+							</table>
+							<table id="table14" width="387" height="26" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td id="table14_cell1" height="21"><span class="culinkhead" id="ap_howtorespond"><b>How to 
+												respond when a virus is found</b></span></td>
+								</tr>
+							</table>
+							<span id="table1_space1">&nbsp;</span>
+							<input type="radio" id="idrad_TSR_ACTION_REPAIR" onClick="enable_all();" name="radiogrp_TSR_ACTION">
+							<label for="idrad_TSR_ACTION_REPAIR" accesskey="p" id="Repair_AccessKey">
+								<span class="indent10" id="ap_autorepair">Re<u>p</u>air the infected file (recommended)<br></span>
+							</label>
+							<span id="table1_space2">&nbsp;</span>
+							<input type="radio" id="idrad_TSR_ACTION_QUAR_CANT_REP" onClick="enable_all();" name="radiogrp_TSR_ACTION">
+							<label for="idrad_TSR_ACTION_QUAR_CANT_REP" accesskey="r" id="Quar_Cant_Repair_AccessKey">
+								<span class="indent10" id="ap_trytorepair">T<u>r</u>y to repair then quarantine if unsuccessful</span>
+							</label>
+							<br>
+							<span id="table1_space3">&nbsp;</span>
+							<input type="radio" id="idrad_TSR_ACTION_DENY" onClick="enable_all();" name="radiogrp_TSR_ACTION">
+							<label for="idrad_TSR_ACTION_DENY" accesskey="d" id="Enable_all_AccessKey">
+								<span class="indent10" id="ap_denyaccess"><u>D</u>eny access to the infected file</span>
+							</label>
+							<br>
+							<span id="Win9x">
+								<span id="table1_space4">&nbsp;</span>
+								<input type="radio" id="idrad_TSR_ACTION_PROMPT" onClick="enable_all();" name="radiogrp_TSR_ACTION">
+								<label for="idrad_TSR_ACTION_PROMPT" accesskey="k" id="Prompt_AccessKey">
+									<span class="indent10" id="ap_askme">As<u>k</u> me what to do</span>
+								</label>
+							</span>
+							<table id="APAutoScanTable" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td id="td_AutoScan_cell1">
+										<span id="SpanAutoScanSpace">&nbsp;</span>
+										<input type="checkbox" id="idchk_APAutoScan" name="APAutoScan">
+									</td>
+									<td id="td_AutoScan_cell2">
+										<label id="threat_APAutoScan" for="idchk_APAutoScan" accesskey="u">
+                                            &nbsp;<span id="ap_autoremove_sideeffects">A<u>u</u>tomatically remove items left behind by viruses (recommended)</span>
+                                        </label>
+									</td>
+								</tr>
+							</table>
+							<table border="0" cellspacing="0" cellpadding="0" ID="Table2">
+									<td id="separator2" align="center" width="423">
+										<img align="middle" border="0" height="1" src="dots.gif" width="303" id="options_ap_seperator2_dots">
+									</td>
+							</table>
+							<table id="table15" width="387" height="26" border="0" cellspacing="0" cellpadding="0">
+								<tr>
+									<td id="table15_cell1"><span class="culinkhead" id="ap_whichfiletypes"><b>Which file types 
+												to scan for viruses</b></span></td>
+								</tr>
+							</table>
+							<table id="table16" border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td id="table16_cell1" colspan="2">
+										&nbsp;<input type="radio" name="Files2Scan" id="Files2Scan_0" onClick="SelectExtensions_enable();">
+										<label for="Files2Scan_0" accesskey="o" id="FilesScan0_AccessKey">
+											<span class="indent10" id="ap_comprehensive">C<u>o</u>mprehensive file scanning
+              (recommended)</span>
+										</label><br>
+									</td>
+								</tr>
+								<tr>
+									<td id="table16_cell2">
+										&nbsp;<input type="radio" name="Files2Scan" id="Files2Scan_1" onClick="SelectExtensions_enable();">
+										<label for="Files2Scan_1" accesskey="n" id="Files2Scan1_AccessKey">
+											<span class="indent10" id="ap_smartscan">Sca<u>n</u> 
+              files using SmartScan</span>
+										</label>
+									</td>
+									<td>
+										<span id="table1_space5">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										<button id="SelectExtensions" class="goldnav1" onClick="SelectAPExtensionsDlg();" DISABLED
+											accesskey="c" type="button"><u>C</u>ustomize...</button>
+									</td>
+								</tr>
+								<tr id="CompressedNtOnlySection">
+									<td id="table16_cell3">
+										&nbsp;<input type="checkbox" name="ScanCompressed" id="CompressedScan">
+										<label for="CompressedScan" accesskey="w" id="CompressedScan_AccessKey">
+											<span class="indent10" id="ap_compressedscan">Scan 
+              <u>w</u>ithin compressed files</span>
+										</label>
+									</td>
+								</tr> <!--id="CompressedNtOnlySection"-->
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form>
+	</BODY>
+</html>

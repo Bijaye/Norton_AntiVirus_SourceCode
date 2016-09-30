@@ -1,0 +1,1538 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+//  IIIIIII SSSSSS
+//    II    SS                          InstallShield (R)
+//    II    SSSSSS      (c) 1996-1998, InstallShield Software Corporation
+//    II        SS      (c) 1990-1996, InstallShield Corporation
+//  IIIIIII SSSSSS                     All Rights Reserved.
+//
+//
+//  This code is generated as a starting setup template.  You should
+//  modify it to provide all necessary steps for your setup.
+//
+//
+//    File Name:  Setup.rul
+//
+//  Description:  InstallShield script
+//
+//     Comments:  This template script performs a basic setup. With minor
+//                modifications, this template can be adapted to create
+//                new, customized setups.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+
+// Include header files
+
+    #include "sdlang.h"
+    #include "ifx.h"
+    #include "RegistryDefaults.h"
+    #include "utils.rul"
+
+////////////////////// string defines ////////////////////////////
+
+    #define UNINST_LOGFILE_NAME             "Uninst.isu"
+    #define IDB_WALLPAPER_BITMAP            20001
+    #define OLD_NORTON_KEY                  "\\Software\\Symantec\\Norton AntiVirus"
+    #define OLD_NORTON_QSERVER_KEY          "\\Software\\Symantec\\Norton AntiVirus\\Qserver"
+    #define SYMANTEC_INSTALLED_APPS_KEY     "\\Software\\Symantec\\InstalledApps"
+    #define SYMANTEC_QSERVER_KEY            "\\Software\\Symantec\\Quarantine\\Server"
+    #define SYMANTEC_ICEPACK_KEY            "\\Software\\Symantec\\Quarantine\\Server\\Avis"
+    #define MS_INTERNET_SETTINGS            "\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings"
+    #define MS_SHARED_DLLS                  "\\Software\\Microsoft\\Windows\\CurrentVersion\\SharedDlls"
+    #define INTEL_LANDESK_KEY               "SOFTWARE\\INTEL\\LANDesk\\VirusProtect6\\CurrentVersion"
+    #define ICEPACK_EVENTLOG_KEY            "SYSTEM\\CurrentControlSet\\Services\\EventLog\\Application\\Symantec Quarantine Agent"
+    #define MSIE_REG_KEY                    "SOFTWARE\\Microsoft\\Internet Explorer"
+    #define MS_TERMSERVICE_KEY              "SYSTEM\\CurrentControlSet\\Services\\TermService"
+    #define AMSCLIENTINSTALLED_VALUE        "AMSClientInstalled"
+    #define AMSINSTALLPATH_VALUE            "AMSInstallPath"
+    #define REG_MAXCONNPERSER               "MaxConnectionsPerServer"
+    #define REG_MAXCONNPER1_0SER            "MaxConnectionsPer1_0Server"
+    #define STR_SIGNATURES                  "Signatures"
+    #define STR_SUBMISSIONS                 "Submissions"
+    #define SERVICE_PACK_REQ                "Service Pack 6"
+    #define REG_INSTALLPATH_VALUE           "InstallPath"
+    #define ICEPACK_EVENTLOG_FILE           "IcePackEventMsgs.dll"
+    #define EM_SETLIMITTEXT                 0x00C5
+    #define MIN_DISKSPACE_NUM               1
+    #define MIN_DISKSPACE_STR               "1"
+    #define MAX_DISKSPACE_NUM               4095
+    #define MAX_DISKSPACE_STR               "4095"
+    #define MSIE_REQ_VERSION                "5.50.4807.2300"
+
+    // AMS Install Flags
+    #define AMS_FLAGS_SERVER            0x0001
+    #define AMS_FLAGS_CONSOLE           0x0002
+    #define AMS_FLAGS_CLIENT            0x0004
+    #define AMS_FLAGS_CLIENTLITE        0x0008
+
+    #define AMS_PRODUCT_NAME            "LDVP"
+
+    #define AMS_INSTALL_DLL             "InstallAMS.DLL"
+    #define MAX_AMSINSTALL_STRLEN       512
+    #define AMS_INSTALLBIN_PATH         "AMS2\\WINNT"
+
+	// Register on reboot if reboot is necessary
+    #define  RUNONCE_KEY         "Software\\Microsoft\\Windows\\CurrentVersion\\RunOnce"
+    #define  REGISTER_TRANSMAN   "TRANSMAN"
+    #define  REGISTER_QSERVER    "QSERVER"
+
+    #define ID_INTELFILES_QSERVER           "SYMANTEC_QSERVER"
+    #define CUSTOM_DLL_NAME                 "qsinst.dll"
+
+//////////////////// installation declarations ///////////////////
+
+// ----- DLL function prototypes -----
+
+
+    // your DLL function prototypes
+    prototype cdecl qsinst.QServerInstStartService( BYVAL STRING );
+    prototype cdecl qsinst.QServerInstStopService( BYVAL STRING );
+    prototype cdecl qsinst.QServerInstDeleteService( BYVAL STRING, BOOL );
+    prototype cdecl qsinst.InstallIcePackServices( BYVAL STRING);
+    prototype cdecl qsinst.UninstallIcePackServices( BYVAL STRING );
+    prototype cdecl qsinst.WSOCKInit();
+    prototype cdecl qsinst.WSOCKFini();
+    prototype cdecl qsinst.ConfirmEmailAddress( BYVAL STRING );
+    prototype cdecl qsinst.ConfirmInstallDir( BYVAL STRING );
+    prototype cdecl qsinst.ConfirmIpAddress( BYVAL STRING );
+    prototype cdecl qsinst.UninstInitialize(HWND);
+    prototype cdecl qsinst.UninstUnInitialize(HWND);
+    prototype cdecl InstallAMS.InstallAMS2( BYVAL STRING, BYVAL STRING, BYVAL STRING, NUMBER, NUMBER, BOOL );
+
+    prototype cdecl qsinst.UpdateIntelSharedFileCountNonMsi (BYVAL STRING,BYVAL STRING,BOOL);
+    prototype cdecl qsinst.IsNT4TerminalServer();
+
+    // functions exported from "User32" DLL
+    prototype   INT     User32.GetKeyboardType(INT);
+
+	// ---- script function prototypes -----
+
+    //MSI Custom Action calls
+    export prototype CheckRequirements(HWND);
+    export prototype SetupInstall(HWND);
+    export prototype SetDefaultDlgData(HWND);
+    export prototype StopIcePackServices(HWND);
+    export prototype UpdateMapleFiles(HWND);
+    export prototype ProcessAfterDataMove(HWND);
+    export prototype CleanUpInstall(HWND);
+    export prototype CheckContactInfoInput(HWND);
+    export prototype CheckWebGatewayInput(HWND);
+    export prototype CheckAlertsInput(HWND);
+    export prototype CheckMaxDiskSpaceInput(HWND);
+    export prototype CheckInstallDir(HWND);
+    export prototype CheckBrowseDir(HWND);
+    export prototype Uninstall(HWND);
+    export prototype SetNoBackSlashInstallDir(HWND);
+    export prototype ChangeDec3cfgPath(HWND);
+    export prototype IncrementVP6UsageCount(HWND);
+    export prototype DecrementVP6UsageCount(HWND);
+    export prototype IsNEC(HWND);
+    export prototype CheckInstallMode(HWND);
+    // export prototype DeleteQuarantineSubmissions(HWND);
+    export prototype ComUnRegisterFiles(HWND);
+    export prototype HideUninstallCancelButton(HWND);
+
+    // your script function prototypes
+    prototype IsAcceptableNTServicePack(); // CMM -- 07/28/99
+    prototype SetupRegistryIcePack(HWND);
+    prototype IsIE5Installed();
+    prototype CheckDir(HWND, STRING);
+	prototype ConfirmTelephoneNum(STRING);
+
+	// prototype TRACE(STRING);
+
+    // ----- global variables ------
+
+    // generated by the Project Wizard
+    BOOL        bIsWindowsNT4, bIsWindowsNT351, bIsWindows98, bIsWindows95;
+    BOOL        bIsShellExplorer, bInstallAborted, bIs32BitSetup;
+    STRING      svDir;
+    STRING      svName, svCompany, svSerial;
+    STRING      svDefGroup;
+    STRING      szAppPath;
+    STRING      svSetupType;
+    LIST        listStartCopy;
+
+    // your global variables
+    STRING      svCustomer, svAccount, svContact, svTelephone, svEmail;
+    STRING      svWebGateway;
+    STRING      svEnableAlerts, svAMSServerName;
+    STRING      svDiskSpace;
+    STRING		szQsinstDLL, szNavinstntDLL;
+    STRING 		svNoBackSlashInstallDir;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: ProcessAfterDataMove
+//
+//  Purpose: This function performs any necessary operations needed after
+//           all files have been transferred.
+//
+///////////////////////////////////////////////////////////////////////////////
+function ProcessAfterDataMove(hMSI)
+    STRING szReferenceFile, szMsg, szKey, szValueName, svValueData, szValue;
+    STRING szExecutable;
+    STRING szAMSInstallStatus[MAX_AMSINSTALL_STRLEN + 1];
+    STRING szAMSFolder;
+    STRING szShortInstallDir;
+    NUMBER nResult, nvType, nvSize, nUsgCnt;
+    NUMBER nAMSStatusLen;
+begin
+
+    // Delete the superfluous key created by the call to InstallationInfo()
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    RegDBDeleteKey("SOFTWARE\\Symantec\\Symantec AntiVirus Quarantine Server");
+
+    szExecutable = AMS_INSTALL_DLL ;
+    LongPathToShortPath( szExecutable );
+    szAMSFolder = INSTALLDIR ^ AMS_INSTALLBIN_PATH;
+    LongPathToShortPath( szAMSFolder );
+    ChangeDirectory( szAMSFolder );
+
+    if( 0 != UseDLL( szExecutable ) ) then
+        MessageBox( @ID_ERROR_LOADING_AMSINSTDLL, WARNING );
+    else
+        nAMSStatusLen = MAX_AMSINSTALL_STRLEN ;
+        nResult = InstallAMS2( szAMSFolder, AMS_PRODUCT_NAME, szAMSInstallStatus, nAMSStatusLen, AMS_FLAGS_CLIENTLITE | AMS_FLAGS_CLIENT, TRUE );
+        UnUseDLL( szExecutable );
+
+        // 0x40000000 indicates no error
+        if( 1073741824 = nResult ) then
+            MsiSetProperty(hMSI, "REBOOT","Force");
+        else
+            if ( 0 != nResult ) then
+                MessageBox( @ID_ERROR_AMS_INSTALL  + szAMSInstallStatus, INFORMATION );
+            endif;
+
+        endif;
+        UseDLL( INSTALLDIR ^ "qsinst.dll" );
+        // Remove lcfinst.exe because it is not needed and causes problems under NEC
+        QServerInstDeleteService( "TMA Distribution", FALSE );
+    endif;
+
+    ChangeDirectory( SRCDIR );
+
+    RegDBSetDefaultRoot (HKEY_LOCAL_MACHINE);
+
+    if (RegDBKeyExist(SYMANTEC_QSERVER_KEY) < 0) then
+        RegDBCreateKeyEx(SYMANTEC_QSERVER_KEY, "");
+    endif;
+
+    // Also update registry indicating AMS console has been installed
+    RegDBSetKeyValueEx( SYMANTEC_QSERVER_KEY, AMSCLIENTINSTALLED_VALUE, REGDB_NUMBER, "1", -1 );
+    RegDBSetKeyValueEx( SYMANTEC_QSERVER_KEY, AMSINSTALLPATH_VALUE, REGDB_STRING, szAMSFolder, -1);
+
+    // Create this directory before starting the IcePack and ScanExplicit services
+    CreateDir( INSTALLDIR ^ STR_SIGNATURES );
+    CreateDir( INSTALLDIR ^ STR_SUBMISSIONS );
+
+    // This was originally in SetupRegistry() but IcePack needs it to work
+    if ( SetupRegistryIcePack(hMSI) < 0 ) then
+        MessageBox(@ID_ERROR_REGISTRY, WARNING);
+    endif;
+
+    RegDBSetDefaultRoot (HKEY_LOCAL_MACHINE);
+    szShortInstallDir = INSTALLDIR;
+    LongPathToShortPath(szShortInstallDir);
+    RegDBSetKeyValueEx( RUNONCE_KEY, REGISTER_QSERVER, REGDB_STRING, szShortInstallDir ^ "qserver.exe /runonce", -1 );
+    RegDBSetDefaultRoot (HKEY_CLASSES_ROOT);
+
+    return 0;
+end;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: CleanUpInstall
+//
+//  Purpose: This cleans up the setup.  Anything that should
+//           be released or deleted at the end of the setup should
+//           be done here.
+//
+///////////////////////////////////////////////////////////////////////////////
+function CleanUpInstall(hMSI)
+
+begin
+
+    WSOCKFini();
+
+    UnUseDLL( szQsinstDLL );
+
+    UnUseDLL( szNavinstntDLL );
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: SetupInstall
+//
+//  Purpose: This will initialize the setup.  Any general initialization
+//           needed for the installation should be performed here.
+//
+///////////////////////////////////////////////////////////////////////////////
+function SetupInstall(hMSI)
+    NUMBER nvType;
+    NUMBER nvSize;
+    STRING svValue;
+    NUMBER nvResult;
+begin
+    bInstallAborted = FALSE;
+
+    RegDBSetDefaultRoot( HKEY_LOCAL_MACHINE );
+
+    nvResult = RegDBGetKeyValueEx(SYMANTEC_QSERVER_KEY, REG_INSTALLPATH_VALUE, nvType, svValue, nvSize);
+
+    if ( (nvResult = 0) && (Is(VALID_PATH, svValue) = TRUE) ) then
+        INSTALLDIR = svValue;
+    endif;
+
+    // Load our custom dll.
+    FindAllFiles (TempFolder, "\\qsinst.dll", szQsinstDLL, RESET);
+    UseDLL( szQsinstDLL );
+    FindAllFiles (TempFolder, "\\navinstnt.dll", szNavinstntDLL, RESET);
+    UseDLL( szNavinstntDLL );
+
+    // Initialize WSOCK
+    WSOCKInit();
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckRequirements
+//
+//  Purpose:  This function checks all minimum requirements for the
+//            application being installed.  If any fail, then the user
+//            is informed and the setup is terminated.
+//
+///////////////////////////////////////////////////////////////////////////////
+function CheckRequirements(hMSI)
+    NUMBER  nvDx, nvDy, nvResult;
+    STRING  svResult, szTitle, szMsg, svTempString, szSilent;
+    STRING  svIgnored;
+    LONG	lBuf;
+begin
+
+    bIsShellExplorer = FALSE;
+    bIsWindowsNT4    = FALSE;
+    bIsWindowsNT351  = FALSE;
+    bIsWindows95     = FALSE;
+    bIsWindows98     = FALSE;
+
+    // Check screen resolution.
+    GetExtents( nvDx, nvDy );
+
+    if (nvDy < 480) then
+        MessageBox( @ID_ERROR_VGARESOLUTION, WARNING );
+        abort;
+    endif;
+
+    // Set 'setup' operation mode
+    bIs32BitSetup = TRUE;
+    GetSystemInfo( ISTYPE, nvResult, svResult );
+    if (nvResult = 16) then
+        bIs32BitSetup = FALSE; // running 16-bit setup
+        return 0; // no additional information required
+    endif;
+
+    // --- 32-bit testing after this point ---
+
+    // Determine the target system's operating system.
+    GetSystemInfo( OS, nvResult, svResult );
+
+    if (nvResult = IS_WINDOWSNT) then
+        // Check to see if OS is Windows NT 4.0 or Windows NT 3.51,
+        // and if the shell being used is the Explorer shell.
+        if (GetSystemInfo( WINMAJOR, nvResult, svResult ) = 0) then
+            if ( ((nvResult = 4) && IsAcceptableNTServicePack()) || (nvResult > 4) ) then
+                bIsShellExplorer = TRUE;
+                bIsWindowsNT4 = TRUE;
+            else
+                szTitle = @ID_PRODUCT_NAME;
+                szMsg = @ID_ERROR_INVALID_OS;
+                // Not running NT4 SP6, alert user and bail out of the install
+                SprintfBox(SEVERE, szTitle, szMsg);
+                abort;
+            endif;
+        endif;
+    elseif (nvResult = IS_WINDOWS9X) then
+        szTitle = @ID_PRODUCT_NAME;
+        szMsg = @ID_ERROR_INVALID_OS;
+        // Not running NT4, alert user and bail out of the install
+        SprintfBox(SEVERE, szTitle, szMsg);
+        abort;
+    endif;
+
+    // Check to see if IE 5.0 is installed.
+    if ( IsIE5Installed() < 0 ) then
+        MessageBox( @ID_ERROR_MSIE_VERSION, INFORMATION );
+        abort;
+    endif;
+
+    // Do not allow a silent install.
+    MsiGetProperty(hMSI,"UILevel",szSilent,lBuf);
+    StrToNum(nvResult, szSilent);
+	if (nvResult < 5 )	then		//silent install if UILevel=2
+		szTitle = @ID_PRODUCT_NAME;
+        szMsg = @ID_ERROR_NOSILENTINSTALL;
+		SprintfBox(SEVERE, szTitle, szMsg);
+		abort;
+	endif;
+
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Function: IsAcceptableNTServicePack
+//
+//  Purpose: Returns TRUE if they have a service pack installed that we can accept
+//           returns FALSE otherwise.
+//           Added by Chris McGowen -- 07/28/99
+//
+///////////////////////////////////////////////////////////////////////////////
+// TNILI 5/15/00 Modified to use ISCompareServicePack and check for SP5
+///////////////////////////////////////////////////////////////////////////////
+function IsAcceptableNTServicePack()
+    BOOL bRtnVal;
+    NUMBER nvResult;
+begin
+    bRtnVal = TRUE;
+
+    nvResult = ISCompareServicePack( SERVICE_PACK_REQ );
+    // Make sure that SP6 or greater is installed
+    if ((nvResult < 0) || (nvResult = LESS_THAN)) then
+        bRtnVal = FALSE;
+    endif;
+
+    return bRtnVal;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Function: SetupRegistryIcePack
+//
+//  Purpose: Update registry for Qserver 2.0
+//
+///////////////////////////////////////////////////////////////////////////////
+function SetupRegistryIcePack(hMSI)
+    STRING szBuffer[MAX_PATH];
+    STRING szVersion;
+    STRING svValue, szUseIcePack;
+    NUMBER nvType;
+    NUMBER nvSize;
+    NUMBER nCount, nResult;
+    LONG lBuf;
+    STRING sQSINSTALLMODE;
+    STRING szDefaultSubmissionsFolder;
+    STRING szSubmissionsFolder;
+    BOOL bReInstall;
+begin
+	bReInstall = FALSE;
+    MsiGetProperty(hMSI,"QSINSTALLMODE", sQSINSTALLMODE,lBuf);
+    if (sQSINSTALLMODE = "REINSTALL") then
+    	bReInstall = TRUE;
+    endif;
+
+    // First make sure MaxConnectionsPerServer and MaxConnectionsPer1_0Server
+    // are atleast "5"
+    RegDBSetDefaultRoot( HKEY_CURRENT_USER );
+
+    if (RegDBGetKeyValueEx( MS_INTERNET_SETTINGS, REG_MAXCONNPERSER, nvType, svValue, nvSize ) < 0) then
+        // Does not exist so set it to default "5"
+        RegDBSetKeyValueEx( MS_INTERNET_SETTINGS, REG_MAXCONNPERSER, REGDB_NUMBER, "5", -1 );
+    else
+        // Check to see if the contents are atleast "5"
+        StrToNum( nCount, svValue );
+        if (nCount < 5) then
+            RegDBSetKeyValueEx( MS_INTERNET_SETTINGS, REG_MAXCONNPERSER, REGDB_NUMBER, "5", -1 );
+        endif;
+    endif;
+
+    if (RegDBGetKeyValueEx( MS_INTERNET_SETTINGS, REG_MAXCONNPER1_0SER, nvType, svValue, nvSize ) < 0) then
+        // Does not exist so set it to default "5"
+        RegDBSetKeyValueEx( MS_INTERNET_SETTINGS, REG_MAXCONNPER1_0SER, REGDB_NUMBER, "5", -1 );
+    else
+        // Check to see if the contents are atleast "5"
+        StrToNum( nCount, svValue );
+        if (nCount < 5) then
+            RegDBSetKeyValueEx( MS_INTERNET_SETTINGS, REG_MAXCONNPER1_0SER, REGDB_NUMBER, "5", -1 );
+        endif;
+    endif;
+
+    RegDBSetDefaultRoot( HKEY_LOCAL_MACHINE );
+     
+    if ((bReInstall = TRUE) || (sQSINSTALLMODE = "UPGRADE")) then
+        if (RegDBKeyExist(OLD_NORTON_KEY)) then
+            RegDBDeleteKey(OLD_NORTON_QSERVER_KEY);   
+            if (IsRegKeyEmpty(OLD_NORTON_KEY)) then
+                RegDBDeleteKey(OLD_NORTON_KEY);
+            endif;
+        endif;
+    endif;
+
+    // Register IcePackEventMsgs.dll here
+    if (RegDBCreateKeyEx(ICEPACK_EVENTLOG_KEY, "") < 0) then
+        return -1;
+    endif;
+
+    RegDBSetKeyValueEx(ICEPACK_EVENTLOG_KEY, "CategoryCount", REGDB_NUMBER, "13", -1);
+    RegDBSetKeyValueEx(ICEPACK_EVENTLOG_KEY, "CategoryMessageFile", REGDB_STRING, INSTALLDIR ^ ICEPACK_EVENTLOG_FILE, -1);
+    RegDBSetKeyValueEx(ICEPACK_EVENTLOG_KEY, "EventMessageFile", REGDB_STRING, INSTALLDIR ^ ICEPACK_EVENTLOG_FILE, -1);
+    RegDBSetKeyValueEx(ICEPACK_EVENTLOG_KEY, "TypesSupported", REGDB_NUMBER, "7", -1);
+
+    // InstallPath and QuarantineFolder are needed for UninstUnInitialize
+
+    // Remember the install path
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, REG_INSTALLPATH_VALUE, REGDB_STRING, svNoBackSlashInstallDir, -1);
+
+	szDefaultSubmissionsFolder = INSTALLDIR ^ STR_SUBMISSIONS;
+
+    szSubmissionsFolder = "";
+    MsiGetProperty(hMSI,"SUBMISSIONS", szSubmissionsFolder,lBuf);
+    if (szSubmissionsFolder = "") then
+    	szSubmissionsFolder = szDefaultSubmissionsFolder;
+    endif;
+
+    // This is necessary for qsinst.dll
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, "QuarantineFolder", REGDB_STRING, szSubmissionsFolder, -1);
+
+    szBuffer = TempFolder;
+    LongPathToShortPath(szBuffer);
+
+    // Did the user select Ice Pack or not
+    MsiGetProperty(hMSI,"SETUPTYPERADIO",szUseIcePack,lBuf);
+    nResult = StrCompare(szUseIcePack,"InternetBased");
+
+    if (nResult=0) then
+        szVersion = "3";
+    else
+        szVersion = "1";
+    endif;
+
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, "Version", REGDB_NUMBER, szVersion, -1);
+
+    if (RegDBCreateKeyEx(SYMANTEC_ICEPACK_KEY, "") < 0) then
+        return -1;
+    endif;
+
+    MsiGetProperty(hMSI,"EMAIL", svEmail,lBuf);
+    MsiGetProperty(hMSI,"CONTACT", svContact,lBuf);
+    MsiGetProperty(hMSI,"TELEPHONE", svTelephone,lBuf);
+    MsiGetProperty(hMSI,"ACCOUNT", svAccount,lBuf);
+    MsiGetProperty(hMSI,"CUSTOMER", svCustomer,lBuf);
+    MsiGetProperty(hMSI,"WEBGATEWAY", svWebGateway,lBuf);
+    MsiGetProperty(hMSI,"ENABLEALERTS", svEnableAlerts,lBuf);
+    MsiGetProperty(hMSI,"AMSSERVERNAME", svAMSServerName,lBuf);
+    MsiGetProperty(hMSI,"QSDISKSPACE", svDiskSpace,lBuf);
+
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerContactEmail", REGDB_STRING, svEmail, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerContactName", REGDB_STRING, svContact, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerContactTelephone", REGDB_STRING, svTelephone, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerIdentifier", REGDB_STRING, svAccount, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerName", REGDB_STRING, svCustomer, -1);
+
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webGatewayName", REGDB_STRING, svWebGateway, -1);
+
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, "QsAlertingEnabled", REGDB_STRING, svEnableAlerts, -1);
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, "QsAmsServerAddress", REGDB_STRING, svAMSServerName, -1);
+
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, "MaxSize", REGDB_NUMBER, svDiskSpace, -1);
+    RegDBSetKeyValueEx(SYMANTEC_QSERVER_KEY, "MaxFiles", REGDB_NUMBER, "750", -1);
+
+    // The rest of this should not be done if we are doing a re-install
+    if (bReInstall = TRUE) then
+        return 0;
+    endif;
+
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "configurationChangeCounter", REGDB_STRING, ICEP_DEF_CONFIGURATIONCHANGECOUNTER, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "configurationChangeInterval", REGDB_STRING, ICEP_DEF_CONFIGURATIONCHANGEINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionBlessedBroadcast", REGDB_STRING, ICEP_DEF_DEFINITIONBLESSEDBROADCAST, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionBlessedTargets", REGDB_STRING, ICEP_DEF_DEFINITIONBLESSEDTARGETS, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionChangeTimeout", REGDB_STRING, ICEP_DEF_DEFINITIONCHANGETIMEOUT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionConcurrencyMaximum", REGDB_STRING, ICEP_DEF_DEFINITIONCONCURRENCYMAXIMUM, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionConcurrencyMinimum", REGDB_STRING, ICEP_DEF_DEFINITIONCONCURRENCYMINIMUM, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionDeliveryInterval", REGDB_STRING, ICEP_DEF_DEFINITIONDELIVERYINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionDeliveryPriority", REGDB_STRING, ICEP_DEF_DEFINITIONDELIVERYPRIORITY, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionDeliveryTimeout", REGDB_STRING, ICEP_DEF_DEFINITIONDELIVERYTIMEOUT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionLibraryDirectory", REGDB_STRING, INSTALLDIR ^ STR_SIGNATURES, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionHeuristicLevel", REGDB_STRING, ICEP_DEF_DEFINITIONHEURISTICLEVEL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionPrune", REGDB_STRING, ICEP_DEF_DEFINITIONPRUNE, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionUnblessedBroadcast", REGDB_STRING, ICEP_DEF_DEFINITIONUNBLESSEDBROADCAST, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionUnblessedNarrowcast", REGDB_STRING, ICEP_DEF_DEFINITIONUNBLESSEDNARROWCAST, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionUnblessedPointcast", REGDB_STRING, ICEP_DEF_DEFINITIONUNBLESSEDPOINTCAST, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionUnblessedTargets", REGDB_STRING, ICEP_DEF_DEFINITIONUNBLESSEDTARGETS, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "definitionUnpackTimeout", REGDB_STRING, ICEP_DEF_DEFINITIONUNPACKTIMEOUT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "sampleCompressContent", REGDB_STRING, ICEP_DEF_SAMPLECOMPRESSCONTENT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "sampleMaximumPending", REGDB_STRING, ICEP_DEF_SAMPLEMAXIMUMPENDING, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "sampleQuarantineInterval", REGDB_STRING, ICEP_DEF_SAMPLEQUARANTINEINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "sampleScrambleContent", REGDB_STRING, ICEP_DEF_SAMPLESCRAMBLECONTENT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "sampleStripContent", REGDB_STRING, ICEP_DEF_SAMPLESTRIPCONTENT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "sampleSubmissionPriority", REGDB_STRING, ICEP_DEF_SAMPLESUBMISSIONPRIORITY, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "scanCompletionTimeout", REGDB_STRING, ICEP_DEF_SCANCOMPLETIONTIMEOUT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "scanRetryInterval", REGDB_STRING, ICEP_DEF_SCANRETRYINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "scanRetryLimit", REGDB_STRING, ICEP_DEF_SCANRETRYLIMIT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "temporaryDirectory", REGDB_STRING, szBuffer, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "traceEnable", REGDB_STRING, ICEP_DEF_TRACEENABLE, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "traceFilename", REGDB_STRING, INSTALLDIR ^ "avistrace.txt", -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "traceFilter", REGDB_STRING, ICEP_DEF_TRACEFILTER, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "traceSeverity", REGDB_STRING, ICEP_DEF_TRACESEVERITY, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webBlessedInterval", REGDB_STRING, ICEP_DEF_WEBBLESSEDINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webFirewallName", REGDB_STRING, ICEP_DEF_WEBFIREWALLNAME, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webFirewallUser", REGDB_STRING, ICEP_DEF_WEBFIREWALLUSER, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webFirewallPassword", REGDB_STRING, ICEP_DEF_WEBFIREWALLPASSWORD, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webFirewallPort", REGDB_STRING, ICEP_DEF_WEBFIREWALLPORT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webGatewayPort", REGDB_STRING, ICEP_DEF_WEBGATEWAYPORT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webGatewayPortSSL", REGDB_STRING, ICEP_DEF_WEBGATEWAYPORTSSL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webNeededInterval", REGDB_STRING, ICEP_DEF_WEBNEEDEDINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webRetryInterval", REGDB_STRING, ICEP_DEF_WEBRETRYINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webRetryLimit", REGDB_STRING, ICEP_DEF_WEBRETRYLIMIT, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webSecureIgnoreHostname", REGDB_STRING, ICEP_DEF_WEBSECUREIGNOREHOSTNAME, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webSecureSampleSubmission", REGDB_STRING, ICEP_DEF_WEBSECURESAMPLESUBMISSION, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webSecureSignatureDownload", REGDB_STRING, ICEP_DEF_WEBSECURESIGNATUREDOWNLOAD, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webSecureStatusQuery", REGDB_STRING, ICEP_DEF_WEBSECURESTATUSQUERY, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webStatusInterval", REGDB_STRING, ICEP_DEF_WEBSTATUSINTERVAL, -1);
+    RegDBSetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webTimeoutInterval", REGDB_STRING, ICEP_DEF_WEBTIMEOUTINTERVAL, -1);
+
+    return 0;
+end;
+
+/////////////////////////////////////////////////////////////////////////////
+// Function: CheckInstallMode                                              //
+// Purpose: Determine what type of installation and display message        //
+/////////////////////////////////////////////////////////////////////////////
+function CheckInstallMode(hMSI)
+	BOOL bFreshInstall, bReInstall, bUpgradeInstall;
+	STRING sMODE;
+begin
+
+    RegDBSetDefaultRoot( HKEY_LOCAL_MACHINE );
+
+    // Set the install mode based on the existence of these two keys
+    // 1) HKEY_LOCAL_MACHINE\Software\Symantec\Quarantine\Server
+    // 2) HKEY_LOCAL_MACHINE\Software\Symantec\Quarantine\Server\Avis
+    if (RegDBKeyExist( SYMANTEC_QSERVER_KEY ) < 0) then
+        bFreshInstall = TRUE;
+        sMODE = "FRESH";
+    elseif (RegDBKeyExist( SYMANTEC_ICEPACK_KEY ) < 0) then
+        bUpgradeInstall = TRUE;
+        sMODE = "UPGRADE";
+    else
+        bReInstall = TRUE;
+        sMODE = "REINSTALL";
+    endif;
+
+    if (bReInstall = TRUE) then
+        if (AskYesNo( @ID_MSG_REINSTALL, NO ) = NO) then
+            abort;
+        endif;
+    endif;
+
+    if (bUpgradeInstall = TRUE) then
+        if (AskYesNo( @ID_MSG_UPGRADEINSTALL, NO ) = NO) then
+            abort;
+        endif;
+    endif;
+
+    if ((bReInstall = TRUE) || (bUpgradeInstall = TRUE)) then
+    	// REINSTALLMODE
+    	//		a = overwrite all files
+    	//		m = overwrite all HKEY_LOCAL_MACHINE registry keys
+    	//		u = overwrite all HKEY_CURRENT_USER registry keys
+    	//		s = update all short cuts, and icons
+    	MsiSetProperty(hMSI, "REINSTALLMODE", "amus");
+    endif;
+
+	MsiSetProperty(hMSI, "QSINSTALLMODE", sMODE);
+
+end;
+
+/////////////////////////////////////////////////////////////////////////////
+// Function: SetDefaultDlgData                                             //
+//  Purpose: Populate dialog data with defaults                            //
+/////////////////////////////////////////////////////////////////////////////
+function SetDefaultDlgData(hMSI)
+    NUMBER nvType;
+    NUMBER nvSize,nResult,lBuf;
+    STRING sQSINSTALLMODE;
+    BOOL bReInstall;
+    BOOL bUpgrade;
+    STRING sSubmissionsFolder;
+begin
+	bReInstall = FALSE;
+    MsiGetProperty(hMSI,"QSINSTALLMODE", sQSINSTALLMODE,lBuf);
+    if (sQSINSTALLMODE = "REINSTALL") then
+    	bReInstall = TRUE;
+    endif;
+
+    if (sQSINSTALLMODE = "UPGRADE") then
+    	bUpgrade = TRUE;
+    endif;
+
+    if (bReInstall = TRUE || bUpgrade = TRUE) then
+	    sSubmissionsFolder = "";
+	    RegDBGetKeyValueEx(SYMANTEC_QSERVER_KEY, "QuarantineFolder", nvType, sSubmissionsFolder, nvSize);
+	    MsiSetProperty(hMSI,"SUBMISSIONS", sSubmissionsFolder);
+    endif;
+
+    // If this is a reinstall then set dialog data to what is in registry
+    if (bReInstall = TRUE) then
+        RegDBGetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerContactEmail", nvType, svEmail, nvSize);
+        RegDBGetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerContactName", nvType, svContact, nvSize);
+        RegDBGetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerContactTelephone", nvType, svTelephone, nvSize);
+        RegDBGetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerIdentifier", nvType, svAccount, nvSize);
+        RegDBGetKeyValueEx(SYMANTEC_ICEPACK_KEY, "customerName", nvType, svCustomer, nvSize);
+        RegDBGetKeyValueEx(SYMANTEC_ICEPACK_KEY, "webGatewayName", nvType, svWebGateway, nvSize);
+
+        RegDBGetKeyValueEx(SYMANTEC_QSERVER_KEY, "QsAlertingEnabled", nvType, svEnableAlerts, nvSize);
+        RegDBGetKeyValueEx(SYMANTEC_QSERVER_KEY, "QsAmsServerAddress", nvType, svAMSServerName, nvSize);
+
+        RegDBGetKeyValueEx(SYMANTEC_QSERVER_KEY, "MaxSize", nvType, svDiskSpace, nvSize);
+
+        //See if Enable Alerts was set. If so, enable the check box
+        nResult = StrCompare(svEnableAlerts,"1");
+        if (nResult=0) then
+        	MsiSetProperty(hMSI,"ENABLEALERTS", svEnableAlerts);
+        endif;
+
+
+        MsiSetProperty(hMSI,"EMAIL", svEmail);
+        MsiSetProperty(hMSI,"CONTACT", svContact);
+        MsiSetProperty(hMSI,"TELEPHONE", svTelephone);
+        MsiSetProperty(hMSI,"ACCOUNT", svAccount);
+        MsiSetProperty(hMSI,"CUSTOMER", svCustomer);
+        MsiSetProperty(hMSI,"WEBGATEWAY", svWebGateway);
+        MsiSetProperty(hMSI,"AMSSERVERNAME", svAMSServerName);
+        MsiSetProperty(hMSI,"QSDISKSPACE", svDiskSpace);
+    else
+        svEmail        = (ICEP_DEF_CUSTOMERCONTACTEMAIL);
+        svContact      = (ICEP_DEF_CUSTOMERCONTACTNAME);
+        svTelephone    = (ICEP_DEF_CUSTOMERCONTACTTELEPHONE);
+        svAccount      = (ICEP_DEF_CUSTOMERIDENTIFIER);
+        svCustomer     = (ICEP_DEF_CUSTOMERNAME);
+        svWebGateway   = (ICEP_DEF_WEBGATEWAYNAME);
+
+        RegDBSetDefaultRoot(HKEY_CURRENT_USER);
+        RegDBGetKeyValueEx("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001",
+                           "SMTP Email Address", nvType, svEmail, nvSize);
+        RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+        if( RegDBGetKeyValueEx(SYMANTEC_QSERVER_KEY, "MaxSize", nvType, svDiskSpace, nvSize) != 0) then
+        	svDiskSpace    = "500";
+        endif;
+
+        MsiSetProperty(hMSI,"QSDISKSPACE", svDiskSpace);
+    endif;
+end;
+
+/////////////////////////////////////////////////////////////////////////////
+// Function: IsIE5Installed                                                //
+//  Purpose: This function checks for the presence of IE 5.0               //
+/////////////////////////////////////////////////////////////////////////////
+function IsIE5Installed()
+    NUMBER nvType;
+    STRING svValue;
+    NUMBER nvSize;
+    NUMBER nRet;
+begin
+    // Return 0 for success, -1 for error
+    nRet = -1;
+
+    RegDBSetDefaultRoot( HKEY_LOCAL_MACHINE );
+
+    if ( RegDBKeyExist( MSIE_REG_KEY ) < 0 ) then
+        goto Error;
+    endif;
+
+    if ( RegDBGetKeyValueEx( MSIE_REG_KEY, "Version", nvType, svValue, nvSize ) < 0 ) then
+        goto Error;
+    endif;
+
+    if ( VerCompare( svValue, MSIE_REQ_VERSION, VERSION ) != LESS_THAN ) then
+        nRet = 0;
+    endif;
+
+Error:
+    RegDBSetDefaultRoot( HKEY_CLASSES_ROOT );
+    return nRet;
+end;
+
+//////////////////////////////////////////////////////////////////////////////
+// FUNCTION:	Uninstall
+//
+//  EVENT:      Do some custom uninstall work
+//
+///////////////////////////////////////////////////////////////////////////////
+function Uninstall(hMSI)
+STRING szQServerPath;
+NUMBER nHwnd,nvResult,nResult,nvType,nvSize;
+begin
+
+	// Set HKLM
+	RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+	// Get QServer Install directory from registry
+	nvResult = RegDBGetKeyValueEx(SYMANTEC_INSTALLED_APPS_KEY,
+								  "QServer",
+								  nvType,
+								  szQServerPath,
+								  nvSize);
+
+	// Get path to custom dll
+	nResult=UseDLL( szQServerPath^"qsinst.dll" );
+	if(nResult < 0)then
+   		MessageBox( "qsinst.dll FAILED - ", SEVERE );
+    endif;
+    nHwnd = GetWindowHandle (HWND_INSTALL);
+	//////////////////////////////////////
+	//DO NOT DELETE.  The below code will
+	//initiate the uninstallation process.
+	UninstInitialize(nHwnd);
+	UninstUnInitialize(nHwnd);
+	UnUseDLL( INSTALLDIR ^ "qsinst.dll" ) ;
+	RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+	RegDBDeleteKey  (SYMANTEC_QSERVER_KEY);
+	RegDBDeleteValue(RUNONCE_KEY, REGISTER_TRANSMAN);
+	RegDBDeleteValue(RUNONCE_KEY, "QSERVERPS");
+	RegDBDeleteValue(RUNONCE_KEY, REGISTER_QSERVER);
+	RegDBSetDefaultRoot(HKEY_CLASSES_ROOT);
+	//////////////////////////////////////
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  StopIcePackServices
+//
+//  Purpose:  Our IcePack service depends on ScanExplicit and Qserver so stop
+//  		  them in the right order
+///////////////////////////////////////////////////////////////////////////////
+//	12/10/01 - Joe Antonelli
+///////////////////////////////////////////////////////////////////////////////
+function StopIcePackServices(hMSI)
+begin
+
+    QServerInstStopService( "IcePack" );
+
+    QServerInstStopService( "ScanExplicit" );
+
+    QServerInstStopService( "Qserver" );
+
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateMapleFiles
+//
+//  Purpose:  Do not use installShield technique to copy these files
+///////////////////////////////////////////////////////////////////////////////
+//	12/10/01 - Joe Antonelli
+///////////////////////////////////////////////////////////////////////////////
+function UpdateMapleFiles(hMSI)
+STRING svTempString,szDLL,szExecutable;
+NUMBER nResult;
+begin
+    // Initialize the custom dll for use
+    FindAllFiles (TempFolder, "\\"+CUSTOM_DLL_NAME, szDLL, RESET);
+    UseDLL( szDLL );
+
+    // Update PDS.DLL
+    VarSave(SRCINSTALLDIR);
+    INSTALLDIR=SystemFolder;
+    FindAllFiles (TempFolder, "\\PDS.DLL", svTempString, RESET);
+    XCopyFile( svTempString, "", COMP_UPDATE_VERSION | LOCKEDFILE ) ;
+    UpdateIntelSharedFileCountNonMsi (SystemFolder ^ "PDS.DLL", ID_INTELFILES_QSERVER, TRUE);
+    // we do not need this file in the common files\symantec shared\ssc folder
+    // hence if it was there are part of some pervious install...delete it
+    INSTALLDIR = CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ;
+    if (Is (FILE_EXISTS, CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "PDS.DLL") = TRUE ) then
+        DeleteFile("PDS.DLL" );
+    endif;
+    VarRestore(SRCINSTALLDIR);
+
+    // Update CBA.DLL
+    VarSave(SRCINSTALLDIR);
+    INSTALLDIR=SystemFolder;
+    FindAllFiles (TempFolder, "\\CBA.DLL", svTempString, RESET);
+    XCopyFile( "CBA.DLL", "", COMP_UPDATE_VERSION | LOCKEDFILE ) ;
+    UpdateIntelSharedFileCountNonMsi (SystemFolder ^ "CBA.DLL", ID_INTELFILES_QSERVER, TRUE);
+    // we do not need this file in the common files\symantec shared\ssc folder// hence if it was there are part of some pervious install...delete it
+    INSTALLDIR = CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ;
+    if (Is (FILE_EXISTS, CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "CBA.DLL") = TRUE ) then
+        DeleteFile("CBA.DLL" );
+    endif;
+    VarRestore(SRCINSTALLDIR);
+
+    // Update NTS.DLL
+    VarSave(SRCINSTALLDIR);
+    INSTALLDIR=SystemFolder;
+    FindAllFiles (TempFolder, "\\NTS.DLL", svTempString, RESET);
+    XCopyFile( "NTS.DLL", "", COMP_UPDATE_VERSION | LOCKEDFILE ) ;
+    UpdateIntelSharedFileCountNonMsi (SystemFolder ^ "NTS.DLL", ID_INTELFILES_QSERVER, TRUE);
+    // we do not need this file in the common files\symantec shared\ssc folder
+    // hence if it was there are part of some pervious install...delete it
+    INSTALLDIR = CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ;
+    if (Is (FILE_EXISTS, CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "NTS.DLL") = TRUE ) then
+        DeleteFile("NTS.DLL");
+    endif;
+    VarRestore(SRCINSTALLDIR);
+
+    // Update MSGSYS.DLL
+    VarSave(SRCINSTALLDIR);
+    INSTALLDIR=SystemFolder;
+    FindAllFiles (TempFolder, "\\MSGSYS.DLL", svTempString, RESET);
+    XCopyFile( "MSGSYS.DLL", "", COMP_UPDATE_VERSION | LOCKEDFILE ) ;
+    UpdateIntelSharedFileCountNonMsi (SystemFolder ^ "MSGSYS.DLL", ID_INTELFILES_QSERVER, TRUE);
+    // we do not need this file in the common files\symantec shared\ssc folder
+    // hence if it was there are part of some pervious install...delete it
+    INSTALLDIR = CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ;
+    if (Is (FILE_EXISTS, CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "MSGSYS.DLL") = TRUE ) then
+        DeleteFile("MSGSYS.DLL" );
+    endif;
+    VarRestore(SRCINSTALLDIR);
+
+      // Register COM Components - either now or on reboot
+      // Register Transman.DLL
+      szExecutable = " /s  \"" + CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "Transman.dll" + "\"";
+
+      /*
+      //JA Register Transman now...
+      nResult = LaunchAppAndWait (SystemFolder ^ "regsvr32.EXE", szExecutable,WAIT);
+      */
+  	  // Put keys in runonce just in case
+      RegDBSetDefaultRoot (HKEY_LOCAL_MACHINE);
+      RegDBSetKeyValueEx( RUNONCE_KEY, REGISTER_TRANSMAN, REGDB_STRING, SystemFolder ^ "regsvr32.EXE" + szExecutable, -1 );
+      RegDBSetDefaultRoot (HKEY_CLASSES_ROOT);
+
+      // Register Qserverps.DLL
+      szExecutable = " /s  \"" + INSTALLDIR^"qserverps.dll" + "\"";
+      
+      /* Let the Windows Installer handle it.
+      //JA Register Qserverps now...
+      nResult = LaunchAppAndWait (SystemFolder ^ "regsvr32.EXE", szExecutable,WAIT);
+      */
+      
+      // Put keys in runonce just in case		
+      RegDBSetDefaultRoot (HKEY_LOCAL_MACHINE);
+      RegDBSetKeyValueEx( RUNONCE_KEY, "QSERVERPS", REGDB_STRING, SystemFolder ^ "regsvr32.EXE" + szExecutable, -1 );
+      RegDBSetDefaultRoot (HKEY_CLASSES_ROOT);
+      
+      UnUseDLL( szDLL );
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckContactInfoInput
+//
+//  Purpose:  Checks the user input on the Contact Info panel for errors	
+///////////////////////////////////////////////////////////////////////////////
+//	12/10/01 - Joe Antonelli                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function CheckContactInfoInput(hMSI)
+STRING svContact, svAccount, svCustomer, svTelephone, svEmail;
+LONG lBuf;
+begin 
+	MsiSetProperty(hMSI,"INVALIDCONTACTINFO","0");
+
+    MsiGetProperty(hMSI,"CONTACT",svContact,lBuf);
+    
+    MsiGetProperty(hMSI,"ACCOUNT",svAccount,lBuf);
+    
+    MsiGetProperty(hMSI,"CUSTOMER",svCustomer,lBuf);
+    
+    MsiGetProperty(hMSI,"TELEPHONE",svTelephone,lBuf);
+    
+    MsiGetProperty(hMSI,"EMAIL",svEmail,lBuf);
+    
+	//Strip spaces from the start and end of the strings
+	StripSpaces(svContact, 0);
+	StripSpaces(svAccount, 0);
+	StripSpaces(svCustomer, 0);
+	StripSpaces(svTelephone, 0);
+	StripSpaces(svEmail, 0);
+    
+    if ((svCustomer  = "") ||
+        (svAccount   = "") ||
+        (svContact   = "") ||
+        (svTelephone = "") ||
+        (svEmail     = "")) then
+        MsiSetProperty(hMSI,"INVALIDCONTACTINFO","1");
+        SprintfBox (WARNING, @ID_PRODUCT_NAME, @ID_ERROR_CONTACT_EMPTY);
+    elseif ( ConfirmTelephoneNum (svTelephone) < 0 ) then
+        // Invalid Telephone number
+    	MsiSetProperty(hMSI,"INVALIDCONTACTINFO","1");
+    	// InstallShield Dev 7 bug. Concatenate two strings together so you can use the '\n' escape sequence in a MessageBox
+        SprintfBox (WARNING, @ID_PRODUCT_NAME, @ID_ERROR_TELEPHONE_INVALID);
+    elseif ( ConfirmEmailAddress (svEmail) < 0 ) then
+    	MsiSetProperty(hMSI,"INVALIDCONTACTINFO","1");
+    	// InstallShield Dev 7 bug. Concatenate two strings together so you can use the '\n' escape sequence in a MessageBox
+        SprintfBox (WARNING, @ID_PRODUCT_NAME, @ID_ERROR_EMAIL_INVALID1+"\n"+@ID_ERROR_EMAIL_INVALID2);
+    endif;
+    
+    return 0;
+end; 
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckWebGatewayInput
+//
+//  Purpose:  Checks the user input on the Web Gateway panel for errors	
+///////////////////////////////////////////////////////////////////////////////
+//	12/10/01 - Joe Antonelli                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function CheckWebGatewayInput(hMSI) 
+STRING svWebGateway;
+LONG lBuf;
+begin 
+
+	MsiSetProperty(hMSI,"INVALIDGATEWAYINFO","0");
+
+	MsiGetProperty(hMSI,"WEBGATEWAY",svWebGateway,lBuf);
+
+    if (svWebGateway = "") then
+    	MsiSetProperty(hMSI,"INVALIDGATEWAYINFO","1");
+        SprintfBox (WARNING, @ID_PRODUCT_NAME, @ID_ERROR_GATEWAY_EMPTY);
+    elseif ( ConfirmIpAddress (svWebGateway) < 0 ) then
+        if ( AskYesNo (@ID_ERROR_GATEWAY_INVALID, YES) = NO ) then
+        	MsiSetProperty(hMSI,"INVALIDGATEWAYINFO","1");
+            return 0;
+        endif;
+    endif;
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckAlertsInput
+//
+//  Purpose:  Checks the user input on the Alerts panel for errors	
+///////////////////////////////////////////////////////////////////////////////
+//	03/21/02 - Joe Antonelli                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function CheckAlertsInput(hMSI) 
+STRING svAmsServerName,svEnableAlerts;
+LONG lBuf;
+begin 
+    
+    MsiSetProperty(hMSI,"INVALIDALERTSINFO","0");
+    
+ 	MsiGetProperty(hMSI,"ENABLEALERTS",svEnableAlerts,lBuf);   
+    
+    if (svEnableAlerts = "1") then
+    	lBuf=0; 
+    	MsiGetProperty(hMSI,"AMSSERVERNAME",svAmsServerName,lBuf);
+	    if (svAmsServerName = "") ||
+           (svAmsServerName = " ") ||
+           (svAmsServerName = "  ") ||
+           (svAmsServerName = "   ") ||
+           (svAmsServerName = "    ") then	
+	    	MsiSetProperty(hMSI,"INVALIDALERTSINFO","1");
+	    	SprintfBox (WARNING, @ID_PRODUCT_NAME, @ID_ERROR_AMSSERVERNAME_EMPTY);	    	
+	    endif;	
+	endif;    
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetNoBackSlashInstallDir
+//
+//  Purpose:  Checks the user input on the Contact Info panel for errors	
+///////////////////////////////////////////////////////////////////////////////
+//	12/10/01 - Joe Antonelli                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function SetNoBackSlashInstallDir(hMSI) 
+LONG lBuf;
+begin 
+     
+    svNoBackSlashInstallDir =  INSTALLDIR;
+	StrRemoveLastSlash ( svNoBackSlashInstallDir );
+	MsiSetProperty(hMSI,"NOBACKSLASHINSTALLDIR",svNoBackSlashInstallDir);
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  ChangeDec3cfgPath
+//
+//  Purpose:  Edit the dec3.cfg file after it is installed	
+///////////////////////////////////////////////////////////////////////////////
+//	03/19/02 - Joe Antonelli                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function ChangeDec3cfgPath(hMSI)
+STRING szTempString;
+NUMBER nvFileHandle1, nvFileHandle2;
+begin
+	// Remove the last slash from INSTALLDIR
+	svNoBackSlashInstallDir =  INSTALLDIR;
+	StrRemoveLastSlash ( svNoBackSlashInstallDir );
+	
+	//Make sure the file is installed
+    if (!Is ( FILE_EXISTS, svNoBackSlashInstallDir ^ "dec3.cfg" )) then
+       MessageBox("Error editing dec3.cfg",SEVERE);
+    else
+    	// Open the file
+        OpenFileMode ( FILE_MODE_NORMAL );
+        if ( 0 > OpenFile ( nvFileHandle1, svNoBackSlashInstallDir, "dec3.cfg" ) ) then
+        	MessageBox ("Error creating editing dec3.cfg",SEVERE);
+        else
+        	// Create a temp copy of the file        	 
+            GetLine(nvFileHandle1, szTempString);
+            OpenFileMode ( FILE_MODE_APPEND );
+            if ( 0 > CreateFile ( nvFileHandle2, svNoBackSlashInstallDir, "dec3tmp.cfg" ) ) then
+                MessageBox("Error creating editing dec3.cfg",SEVERE);
+                CloseFile ( nvFileHandle1 );
+            else
+            	// Write the path to the temp file
+                WriteLine( nvFileHandle2, svNoBackSlashInstallDir);
+                while ( 0 == GetLine(nvFileHandle1, szTempString) )
+                	WriteLine( nvFileHandle2, szTempString);
+                endwhile;
+                CloseFile ( nvFileHandle2 );
+            endif;
+            // Close the temp file...
+            // ...delete original
+            // ...rename the temp file to original
+            // ...delete the temp file.
+            CloseFile ( nvFileHandle1 );
+            DeleteFile(svNoBackSlashInstallDir ^ "dec3.cfg");
+            CopyFile(svNoBackSlashInstallDir ^ "dec3tmp.cfg", svNoBackSlashInstallDir ^ "dec3.cfg");
+            DeleteFile(svNoBackSlashInstallDir ^ "dec3tmp.cfg");
+        endif;
+    endif;
+    
+    return ERROR_SUCCESS; 
+       
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  IncrementVP6UsageCount
+//
+//  Purpose:  Increment the reg value for VP6UsageCount
+//				or if not existing create one	
+///////////////////////////////////////////////////////////////////////////////
+//	04/23/02 - Talmadge Williams                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function IncrementVP6UsageCount(hMSI)
+STRING szKey, szValueName, szValueData, szValue, svValueData;
+NUMBER nvType, nvSize, nUsgCnt;
+begin   
+ 	RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);	
+  	szKey = SYMANTEC_INSTALLED_APPS_KEY;  
+   	nvType = REGDB_NUMBER;
+
+    // Process the VP6UsageCount Key.
+    szValueName = "VP6UsageCount";
+    if( 0 = RegDBGetKeyValueEx( szKey, szValueName, nvType, svValueData, nvSize ) ) then
+        StrToNum( nUsgCnt, svValueData );
+        // increment the usage count.
+        nUsgCnt = nUsgCnt + 1;
+        NumToStr( szValue, nUsgCnt );
+        // set the new value.
+        RegDBSetKeyValueEx( szKey, szValueName, REGDB_NUMBER, szValue, -1 );
+    else
+        // The key doesn't exist so create it and give it a usage count of 1.
+        RegDBSetKeyValueEx( szKey, szValueName, REGDB_NUMBER, "1", -1 );
+    endif;                                                    
+end;       
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DecrementVP6UsageCount
+//
+// Purpose:  Decrement the reg value for VP6UsageCount
+///////////////////////////////////////////////////////////////////////////////
+//	04/23/02 - Talmadge Williams                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function DecrementVP6UsageCount(hMSI)
+STRING szKey, szValueName, szValueData, szValue, svValueData;
+NUMBER nvType, nvSize, nUsgCnt;
+begin     
+ 	RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);	
+  	szKey = SYMANTEC_INSTALLED_APPS_KEY;  
+   	nvType = REGDB_NUMBER;
+    // Process the VP6UsageCount Key.
+    szValueName = "VP6UsageCount";
+    if( 0 = RegDBGetKeyValueEx( szKey, szValueName, nvType, svValueData, nvSize ) ) then
+        StrToNum( nUsgCnt, svValueData );
+        // decrement the usage count. 
+        if( nUsgCnt > 0) then
+        	nUsgCnt = nUsgCnt - 1;
+	    else 
+	    	//Set it to zero just to ensure it is not a negative number
+	    	nUsgCnt = 0;
+	    endif;
+	    if ( 0 = nUsgCnt) then 
+	    	if ( 0 = RegDBDeleteValue(szKey, szValueName) ) then
+	    		return ERROR_SUCCESS;
+	    	endif; 
+	    endif;
+		NumToStr( szValue, nUsgCnt );
+        RegDBSetKeyValueEx( szKey, szValueName, REGDB_NUMBER, szValue, -1 ); 
+    endif;                                                    
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckMaxDiskSpaceInput
+//
+//  Purpose:  Checks the user input on the MaxDiskSpace panel for errors	
+///////////////////////////////////////////////////////////////////////////////
+//	05/22/02 - Asher Siddiqui
+///////////////////////////////////////////////////////////////////////////////
+function CheckMaxDiskSpaceInput(hMSI) 
+	STRING svTempDiskSpace;
+	NUMBER nTempDiskSpace;
+    LONG lBuf;
+	BOOL bError;
+begin 
+	//Assume no error in the user input
+	bError = FALSE;
+
+	//create and set the invalid property in the dialog to false
+	MsiSetProperty(hMSI,"INVALIDMAXDISKSPACEINFO","0");
+    
+	//get the disk space value set by the user
+	MsiGetProperty(hMSI,"QSDISKSPACE", svTempDiskSpace,lBuf);
+
+	//Strip and space the user may have put in before
+	//or after the string
+	StripSpaces(svTempDiskSpace, 0);
+
+	// Check to see if the string is a number
+	if ( IsNum_Script(svTempDiskSpace) ) then 
+		//Convert the string to an integer.	
+		StrToNum (nTempDiskSpace, svTempDiskSpace);
+		
+		// Check to see if it is a valid range.  
+ 		if ( (nTempDiskSpace < 1) || (nTempDiskSpace > 4085) ) then
+ 			bError = TRUE;
+ 		endif;
+ 	else
+		bError = TRUE;
+	endif;
+ 	                                                          
+	//If there was an error then set the invalid property to true
+	//and display a messagebox with the error message.
+	if (bError) then
+		MsiSetProperty(hMSI,"INVALIDMAXDISKSPACEINFO","1");
+    	SprintfBox (WARNING, @ID_PRODUCT_NAME, @ID_ERROR_QSDISKSPACE_INVALID, 1, 4085);	    	
+	endif;    
+
+	return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CheckInstallDir
+//
+//  Purpose:  Checks the user selected directory
+///////////////////////////////////////////////////////////////////////////////
+//	05/22/02 - John Lenz
+///////////////////////////////////////////////////////////////////////////////
+function CheckInstallDir(hMSI) 
+begin 
+	return CheckDir( hMSI, "INSTALLDIR" );
+end;
+
+function CheckBrowseDir( hMSI )
+	STRING szProperty;
+    LONG lBuf;
+begin    
+	MsiGetProperty(hMSI,"_BrowseProperty", szProperty, lBuf);
+
+	return CheckDir( hMSI, szProperty );
+end;
+
+function CheckDir(hMSI, szProperty) 
+	STRING szPath;
+	NUMBER lTargetPathLength;
+    LONG lBuf;
+    NUMBER i;
+    NUMBER nChar;
+    BOOL bBadChar;    
+begin 
+	//create and set the invalid property in the dialog to false
+	MsiSetProperty(hMSI,"INVALIDINSTALLDIR","0");
+    
+	// get the value set by the user
+	MsiGetProperty(hMSI,szProperty, szPath, lBuf);
+
+	// SprintfBox (SEVERE, "DEBUG", "PROPERTY = " + szPath);
+ 
+    lTargetPathLength = StrLength(szPath);
+    if ( lTargetPathLength > 100 ) then
+    	SprintfBox (SEVERE, @ID_PRODUCT_NAME, @ID_ERROR_PATH_TOO_LARGE);
+     	MsiSetProperty(hMSI,"INVALIDINSTALLDIR","1");
+    endif;	
+    
+    // don't allow an install at the root "c:\" but "c:\x" is ok.
+    if ( lTargetPathLength < 4 ) then
+    	SprintfBox (SEVERE, @ID_PRODUCT_NAME, @ID_ERROR_PATH_TOO_SHORT);
+     	MsiSetProperty(hMSI,"INVALIDINSTALLDIR","1");
+    endif;	
+                            
+    bBadChar = FALSE;
+    for i = 0 to (lTargetPathLength-1)
+         nChar = szPath[i];
+         // Check for characters above "~", less than " ", 
+         // or equal "?".  The last because as much as InstallShield
+         // claims to support UNICODE, they are really using ANSI
+         // characters outside the current code page are converted to 
+         // "?".  
+         if ( (nChar > 126) || (nChar<32) || (nChar=63)) then
+            bBadChar = TRUE;
+         endif;
+    endfor;
+    
+    if (bBadChar = TRUE) then
+    	SprintfBox (SEVERE, @ID_PRODUCT_NAME, @ID_ERROR_PATH_INVALID);
+     	MsiSetProperty(hMSI,"INVALIDINSTALLDIR","1");
+    endif;
+ 	                                                          
+	return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Function: IsNEC
+//
+//  Purpose: Set the ISNEC property
+//
+///////////////////////////////////////////////////////////////////////////////
+function IsNEC(hMSI)
+    STRING szUser32DLL;
+    BOOL bRtnVal;
+begin
+	MsiSetProperty(hMSI,"ISNEC","0");
+
+    szUser32DLL = SystemFolder ^ "USER32.DLL";
+    if(UseDLL(szUser32DLL) = 0) then
+        if ( User32.GetKeyboardType( 0 ) = 7 ) then
+            if ( User32.GetKeyboardType( 1 ) > 3328 ) then
+				MsiSetProperty(hMSI,"ISNEC","1");
+            endif;
+        endif;
+        UnUseDLL(szUser32DLL);
+    endif;
+
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  ConfirmTelephoneNum
+//
+// Purpose:  Checks to see if a valid telephone number was entered by 
+//           the user.  A valid number is digits and dashes only.
+//           i.e. 123-123-1234  
+//
+// Return:   0 for vaid telephone num
+//          -1 for invalid telephone num
+//
+///////////////////////////////////////////////////////////////////////////////
+function ConfirmTelephoneNum( svTelNum )
+	NUMBER	nRetVal; 
+	BOOL	bDigit;
+	STRING  svDigit;
+	INT		iVal, iLen;
+begin
+	// Assume success
+	nRetVal = 0;
+	
+	//set initial values 
+	iVal = 0;
+	iLen = StrLength( svTelNum );
+
+	// Loop through till we reach the end of the string or
+	// a non telephone character was found
+	while( (iVal < iLen) && !nRetVal )
+		// Run the digit test
+		StrSub( svDigit, svTelNum, iVal, 1 );
+		bDigit = IsNum_Script( svDigit );
+		
+		//is the current charater a digit or a dash
+		if( bDigit || (svTelNum[iVal] = "-") )then
+			//Yup - move to the next character
+			iVal++;
+		else
+			//Nope - set false return code
+			nRetVal = -1;
+		endif;
+	endwhile;                  
+
+	return nRetVal;
+end;
+
+  
+#if 0  
+function TRACE(sMsg) 
+begin
+	MessageBox(sMsg,INFORMATION);
+end;
+
+function DeleteQuarantineSubmissions(hInstall)
+	NUMBER uResult;
+	HWND hDatabase, hView, hRec;
+begin
+    uResult = 0;
+    hDatabase = 0;
+    hView = 0;
+    hRec = 0;
+
+    hDatabase = MsiGetActiveDatabase(hInstall);
+    if (hDatabase != 0) then
+        uResult = MsiDatabaseOpenView(hDatabase, "SELECT * FROM RemoveFile", hView);
+        if (uResult == ERROR_SUCCESS) then
+            hRec = MsiCreateRecord(4);
+            if (hRec != NULL) then
+                MsiRecordSetString(hRec, 1, "Submissions");         // Column1: key
+                MsiRecordSetString(hRec, 2, "Registry");  			// Column2: Component
+                MsiRecordSetString(hRec, 3, "*");  					// Column3: the files
+                MsiRecordSetString(hRec, 4, "SUBMITTEDFILES");  	// Column4: Property containing the directory
+                MsiRecordSetInteger(hRec, 5,  2);         			// Column5: When the files should be remove (uninstall) 
+
+                uResult = MsiViewModify(hView, MSIMODIFY_VALIDATE_NEW, hRec);
+                if (uResult == ERROR_SUCCESS) then
+                    uResult = MsiViewModify(hView, MSIMODIFY_INSERT_TEMPORARY, hRec);
+                    if (uResult != ERROR_SUCCESS) then
+                        TRACE("MsiViewModify MSIMODIFY_INSERT_TEMPORARY failed!");
+                    endif;
+                else
+                    TRACE("MsiViewModify MSIMODIFY_VALIDATE_NEW failed!");
+                endif;
+            endif;
+
+			if (hRec != 0) then
+				MsiCloseHandle(hRec);
+				hRec = 0;
+			endif;
+            
+            // delete the directory too
+            hRec = MsiCreateRecord(4);
+            if (hRec != NULL) then
+                MsiRecordSetString(hRec, 1, "Submissions");         // Column1: key
+                MsiRecordSetString(hRec, 2, "Registry");  			// Column2: Component
+                MsiRecordSetString(hRec, 3, "");  					// Column3: the files
+                MsiRecordSetString(hRec, 4, "SUBMITTEDFILES");  	// Column4: Property containing the directory
+                MsiRecordSetInteger(hRec, 5,  2);         			// Column5: When the files should be remove (uninstall) 
+
+                uResult = MsiViewModify(hView, MSIMODIFY_VALIDATE_NEW, hRec);
+                if (uResult == ERROR_SUCCESS) then
+                    uResult = MsiViewModify(hView, MSIMODIFY_INSERT_TEMPORARY, hRec);
+                    if (uResult != ERROR_SUCCESS) then
+                        TRACE("MsiViewModify MSIMODIFY_INSERT_TEMPORARY failed!");
+                    endif;
+                else
+                    TRACE("MsiViewModify MSIMODIFY_VALIDATE_NEW failed!");
+                endif;
+            endif;
+
+            MsiViewClose(hView);
+        else
+            TRACE("MsiDatabaseOpenView failed!");
+        endif;
+    else
+        TRACE("MsiGetActiveDatabase failed!");
+    endif;
+
+	if (hRec != 0) then
+		MsiCloseHandle(hRec);
+	endif;
+
+	if (hView != 0) then
+		MsiCloseHandle(hView);
+	endif;
+
+	if (hDatabase != 0) then
+		MsiCloseHandle(hDatabase);
+	endif;
+
+    return 0;
+end;
+#endif
+
+///////////////////////////////////////////////////////////////////////////////
+//                   
+// Function:  ComUnRegisterFiles
+//
+//  Purpose:  UnRegister Com objects
+//            This was created to deal with a timing issue some COM components 
+//            are having with MSI when unregistering.  The files would be
+//            removed before the unregister call occurs.
+///////////////////////////////////////////////////////////////////////////////
+//	6/27/02 - Asher Siddiqui
+///////////////////////////////////////////////////////////////////////////////
+function ComUnRegisterFiles(hMSI)
+    STRING szExecutable, szKey, szValueName, svValueData;
+    NUMBER nResult, nvType, nvSize, nUsgCnt;
+begin  
+	// Switch to the HKLM root
+    RegDBSetDefaultRoot (HKEY_LOCAL_MACHINE);
+    
+    // Setup up the value to look up
+    szKey = MS_SHARED_DLLS;
+    szValueName =  CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "Transman.dll";
+   	nvType = REGDB_NUMBER;
+    
+    // Get the usage value for the Transman dll 
+    nResult = RegDBGetKeyValueEx( szKey, szValueName, nvType, svValueData, nvSize );
+    if ( nResult < 0 ) then                      
+    	// Failed to find the value so exit
+        return 0;
+    endif;
+                                        
+    // See convert the count.  If it is 1 or less then unregister 
+    // the transman.dll.  We can test for 1 since the dll has not
+    // been removed yet and the reference count has not been decremented
+    // by installshield yet.
+	StrToNum( nUsgCnt, svValueData );
+	if ( nUsgCnt < 2 ) then
+        // UnRegister COM Components now
+        // Register Transman.DLL
+        szExecutable = " /u /s \"" + CommonFilesFolder ^ "Symantec Shared" ^ "SSC" ^ "Transman.dll" + "\"";
+        nResult = LaunchAppAndWait (SystemFolder ^ "regsvr32.EXE", szExecutable, WAIT);
+    endif;
+
+    RegDBSetDefaultRoot (HKEY_CLASSES_ROOT);
+    
+    return 0;
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: HideUninstallCancelButton
+// Purpose:  When removing the product via Add/Remove Programs,
+//			 hide the cancel button on the MSI progress dialog
+///////////////////////////////////////////////////////////////////////////////
+//	07/16/02 - Joe Antonelli                                                                        
+///////////////////////////////////////////////////////////////////////////////
+function HideUninstallCancelButton(hMSI)
+NUMBER	hRecord;
+INT		iRet;
+begin
+
+	hRecord = MsiCreateRecord(3);
+
+	if(hRecord)then
+		MsiRecordSetInteger(hRecord,1,2);
+		MsiRecordSetInteger(hRecord,2,0);
+		iRet = MsiProcessMessage(hMSI,INSTALLMESSAGE_COMMONDATA,hRecord);
+	endif;
+	MsiCloseHandle(hRecord);
+
+	return ERROR_SUCCESS;
+	
+end;
+
+// --- include script file section ---        

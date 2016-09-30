@@ -1,0 +1,63 @@
+﻿<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Norton AntiVirus - Manual Quarantine</title>
+		<link rel="stylesheet" type="text/css" href="common.css" />
+		<link rel="stylesheet" type="text/css" href="QUARANTINERESTORE.CSS" />
+	</head>
+	<body id="body">
+	<div id="description">Restoring an item from Quarantine could potentially put your system at risk.</div>
+	<fieldset id="restform" class="GroupBox">
+		<legend id="restlegend" class="GBLegend">Quarantine Item Details:</legend>
+		<table id="filedetailstable" border="0" cellspacing="0" cellpadding="0" class="FormTable">
+			<tr>
+				<td id="nametitle" class="title">Risk Name:</td>
+				<td id="namefield" class="field">n/a</td>
+			</tr>
+			<tr>
+				<td id="cattitle" class="title">Category:</td>
+				<td id="catfield" class="field">n/a</td>
+			</tr>
+			<tr>
+				<td id="tleveltitle" class="title">Risk Level:</td>
+				<td id="tlevelfield" class="field">n/a</td>
+			</tr>
+		</table>
+        <button type="checkbox" id="exclude" accesskey="d"><u>D</u>o not detect this risk in the future</button>
+	</fieldset>
+	<fieldset id="statusform" class="GroupBox" hide="1">
+		<legend id="statuslegend" class="GBLegend">Restore Status:</legend>
+            	<table id="statustable" border="0" cellspacing="0" cellpadding="0" class="FormTable">
+                <tr><td id="statustext" class="statfield">Restoring...</td></tr>
+                <tr><td id="statusprog"><input type="progress" id="progress" maxvalue="100" value="0"/></td></tr>
+                <tr><td id="restitle" class="title">Items Restored:</td></tr>
+			<tr>
+				<td>
+                    <table fixedrows="1" cellspacing="1px" id="itemtable" type="grid">
+                        <tr><th>File</th><th>Status</th></tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+	<div id="spacer2" class="Fill"></div>
+	<div id="prompt" class="question">Are you certain you want to restore this risk to your computer?</div>
+		<div id="command-bar" class="command-bar">
+			<div id="command-bar-spacer"></div>
+			<div id="rbuttons" class="VCenter">
+				<button id="yes" tabindex="2" title="Yes" accesskey="y"><u>Y</u>es</button>
+				<button id="no" tabindex="3" title="No" accesskey="n"><u>N</u>o</button>
+				<button id="close" tabindex="4" title="Close" accesskey="c" hide="1"><u>C</u>lose</button>
+			</div>
+		</div>
+	</body>
+</html>

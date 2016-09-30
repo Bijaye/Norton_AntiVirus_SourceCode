@@ -1,0 +1,42 @@
+
+ENVIRONMENT=$(EXTRA_DEPTH)../CM/buildenv.$(PLATFORM)
+
+include $(ENVIRONMENT)
+
+CCFLAGS=$(SHARED_OBJ_FLAGS) $(DEBUGFLAGS) $(USEPIC) $(PLATFORM_DEFINES) -DUNIX -DSYM_UNIX $(EXTRA_CCFLAGS) $(STL_INCLUDE) -I$(EXTRA_DEPTH)../NoBuilds/Include -I. -I../include  -I$(EXTRA_DEPTH)../Shared/Include $(COMPILE_SHARED)
+
+CFLAGS=$(CCFLAGS)
+
+#Dependency macros:
+#Makefile Dependencies (this forces a build when makefiles change)
+MAKEF_DEPS=$(MAKEF)
+
+#Default Libary dependencies
+LIB_DEPS=$(LIB_OBJS) $(MAKEF_DEPS)
+
+#Default shared object dependencies
+SO_DEPS=$(SO_OBJS) $(MAKEF_DEPS)
+
+#Default program dependencies
+PROG_DEPS=$(PROG_OBJS) $(MAKEF_DEPS)
+
+# Default build rule - build everything
+all: $(LIB_TARGET) $(SO_TARGET) $(PROG_TARGET)
+
+# Rule for building a standard library:
+# Includes regular object files and optional library files
+$(LIB_TARGET): $(LIB_DEPS) $(LIB_LIBS)
+	$(AR) $(ARFLAGS) $@ $(LIB_OBJS)
+	$(EXTRA_DEPTH)../CM/addlib $@ $(LIB_LIBS)
+
+#Rule for building a shared object:
+$(SO_TARGET): $(SO_DEPS)
+	$(MAKE_SO) $(SO_LINK_FLAGS) $(SO_OBJS) $(SO_LOCAL_LIBS) $(SO_LIBS) -o $@
+
+#Rule for building a program executable:
+$(PROG_TARGET): $(PROG_DEPS)
+	$(MAKE_PROG) $(PROG_LINK_FLAGS) $(PROG_OBJS) $(PROG_LOCAL_LIBS) $(STD_LIBS) -o $@
+
+clean:
+	$(RM) $(LIB_OBJS) $(SO_OBJS) $(LIB_TARGET) $(SO_TARGET) $(PROG_TARGET) $(PROG_OBJS)
+

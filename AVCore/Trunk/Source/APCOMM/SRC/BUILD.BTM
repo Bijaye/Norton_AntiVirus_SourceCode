@@ -1,0 +1,8 @@
+@echo off
+
+call DecPlat.btm
+
+call mk apcomm %&
+if exist make.err copy build.err+make.err build.err
+
+

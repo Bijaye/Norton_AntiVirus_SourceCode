@@ -1,0 +1,7 @@
+iff "%PLATFORM" NE ".OS2" then
+   call mk crc32.mak %&
+   if exist make.err copy build.err+make.err build.err
+else
+   wmake /f S:crc32.wmk /L BUILD.ERR
+endiff
+   

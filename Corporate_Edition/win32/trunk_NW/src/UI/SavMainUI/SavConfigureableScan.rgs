@@ -1,0 +1,27 @@
+HKCR
+{
+	SavMainUI.SavConfigureableScan.1 = s 'SavConfigureableScan Class'
+	{
+		CLSID = s '{AE78D5A2-46A3-43BB-A166-1B0018F0F21B}'
+	}
+	SavMainUI.SavConfigureableScan = s 'SavConfigureableScan Class'
+	{
+		CLSID = s '{AE78D5A2-46A3-43BB-A166-1B0018F0F21B}'
+		CurVer = s 'SavMainUI.SavConfigureableScan.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AE78D5A2-46A3-43BB-A166-1B0018F0F21B} = s 'SavConfigureableScan Class'
+		{
+			ProgID = s 'SavMainUI.SavConfigureableScan.1'
+			VersionIndependentProgID = s 'SavMainUI.SavConfigureableScan'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{7F1806A6-1864-4697-A06B-E36F41D75DEF}'
+		}
+	}
+}

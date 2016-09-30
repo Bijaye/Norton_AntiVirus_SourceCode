@@ -1,0 +1,26 @@
+HKCR
+{
+	NAVCfgWizDll.NAVCfgWizMgr.1 = s 'NAVCfgWizMgr Class'
+	{
+		CLSID = s '{333EDEFF-6F69-484d-B6BC-6150ABC7EB80}'
+	}
+	NAVCfgWizDll.NAVCfgWizMgr = s 'NAVCfgWizMgr Class'
+	{
+		CLSID = s '{333EDEFF-6F69-484d-B6BC-6150ABC7EB80}'
+		CurVer = s 'NAVCfgWizDll.NAVCfgWizMgr.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {333EDEFF-6F69-484d-B6BC-6150ABC7EB80} = s 'NAVCfgWizMgr Class'
+		{
+			ProgID = s 'NAVCfgWizDll.NAVCfgWizMgr.1'
+			VersionIndependentProgID = s 'NAVCfgWizDll.NAVCfgWizMgr'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{D935DFEC-4546-4119-94D5-91807C7BB363}'
+		}
+	}
+}

@@ -1,0 +1,33 @@
+HKCR
+{
+	NAVComUI.AxSysListView32.1 = s 'AxSysListView32 Class'
+	{
+		CLSID = s '{0A398EE6-277C-480D-BD4F-3288EA3AB8E2}'
+	}
+	NAVComUI.AxSysListView32 = s 'AxSysListView32 Class'
+	{
+		CLSID = s '{0A398EE6-277C-480D-BD4F-3288EA3AB8E2}'
+		CurVer = s 'NAVComUI.AxSysListView32.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {0A398EE6-277C-480D-BD4F-3288EA3AB8E2} = s 'AxSysListView32 Class'
+		{
+			ProgID = s 'NAVComUI.AxSysListView32.1'
+			VersionIndependentProgID = s 'NAVComUI.AxSysListView32'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			ForceRemove 'Control'
+			ForceRemove 'ToolboxBitmap32' = s '%MODULE%, 102'
+			'MiscStatus' = s '0'
+			{
+			    '1' = s '%OLEMISC%'
+			}
+			'TypeLib' = s '{70E491EB-491F-4A83-B337-C0E53D438C67}'
+			'Version' = s '1.0'
+		}
+	}
+}

@@ -1,0 +1,23 @@
+How to build Quarantine Server:
+------------------------------
+
+First, you'll need to create a client spec based on BUILD_QSERVER.
+
+Once you've done this, and sync'd down all of the areas referenced by the
+client spec, go to the QuarantineServer\CM folder and run BUILD.BTM.
+
+This batch file will do a complete release build of all of the Quarantine Server
+components.
+
+You can also perform a debug build by specifying /DBG on the command line.
+
+You can inspect the build results by examining the file MAKE.ERR.
+
+
+Ed 4-13
+
+build.btm calls the following files:
+
+bqs.btm - builds the qserver projects
+bqsislls.btm - builds the installer dll project(s)
+bqsi.btm - builds the installer projects

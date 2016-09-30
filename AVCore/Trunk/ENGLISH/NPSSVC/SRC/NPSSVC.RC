@@ -1,0 +1,158 @@
+/////////////////////////////////////////////////////////////////////
+// NPSSERVE.RC - Created - 09/27/96
+//
+// Copyright 1992-1996 Symantec, Peter Norton Product Group
+/////////////////////////////////////////////////////////////////////
+// $Header:   N:/NPSSVC/VCS/npssvc.rcv   1.5   15 Jun 1998 20:08:58   mdunn  $
+//
+// Description:
+//    Resources used in the Norton Program Scheduler Service.
+//
+/////////////////////////////////////////////////////////////////////
+//
+// $Log:   N:/NPSSVC/VCS/npssvc.rcv  $
+// 
+//    Rev 1.5   15 Jun 1998 20:08:58   mdunn
+// Fixed #115027 - potential for text clipping in missed event alert dlgs.
+// 
+//    Rev 1.4   17 Apr 1998 14:46:18   mdunn
+// Added missed event alert dialogs.
+// 
+//    Rev 1.3   30 Mar 1998 10:26:30   mdunn
+// Added a few strings used to read in the AutorunMissedEvents setting from
+// the INI file.
+// 
+//    Rev 1.2   25 Jul 1997 18:38:28   MKEATIN
+// Added version info
+//
+//    Rev 1.1   25 Jun 1997 13:51:48   KSACKIN
+// Added a string for our custom message display title.
+//
+//    Rev 1.0   19 May 1997 00:12:06   KSACKIN
+// Initial revision.
+//
+/////////////////////////////////////////////////////////////////////
+
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define VR_FILEDESCRIPTION      "Norton Program Scheduler Service"
+#define VR_INTERNALNAME         "NPSSVC"
+#define VR_ORIGINALFILENAME     "NPSSVC.EXE"
+#include "vlib.ver"
+
+#include "windows.h"
+
+                                        // NPS String IDs
+#include "npssvstr.h"
+#include "npsstb.h"
+#include "npsres.h"
+
+#define IDC_STATIC -1
+
+/////////////////////////////////////////////////////////////////////
+
+STRINGTABLE
+BEGIN
+
+
+/////////////////////////////////////////////////////////////////////
+// Generic Error Messages
+
+   IDS_ERR_REGISTERSERVICECTRLR_FAILED     "Unable to initialize Service Control Manager"
+   IDS_ERR_BEGINTHREAD_FAILED              "Unable to create a new thread (_beginthread)"
+   IDS_ERR_CREATEEVENT_FAILED              "Unable to create event (CreateEvent)"
+   IDS_ERR_MEMORY_ALLOCATION               "Memory allocation error"
+   IDS_ERR_STARTLISTEN                     "Unable to start RPC server."
+
+
+/////////////////////////////////////////////////////////////////////
+// Error messages used in NPSSERVE.CPP
+
+   IDS_ERR_CHECKEVENTS                     "Error Checking Events"
+   IDS_ERR_LOADEVENTS                      "Error Loading Events"
+
+
+/////////////////////////////////////////////////////////////////////
+// Error messages used in NPSEVNTS.CPP
+
+   IDS_ERR_LOADING_SCHEDULE_DAT            "Error Loading Schedule.dat"
+   IDS_ERR_BACKUP_SCHEDULE_DAT             "Error backing up Schedule.dat"
+   IDS_ERR_OPEN_SCHEDULE_DAT               "Unable to open Schedule.dat"
+   IDS_ERR_VERSION_SCHEDULE_DAT            "Incompatible Version number in Schedule.dat"
+   IDS_ERR_CHECKSUM_SCHEDULE_DAT           "Schedule.dat contains and invalid checksum value"
+   IDS_ERR_INVALIDENTRY_SCHEDULE_DAT       "Invalid entry in Schedule.dat"
+   IDS_ERR_OPEN_EVENTS_FILE                "Error opening events file"
+   IDS_ERR_WRITING_EVENTS_FILE             "Error writing events file"
+   IDS_ERR_WRITING_EVENTS_FILE_HEADER      "Error writing events file header"
+
+/////////////////////////////////////////////////////////////////////
+// Error messages used in NPSDO.CPP
+
+   IDS_ERR_EXECUTION_FAILURE               "Unable to execute program [%s]"
+
+
+/////////////////////////////////////////////////////////////////////
+// Message string storage.
+
+   IDS_CUSTOM_MESSAGE_TITLE                "Norton Program Scheduler"
+   IDS_NPS_TITLE                           "Norton Program Scheduler"
+   IDS_NPS_INI_TITLETIME                   "AutorunMissedEvents"
+   IDS_NPS_NORTON_INI                      "SCHEDULE.INI"
+   IDS_NPS_SCHED_TIME                      "%s at %s"
+END
+
+/////////////////////////////////////////////////////////////////////
+
+IDD_NPS_EXPIRED DIALOG DISCARDABLE  0, 0, 222, 253
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Norton Program Scheduler"
+FONT 8, "Helv"
+BEGIN
+    CONTROL         "", IDC_WARNING_ICON,"STATIC",WS_GROUP|SS_ICON,7,7,21,20
+    LTEXT           "The scheduled start time for a one-time event passed while your computer was off or while Norton Program Scheduler was not running.  The actions associated with the event were not performed.",
+                    IDC_STATIC,39,7,176,40
+    LTEXT           "Event description:",IDC_STATIC,39,54,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_DESCR_TEXT,49,67,166,20
+    LTEXT           "Scheduled time:",IDC_STATIC,39,94,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_SCHEDTIME,49,107,166,8
+    LTEXT           "Command/Message:",IDC_STATIC,39,123,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_TEXT,49,136,166,19
+    LTEXT           "How would you like to resolve this event?",IDC_STATIC,7,
+                    165,208,8
+    CONTROL         "&Run the event now",IDC_RUN_EVENT_NOW,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,17,180,198,10
+    CONTROL         "&Delete the event without running it",IDC_DELETE_EVENT,
+                    "Button",BS_AUTORADIOBUTTON,17,195,198,10
+    CONTROL         "&Leave the event as-is",IDC_LEAVE_AS_IS,"Button",
+                    BS_AUTORADIOBUTTON,17,210,198,10
+    DEFPUSHBUTTON   "OK",IDOK,56,232,50,14,WS_GROUP
+    PUSHBUTTON      "&Help",IDC_NPS_HELP,116,232,50,14
+END
+
+IDD_NPS_REPEATEVENT_EXPIRED DIALOG DISCARDABLE  0, 0, 222, 253
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Norton Program Scheduler"
+FONT 8, "Helv"
+BEGIN
+    CONTROL         "", IDC_WARNING_ICON,"STATIC",WS_GROUP|SS_ICON,7,7,21,20
+    LTEXT           "The scheduled start time for a repeating event passed while your computer was off or while Norton Program Scheduler was not running.  The actions associated with the event were not performed.",
+                    IDC_STATIC,39,7,176,40
+    LTEXT           "Event description:",IDC_STATIC,39,54,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_DESCR_TEXT,49,67,166,20
+    LTEXT           "Scheduled time:",IDC_STATIC,39,94,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_SCHEDTIME,49,107,166,8
+    LTEXT           "Command/Message:",IDC_STATIC,39,123,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_TEXT,49,136,166,19
+    LTEXT           "How would you like to resolve this event?",IDC_STATIC,7,
+                    165,208,8
+    CONTROL         "&Run the event now",IDC_RUN_EVENT_NOW,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,17,180,198,10
+    CONTROL         "&Delete the event without running it",IDC_DELETE_EVENT,
+                    "Button",BS_AUTORADIOBUTTON,17,195,198,10
+    CONTROL         "&Leave the event as-is",IDC_LEAVE_AS_IS,"Button",
+                    BS_AUTORADIOBUTTON,17,210,198,10
+    DEFPUSHBUTTON   "OK",IDOK,56,232,50,14,WS_GROUP
+    PUSHBUTTON      "&Help",IDC_NPS_HELP,116,232,50,14
+END
+

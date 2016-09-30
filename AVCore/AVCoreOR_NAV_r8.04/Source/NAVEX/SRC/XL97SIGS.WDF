@@ -1,0 +1,302 @@
+;****************************************************************************
+; Copyright 1997 Symantec, Peter Norton Product Group
+;****************************************************************************
+; XL97SIGS.WDF
+;
+; $Header:   S:/NAVEX/VCS/XL97SIGS.WDv   1.6   06 May 1997 12:06:02   CFORMUL  $
+;
+; This source file contains definitions for the Excel 97 viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/XL97SIGS.WDv  $
+   
+      Rev 1.6   06 May 1997 12:06:02   CFORMUL
+   Added sig for LAroux.C
+   
+      Rev 1.5   05 May 1997 15:56:44   CFORMUL
+   Added detection for the Excel 97 Dumb Laroux virus
+   
+      Rev 1.4   30 Apr 1997 16:26:30   CFORMUL
+   Fixed the repair for robocop
+   
+   
+      Rev 1.3   10 Apr 1997 15:08:32   CFORMUL
+   Updated all CRC's to the new format
+   
+      Rev 1.2   28 Mar 1997 13:40:44   CFORMUL
+   Added detection for Legend and Robocop
+   
+      Rev 1.1   27 Mar 1997 16:43:50   CFORMUL
+   Changed Laroux sig from a CRC to an ALG
+   
+      Rev 1.0   13 Feb 1997 13:25:44   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+
+##############################################################################
+#
+# Name Sigs
+#
+##############################################################################
+
+[NameSigStart]
+[Comment]       Only MODULE1
+[ID]            NAME_ONLY_MODULE1
+[Signature]     SeekSet(0) "MODULE1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODULE2
+[ID]            NAME_ONLY_MODULE2
+[Signature]     SeekSet(0) "MODULE2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHEET01
+[ID]            NAME_ONLY_SHEET01
+[Signature]     SeekSet(0) "SHEET01" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LAROUX
+[ID]            NAME_ONLY_LAROUX
+[Signature]     SeekSet(0) "LAROUX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only "           "     
+[ID]            NAME_ONLY_11SPACES   
+[Signature]     SeekSet(0) "           " AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LEGEND
+[ID]            NAME_ONLY_LEGEND
+[Signature]     SeekSet(0) "LEGEND" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COP
+[ID]            NAME_ONLY_COP
+[Signature]     SeekSet(0) "COP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ROBO
+[ID]            NAME_ONLY_ROBO
+[Signature]     SeekSet(0) "ROBO" AtEnd()
+[NameSigEnd]
+
+
+##############################################################################
+#
+# Known Virus Sigs
+#
+##############################################################################
+
+############
+# XM.Delta
+############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MODULE1
+[ID]            CRC_MODULE1_DELTA
+[CRCXL97]       0xD5772916
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Delta
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_DELTA
+[Signature]     NamedCRCSig(CRC_MODULE1_DELTA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+#########
+# XM.DMV
+#########
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for SHEET01
+[ID]            CRC_SHEET01_DMV
+[CRCXL97]       0x81C63C3F
+[Signature]     NameSig(NAME_ONLY_SHEET01)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.DMV
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_XLDMV
+[Signature]     NamedCRCSig(CRC_SHEET01_DMV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+###############
+# XM.Laroux.A
+###############
+
+[MacroSigStart]
+[Comment]       Alg detection for Laroux
+[ID]            MACRO_SIG_LAROUXA
+[Signature]     0x53 0x68 0x65 0x65 0x74 0x73 0x28 0x22
+[Signature]     0x6c 0x61 0x72 0x6f 0x75 0x78 0x22 0x29
+[Signature]     0x2e 0x43 0x6f 0x70 0x79
+[MacroSigEnd]
+
+
+# This is for the Dumb Laroux 97 virus
+[NamedCRCSigStart]
+[Comment]       Named CRC for DUMB LAROUX
+[ID]            CRC_DUMBLAROUX_MODULE1
+[CRCXL97]       0x00E293BE
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUX
+[Signature]     NameSig(NAME_ONLY_LAROUX) and
+[Signature]     MacroSig(MACRO_SIG_LAROUXA) or
+[Signature]     NamedCRCSig(CRC_DUMBLAROUX_MODULE1)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+###############
+# XM.Laroux.B
+###############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX
+[ID]            CRC_LAROUX_LAROUXB
+[CRCXL97]       0xD6170E43
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXB
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+###############
+# XM.Laroux.C
+###############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX.C
+[ID]            CRC_LAROUX_LAROUXC
+[CRCXL97]       0x8516823F
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.C
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXC
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+#############
+# XM.Sofa
+#############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for
+[ID]            CRC_11SPACES_SOFA  
+[CRCXL97]       0x2D333F7B
+[Signature]     NameSig(NAME_ONLY_11SPACES)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Sofa
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SOFA
+[Signature]     NamedCRCSig(CRC_11SPACES_SOFA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+
+###############
+# XM.Legend
+###############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LEGEND
+[ID]            CRC_LEGEND_LEGEND
+[CRCXL97]       0xBE70B006
+[Signature]     NameSig(NAME_ONLY_LEGEND)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Legend.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LEGEND
+[Signature]     NamedCRCSig(CRC_LEGEND_LEGEND)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+
+##############
+# XM.Robocop
+##############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for COP
+[ID]            CRC_COP_ROBOCOP
+[CRCXL97]       0x8F14E37C
+[Signature]     NameSig(NAME_ONLY_COP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for ROBO
+[ID]            CRC_ROBO_ROBOCOP
+[CRCXL97]       0x387D4BED
+[Signature]     NameSig(NAME_ONLY_ROBO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MODULE1
+[ID]            CRC_MODULE1_ROBOCOP
+[CRCXL97]       0xFFFFFFFF
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MODULE2
+[ID]            CRC_MODULE2_ROBOCOP
+[CRCXL97]       0xFFFFFFFF
+[Signature]     NameSig(NAME_ONLY_MODULE2)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       Sig
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_ROBOCOPA
+[Signature]     NamedCRCSig(CRC_COP_ROBOCOP) and
+[Signature]     NamedCRCSig(CRC_ROBO_ROBOCOP)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_MODULE1_ROBOCOP),
+[Repair]        NamedCRCSig(CRC_MODULE2_ROBOCOP)
+[KnownVirusSigEnd]

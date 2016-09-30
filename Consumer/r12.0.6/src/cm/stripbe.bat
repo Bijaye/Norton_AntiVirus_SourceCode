@@ -1,0 +1,11 @@
+del *.pdb /s
+del *.ilk /s
+del *.pch /s
+del *.idb /s
+del *.sbr /s
+del *.obj /s
+del *.exp /s
+del *.lib /s
+del *.map /s
+del cmbuildlog.txt /s
+del postinglog.txt /s

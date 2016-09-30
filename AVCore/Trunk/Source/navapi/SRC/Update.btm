@@ -1,0 +1,162 @@
+:**************************************************************************
+: This Update.btm copies the files to the appropriate location and properly
+: creates the "latest.dev" directory structure for this platform. This 
+: should mirror the directory structure published in perforce.
+:
+: The layout of this directory structure is:
+:     S:\NavApi\Latest.dev\
+:                   Include
+:                   Docs
+:                   LibIntelAnsiWin32Debug
+:                   BinIntelAnsiWin32Release
+:                   LibAlphaAnsiWin32Debug
+:                   BinAlphaAnsiWin32Release
+:                   LibWDA          means IntelAnsiWin16Debug
+:                   BinWRA          means IntelAnsiWin16Release
+:                   LibDVX          means NecAnsiDvx     release hopefully
+:                   LibDX           means IntelAnsiDx    release hopefully
+:
+: 03/04/1999 Jim Brennan - Created.
+:**************************************************************************
+
+: Copy all files to the "S:\<proj>\LIB.<plat>" directory. Copy *.LIB to
+: global LIB directory and *.DLL to global BIN directory.
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM
+copy *.LIB %PROJPRE%LIB%PROJVERS%%PLATFORM
+copy *.dll %PROJPRE%BIN%PROJVERS%%PLATFORM
+rem copy *.sym %PROJPRE%BIN%PROJVERS%%PLATFORM
+
+call decplat.btm
+
+set MyBaseDir=%PROJ%\Latest.dev
+set MyIncludeDir=%MyBaseDir%\Include
+set MyDocDir=%MyBaseDir%\Docs
+set MyLibDir=%MyBaseDir%\Lib%@SUBSTR[%PLATFORM%,1,32]
+set MyBinDir=%MyBaseDir%\Bin%@SUBSTR[%PLATFORM%,1,32]
+
+: If we are on a Win32 platform, use the new naming convention for LIB and BIN.
+: This also sets up VXDs to go to one of the IntelAnsiWin32Debug directories.
+: Remember that NAVAPI.VXD is required for the Win32 DLL. As such, we put it
+: in the Win32 directory.
+
+iff "%CORE_WIN32%" != "" then
+    set MyLibDir=%MyBaseDir%\Lib
+    set MyBinDir=%MyBaseDir%\Bin
+
+    iff "%CORE_PLAT%" == "I" then
+        set MyLibDir=%MyLibDir%Intel
+        set MyBinDir=%MyBinDir%Intel
+    else"%CORE_PLAT%" == "A" then
+        set MyLibDir=%MyLibDir%Alpha
+        set MyBinDir=%MyBinDir%Alpha
+    else
+        set MyLibDir=%MyLibDir%Unknown
+        set MyBinDir=%MyBinDir%Unknown
+	endiff
+    iff "%CORE_CHARSET%" == "A" then
+        set MyLibDir=%MyLibDir%Ansi
+        set MyBinDir=%MyBinDir%Ansi
+    elseiff "%CORE_CHARSET%" == "U" then
+        set MyLibDir=%MyLibDir%Unicode
+        set MyBinDir=%MyBinDir%Unicode
+    else
+        set MyLibDir=%MyLibDir%Unknown
+        set MyBinDir=%MyBinDir%Unknown
+	endiff
+    
+	set MyLibDir=%MyLibDir%Win32
+	set MyBinDir=%MyBinDir%Win32
+
+    iff "%CORE_BMODE%" == "R" then
+        set MyLibDir=%MyLibDir%Release
+        set MyBinDir=%MyBinDir%Release
+    elseiff "%CORE_BMODE%" == "D" then
+        set MyLibDir=%MyLibDir%Debug
+        set MyBinDir=%MyBinDir%Debug
+    else
+        set MyLibDir=%MyLibDir%Unknown
+        set MyBinDir=%MyBinDir%Unknown
+	endiff
+endiff
+     
+
+: Create the root directory. The subdirectories are dynamically created
+: by the CopyFiles function (at the end).
+if not direxist %MyBaseDir%     mkdir %MyBaseDir%
+
+:----------------------------------------------------------------------
+: General copying
+:----------------------------------------------------------------------
+
+: Copy the checked in API documentation.
+set SrcSpec=%PROJ%\Src%PROJVERS%\navapi.doc
+set DstSpec=%MyDocDir%
+gosub CopyFiles
+
+set SrcSpec=%PROJ%\Src%PROJVERS%\relnotes.doc
+set DstSpec=%MyDocDir%
+gosub CopyFiles
+
+: Copy the checked in public header files.
+set SrcSpec=%PROJ%\Src%PROJVERS%\navapi.h
+set DstSpec=%MyIncludeDir%
+gosub CopyFiles
+
+set SrcSpec=%PROJ%\Src%PROJVERS%\dxtypes.h
+set DstSpec=%MyIncludeDir%
+gosub CopyFiles
+
+set SrcSpec=%PROJ%\Src%PROJVERS%\nlmtypes.h
+set DstSpec=%MyIncludeDir%
+gosub CopyFiles
+
+:----------------------------------------------------------------------
+: Copy the platform specific libraries and binaries were just built to
+: the appropriate Latest.dev\Lib.* and Latest.dev\Bin.* directory.
+:----------------------------------------------------------------------
+
+: If we have any dlls, vxds, or libs, copy them appropriately.
+set SrcSpec=navapi*.dll
+set DstSpec=%MyBinDir%
+gosub CopyFiles
+
+set SrcSpec=NavApi*.vxd
+set DstSpec=%MyBinDir%
+gosub CopyFiles
+
+: On all platforms except the NLM, copy *.lib
+iff "%PLATFORM%" != ".NLM" then
+    set SrcSpec=navapi*.lib
+    set DstSpec=%MyLibDir%
+    gosub CopyFiles
+endiff
+
+: If we just built the NLM, copy only the appropriate files
+iff "%PLATFORM%" == ".NLM" then
+    set SrcSpec=%PROJ%\Src%PROJVERS%\navapi.imp
+    set DstSpec=%MyLibDir%
+    gosub CopyFiles
+
+    set SrcSpec=%PROJ%\Src%PROJVERS%\navapi.exp
+    set DstSpec=%MyLibDir%
+    gosub CopyFiles
+
+    set SrcSpec=*.nlm
+	set DstSpec=%MyBinDir%
+	gosub CopyFiles
+endiff
+
+quit
+
+:----------------------------------------------------------------------
+: Function to attempt to copy files from one place to another. Set
+: %SrcSpec% to the source file specification (like c:\*.dll or just
+: *.dll). Set %DstSpec% to the directory to copy to.
+:----------------------------------------------------------------------
+
+:CopyFiles
+iff exist %SrcSpec% then
+    if not direxist %DstSpec%		mkdir %DstSpec%
+    copy %SrcSpec% %DstSpec%
+endiff
+return

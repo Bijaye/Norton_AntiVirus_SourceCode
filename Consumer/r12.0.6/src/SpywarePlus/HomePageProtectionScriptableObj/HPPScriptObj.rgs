@@ -1,0 +1,27 @@
+HKCR
+{
+	HPPSCR.Util.1 = s 'HPP Scripting Utility Class'
+	{
+		CLSID = s '{6396182F-1DE4-4C8E-A52A-D9C5FF86095F}'
+	}
+	HPPSCR.Util = s 'HPP Scripting Utility Class'
+	{
+		CLSID = s '{6396182F-1DE4-4C8E-A52A-D9C5FF86095F}'
+		CurVer = s 'HPPSCR.Util.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6396182F-1DE4-4C8E-A52A-D9C5FF86095F} = s 'HPP Scripting Utility Class'
+		{
+			ProgID = s 'HPPSCR.Util.1'
+			VersionIndependentProgID = s 'HPPSCR.Util'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{98CA8B82-7794-4E2F-857C-7A8487CDDCEB}'
+		}
+	}
+}

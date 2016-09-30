@@ -1,0 +1,362 @@
+@echo off
+on break cancel
+setlocal
+echo Command line - %0 %&
+
+:: ******************************************************************
+:: * PATH DEFINATION
+:: ******************************************************************
+set CM_DIR=%@full[%@path[%_batchname]]
+set ROOT_DIR=%@full[%CM_DIR%..\..]
+set SDK_DIR=%@full[%ROOT_DIR%\SDKs]
+set RESOURCE_COPY=%@full[%SDK_DIR%\Licensing\CLT\Bin.ira\ntcopyres.exe]
+set INPUT_DIR_DEFAULT=%@full[%SDK_DIR%\Licensing\CLT\Bin.ira\SuiteOwner\Base]
+set OUTPUT_DIR_DEFAULT=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\UnWrapped]
+set RESDLL_DIR_DEFAULT=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\V2ResourceDlls]
+
+:: Defaults you can overide
+set PROD_DEFAULT=NAV
+set OUTPUT_FILE_NAME_DEFAULT=AVSTE.dll
+set INPUT_FILE_NAME_DEFAULT=SuiteOwnerBase.dll
+set RESDLL_FILE_DEFAULT=
+set INPUT_FILE_DEFAULT=%INPUT_DIR_DEFAULT%\%INPUT_FILE_NAME_DEFAULT%
+set OUTPUT_FILE_DEFAULT=
+
+:: ******************************************************************
+:: * MISC DEFAULTS YOU SHOULD NOT NEED TO CHANGE
+:: ******************************************************************
+set PHASE=1
+set BUILD_SUITE_OWNER_LOG=BuildSuiteOwners.log
+set MERGE_FILE_LOG=MergeRes.log
+set GREPCMD=%CM_DIR%\grep.exe
+
+:: Initialize all of our overrideable vars
+gosub ResetOverrides
+
+:: Initialize our log files
+gosub :IntializeLogFiles
+
+:: Parse command-line parameters.
+gosub :ParseCommandLine
+goto PHASE%PHASE
+
+:PHASE1
+rem goto :PHASE1_END
+
+    :: ******************************************************************************************
+    :: NAV SuiteOwner
+    :: ******************************************************************************************
+    set PROD=NAV
+    set RESDLL_FILE=%RESDLL_DIR_DEFAULT%\%PROD%\V2ResourceDLL_%PROD%.dll
+    set OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\%PROD%\%OUTPUT_FILE_NAME_DEFAULT%
+
+    gosub CopyResources
+:PHASE1_END
+
+:PHASE2
+rem goto :PHASE2_END
+
+    :: ******************************************************************************************
+    :: NAV NOAS SuiteOwner
+    :: ******************************************************************************************
+    set PROD=NAV_NOAS
+    set RESDLL_FILE=%RESDLL_DIR_DEFAULT%\%PROD%\V2ResourceDLL_%PROD%.dll
+    set OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\%PROD%\%OUTPUT_FILE_NAME_DEFAULT%
+
+    gosub CopyResources
+:PHASE2_END
+
+:PHASE3
+rem goto :PHASE3_END
+
+    :: ******************************************************************************************
+    :: NAV SOS SuiteOwner
+    :: ******************************************************************************************
+    set PROD=NAV_SOS
+    set RESDLL_FILE=%RESDLL_DIR_DEFAULT%\NAV\V2ResourceDLL_NAV.dll
+    set INPUT_FILE=%OUTPUT_DIR_DEFAULT%\NAV\XL1.8\AVSTE.dll
+    set OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\NAV\XL1.8\AVSTE.dll
+
+    gosub CopyResources
+:PHASE3_END
+
+:: ******************************************************************
+:: * FINISHED WITH NO ERRORS
+:: ******************************************************************
+:PHASECompletion
+    set BUILD_STATUS=PASS
+
+    @echo ____________________________________________________________
+    @echo.
+    @echo   Success = Success = Success = Success = Success = Success
+    @echo   Success = Success = UpdateSuiteOwners = Success = Success
+    @echo   Success = Success = Success = Success = Success = Success
+    @echo ____________________________________________________________
+    @echo.
+
+    @set a=*** UpdateSuiteOwners time %@timer[1] (%_DATE - %_TIME) ***
+    @gosub logthis
+
+    popd *
+    endlocal
+
+quit 0
+
+:: ******************************************************************
+:: ******************************************************************
+:: ************* SUBROUTINES FROM HERE DOWN ***************
+:: ******************************************************************
+:: ******************************************************************
+
+rem ==================================================================
+:ParseCommandLine
+rem ==================================================================
+    do param = 1 to 127
+        shift 1
+        iff "%0"=="" then
+            shift -%param%
+            goto continue
+        endiff
+
+        set this_param=%@upper[%0]
+
+        iff "%@upper[%0]"=="/PHASE" then
+            shift 1
+            set PHASE=%0
+        elseiff "%@upper[%0]"=="/DBG_BTM" then
+            set DBG_BTM=/DBG_BTM
+        else
+            echo.
+            echo ******************************************
+            echo * Error: %0 is an invalid parameter
+            echo ******************************************
+            echo.
+            echo Valid parameters are:
+            echo.
+            echo /PHASE #           :: PHASE to jump to
+            echo /DBG_BTM           :: Turn Echo on
+            quit 1
+        endiff
+    enddo
+    shift -127
+
+    :continue
+    if "%DBG_BTM" NE "" echo on
+return
+
+rem ==================================================================
+:logThis
+rem ==================================================================
+    @echo %a
+    @echo %a >> %BUILD_SUITE_OWNER_LOG
+return
+
+rem ==================================================================
+:logblank
+rem ==================================================================
+    @echo.
+    @echo. >> %BUILD_SUITE_OWNER_LOG
+return
+
+rem ==================================================================
+:logBreak
+rem ==================================================================
+    @echo ********************************************************************
+    @echo ******************************************************************** >> %BUILD_SUITE_OWNER_LOG
+return
+
+rem ==================================================================
+:logHeader
+rem ==================================================================
+    @gosub logblank
+    @gosub logBreak
+    @gosub logthis
+    @gosub logBreak
+    @gosub logblank
+
+return
+
+rem ==================================================================
+:IntializeLogFiles
+rem ==================================================================
+
+    :: If the last character in ROOT_DIR is not a '\', then append one.
+    iff %@SUBSTR[%ROOT_DIR%,%@EVAL[%@LEN[%ROOT_DIR%]-1],1] NE \ then
+        set ROOT_DIR=%ROOT_DIR%\
+    endiff
+
+    :: Clear this file out.
+    @del /Q %BUILD_SUITE_OWNER_LOG
+
+    timer on /1
+    set a= **** UpdateSuiteOwners started %_date - %_time ****
+    gosub logthis
+
+    :: Make sure that we were able to create the log file
+    iff NOT EXIST %BUILD_SUITE_OWNER_LOG% then
+        echo.
+        echo ****************************************************
+        echo * ERROR: Cannot create log file [%BUILD_SUITE_OWNER_LOG%]
+        echo ****************************************************
+        quit 1
+    endiff
+
+return
+
+rem ==================================================================
+:errexit
+rem ==================================================================
+    set BUILD_STATUS=FAIL
+    @set a=*** UpdateSuiteOwners time %@timer[1] (%_DATE - %_TIME) ***
+    @gosub logthis
+
+    @echo **********************************************************************  | tee /a %XINSTALL_LOG
+    @echo ******************** ERROR(S) IN XINSTALL ****************************  | tee /a %XINSTALL_LOG
+    @echo **********************************************************************  | tee /a %XINSTALL_LOG
+    @echo (Refer to %BUILD_SUITE_OWNER_LOG for more info on errors.)
+
+    endlocal
+quit 1
+
+rem ==================================================================
+:ResetOverrides
+rem ==================================================================
+
+    :: ******************************************************************
+    :: * OVERRIDES
+    :: *    Use the follow overrides in the wrap Phase to
+    :: *        override the variable of like name (with _DEFAULT appended).
+    :: *    EG Setting SKUCMD=Something will override the default value
+    :: *         of SKUCMD_DEFAULT.
+    :: *    NOTE: Overrides get reset after each wrap
+    :: ******************************************************************
+    set PROD=
+    set OUTPUT_FILE_NAME=
+    set INPUT_FILE_NAME=
+    set RESDLL_FILE=
+    set INPUT_FILE=
+    set OUTPUT_FILE=
+
+return
+
+rem ==================================================================
+:SetupOverrides
+rem ==================================================================
+    :: Use override commands if there are any
+
+    iff "%PROD%"=="" then
+        set PROD=%PROD_DEFAULT%
+    endiff
+
+    iff "%INPUT_FILE_NAME%"=="" then
+        set INPUT_FILE_NAME=%INPUT_FILE_NAME_DEFAULT%
+    endiff
+
+    iff "%OUTPUT_FILE_NAME%"=="" then
+        set OUTPUT_FILE_NAME=%OUTPUT_FILE_NAME_DEFAULT%
+    endiff
+
+    iff "%RESDLL_FILE%"=="" then
+        set RESDLL_FILE=%RESDLL_FILE_DEFAULT%
+    endiff
+
+    iff "%INPUT_FILE%"=="" then
+        set INPUT_FILE=%INPUT_FILE_DEFAULT%
+    endiff
+
+    iff "%OUTPUT_FILE%"=="" then
+        set OUTPUT_FILE=%OUTPUT_FILE_DEFAULT%
+    endiff
+
+return
+
+rem ==================================================================
+:CopyResources
+rem ==================================================================
+    pushd
+
+    @set a=*** UpdateSuiteOwner - %PROD%
+    gosub logHeader
+
+    :: Reset Error file
+    echo. > %MERGE_FILE_LOG
+
+    ::  Use defaults for variables not set
+    gosub SetupOverrides
+
+    gosub logblank
+    echo --------------------------------------------------
+    :: Make sure that we have a PROD name file exist
+    iff "%PROD%" NE "" then
+        @echo ... PROD             = %PROD%
+    else
+        @echo ERROR - No PROD name specified. | tee /A %MERGE_FILE_LOG
+    endiff
+
+    :: Make sure that the V2ResourceDLL file exist
+    iff EXIST %RESDLL_FILE% then
+        @echo ... V2ResourceDLL    = %RESDLL_FILE%
+    else
+        @echo ERROR - V2ResourceDLL not found [%RESDLL_FILE%] | tee /A %MERGE_FILE_LOG
+    endiff
+
+    :: Make sure that the INPUT_FILE file exist
+    iff EXIST %INPUT_FILE% then
+        @echo ... INPUT_FILE       = %INPUT_FILE%
+    else
+        @echo ERROR - INPUT_FILE not found [%INPUT_FILE%] | tee /A %MERGE_FILE_LOG
+    endiff
+
+    :: Copy our SuiteOwnerBase to an output *ste.dll
+    copy /Z /V /Q /E  %INPUT_FILE% %OUTPUT_FILE%
+
+    :: Make sure that the OUTPUT_FILE file exist
+    iff EXIST %OUTPUT_FILE% then
+        @echo ... OUTPUT_FILE      = %OUTPUT_FILE%
+    else
+        @echo ERROR - OUTPUT_FILE not found [%OUTPUT_FILE%] | tee /A %MERGE_FILE_LOG
+    endiff
+
+    :: Make sure that the Resource Copy program exist
+    iff EXIST %RESOURCE_COPY% then
+        @echo ... RESOURCE_COPY PRG= %RESOURCE_COPY%
+    else
+        @echo ERROR - RESOURCE_COPY program not found [%RESOURCE_COPY%] | tee /A %MERGE_FILE_LOG
+    endiff
+    echo --------------------------------------------------
+
+    gosub logbreak
+
+    :: Look for errors
+    %GREPCMD% -i "Error" %MERGE_FILE_LOG > NUL:
+    set ret1=%?
+
+    :: Check to see if we found "Error" in the log file. If so don't bother trying to run rovercli.exe
+    if %ret1 == 0 goto errexit
+
+    :: Run Resource Copy Utility program to move the V2ResourceDll's
+    :: resources into the output file
+    echo %RESOURCE_COPY% %RESDLL_FILE%     %OUTPUT_FILE%     | tee LastExecuted.btm | tee /A %MERGE_FILE_LOG
+    %RESOURCE_COPY% %RESDLL_FILE% %OUTPUT_FILE% | tee /A %MERGE_FILE_LOG
+    set ret2=%?
+
+    :: Append our Resource Copy program output to the main log file
+    rem type %MERGE_FILE_LOG >> %BUILD_SUITE_OWNER_LOG
+
+    :: Look for errors in our log file from rovercli.exe...
+    %GREPCMD% -i "Error" %MERGE_FILE_LOG > NUL:
+    set ret3=%?
+
+    popd
+
+    :: Check to see if we had an error running Resource Copy program
+    if %ret2 != 0 goto errexit
+
+    :: Check to see if we found "Error" in the log file
+    if %ret3 == 0 goto errexit
+
+    :: Reset all variables that can use defaults
+    gosub ResetOverrides
+
+return
+

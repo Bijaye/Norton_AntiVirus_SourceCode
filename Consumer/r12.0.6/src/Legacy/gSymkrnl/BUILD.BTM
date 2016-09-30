@@ -1,0 +1,264 @@
+: Copyright 1993-1997 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/SYMKRNL/VCS/BUILD.BTv   1.24   19 May 1997 18:36:44   BILL  $
+:                                                                       :
+: Description:                                                          :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/SYMKRNL/VCS/BUILD.BTv  $
+:  
+:     Rev 1.24   19 May 1997 18:36:44   BILL
+:  Added building drvcomm for ada and aduk platforms
+:  
+:     Rev 1.23   12 May 1997 15:44:12   ksackin
+:  Updated check for Kernel mode and VxD for the KrnlThk.mak conditional.
+:
+:     Rev 1.22   12 May 1997 15:01:54   ksackin
+:  Added check so that KrnlThk.Mak would not build on the Kernel or VxD
+:  platforms.
+:
+:     Rev 1.21   09 Apr 1997 17:12:44   DALLEE
+:  Modified conditional for building drvcomm.
+:  Split Intel-only check to a separate line due to NDOS's parsing of
+:  multiple .OR.'s and .AND.'s (previous check excluded old .W32, .NTK, etc.)
+:  Also allow to compile for VXD platform.
+:
+:     Rev 1.20   08 Apr 1997 14:12:08   bsobel
+:  Build system changes for vxd
+:
+:     Rev 1.19   20 Mar 1997 17:12:32   BILL
+:  Don't build drvcomm on Alpha platform
+:
+:     Rev 1.18   06 Jan 1997 16:58:10   RSTANEV
+:  Building DRVCOMM.MAK for SYM_VXD.
+:
+:     Rev 1.17   03 Dec 1996 18:02:54   BMCCORK
+:  Exclude building of debug stuff in NT Kernel and VxD new platforms
+:
+:     Rev 1.16   02 Dec 1996 17:57:30   BMCCORK
+:  Yet another fix for new platform stuff
+:
+:     Rev 1.15   02 Dec 1996 17:47:06   BMCCORK
+:  Yet another fix for new platform stuff
+:
+:     Rev 1.14   02 Dec 1996 16:51:46   BMCCORK
+:  Fixed use of _CORE instead of CORE
+:
+:     Rev 1.13   02 Dec 1996 16:45:44   BMCCORK
+:  Added support for new platform stuff
+:
+:     Rev 1.12   23 Sep 1996 08:47:18   JBRENNA
+:  Also remove DEBUG_ALL from the environment when KILLCV gets called. Which
+:  is for the DOS projects.
+:
+:     Rev 1.11   30 Aug 1996 16:16:30   BMCCORK
+:  Removed symkrlib, since it is moved to its own project
+:
+:     Rev 1.10   10 Jul 1996 16:53:42   RJACKSO
+:  Added NLM to the list of stuff to build without CV=yes
+:
+:     Rev 1.9   14 Jun 1996 15:06:22   RJACKSO
+:  Added SETLOCAL and ENDLOCAL to prevent the permenant removal of CV from
+:  the environment.
+:
+:     Rev 1.8   23 Apr 1996 21:58:02   JMILLAR
+:  back out 1.6 - it now builds for vxd again. We now resume normal service.
+:
+:     Rev 1.7   11 Apr 1996 10:49:40   JMILLAR
+:  add build of drvcomm for NTK platform
+:
+:     Rev 1.6   01 Apr 1996 13:14:16   RSTANEV
+:  Temporarily not building symkrnl.lib for VxD platform.
+:
+:     Rev 1.5   20 Mar 1996 14:10:50   SDAVIS
+:  Changed call order to call mk symdebug first.
+:
+:     Rev 1.4   18 Mar 1996 15:23:42   RJACKSO
+:  Removed the check for STATICLIB because it was breaking all the builds.
+:
+:     Rev 1.3   18 Mar 1996 11:25:24   RSTANEV
+:  Now building drvcomm.mak for W32 platform.
+:
+:     Rev 1.2   04 Mar 1996 14:34:24   Basil
+:  Added building of Symkrlib.mak, which builds symkrnl as a statically linked lib.
+:  NOTE: You have to define STATICLIB in your environment for this to work.
+:
+:     Rev 1.1   29 Jan 1996 09:44:42   JREARDON
+:  Changed %1 to %& so that it will pick up all
+:  Command line parameters
+:
+:     Rev 1.0   26 Jan 1996 20:22:00   JREARDON
+:  Initial revision.
+:
+:     Rev 1.27   13 Oct 1995 19:45:08   JREARDON
+:  Updates for NCX,DVX,NCS,&DVS platforms
+:
+:     Rev 1.26   12 Jul 1995 14:13:34   SRYAN
+:
+:  Removed DVX and NCX support
+:
+:     Rev 1.25   12 Jul 1995 13:50:22   SRYAN
+:  Added NCX and DVX platforms for Japan
+:
+:     Rev 1.24   11 Apr 1995 12:08:44   HENRI
+:  Merge changes from branch 6
+:
+:     Rev 1.23   01 Feb 1995 09:09:20   RSTANEV
+:  Now building SYMKVXD.MAK for VxD platform.
+:
+:     Rev 1.22   26 Jan 1995 16:41:08   RSTANEV
+:  Don't build VSYMKRNL.MAK anymore.
+:
+:     Rev 1.21   24 Jan 1995 13:44:34   TORSTEN
+:  Made sure SYMDEBUG is built for X86 platform.
+:
+:     Rev 1.20   09 Dec 1994 17:13:52   BRAD
+:  Added VXD platform
+:
+:     Rev 1.19   02 Sep 1994 14:50:48   CAREY
+:  Build symdebug lib for .DX platform.  SYM_ASSERT is defined for
+:  SYM_DOS which include .DOS and .DX platforms.
+:
+:     Rev 1.18   02 Sep 1994 14:33:58   JMILLARD
+:  add symdebug for DOS and NLM
+:
+:     Rev 1.17   11 Aug 1994 12:30:46   BRIANF
+:  Moved SYMDEBUG to before SYMKRNL for the WIN and WIN32 platforms.
+:
+:     Rev 1.16   04 Aug 1994 19:16:54   PATRICKM
+:  Removed \TOOLS\ reference from RC line
+:
+:
+:     Rev 1.15   26 Jul 1994 11:17:02   MFALLEN
+:  Force rebuild of SYMDEBUG
+:
+:     Rev 1.14   24 Jun 1994 13:04:52   MFALLEN
+:  Added building of S32DEBUG.LIB/S16DEBUG.LIB library.
+:
+:     Rev 1.13   23 Jun 1994 18:14:56   PATRICKM
+:  It now copies 32TO16.ASM to the src%QUAKE% directory.
+:
+:
+:     Rev 1.12   23 Jun 1994 18:05:44   HENRI
+:  Added build of thunking DLL's
+:
+:     Rev 1.11   03 May 1994 15:32:46   MARKK
+:  Added DX
+:
+:     Rev 1.10   27 Apr 1994 11:17:00   BRAD
+:  Only build CFGINIT.OBJ for WIN16 and DOS
+:
+:     Rev 1.9   26 Apr 1994 18:23:26   MFALLEN
+:
+:
+:     Rev 1.8   26 Apr 1994 13:14:04   BRAD
+:  Build CFGINIT.OBJ for WIN32 also
+:
+:     Rev 1.7   20 Mar 1994 21:52:50   BRUCEH
+:  Removed line to copy static lib to lib.win since it gets done automatically
+:
+:     Rev 1.6   20 Mar 1994 21:47:58   BRUCEH
+:  Added support for static symkrnl windows library if the WINSTATICLIB
+:  environment variable is set
+:
+:     Rev 1.5   01 Feb 1994 17:37:00   BRUCE
+:  Don't build cfginit.mak for win32
+:
+:     Rev 1.4   21 Oct 1993 10:38:46   DALLEE
+:  CFGINIT.OBJ should go to LIB%PLATFORM% not always LIB.WIN
+:
+:     Rev 1.3   20 Oct 1993 13:03:48   SCOTTP
+:  ADDED TRICK COPY OF CFGINIT TO FIX OTHER COMPONENTS WITHOUT THE USE OF AND
+:  UPDATE .BAT  (YES THIS IS NAUGHTY)
+:
+:     Rev 1.2   08 Oct 1993 11:51:12   PATRICKM
+:  added cfginit.mak for the windows platform
+:
+:
+:     Rev 1.1   22 Jul 1993 17:09:34   PATRICKM
+:  Moved the platform check stuff into a subroutine.
+:
+:
+:     Rev 1.0   25 Jun 1993 19:54:52   BRAD
+:  Initial revision.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+setlocal
+
+:: Decode any possible new platform support (will set CORE_WIN32, CORE_WIN16, CORE_PLAT, etc.)
+call decplat.btm
+
+IF %@index[.DOS.X86.DX.NCX.DVX.NCS.DVS.NLM.,%PLATFORM] NE -1  gosub killcv
+
+
+: Build this first!
+IFF  %@index[.WIN.W32.32S.NLM.DOS.X86.DX.NCX.DVX.NCS.DVS.,%PLATFORM] NE -1 .OR. "%CORE_WIN32%%CORE_WIN16%" NE "" THEN
+    :: Exclude VxD and NT Kernel mode
+    iff "%CORE_SOFT" NE "V" .AND. "%CORE_SOFT" NE "K" then
+        call mk symdebug -a
+        if exist make.err copy build.err+make.err build.err
+    endiff
+endiff
+
+call mk symkrnl %&
+if exist make.err copy build.err+make.err build.err
+
+iff "%PLATFORM" EQ ".VXD" .OR. "%CORE_SOFT" == "V" then
+    call mk SYMKVxD %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+iff "%PLATFORM" EQ ".W32" .OR. "%PLATFORM" EQ ".NTK" .OR. "%PLATFORM" EQ ".VXD" .OR. "%CORE_WIN32" NE "" then
+    call mk drvcomm.mak %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+iff "%PLATFORM" EQ ".WIN" .OR. "%CORE_WIN16" NE "" .OR. "%PLATFORM" EQ ".DOS" .OR. "%PLATFORM" EQ ".X86" .OR. "%PLATFORM" EQ ".DX" .OR. "%PLATFORM" == ".DVX" .OR. "%PLATFORM" == ".DVS" .OR. "%PLATFORM" == ".NCX" .OR. "%PLATFORM" == ".NCS" then
+    call mk cfginit %&
+    if exist cfginit.obj COPY CFGINIT.OBJ %projpre%\LIB%QUAKE%%PLATFORM%
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+iff "%PLATFORM" EQ ".WIN" .OR. "%CORE_WIN16" NE "" .AND. "%WINSTATICLIB" NE "" then
+    call mk skrnlsl %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+if not "%NoThunk" == "" goto Skip
+iff "%PLATFORM" EQ ".WIN" .OR. "%PLATFORM" EQ ".W32" .OR. "%PLATFORM" EQ ".32S" .OR. "%CORE_WIN16" NE "" .OR. "%CORE_WIN32" NE "" then
+    :: Exclude non-intel platforms from making thunks
+    iff "%CORE_PLAT" == "I" .OR. "%CORE_PLAT" == "W" .OR. "%CORE_PLAT" == "" then
+        :: Exclude Kernel mode and VXD from building thunks.
+        iff "%CORE_SOFT" NE "V" .AND. "%CORE_SOFT" NE "K" then
+            call mk krnlthk %&
+            copy 32to16.asm %proj%\src%quake%
+            if exist make.err copy build.err+make.err build.err
+    endiff
+endiff
+:skip
+
+endlocal
+
+quit
+
+:killcv
+    iff not "%CV%" == "" then
+	set CV=
+	beep
+	echo.
+	echo ** Your CV environment variable has been unset because DOS
+	echo ** libraries should never be MKUPDATE'd with debug info!
+	echo.
+    endiff
+    iff not "%DEBUG_ALL%" == "" then
+        set DEBUG_ALL=
+	beep
+	echo.
+        echo ** Your DEBUG_ALL environment variable has been unset because DOS
+	echo ** libraries should never be MKUPDATE'd with debug info!
+	echo.
+    endiff
+return

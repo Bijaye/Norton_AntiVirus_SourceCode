@@ -1,0 +1,55 @@
+::
+:: $Header:   S:/scand/VCS/buildall.btv   1.0   06 Feb 1997 21:08:50   RFULLER  $
+::
+:: This file performs mkupdate's for all platforms of the SCAND project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/scand/VCS/buildall.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 21:08:50   RFULLER
+:  Initial revision
+:  
+:     Rev 1.1   08 Aug 1996 13:29:32   JBRENNA
+:  Ported from DOSNAV environment
+:  
+:  
+:     Rev 1.1   11 Jul 1994 19:01:44   DALLEE
+:  Added DX to list of platforms to build.
+:  Changed 'bproj' to 'proj'.
+:  
+:     Rev 1.0   27 Apr 1994 18:53:34   DALLEE
+:  Initial revision.
+::
+:: First rev, for now, just here for consistancy with other projects.
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+
+                                        :: Build each target for each platform.
+for %__Plat in (DOS DX) do gosub Build_It
+
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call proj scand %__Plat
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

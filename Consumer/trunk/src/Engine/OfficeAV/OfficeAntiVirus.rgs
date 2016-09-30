@@ -1,0 +1,26 @@
+HKCR
+{
+	NortonAntiVirus.OfficeAntiVirus.1 = s 'Symantec Norton AntiVirus OfficeAntiVirus Class'
+	{
+		CLSID = s '{DE1F7EEF-1851-11D3-939E-0004AC1ABE1F}'
+	}
+	NortonAntiVirus.OfficeAntiVirus = s 'Symantec Norton AntiVirus OfficeAntiVirus Class'
+	{
+		CLSID = s '{DE1F7EEF-1851-11D3-939E-0004AC1ABE1F}'
+		CurVer = s 'NortonAntiVirus.OfficeAntiVirus.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {DE1F7EEF-1851-11D3-939E-0004AC1ABE1F} = s 'Symantec Norton AntiVirus OfficeAntiVirus Class'
+		{
+			ProgID = s 'NortonAntiVirus.OfficeAntiVirus.1'
+			VersionIndependentProgID = s 'NortonAntiVirus.OfficeAntiVirus'
+			ForceRemove 'Implemented Categories'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{DE1F7EE0-1851-11D3-939E-0004AC1ABE1F}'
+		}
+	}
+}

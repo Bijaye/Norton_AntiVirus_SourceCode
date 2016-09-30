@@ -1,0 +1,252 @@
+@echo off
+rem Update ALE rules with current digest codes for this build.
+rem By David Luxford, 2004 May 6
+rem
+rem Parameters:
+rem     (none)
+rem 
+rem Return Value:
+rem     0 - Success
+rem     Non-Zero - Failure of some kind
+rem
+rem Uses:
+rem     BINARYSOURCENISMM
+rem     BUILDLOGS
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  "%_BATCHNAME" on %_DATE at %_TIME
+rem * Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+
+:Initialize
+rem ** Initialize
+cdd "%@PATH["%_BATCHNAME"]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+set sourceNavBuilt=%CLIENTROOT%\Norton_Antivirus\Corporate_edition\Win32\src\bin.ira
+set sourceNscBuilt=%CLIENTROOT%\Norton_System_Center\src\bin.ira
+set sourceAMS=%CLIENTROOT%\Release\AMS\bin\PDS
+set aleRoot=%@FULL[.]
+set aleTemplate=%aleRoot%\OldALEtemplate
+set aleUpdatedRules=%aleRoot%\UpdatedRules
+set aleTools=%aleRoot%\Tools
+set resultsDir=%aleRoot%\Finished
+set resultsDirLicensed=%aleRoot%\Finished\Licensed
+set resultsDirUnlicensed=%aleRoot%\Finished\Unlicensed
+
+echo ** Initial setup...
+set CreateCleanDirName=%aleTemplate%
+gosub CreateCleanDir
+set CreateCleanDirName=%resultsDir%
+gosub CreateCleanDir
+set CreateCleanDirName=%resultsDirLicensed%
+gosub CreateCleanDir
+set CreateCleanDirName=%resultsDirUnlicensed%
+gosub CreateCleanDir
+rem ** Initial setup:  Extract template
+"%BINARYSOURCENISMM%\ALERules.exe" OVERWRITERO=YES DEFAULTDIR="%aleTemplate%" QUIETMODE=YES
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Creating work copy of ALEs...
+set CreateCleanDirName=%aleUpdatedRules%
+gosub CreateCleanDir
+copy /q "%aleRoot%\*.ale" "%aleUpdatedRules%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Calculating unlicensed digest codes...
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\rtvscan.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\rtvscan.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\clientremote.ale
+set GenerateALErulesDigestCodeFilename=%sourceNscBuilt%\clientremote.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\savroam.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\savroam.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\vpdn_lu.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\vpdn_lu.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\nsctop.ale
+set GenerateALErulesDigestCodeFilename=%sourceNscBuilt%\nsctop.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\roamadmn.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\RoamAdmn.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\PDS.ale
+set GenerateALErulesDigestCodeFilename=%sourceAMS%\pds.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\copysrv.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\CopySrv.exe
+gosub GenerateALErulesDigestCode
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\vpc32.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\vpc32.exe
+gosub GenerateALErulesDigestCode
+rem ** UpdateALE fails with UNC paths, must use a local path
+copy /qz "%BINARYSOURCESYMSENTRY%\SymSentry\vpnsentry.exe" vpnsentry.exe
+if %errorlevel% != 0 goto BuildFailed
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\vpnsentry.ale
+set GenerateALErulesDigestCodeFilename=vpnsentry.exe
+gosub GenerateALErulesDigestCode
+del /q vpnsentry.exe
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Generating unlicensed ALERules...
+set GenerateALErulesTemplate=%aleTemplate%
+set GenerateALErulesOverride=%aleUpdatedRules%
+set GenerateALErulesWorkDir=%aleRoot%\EncryptedUpdatedALEs
+set GenerateALErulesWorkDirB=%aleRoot%\FinalALEs
+set GenerateALErulesTargetFilename=%resultsDirUnlicensed%\alerules.exe
+gosub GenerateALErules
+
+echo ** Calculating licensed digest codes...
+set GenerateALErulesDigestCodeRule=%aleUpdatedRules%\rtvscan.ale
+set GenerateALErulesDigestCodeFilename=%sourceNavBuilt%\els\rtvscan.exe
+gosub GenerateALErulesDigestCode
+
+echo ** Generating licensed ALERules...
+set GenerateALErulesTemplate=%aleTemplate%
+set GenerateALErulesOverride=%aleUpdatedRules%
+set GenerateALErulesWorkDir=%aleRoot%\EncryptedUpdatedALEs
+set GenerateALErulesWorkDirB=%aleRoot%\FinalALEs
+set GenerateALErulesTargetFilename=%resultsDirLicensed%\alerules.exe
+gosub GenerateALErules
+
+
+echo ===                                               ===
+echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+echo ===                                               ===
+set returnVal=0
+goto RealEnd
+
+
+:GenerateALErules
+rem * Generates a new ALERULES.EXE ALE rules updater given source ALE rules
+rem * Parameters:
+rem *   GenerateALErulesTemplate        - Full pathname to the template directory containing source
+rem *                                     ALE rules.
+rem *   GenerateALErulesOverride        - Full pathname to the directory containing overrides to
+rem *                                     template ALE rules and/or new rules.
+rem *   GenerateALErulesWorkDir         - Temporary work directory
+rem *   GenerateALErulesWorkDirB        - Temporary work directory #2
+rem *   GenerateALErulesTargetFilename  - Full pathname for the resulting ALERULES.EXE-type file
+rem *
+
+rem * Validate parameters
+if not isdir "%GenerateALErulesTemplate%" goto BuildFailed
+if not isdir "%GenerateALErulesOverride%" goto BuildFailed
+set CreateCleanDirName=%GenerateALErulesWorkDir%
+gosub CreateCleanDir
+set CreateCleanDirName=%GenerateALErulesWorkDirB%
+gosub CreateCleanDir
+iff exist "%GenerateALErulesTargetFilename%" then
+    del /qz "%GenerateALErulesTargetFilename%"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+
+rem * Encrypt override ALEs
+set GenerateALErulesTemplateFilespec=%GenerateALErulesTemplate%\*.ale
+regsvr32 /s "%aleTools%\pprofile.dll"
+if %errorlevel% != 0 goto BuildFailed
+"%aleTools%\CryptIni.exe" -m7 "%GenerateALErulesOverride%\*.*" "%GenerateALErulesWorkDir%"
+if %errorlevel% != 0 goto BuildFailed
+regsvr32 /s /u "%aleTools%\pprofile.dll"
+if %errorlevel% != 0 goto BuildFailed
+
+rem * Create source directory for MakeSFX
+xcopy /s /e /h /k /q /i /y "%GenerateALErulesTemplate%" "%GenerateALErulesWorkDirB%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /h /k /q /i /y "%GenerateALErulesWorkDir%" "%GenerateALErulesWorkDirB%"
+if %errorlevel% != 0 goto BuildFailed
+attrib +r /q "%GenerateALErulesWorkDirB%\*.*"
+if %errorlevel% != 0 goto BuildFailed
+
+rem * Compress files into an SFX
+pushd
+cdd "%GenerateALErulesWorkDirB%"
+"%aleTools%\makesfx.exe" /OVERWRITE "%GenerateALErulesTargetFilename%" "*.*"
+set returnVal=%errorlevel%
+popd
+if %returnVal% != 0 goto BuildFailed
+return
+
+
+:CreateCleanDir
+rem * Creates an empty subdirectory of the specified name.  If the directory
+rem * already exists, deletes all files and subdirs from it first.
+rem * Parameters:
+rem *   CreateCleanDirName       - filename to touch
+rem *
+echo ** Cleaning %CreateCleanDirName%...
+if exist "%CreateCleanDirName%" attrib -r -s -h /s /q "%CreateCleanDirName%\*.*" >& nul
+if exist "%CreateCleanDirName%" del /s /q /y /x /z "%CreateCleanDirName%\*.*" >& nul
+iff not exist "%CreateCleanDirName%" then
+    mkdir /s "%CreateCleanDirName%"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+return
+
+:GenerateALErulesDigestCode
+rem * Updates an ALE rule with the digest code for the specified file.
+rem * Parameters:
+rem *   GenerateALErulesDigestCodeRule          - Full pathname to the ALE rule to update
+rem *   GenerateALErulesDigestCodeFilename      - Full pathname to the file to calculate the digest
+rem *                                             code against.
+rem *
+if not exist "%GenerateALErulesDigestCodeRule%" goto BuildFailed
+if not exist "%GenerateALErulesDigestCodeFilename%" goto BuildFailed
+attrib -r /q "%GenerateALErulesDigestCodeRule%"
+if %errorlevel% != 0 goto BuildFailed
+"%aleTools%\UpdateALE.exe" "%GenerateALErulesDigestCodeRule%" MATCH:SECTION001 "%GenerateALErulesDigestCodeFilename%"
+if %errorlevel% != 0 goto BuildFailed
+attrib +r /q "%GenerateALErulesDigestCodeRule%"
+if %errorlevel% != 0 goto BuildFailed
+return
+
+
+:BuildFailed
+set returnVal=2
+echo ===                                               ===
+echo `!=*>` FAILED:  Code %returnVal%:  Error detected! `<*=!`
+echo `!=*>` INFO:  At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+echo ===                                               ===
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS not detected!  The 4DOS shell is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS too old!  Version 3.02B or later is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorNoClientRoot
+set returnVal=5
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable not set! `<*=!`
+goto RealEnd
+
+:ErrorBadClientRoot
+set returnVal=6
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable invalid! `<*=!`
+goto RealEnd
+
+:ErrorNoTarget
+set returnVal=7
+echo `!=*>` FAILED:  Code %returnVal%:  No target specified! `<*=!`
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  "%_BATCHNAME" on %_DATE at %_TIME
+quit %returnVal%

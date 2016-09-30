@@ -1,0 +1,57 @@
+#!/bin/sh
+
+#if [ $#argv[0] = hi ]; then
+#    echo Usage: clean debug|release
+#    exit 1
+#fi
+
+case $1 in 
+    debug)
+         TARGET_CLEAN=debug
+         ;;
+
+    release)
+         TARGET_CLEAN=release
+         ;;
+
+    *) echo "Usage: $0 debug|release"; exit 1;; 
+esac
+
+case `uname` in
+    SunOS)
+        TARGET_PLATFORM=solaris
+        ;;
+    Linux)
+        TARGET_PLATFORM=linux
+        ;;
+    AIX)
+        TARGET_PLATFORM=aix
+        ;;
+    FreeBSD)
+        TARGET_PLATFORM=freebsd
+        ;;
+    *)
+        TARGET_PLATFORM=unknown
+        ;;
+esac
+
+# Construct the targets.lst file for the current platform/hardware.
+maketargets
+
+# Clean all projects in targets.lst
+cm_dir=`pwd`
+cd ..
+for target in `cat $cm_dir/targets.lst`
+do
+    targetdir=$target
+    save_dir=`pwd`
+    cd $targetdir
+    rm -f *.o
+    rm -f make.err
+    rm -f $target
+    rm -f ./bin/$TARGET_PLATFORM/$TARGET_CLEAN/$target
+    rm -f ../Shared/bin/$TARGET_PLATFORM/$TARGET_CLEAN/$target
+    cd $save_dir
+done
+
+cd $cm_dir

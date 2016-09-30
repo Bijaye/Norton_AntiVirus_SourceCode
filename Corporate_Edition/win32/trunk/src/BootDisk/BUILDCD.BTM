@@ -1,0 +1,93 @@
+@echo off
+: Copyright 2000 - 2003 Symantec Corporation. All rights reserved.
+:************************************************************************
+:
+: Description:  This batch file builds the Bootable CD floppy for Turbo
+:
+:************************************************************************
+
+:========================================================================
+:
+:  Get navc.exe and it's configuration files.
+:
+:========================================================================
+copy s:\bin.dvx\navdx.exe
+copy s:\bin.dvx\navdx.ovl
+copy s:\bin\release\navopts.dat
+copy s:\nobuilds\navstart.dat
+copy s:\nobuilds\exclude.dat
+copy s:\nobuilds\excludel.dat
+
+:========================================================================
+:
+:  Get the definition files.
+:
+:========================================================================
+copy s:\testdefs\virwild-nomacro1.dat virscan1.dat
+copy s:\testdefs\virwild-nomacro2.dat virscan2.dat
+copy s:\testdefs\virwild-nomacro3.dat virscan3.dat
+copy s:\testdefs\virwild-nomacro4.dat virscan4.dat
+copy s:\testdefs\navex15-nomacro.exp  navex15.exp
+copy s:\testdefs\virscan6.ini
+
+:========================================================================
+:
+:  Get the OS-R2 system files for our boot disk. Also, get autoexec.bat.
+:
+:========================================================================
+copy s:\misc\bootdisk\command.com
+copy s:\misc\bootdisk\io.sys
+copy s:\misc\bootdisk\msdos.sys
+copy s:\misc\bootdisk\autoexec.bat
+copy s:\misc\bootdisk\config.sys
+copy s:\misc\bootdisk\show.com
+copy s:\misc\bootdisk\help.txt
+copy s:\misc\bootdisk\normal.txt
+
+:========================================================================
+:
+:  Format the floppy and copy the system files so io.sys and msdos.sys
+:  are put in the correct locations.
+:
+:========================================================================
+format a: /V:Emergency /S /F:1.44
+
+:========================================================================
+:
+:  Changed the attributes on the system files so we can copy over them.
+:  Also, del drvspace.bin because we need the diskspace.
+:
+:========================================================================
+attrib -r -s -h  a:\*.*
+del a:\drvspace.bin
+
+:========================================================================
+:
+:  Copy our files onto the floppy and reset the attributes on the system
+:  files.
+:
+:========================================================================
+copy *.* a:
+fd a:io.sys /d08-24-96 /t11:11:10
+attrib +r +s +h  a:\io.sys
+attrib +r +s +h  a:\msdos.sys
+attrib +r  a:\command.com
+del a:*.err
+
+:========================================================================
+:
+:  Create the Norton Emergency Disk (NED) image 
+:
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Norton AntiVirus Emergency Boot Disk" image.
+echo.
+
+%projpre%\Release\EDisk\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Boot Disk"
+
+:========================================================================
+:
+:  All done!
+:
+:========================================================================

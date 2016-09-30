@@ -1,0 +1,105 @@
+: Search and replace for:
+:   Dates stamps. For example, 08-01-95
+:   MONYR.TXT files. For example, aug95.txt
+
+@echo off
+cls
+if "%1" == "" goto help
+
+iff isdir s:\builds then
+        echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+        echo บ                This can only be executed from a build area.                 บ
+        echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+        goto end
+endiff
+
+echo Building .ZIP to path:  %1
+be ask "        Proceed (Y/N):  " YyNn
+if errorlevel 3 goto end
+
+DATE 07-24-96
+TIME 00:00:00
+
+cls
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ  Copying Live Update Files...                                               บ
+echo บ                        ... Pausing on errors ...                            บ
+echo บ                                                      ...Otherwise, chill!   บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo Transferring main NAV update files...
+echo.
+
+copy s:\source\nobuilds\src\virusdef.dis %1virusdef.dis
+if not exist %1virusdef.dis pause
+
+copy s:\english\virscan.inf\src\aug96.txt %1aug96.TXT
+if not exist %1aug96.txt pause
+
+copy s:\source\bin.dos\virscan.dat %1virscan.dat
+if not exist %1virscan.dat pause
+
+copy s:\source\pam.dat\lib.dos\virscan2.dat %1virscan2.dat
+if not exist %1virscan2.dat pause
+
+copy s:\SOURCE\VIRSCAN.INF\lib.dos\virscan.inf %1virscan.inf
+if not exist %1virscan.inf pause
+
+copy s:\english\virscan.inf\src\virspec.txt %1virspec.txt
+if not exist %1virspec.txt pause
+
+echo.
+echo Transferring NAVEX update files...
+
+copy s:\source\navex\lib.vxd\navex.vxd %1navex.vxd
+if not exist %1navex.vxd pause
+
+copy s:\source\navex\lib.w32\navex32.dll %1navex32.dll
+if not exist %1navex32.dll pause
+
+copy s:\source\navex\lib.dx\navex.exp %1navex.exp
+if not exist %1navex.exp pause
+
+echo.
+echo Transfer complete.  One moment please...Zipping files
+
+fd %1*.* /d07-24-96 /t0:00:00 /s
+
+k:
+s:\source\nobuilds\src\pkzip -! -ex %1`LIVUPDAT.zip` %1*.*
+s:\source\nobuilds\src\pkzip %1`LIVUPDAT.ZIP`
+
+cls
+fd %1*.zip /d07-24-96 /t0:00:00 /s
+
+cls
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Cleaning up.  One moment please.                                            บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo.
+if exist %1aug96.txt erase %1aug96.txt > nul
+if exist %1update.txt erase %1update.txt > nul
+if exist %1virscan.dat erase %1virscan.dat > nul
+if exist %1virscan2.dat erase %1virscan2.dat > nul
+if exist %1virscan.inf erase %1virscan.inf > nul
+if exist %1virusdef.dis erase %1virusdef.dis > nul
+if exist %1virspec.txt erase %1virspec.txt > nul
+if exist %1navex.vxd erase %1navex.vxd > nul
+if exist %1navex32.dll erase %1navex32.dll > nul
+if exist %1navex.exp erase %1navex.exp > nul
+
+if exist %1updater.ini erase %1updater.ini > nul
+if exist %1virupdat.ini erase %1virupdat.ini > nul
+if exist %1extpack.exe erase %1extpack.exe > nul
+if exist %1virscan.zip erase %1virscan.zip > nul
+
+:end
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ                                 Finished!                                   บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+:help
+text
+Usage: BUILDZIP.BTM <drive:\dest\>
+ NOTE: Remember the trailing backslash!
+endtext
+

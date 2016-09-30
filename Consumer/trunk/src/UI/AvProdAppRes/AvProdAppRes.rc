@@ -1,0 +1,202 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "AvProdAppRes.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "AvProdAppRes.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "#include ""NAVVer.h""\r\n"
+    "#include ""filever.h""\r\n"
+    "#include ""verinc.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_TRAY MENU 
+BEGIN
+    POPUP "Tray Menu"
+    BEGIN
+        MENUITEM "Open %1!s!",                  ID_TRAYMENU_OPENAVPRODUCT
+        MENUITEM "View Recent History",         ID_TRAYMENU_VIEWRECENTHISTORY
+
+        MENUITEM SEPARATOR
+        MENUITEM "Enable Auto-Protect",         ID_TRAYMENU_ENABLEAUTOPROTECT
+
+        MENUITEM "Disable Auto-Protect",        ID_TRAYMENU_DISABLEAUTOPROTECT
+
+        MENUITEM "%1!s! Options",               ID_TRAYMENU_OPENAVPRODUCTOPTIONS
+
+        POPUP "Additional Options"
+        BEGIN
+            MENUITEM "Set Normal State",            ID_ADDITIONALOPTIONS_SETNORMALSTATE
+
+            MENUITEM "Set Abnormal State",          ID_ADDITIONALOPTIONS_SETABNORMALSTATE
+
+            MENUITEM "Set Unknown State",           ID_ADDITIONALOPTIONS_SETUNKNOWNSTATE
+
+            MENUITEM SEPARATOR
+            MENUITEM "Set Working State",           ID_ADDITIONALOPTIONS_SETWORKINGSTATE
+
+            MENUITEM "Set Information State",       ID_ADDITIONALOPTIONS_SETINFORMATIONSTATE
+
+            MENUITEM "Set Warning State",           ID_ADDITIONALOPTIONS_SETWARNINGSTATE
+
+            MENUITEM SEPARATOR
+            MENUITEM "Send Test Notification",      ID_ADDITIONALOPTIONS_SENDTESTNOTIFICATION
+
+            MENUITEM "Send Test Alert",             ID_ADDITIONALOPTIONS_SENDTESTALERT
+
+            MENUITEM SEPARATOR
+            MENUITEM "Show Balloon Text",           ID_ADDITIONALOPTIONS_SHOWBALLOONTEXT
+
+            MENUITEM SEPARATOR
+            MENUITEM "Close",                       ID_ADDITIONALOPTIONS_CLOSE
+
+        END
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TRAYICON_NORMAL     ICON                    "res\\TrayIcon_Normal.ICO"
+IDI_TRAYICON_ABNORMAL   ICON                    "res\\TrayIcon_Abnormal.ICO"
+IDI_TRAYICON_WORKING    ICON                    "res\\TrayIcon_Working.ICO"
+IDI_TRAYICON_INFORMATION ICON                    "res\\TrayIcon_Information.ICO"
+IDI_TRAYICON_WARNING    ICON                    "res\\TrayIcon_Warning.ICO"
+IDI_TRAYICON_UNKNOWN    ICON                    "res\\TrayIcon_Unknown.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_OEHALERT_TITLE_RED  BITMAP                  "res\\alert_banner_red.bmp"
+IDB_OEHALERT_TITLE_YELLOW BITMAP                  "res\\alert_banner_yellow.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_TRAYICON_TEXT_NORMAL "%1!s! Auto-Protect Enabled"
+    IDS_TRAYICON_TEXT_ABNORMAL "%1!s! Auto-Protect Disabled"
+    IDS_TRAYICON_TEXT_UNKNOWN "%1!s! Auto-Protect Unknown"
+    IDS_TRAYICON_TEXT_WORKING "%1!s! is running a background scan"
+    IDS_TRAYICON_TEXT_INFORMATION "%1!s! has information that needs reviewed"
+    IDS_TRAYICON_TEXT_WARNING 
+                            "%1!s! has information that needs your immediate review"
+    IDS_OEHALERT_SUBJECT    "Subject"
+    IDS_OEHALERT_SENDER     "Sender"
+    IDS_OEHALERT_WORMPATH   "File Path"
+    IDS_OEHALERT_RECIPIENT  "Recipient"
+    IDS_OEHALERT_TITLE      "%1!s! has detected a worm."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_OEHALERT_ACTION_TITLE "What would you like to do?"
+    IDS_OEHALERT_ACTION_QUARANTINE "Quarantine"
+    IDS_OEHALERT_ACTION_AUTHORIZE "Allow"
+    IDS_OEHALERT_ACTION_ABORT "Abort"
+    IDS_OEHALERT_ACTION_IGNORE "Ignore"
+    IDS_OEHALERT_BRIEF_DESC "A suspected email worm has been detected attempting to propagate itself using your computer."
+    IDS_OEHALERT_PROMPT_TEXT "What would you like to do?"
+    IDS_REBOOTREQUEST_TITLE "Restart Required"
+    IDS_REBOOTREQUEST_BRIEF_DESC 
+                            "Your computer must restart in order to continue the removal of Security Risks."
+    IDS_REBOOTREQUEST_PROMPT_TEXT "What would you like to do?"
+    IDS_REBOOTREQUEST_REBOOT_NOW "Restart now (recommended)"
+    IDS_REBOOTREQUEST_REBOOT_LATER "Don't restart now, I'll restart later"
+    IDS_PROCTERM_PROMPT_TEXT 
+                            "To completely remove security risks from your computer, you must close all programs.\r\n\r\nSave all open files, and then click OK to continue."
+    IDS_PROCTERM_CANCEL_BUTTON_TEXT "Cancel"
+    IDS_PROCTERM_OK_BUTTON_TEXT "OK"
+    IDS_PROCTERM_MOREINFO_BUTTON_TEXT "more info"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROCTERM_DONTASKAGAIN_TEXT "Don't ask me again"
+    IDS_RISKALERT_TITLE     "Security Risk Alert"
+    IDS_RISKALERT_BRIEF_DESC "A suspected security risk has been detected."
+    IDS_RISKALERT_RISK_NAME "Risk name"
+    IDS_RISKALERT_RISK_CATEGORY "Risk category"
+    IDS_RISKALERT_PROMPT_TEXT "What would you like do?"
+    IDS_RISKALERT_ACTION_REMOVE "Remove this risk now"
+    IDS_RISKALERT_ACTION_IGNORE_ONCE "Ignore this risk once"
+    IDS_RISKALERT_ACTION_IGNORE_ALWAYS "Always ignore this risk"
+    IDS_REBOOTREQUEST_HEIGHT "200"
+    IDS_REBOOTREQUEST_WIDTH "200"
+    IDS_OEH_FEATURE_NAME    "Norton Email Protection"
+    IDS_PROCTERM_TITLE      "Symantec"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+#include "NAVVer.h"
+#include "filever.h"
+#include "verinc.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,376 @@
+@echo off
+echo.
+echo --------------------
+echo Starting XWING build
+echo --------------------
+echo.
+echo.
+
+pushd
+
+: ---------------------------------------------------------------------------
+: Save environment
+: ---------------------------------------------------------------------------
+set O_PATH=%PATH
+set O_INCLUDE=%INCLUDE
+set O_LIB=%LIB
+set O_PROGS=%PROGS
+set O_WATCOM=%WATCOM
+set O_DEBUG=%DEBUG
+
+set O_CM_DIR=%CM_DIR
+set O_LDVP_SHARED_PATH=%LDVP_SHARED_PATH
+set O_BLD_LOG=%BLD_LOG
+
+set O_NORTON_ANTIVIRUS_NAVNLM_SRC_PATH=%NORTON_ANTIVIRUS_NAVNLM_SRC_PATH
+
+set O_NOVELLNDK=%NOVELLNDK
+SET O_MWCINCLUDES=%MWCINCLUDES
+SET O_MWLibraries=%MWLibraries
+SET O_MWLibraryFiles=%MWLibraryFiles
+: ---------------------------------------------------------------------------
+: Set environment
+: ---------------------------------------------------------------------------
+set PATH=R:\Watcom11\binnt;R:\Watcom11\binw;C:\Progra~1\Metrow~1\CodeWa~1\Tools\Comman~1;%PATH%
+set INCLUDE=R:\Watcom11\novh;R:\Watcom11\h
+set LIB=
+set PROGS=R:
+set WATCOM=R:\Watcom11
+set DEBUG= DEBUG
+
+set CM_DIR=%_CWD
+set LDVP_SHARED_PATH=%@FULL[\Core_technology\LDVP_Shared]
+set BLD_LOG=%_CWD\build.err
+
+set NORTON_ANTIVIRUS_NAVNLM_SRC_PATH=%@FULL[\Norton_Antivirus\Navnlm\src]
+
+set NOVELLNDK=C:\Novell\NDK\nwsdk
+SET MWCINCLUDES=C:\PROGRA~1\Metrow~1\CodeWa~1\Novell~1\Metrow~1\Librar~1\MSLC__~1\Include;C:\PROGRA~1\Metrow~1\CodeWa~1\Novell~1\Metrow~1\Headers;C:\PROGRA~1\Metrow~1\CodeWa~1\Win32-~1\Headers\Win32S~1
+SET MWLibraries=c:\PROGRA~1\Metrow~1\CodeWa~1\Novell~1\Metrow~1\Librar~1\Runtime\;c:\Novell\NDK\nwsdk\imports
+set MWLibraryFiles = mwcrtl.lib;mwcpp.lib;clib.imp;threads.imp;nlmlib.imp;tli.imp;nit.imp;requestr.imp;QsFwd.exp;ws2nlm.imp
+
+: Clear the build log
+> %BLD_LOG
+
+: ---------------------------------------------------------------------------
+: Start Core Technology builds
+: ---------------------------------------------------------------------------
+echo.
+echo Building Core Technology projects
+echo.
+echo. >> %BLD_LOG
+echo Building Core Technology projects >> %BLD_LOG
+echo. >> %BLD_LOG
+
+cd %LDVP_SHARED_PATH
+attrib -R *.lk1 /sq
+
+
+:
+: Build Message File
+: ------------------
+
+cd PScan\local
+set projname=MakeMsgs
+set wkdir=%_CWD
+set ret=0
+echo    Running %projname
+echo.
+echo    Running %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+
+attrib -R ..\nlm\src\rtvscan.msg /q
+
+makemsgs h e >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+:
+: Build MSGS.H File
+: ------------------
+
+cd PScan\Common\Src
+set projname=MC
+set wkdir=%_CWD
+set ret=0
+echo    Running %projname
+echo.
+echo    Running %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+
+MC msgs.mc >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..\..
+echo.
+echo. >> %BLD_LOG
+
+:
+: Build RTVScan
+: -------------
+
+cd PScan\nlm
+set projname=RTVScan
+set wkdir=%_CWD
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+
+:
+: Build VPStart
+: -------------
+
+cd PScan\VPStart
+set wkdir=%_CWD
+set projname=VPStart
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+
+:
+: Build VPReg
+: -----------
+
+cd PScan\VPReg
+set wkdir=%_CWD
+set projname=VPReg
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+
+:
+: Build VPRegEdt
+: --------------
+
+cd PScan\VPRegEdt
+set wkdir=%_CWD
+set projname=VPRegEdt
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+
+:
+: Build VPQue
+: -----------
+
+cd PScan\VPQue
+set wkdir=%_CWD
+set projname=VPQue
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+
+:
+: Build VPFix
+: -----------
+
+cd PScan\VPFix
+set wkdir=%_CWD
+set projname=VPFix
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..
+echo.
+echo. >> %BLD_LOG
+
+
+:
+: Build NAV_Glue
+: --------------
+
+cd PScan\NAV_Glue\nlm
+set wkdir=%_CWD
+set projname=i2_ldvp
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd ..\..\..
+echo.
+echo. >> %BLD_LOG
+
+:
+: Build QSFwd
+: --------------
+
+cd %NORTON_ANTIVIRUS_NAVNLM_SRC_PATH
+:don't need this   attrib -R *.lk1 /sq
+
+cd QsFwd
+set wkdir=%_CWD
+set projname=QSFwd
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd %LDVP_SHARED_PATH
+echo.
+echo. >> %BLD_LOG
+: ---------------------------------------------------------------------------
+: Finished. Cleanup and leave.
+: ---------------------------------------------------------------------------
+goto cleanup
+
+
+: ---------------------------------------------------------------------------
+: Handle errors
+: ---------------------------------------------------------------------------
+
+:errexit
+echo.
+echo ****************************
+echo Build error in %projname.mak
+echo (%wkdir)
+echo ****************************
+echo.
+
+echo. >> %BLD_LOG
+echo **************************** >> %BLD_LOG
+echo Build error in %projname.mak >> %BLD_LOG
+echo (%wkdir)                     >> %BLD_LOG
+echo **************************** >> %BLD_LOG
+echo. >> %BLD_LOG
+
+
+: ---------------------------------------------------------------------------
+: Cleanup and restore environment vars
+: ---------------------------------------------------------------------------
+
+:cleanup
+
+set PATH=%O_PATH
+set INCLUDE=%O_INCLUDE
+set LIB=%O_LIB
+set PROGS=%O_PROGS
+set WATCOM=%O_WATCOM
+set DEBUG=%O_DEBUG
+
+set CM_DIR=%O_CM_DIR
+set BLD_LOG=%O_BLD_LOG
+set LDVP_SHARED_PATH=%O_LDVP_SHARED_PATH
+
+set NORTORN_ANTIVIRUS_NAVNLM_SRC_PATH=%O_NORTORN_ANTIVIRUS_NAVNLM_SRC_PATH
+
+set NOVELLNDK=%O_NOVELLNDK
+SET MWCINCLUDES=%O_MWCINCLUDES
+SET MWLibraries=%O_MWLibraries
+SET MWLibraryFiles=%O_MWLibraryFiles
+set O_PATH=
+set O_INCLUDE=
+set O_LIB=
+set O_PROGS=
+set O_WATCOM=
+set O_DEBUG=
+set O_CM_DIR=
+set O_LDVP_SHARED_PATH=
+set O_BLD_LOG=
+
+set O_NORTORN_ANTIVIRUS_NAVNLM_SRC_PATH=
+
+set O_NovellNDK=
+SET O_MWCINCLUDES=
+SET O_MWLibraries=
+SET O_MWLibraryFiles=
+
+set wkdir=
+set projname=
+
+popd
+quit %ret
+

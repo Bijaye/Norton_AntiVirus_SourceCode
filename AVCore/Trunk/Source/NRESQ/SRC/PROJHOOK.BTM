@@ -1,0 +1,20 @@
+::**********************************************************************
+::
+:: PROJHOOK.BTM
+:: 
+:: This project hook file is for the RESCUEW project.  It ensures
+:: that the project builds correctly.
+::
+::**********************************************************************
+
+iff "%1" == "INIT" then
+                                        :: Entering the Project so
+                                        :: perform initialization tasks.
+
+elseiff "%1" == "CLEANUP" then
+                                        :: the required clean up.
+else
+
+    Echo Invalid PROJHOOK parameter 1 - MUST be INIT or CLEANUP!!
+
+endiff

@@ -1,0 +1,118 @@
+<html>
+<head>
+<meta ID="charset_opt_ed" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1" />
+<title id="exclude_title">Norton AntiVirus</title>
+
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+<script Language="JavaScript" src="DisplayScriptError.js"></script>
+<script language="JavaScript" src="options.js"></script>
+<script language="JavaScript" src="options_exclude_ap_dlg.js"></script>
+<link rel="stylesheet" type="text/css" href="navstyle.css">
+</head>
+<body id="body_ed" leftmargin="0"  topmargin="0" scroll="no" onHelp="Help();" onLoad="initialize_options_exclude_ap_dlg();" TABINDEX="-1">
+<!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+<span id="IlegalFile" style="display:none">Illegal file path specified!</span> 
+<span id="WildCardInPath" style="display:none">The path name includes an unsupported character or wildcard.  Unsupported characters include  * ? / " < > |. Colons (:) are supported as part of drive names only.</span> 
+<span id="AllPathsError" style="display:none">You cannot exclude all files from scanning (*.*). You can exclude all files in a folder (c:\excluded files) or all files with a specific extension (*.jpg).</span> 
+<span id="ExclusionError" style="display:none">Invalid exclusion!</span> 
+<span id="DuplicateExclusion" style="display:none">Duplicate exclusion!</span>
+ <!-- end of JavaScript text -->
+<form name="options_exclude_ap_dlg" onsubmit="return false">
+  <table id="t1_ed" width="100%" border="0" bgcolor="#FFFFFF">
+    <tr id="t1_tr1_ed" style="background-image: url('topbg.gif'); background-repeat: no-repeat;"> 
+      <td id="t1_td1_ed" valign="top" width="100%" height="30"> 
+        <table id="t2_ed" width="100%" height="41" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td id="t2_td1_ed" height="4" colspan="2">&nbsp;</td>
+          </tr>
+          <tr id="t2_tr1_ed" valign="top"> 
+            <td id="t2_td2_ed" height="12" valign="top" style="padding-bottom:1px" width="75%"> 
+              &nbsp;<font color="#333333"><label id="ItemAccessKey" for="Item" accesskey="I"> <span class="cutitleb" id="exclude_item">Add Item</span></label></font> 
+            </td>
+            <td id="t2_td3_ed" align="right">
+			  <a href='' onClick="Help(); return false;">
+              <span class="cuhelp" id="eclude_dlg_help">more info</span></a><span id="table2_space1">&nbsp;&nbsp;&nbsp;</span><br>
+            </td>
+          </tr>
+          <tr id="t2_tr2_ed" valign="center"> 
+            <td id="t2_td4_ed" valign="center">
+              <table id="t3_ed" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td id="t3_td1_ed" width="75%" align="center" height="30">
+                    <input class="normal" id="Item" size="48" maxlength="256" onKeyUp="OnKey();" onKeyPress="OnKey();" onpropertychange="OnKey();">
+                    &nbsp;<button id="Browse" class="normal" onClick="return BrowseExclusions();"> 
+                      <img id="ed_openfile" src="openfile.gif" width="16" height="16">
+                    </button>
+                  </td>
+                </tr> 
+                <tr id="t3_tr1_ed" valign="top"> 
+                  <td id="t3_td2_ed" height="12" valign="top" style="padding-bottom:1px" width="87%" colspan="2"> 
+                    &nbsp; 
+                    <input type="checkbox" id="IncludeSubfolders" name="checkbox">
+                    <label id="IncludeSubAccessKey" for="IncludeSubfolders" accesskey="s"> <span class="indent10" id="exclude_includesub">Include 
+                    <u>s</u>ubfolders</span> </label>
+                  </td>
+                </tr>
+                <tr id="NTCompressedCheckRow" valign="top"> 
+                  <td id="t3_td3_ed" height="12" valign="top" style="padding-bottom:1px" width="87%" colspan="2"> 
+                    &nbsp; 
+                    <input type="checkbox" id="IncludeCompressed" name="checkbox">
+                    <label id="IncludeCompAccessKey" for="IncludeCompressed" accesskey="e"> <span class="indent10" id="exclude_includecomp">Only <u>e</u>xclude 
+                    from compressed file scanning</span> </label>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td id="table4_td_buttons" valign="middle">
+              <table id="t4_ed" width="100%" border="0" cellspacing="2" cellpadding="0">
+                <tr> 
+                  <td>
+                    <button id="OK" class="goldnav1" onClick="Save();"> 
+                    <label id="OkAccessKey" for="OK" accesskey="o"> <span class="indent10" id="exclude_ok"> 
+                    <u>O</u>K </span> </label> </button><br>
+                  </td>
+                </tr> 
+                <tr> 
+                  <td>
+                    <button id="Cancel" class="goldnav1" onClick="location.href = 'closeme.xyz';"> 
+                    <label id="CancelAccessKey" for="Cancel" accesskey="c"> <span class="indent10" id="exclude_cancel"> 
+                    <u>C</u>ancel </span> </label> </button><br>
+                  </td>
+                </tr> 
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr id="Win9x"> 
+      <td id="t4_td1_ed" valign="top" width="100%"> 
+        <table id="t5_ed" height="26" width="100%">
+            <tr> 
+              <td id="t5_td1_ed" height="10" style="padding-left:10px"><span class="culinkhead" id="exclude_excludefrom"><b>Exclude 
+                from:</b></span></td>
+            </tr>
+          </table>
+          <br>
+          &nbsp; 
+          <input type="checkbox" id="VirusDetection" name="checkbox2" onClick="return EnableOK();">
+          <label id="VirusDetectionAccessKey" for="VirusDetection" accesskey="V"><span class="indent10" id="exclude_virusdetection"><u>V</u>irus 
+          detection</span></label><br>
+          <span id="t4_space1">&nbsp;</span>
+          <input type="checkbox" id="LowLevelFormat" tabindex="L" name="checkbox2" onClick="return EnableOK();">
+          <label id="FormatAccessKey" for="LowLevelFormat" accesskey="L"><span class="indent10" id="exclude_lowlevelformat"><u>L</u>ow level format of 
+          hard disk</span></label><br>
+          <span id="t4_space2">&nbsp;</span>
+          <input type="checkbox" id="BootRecordWriteHD" name="checkbox2" onClick="return EnableOK();">
+          <label id="HDBootRecWriteAccessKey" for="BootRecordWriteHD" accesskey="d"><span class="indent10" id="exclude_writetoharddisk">Write to har<u>d</u> disk 
+          boot records</span></label><br>
+          <span id="t4_space3">&nbsp;</span>
+          <input type="checkbox" id="BootRecordWriteFloppy" name="checkbox2" onClick="return EnableOK();">
+          <label id="FlopBootRecWriteAccessKey" for="BootRecordWriteFloppy" accesskey="f"><span class="indent10" id="exclude_writetofloppy">Write to <u>f</u>loppy 
+          disk boot records</span></label><br>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

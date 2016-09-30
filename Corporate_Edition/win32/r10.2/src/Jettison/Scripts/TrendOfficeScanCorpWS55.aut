@@ -1,0 +1,24 @@
+;This script file supports and has been tested with
+;Trend OfficeScan Corporate 5.5 - WorkStation
+Platform=WinXP
+
+;  Turn off password protection.
+SetRegistry=HKEY_LOCAL_MACHINE, Software\TrendMicro\PC-cillinNTCorp\CurrentVersion\Misc., NoPwdProtect, 1
+
+;
+;  If this program is password protected...
+;What we can do is to change the password needed for the uninstall:
+; go to the OfficeScan client's /winnt or /windows directory
+; look for ofcscan.ini
+; open using notepad
+; search for uninstall_pwd
+; change the value to 70
+; save and exit
+; uninstall using the password 1
+SetINIEntry=ofcscan.ini, INI_CLIENT_SECTION, uninstall_pwd,70
+
+;  Run Uninstall
+runprogram=HKEY_LOCAL_MACHINE, SOFTWARE\Microsoft\Windows\CurrentVersion\UnInstall\OfficeScanNT, UninstallString
+SendTextToEditWindow=Uninstall OfficeScan Client, 1, 60
+SendAffirmativeToWindowWithButtonClick=Uninstall OfficeScan Client, &Ok, 60
+

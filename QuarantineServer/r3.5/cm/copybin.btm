@@ -1,0 +1,32 @@
+@echo off
+
+color bright cyan on black
+
+set sourceret=0
+set targetret=0
+
+set source=%1
+set target=%2
+
+iff not exist %source% then
+    echo ***** >> %build_err
+    echo unable to locate %source%  >> %build_err
+    echo ***** >> %build_err
+    set ret=1
+    goto done
+endiff
+
+copy /k /z /q %source% %target%
+
+iff not exist %target% then
+    echo ***** >> %build_err
+    echo unable to locate %target%  >> %build_err
+    echo ***** >> %build_err
+    set ret=1
+    goto done
+endiff
+
+echo copy /k /z /q %source% %target% >> %build_err
+echo copy /k /z /q %source% %target%
+:done
+color white on black

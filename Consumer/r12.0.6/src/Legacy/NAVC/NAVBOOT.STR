@@ -1,0 +1,58 @@
+// Copyright 1992-1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/NAVC/VCS/navboot.stv   1.1   13 Aug 1997 21:36:02   TCASHIN  $
+//
+// Description:
+//  Strings file for the DOS NAVBOOT stub program
+//
+// See Also:
+//***********************************************************************
+// $Log:   N:/NAVC/VCS/navboot.stv  $
+// 
+//    Rev 1.1   13 Aug 1997 21:36:02   TCASHIN
+// Changed NAVC to NAVDX.
+// 
+//    Rev 1.0   13 Aug 1997 21:13:08   TCASHIN
+// Initial revision.
+// 
+//    Rev 1.0   29 Jul 1997 15:51:06   JBELDEN
+// Initial revision.
+// 
+//    Rev 1.5   06 Aug 1996 16:58:36   MZAREMB
+// Add a new switch to pass to the overlay.
+// 
+//    Rev 1.4   15 Jul 1996 10:13:36   MZAREMB
+// Changed all "NAVBOOT" names to "NAV" for Nirvana Plus.
+//
+//    Rev 1.3   09 Apr 1996 11:44:38   MZAREMB
+// Changed a %u parameter to %ld for times when the user's available
+// conventional memory is way too low.
+//
+//    Rev 1.2   08 Apr 1996 10:35:24   MZAREMB
+// Added "Insufficient memory" message for memory checking.
+//
+//    Rev 1.1   02 Apr 1996 15:54:36   MZAREMB
+// Changed message for when the CRC is incorrect to be more helpful to the user.
+//
+//    Rev 1.0   01 Apr 1996 18:55:10   MZAREMB
+// Initial revision.
+//
+//***********************************************************************
+
+#define SZ_CANNOTEXEC_CONSTANT      "** Cannot execute NAVDX.OVL; "
+#define SZ_NOENT_CONSTANT           "file not found.\n"
+#define SZ_NOEXEC_CONSTANT          "invalid executable format.\n"
+#define SZ_NOMEM_CONSTANT           "insufficient conventional memory to load.\n"
+#define SZ_BADCHECKSUM_CONSTANT     "The NAVDX.EXE file has been changed or infected.\nPlease re-run this program from your original disks.\n"
+#define SZ_CANNOTOPEN_CONSTANT      "Error opening NAVDX.EXE for checksum verification.\n"
+#define SZ_READERROR_CONSTANT       "Error reading NAVDX.EXE for checksum verification.\n"
+#define SZ_NOCHECKSUM_CONSTANT      "Cannot continue; NAVDX.EXE has no checksum.\n"
+#define SZ_PLEASEWAIT_CONSTANT      "Loading NAVDX, please wait...\n"
+#define SZ_NOCRCMEM_CONSTANT        "Insufficient memory to verify checksum.\n"
+#define INSUFFICIENT_MEM_CONSTANT   "Not enough memory to run NAVDX.\nPlease free an additional %ld bytes and try again.\n"
+
+#define INIFILE                     "NAVDX.INI"
+#define ADVO_SECTION                "AdvoText"
+#define OPEN_ENTRY                  "OpenMsg"
+#define CLOSE_ENTRY                 "CloseMsg"

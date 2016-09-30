@@ -1,0 +1,133 @@
+[envset]
+set PROJPRE=%SRCPRE%
+set quakepre=%COREPRE%\SOURCE
+set quake=
+set quakeinc=%COREPRE%\SOURCE\INCLUDE\SRC%QUAKE%
+set globalinc=%COREPRE%\SOURCE\INC\SRC
+set quakelangpre=%COREPRE%\%lang%
+set toolsdir=%SRCPRE%\tools
+set dosx=-SWAPDIR %temp%
+
+[commonpre]
+platforms=ida,ira,IDAV,IRAV,iru,idu,IDUK,IRUK,ada,ara,adu,aru,ADUK,ARUK,dos,wra,wda,nlm,x86,BIN,ntk,NLM
+set quake=
+set quakeinc=%COREPRE%\source\include\src%QUAKE%
+set includepre=
+set libpre=
+
+[IDA]
+set QUAKE_CUSTOM=NAV
+tools=msvc50x86;msvc50mfcx86;mstest40;masm611
+
+[IRA]
+set QUAKE_CUSTOM=NAV
+tools=msvc50x86;msvc50mfcx86;mstest40;masm611
+
+[IDAV]
+set xopts=/Gys10000
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[IRAV]
+set xopts=/Gys10000
+tools=vxdrc;msvc20ddklink;msvc20path;msvc20;win95ddk;masm611;win95sdk
+
+[IRU]
+set QUAKE_CUSTOM=NAV
+tools=msvc42path;masm611;msvc42;msvc42mfc;mstest40
+
+[IDU]
+set QUAKE_CUSTOM=NAV
+tools=msvc42path;masm611;msvc42;msvc42mfc;mstest40
+
+[IRUK]
+set globalinc=%COREPRE%\SOURCE\INC\SRC;%COREPRE%\source\symevntk.dev\src
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+[IDUK]
+set globalinc=%COREPRE%\SOURCE\INC\SRC;%COREPRE%\source\symevntk.dev\src
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+[ADA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ARA]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ARU]
+set QUAKE_CUSTOM=NAV
+tools=MSVC50AXP;MSVC50MFCAXP
+
+[ADUK]
+set globalinc=%COREPRE%\SOURCE\INC\SRC;%COREPRE%\source\symevntk.dev\src
+tools=MSVC50AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[ARUK]
+set globalinc=%COREPRE%\SOURCE\INC\SRC;%COREPRE%\source\symevntk.dev\src
+tools=MSVC50AXP;winnt40srcinc;winntddk40AXP;win32sdkAXP
+
+[DOS]
+tools=msc8;masm611
+
+[WDA]
+; set QUAKE_CUSTOM=NAV
+;tools=msc8;masm611;windev31
+tools=msvc152;masm611;windev31
+
+[WRA]
+; set QUAKE_CUSTOM=NAV
+;tools=msc8;masm611;windev31
+tools=msvc152;masm611;windev31
+
+[X86]
+tools=msc8;masm611
+
+[NLM]
+tools=watcom11;masm611;nwnlm12
+set WATCOM11=C
+set WATCOM=R:\WATCOM11
+
+[dx]
+tools=dos16m.601;msc8;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=r:\dos16m.601
+
+[dvx]
+tools=dos16m.601;msc8;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=r:\dos16m.601
+
+[ncx]
+tools=dos16m.601;msc8;masm611
+SET DOSX=-SWAPDIR %TEMP%
+SET DOSEXTENDER=r:\dos16m.601
+
+[NTK]
+;set globalinc=%COREPRE%\source\include\src
+tools=winnt40srcinc;win95sdk;winntddk40;msvc40;masm611
+
+;[w32]
+;set QUAKE_CUSTOM=NAV
+;tools=msvc42;msvc42mfc;masm611
+
+;[32s]
+;set QUAKE_CUSTOM=NAV
+;tools=msvc20;masm611;winsdk32s
+
+[TSR]
+tools=msc8;masm611
+
+[BIN]
+
+[NLM]
+tools=watcom11;masm611;nwnlm12
+set WATCOM11=C
+set WATCOM=R:\WATCOM11
+
+[]
+

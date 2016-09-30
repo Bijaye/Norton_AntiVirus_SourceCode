@@ -1,0 +1,223 @@
+/*
+  Spying int 13h for boot and multipartite infections
+  */
+
+global infect_cnt: integer;
+global switch_cnt: integer;
+global btstate: integer; /* boot triaging state: 0 -> must do 'dir A:', 1 -> must switch A: drive */
+
+rule BIOSint;
+var
+secpertrack: integer;
+numheads: integer;
+secnum: integer;
+lastsecnum: integer;
+drive: string;
+cause: integer;
+rc: integer;
+disk: integer;
+head: integer;
+track: integer;
+sector: integer;
+seccnt: integer; /* count for max sectors to write */
+begin
+cause := strToInt(report_tag);
+if
+        (cause = 1 or cause = 13)
+        and strToU(imm) = 0x13                          /* 13h */
+        and strToInt(rettick) > strToInt(calltick)      /* on return */
+        and strToInt(retcf) = 0                         /* success */
+        -->
+        begin
+        if
+                rl(edx) = 0x80 --> begin secpertrack := 17; numheads := 4 end;  /* Parameters for our 10M HDD */
+                true           --> begin secpertrack := 18; numheads := 2 end   /* For the FDD */
+        fi;
+
+        if
+                rh(eax) = 0x03          /* Write sector */
+                or rh(eax) = 0x0B       /* Write long sector */
+                -->
+                begin
+                /* println ('btstate ', btstate,  ' infect_cnt ',infect_cnt, ' switch_cnt ',switch_cnt); */
+                disk   := rl(edx);
+                head   := rh(edx);
+                track  := rh(ecx)+4*bitand(rl(ecx),0xC0);
+                sector := bitand(rl(ecx),0x3F);
+				seccnt := rl(eax); /* How many sectors to write */
+                print(' *** BIOS Write (',byte2h(disk),',',byte2h(head),',',word2h(track),',', byte2h(sector),',', byte2h(seccnt),') ');                         
+                /* CH = track ; CL = sector ; DH = head */
+                /* rc := extractsec(disk,head,track,sector,seccnt);
+                if rc != 0 --> println('EXTRACTION FAILED!') fi; */
+                secnum := rl(ecx)+(rh(edx)+rh(ecx)*numheads)*secpertrack;
+                lastsecnum := secnum+rl(eax)-1;
+                if
+                        rx(edx) = 0x80 and rx(ecx) = 0x01
+                        -->	begin
+				print('HDD MBR');
+				/*rc := extractHDMBR;
+                                if rc != 0 --> println('EXTRACTION FAILED!') fi;*/
+                                infect_cnt := infect_cnt + 1
+				end;
+                        
+                        rx(edx) = 0x180 and rx(ecx) = 0x01
+                        -->	begin
+				print('HDD Boot Sector');
+				/*rc := extractHDPBS;
+                                if rc != 0 --> println('EXTRACTION FAILED!') fi;*/
+                                infect_cnt := infect_cnt + 1
+				end;
+                        
+                        rx(edx) = 0x00 and rx(ecx) = 0x01
+                        -->	begin
+				print('FDA Boot Sector');
+				/*rc := extractFDBootSector;
+                                if rc != 0 --> println('EXTRACTION FAILED!') fi;*/
+                                infect_cnt := infect_cnt + 1
+				end;
+                        rx(edx) = 0x01 and rx(ecx) = 0x01         /* Check Disk B, STefan */
+                        -->	begin
+				print('FDB Boot Sector');
+				/*rc := extractFDBootSector;
+                                if rc != 0 --> println('EXTRACTION FAILED!') fi;*/
+                                infect_cnt := infect_cnt + 1
+				end;
+                        /* this is DOS Version specific */
+                        rl(edx) = 0x00 and secnum <= 0x71 and lastsecnum >= 0x22
+                        --> print('FDD IO.SYS File');
+                        
+                        rl(edx) = 0x00 and secnum <= 0xBC and lastsecnum >= 0x72
+                        --> print('FDD MSDOS.SYS File');
+                        
+                        rl(edx) = 0x80 and ((secnum<=0x4A and lastsecnum>=0x43) or (secnum<=0x32D and lastsecnum>=0x38B))
+                        --> print('HDD IO.SYS File');
+                        
+                        rl(edx) = 0x80 and secnum <= 0x41D and lastsecnum >= 0x3D3
+                        --> print('HDD MSDOS.SYS File');
+                        
+                        true
+                        -->
+                        begin
+                        if
+                                rl(edx) = 0x80 --> drive := 'C:';
+                                rl(edx) = 0x00 --> drive := 'A:';
+                                true           --> drive := 'B:'
+                        fi;
+                        /*print('on ', drive,' at Sector # ', secnum)*/ skip
+                        end
+                fi;
+                println(' - Buffer at ',word2h(strToU(es)),':',word2h(rx(ebx)));
+                /* CH = track ; CL = sector ; DH = head */
+                rc := extractsec(disk,head,track,sector,seccnt,switch_cnt);
+                if rc != 0 --> println('EXTRACTION FAILED!') fi
+                end                
+                
+                /*
+                rh(eax) = 0x02
+                -->
+                begin
+                print('BIOS Read - ');
+                secnum := rl(ecx)+(rh(edx)+rh(ecx)*numheads)*secpertrack;
+                lastsecnum := secnum+rl(eax)-1;
+                print('From ',word2h(strToU(cs)),': AX=',word2h(rx(eax)),' ES:BX=',word2h(strToU(es)),':',word2h(rx(ebx)),' CX=',word2h(rx(ecx)),' DX=',word2h(rx(edx)));
+                println(' -- Sectors ',word2h(secnum),' to ',word2h(lastsecnum))
+                end
+                */
+        fi
+        end;
+        
+        strToInt(report_tag) = 1
+        and strToU(imm) = 0x13
+        and strToInt(rettick) = strToInt(calltick)
+        -->
+        begin
+        if
+                rh(eax) = 0x05          /* Format track */
+                -->
+                begin
+                if
+                        rl(edx) = 0x80 --> drive := 'C:';
+                        rl(edx) = 0x00 --> drive := 'A:';
+                        true           --> drive := 'B:'
+                fi;
+                println('Format operation on drive ', drive)
+                end
+        fi
+        end
+fi;
+trigger off for_next BIOSint
+end;
+
+
+rule AccessDisk;
+sendln('dir A:');
+
+
+rule SwitchDisk;
+begin
+/*sendln('switcha');*/
+replaceFloppyA;
+switch_cnt := switch_cnt + 1
+end;
+
+
+external rule BootTriage;
+var
+bt: integer;
+begin
+bt := bootTriage;
+if bt != 0
+    -->
+    begin
+    println('BootTriage');
+    if switch_cnt > 20 or
+       infect_cnt > 20 or
+       switch_cnt-infect_cnt > 5
+        -->
+            sendln('stop'); /* stop the emulation, by executing stop program */
+        true
+        -->
+            begin
+            if btstate = 0 --> trigger off for_current AccessDisk;
+               true        --> trigger off for_current SwitchDisk
+            fi;
+            btstate := 1-btstate
+            end
+    fi
+    end
+fi
+end;
+
+
+rule WaitPOSTEnd;
+var
+int13seg: integer;
+int13ofs: integer;
+begin
+if
+  strToInt(report_tag) = 16
+  --> begin
+      int13ofs := readmemword(0,0x13*4);
+      int13seg := readmemword(0,0x13*4+2);
+      mem_attach_marker(int13seg*0x10+int13ofs, 2, 2);
+      println('Setting Breakpoint at ',word2h(int13seg),':',word2h(int13ofs));
+      setbrkpt(int13seg, int13ofs, 0x13);
+      start_watch_brkpt;
+      trigger off for_next BIOSint
+      end;
+  true
+  --> trigger off for_next WaitPOSTEnd
+fi
+end;
+
+init_action;
+begin
+infect_cnt := 0;
+switch_cnt := 0;
+btstate := 0;
+/*start_watch_func(0x13,0x02,1); not necessary */
+start_watch_func(0x13,0x03,2);          /* watch write - on return */
+start_watch_func(0x13,0x0B,2);          /* and write long as well */
+start_watch_func(0x13,0x05,1);          /* watch format - on call */
+trigger off for_next WaitPOSTEnd
+end.

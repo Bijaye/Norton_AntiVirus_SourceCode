@@ -1,0 +1,51 @@
+;Auto-Configuration File for Symantec Antivirus Corporate Edition NscTop Module
+;created for NscTop Module 06062002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec Antivirus Corporate Edition NscTop Module
+DisplayName=NSCTOP0
+File:Name=nsctop.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=UDP-IN,UDP-IN2,UDP-OUT,UDP-OUT2
+
+[MATCH:SECTION003]
+ApplicationDescription=Symantec Antivirus Corporate Edition NscTop Module
+DisplayName=NSCTOP
+File:Name=nsctop.exe
+Rules=UDP-IN,UDP-IN2,UDP-OUT,UDP-OUT2
+Version:CompanyName=*symantec*
+
+[RULE:UDP-IN]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+LocalPorts=1000-1200
+Protocol=UDP
+RuleName=Antivirus Corporate Edition NscTop Module UDP Inbound Connection
+
+[RULE:UDP-IN2]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+LocalPorts=2967,26409,38293
+Protocol=UDP
+RuleName=Antivirus Corporate Edition NscTop Module UDP Inbound Connection
+
+[RULE:UDP-OUT]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+Protocol=UDP
+RemotePorts=1000-1200
+RuleName=Antivirus Corporate Edition NscTop Module UDP Outbound Connection
+
+[RULE:UDP-OUT2]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+Protocol=UDP
+RemotePorts=2967,26409,38293
+RuleName=Antivirus Corporate Edition NscTop Module UDP Outbound Connection
+
+

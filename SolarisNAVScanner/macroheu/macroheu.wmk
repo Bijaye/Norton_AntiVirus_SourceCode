@@ -1,0 +1,19 @@
+!define BLANK ""
+.cpp : $(%include)
+.h : $(%include)
+
+.cpp.obj :
+  if not exist $[&.cpp copy $[@ . > nul
+ *wpp386 $^&.cpp -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+macroheu.lib : control.obj env.obj eval.obj exec.obj external.obj for.obj goto.obj gsm.obj ident.obj if.obj modenv.obj o97call.obj o97ctrl.obj o97doop.obj o97doop0.obj o97doop1.obj o97doop2.obj o97doop3.obj o97doop4.obj o97doop5.obj o97doop6.obj o97doop7.obj o97doop8.obj o97doop9.obj o97doopa.obj o97doopb.obj o97doopc.obj o97doopd.obj o97doope.obj o97doopf.obj o97env.obj o97eval.obj o97exec.obj o97modev.obj o97param.obj o97str.obj o97var.obj select.obj state.obj var.obj wbutil.obj while.obj .AUTODEPEND
+            
+!ifneq BLANK "control.obj env.obj eval.obj exec.obj external.obj for.obj goto.obj gsm.obj ident.obj if.obj modenv.obj o97call.obj o97ctrl.obj o97doop.obj o97doop0.obj o97doop1.obj o97doop2.obj o97doop3.obj o97doop4.obj o97doop5.obj o97doop6.obj o97doop7.obj o97doop8.obj o97doop9.obj o97doopa.obj o97doopb.obj o97doopc.obj o97doopd.obj o97doope.obj o97doopf.obj o97env.obj o97eval.obj o97exec.obj o97modev.obj o97param.obj o97str.obj o97var.obj select.obj state.obj var.obj wbutil.obj while.obj"
+ @for %i in (control.obj env.obj eval.obj exec.obj external.obj for.obj goto.obj gsm.obj ident.obj if.obj modenv.obj o97call.obj o97ctrl.obj o97doop.obj o97doop0.obj o97doop1.obj o97doop2.obj o97doop3.obj o97doop4.obj o97doop5.obj o97doop6.obj o97doop7.obj o97doop8.obj o97doop9.obj o97doopa.obj o97doopb.obj o97doopc.obj o97doopd.obj o97doope.obj o97doopf.obj o97env.obj o97eval.obj o97exec.obj o97modev.obj o97param.obj o97str.obj o97var.obj select.obj state.obj var.obj wbutil.obj while.obj) do @%append macroheu.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append macroheu.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 macroheu.lib @ macroheu.lb1
+
+

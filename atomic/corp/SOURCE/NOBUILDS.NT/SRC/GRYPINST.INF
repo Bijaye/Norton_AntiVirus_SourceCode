@@ -1,0 +1,2124 @@
+;***************************************************************************
+;* Norton AntiVirus for Windows NT (Marconi) Setup Script                  *
+;* FOR VERSION 4.0+ OF SYMANTEC SETUP FOR WINDOWS                          *
+;***************************************************************************
+;
+; Target Usage
+; ----------------------------
+; TARGET        LFN directory for NAV (Def: \win32apps\NAVNT)
+; TARGET2       LFN NAV system directory (Def: {TARGET}\System)
+; TARGET3       LFN Shared Componented directory (Def: \SOFTWARE\Symantec)
+; TARGET3       (later in script) TARGET3 = SFN of TARGET
+; TARGET4       SFN version of TARGET2
+; TARGET5       SFN version of original TARGET3
+;
+; ---------------------------------------------------------------------------
+; Script Switch Numbers
+; These settings control the setup wizard flow
+; ---------------------------------------------------------------------------
+; SWITCH_ADMIN                  45      // TRUE if running with Admin privileges
+;
+; SWITCH_NEED_TO_REBOOT         48      // TRUE if other Norton Apps running
+;                                       // and we need to reboot to finish.
+;
+; SWITCH_PREVIOUS               50      // TRUE = script should backup a screen
+; SWITCH_NEXT                   51      // TRUE = script should move to next screen
+;                                       // NOTE: If both NEXT/PREV are FALSE, stay on same screen.
+; SWITCH_CANCEL                 52      // TRUE= script should exit
+;
+; SWITCH_FILEVIRUS              55      // TRUE = Files infected
+;                                       // (memory and boot don't come back!)
+;
+; SWITCH_NS_INSTALLED           58      // TRUE if Netscape found
+; SWITCH_NS_ADDHELPER           59      // TRUE if script should add helper functionality
+;
+; SWITCH_SDD                    61
+;
+; SWITCH_CUSTOM                 63      // TRUE = custom install
+;                                       // FALSE= full install
+; SWITCH_PRE_AP                 64      // TRUE if installing over a pre-autoprotect
+;                                       // version of NAVNT (gargoyle or sphynx).
+;
+; SWITCH_INSTALL_GROUP_ITEMS    65      // TRUE = Install Progman group and items
+;
+; ---------------------------------------------------------------------------
+; Choices made from "Specify Location to Install" dialog
+; ---------------------------------------------------------------------------
+;
+; SWITCH_LOC_DEFAULT            67      // TRUE = Use default directory
+;                                       // FALSE= Use "other" directory
+; SWITCH_PREVIOUSVER            68      // TRUE = Found previous version
+; SWITCH_FLOPPY_IN_DRIVE        69      // TRUE = These's a floppy in the drive
+;
+; ---------------------------------------------------------------------------
+; Choices made from the "Out of disk space" dialog
+; ---------------------------------------------------------------------------
+;
+; SWITCH_NOSPACE_WINDRIVE       70      // TRUE = No space on the Windows drive
+; SWITCH_NOSPACE_DESELECT       71      // TRUE = Go to custom install
+; SWITCH_NOSPACE_NEWDRIVE       72      // TRUE = Select another target drive
+;                                       // User can also exit install.
+;
+; SWITCH_REBOOT                 73      // TRUE = user wants to reboot now
+;                                       // FALSE= user wants to reboot later
+;
+; ---------------------------------------------------------------------------
+; These settings control which set of options should be installed
+; ---------------------------------------------------------------------------
+;
+; SWITCH_OPTS_LOW               75      // TRUE= Install minimal protection
+; SWITCH_OPTS_NORMAL            76      // TRUE= Install normal protection
+; SWITCH_OPTS_MAX               77      // TRUE= Install maximum protection
+; SWITCH_OPTS_CURRENT           78      // TRUE= Retain previous settings
+;
+; ---------------------------------------------------------------------------
+; These settings control what's installed automatically
+; ---------------------------------------------------------------------------
+;
+; SWITCH_DO_RUNAUTOPROTECT      80      // TRUE= Load autoprotect at startup
+; SWITCH_DO_RUNSCHEDULE         81      // TRUE= Load scheduler at startup
+; SWITCH_DO_RUNNAVBOOT          82      // TRUE= Run NAVBOOT at Startup
+; SWITCH_DO_MAKERESCUE          83      // TRUE= Make a rescue disk
+;
+; Communicate from script to wizard dialogs what options are selected
+; (Don't want to hard-code the section names...)
+;
+; SWITCH_NAVBOOT_INSTALLED      84      // TRUE= NAVBOOT installed add to AUTOEXEC
+; SWITCH_AUTOPROTECT_INSTALLED  85      // TRUE= NAVAP is selected
+; SWITCH_SCHEDULER_INSTALLED    86      // TRUE= SCHEDULER is selected
+; SWITCH_RESCUE_INSTALLED       87      // TRUE= RESCUE is selected
+;
+; Uninstall switches
+;
+; SWITCH_REMOVE_SYMEVNT         90
+; SWITCH_REMOVE_INFODESK        91
+; SWITCH_REMOVE_SHARED          99      // TRUE= Remove shared components
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[InstallVersion]
+4.1
+
+[Process]
+AllowIntlChars()
+Bitmaps(Pix)                            ; Background bitmaps
+DisableHelp()                           ; Don't display help buttons
+EnableForceWrite()
+;removed because makes last char of extensions uppercase (.exE) EnableUpperCase()
+Backup(CustDLLCopy)                     ; Copy custom DLL to temp dir
+Enable256Advos()
+switch78 = TRUE
+switch73 = FALSE
+
+;/////////////////////////////////////////////////////////////////////////////
+;// USER ADJUSTABLE SETTINGS
+;/////////////////////////////////////////////////////////////////////////////
+;!;
+;!; Customizing Norton AntiVirus install from a file server
+;!; -------------------------------------------------------
+;!; If you are running silent Norton AntiVirus installs, either from
+;!; Norton Administrator for Networks or from Microsoft's SMS, you may
+;!; want to modify the following default install settings.
+;!;
+;!; Installation of Netscape plug-ins:
+;!; The default is to install plug-ins to NetScape. To turn this off,
+;!; set switch 59 to FALSE.
+;!;
+;!; The default for Netscape is to replace any scanning plug-in for
+;!; executable files with Norton AntiVirus. To turn this off, modify the
+;!; setting for switch84 to FALSE.
+;!;
+;!; Disable the LiveUpdate feature:
+;!; To disable the install of LiveUpdate, set switch85 to FALSE.
+;!;
+;!; Don't start AutoProtect automatically (not recommended):
+;!; To disable the install of AutoProtect, set switch80 to
+;!; FALSE.
+;!;
+;!; Note:  Running Norton AntiVirus with AutoProtect disabled can
+;!;        significantly reduce Norton AntiVirus's ability to protect
+;!;        your computer from viruses.
+;!;
+;!; Don't schedule weekly scans:
+;!; To disable default scheduling of a weekly scan on Friday night, set
+;!; switch81 to FALSE.
+;!;
+;!; Don't create Program Manager icons or Start Menu items for NAV
+;!; To disable creation, set switch65 to FALSE.
+;!;
+
+;!;
+;!; switch80 TRUE/FALSE - Default to load and start AutoProtect.
+;!;
+switch80 = TRUE                         ; Run A-P
+
+;!;
+;!; switch81 TRUE/FALSE - Default to set up a weekly scan for viruses.
+;!;
+switch81 = TRUE                         ; Scheduled Scan
+;switch82 = FALSE                       ; Run NAVBOOT
+;switch83 = FALSE                       ; Create Rescue Disk
+
+;!;
+;!; switch59 TRUE/FALSE - Default to install NAV plugins into NetScape.
+;!;
+switch59 = TRUE                         ; default in Netscape dialog is to check the checkbox
+
+;!;
+;!; switch84 TRUE/FALSE - Default to install NAV Netscape plugins for
+;!;                       all file extensions over existing plugins.
+;!;
+switch84 = TRUE                         ; Automatically install Netscape plugins
+
+;!;
+;!; switch85 TRUE/FALSE - Default to install LiveUpdate.
+;!;
+switch85 = TRUE                         ; install LiveUpdate/OnRamp files
+
+;!;
+;!; switch65 TRUE/FALSE - Default to create NAV Program Manager/Start Menu
+;!;                       group and items. Change to 'switch65 = FALSE' to
+;!;                       prevent install from creating NAV group and items
+;!;                       in NT 3.51 Program Manager or NT 4.0 Start Menu.
+;!;
+switch65 = TRUE                         ; install program group and icons
+
+;/////////////////////////////////////////////////////////////////////////////
+;// INITIALIZE MEMORY
+;/////////////////////////////////////////////////////////////////////////////
+CallProc(InitMemory)
+CallProcEx(DefaultMIF)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// VERSION AND PLATFORM CHECK
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(WrongVersion, siwnavnt.dll)
+switch30 = FALSE                        ; Simply set win95 false.
+switch31 = IsWinVerGTE(0351)            ; Check if running under WinNT 3.51
+
+#if(switch31)                           ; Both Win95 and NT New Shell report
+    switch31 = CallProcEx(IsPlatformNT) ; ver 400, so check platform = NT.
+#endif
+
+#ifnot(switch31)
+    WizardProcessPanel()                ; Not NT 3.51
+    CallProcEx(WrongOSVersionMIF)
+    Exit()
+#endif
+
+; Is this check really necessary? The loader on a non Intel NT system
+; won't load an I386 executable anyway so INST32.EXE will never actually execute.
+;                                                                 -- TSmith
+switch99 = CallProcEx(IsBadPlatform)
+#if(switch99)
+   MessageBox(BadPlatform)              ;can install only on 80x86 machines
+   CallProcEx(BadPlatformMIF)
+   Exit()
+#endif
+
+switch99=IsWinVerGTE(0400)
+#if(switch99)
+    EnableWin95Shell()
+#endif
+
+WizardExcludePanel(WrongVersion)        ; We won't want to come back here
+
+;/////////////////////////////////////////////////////////////////////////////
+;// RESTORE PROGRAM MANAGER FROM ICON
+;/////////////////////////////////////////////////////////////////////////////
+switch99=IsWinVer(0351)
+#if(switch99)
+    switch79=CallProcEx(IsProgramManagerIconic)
+    #if(switch79)
+        switch99=CallProcEx(RestoreProgramManager)
+        #ifnot(switch99)
+            MessageBox(RestoreProgramManagerFail)
+        #endif
+    #endif
+#endif
+
+SetActiveCopy(NAVCopy, install.inf)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// SET DEFAULT DIRECTORIES
+;/////////////////////////////////////////////////////////////////////////////
+;!;
+;!;  Modifying the default installation directory
+;!; -------------------------------------------------------
+;!; To modify the default installation directory:
+;!;
+;!; 1) Change the install directory in the TargetDefault area at the end of
+;!;    the script.
+;!;
+;!; 2) Search for the commented out lines that begin with
+;!;    ;!;ResetTarget(TargetDefault).
+;!;
+;!; This line is in 3 locations. There are comments in each location
+;!; that explain what the effect is. (The second is the one that you
+;!; would normally use.)
+;!;
+;!; 3) Select the location that meets your needs, and remove the ;!; from
+;!;    the ResetTarget line. Do this for one location only.
+;!;
+switch68 = FALSE
+switch02 = TRUE
+switch03 = TRUE
+switch04 = TRUE
+
+;tmp @af
+;switch02 = CallProcEx(CheckLFNTarget)   ; Target drive support LFN's?
+;switch03 = CallProcEx(CheckLFNCDrive)   ; Boot drive support LFN's?
+;switch04 = CallProcEx(CheckLFNWindows)  ; Windows drive support LFN's?
+
+;!;
+;!; This is the first location where you can invoke TargetDefault to
+;!; change the install directory. The install will put NAV in a NAVNT
+;!; subdirectory under the path specified in the TargetDefault section
+;!; at the end of the script.
+;!;
+;!; To use this, remove ;!; from the front of the following line
+;!;
+;!;ResetTarget(TargetDefault)
+
+#ifnot(switch02)                    ;target does not support LFN
+    ResetTarget(Target2SFN)         ; Set 8.3 application program to target2
+    ResetTarget(Target2to1)         ; move to TARGET
+    ResetTarget(TargetExt)          ; Set 8.3 application extensions folder
+#else
+    ResetTarget(Target2LFN)         ; Set default LFN app dir to target2
+    ResetTarget(Target2to1)         ; movet to TARGET
+    ResetTarget(TargetExt)          ; Set LFN application extensions folder
+#endif
+
+;!;
+;!; This is the second (and recommended) location where you can invoke
+;!; TargetDefault to change the install directory. The install directory
+;!; specified at the end of the script will be used as is.
+;!;
+;!; To use this, remove ;!; from the front of the following line
+;!;
+;!;ResetTarget(TargetDefault)
+
+switch99 = CallProcEx(FindSharedComponents) ; Get shared comp dir from reg
+#ifnot(switch99)
+    #ifnot(switch03)                ; If shared comp folder not registered and
+        GetSymantecDir()            ; no LFN support, use short Symantec dir.
+        ResetTarget(TargetShared)
+        ResetTarget(TargetSharedShort)
+    #endif
+#endif
+
+ResetTarget(TargetForSymEvent)      ; symevent.sys and other services go into WINNT\SYSTEM32\DRIVERS
+
+; Search for previous versions
+switch68 = CallProcEx(CheckPrevVer)
+
+;!;
+;!; This is the third location where you can invoke TargetDefault to
+;!; change the install directory. The install directory specified at
+;!; the end of the script will be used as is, and any existing
+;!; installation will be ignored. We do not recommend this since the
+;!; old installation will not be uninstalled first.
+;!;
+;!; To use this, remove ;!; from the front of the following line
+;!;
+;!;ResetTarget(TargetDefault)
+
+switch48 = CallProcEx(CheckForNortonApps)
+#if(switch48)
+    MessageBox(NortonAppRunning)
+    CallProcEx(AppRunningMIF)
+    Exit()
+#endif
+
+switch48 = CallProcEx(ServicesMarkedForDeletion)
+#if(switch48)
+   MessageBox(ServicesMarked)
+   CallProcEx(AppRunningMIF)
+   Exit()
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CHECK FOR ADMINISTRATOR PRIVILEGES
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(NeedAdministratorDialog, siwnavnt.dll)
+
+switch45 = CallProcEx(IsRunningAsAdministrator)
+#ifnot(switch45)
+    WizardProcessPanel()                ; must be administrator to change the path in the Registry
+    CallProcEx(NoAdminMIF)
+    Exit()
+#endif
+                                        ; We won't want to come back here.
+WizardExcludePanel(NeedAdministratorDialog)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CHECK FOR SPACE ON WINDOWS DRIVE
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(NoWinSpace, siwnavnt.dll)
+CallProc(CheckWinSpace)
+
+#if(switch70)
+    WizardProcessPanel()
+    CallProcEx(NoWinSpaceMIF)
+    Exit()
+#endif
+
+WizardExcludePanel(NoWinSpace)
+SetInternalFlag(1)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// WELCOME & REGISTRATION DIALOG
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(Welcome, siwnavnt.dll)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// LICENSE DIALOG
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(License, siwnavnt.dll)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// INSTALLING OVER PRE-AUTOPROTECT VERSION?
+;/////////////////////////////////////////////////////////////////////////////
+switch99=Exists(GARG)                   ; N32SCANW.EXE
+
+#if(switch99)
+    switch99=Exists(GRYP)               ; NAVWNT.EXE
+    #ifnot(switch99)
+        switch64=TRUE                   ; Installing over pre AP version
+    #else
+        switch64=FALSE
+    #endif
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// DEFAULT OR OTHER INSTALL LOCATION
+;/////////////////////////////////////////////////////////////////////////////
+:InstallLocation
+WizardPanel(SpecifyLocation, siwnavnt.dll)
+WizardIncludePanel(NoDiskSpace)
+WizardIncludePanel(KeepSettingsDlg)
+WizardIncludePanel(InitialSettingsDlg)
+WizardIncludePanel(ReselectDirectoryDialog)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CHECK FOR WIN95 VERSION
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(ReselectDirectoryDialog, siwnavnt.dll)
+
+switch99 = Exists(NAV95)
+#if(switch99)
+    WizardProcessPanel()                ; cannot install over NAV95
+#endif
+WizardExcludePanel(ReselectDirectoryDialog)
+
+GetPrevVerSize()                        ; Calculate the prev ver size if available
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CHECK FOR DRIVESPACE
+;/////////////////////////////////////////////////////////////////////////////
+Wizardpanel(NoDiskSpace, siwnavnt.dll)
+switch71 = FALSE
+switch72 = FALSE
+
+switch98 = CheckDiskSpace(TARGET)       ; Selected components fit on target?
+#ifnot(switch98)
+    switch99=IsSilentMode()             ; IsSilentMode(switch99)in the manual, but did not work
+    #if(switch99)
+      CallProcEx(NoDiskSpaceMIF)
+      Exit()
+    #endif
+    WizardProcessPanel()                ; Display error if not
+    switch72 = TRUE                     ; force it to specify another location
+#else
+    WizardExcludePanel(NoDiskSpace)
+#endif
+
+#if(switch72)
+    WizardGotoPanel(SpecifyLocation)    ; Select another drive to install to
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// KEEP CURRENT SETTINGS
+;/////////////////////////////////////////////////////////////////////////////
+:KeepSettingsDialog
+WizardPanel(KeepSettingsDlg, siwnavnt.dll)
+WizardIncludePanel(InitialSettingsDlg)
+switch99 = Exists(NavoptsFind)
+#if(switch99)
+    WizardProcessPanel()
+#else
+    switch78 = FALSE
+    WizardExcludePanel(KeepSettingsDlg)
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// INITIAL SETTINGS
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(InitialSettingsDlg, siwnavnt.dll)
+#ifnot(switch78)
+    WizardProcessPanel()
+#else
+    WizardExcludePanel(InitialSettingsDlg)
+;    WizardGotoPanel(CopyFiles)
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CHECK FOR NETSCAPE INSTALL
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(NetscapeDetected, siwnavnt.dll)
+switch58 = CallProcEx(CheckNetscapeInstall)
+#if(switch58)
+    WizardProcessPanel()
+#else
+    switch59=FALSE                      ; Deselect add as help app
+    WizardExcludePanel(NetscapeDetected)
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// COPY FILES / REVIEW
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(CopyFiles, siwnavnt.dll)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CREATE DIRECTORIES
+;/////////////////////////////////////////////////////////////////////////////
+CreateDirectory(CreateExtDir)
+CreateDirectory(CreateSharedDir)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// SELECT / DESELECT BEFORE COPY
+;/////////////////////////////////////////////////////////////////////////////
+
+#if(switch78)                           ; If keeping the previous option settings
+    switch99 = Exists(NavoptsFind)      ; Is NAVOPTS.DAT present?
+
+    #if(switch99)
+                                        ; If so, don't replace it
+        DeselectOption(options)
+    #endif
+
+    switch99=Exists(NavapFind)          ; Did previous version have Navap?
+
+    #ifnot(switch99)
+                                        ; If not, set the start AP switch off
+                                        ; so we won't try to start it even though
+                                        ; we're installing it.
+        switch80=FALSE
+    #else
+                                        ; Set the start AP switch to whatever
+                                        ; the previous version had it set to.
+        switch80=CallProcEx(GetLoadNavapOptions)
+    #endif
+#endif
+
+Backup(InfodeskCheck)
+switch99 = CallProcEx(InfodeskAsNew)
+#ifnot(switch99)
+    DeselectOption(infodesk)
+#endif
+
+; Not necessary - it's part of custom dll copy.
+;Backup(SymstatCheck)
+switch99 = CallProcEx(SymstatAsNew)
+#ifnot(switch99)
+    DeselectOption(symstat)
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// REMOVE PREVIOUS VERSIONS
+;/////////////////////////////////////////////////////////////////////////////
+;switch99=Exists(GARG)                   ; N32SCANW.EXE
+
+;#if(switch99)
+;   switch99=Exists(GRYP)               ; NAVWNT.EXE
+
+ ;   #ifnot(switch99)
+
+ #if(switch64)                          ; Installing over pre-AP version?
+    Delete(GargDel)
+                                        ; decrement usage counts.
+    CallProcEx(UsageCountsDecrement)
+    CallProcEx(DeleteNavwPathReg)       ; garg
+    CallProcEx(DeleteNavscanPathReg)    ; sphinx
+    CallProcEx(DeleteNavReg1)           ; garg
+    CallProcEx(DeleteNavReg2)
+    CallProcEx(DeleteNavReg3)           ; will force reinstalling shared files
+    CallProcEx(DeleteNavReg4)
+    CallProcEx(DeleteNavInstalledReg)
+
+    CallProcEx(DeleteNavscanReg1)       ; sphinx
+    CallProcEx(DeleteNavscanReg2)
+    CallProcEx(DeleteNavscanReg3)
+    CallProcEx(DeleteNavscanReg7)
+    CallProcEx(DeleteNavscanReg8)
+    CallProcEx(DeleteNavscanInstalledReg)
+    CallProcEx(DeleteNavscanHelpReg)
+                                        ; Remove Gargoyle group items.
+    CallProcEx(DeleteNAVScannerIcon)
+    CallProcEx(DeleteNAVUninstallIcon)
+                                        ; Remove Sphinx common group items
+                                        ; & common group.
+    CallProcEx(DeleteSphinxNAVScannerIcon)
+    CallProcEx(DeleteSphinxUninstallIcon)
+    CallProcEx(DeleteNAVScannerGroup)
+                                        ; Remove Sphinx private group items
+                                        ; & private group.
+    CallProcEx(DeleteSphinxNAVScannerIconP)
+    CallProcEx(DeleteSphinxUninstallIconP)
+    CallProcEx(DeleteNAVScannerGroupP)
+
+    #if(switch78)                       ; if user wants to keep prev settings (default in silent mode)
+        switch99=IsSilentMode()         ; IsSilentMode(switch99)in the manual, but did not work
+        #if(switch99)
+            switch78 = FALSE            ; overwrite prev options
+            switch81 = TRUE             ; Schedule Scan when overinstalling in silent mode
+            switch80 = TRUE             ; Run A-P, when overinstalling in silent mode
+        #endif
+    #endif
+#endif
+
+;     #endif
+;#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// COPY FILES
+;/////////////////////////////////////////////////////////////////////////////
+
+DisableUtils()
+
+CallProcEx(ServiceStop)  ;do not check the return value, since StopServices() fails when there are no services to stop
+
+Copy()
+
+; Depending on the target platform, execute the MS program to install
+; "wininet.dll" and "inloader.dll"
+switch99 = IsWinVer(0351)
+#if(switch99)
+   Launch(Wint351Run)
+#else
+   Launch(WintdistRun)
+#endif
+
+; if the user has elected to keep current settings, make sure that the
+; "navalert.dat" file exists so that NAVAP will be able to start
+#if(switch78)                           ; Keep previous options
+    switch99 = Exists(NAVALERT_DAT)
+    #ifnot(switch99)
+        ; if we're keeping current settings and the "navalert.dat" file
+        ; does not exist, we're most likely dealing with a pre-Marconi
+        ; version of NAV, so copy the file over
+        Backup(NavalertDatCopy)
+    #endif
+#else
+    Backup(NavalertDatCopy)
+#endif
+
+; copy navwnt.exe over to its final destination (fix for #80737)
+Backup(NavwntExeCopy)
+
+;MergeRegFileEx(NavReg)                  ; NAVNT.REG needs LFN of shared in TARGET3
+switch99 = CallProcEx( MergeRegFileEx_Nav )
+#ifnot(switch99)
+   MessageBox(UpdateRegistryFail)
+   CallProcEx(UpdateRegistryFailMIF)
+   Exit()
+#endif
+
+switch99 = CallProcEx(ServiceInstall)
+#ifnot(switch99)
+   MessageBox(ServiceInstallFail)
+   CallProcEx(ServiceInstallFailMIF)
+   Exit()
+#endif
+
+EnableUtils()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// ONRAMP INSTALL
+;/////////////////////////////////////////////////////////////////////////////
+
+;ResetTarget(Target2Onramp)            ; TARGET2 = TARGET for Onramp (temp)
+;ResetTarget(Target2to3)               ; TARGET3 = TARGET for Onramp
+;ResetTarget(TargetExt)                ; Reset TARGET2
+
+ResetTarget(Target10toLiveUpdateDir)   ; TARGET10 = \Symantec\LiveUpdate
+
+#if(switch85)
+CreateDirectory(CreateOnrampDir)
+                                        ; Copy OnrampFiles
+switch99 = CallProcEx(OnrampexeAsNew)
+#if(switch99)
+    Backup(OnrampexeNewer)
+#endif
+switch99 = CallProcEx(Symmal32AsNew)
+#if(switch99)
+    Backup(Symmal32Newer)
+#endif
+switch99 = CallProcEx(Symhm32AsNew)
+#if(switch99)
+    Backup(Symhm32Newer)
+#endif
+switch99 = CallProcEx(Symhf32AsNew)
+#if(switch99)
+    Backup(Symhf32Newer)
+#endif
+switch99 = CallProcEx(Symdis32AsNew)
+#if(switch99)
+    Backup(Symdis32Newer)
+#endif
+switch99 = CallProcEx(Symuzp32AsNew)
+#if(switch99)
+    Backup(Symuzp32Newer)
+#endif
+#endif  ;switch85
+
+
+Delete(OnrampTempDel)
+CallProcEx(OnrampUsageCounts)
+
+;MergeRegFileEx(OnrampReg)
+switch99 = CallProcEx( MergeRegFileEx_Onramp )
+#ifnot(switch99)
+   MessageBox(UpdateRegistryFail)
+   CallProcEx(UpdateRegistryFailMIF)
+   Exit()
+#endif
+
+					   ;reset TARGET3
+switch99 = CallProcEx(FindSharedComponents) ; Get shared comp dir from reg
+#ifnot(switch99)
+    #ifnot(switch03)                ; If shared comp folder not registered and
+	GetSymantecDir()            ; no LFN support, use short Symantec dir.
+	ResetTarget(TargetShared)
+	ResetTarget(TargetSharedShort)
+    #endif
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// UPDATE USAGE COUNTS
+;/////////////////////////////////////////////////////////////////////////////
+CallProcEx(UsageCounts)
+CallProcEx(MiscUsageCounts)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CREATE SHORT NAMES FOR TARGETS
+;/////////////////////////////////////////////////////////////////////////////
+ResetTarget(TargetSharedShort)
+CallProcEx(GetShort)
+ResetTarget(TargetSharedSave)           ; Save SFN of shared path in TARGET5
+ResetTarget(TargetShort)
+CallProcEx(GetShort)                    ; Set SFN of target path in TARGET4
+
+switch99=IsSilentMode()                 ; IsSilentMode(switch99) in the manual, but did not work
+
+#if(switch58)                           ; if Netscape has been installed
+  #if(switch59)                         ; and Helper plug-in selected.
+    #if(switch99)
+      #if(switch84)                     ; silent mode AND default is set to TRUE
+        CallProcEx(MergeNetscapePluginKey)
+      #endif
+    #else
+      CallProcEx(MergeNetscapePluginKey)    ; not silent, use user's input
+    #endif
+  #endif
+#endif
+
+ResetTarget(TargetSave)                 ; Save SFN of target path in TARGET3
+ResetTarget(TargetExtShort)
+CallProcEx(GetShort)                    ; Set SFN of app ext path in TARGET4
+
+;/////////////////////////////////////////////////////////////////////////////
+;// UPDATE INFODESK
+;/////////////////////////////////////////////////////////////////////////////
+SilentModifyTF(AddContents)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// STORE USER REGISTRATION INFO
+;/////////////////////////////////////////////////////////////////////////////
+CallProcEx(SetNavoptsReg)               ; In place of RegisterNAV30()
+SetRegistration(SetNAVRegister)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// UPDATE OPTIONS
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(ScheduleServiceDlg, siwnavnt.dll)
+#ifnot(switch78)                        ; If not keep old settings
+    #ifnot(switch45)                    ; Are we Administrator ?
+        WizardProcessPanel()
+    #else
+		#if(switch81)
+			CallProcEx(StartNTScheduleService) ; Start NT Schedule Service if Schedule Scan Checkbox is checked
+        #endif
+        switch99 = CallProcEx(IsScheduleRunning)
+        #ifnot(switch99)
+          #if(switch81)                 ; Only squawk if they're trying to add.
+            WizardProcessPanel()
+          #endif
+        #else
+            CallProcEx(FridayScan)      ; Add/remove scan based on switch81
+        #endif
+    #endif
+#endif
+WizardExcludePanel(ScheduleServiceDlg)  ; Display only once at most
+
+;/////////////////////////////////////////////////////////////////////////////
+;// ADD NAV REGISTRY INFO
+;/////////////////////////////////////////////////////////////////////////////
+CallProcEx(AddDefinitionsLocation)
+
+switch99 = IsOptionSelected(navwnt)
+#if(switch99)
+    switch99 = CallProcEx( MergeRegFileEx_Navw )
+	#ifnot(switch99)
+	   MessageBox(UpdateRegistryFail)
+	   CallProcEx(UpdateRegistryFailMIF)
+       Exit()
+	#endif
+
+        switch99 = CallProcEx( MergeRegFileEx_Setup )
+	#ifnot(switch99)
+	   MessageBox(UpdateRegistryFail)
+	   CallProcEx(UpdateRegistryFailMIF)
+       Exit()
+	#endif
+    switch99 = CallProcEx( MergeRegFileEx_NavShell )
+	#ifnot(switch99)
+	   MessageBox(UpdateRegistryFail)
+	   CallProcEx(UpdateRegistryFailMIF)
+       Exit()
+	#endif
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// CREATE PROGRAM GROUP ITEMS
+;/////////////////////////////////////////////////////////////////////////////
+                                        ; Conditionally add AP to Startup group
+#if(switch80)
+    switch99=CallProcEx(ProgmanAddAPInStartup)
+    #ifnot(switch99)
+        MessageBox(ProgmanAddAPInStartupFail)
+    #endif
+#else
+    CallProcEx(ProgmanDelAPFromStartup)
+#endif
+
+                                        ; Optionally skip creating program group and items
+#if(switch65)
+                                        ; Add NAV Scanner item.
+    switch99=CallProcEx(ProgmanAddNAVInNAV)
+    #ifnot(switch99)
+        MessageBox(ProgmanAddNAVInNAVFail)
+    #endif
+                                        ; Add AutoProtect item.
+    switch99=CallProcEx(ProgmanAddAPInNAV)
+    #ifnot(switch99)
+        MessageBox(ProgmanAddAPInNAVFail)
+    #endif
+                                        ; Add uninstall item.
+    switch99=CallProcEx(ProgmanAddNAVUnInstInNAV)
+    #ifnot(switch99)
+        MessageBox(ProgmanAddNAVUnInstInNAVFail)
+    #endif
+                                        ; If NAV Scanner is present in NT-Tools
+                                        ; remove it and add NAV icon.
+    switch99=CallProcEx(CheckNAVScannerInNTTools)
+    #if(switch99)
+        CallProcEx(DeleteNTToolsNAVScannerIcon)
+        CallProcEx(ProgmanAddNAVInNTTools)
+    #endif
+
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// ADD SARC URL SHORTCUT
+;/////////////////////////////////////////////////////////////////////////////
+#if(switch65)
+;switch99 = CallProcEx(CheckInternetBrowserInstalled)
+;#if(switch99)
+    switch99 = IsWinVerLTE(0351)            ; Check if running under WinNT 3
+    #if(switch99)
+        ;switch99=CallProcEx(ProgmanAddHERMESUIInAVIS)
+        ;#ifnot(switch99)
+            ;MessageBox(ProgmanAddHERMESUIInAVISFail)
+        ;#endif
+    #else                                   ; NT4.0
+        switch99=CallProcEx(CreateSarcInternetShortCut)
+        #ifnot(switch99)
+            MessageBox(CreateSarcInternetShortCutFail)
+        #endif
+    #endif
+;#else
+;        MessageBox(CheckInternetBrowserInstalledFail)
+;#endif
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// MINIMIZE PROGRAM MANAGER
+;/////////////////////////////////////////////////////////////////////////////
+switch99=IsWinVer(0351)
+#if(switch99)
+    #if(switch79)
+        switch99=CallProcEx(MinimizeProgramManager)
+        #ifnot(switch99)
+            MessageBox(MinimizeProgramManagerFail)
+        #endif
+    #endif
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// UPDATE REG INFO ABOUT INSTALLED APPS
+;/////////////////////////////////////////////////////////////////////////////
+switch99=CallProcEx(UpdateInstFlag)
+#ifnot(switch99)
+   MessageBox(UpdateRegistryFail)
+   CallProcEx(UpdateRegistryFailMIF)
+   Exit()
+#endif
+switch99=UpdateReg32(RegUpdate)
+#ifnot(switch99)
+   MessageBox(UpdateRegistryFail)
+   CallProcEx(UpdateRegistryFailMIF)
+   Exit()
+#endif
+
+;/////////////////////////////////////////////////////////////////////////////
+;// USE LIVEUPDATE DIALOG
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(UseLiveUpdate, siwnav32.dll)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// TECH SUPPORT DIALOG
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(TechSupport, siwnavnt.dll)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// HOW TO REACH US DIALOG
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(Reach, siwnavnt.dll)
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// ONLINE REGISTRATION
+;/////////////////////////////////////////////////////////////////////////////
+
+WizardPanel(RegisterNow, siwnavnt.dll)
+WizardIncludePanel(SendRegistration)
+WizardIncludePanel(OnlineMarketing)
+WizardIncludePanel(OnlineRegistration)
+
+WizardSetSkip(RegisterNow, Finished)
+WizardProcessPanel()
+
+WizardPanel(OnlineRegistration, siwnavnt.dll)
+WizardSetSkip(OnlineRegistration, Finished)
+WizardProcessPanel()
+
+WizardPanel(OnlineMarketing, siwnavnt.dll)
+WizardSetSkip(OnlineMarketing, Finished)
+WizardProcessPanel()
+
+WizardSetSkip(SendRegistration, Finished)
+
+WizardPanel(SendRegistration, siwnavnt.dll)
+WizardProcessPanel()
+
+WizardExcludePanel(SendRegistration)
+WizardExcludePanel(OnlineMarketing)
+WizardExcludePanel(OnlineRegistration)
+
+;/////////////////////////////////////////////////////////////////////////////
+;// PREPARE FOR EXIT
+;/////////////////////////////////////////////////////////////////////////////
+WizardPanel(Finished, siwnavnt.dll)
+switch73=FALSE
+WizardProcessPanel()
+
+;/////////////////////////////////////////////////////////////////////////////
+;// DELETE LEFTOVER DLLS
+;/////////////////////////////////////////////////////////////////////////////
+CallProcEx(ExitHookProc)
+                                        ; Delete both "wint" files
+Delete(Wint351Delete)
+Delete(WintdistDelete)
+Delete(Leftovers)
+
+#ifnot(switch48)                        ; Don't need to reboot to finish.
+    #if(switch80)                       ;  Start AutoProtect
+        Launch(RunAP)
+    #endif
+    #if(switch73)                       ; Run NAV.
+        Launch(RunNAVNT)
+    #endif
+#endif
+CallProcEx(SuccessMIF)
+Exit()
+End()
+
+;############################################################################
+;##        End of process section. Begin sections referenced above         ##
+;############################################################################
+
+;/////////////////////////////////////////////////////////////////////////////
+;// EXTERNAL FUNCTION CALLS
+;/////////////////////////////////////////////////////////////////////////////
+[DeleteNAVScannerIcon]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus",1			          ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner"
+
+[DeleteNAVUninstallIcon]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus",1			          ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Uninstall"
+
+[DeleteSphinxNAVScannerIcon]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus Scanner",1			    ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner"
+
+[DeleteSphinxUninstallIcon]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus Scanner",1			    ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner Uninstall"
+
+[DeleteNAVScannerGroup]
+dll = siwnavnt.dll
+function = FuncDelGroup
+group="Norton AntiVirus Scanner",1			    ; 1 indicates common group, 0 - indicates private group
+
+[DeleteSphinxNAVScannerIconP]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus Scanner",0			    ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner"
+
+[DeleteSphinxUninstallIconP]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus Scanner",0			    ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner Uninstall"
+
+[DeleteNAVScannerGroupP]
+dll = siwnavnt.dll
+function = FuncDelGroup
+group="Norton AntiVirus Scanner",0			    ; 1 indicates common group, 0 - indicates private group
+
+[DeleteNTToolsNAVScannerIcon]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton NT Tools 1.0",1			          ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner"
+
+[DefaultMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Installation Failed"
+
+[WrongOSVersionMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Operating System Version Not Supported"
+
+[BadPlatformMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Norton AntiVirus can run only on Intel 80x86 computers"
+
+[NoAdminMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Need administrator privileges"
+
+[AppRunningMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Cannot install when Symantec application is running"
+
+[NoWinSpaceMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Not enough space on Windows Drive for Installation to Continue"
+
+[NoDiskSpaceMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Not enough space on Target Drive for Installation to Continue"
+
+[ServiceInstallFailMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Norton AntiVirus failed to install services"
+
+[SuccessMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Success"					; DO NOT TRANSLATE THIS LINE
+
+[ServiceInstall]
+dll = siwnavnt.dll
+function = InstallServices
+
+[ServiceStop]
+dll = siwnavnt.dll
+function = StopServices
+
+[InfodeskAsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = INFODESK.DLL, TEMPDIR, TARGET3
+
+[SymstatAsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = S32STAT.DLL, TEMPDIR, TARGET3
+
+[OnrampexeAsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = LIVEUPDT.EXE, TARGET3, TARGET10
+
+[Symmal32AsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = S32LIVE1.DLL, TARGET3, TARGET10
+
+[Symhm32AsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = S32LUHM1.DLL, TARGET3, TARGET10
+
+[Symhf32AsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = S32LUHF1.DLL, TARGET3, TARGET10
+
+[Symdis32AsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = S32LUIS1.DLL, TARGET3, TARGET10
+
+[Symuzp32AsNew]
+dll = siwnavnt.dll
+function = IsFileAsNew
+file = S32LUUZ1.DLL, TARGET3, TARGET10
+
+[CheckLFNTarget]
+dll = siwnavnt.dll
+function = DriveSupportsLFN
+location = TARGET
+
+[CheckLFNCDrive]
+dll = siwnavnt.dll
+function = DriveSupportsLFN
+location = C
+
+[CheckLFNWindows]
+dll = siwnavnt.dll
+function = DriveSupportsLFN
+location = WINDOWS
+
+[FindSharedComponents]
+dll = siwnavnt.dll
+function = FindSharedComponents
+
+[CheckPrevVer]
+dll = siwnavnt.dll
+function = CheckPrevVersion
+
+[UpdateInstFlag]
+dll = siwnavnt.dll
+function = UpdateInstalledFlag
+
+[UsageCounts]
+dll = siwnavnt.dll
+function = UpdateUsageCounts
+
+[OnrampUsageCounts]
+dll = siwnavnt.dll
+function = OnrampUpdateUsageCounts
+
+[MiscUsageCounts]
+dll = siwnavnt.dll
+function = UpdateMiscUsageCounts
+
+[GetLoadNavapOptions]
+dll = siwnavnt.dll
+function = GetLoadNavapOptions
+
+[DeleteSarcUrlShortcutIcon]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Norton AntiVirus",1			          ; 1 indicates common group, 0 - indicates private group
+item="SARC Home Page"
+
+; =================================================
+; the following 2 sections are used to merge
+; Netscape plug-in keys
+; =================================================
+[MergeNetscapePluginKey]
+dll = siwnavnt.dll
+function = Sphinx_UpdateNetscapePlugin
+
+[NetscapePlugIn]
+application/octet-stream, "386,bin,cla,com,cpl,dll,doc,dot,drv,exe,ncp,ned,nnl,ocx,ovl,scr,sys,vbx,vxd"
+application/zip,"zip,lha,lzh"
+application/msexcel,"xlb,xlm,xls,xlt,xlw"
+application/msword,"doc,dot"
+application/binary
+application/word
+application/octet-string
+file/executable
+application/x-binary
+application/x-compressed
+application/x-excel
+application/x-msword
+application/x-word
+application/x-winexe
+application/x-lha-compressed
+application/x-lzh-compressed
+application/x-zip-compressed
+application/x-lha
+application/x-lzh
+application/x-zip
+application/x-msdownload
+
+[GetShort]
+dll = siwnavnt.dll
+function = ConvertToShortName
+
+[SetNavoptsReg]
+dll = siwnavnt.dll
+function = SetNavoptsRegInfo
+
+[CheckWinSpace]
+dll = siwnavnt.dll
+function = WindowsDriveSpace
+
+[InitMemory]
+dll = siwnavnt.dll
+function = InitMemory
+
+[CheckForNortonApps]
+dll = siwnavnt.dll
+function = CheckForNortonApps
+INFODESK.DLL,   TARGET3
+
+[ServicesMarkedForDeletion]
+dll = siwnavnt.dll
+function = ServicesMarkedForDeletion
+
+[DoGroups]
+dll = siwnavnt.dll
+function = CreateGroupItems
+
+[FloppyInDrive]
+dll = siwnavnt.dll
+function = IsFloppyInDrive
+
+[ExitHookProc]
+dll = siwnavnt.dll
+function = ReleaseMemory
+delete = CustDLLDel
+
+[IsScheduleRunning]
+dll = siwnavnt.dll
+function = IsScheduleRunning
+
+[FridayScan]
+dll = siwnavnt.dll
+function = FridayScan
+
+[IsRunningAsAdministrator]
+dll = siwnavnt.dll
+function = IsRunningAsAdministrator
+
+[CheckNetscapeInstall]
+dll = siwnavnt.dll
+function = CheckNetscapeInstall
+
+[IsPlatformNT]
+dll = siwnavnt.dll
+function = IsPlatformNT
+
+[IsBadPlatform]
+dll = siwnavnt.dll
+function = IsBadPlatform
+
+[RunNAVNT]
+"%s\navwnt.exe /L", TARGET3
+
+[RunAP]
+"%s\navapw32.exe", TARGET3
+
+[NAV95]
+navw32.exe, TARGET
+
+[GARG]
+n32scanw.exe, TARGET
+
+[SPHINX]
+n32scanw.exe, TARGET
+
+[GRYP]
+navwnt.exe, TARGET
+
+[AddDefinitionsLocation]
+dll = siwnavnt.dll
+function = AddDefinitionsLocationKey
+
+[NAVALERT_DAT]
+navalert.dat, TARGET
+
+
+;/////////////////////////////////////////////////////////////////////////////
+;// DIALOG INFO
+;/////////////////////////////////////////////////////////////////////////////
+[NAVCopy:CopyDialog]
+caption = "Copying Norton AntiVirus Files..."
+posx = -10
+posy = -10
+
+[NAVCopy:Advo]
+posx = 20
+posy = 30
+location = siwnavnt.dll
+count = 2
+BitmapsOnly=1
+
+;/////////////////////////////////////////////////////////////////////////////
+;// MESSAGE TEXT
+;/////////////////////////////////////////////////////////////////////////////
+[ServiceInstallFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus failed to install services"
+
+[FileCopy]
+copycaption   =  "Installing Norton AntiVirus for Windows NT"
+errorcaption  =  "Error Copying Files"
+insertcaption =  "Insert Diskette"
+Message       =   MessageText
+
+[Cancel]
+caption = "Symantec Setup"
+text    = "The installation is not completed.
+"Are you sure you would like to exit?"
+
+[CancelShell]
+caption = "Norton AntiVirus - Exit Setup"
+"You have selected to cancel Setup."
+"In order to reset the Windows"
+"environment, Setup will also close"
+"Windows.  Are you sure you want to exit?"
+
+[Errors]
+noprev  =  "Symantec Setup for Windows is already running!"
+
+[BadPlatform]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus can run only on Intel 80x86 computers"
+
+[FailedUpdateRegistry]
+Caption="Norton AntiVirus for Windows NT Setup"
+"Failed to Update the Registry"
+
+[NortonAppRunning]
+caption = "Norton AntiVirus for Windows NT Setup"
+"A Symantec application is currently running."
+" "
+"Setup cannot install Norton AntiVirus files or update"
+"shared files if they are in use."
+" "
+"Please close all Symantec applications before continuing."
+
+[ServicesMarked]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Setup has detected that one or more Norton AntiVirus device"
+"drivers have been marked for deletion."
+" "
+"You must re-start Windows NT before Norton AntiVirus"
+"can be re-installed."
+
+;/////////////////////////////////////////////////////////////////////////////
+;// TARGET FOLDER SETTINGS
+;/////////////////////////////////////////////////////////////////////////////
+[Target2to1]
+reset = TARGET
+location = %s, TARGET2
+
+[Target2LFN]
+reset = TARGET2
+location = "NAVNT"
+relative = 1
+relativeto = TARGET
+
+[Target2to3]
+reset = TARGET3
+location = %s, TARGET2
+
+[Target2Onramp]
+reset = TARGET2
+location = "LiveUpdate"
+relative = 1
+relativeto = TARGET3
+
+[Target10toLiveUpdateDir]
+reset = TARGET10
+location = "LiveUpdate"
+relative = 1
+relativeto = TARGET3
+
+[Target2SFN]
+reset = TARGET2
+location = "NAVNT"
+relative = 1
+relativeto = TARGET
+
+[TargetShort]
+reset = TARGET4
+location = %s, TARGET
+
+[TargetQuoted]
+reset = TARGET3
+location = %s, TARGET
+
+[TargetSave]
+reset = TARGET3
+location = %s, TARGET4
+
+[TargetExt]
+reset = TARGET2
+location = "System"
+relative = 1
+relativeto = TARGET
+
+[TargetExtShort]
+reset = TARGET4
+location = %s, TARGET2
+
+[TargetShared]
+reset = TARGET3
+location = %s, TARGET5
+
+[TargetSharedShort]
+reset = TARGET4
+location = %s, TARGET3
+
+[TargetSharedSave]
+reset = TARGET5
+location = %s, TARGET4
+
+[CreateExtDir]
+%s, TARGET2
+
+[CreateSharedDir]
+%s, TARGET3
+
+[TargetForSymEvent]
+reset = TARGET5
+location = %s\system32\drivers, WINDOWS
+
+[CreateOnrampDir]
+%s, TARGET10
+
+;/////////////////////////////////////////////////////////////////////////////
+;// FILE BACKUP
+;/////////////////////////////////////////////////////////////////////////////
+[SymEventCopy]
+symevent.sys, symevent.sys, SOURCE, TARGET5
+
+[RWSetup]
+setup.exe, WINDOWS
+
+[NavoptsFind]
+navopts.dat, TARGET
+
+[NewoptsFind]
+navstart.dat, TARGET
+
+[NavapFind]
+navapw32.exe, TARGET
+
+[CustDLLCopy]
+siwnavnt.dll, siwnavnt.dll, SOURCE, TEMPDIR
+s32navK.dll,  s32navK.dll,  SOURCE, TEMPDIR
+navntsch.dll, navntsch.dll, SOURCE, TEMPDIR
+s32stat.dll,  s32stat.dll,  SOURCE, TEMPDIR
+
+[InfodeskCheck]
+infodesk.dll, infodesk.dll, SOURCE, TEMPDIR
+
+[OnrampexeNewer]
+liveupdt.exe, liveupdt.exe, TARGET3, TARGET10
+
+[Symmal32Newer]
+s32live1.dll, s32live1.dll, TARGET3, TARGET10
+liveupdt.hst, liveupdt.hst, TARGET3, TARGET10
+liveupdt.hct, liveupdt.hct, TARGET3, TARGET10
+
+[Symhm32Newer]
+s32luhm1.dll, s32luhm1.dll, TARGET3, TARGET10
+hscript.scp,  hscript.scp,  TARGET3, TARGET10
+
+[Symhf32Newer]
+s32luhf1.dll, s32luhf1.dll, TARGET3, TARGET10
+
+[Symdis32Newer]
+s32luis1.dll, s32luis1.dll, TARGET3, TARGET10
+
+[Symuzp32Newer]
+s32luuz1.dll, s32luuz1.dll, TARGET3, TARGET10
+
+[Wint351Run]
+"%s\wint351.exe /Q", WINDOWS
+
+[WintdistRun]
+"%s\wintdist.exe /Q", WINDOWS
+
+[Wint351Delete]
+wint351.exe, WINDOWS
+
+[WintdistDelete]
+wintdist.exe, WINDOWS
+
+[NavalertDatCopy]
+navalert.dat, navalert.dat, TARGET3, TARGET
+
+[NavwntExeCopy]
+navwnt.exe, navwnt.exe, TARGET3, TARGET
+
+
+
+
+;/////////////////////////////////////////////////////////////////////////////
+;// DELETE FILES
+;/////////////////////////////////////////////////////////////////////////////
+[GargDel]                      ;remove garg specific files
+nntalog.dll,  TARGET
+nntexclu.dll, TARGET
+nntlib01.dll, TARGET
+nntwork.dll,  TARGET
+nntxutil.dll, TARGET
+s32alog8.dll, TARGET
+s32nav8.dll,  TARGET
+n32scanw.exe, TARGET
+nntopts.ncp,  TARGET
+symnav8.dll,  TARGET           ;and sphinx specific too
+tknv168.dll,  TARGET
+tknv328.dll,  TARGET
+navkrnl8.vxd, TARGET
+navwnt.cnt,   TARGET
+navwnt.hlp,   TARGET
+navscn.reg,   TARGET2
+navscn95.reg, TARGET2
+navscnw.reg,  TARGET2
+navwscn.hlp,  TARGET2
+navwscn.cnt,  TARGET3
+
+[OnrampTempDel]
+s32live1.dll, TARGET3
+liveupdt.exe, TARGET3
+s32luhm1.dll, TARGET3
+s32luhf1.dll, TARGET3
+s32luis1.dll, TARGET3
+s32luuz1.dll, TARGET3
+hscript.scp,  TARGET3
+liveupdt.hst, TARGET3
+liveupdt.hct, TARGET3
+
+[Leftovers]
+infodesk.gid,   TARGET5
+infodesk.fts,   TARGET5
+infodesk.ftg,   TARGET5
+navwscn.fts,    TARGET2
+navwscn.gid,    TARGET2
+navwscn.gid,    TARGET5
+pipedlg.dat,    TARGET5
+~syminst.exe,   WINDOWS
+navalert.dat,   TARGET5
+navwnt.exe,     TARGET5
+
+
+[AddContents]                                 ;af@ what is it?
+FileSpec   = %s\symantec.cnt, TARGET5
+filetype   = text
+Create     = 1
+CreateText = " "
+AddItems   = ContentsAddItems
+
+[ContentsAddItems]
+":INCLUDE NAVWNT.CNT", APPEND
+
+;/////////////////////////////////////////////////////////////////////////////
+;// REG DATABASE MODS
+;/////////////////////////////////////////////////////////////////////////////
+[UsageCountsDecrement]
+dll = siwnavnt.dll
+function = DecrementUsageCounts
+subkey = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\SharedDLLs"
+
+[DeleteNavwPathReg]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\App Paths\N32SCANW.EXE"
+
+[DeleteNavscanPathReg]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\N32SCANW.EXE"
+
+[DeleteNavReg1]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0\Components"
+
+[DeleteNavReg2]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0"
+
+[DeleteNavReg3]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install"
+
+[DeleteNavReg4]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Virus Defs\LastUpdate"
+
+[DeleteNavReg5]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Virus Defs"
+
+[DeleteNavReg6]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\LastScan"
+
+[DeleteNavReg7]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Clinic"
+
+[DeleteNavReg8]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT"
+
+[DeleteNavInstalledReg]
+dll = siwnavnt.dll
+function = NavDeleteRegValue
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\InstalledApps"
+value = "NAVNT"
+
+[DeleteSymInstalledApps]
+dll = siwnavnt.dll
+function = NavDeleteEmptyRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\InstalledApps"
+
+[DeleteNavscanReg1]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus Scanner\Install\4.0\Components"
+
+[DeleteNavscanReg2]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus Scanner\Install\4.0"
+
+[DeleteNavscanReg3]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus Scanner\Install"
+
+[DeleteNavscanReg4]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Virus Defs\LastUpdate"
+
+[DeleteNavscanReg5]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Virus Defs"
+
+[DeleteNavscanReg6]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\LastScan"
+
+[DeleteNavscanReg7]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus Scanner\Clinic"
+
+[DeleteNavscanReg8]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus Scanner"
+
+[DeleteNavscanInstalledReg]
+dll = siwnavnt.dll
+function = NavDeleteRegValue
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\InstalledApps"
+value = "NAVSCAN"
+
+[DeleteNavscanHelpReg]
+dll = siwnavnt.dll
+function = NavDeleteRegValue
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Microsoft\Windows\Help"
+value = "Navwscn.hlp"
+
+[DeleteSymInstalledApps]
+dll = siwnavnt.dll
+function = NavDeleteEmptyRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\InstalledApps"
+
+[MergeRegFileEx_Nav]
+dll = siwnavnt.dll
+function = RegMergeFileEx
+file = %s\navnt.reg, TARGET2
+
+[MergeRegFileEx_Navw]
+dll = siwnavnt.dll
+function = RegMergeFileEx
+file = %s\navwnt.reg, TARGET2
+
+[MergeRegFileEx_Setup]
+dll = siwnavnt.dll
+function = RegMergeFileEx
+file = %s\setup.reg, TARGET2
+
+[MergeRegFileEx_NavShell]
+dll = siwnavnt.dll
+function = RegMergeFileEx
+file = %s\navshell.reg, TARGET2
+
+[RegUpdate]
+key = "HKEY_LOCAL_MACHINE"
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0\Components"
+
+;/////////////////////////////////////////////////////////////////////////////
+;// MISC INSTALL FUNCTIONS
+;/////////////////////////////////////////////////////////////////////////////
+[Pix]
+color = %s\symlogo.rle, -1, 1
+
+[VerDll]
+ver.dll, SYSTEM
+
+[SetNAVRegister]
+s32navK.dll, TARGET
+
+[Registration]
+dll = s32navK.dll
+string = "Symantec Setup for Windows"
+active = no
+serialize = 0
+
+[MergeRegFileEx_Onramp]
+dll = siwnavnt.dll
+function = RegMergeFileEx
+file = %s\liveupdt.reg, TARGET2
+
+;/////////////////////////////////////////////////////////////////////////////
+;// COPY
+;/////////////////////////////////////////////////////////////////////////////
+[NAVCopy]
+;seltype.component, description,                        size,req,files,show
+CopyMain.BaseFiles, "Norton AntiVirus Base Files",         0,  Y, N, Y
+CopySub.infodesk,   " "
+CopySub.symstat,    " "
+CopySub.options,    " "
+CopySub.newoptions, " "
+CopySub.virdefs,    " "
+CopySub.install,    "Install/uninstall NAV"
+CopySub.navwnt,     "Windows scanner application"
+; Bogus unused copymain so deselect() doesn't chunk.
+CopyMain.Select,    " ", 0, N, N, N
+
+;/////////////////////////////////////////////////////////////////////////////
+;// WIZARD PANELS
+;/////////////////////////////////////////////////////////////////////////////
+[WrongVersion]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Incorrect Version"
+DlgProc=WizardPanelProc
+ResourceId=102
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First+Last+Finish
+
+[NoWinSpace]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Low Disk Space"
+DlgProc=WizardPanelProc
+ResourceId=108
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First+Last+Finish
+
+[Welcome]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Welcome to Norton AntiVirus"
+DlgProc=_WelcomeDlgProc@16
+ResourceId=501
+Bitmap16=202
+PanelDataProc=_WelcomeDataProc@0
+PanelFlags=First
+
+[UseLiveUpdate]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Important Reminders..."
+DlgProc=WizardPanelProc
+ResourceId=145
+Bitmap16=311
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First
+
+[License]
+;Caption="Norton AntiVirus for Windows NT Setup"
+Caption="Online License Agreement"
+DlgProc=WizardPanelProc
+ResourceId=502
+;Bitmap16=202
+PanelDataProc=_LicenseDataProc@0
+
+[NetscapeDetected]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Netscape Detected"
+DlgProc=WizardPanelProc
+ResourceId=119
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+
+[TechSupport]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Symantec Support Solutions"
+DlgProc=WizardPanelProc
+ResourceId=507
+Bitmap16=207
+PanelDataProc=_DefaultDataProc@0
+
+[Reach]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="How to Reach Us"
+DlgProc=WizardPanelProc
+ResourceId=513
+Bitmap16=213
+PanelDataProc=_DefaultDataProc@0
+
+[SpecifyLocation]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Program Location"
+DlgProc=WizardPanelProc
+ResourceId=118
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+
+[CompressedDrive]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Compressed Drive Information"
+DlgProc=WizardPanelProc
+ResourceId=104
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+
+[NoDiskSpace]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Not Enough Disk Space"
+DlgProc=WizardPanelProc
+ResourceId=106
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=Last
+
+[KeepSettingsDlg]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Current Settings"
+DlgProc=WizardPanelProc
+ResourceId=121
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+
+[InitialSettingsDlg]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Initial Settings"
+DlgProc=WizardPanelProc
+ResourceId=122
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+
+[CopyFiles]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Setup Review"
+DlgProc=WizardPanelProc
+ResourceId=128
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+
+[Finished]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Setup Complete"
+DlgProc=WizardPanelProc
+ResourceId=130
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=Last+Finish
+
+[RebootFloppyDialog]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Remove Floppy Diskette"
+DlgProc=WizardPanelProc
+ResourceId=129
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First+Last+Finish
+
+[NeedAdministratorDialog]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Need administrator privileges"
+DlgProc=WizardPanelProc
+ResourceId=141
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First+Last+Finish
+
+[ReselectDirectoryDialog]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Cannot install over Norton AntiVirus for Windows 95"
+DlgProc=WizardPanelProc
+ResourceId=142
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=Last
+
+[ScheduleServiceDlg]
+Caption="Norton AntiVirus for Windows NT Setup"
+Title="Cannot schedule weekly scans."
+DlgProc=WizardPanelProc
+ResourceId=143
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First
+
+;/////////////////////////////////////////////////////////////////////////////
+;// BEGIN PIPELINE PANELS
+;/////////////////////////////////////////////////////////////////////////////
+[RegisterNow]
+caption = "Norton AntiVirus for Windows NT Setup"
+Title="Register Now"
+DlgProc=_RegNowDlgProc@16
+PanelDataProc=_RegNowDataProc@0
+ResourceId=504
+Bitmap16=204
+;Bitmap16=120
+PanelFlags=Skip
+
+[OnlineRegistration]
+caption = "Norton AntiVirus for Windows NT Setup"
+DlgProc=_UsaRegDlgProc@16
+PanelDataProc=_UsaRegDataProc@0
+ResourceId=505
+PanelFlags=Skip
+
+[OnlineMarketing]
+caption = "Norton AntiVirus for Windows NT Setup"
+DlgProc=_MarketingDlgProc@16
+PanelDataProc=_MarketingDataProc@0
+ResourceId=506
+PanelFlags=Skip
+
+[SendRegistration]
+caption = "Norton AntiVirus for Windows NT Setup"
+DlgProc=_SendRegDlgProc@16
+PanelDataProc=_SendRegDataProc@0
+ResourceId=514
+Bitmap16=214
+;Bitmap16=120
+Flags=Skip
+
+[ProgmanAddAPInNAV]
+dll = siwnavnt.dll
+function = FuncAddGroupItem
+group="Norton AntiVirus",1            ; 1 indicates common group, 0 - indicates private group
+groupid=navwnt
+item="Norton AntiVirus AutoProtect"
+exe=navapw32.exe
+cmdparams=" "
+exedir=%s, TARGET
+workdir=
+iconfile=%s, TARGET
+alticonfile=navapw32.exe
+icon="0"
+
+[ProgmanAddAPInStartup]
+dll = siwnavnt.dll
+function = FuncAddGroupItem
+group="Startup",1                      ; 1 indicates common group, 0 - indicates private group
+groupid=navwnt
+item="Norton AntiVirus AutoProtect"
+exe=navapw32.exe
+cmdparams=" "
+exedir=%s, TARGET
+workdir=
+iconfile=%s, TARGET
+alticonfile=navapw32.exe
+icon="0"
+
+[ProgmanAddNAVInNAV]
+dll = siwnavnt.dll
+function = FuncAddGroupItem
+group="Norton AntiVirus",1            ; 1 indicates common group, 0 - indicates private group
+groupid=navwnt
+item="Norton AntiVirus"
+exe=navwnt.exe
+cmdparams=" "
+exedir=%s, TARGET
+workdir=
+iconfile=%s, TARGET
+alticonfile=navwnt.exe
+icon="0"
+
+[ProgmanAddNAVUnInstInNAV]
+dll = siwnavnt.dll
+function = FuncAddGroupItem
+group="Norton AntiVirus",1            ; 1 indicates common group, 0 - indicates private group
+groupid=install
+item="Norton AntiVirus Uninstall"
+exe=setup.exe
+cmdparams="/u"
+exedir=%s, TARGET
+workdir=
+iconfile=%s, TARGET
+alticonfile=setup.exe
+icon="0"
+
+[ProgmanAddNAVInNTTools]
+dll = siwnavnt.dll
+function = FuncAddGroupItem
+group="Norton NT Tools 1.0",1			          ; 1 indicates common group, 0 - indicates private group
+groupid=navwnt
+item="Norton AntiVirus"
+exe=navwnt.exe
+cmdparams=" "
+exedir=%s, TARGET
+workdir=
+iconfile=%s, TARGET
+alticonfile=navwnt.exe
+icon="0"
+
+[ProgmanAddAPInNAVFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus failed to add AutoProtect icon to the Norton AntiVirus Group"
+
+[ProgmanAddNAVInNAVFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus failed to add Norton AntiVirus icon to the Norton AntiVirus Group"
+
+[ProgmanAddNAVUnInstInNAVFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus failed to add Norton AntiVirus Uninstall icon to the Norton AntiVirus Group"
+
+[ProgmanAddAPInStartupFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus failed to add AutoProtect icon to the Startup Group"
+
+[StartNTScheduleService]
+dll = siwnavnt.dll
+function = FuncStartNTScheduleService
+
+[ProgmanDelAPFromStartup]
+dll = siwnavnt.dll
+function = FuncDelGroupItem
+group="Startup",1			          ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus AutoProtect"
+
+[UpdateRegistryFailMIF]
+dll = siwnavnt.dll
+function = FuncCreateMIFFile
+msg="Failed to append information in the registry"
+
+[UpdateRegistryFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus failed to update registry"
+
+[CheckNAVScannerInNTTools]
+dll = siwnavnt.dll
+function = FuncCheckGroupItemExist
+group="Norton NT Tools 1.0",1			          ; 1 indicates common group, 0 - indicates private group
+item="Norton AntiVirus Scanner"
+
+[IsProgramManagerIconic]
+dll = siwnavnt.dll
+function = IsProgmanIconic
+
+[RestoreProgramManager]
+dll = siwnavnt.dll
+function = RestoreProgman
+
+[RestoreProgramManagerFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Program Manager could not be restored from iconic state"
+
+[MinimizeProgramManager]
+dll = siwnavnt.dll
+function = MinimizeProgman
+
+[MinimizeProgramManagerFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Program Manager could not be minimized"
+
+[CreateSarcInternetShortCut]
+dll = siwnavnt.dll
+function = CreateInternetShortCutURLNT4
+Group = "Norton AntiVirus"
+TargetUrl = "www.symantec.com/avcenter/navcd.html"
+ShortCutTitle = "SARC Home Page"
+
+[CreateSarcInternetShortCutFail]
+caption = "Norton AntiVirus for Windows NT Setup"
+"Norton AntiVirus could not install the SARC Internet shortcut"
+
+;!;
+;!; This section lets you override the installation directory.
+;!; Change the location to whatever you like, and then invoke
+;!; at the appropriate place in the script above. There are 3
+;!; possible places - search for TargetDefault in the script.
+;!;
+[TargetDefault]
+reset = TARGET
+location = "C:\NAV_CUST"

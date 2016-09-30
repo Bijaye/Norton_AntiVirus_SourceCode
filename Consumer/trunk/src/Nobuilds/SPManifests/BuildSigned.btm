@@ -1,0 +1,25 @@
+@echo off
+
+rem ---------------------------------------------------------------------------------------
+rem BuildSigned.btm - creates encrypted manifests and corresponding .grd hash files
+rem Run this after making final edits to the renamed manifest files (see BuildUnsigned.btm)
+rem After the .grd files have been generated, they must be  signed by RPS 
+rem (rps.corp.symantec.com) to obtain the .sig file
+rem ---------------------------------------------------------------------------------------
+
+
+
+set manifestpath=Unsigned
+set staticpath=%manifestpath%
+set makeguard=tools\MakeGuard.exe
+set dest=Signed
+set symprotectprocessmanifest=..\..\..\SDKs\SymProtect\ntu.x86.vc71.Release\bin.nonredist\SymProtectProcessManifest.exe
+
+set files=CfgWzRes DefAlert IMScan IWP IWPLog IWPLUCBK NAV navap32 navapw32 NAVError NAVEvent navlucbk NAVOpts NAVPatch NAVUI Navw32 NPFMntor OPScan Parent Scnrs SCSSComm Short Symevent SYMLT
+set static=NAV_Dirs NAV_Krnl OpenCmd
+
+del %dest\*.grd
+del %dest\*.spm
+for i in (%files%) do %symprotectprocessmanifest% %manifestpath%\%i%.xml %dest%\%i%.spm
+for i in (%static%) do %symprotectprocessmanifest% %staticpath%\%i%.xml %dest%\%i%.spm
+for i in (%files% %static%) do %makeguard% %dest%\%i%.grd %dest%\%i%.spm

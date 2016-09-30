@@ -1,0 +1,239 @@
+**********************************************************************
+Norton AntiVirus for Windows NT Server - NEC                README.TXT
+Copyright (c) 1995-1997 Symantec Corporation              October 1997
+
+**********************************************************************
+HOW TO USE THIS DOCUMENT
+**********************************************************************
+To view README.TXT on screen in Notepad or WordPad, maximize the
+Notepad or WordPad window.
+
+To print README.TXT in Notepad or WordPad, choose Print from the File
+menu.  If you use another word processor, select the entire document
+and format the text in 10-point Courier before printing to ensure
+proper spacing.
+
+To print README.TXT from the DOS prompt, type COPY README.TXT PRN:
+
+**********************************************************************
+NORTON ANTIVIRUS NOTES
+**********************************************************************
+This README.TXT file covers compatibility information, late-breaking
+news, and usage tips for Norton AntiVirus for Windows NT Server. The
+following topics are discussed:
+
+ * Print versions of Norton AntiVirus Guides
+ * Options settings from earlier versions of Norton AntiVirus
+ * Installing Norton AntiVirus and Lotus Notes Server
+ * NT 4.0 Service Pack 2
+ * NT 3.51 Service Pack 4 and uninstalling Norton AntiVirus
+ * Restart desirable after installing for the first time
+ * Access privileges required for installation
+ * Short File Name (SFN) alias generation during install
+ * Using the /INTERACTIVE switch with the AT command to schedule scans
+ * LiveUpdate modem support for NT 3.51
+ * Installation from long-filename folders on NetWare servers
+ * Creating a test text file that looks like a virus
+ * Using Netscape with Norton AntiVirus
+ * Changing LiveUpdate automatic schedules
+ * Uninstalling Norton NT Tools
+ * Preventing the Norton AntiVirus Startup Logo Screen from displaying
+ * Long Filenames and LiveUpdate 
+
+To help us improve Norton AntiVirus for Windows NT, please send email
+with suggestions for enhancements to:
+
+     navntfeedback@symantec.com
+
+Your comments are greatly appreciated.
+**********************************************************************
+
+Print versions of Norton AntiVirus Guides
+-----------------------------------------
+Print versions of the Norton AntiVirus User and Implementation Guides
+can be ordered through Symantec Customer Service.
+
+Options settings from earlier versions of Norton AntiVirus
+----------------------------------------------------------
+Options settings from earlier versions of Norton AntiVirus are not
+preserved when you install Norton AntiVirus 4.0.  The new version
+stores options settings in a different format.
+
+Installing Norton AntiVirus and Lotus Notes Server
+--------------------------------------------------
+You must first stop the Lotus Notes Server before installing Norton
+AntiVirus. The setup program will not run while Lotus Notes Server
+is running.
+
+NT 4.0 Service Pack 2
+---------------------
+There is a serious incompatibility issue between AutoProtect and
+Service Pack 2 that may cause your NT machine to crash. This may
+occur when mounting CD-ROM's, or when formatting a floppy.  You
+should install Service Pack 3 instead.  Service Pack 3 is available
+from the following FTP site:
+
+ftp://ftp.microsoft.com/bussys/winnt/winnt-public/fixes/jpn/NT40/sp3/nec98
+
+NT 3.51 Service Pack 4 and uninstalling Norton AntiVirus
+--------------------------------------------------------
+There is a known bug in SMSS.EXE in Service Pack 4 that prevents easy
+uninstall and reinstall of Norton AntiVirus. Microsoft and Symantec
+recommend that you upgrade this file. 
+
+To upgrade the file, rename SMSS.EXE to SMSS.ORG in your Windows NT
+system32 subdirectory, copy the updated SMSS.EXE from the Norton
+AntiVirus install disk to your system32 subdirectory, then restart
+Windows NT. Do not apply this fix unless you are running NT 3.51
+Service Pack 4. 
+ 
+Restart desirable after installing for the first time
+-----------------------------------------------------
+After you install Norton AntiVirus you should restart your machine or
+restart the server software. The install process modifies two registry
+keys that will not take effect until you do so. 
+
+To restart the server software:
+
+   1) Open an MS-DOS box, and type the following at the command prompt:
+
+      NET STOP SERVER
+
+      This will log all connected users and machines off, and stop the 
+      "Net Logon" service and the "Computer Browser" service.
+
+   2) Restart the stopped services by typing the following: 
+
+      NET START SERVER
+      NET START "Net Logon"
+      NET START "Computer Browser"
+
+      This returns your machine to full operation, with the modified
+      settings in the registry in place.
+
+The two settings modified by install are the following:
+
+HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\
+LanmanServer\Parameters
+
+The modified values are:
+
+CachedOpenLimit = 0
+IrpStackSize = 2 more than what it was, or 6 if no value was present
+
+The first change ensures that files are promptly scanned on the
+server when they are closed. This change only affects NT servers.
+
+The second change tells the system to increase the I/O request packet
+stack size to allow for the presence of NAV's file filter driver. If
+this isn't done, you may get the message "not enough memory to
+complete the operation" when attaching to a CD-ROM share from a
+remote machine. 
+
+Access privileges required for installation
+------------------------------------------- 
+As part of Norton AntiVirus installation, shared Symantec files, which
+are components of all Symantec products, are always installed to 
+\win32app\symantec under Windows NT 3.51 or to \Program Files\Symantec
+under Windows NT 4.0 -- even if a custom location for the Norton 
+AntiVirus program files is specified during install. If you do not
+have write (and create, if necessary) privileges to this location, 
+the install will fail.
+
+Short File Name (SFN) alias generation during install
+-----------------------------------------------------
+If you are installing Norton AntiVirus to a custom location that is
+a Long File Name (LFN) folder, SFN alias generation must not be 
+disabled during the install. To re-enable SFN alias generation, run 
+REGEDT32 and change the following registry key entry:
+
+  HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+
+  NtfsDisable8dot3NameCreation should be set to 0 to enable SFN 
+  alias generation.
+
+You must restart your NT machine in order for changes in SFN alias
+generation to take effect. Set the value back to 1 after installation
+to disable SFN alias generation, if desired.
+
+Using the /INTERACTIVE switch with the AT command to schedule scans
+-------------------------------------------------------------------
+You must use the /INTERACTIVE switch to schedule scans with the AT
+command. If NAVWNT is launched from the NT Scheduling Service (AT)
+without the /INTERACTIVE switch, Norton AntiVirus remains in memory
+with no way of terminating. The following examples demonstrate
+correct usage to schedule automatic scans three times per week.
+
+For Windows NT 4.0:
+
+ at 17:30 /interactive /every:M,W,F "A:\Program Files\NAVNT\navwnt" /L
+
+For Windows NT 3.51:
+
+ at 17:30 /interactive /every:M,W,F "A:\win32app\NAVNT\navwnt" /L
+
+See your Windows NT documentation for more information on using the AT
+command.
+
+LiveUpdate modem support for NT 3.51
+-------------------------------------
+LiveUpdate is the automatic virus definitions files update feature.
+LiveUpdate requires TAPI support to run with a modem connection.
+Because TAPI is only available under NT 4.0, LiveUpdate will not be 
+able to use a modem under NT 3.51.
+
+Installation from long-filename folders on NetWare servers
+----------------------------------------------------------
+On a Novell NetWare server, you cannot install Norton AntiVirus from
+a long-filename folder.
+
+Creating a test text file that looks like a virus
+-------------------------------------------------
+To create a harmless text file that will be detected as a virus,
+which you can then use to verify detection of viruses, logging and
+functioning of alerts, copy the following line in to a separate file,
+saving it as trigger.com. This file is NOT a virus, but will be
+detected as the "EICAR Test String.70" virus. Disable Auto-Protect
+temporarily before you save the file.
+
+X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+
+Using Netscape with Norton AntiVirus
+------------------------------------
+If Norton AntiVirus is installed as a Netscape helper application, a
+a downloaded file will be lost if Netscape is closed before the 
+download is complete.
+
+Changing LiveUpdate automatic schedules
+---------------------------------------
+The first time that LiveUpdate completes a successful session, it 
+offers to schedule future sessions automatically. If you want to 
+modify or delete the scheduled sessions, access the Norton Program
+Scheduler from the Norton AntiVirus group on the Start menu or the
+Norton AntiVirus main window.
+
+Uninstalling Norton NT Tools
+----------------------------
+If Norton NT Tools is uninstalled after Norton AntiVirus is installed,
+the shared file S32STAT.DLL is removed. Reinstall Norton AntiVirus to 
+correct the problem.
+
+Preventing the Norton AntiVirus Startup Logo Screen from displaying
+-------------------------------------------------------------------
+Some users prefer not to see the startup logo screens that display 
+when Norton AntiVirus components are loaded. They can be disabled
+adding the following Registry entries:
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus\Auto-Protect]
+"DisableSplashScreen"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Clinic]
+"DisableSplashScreen"=dword:00000001
+
+Long Filenames and LiveUpdate 
+-----------------------------
+Long Filenames (LFNs) must be enabled on Windows NT systems to
+install LiveUpdate.
+**********************************************************************
+                                END OF FILE
+**********************************************************************

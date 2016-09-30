@@ -1,0 +1,58 @@
+<html>
+<head>
+<script type="text/javascript">
+<!--
+
+
+function ResetHomePage()
+{
+    //document.writeline(txtHomePage.value)
+    
+    axResetHomePage = new ActiveXObject('HPPSCR.Util');
+    
+    axResetHomePage.SetHomePage(txtHomePage.value, false);
+
+    return;
+}
+
+function SignalHomePageProtectionUpdate()
+{
+    //document.writeline(txtHomePage.value)
+    
+    axResetHomePage = new ActiveXObject('HPPSCR.Util');
+    
+    axResetHomePage.ResetOptions();
+
+    return;
+}
+
+function SignalHomePageProtectionUninstall()
+{
+    //document.writeline(txtHomePage.value)
+    
+    axResetHomePage = new ActiveXObject('HPPSCR.Util');
+    
+    axResetHomePage.PrepHPPForUninstall();
+
+    return;
+}
+
+//-->
+</script>
+</head>
+<body>
+<h1>Test Home Page Protection Scriptable Object</h1>
+<hr>
+Home Page Value<br>
+<input type="text" name="txtHomePage" value="http://www.microsoft.com" size=50><br>
+<input type="submit" onclick="ResetHomePage()" value="Click Me...">
+<h3>Signal Options Update</h3>
+<hr>
+<input type="submit" onclick="SignalHomePageProtectionUpdate()" value="Click Me...">
+<hr>
+<h3>Signal Prep for uninstall</h3>
+<hr>
+<input type="submit" onclick="SignalHomePageProtectionUninstall()" value="Click Me...">
+
+</body>
+</html>

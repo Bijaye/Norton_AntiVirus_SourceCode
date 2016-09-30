@@ -1,0 +1,47 @@
+;**********************************************************************
+;
+; This prodhook selects tools and does global setup for ILIAD (NAV 6.0 Corporate).
+;
+;**********************************************************************
+
+
+; Prodhook for Iliad
+
+[envset]
+set LANGPRE=n:\
+set PROJPRE=S:\
+set quakepre=L:\SOURCE
+set quake=
+set quakeinc=L:\SOURCE\INCLUDE\SRC%QUAKE%
+set quakesuf=
+set globalinc=L:\SOURCE\INC\SRC
+set LANGDRIVE=N:
+set quakelangpre=L:\%LANG%
+set toolsdir=S:\TOOLS
+set dosx=-SWAPDIR %TEMP%
+set familyvers=
+set familypre=T:\SOURCE
+set familylangpre=T:\
+set familyinc=T:\SOURCE\INCLUDE\SRC%FAMILYVERS%
+
+[commonpre]
+platforms=ida,ira,BIN
+set quakeinc=L:\SOURCE\INCLUDE\SRC%QUAKE%
+set libpre=
+set includepre=
+
+
+[ida]
+set QUAKE_CUSTOM=NAV
+tools=MSVC60SP2X86;MSVC60MFCSP2X86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[ira]
+set QUAKE_CUSTOM=NAV
+tools=MSVC60SP2X86;MSVC60MFCSP2X86;masm611
+SET DOSX=-SWAPDIR %TEMP%
+
+[BIN]
+
+
+[]

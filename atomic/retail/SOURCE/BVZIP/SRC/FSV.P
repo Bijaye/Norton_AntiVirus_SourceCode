@@ -1,0 +1,628 @@
+/*
+ * $Workfile::   fsv.p       $
+ * $Revision::   1.0         $
+ * $Modtime::   30 Jan 1996 15:48:08     $
+ *
+ * FILE SERVICES -- Private Header file
+ *
+ * LANGUAGE  : Microsoft C6.0
+ * MODEL   : medium
+ * ENVIRONMENT : Microsoft Windows 3.0 SDK
+ *
+ * This module contains local header information required file services.
+ *
+ */
+
+#ifndef FSV_P_INCLUDED
+#define FSV_P_INCLUDED
+
+#ifndef NAV95
+#include <shellapi.h>
+//#include <ntt.h>
+#include "..\rc\fsv.hrc"
+#endif
+//===========================================================================
+//
+//                              DEFINES
+//
+//===========================================================================
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef NAV95
+
+#define BKTASK 0
+#define UNDOSYMEVENT 1
+#define UNDOSEBRUTEFORCE   1
+
+/* Cursors used for drag and drop.
+   These constants must start at zero and be contiguous. */
+#define FSV_CURCOUNT               17
+#define FSV_CUR_NODROP              0
+#define FSV_CUR_FILESINGLE          1
+#define FSV_CUR_FILESINGLECOPY      2
+#define FSV_CUR_FILEMULTIPLE        3
+#define FSV_CUR_FILEMULTIPLECOPY    4
+#define FSV_CUR_DIRSINGLE           5
+#define FSV_CUR_DIRSINGLECOPY       6
+#define FSV_CUR_DIRMULTIPLE         7
+#define FSV_CUR_DIRMULTIPLECOPY     8
+#define FSV_CUR_DRIVE525            9
+#define FSV_CUR_DRIVE35             10
+#define FSV_CUR_DRIVEFIXED          11
+#define FSV_CUR_DRIVEREMOTE         12
+#define FSV_CUR_DRIVERAM            13
+#define FSV_CUR_DRIVECDROM          14
+#define FSV_CUR_DRIVEBERNOULLI      15
+#define FSV_CUR_DRIVEUNKNOWN        16
+
+#endif  // NOT NAV95
+
+#define LIST_INDEXMAX       63999
+#define LIST_COUNTMAX       64000
+#define LIST_INDEXNONE      LIST_INDEXMAX+1
+#define LIST_SIZEMAX        64000
+
+#define LIST_ALLOCSIZEMAX   64000
+#define LIST_ALLOC_GLOBAL   2
+#define LIST_ALLOC_SHARED   3
+
+#define LIST_DTYPE_SHORT      1
+#define LIST_DTYPE_LONG       2
+#define LIST_DTYPE_LP         3
+#define LIST_DTYPE_HFSV       4
+#define LIST_DTYPE_STR        5
+#define LIST_DTYPE_WORD       6
+#define LIST_DTYPE_DWORD      7
+#define LIST_DTYPE_HWND       8
+#define LIST_DTYPE_CHARARRAY  9
+
+#define FSV_FTP_MAXSOCKETS    10    // maximum number of FTP sockets open at once
+
+#define FSV_MAXUSERNAME       16
+
+#define FSV_COMPAT_DUMBCDROM  0x0001
+
+//===========================================================================
+//
+//                              MACROS
+//
+//===========================================================================
+
+#define ListCount(lpList)       (((LPLISTHEADSTRUCT)lpList)[-1].idxCount)
+#define ListMaxCount(lpList)    (((LPLISTHEADSTRUCT)lpList)[-1].idxMaxCount)
+#define ListEntrySize(lpList)   (((LPLISTHEADSTRUCT)lpList)[-1].entrySize)
+#define ListAppend(lplpList,lpData) ListInsert(lplpList, (LISTINDEX)LIST_INDEXMAX, lpData)
+#define ListAppendMultiple(lplpList,count,lpData)   ListInsert(lplpList, (LISTINDEX)LIST_INDEXMAX, count, lpData)
+
+#ifndef NAV95
+#if (WINVER < 0x0400)
+   #define FSV_ISMSDOS7()          ((!gFsv.wDR_DOS) && (gFsv.osversion.b[0] >= 7))
+#else
+   #define FSV_ISMSDOS7()     TRUE
+#endif
+#endif
+
+#ifdef _DEBUG
+
+
+#define FSVASSERT(x)    \
+   if (!(x)){        \
+      char sz[80];   \
+      wsprintf( sz, "Assert Failed in " __FILE__ " at line %d", __LINE__ );\
+      OutputDebugString( sz );                     \
+      OutputDebugString( "\n" );                   \
+      MessageBox(NULL, sz, "ERROR",                \
+         MB_ICONHAND | MB_OK | MB_SYSTEMMODAL );   \
+      for(;;)(*((UINT far *) NULL))++;             \
+   }
+#define ERRORMESS(x) \
+   MessageBox(NULL, x, "ERROR",                \
+      MB_ICONHAND | MB_OK | MB_SYSTEMMODAL );
+
+#define ASSERT_STRUCT_PTR(lp) \
+   if (lp && IsBadWritePtr(lp, sizeof(*lp)-1)){    \
+      char sz[80];   \
+      wsprintf( sz, "Bad pointer in " __FILE__ " at line %d", __LINE__ );\
+      OutputDebugString( sz );                     \
+      OutputDebugString( "\n" );                   \
+      }
+
+#define ASSERT_READ_PTR(lp, wMax)   FSVASSERT(!IsBadReadPtr(lp, wMax))
+#define ASSERT_WRITE_PTR(lp, wMax)  FSVASSERT(!IsBadWritePtr(lp, wMax))
+#define ASSERT_STRING_PTR(lp, wMax) FSVASSERT(!IsBadStringPtr(lp, wMax))
+
+#define ASSERT_STRING_IS_LOWER(x)                        \
+   {  char sz[256+14];                                   \
+      if (x){                                            \
+         lstrcpy( sz, x );                               \
+         AnsiLower( sz );                                \
+         if (lstrcmp( sz, x )){                          \
+            wsprintf( sz, "Upper case %s\n in " __FILE__ " at line %d", x, __LINE__ );\
+            OutputDebugString( sz );                     \
+            OutputDebugString( "\n" );                   \
+            MessageBox(NULL, sz, "ERROR",                \
+               MB_ICONHAND | MB_OK | MB_SYSTEMMODAL );   \
+         }                                               \
+      }                                                  \
+   }
+
+#else
+#define FSVASSERT(x)
+#define ERRORMESS(x)
+#define ASSERT_STRUCT_PTR(lp)
+#define ASSERT_STRING_IS_LOWER(x)
+#define ASSERT_READ_PTR(x) 
+#define ASSERT_WRITE_PTR(x) 
+#define ASSERT_STRING_PTR(x) 
+#endif
+
+//===========================================================================
+//
+//                             TYPEDEFS
+//
+//===========================================================================
+
+/***** Memory suballocation privates */
+
+#ifndef NAV95
+typedef struct _FSV_USERNAMESTRUCT {
+   DWORD       dwID;
+   BYTE        abName[FSV_MAXUSERNAME];
+} FSV_USERNAMESTRUCT, FAR* LPFSV_USERNAMESTRUCT;
+
+typedef struct _FSV_CONNECTIONSTRUCT {
+   WORD                    wID;
+   LPFSV_USERNAMESTRUCT    lpaUserNameStruct;
+} FSV_CONNECTIONSTRUCT, FAR* LPFSV_CONNECTIONSTRUCT;
+#endif
+  
+typedef unsigned short  LISTINDEX, FAR* LPLISTINDEX;
+typedef unsigned short  ENTRYSIZE, FAR* LPENTRYSIZE;
+typedef struct _LISTHEADSTRUCT {
+    LISTINDEX   idxMaxCount;        /* largest count without a realloc          */
+    LISTINDEX   idxCount;           /* current number of array entries          */
+    LISTINDEX   idxOrigCount;       /* original number of indeces                   */
+    ENTRYSIZE   entrySize;          /* size of each entry                           */
+    WORD        wAllocType;         /* allocation method (LIST_ALLOC_???)       */
+    HANDLE      hMem;               /* memory handle (depends on wAllocType)    */
+} LISTHEADSTRUCT, FAR* LPLISTHEADSTRUCT;
+
+#ifndef NAV95
+
+// Prototypes should match function prototypes found in WINNET.H
+typedef WORD (CALLBACK* WNETDIRECTORYNOTIFYPROC)(HWND, LPSTR, WORD);
+typedef WORD (CALLBACK* WNETGETDIRECTORYTYPE)( LPSTR, LPINT );
+typedef WORD (CALLBACK* WNETGETSHARENAME)( LPSTR, LPSTR, WORD );
+typedef WORD (CALLBACK* WNETSETDEFAULTDRIVE)( WORD );
+typedef WORD (CALLBACK* WNETGETSHAREPATH)( LPSTR, LPSTR, WORD );
+
+// Netware APIs
+typedef WORD (CALLBACK* NETGETDIRECTORYPATH)(BYTE, LPSTR);
+typedef WORD (CALLBACK* NETGETPREFCONNPROC)(void);
+typedef void (CALLBACK* NETSETPREFCONNPROC)(WORD);
+typedef WORD (CALLBACK* NETSCANINFOPROC)( BYTE, LPSTR, BYTE, LPWORD, LPSTR, LPBYTE,
+                                          LPBYTE, LPDWORD, LPBYTE, LPBYTE, LPBYTE,
+                                          LPBYTE, LPDWORD );
+typedef WORD (CALLBACK* NETSCANENTRYPROC)( WORD, BYTE, LPSTR, BYTE, LPDWORD, LPVOID);
+typedef BYTE (CALLBACK* NETGETDRIVEINFOPROC)( BYTE, LPWORD, LPBYTE );
+typedef BYTE (CALLBACK* NETGETBINDERYNAMEPROC)( DWORD, LPSTR, LPWORD );
+typedef WORD (CALLBACK* NETSCANBINDERYOBJECTPROC)( LPSTR, WORD, LPDWORD, LPSTR, LPWORD, LPBYTE, LPBYTE, LPBYTE );
+typedef WORD (CALLBACK* LPFN_SCANSALVAGABLEFILES)( WORD, BYTE, LPDWORD, LPVOID );
+typedef WORD (CALLBACK* LPFN_RECOVERSALVAGABLEFILE)( WORD, BYTE, DWORD, LPSTR, LPSTR );
+typedef WORD (CALLBACK* LPFN_PURGESALVAGABLEFILE)( WORD, BYTE, DWORD, LPSTR );
+typedef VOID (CALLBACK* FILECDRCALLBACK)( WORD, LPSTR );
+typedef WORD (CALLBACK* LPFN_SETENTRY)( WORD, BYTE, BYTE, DWORD, DWORD, LPVOID );
+
+// SHELL APIs
+typedef LONG (WINAPI * REGOPENKEY)(HKEY, LPCSTR, HKEY FAR*);
+typedef LONG (WINAPI * REGCREATEKEY)(HKEY, LPCSTR, HKEY FAR*);
+typedef LONG (WINAPI * REGCLOSEKEY)(HKEY);
+typedef LONG (WINAPI * REGDELETEKEY)(HKEY, LPCSTR);
+typedef LONG (WINAPI * REGSETVALUE)(HKEY, LPCSTR, DWORD, LPCSTR, DWORD);
+typedef LONG (WINAPI * REGQUERYVALUE)(HKEY, LPCSTR, LPSTR, LONG FAR*);
+typedef LONG (WINAPI * REGENUMKEY)(HKEY, DWORD, LPSTR, DWORD);
+
+// Special:  GetCurrentTask() really returns a DWORD.
+typedef DWORD (WINAPI * LPFNGETCURRENTTASKD)( void );
+
+#ifdef PREVIOUS_FSV_COMPATIBLE
+
+typedef DWORD (WINAPI * LPFNFSVEVNT_REGISTERFOREVENT2)( HTASK, LPSTR, WORD, WORD, HWND, UINT, LPFSVEVNT_CALLBACK, DWORD );
+
+#endif
+
+typedef struct _FSV_APPREGISTRYSTRUCT {
+   HINSTANCE   hInst;
+   WORD        wDataType;
+   WORD        wRegisterCount;
+} FSV_APPREGISTRYSTRUCT, FAR* LPFSV_APPREGISTRYSTRUCT;
+
+typedef struct _FSV_TIMERSTRUCT {
+   HWND        hWnd;
+   UINT        uId;
+   TIMERPROC   tmProc;
+   UINT        uTimeout;
+   DWORD       dwNextTrig;
+} FSV_TIMERSTRUCT, FAR * LPFSV_TIMERSTRUCT;
+
+#define FSV_EVENT_TYPE_COUNT  5
+
+typedef struct _FSV_EVENTSTRUCT {
+   DWORD       dwEventId;        // This field MUST be the first field
+   HTASK       hTask;
+   HWND        hWnd;
+   UINT        msg;
+   TCHAR       abName[FSV_PATHBUF_LEN + FSV_PATHBUF_LEN + 1];
+   TCHAR       szLongName[FSV_PATHBUF_LEN * 2];
+   WORD        wObject;
+   WORD        wDomain;
+   LPFSVEVNT_CALLBACK   lpfnFsvEvnt;
+   DWORD       dwUser;
+   int         cnDisable;
+   LPFSVEVNT_STRUCT  aFsvES;
+} FSV_EVENTSTRUCT, FAR * LPFSV_EVENTSTRUCT;
+
+//
+// Defines and structs used for handling UNDO operations.
+//
+
+// Mapped file name for shared memory across multiple FSV processes
+#define FSV_UNDO_MEMNAME   "FSV4_UNDOMEM"
+
+#define FSV_UNDO_MUTEXNAME       "FSV4_UNDOMUTEX"
+#define FSV_UNDO_WRITEPOSTNAME   "FSV4_UNDOWRITEPOST"
+#define FSV_UNDO_MUTEXWRITE      "FSV4_UNDOMUTEXWRITE"
+#define FSV_UNDO_MUTEXREAD       "FSV4_UNDMUTEXREAD"
+
+// Indices into array of handles to control interprocess synchronization
+#define FSV_UNDO_HMUTEX    0  // Mutex -- no two processes should write physical file simultaneously
+#define FSV_UNDO_HEVENTQ   1  // Event -- signaled when undo info is posted to memory
+#define FSV_UNDO_HTHREAD   2  // Thread -- handle of Undo write to file thread
+#define FSV_UNDO_HFILE     3  // File -- handle to undo stack disk file
+#define FSV_UNDO_HMUTEXW   4  // Mutex -- no two processes can write to disk or queue at the same time
+#define FSV_UNDO_HMUTEXR   5  // Mutex -- no two processes can read the disk or queue at the same time
+#define FSV_UNDO_HCOUNT    6
+
+// Return values from FsvUndo_<x>() functions.
+#define FSV_UNDO_POSTOK       0     // Success!
+#define FSV_UNDO_POSTERROR    -1    // Undefined error
+#define FSV_UNDO_POSTBLOCKED  -2    // Operation blocked, retry is suggested action
+#define FSV_UNDO_POSTFULL     -3    // Queue is full, retry is suggested action
+#define FSV_UNDO_POSTMEMERR   -4    // Memory error, abort is suggested action
+#define FSV_UNDO_POSTFILEERR  -5    // Physical file error, abort is suggested action
+#define FSV_UNDO_POSTTIMEOUT  -6    // Operation blocked, retries failed, timeout limit reached
+
+// Undo runtime flags, stored in FSV_UNDOSTRUCT->fdwFlags.
+#define FSV_UNDO_RF_IGNOREEXTERNAL  0x00000001  // Ignore externally generated events (i.e. SymEvent notifications)
+
+// Undo physical file header structure (located at file offset 0)
+typedef struct _FSV_UNDO_FILEHEADER
+{
+   DWORD          cbSize;     // size of structure
+   DWORD          dwVersion;  // file version
+   DWORD          dwRecCount; // count of Undo records in file
+   DWORD          dwFirstRec; // offset of first Undo record (0xffffffff indicates no records)
+   DWORD          dwLastRec;  // offset of last Undo record (0xffffffff indicates no records)
+   DWORD          dwFirstSpc; // offset of first empty space in file
+   DWORD          dwMaxRecs;  // maximum number of Undo records that may exist in this file
+                              // padding (if necessary) to align to DWORD
+   DWORD          dwCheckSum; // simple structure validation checksum
+} FSV_UNDO_FILEHEADER, FAR * LPFSV_UNDO_FILEHEADER, * PFSV_UNDO_FILEHEADER;
+
+// Undo data that needs to be shared by multiple processes
+typedef struct _FSV_UNDOSTRUCT {
+   DWORD                   dwStart;
+   DWORD                   dwEnd;
+   DWORD                   dwCount;
+   DWORD                   dwProcCount;
+   DWORD                   dwLock;
+   DWORD                   dwHeaderOutputTime;
+   DWORD                   fdwFlags;
+   FSV_UNDO_FILEHEADER     undoFile;
+} FSV_UNDOSTRUCT, FAR * LPFSV_UNDOSTRUCT, * PFSV_UNDOSTRUCT;
+
+typedef struct _FSV_ROOTSTRUCT {
+   LPFSV_APPREGISTRYSTRUCT lpAppRegistryArray;
+   HINSTANCE         hInst;
+   HDC               hDCBitmap;
+   HBITMAP           hBitmap;
+   HBITMAP           hBitmapOld;
+   HCURSOR           hCursor[FSV_CURCOUNT];
+   LPDWORD           adwExtExe;
+   LPDWORD           lpdwExtMap;
+   LPDWORD           adwExtArc;
+   HOOKPROC          hkprc;
+
+   DWORD             dwCompat;
+   BOOL              fDBCS;
+
+   LPFSV_DEITREE     lptdeiCache;
+   DWORD             dwCacheBits;
+   DWORD             dwCacheEventId;
+
+   LPFSVEVNT_STRUCT  lpFsvES;
+   LONG              lhevCount;
+   HANDLE            *phevSymEvent;
+
+   UINT              uLastTimerId;
+   UINT              cuSlowTimer;
+   UINT              cuFastTimer;
+   DWORD             dwLastTickFast;
+   DWORD             dwLastTickSlow;
+   UINT              uSlowTimerId;
+   UINT              uFastTimerId;
+   LPFSV_TIMERSTRUCT aFsvTimer;
+
+   int               cnEventDisable;
+   int               cnFileCDRDisable;
+   LPFSV_EVENTSTRUCT aFsvEvent;
+   UINT              uEventTimerId;
+   WORD              awDrives[27];
+
+   HANDLE            hMemUndo;
+   volatile LPFSV_UNDOSTRUCT  lpUndo;
+   HANDLE            hUndo[FSV_UNDO_HCOUNT];
+   volatile BOOL     fUndoExit;
+   volatile BOOL     fUndoWrite;
+   LONG              lCanUndo;
+   volatile DWORD    dwSemUndo;
+   LPTSTR *          alpszExceptionList;
+   DWORD             dwExceptionCount;
+   DWORD             dwProcessId;
+   HANDLE            hProcessId;
+#if UNDOSEBRUTEFORCE
+   LPTSTR            lpszHPTempFile;
+#endif
+   LPVOID            hUEUndo;
+
+   LPVOID            lpFDlgCallback;
+   LPVOID            lpFDlgCallbackData;
+
+   BOOL              fFTP_WINSOCK_LOAD;
+   SOCKET            aSocketID[FSV_FTP_MAXSOCKETS];
+   LPSTR             alpszSiteName[FSV_FTP_MAXSOCKETS];
+   LPFSV_FTP_SITESTRUCT alpSite;
+   LONG              lFTPError;
+   HANDLE            hConnThread;
+   BOOL              bFlagThread;
+   HWND              hwndFTPLogWindow;
+   int               IdFtpTimer;
+   HINSTANCE              hInstNetwork;
+   HINSTANCE              hInstMSShr;
+   WORD                   wNetType;
+   WNETDIRECTORYNOTIFYPROC    lpfnWNetDirectoryNotify;
+   WNETGETDIRECTORYTYPE       lpfnWNetGetDirectoryType;
+   WNETGETSHARENAME           lpfnWNetGetShareName;
+   WNETSETDEFAULTDRIVE        lpfnWNetSetDefaultDrive;
+   WNETGETSHAREPATH           lpfnWNetGetSharePath;
+   HINSTANCE                  hInstNetwork2;
+   WORD                       wNetType2;
+
+   HINSTANCE                  hInstNWNETAPI;
+   WORD                       wServerConnID;
+   LPFSV_CONNECTIONSTRUCT     lpaConnStruct;
+   NETSETPREFCONNPROC         lpfnSetPreferredConnectionID;
+   NETGETPREFCONNPROC         lpfnGetPreferredConnectionID;
+   NETSCANINFOPROC            lpfnScanFileInformation;
+   NETGETDIRECTORYPATH        lpfnGetDirectoryPath;
+   NETGETDRIVEINFOPROC        lpfnGetDriveInformation;
+   NETSCANENTRYPROC           lpfnScanFileEntry;
+   NETGETBINDERYNAMEPROC      lpfnGetBinderyObjectName;
+   NETSCANBINDERYOBJECTPROC   lpfnScanBinderyObject;
+   LPFN_SCANSALVAGABLEFILES   lpfnScanSalvagableFiles;
+   LPFN_RECOVERSALVAGABLEFILE lpfnRecoverSalvagableFile;
+   LPFN_PURGESALVAGABLEFILE   lpfnPurgeSalvagableFile;
+   LPFN_SETENTRY              lpfnSetEntry;
+
+   HINSTANCE                  hInstOLE32;
+   HINSTANCE                  hInstMPR;
+   HINSTANCE                  hInstSHELL32;
+
+   BOOL        fOwnerLoaded;
+   LPOWNERID   lpoiOwner;
+   union
+   {
+      WORD w;
+      BYTE b[2];
+   } osversion;
+   WORD wDR_DOS;
+   char cBootDrive;
+   BOOL fIbmNames;
+   char achIOSYS[11];
+   char achMSDOSSYS[11];
+
+} FSV_ROOTSTRUCT, FAR* LPFSV_ROOTSTRUCT;
+
+
+
+typedef struct tagTRUENAMEBUFF 
+   {
+   char szAnsiPath[256+15];
+   WORD wTruePathLength;
+   WORD wTrueVolume;
+   char szTruePath[256+15+48];
+} TRUENAMEBUFF;
+
+//
+// DOSWRAP DEFINES
+//
+typedef  struct tagCDRDRIVES{
+   WORD           wCDRCount;
+   WORD           wCDRfirst;  /* zero based */
+}  CDRDRIVES;
+
+typedef struct tagDIRENT{   /* de */
+    char    acName[11];
+    BYTE    bAttributes;
+    BYTE  bReserved[10];
+    WORD    wTime;
+    WORD    wDate;
+    WORD    wStartCluster;
+    DWORD   dwFileSize;
+}   DIRENT;
+
+typedef struct tagEXTHEADER{    /* eh   */
+    BYTE    bSignature;
+    BYTE    bReserved[5];
+    BYTE    bAttributes;
+    BYTE    bDriveID;
+    DIRENT de;
+}   EXTHEADER;
+
+typedef struct tagDEVICEIDS
+{
+   WORD     wType;
+   LPSTR    lpString;
+}
+DEVICEIDS;
+
+// Private stuff used by WNFSVT and should not be used by anyone else.
+#define FSVTASK_MSG           (WM_USER + 200)
+#define FSVTASK_MSG_SHUTDOWN        1
+//LONG WINAPI pFsvEvnt_Callback( LPFSVEVNT_CALLBACK lpfnFsvEvnt );
+
+#define BUF_LEN_LG                  256
+#define BUF_LEN_SM                  128
+
+//--- Handy Macro Pseudofunctions for string resources ---
+#define SRSM_LOAD_INST(buffer, srid, inst)  LoadString(inst, (srid), buffer, BUF_LEN_SM-1)
+#define SRSM_LOAD(buffer, srid)  LoadString(gFsv.hInst, srid, buffer, BUF_LEN_SM)
+#define SRSM_DECL(buffer)  char buffer[BUF_LEN_SM]
+
+#define SRLG_LOAD_INST(buffer, srid, inst)  LoadString(inst, (srid), buffer, BUF_LEN_LG-1)
+#define SRLG_LOAD(buffer, srid)  LoadString(gFsv.hInst, srid, buffer, BUF_LEN_LG)
+#define SRLG_DECL(buffer)  char buffer[BUF_LEN_LG]
+
+#endif          // NOT NAV95
+
+//===========================================================================
+//
+//                            PROTOTYPES
+//
+//===========================================================================
+
+#ifndef NAV95
+
+// FSVUTIL.C
+//
+HINSTANCE WINAPI FsvUtil_GetNovellDllHandle( void );
+WORD WINAPI FsvUtil_StringToBuff ( LPSTR lpDst, LPCSTR lpSrc, WORD wBufferSize);
+void WINAPI FsvUtil_FreeExeTable( void );
+void WINAPI FsvUtil_FreeArcTable( void );
+VOID FAR PASCAL FsvUtil_CleanOwnerName( void );
+void WINAPI FsvUtil_LoadExeTable( void );
+
+// DOSWRAP.ASM
+//
+WORD WINAPI ScanForString( LPSTR lpDest, LPSTR lpSrc, WORD wcSrcBytes, WORD wcSearchBytes);
+WORD WINAPI FsvDOSWrap_440D40_SetDevParam( WORD wLogicalDrive, DEVICEPARAMS far * lpDeviceParams );
+DWORD WINAPI FsvDOSWrap_59_ExtendedError(void);
+long WINAPI DOSWrap_40_Write ( HFILE hHandle, const void far * lpBuff,WORD wSize );
+long WINAPI FsvDOSWrap_3F_Read ( HFILE hHandle, void far * lpBuff, WORD wSize );
+long WINAPI FsvDOSWrap_42_Seek ( HFILE hHandle, long lOffset, BYTE bOrigin );
+LONG WINAPI DOSWrap_5700_GetDateAndTime (int iFileHandle);
+WORD WINAPI DOSWrap_440D60_GetDeviceType(WORD wLogicalDrive);
+WORD WINAPI FsvDOSWrap_440D60_GetDevParamEr(WORD wLogicalDrive,DEVICEPARAMS far * lpDeviceParams);
+WORD WINAPI DosWrap_440D42_FormatTrack(WORD wLogicalDrive,BYTE far * lpFv);
+long WINAPI FsvDOSWrap_40_Write( HFILE hHandle, LPVOID lpBuff, WORD wSize );
+long WINAPI FsvDOSWrap_40_WriteBytes( HFILE hHandle, LPVOID lpBuff, WORD wSize );
+DWORD WINAPI Fsv_GetExtendedError( BYTE bDrive );
+
+#endif // NOT NAV95
+
+LONG WINAPI DOSWrap_5701_SetDateAndTime (int iFileHandle,DWORD dwDateTime);
+
+// ASMUTILS.ASM
+//
+
+// MSDOS7.ASM
+
+// PMEMLIST.C
+//
+LPVOID WINAPI ListMalloc( LISTINDEX idxCount, ENTRYSIZE entrySize, WORD wAllocType );
+BOOL WINAPI  ListFree( LPVOID lpList );
+LISTINDEX WINAPI ListInsert( LPVOID FAR *lplpList, LISTINDEX idx, LPVOID lpData );
+LISTINDEX WINAPI ListInsertMultiple( LPVOID FAR *lplpList, LISTINDEX idx, LISTINDEX count, LPVOID lpData );
+BOOL WINAPI ListDelete( LPVOID FAR *lplpList, LISTINDEX idx );
+BOOL WINAPI ListDeleteMultiple( LPVOID FAR *lplpList, LISTINDEX idx, LISTINDEX count );
+LPVOID WINAPI ListBFind( LPVOID lplist, WORD wDType, WORD wOffset, LPVOID lpKey, LPLISTINDEX lpIdx );
+LPVOID WINAPI ListLFind( LPVOID lplist, WORD wDType, WORD wOffset, LPVOID lpKey, LPLISTINDEX lpIdx );
+BOOL WINAPI ListRealloc( LPVOID FAR * lplpList, LISTINDEX idxNewMaxCount );
+LPVOID WINAPI Mem_SubMallocHeap( DWORD dwBytes, LPVOID lphHeap );
+LPVOID WINAPI Mem_SubCallocHeap( DWORD dwCount, DWORD dwSize, LPVOID lphHeap );
+LPVOID WINAPI Mem_SubReallocHeap( LPVOID lpMem, DWORD dwBytes, LPVOID lphHeap );
+VOID WINAPI Mem_SubFreeHeap( LPVOID lpMem, LPVOID lphHeap );
+
+#ifndef NAV95
+// FSVDEI.C
+//
+LPFSV_DIRENTRYINFO far * WINAPI FsvDei_EntryOfPathNoHit( FSVDEITREE far * lptdei, LPCSTR lpPath, LPNETRESOURCE lpNetRes );
+WORD WINAPI  EnumDirEntryCallback( FSVIO_DIRENTRYSTRUCT far *, LPSTR, DWORD );
+
+
+// FSVEVNT.C
+//
+DWORD WINAPI FsvEvnt_RegisterForEvent2( HTASK hTask, LPSTR lpszName, WORD wObject, 
+                                        WORD wDomain, HWND hWnd, UINT msg, 
+                                        LPFSVEVNT_CALLBACK lpfnFsvEvnt, DWORD dwUser );
+BOOL WINAPI FsvEvnt_OpenSymEvent( void );
+void WINAPI FsvEvnt_CloseSymEvent( void );
+void WINAPI FsvEvnt_IgnoreSymEvent( BOOL fIgnore );
+
+// FSVIO.C
+//
+long WINAPI FsvIO_TrueName( TRUENAMEBUFF FAR *lpTrueName );
+
+// FSVUNDO.CPP
+//
+LONG WINAPI FsvUndo_PostUndo( LPFSV_UNDO_INFOSTRUCT lpUndoInfo, BOOL fWait, DWORD dwTimeOut );
+BOOL WINAPI FsvUndo_Initialize();
+void WINAPI FsvUndo_Uninitialize();
+BOOL WINAPI FsvUndo_ProcessIdExists( DWORD dwProcessId );
+BOOL WINAPI FsvUndo_ReplaceProcessId( DWORD dwProcessId );
+
+// FSVFTP.cpp
+//
+long WINAPI FsvFTP_EnumerateDirEntries2(LPSTR lpPath,LPSTR lpFileSpec,WORD wOptions,LPFSV_ENUMDIRENTRYCALLBACK lpCallback,DWORD dwParam);
+int WINAPI FsvFTP_ChangeDir(SOCKET,LPSTR, LPFSV_FTP_SITESTRUCT);
+int WINAPI FsvFTP_GetCurrDir(SOCKET,LPSTR, LPFSV_FTP_SITESTRUCT);
+int WINAPI FsvFTP_ReconnectSite( LPTSTR  lpSite );
+
+#endif          // NOT NAV95
+//===========================================================================
+//
+//                     STATIC DECLARATIONS
+//
+//===========================================================================
+#ifndef NAV95
+
+#ifdef INIT
+   FSV_ROOTSTRUCT       gFsv;
+#if BKTASK
+#pragma data_seg("SHAREDAT")
+   HWND                 g_hWndBkTask = NULL;
+   int                  g_nBkTaskCount = 0;
+   BOOL                 g_fLoadingBkTask = FALSE;
+#pragma data_seg()
+#endif
+#else
+   extern FSV_ROOTSTRUCT gFsv;
+#if BKTASK
+#pragma data_seg("SHAREDAT")
+   extern HWND          g_hWndBkTask;
+   extern int           g_nBkTaskCount;
+   extern BOOL          g_fLoadingBkTask;
+#pragma data_seg()
+#endif
+#endif
+
+#endif          // NOT NAV95
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

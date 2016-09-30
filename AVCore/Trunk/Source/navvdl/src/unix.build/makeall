@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ ! -d libSolarisRelease ]; then
+mkdir libSolarisRelease
+fi
+if [ ! -d libSolarisDebug ]; then
+mkdir libSolarisDebug
+fi
+
+for dir in navvdl
+do
+    echo Making $dir
+    cd $dir
+    rm -f *.o
+    rm -f *.a
+    make -f unix.mak $1 >make.err 2>&1
+    echo "    errors:   `grep error make.err | wc -l`"
+    echo "    warnings: `grep warning make.err | wc -l`"
+    cd ..
+done

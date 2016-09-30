@@ -1,0 +1,309 @@
+// Copyright 1992-1993 Symantec, Peter Norton Product Group
+//************************************************************************
+//                                                                
+// $Header:   N:/NAVXUTIL/VCS/utilstr.stv   1.5   27 Apr 1998 16:47:14   jbrenna  $
+//                                                                
+// Description:                                                   
+//      Strings used by NAV 3.0 DOS NAVUTIL project.
+//      These strings should mirror the string ID #defines in NAVW.
+//
+// Contains (as exports): 
+//                                                                
+// See Also:                                    
+//************************************************************************
+// $Log:   N:/NAVXUTIL/VCS/utilstr.stv  $
+// 
+//    Rev 1.5   27 Apr 1998 16:47:14   jbrenna
+// Removed 'known' from 'known virus'.
+// 
+//    Rev 1.4   18 Mar 1998 16:42:42   DALLEE
+// Nuked unknown and inoculation auto-protect log strings.
+// 
+//    Rev 1.3   25 Apr 1997 16:05:18   JBRENNA
+// Add , to the new strings.
+// 
+//    Rev 1.2   24 Apr 1997 17:04:02   JBRENNA
+// Tesla Port: TSMITH r1.1:
+// Entered additional VIR_ACT_... strings.
+// 
+//    Rev 1.1   24 Feb 1997 19:16:26   DALLEE
+// Ported from HYDRA.15:
+// 
+//            Rev 1.22   07 Nov 1996 15:20:50   CCOTRIL
+//         Changed IDS_LOG_INTEG_REINOCULATED to match Win text.  Fixes
+//         STS 73973.
+// 
+//    Rev 1.0   06 Feb 1997 21:05:48   RFULLER
+// Initial revision
+// 
+//    Rev 1.1   07 Aug 1996 13:52:28   YVANG
+// Ported changes from LuigiPlus.
+// 
+//    Rev 1.0   30 Jan 1996 16:06:24   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 15:00:10   BARRY
+// Initial revision.
+// 
+//    Rev 1.20   10 Nov 1995 13:50:00   JWORDEN
+// Add strings used to report MBR viruses in the Activity log
+// 
+//    Rev 1.19   24 Oct 1995 19:52:42   JWORDEN
+// Fix boot record and MBR strings to read correctly
+// 
+//    Rev 1.18   08 Mar 1995 16:11:56   DALLEE
+// Had to add #include's since we're compiling this module once again - not
+// #include'ing it into navaplog.cpp
+// 
+//    Rev 1.17   28 Feb 1995 15:23:42   AMATIC
+// Changed "Halt" into "Shutdown".
+// 
+//    Rev 1.16   22 Feb 1995 12:05:52   DALLEE
+// Removed ordinals from DOS strings.  Log code now calls stdlib sprintf(),
+// not goofball norton lib FastStringPrint().
+// 
+//    Rev 1.15   24 Jan 1995 12:29:36   DALLEE
+// DOS_STRING structure now uses 'LPSTR lpszString' instead of
+// 'char szString[256]' to save memory -- NAVBOOT's DGROUP exploded.
+// 
+//    Rev 1.14   24 Jan 1995 00:54:50   DALLEE
+// Removed #ifdef SYM_VXD -- DOS needs IDS_VIR_xxx strings, too.
+// Added #ifdef SYM_DOS for DOS only strings.
+// Added (to DOS section): DIS_DEF_ACTIFILE, IDS_DEFAULT, IDS_LOG_SCANNER.
+// 
+//    Rev 1.13   20 Jan 1995 19:15:58   MFALLEN
+// All DOS and VXD string ID's are stored here.
+// 
+//    Rev 1.12   01 Jun 1994 16:27:48   MFALLEN
+// We indicate if no items were scanned.
+// 
+//    Rev 1.11   23 Mar 1994 11:24:38   DALLEE
+// Added configuration change log message.
+// 
+//    Rev 1.10   13 Dec 1993 13:49:28   DALLEE
+// New log strings for end of scan and scan interrupted.
+// 
+//    Rev 1.9   08 Dec 1993 12:50:12   MFALLEN
+// Pad month and day with a 0 if required.
+// 
+//    Rev 1.8   01 Dec 1993 13:26:36   DALLEE
+// Fix boot inoc change message strings.
+// 
+//    Rev 1.7   01 Dec 1993 13:13:46   MFALLEN
+// Added new alert message string for boot and mboot inoc. changes.
+// 
+//    Rev 1.6   29 Oct 1993 23:02:10   BARRY
+// Removed the word 'successfully' from strings to match TSR
+// 
+//    Rev 1.5   26 Oct 1993 22:24:20   DALLEE
+// Added ordinals for IDS_CONSOLETEMPLATE format substitutions.
+// 
+//    Rev 1.4   20 Oct 1993 19:14:44   DALLEE
+// Added string IDS_DOS_EXECUTABLE.
+// 
+//    Rev 1.3   08 Oct 1993 14:35:58   MFALLEN
+// Added IDS_CONSOLETEMPLATE
+// 
+//    Rev 1.2   03 Sep 1993 00:54:56   DALLEE
+// Updated network alert messages.
+// 
+//    Rev 1.1   26 Aug 1993 23:32:34   DALLEE
+// Added IDS_LOG_SCANINTERRUPTED.  Removed unused strings.
+// 
+//    Rev 1.0   12 Aug 1993 11:50:42   MFALLEN
+// Initial revision.
+// 
+//    Rev 1.17   11 Aug 1993 19:11:30   DALLEE
+// Moved Writing Activity Log dialog strings/controls to NAVSTR.STR
+// 
+//    Rev 1.16   11 Aug 1993 18:12:42   DALLEE
+// Activity Log progress dialog controls/strings.
+// 
+//    Rev 1.15   08 Aug 1993 10:43:00   MFALLEN
+// Added new strings for loging activity logs.
+// 
+//    Rev 1.14   23 Jul 1993 06:03:02   DALLEE
+// New strings for net alerts.
+// 
+//    Rev 1.13   20 Jul 1993 01:21:24   DALLEE
+// Added new integrity checking strings.
+// 
+//    Rev 1.12   12 Jul 1993 13:34:20   MFALLEN
+// ZIP file log info contains three slots where info should be placed.
+// 
+//    Rev 1.11   12 Jul 1993 12:38:18   MFALLEN
+// More of Karen's changes
+// 
+//    Rev 1.10   12 Jul 1993 12:32:50   MFALLEN
+// LOGACTION_ZIPFILENOTDELETED
+// 
+//    Rev 1.9   12 Jul 1993 12:17:10   MFALLEN
+// Karen's changes.
+// 
+//    Rev 1.8   08 Jul 1993 12:32:34   DALLEE
+// Added IDS_LOG_XXX-WAS/IS-INFECTED strings.
+// 
+//    Rev 1.7   29 Jun 1993 17:17:54   DALLEE
+// Added more IDS_LOG_INOCULATExxx strings for activity log.
+// 
+//    Rev 1.6   28 Jun 1993 22:08:32   DALLEE
+// Added IDS_DEF_ACTIFILE string.
+// 
+//    Rev 1.5   28 Jun 1993 18:09:00   DALLEE
+// Match DOS extern char *'s to WINDOWS IDS_XXX's.
+// 
+//    Rev 1.4   26 Jun 1993 18:17:02   BRAD
+// Added IDS_DEFAULT.
+// 
+//    Rev 1.3   17 Jun 1993 13:15:36   MFALLEN
+// Inoculation log strings
+// 
+//    Rev 1.2   03 Jun 1993 03:47:18   DALLEE
+// Inoculation change logging strings.
+// 
+//    Rev 1.1   31 May 1993 17:49:58   DALLEE
+// Added strings which match the Windows string ID #defines.
+// (Used in the BLDLOG module)
+//************************************************************************
+
+#ifdef SYM_DOS
+
+#include "platform.h"
+
+#include "ctsn.h"
+#include "navutil.h"
+#include "stbexts.h"
+#include "navaplog.h"
+
+
+//***************************************************************************
+// General Strings
+//***************************************************************************
+
+DOS_STRINGS DOS_Strings[] =
+    {
+     {IDS_ALOG_APP_NAME,                  "Windows Auto-Protect" },
+     {IDS_VXD_MSG_LOADED,                 "The Norton AntiVirus Auto-Protect was loaded." },
+     {IDS_VXD_MSG_UNLOADED,               "The Norton AntiVirus Auto-Protect was unloaded." },
+     {IDS_VXD_MSG_ENABLED,                "The Norton AntiVirus Auto-Protect was enabled." },
+     {IDS_VXD_MSG_DISABLED,               "The Norton AntiVirus Auto-Protect was disabled." },
+     {IDS_VIR_MSG_IS_INFECTED,            "The file\r\n%s\r\nis infected with the %s virus." },
+     {IDS_VIR_MSG_WAS_INFECTED,           "The file\r\n%s\r\nwas infected with the %s virus." },
+     {IDS_VIR_MSG_ATTRIB_CHANGED,         "The file\r\n%s\r\ntried to change the read-only attribute of\r\n%s." },
+     {IDS_VIR_MSG_WRITEPROG,              "The file\r\n%s\r\ntried to write to\r\n%s." },
+     {IDS_VIR_MSG_WRITE_BOOT,             "The file\r\n%s\r\ntried to write to the boot record of drive %s." },
+     {IDS_VIR_MSG_WRITE_MBR,              "The file\r\n%s\r\ntried to write to the master boot record of drive %s." },
+     {IDS_VIR_MSG_BOOT_IS_INFECTED,       "The boot record of drive %s is infected with the %s virus." },
+     {IDS_VIR_MSG_BOOT_WAS_INFECTED,      "The boot record of drive %s was infected with the %s virus." },
+     {IDS_VIR_MSG_MBR_IS_INFECTED,        "The master boot record of drive %s is infected with the %s virus." },
+     {IDS_VIR_MSG_MBR_WAS_INFECTED,       "The master boot record of drive %s was infected with the %s virus." },
+     {IDS_VIR_MSG_BOOT_INOC_CHANGE,       "The boot record of drive %s has changed since inoculation." },
+     {IDS_VIR_MSG_MBR_INOC_CHANGE,        "The master boot record of drive %s has changed since inoculation." },
+     {IDS_VIR_MSG_VIRUS_IN_MEMORY,        "The %s virus was found in memory." },
+     {IDS_VIR_MSG_LOW_FORMAT,             "The file\r\n%s\r\ntried to low-level format drive %s." },
+     {IDS_VIR_ACT_NONE,                   "No action was taken." },
+     {IDS_VIR_ACT_COMPUTER_SHUTDOWN,      "The computer was shut down." },
+     {IDS_VIR_ACT_DELETED,                "The file was deleted." },
+     {IDS_VIR_ACT_NOT_DELETED,            "Unable to delete this file." },
+     {IDS_VIR_ACT_REPAIRED,               "The file was repaired." },
+     {IDS_VIR_ACT_NOT_REPAIRED,           "Unable to repair this file." },
+     {IDS_VIR_ACT_ACCESS_DENIED,          "Access to the file was denied." },
+     {IDS_VIR_ACT_KNOWN_EXCL,             "The file was excluded from future virus checks." },
+     {IDS_VIR_ACT_KNOWN_NOT_EXCL,         "Unable to exclude from future virus checks." },
+     {IDS_VIR_ACT_ATTRIB_ALLOWED,         "The attribute change was allowed." },
+     {IDS_VIR_ACT_ATTRIB_NOT_ALLOWED,     "The attribute change was not allowed." },
+     {IDS_VIR_ACT_ATTRIB_EXCL,            "The file was excluded from future attribute checks." },
+     {IDS_VIR_ACT_NOT_ATTRIB_EXCL,        "Unable to exclude form future attribute checks." },
+     {IDS_VIR_ACT_ACTION_ALLOWED,         "The action was allowed." },
+     {IDS_VIR_ACT_ACTION_NOT_ALLOWED,     "The action was not allowed." },
+     {IDS_VIR_ACT_WRITEPROG_EXCL,         "The file was excluded from future attempts to write to the program files." },
+     {IDS_VIR_ACT_WRITEPROG_NOT_EXCL,     "Unable to exclude from future attempts to write to the program files." },
+     {IDS_VIR_ACT_WRITEBOOT_EXCL,         "The file was excluded from future attempts to write to the boot record." },
+     {IDS_VIR_ACT_WRITEBOOT_NOT_EXCL,     "Unable to exclude file from future attempts to write to the boot record." },
+     {IDS_VIR_ACT_WRITEMBR_EXCL,          "The file was excluded from future attempts to write to the master boot record." },
+     {IDS_VIR_ACT_WRITEMBR_NOT_EXCL,      "Unable to exclude file from future attempts to write to the master boot record." },
+     {IDS_VIR_ACT_BOOTREC_REPAIRED,       "The boot record was repaired." },
+     {IDS_VIR_ACT_BOOTREC_NOT_REPAIRED,   "Unable to repair boot record." },
+     {IDS_VIR_ACT_MBR_REPAIRED,           "The master boot record was repaired." },
+     {IDS_VIR_ACT_MBR_NOT_REPAIRED,       "Unable to repair the master boot record." },
+     {IDS_VIR_ACT_LOW_FMT_EXCL,           "The file was excluded from future low-level format checks." },
+     {IDS_VIR_ACT_LOW_FMT_NOT_EXCL,       "Unable to exclude from future low-level format checks." },
+     {IDS_VIR_ACT_SHUTDOWN_FAIL,          "Unable to shut down the computer."},
+     {IDS_VIR_ACT_MOVE,                   "The file was moved to a secured location."},
+     {IDS_VIR_ACT_MOVE_FAIL,              "Unable to move the file to a secured location."},
+     {IDS_VIR_ACT_RENAME,                 "The file was renamed."},
+     {IDS_VIR_ACT_RENAME_FAIL,            "Unable to rename the file."},
+     {IDS_VIR_ACT_UNDEFINED,              "An undefined virus action occurred."},
+     {IDS_VIR_ACT_BR_KNOWN_EXCL,          "The boot record was excluded from future virus checks."},
+     {IDS_VIR_ACT_BR_KNOWN_NOT_EXCL,      "Unable to exclude the boot record from future virus checks."},
+     {IDS_VIR_ACT_MBR_KNOWN_EXCL,         "The master boot record was excluded from future virus checks."},
+     {IDS_VIR_ACT_MBR_KNOWN_NOT_EXCL,     "Unable to exclude the master boot record from future virus checks."},
+
+     {IDS_LOGACTION_BOOTISINFECTED,       "The boot record is infected." },
+     {IDS_LOGACTION_BOOTNOTREPAIRED,      "Unable to repair the boot record." },
+     {IDS_LOGACTION_BOOTREPAIRED,         "The boot record was repaired." },
+     {IDS_LOGACTION_DELETED,              "The file was deleted." },
+     {IDS_LOGACTION_DELETEFAILED,         "Unable to delete this file." },
+     {IDS_LOGACTION_EXCLUDE_INOC,         "This file was excluded from future inoculation checks." },
+     {IDS_LOGACTION_EXCLUDE_VIRUS,        "This file was excluded from future virus checks." },
+     {IDS_LOGACTION_FILEREPAIRED,         "The file was repaired." },
+     {IDS_LOGACTION_HALTCPU,              "The computer was shutdown." },
+     {IDS_LOGACTION_INOCULATED,           "This file was inoculated." },
+     {IDS_LOGACTION_INOCULATEFAILED,      "Unable to inoculate this file." },
+     {IDS_LOGACTION_INOCULATEREPAIRED,    "This file was repaired using inoculation information." },
+     {IDS_LOGACTION_INOCULATEREPAIRFAILED,"This file could not be repaired using the inoculation information." },
+     {IDS_LOGACTION_INTEG_BOOTREPAIRED,   "The boot record was repaired." },
+     {IDS_LOGACTION_INTEG_BOOTREPAIRFAILED,"Unable to repair the boot record." },
+     {IDS_LOGACTION_INTEG_MBREPAIRED,     "The master boot record was repaired." },
+     {IDS_LOGACTION_INTEG_MBREPAIRFAILED, "Unable to repair the master boot record." },
+     {IDS_LOGACTION_INTEG_SYSFILEREPAIRED,"The file was repaired." },
+     {IDS_LOGACTION_INTEG_SYSFILEREPAIRFAILED,"Unable to repair the system file." },
+     {IDS_LOGACTION_NOACTION,             "No action was taken." },
+     {IDS_LOGACTION_NOTINOCULATED,        "This file has never been inoculated." },
+     {IDS_LOGACTION_REINOCULATED,         "This file was reinoculated." },
+     {IDS_LOGACTION_REINOCULATEFAILED,    "Unable to reinoculate this file." },
+     {IDS_LOGACTION_REPAIRFAILED,         "Unable to repair this file." },
+     {IDS_LOGACTION_MBRISINFECTED,        "The master boot record is infected."},
+     {IDS_LOGACTION_MBRREPAIRED,          "The master boot record was repaired."},
+     {IDS_LOGACTION_MBRNOTREPAIRED,       "Unable to repair the master boot record."},
+     {IDS_LOG_BOOTISINFECTED,             "The boot record of drive %s\r\nis infected with the %s virus." },
+     {IDS_LOG_BOOTWASINFECTED,            "The boot record of drive %s\r\nwas infected with the %s virus." },
+     {IDS_LOG_MBRISINFECTED,              "The master boot record of hard drive #%d is infected\r\nwith the %s virus."},
+     {IDS_LOG_MBRWASINFECTED,             "The master boot record of hard drive #%d was infected\r\nwith the %s virus."},
+     {IDS_LOG_FILEEXCLUDE,                "The file\r\n%s\r\nwas added to the exclusion list." },
+     {IDS_LOG_FILEINOC_CHANGE,            "The file\r\n%s\r\nhas changed since inoculation." },
+     {IDS_LOG_FILEINOC_NEW,               "The file\r\n%s\r\nwas detected as not inoculated." },
+     {IDS_LOG_FILEISINFECTED,             "The file\r\n%s\r\nis infected with the %s virus." },
+     {IDS_LOG_FILEWASINFECTED,            "The file\r\n%s\r\nwas infected with the %s virus." },
+     {IDS_LOG_INTEG_BOOTCHANGED,          "Change detected in the boot record." },
+     {IDS_LOG_INTEG_CREATEFAILED,         "Unable to create the System integrity database." },
+     {IDS_LOG_INTEG_MBCHANGED,            "Change detected in the master boot record." },
+     {IDS_LOG_INTEG_NOTEXIST,             "System integrity database doesn't exist." },
+     {IDS_LOG_INTEG_REINOCULATED,         "The boot records and system files of drive %s were reinoculated." },
+     {IDS_LOG_INTEG_SYSFILECHANGED,       "Change detected in the system file %s" },
+     {IDS_LOG_MEMORYISINFECTED,           "The %s%s virus was found in memory." },
+     {IDS_LOG_SCANEND,                    "Virus scanning completed.\r\nItems scanned:  %s" },
+     {IDS_LOG_SCANEND_NONE,               "Virus scanning completed.\r\nNo items scanned." },
+     {IDS_LOG_SCANINTERRUPTED,            "Virus scanning interrupted while scanning:  %s" },
+     {IDS_LOG_SCANINTERRUPTED_NONE,       "Virus scanning interrupted while scanning.\r\nNo items scanned." },
+     {IDS_LOG_UNINOCULATED,               "The file\r\n%s\r\nwas uninoculated." },
+     {IDS_LOG_UNINOCULATEFAILED,          "Unable to uninoculate the file\r\n%s" },
+#if 0   // Next 2 messages unused in NAVBOOT
+     {IDS_LOG_VIRLISTCHANGED,             "The Virus List has changed." },
+     {IDS_LOG_ZIPFILEISINFECTED,          "The file %s in the compressed file\r\n%s\r\nis infected with the %s virus." },
+#endif
+     {IDS_DEFAULT,                        "DEFAULT" },
+     {IDS_DEF_ACTIFILE,                   "ACTIVITY.LOG" },
+     {IDS_LOG_SCANNER,                    "DOS Scanner" },
+
+     {IDS_USER_MSG_KNOWN_FILE_INFECTOR,   "The %s virus has been detected in %s.\n\n%s"},
+     {IDS_USER_MSG_KNOWN_MBR_INFECTOR,    "The %s virus has been detected in the master boot record of drive %s.\n\n%s"},
+     {IDS_USER_MSG_KNOWN_BR_INFECTOR,     "The %s virus has been detected in the boot record of drive %s.\n\n%s"},
+     {IDS_ADMIN_MSG_KNOWN_FILE_INFECTOR,  "The %s virus has been detected in:\n\nFile:\t%s\nSystem:\t%s\nUser:\t%s\nAction:\t%s"},
+     {IDS_ADMIN_MSG_KNOWN_MBR_INFECTOR,   "The %s virus has been detected in the Master Boot Record of:\n\nDrive:\t%s\nSystem:\t%s\nUser:\t%s\nAction:\t%s"},
+     {IDS_ADMIN_MSG_KNOWN_BR_INFECTOR,    "The %s virus has been detected in the boot record of:\n\nDrive:\t%s\nSystem:\t%s\nUser:\t%s\nAction:\t%s"},
+
+     {0,                                  NULL}
+    };
+
+#endif

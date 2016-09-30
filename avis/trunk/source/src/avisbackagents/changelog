@@ -1,0 +1,73 @@
+1999-12-14  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* BOSupport.pm (_unpack_VDB): The $command_line argument needed
+	changes (there were even syntax errors :() Senthil & Kenny make
+	modifications to that as well as adding the system calls to copy
+	virscan1-4 from the 'wild' directory to the base directory.
+
+1999-12-13  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* BOSupport.pm (unpack_package): This is now a shell method that
+	determines the package type based on the file extension, and
+	routes the parameters off the the appropriate unpack method
+	(_unpack_VDB or _unpack_fatalbert as appropriate)
+	
+	(_verify_unpack): Instead of merely checking for ZDONE.DAT, this
+	method now tests for the existence of nearly a dozen files to
+	verify that a definition package has been successfully unwrapped.
+
+	(_unpack_fatalbert): Broke the handling of fatalbert packages out
+	from unpack_package into this method.
+
+	(_unpack_VDB): Added unpack handler for VDB files (shells out to unzip)
+
+	* GetDefinitions.pl: At Senthil's request I have commented out the 
+	"use SDGS1;" line while making my VDB package changes.  I'm not
+	terribly familiar with the repercussions of this. In all instances 
+	where the string SDGS1 occurred, I have created a duplicate of the 
+	line, commented it out, and changed the "live" source to read SDGS 
+	in the appropriate places.
+
+	* GetDefinitions.pl: A new global constant has been added
+	"$package_extension" to coincide with the $packageType constant.
+	All places where the package filename is refered to with an
+	explicit ".exe" I have changed the string to read
+	".$package_extension" to facilitate flexibility of multiple
+	package type support.
+
+	* BOSupport.pm (migrate_package): This now derives the package
+	type internally by parsing the extension off the end of the
+	$source_pkg parameter.
+
+1999-09-13  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* BuildDefinitions.pl (start_build): Reviewed change made by
+	Senthil, (the explicit declaration of $sequence).  There are also
+	a massive number of log file messages strewn throughout the script.
+
+1999-09-10  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* BuildDefinitions.pl (get_package): # Modified to take:
+	#         $buildtype ('Full' or 'Incremental')
+	#	  $sequence  (package sequence number to retrieve)
+	# Due to an implementation problem in SDGS, a "Full" build may only be
+	# retrieved by using getNewestpackage (previously only used by
+	# getdefinitions.pl) with the "latest available sequence number".  As
+	# a HACK, I am passng getNewestPackage a decremented sequence number
+	# so that i t retrieves the correct package.
+	# Unfortunately, the incremental package cannot be retrieved in this
+	# manner, because it has no sequence number.
+	(get_package): Fixed return parsing from GetNewestPackage.  I was
+	pulling the return as a scalar, when it's actually being returned
+	as a list ($sdgs_response,$sequence_number).
+
+1999-08-31  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* SerializeBuild.pl: Increased "$retry_cycle" to 5 seconds from 1
+	when "SDGS_IN_PROGRESS" is received.
+
+1999-08-30  Michael P. Wilson  <mpwilson@us.ibm.com>
+
+	* BOSupport.pm: Added Changelog file to source tree (no source
+	change, this is a sentinel message only)
+

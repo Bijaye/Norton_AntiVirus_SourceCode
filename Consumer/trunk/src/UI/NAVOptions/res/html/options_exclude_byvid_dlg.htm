@@ -1,0 +1,90 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title id="exclude_vid_title">Norton AntiVirus</title>
+
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+<script Language="JavaScript" src="DisplayScriptError.js"></script>
+<script language="JavaScript" src="options.js"></script>
+<script language="JavaScript" src="options_exclude_byvid_dlg.js"></script>
+<link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+</head>
+<body id="body_ed" leftmargin="0" topmargin="0" scroll="no"
+	onHelp="Help();" onLoad="Initialize();" TABINDEX="-1">
+
+<div id="headerarea" class="optionpage_header" style="PADDING-LEFT: 20px; PADDING-RIGHT:20px; HEIGHT: 30px; BACKGROUND-COLOR:#7D92b2; COLOR:#FFFFFF">
+	<span style="float: left">Security Risk List</span>
+	<span style="float: right;" onmouseover="this.style.cursor='hand'" onclick="Help()" onkeydown="KeyboardNavigate(this)" tabindex="1">
+		<u>Help</u>
+	</span>
+</div>
+<form name="options_exclude_byvid_dlg" onsubmit="return false">
+	<div id="optionsarea" class="optiongroup">
+	  	<select id="category_select" name="category"
+	  		style="width:140px; font-size:8.5pt; MARGIN-LEFT:10px;"
+	  		onChange="OnCategoryChange()">
+	  		<option id="optAll" value="0">All</option>
+	  		<option id="optSpyware" value="6">Spyware</option>
+	  		<option id="optAdware" value="10">Adware</option>
+	  		<option id="optDialers" value="8">Dialers</option>
+	  		<option id="optJoke" value="11">Joke Programs</option>
+	  		<option id="optRemote" value="9">Remote Access</option>
+	  		<option id="optHackTools" value="5">Hack Tools</option>
+			<option id="optOther" value="4">Other</option>
+	  	</select><br/>
+
+    	  	<select multiple id="threat_list" size="2" name="Threats" class="normal"
+    	  		style="width:250px;height:280px;font-size:8.5pt; float:left; MARGIN-LEFT:10px;"
+            onDblClick="get_detailed_info();" onClick="enable_buttons();" onChange="enable_buttons();">
+		</select>
+
+		<div style="width: 100%;">
+			<button id="ADD" class="stdbttn2" onClick="Save();" 
+				onMouseOver="ButtonMouseOver(this); return false;" 
+				onMouseOut="ButtonMouseOut(this); return false;" 
+				onMouseDown="ButtonMouseDown(this); return false;" 
+				onKeyDown="ButtonKeyDown(this);" 
+				onKeyUp="ButtonKeyUp(this);" 				
+				onFocus="ButtonFocus(this); return false;" 
+				onBlur="ButtonBlur(this); return false;" 
+				accesskey="a" style="MARGIN-TOP: 50px">
+				<u>A</u>dd
+			</button><br />
+
+			<button id="Cancel" class="stdbttn2" onClick="location.href = 'closeme.xyz';" 
+				onMouseOver="ButtonMouseOver(this); return false;" 
+				onMouseOut="ButtonMouseOut(this); return false;" 
+				onMouseDown="ButtonMouseDown(this); return false;" 
+				onKeyDown="ButtonKeyDown(this);" 
+				onKeyUp="ButtonKeyUp(this);" 				
+				onFocus="ButtonFocus(this); return false;" 
+				onBlur="ButtonBlur(this); return false;" 
+				accesskey="c">
+				<u>C</u>ancel
+			</button><br />
+
+			<button id="Details" class="stdbttn2_dis" onClick="OnClickDetails()" 
+				onMouseOver="ButtonMouseOver(this); return false;" 
+				onMouseOut="ButtonMouseOut(this); return false;" 
+				onMouseDown="ButtonMouseDown(this); return false;" 
+				onKeyDown="ButtonKeyDown(this);" 
+				onKeyUp="ButtonKeyUp(this);" 				
+				onFocus="ButtonFocus(this); return false;" 
+				onBlur="ButtonBlur(this); return false;" 
+				accesskey="d">
+				Risk <u>D</u>etails
+			</button>
+		</div>
+	</div>
+</form>
+</body>
+</html>

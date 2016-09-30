@@ -1,0 +1,36 @@
+[KEYS]
+; The option for locking manual LiveUpdate:
+; 0=allow manual LU; 1=disable manual LU
+; note that the default setting for a standalone install should be 0
+; admins should uncomment the next two lines to prohibit the client from running LU
+;!KEY!=$REGROOT$\PatternManager
+;LockUpdatePattern=D1
+
+
+; The option for locking access to LiveUpdate scheduling:
+; 0=allow LU scheduling; 1=disable LU scheduling
+; note that the default setting for a standalone install should be 0
+; admins should uncomment the next two lines to prohibit the client from scheduling LU
+;!KEY!=$REGROOT$\PatternManager
+;LockUpdatePatternScheduling=D1
+
+
+; The option for locking the ability to load/unload the NAV service:
+; 0=allow client to unload; 1=lock option to unload
+; note that the default setting for a standalone install should be 0
+; admins should uncomment the next two lines to prohibit the client from unloading NAV
+;!KEY!=$REGROOT$\AdministratorOnly\Security
+;LockUnloadServices=D1
+
+
+; The option for Unmanaged AV Clients to forward to central AMS Server:
+; AMS=1, LoadAMS=1, AMSServer=<AMSServerName>  - Forward to selected AMS Server
+; AMS=0, LoadAMS=0, AMSServer=                 - Do not forward AMS Alerts
+; -- Uncomment Following 5 lines for Central AMS alerting -- 
+;!KEY!=$REGROOT$\Common
+;AMSServer=S<AMSServerName>
+;AMS=D1
+;!KEY!=$REGROOT$\ProductControl
+;LoadAMS=D1
+
+Parent=

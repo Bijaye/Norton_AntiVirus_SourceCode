@@ -1,0 +1,1201 @@
+;****************************************************************************
+; Copyright 1997 Symantec, Peter Norton Product Group
+;****************************************************************************
+; WD7XCLSG.XDF
+;
+; $Header:   S:/NAVEX/VCS/WD7XCLSG.XDv   1.50   13 Jan 1999 18:50:28   DKESSNE  $
+;
+; Description:
+;  This source file contains definitions for the Word 6.0/95 heuristic
+;  emulation exclusion signatures.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/WD7XCLSG.XDv  $
+   
+      Rev 1.50   13 Jan 1999 18:50:28   DKESSNE
+   FP w/ CI 10798
+   
+      Rev 1.49   13 Jan 1999 16:23:36   DKESSNE
+   FP w/ CI 10693
+   
+      Rev 1.48   06 Jan 1999 20:13:08   relniti
+   #10452 W7H2 FP
+   
+      Rev 1.47   30 Dec 1998 16:30:24   relniti
+   Doing Formy's work to add exclusion
+   
+      Rev 1.46   23 Dec 1998 14:00:08   AOONWAL
+   Added exclude signature for proper macro for CI#9595
+   
+      Rev 1.45   23 Dec 1998 13:22:20   AOONWAL
+   
+   Added exclusion for CI#9595
+   
+      Rev 1.44   19 Dec 1998 04:31:56   relniti
+   #9449 fp
+   
+      Rev 1.43   16 Dec 1998 15:23:10   relniti
+   W7H2 FP on #9470
+   
+      Rev 1.42   14 Dec 1998 21:54:48   RELNITI
+   #9064 STARTWIZARD macro
+   
+      Rev 1.41   14 Dec 1998 18:07:30   relniti
+   #9180 a bunch of macros have .EDIT and FileSaveAs
+   
+      Rev 1.40   11 Dec 1998 12:50:08   relniti
+   W7H2 FP on #9002
+   
+      Rev 1.39   09 Dec 1998 12:44:54   relniti
+   #8800 W7H2 FP
+   
+      Rev 1.38   24 Nov 1998 21:53:02   relniti
+   #8140 W7H2 FP
+   
+      Rev 1.37   23 Nov 1998 22:25:24   relniti
+   W7H2 FP on #7908 Setup macro
+   
+      Rev 1.36   23 Nov 1998 16:07:48   ppak
+   Added two exclusions for CI 7994.
+   
+      Rev 1.35   23 Nov 1998 13:46:44   relniti
+   W7H2 FP on #7611's INSTALL macro
+   
+      Rev 1.34   20 Nov 1998 16:56:00   ppak
+   Added an exclusion for CI 7696
+   
+      Rev 1.33   13 Nov 1998 15:59:58   ppak
+   Added exclusion for CI 7399.
+   
+      Rev 1.32   11 Nov 1998 11:09:02   Relniti
+   #7000 W7H2 FP on another installation macro
+   
+      Rev 1.31   10 Nov 1998 11:34:34   Relniti
+   W7H2 FP #6980 & #6942
+   
+      Rev 1.30   26 Oct 1998 17:51:26   relniti
+   #5973: INSTALLDOKLINK macro
+   
+      Rev 1.29   23 Oct 1998 15:18:38   relniti
+   #6055: W7H2 FP on Invircible Virus Protection's AutoOpen
+   
+      Rev 1.28   20 Oct 1998 17:31:40   relniti
+   #5857: W7H2 FP
+   
+      Rev 1.27   18 Oct 1998 13:23:30   ppak
+   No change.
+   
+      Rev 1.26   16 Oct 1998 17:34:48   relniti
+   #5746 W7H2 FP
+   
+      Rev 1.25   13 Oct 1998 10:43:48   relniti
+   REMOVE one exclusion added previous Rev. It's unnecessary.
+   
+      Rev 1.24   13 Oct 1998 10:37:50   relniti
+   W7H2 FP #5627
+   
+      Rev 1.23   12 Oct 1998 14:11:52   relniti
+   WD7 FP on #5546, installation macros
+   
+      Rev 1.22   17 Sep 1998 14:03:10   relniti
+   W7H2 FP #4704
+   
+      Rev 1.21   16 Sep 1998 20:24:24   relniti
+   W7H2 FP on Issue #4611
+   
+      Rev 1.20   14 Sep 1998 12:29:46   relniti
+   W7H2 FP on Customize macro issue #4543
+   
+      Rev 1.19   11 Sep 1998 11:02:12   relniti
+   W7H2 FP on #4524
+   
+      Rev 1.18   02 Sep 1998 14:27:10   AOONWAL
+   Added exclusion for PVMERGE macro from PERFECTVIEW 7.0 to avoid a 
+   BloodHound.Macro hit
+   
+      Rev 1.17   01 Sep 1998 11:43:04   AOONWAL
+   Updated from SNDBOT after the corruption in USSM-SARC\VOL1
+   
+      Rev 1.18   28 Aug 1998 17:20:48   relniti
+   #4121 FP on HDLINK macro
+   
+      Rev 1.17   28 Aug 1998 12:49:12   AOONWAL
+   Added excusion sig for BloodHound.Macro FP
+   
+      Rev 1.16   24 Aug 1998 14:20:40   jwilber
+   Added exclusion for CI 2681.
+ 
+      Rev 1.15   12 Aug 1998 20:38:52   RELNITI
+   W7H2 FP on #2600
+ 
+      Rev 1.14   12 Aug 1998 17:40:02   RELNITI
+   ADD W7H2 Exclusion for #2597
+ 
+      Rev 1.13   11 Aug 1998 17:25:36   jwilber
+   Removed Visio macros - they may not be Visio macros.
+ 
+      Rev 1.12   11 Aug 1998 17:17:54   jwilber
+   Added exclusion for Visio macros for CI 2583.
+ 
+      Rev 1.11   27 Jul 1998 14:56:08   RELNITI
+   w7h2 FP #2481
+ 
+      Rev 1.10   23 Jul 1998 17:04:04   RELNITI
+   #2450 W7H2 FP on VASCAN macro
+ 
+      Rev 1.9   23 Jul 1998 16:46:42   RELNITI
+   FP #2445
+ 
+      Rev 1.8   22 Jul 1998 09:21:08   RELNITI
+   Another W7H2 FP; from Sherra: PrimeMacroManager
+ 
+      Rev 1.7   10 Jul 1998 18:35:36   RELNITI
+   ADD W7H2 Exclusion for #2345 FP on a couple of macros that have FileSaveAs
+ 
+      Rev 1.6   01 Jul 1998 15:53:02   RELNITI
+   #2260: MORE W7H2 FP
+ 
+      Rev 1.5   30 Jun 1998 17:19:06   RELNITI
+   ADD 2 for #2248 FP on W7H2
+ 
+      Rev 1.4   29 Jun 1998 21:33:24   RELNITI
+   for #2140
+ 
+      Rev 1.3   10 Jun 1998 12:56:18   DCHI
+   Added CRCs for Vesselin's samples that caused W7H2 FPs.
+ 
+      Rev 1.2   19 May 1998 18:04:30   JWILBER
+   Added exclusion for CI 1977.
+ 
+      Rev 1.1   12 Jan 1998 15:35:10   DKESSNE
+   added exclusions for customer 990
+ 
+      Rev 1.0   15 Oct 1997 12:33:28   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+######################################################################
+#
+# Sample format
+# -------------
+#
+# [ExclusionSigStart]
+# [Comment]       FOOBAR macro of FOOBAR macro package.
+# [Type]          WD7
+# [QAStatus]      PASSED
+# [CRC]           0x1234ABCD
+# [CRCByteCount]  4515
+# [ExclusionSigEnd]
+#
+######################################################################
+
+[ExclusionSigStart]
+[Comment]       Template from Customer #990
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xED530AF6
+[CRCByteCount]  1598
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       Template from Customer #990
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0080D088
+[CRCByteCount]  1597
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       Template from CI #1977  AutoExec from IBM's voice rec - jjw
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xeaa25341
+[CRCByteCount]  23387
+[ExclusionSigEnd]
+
+
+######################################################################
+#
+# The following are CRCs for samples from Vesselin that triggered
+# W7H2.
+#
+######################################################################
+
+[ExclusionSigStart]
+[Comment]       DEFUSE macro of D:\TSMACROS\VESS\DEFUSE16.DOT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x6C2C1DE2
+[CRCByteCount]  38724
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       DEFUSE macro of D:\TSMACROS\VESS\DEFUSE32.DOT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x79809824
+[CRCByteCount]  38724
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       VASCAN macro of D:\TSMACROS\VESS\EVAL-VAM.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x49BA8CD8
+[CRCByteCount]  160562
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       AUTOOPEN macro of D:\TSMACROS\VESS\INSTALL1.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xFA37E42F
+[CRCByteCount]  6501
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       AUTOOPEN macro of D:\TSMACROS\VESS\IVWDOG16.DOT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x89D2B21E
+[CRCByteCount]  3057
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       SAFEDOCSUBP macro of D:\TSMACROS\VESS\SAFEDOC.DOT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xB4F61C8F
+[CRCByteCount]  98464
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       INSTALLATIONSAFEDOCFIRST macro of D:\TSMACROS\VESS\SETUP.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x00749C5A
+[CRCByteCount]  64388
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       SAFEDOCBEISPIEL macro of D:\TSMACROS\VESS\SETUP.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x1E739907
+[CRCByteCount]  36947
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       STESTI macro of D:\TSMACROS\VESS\STESTIN1.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x750C31A2
+[CRCByteCount]  208802
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       STESTI macro of D:\TSMACROS\VESS\STESTIN2.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xD7EACFB2
+[CRCByteCount]  213281
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       STESTI macro of D:\TSMACROS\VESS\STESTIN3.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x233D7C3C
+[CRCByteCount]  213428
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       ZLOCKSCANMACRO macro of D:\TSMACROS\VESS\Z-SCAN.DOC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x9387AC0A
+[CRCByteCount]  27994
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       Customer #2140: SSWMAIN macro has MacroCopy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xb9980215
+[CRCByteCount]  67563
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       Customer #2140: SSWAUTOEXEC macro has MacroCopy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x09382aa9
+[CRCByteCount]  5147
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       Customer #2140: UPDATENOWNEW macro has Organizer .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x80d56c6a
+[CRCByteCount]  1135
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       Customer #2140: MAGICFORMUPDATE macro has Organizer .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x9AB8FA6A
+[CRCByteCount]  882
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2248: CONDITIONALVIEWANDDELETENAE macro has GetDocumentVar$
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xAC1042EC
+[CRCByteCount]  22326
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2248: STARTWIZARD macro has TOOLSMACRO .EDIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x1D261DFD
+[CRCByteCount]  14242
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2260: CUSTOMIZE macro has TOOLSMACRO .EDIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xA69D95AA
+[CRCByteCount]  11848
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2345: LIBRARY macro has FileSaveAs .format
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xd9075f4b
+[CRCByteCount]  14098
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2345: SETUPDOCUMENT macro has FileSaveAs .format
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xEA37DDFC
+[CRCByteCount]  42212
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2345: LIBRARY macro has FileSaveAs .format
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x2AD53582
+[CRCByteCount]  14867
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2345: SETUPDOCUMENT macro has FileSaveAs .format
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x440C3669
+[CRCByteCount]  44899
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       072298: PRIMEMACROMANAGER macro has .EDIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x163A48C2
+[CRCByteCount]  26173
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2445: AUTONEW macro has .EDIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0a61352b
+[CRCByteCount]  9762
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2450: VASCAN macro has .EDIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x4C1CA2AA
+[CRCByteCount]  206236
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2481: STARTWIZARD macro has .EDIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xC8F37863
+[CRCByteCount]  14290
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2597: GETSHELFSLOTS has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0C2986CD
+[CRCByteCount]  8222
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2600: SELECTSELECTION has GetDocumentVar$
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x768AAAAB
+[CRCByteCount]  13151
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2681: HDAUTO has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x84b5b455
+[CRCByteCount]  1579
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2681: HDLINK has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xac8087f0
+[CRCByteCount]  6724
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2681: HDASM32 has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x8f835c3e
+[CRCByteCount]  11067
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2681: HDPCDOCS16 has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x957a3368
+[CRCByteCount]  864
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2681: HDPCDOCS32 has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x653d31c1
+[CRCByteCount]  866
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #2400: BloodHound FP on IBM document
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x72ad222c
+[CRCByteCount]  13809
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #4121: BloodHound FP on HDLINK macro
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0B7D8C97
+[CRCByteCount]  6002
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #4274: BloodHound FP on PVMERGE macro in PERFECTVIEW 7.0
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x945DDBA6
+[CRCByteCount]  31907
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #4524: CUSTOMIZE has ToolsMacro .Edit
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x90B1DBF7
+[CRCByteCount]  11863
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #4543: CUSTOMIZE has ToolsMacro .Edit
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0fde9d81
+[CRCByteCount]  11918
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #4611: HDLINK macro
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x9B84D2E3
+[CRCByteCount]  6724
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #4704: HDLINK macro
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xCACF54ED
+[CRCByteCount]  5868
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #5546: AWTAUPDATESYSTEM macro
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xED7598B1
+[CRCByteCount]  5440
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #5546: AWTASETUP macro
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xD48AC0CF
+[CRCByteCount]  34200
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #5627: HDLINK has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x6759A610
+[CRCByteCount]  6048
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #5746: ADDCHARACTER has .edit
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x92937BD0
+[CRCByteCount]  7642
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #5857: ADDCHARACTER has .edit
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x013EB0A2
+[CRCByteCount]  7668
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #6055: Invircible Virus Protection's AutoOpen
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x51A6FB68
+[CRCByteCount]  3184
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #5973: German macro package installation.
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x83EFAB84
+[CRCByteCount]  52678
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #6980: AutoOpen has .Copy and FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xF37845E4
+[CRCByteCount]  16582 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #6980: InstallWButn has .Copy and FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xB157D685
+[CRCByteCount]  46665 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #6942: VAScan has .Copy and FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xA47CD890
+[CRCByteCount]  205372
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7000: Install has .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x91E3571B
+[CRCByteCount]  36101 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7399: ADFERMERUNMODELE has .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xEFDE8FCB
+[CRCByteCount]  13221 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7696: FILEOPEN looks for common viruses.
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x71ee7c60
+[CRCByteCount]  8258 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7611: INSTALL macro has .Copy and Filesaveas
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xAC8D19C2
+[CRCByteCount]  39041
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7994: AutoOpen installs macros to global.
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x11fb9209
+[CRCByteCount]  1171
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7994: GetGlobals installs macros to doc.
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0bcc748a
+[CRCByteCount]  1535
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #7908: SETUP has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x08DFB099
+[CRCByteCount]  13382
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 COPYMACROS has .Copy and FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xEACE07B7
+[CRCByteCount]  12644 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 IMPORT has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x475940A2
+[CRCByteCount]  744 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 EDITADDR2 has FileSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xABD4A327
+[CRCByteCount]  134 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 COPYFPAS has .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x3C99C552
+[CRCByteCount]  6252 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 NEWMACROS has .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xD493C738
+[CRCByteCount]  172 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 COPYADDRESS has .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x5A6777F9
+[CRCByteCount]  336 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8140 COPYBANKRUPT has .Copy
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x977498E2
+[CRCByteCount]  301 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #8800 WPMS has ToolsMacro .Edit and FIleSaveAs
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x5E00FA87
+[CRCByteCount]  157360 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9064 STARTWIZARD
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x64a32a3b
+[CRCByteCount]  15478
+[ExclusionSigEnd]
+
+
+[ExclusionSigStart]
+[Comment]       #9180 WSAFILECOPYMGR       
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x7C912314
+[CRCByteCount]  4532 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 LIBRARY
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x6B915AC2
+[CRCByteCount]  15020
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 LIBRARY2
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xDE04CCD2
+[CRCByteCount]  20729
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 PAGEBREAKS
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x168B878B
+[CRCByteCount]  30799
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 WSANOTEPAD
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x62EA3BFE
+[CRCByteCount]  4638
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 WSAREPORTMGR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x30B6639B
+[CRCByteCount]  9925
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 WSAFILEEXPORT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x58B26FAE
+[CRCByteCount]  8578
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 WSAFILEIMPORT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xA05B3402
+[CRCByteCount]  13908
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 WSAREVISIONMGR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xBBBCEE15
+[CRCByteCount]  10949
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 ADDCHARACTER
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x15082CA6
+[CRCByteCount]  7721
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 FORMATEDITOR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xD4A46A7C
+[CRCByteCount]  9319
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9180 WSAHEADERMGR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xEA111E7E
+[CRCByteCount]  17528
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9449 SETUP
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xDCE99782
+[CRCByteCount]  13055
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9470 INSTALL
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x7443AACB
+[CRCByteCount]  42518 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #9595 STOPCODE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0C76458D
+[CRCByteCount]  30993
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       EDITCUSTOMDIC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x75741290
+[CRCByteCount]  863 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       HEADINGNUMBERING     
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xB934308B
+[CRCByteCount]  34001 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       CREATELETTERHEAD
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xC97853AC
+[CRCByteCount]  13101
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       TOCTABS
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xDBAEFA61
+[crcByteCount]  1472
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       TRAILER
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x9A8CB07F
+[crcByteCount]  12523
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       AUTOEXEC
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x727BACC3
+[crcByteCount]  6395
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       DOCCLOSE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xD54DFD26
+[crcByteCount]  2968
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       FILEEXIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x4D21827D
+[crcByteCount]  2201
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       FILEOPEN
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xE0954CED
+[crcByteCount]  701
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       FILESAVE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xF56CA8A1
+[crcByteCount]  3614
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       FILECLOSE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0F95C627
+[crcByteCount]  2530
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       FILEPRINT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x575E4BBC
+[crcByteCount]  1081
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       CLEARDOCVAR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xFBB239F6
+[crcByteCount]  3013
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       RESETSTYLES
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xED43C38E
+[crcByteCount]  31928
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       SHOWDOCVARS
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xC2A0A47B
+[crcByteCount]  337
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       SHOWVERSION
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x74D58B05
+[crcByteCount]  6140
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       POSPROTOTYPE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xEF2E40FA
+[crcByteCount]  27931
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       WHICHTRAILER
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x5AA7FA11
+[crcByteCount]  2465
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       PLEADINGSETUP
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x68C0F968
+[crcByteCount]  7750
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       ZPCDOCSTRAILER
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x5977EEF4
+[crcByteCount]  15982
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       INTERROGATORIES
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x74EA1DE0
+[crcByteCount]  3250
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       ZPCDOCSDOCCLOSE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x6016663B
+[crcByteCount]  3914
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       ZPCDOCSFILEEXIT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x81FEC71D
+[crcByteCount]  3407
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       CREATELETTERHEAD
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xC97853AC
+[crcByteCount]  13101
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       CREATELWENVELOPE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x0049A75A
+[crcByteCount]  20286
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       FILEPRINTDEFAULT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x338783E7
+[crcByteCount]  1050
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       HEADINGNUMBERING
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xB934308B
+[crcByteCount]  34001
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       ZPCDOCSFILECLOSE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x5CA15CDA
+[crcByteCount]  3506
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       CREATESERVICELIST
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x3E210CF7
+[crcByteCount]  10863
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       TOCENTRYCONTINUED
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xF6EFA1A8
+[crcByteCount]  908
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       CROSSACTIONSINSERT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x986CB3BE
+[crcByteCount]  7398
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       HEADINGNUMBERINGLEVEL
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xF72454AD
+[crcByteCount]  10674
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       SPECIALSEQUENCEINSERT
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x29473AB5
+[crcByteCount]  1671
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       SPECIALSEQUENCEMODIFY
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x47CB638D
+[crcByteCount]  3230
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       HEADINGNUMBERINGTOOLBAR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x17F582F7
+[crcByteCount]  4122
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       HEADINGNUMBERINGRESEQUENCE
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xCCCA29F9
+[crcByteCount]  2174
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       HEADINGNUMBERINGCLOSETOOLBAR
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xDA7BA18C
+[crcByteCount]  498
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #10452:SETUP                
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x2EA57788
+[crcByteCount]  13055 
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #10693:STARTWIZARD
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0x8f9af79c
+[crcByteCount]  14235
+[ExclusionSigEnd]
+
+[ExclusionSigStart]
+[Comment]       #10798:INSTALL
+[Type]          WD7
+[QAStatus]      PASSED
+[CRC]           0xa4805409
+[crcByteCount]  21262
+[ExclusionSigEnd]
+

@@ -1,0 +1,26 @@
+HKCR
+{
+	Symantec.Norton.AntiVirus.SnoozeAlert.1 = s 'SnoozeAlert Class'
+	{
+		CLSID = s '{03970E0C-9DA6-460E-A754-FAD0FA3F7037}'
+	}
+	Symantec.Norton.AntiVirus.SnoozeAlert = s 'SnoozeAlert Class'
+	{
+		CLSID = s '{03970E0C-9DA6-460E-A754-FAD0FA3F7037}'
+		CurVer = s 'Symantec.Norton.AntiVirus.SnoozeAlert.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {03970E0C-9DA6-460E-A754-FAD0FA3F7037} = s 'SnoozeAlert Class'
+		{
+			ProgID = s 'Symantec.Norton.AntiVirus.SnoozeAlert.1'
+			VersionIndependentProgID = s 'Symantec.Norton.AntiVirus.SnoozeAlert'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{ABA89334-36F7-4263-987C-941FF0C3E105}'
+		}
+	}
+}

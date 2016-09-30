@@ -1,0 +1,23 @@
+@echo off
+
+rem ----------------------------------------------------------------------------------
+rem FixNames.btm - renames .xml manifests from their merge module name to their 8.3 name
+rem Run this after BuildUnsigned.btm.  Not all manifests are renamed.
+rem Manifest tweaking can be done immediately before or after this step.
+rem ----------------------------------------------------------------------------------
+
+
+
+set manifestpath=Unsigned
+
+move %manifestpath\AP.xml %manifestpath\navapw32.xml
+move %manifestpath\AutoProtectDrivers.xml %manifestpath\navap32.xml
+move %manifestpath\CfgWizRes.xml %manifestpath\CfgWzRes.xml
+move %manifestpath\MainUI.xml %manifestpath\NAVUI.xml
+move %manifestpath\NPFMonitor.xml %manifestpath\NPFMntor.xml
+move %manifestpath\OfficeAV.xml %manifestpath\Scnrs.xml
+move %manifestpath\Options.xml %manifestpath\NAVOpts.xml
+move %manifestpath\PatchInst.xml %manifestpath\NAVPatch.xml
+move %manifestpath\Scanners.xml %manifestpath\Navw32.xml
+move %manifestpath\SCSSCommon.xml %manifestpath\SCSSComm.xml
+move %manifestpath\SNLog.xml %manifestpath\IWPLog.xml

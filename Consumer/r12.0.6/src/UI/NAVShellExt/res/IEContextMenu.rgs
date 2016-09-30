@@ -1,0 +1,65 @@
+HKCR
+{
+	NoRemove *
+	{
+		NoRemove ShellEx
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove 'Symantec.Norton.Antivirus.IEContextMenu' = s '{5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2}'
+			}
+		}
+	}
+	NoRemove Drive
+	{
+		NoRemove ShellEx
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove 'Symantec.Norton.Antivirus.IEContextMenu' = s '{5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2}'
+			}
+		}
+	}
+	NoRemove File
+	{
+		NoRemove ShellEx
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove 'Symantec.Norton.Antivirus.IEContextMenu' = s '{5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2}'
+			}
+		}
+	}
+	NoRemove Folder
+	{
+		NoRemove ShellEx
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove 'Symantec.Norton.Antivirus.IEContextMenu' = s '{5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2}'
+			}
+		}
+	}
+	Symantec.Norton.Antivirus.IEContextMenu.1 = s 'IEContextMenu Class'
+	{
+		CLSID = s '{5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2}'
+	}
+	Symantec.Norton.Antivirus.IEContextMenu = s 'IEContextMenu Class'
+	{
+		CLSID = s '{5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2}'
+		CurVer = s 'Symantec.Norton.Antivirus.IEContextMenu.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2} = s 'IEContextMenu Class'
+		{
+			ProgID = s 'Symantec.Norton.Antivirus.IEContextMenu.1'
+			VersionIndependentProgID = s 'Symantec.Norton.Antivirus.IEContextMenu'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{2292E927-BD89-40DE-999A-4E72CE0EAA4F}'
+		}
+	}
+}

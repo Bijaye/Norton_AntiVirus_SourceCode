@@ -1,0 +1,28 @@
+;Auto-Configuration File for Symantec AntiVirus Corporate Edition Copy Server
+;created for vpnsentry.exe  01282004
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec VPN Sentry
+DisplayName=VPNSENTRY0
+File:Name=VPNSentry.exe
+RequiredDigest=23ea4a42e99aab374cee8fc5fe78dc33269b8047
+Rules=UDP-IN,UDP-OUT
+
+[RULE:UDP-IN]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+LocalPorts=2967
+Protocol=UDP
+RuleName=Symantec VPN Sentry UDP Inbound
+
+[RULE:UDP-OUT]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+RemotePorts=53
+Protocol=UDP
+RuleName=Symantec VPN Sentry UDP Outbound
+
+

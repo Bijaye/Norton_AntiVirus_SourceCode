@@ -1,0 +1,937 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="qserver"
+	SccProjectName="qserver"
+	SccAuxPath=""
+	SccLocalPath="."
+	SccProvider="MSSCCI:Perforce SCM"
+	Keyword="MFCProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Unicode Release|Win32"
+			OutputDirectory=".\qserver___Win32_Unicode_Release"
+			IntermediateDirectory=".\qserver___Win32_Unicode_Release"
+			ConfigurationType="1"
+			UseOfMFC="2"
+			UseOfATL="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="1">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="1"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\shared\include;..\include;..\..\..\LDVP_shared\src\pscan\common\src;..\..\..\Core_technology\LDVP_shared\src\include;..\..\..\Release\SESA2.1\AppSupport\applibsrc\include;..\..\..\Release\SESA2.1\AppSupport\include;..\..\..\Release\ECOM\Include;..\..\..\Release\avcomp\Defutils\include;..\..\..\release\ams\include;..\..\..\Shareable_code\unlicensed\SymSafer\include;..\..\..\Shareable_code\unlicensed\DebugNET\include"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;SYM_WIN;SYM_WIN32"
+				StringPooling="TRUE"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\qserver___Win32_Unicode_Release/qserver.pch"
+				AssemblerListingLocation=".\qserver___Win32_Unicode_Release/"
+				ObjectFile=".\qserver___Win32_Unicode_Release/"
+				ProgramDataBaseFileName=".\qserver___Win32_Unicode_Release/"
+				BrowseInformation="1"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description="Performing registration"
+				CommandLine="echo Building proxy stub DLL
+nmake -f qserverps.mk
+"
+				Outputs="$(OutDir)\regsvr32.trg"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ecmldr32.lib ws2_32.lib qspak32.lib IcePackTokens.lib applib.lib wininet.lib version.lib"
+				OutputFile="..\shared\BinIntelUnicodeWin32Release/qserver.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="..\..\..\Release\ECOM\LibIntelAnsiWin32Release;..\..\..\release\SESA2.1\appsupport\lib\win32.vc71\release;..\..\..\release\avcomp\defutils\LibWin32VC7AnsiRelease;..\shared\LibIntelAnsiWin32Release;..\..\LDVP_Shared\src\nobuilds\lib\intelansi\win32\release"
+				ProgramDatabaseFile=".\qserver___Win32_Unicode_Release/qserver.pdb"
+				SubSystem="2"
+				EntryPointSymbol="wWinMainCRTStartup"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\qserver___Win32_Unicode_Release/qserver.tlb"
+				HeaderFileName=""/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="call ..\cm\mdir.bat ..\Shared\BinIntelAnsiWin32Release
+copy qserverps.dll ..\Shared\BinIntelAnsiWin32Release
+copy qserver.tlb ..\shared\include
+copy qserver.h ..\shared\include
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="..\Shared\Include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Unicode Debug|Win32"
+			OutputDirectory=".\qserver___Win32_Unicode_Debug"
+			IntermediateDirectory=".\qserver___Win32_Unicode_Debug"
+			ConfigurationType="1"
+			UseOfMFC="2"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="1">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\shared\include;..\include;..\..\..\LDVP_shared\src\pscan\common\src;..\..\..\Core_technology\LDVP_shared\src\include;..\..\..\Release\SESA2.1\AppSupport\applibsrc\include;..\..\..\Release\SESA2.1\AppSupport\include;..\..\..\Release\ECOM\Include;..\..\..\Release\avcomp\Defutils\include;..\..\..\release\ams\include;..\..\..\Shareable_code\unlicensed\SymSafer\include;..\..\..\Shareable_code\unlicensed\DebugNET\include"
+				PreprocessorDefinitions="_DEBUG;UNICODE;SESDEBUG;SY;WIN32;_WINDOWS;SYM_WIN;SYM_WIN32"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\qserver___Win32_Unicode_Debug/qserver.pch"
+				AssemblerListingLocation=".\qserver___Win32_Unicode_Debug/"
+				ObjectFile=".\qserver___Win32_Unicode_Debug/"
+				ProgramDataBaseFileName=".\qserver___Win32_Unicode_Debug/"
+				BrowseInformation="1"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="4"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				Description="Performing registration"
+				CommandLine="echo Building proxy stub DLL
+nmake -f qserverps.mk
+"
+				Outputs="$(OutDir)\regsvr32.trg"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ecmldr32.lib version.lib ws2_32.lib qspak32.lib IcePackTokens.lib applib.lib wininet.lib"
+				ShowProgress="0"
+				OutputFile="..\shared\BinIntelUnicodeWin32Debug/qserver.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="..\..\..\Release\ECOM\LibIntelAnsiWin32Debug;..\..\..\release\SESA2.1\appsupport\lib\win32.vc71\debug;..\..\..\release\avcomp\defutils\LibWin32vc7AnsiDebug;..\shared\LibIntelAnsiWin32Debug;..\..\LDVP_Shared\src\nobuilds\lib\intelansi\win32\release"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\qserver___Win32_Unicode_Debug/qserver.pdb"
+				SubSystem="2"
+				EntryPointSymbol="wWinMainCRTStartup"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				SuppressStartupBanner="FALSE"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName=".\qserver___Win32_Unicode_Debug/qserver.tlb"
+				HeaderFileName=""/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="call ..\cm\mdir.bat ..\Shared\BinIntelAnsiWin32Debug
+copy qserverps.dll ..\Shared\BinIntelAnsiWin32Debug
+copy qserver.tlb ..\shared\include
+copy qserver.h ..\shared\include
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="..\Shared\Include"
+				ResourceOutputFileName="qserver.res"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="ams.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="AvisConfig.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="AVScanner.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="CopyItemData.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="Enumerator.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="EnumQserverItemsVariant.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="eresource.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="FileNameParse.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="GeneralEventDetection.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ModulVer.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="NavAPICallbacks.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="ProccessSamples.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qserver.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qserver.idl">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateStublessProxies="TRUE"
+						TypeLibraryName=".\qserver.tlb"
+						HeaderFileName="qserver.h"
+						InterfaceIdentifierFileName="qserver_i.c"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateStublessProxies="TRUE"
+						TypeLibraryName=".\qserver.tlb"
+						HeaderFileName="qserver.h"
+						InterfaceIdentifierFileName="qserver_i.c"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qserver.rc">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCResourceCompilerTool"
+						PreprocessorDefinitions="NDEBUG;_AFXDLL;$(NoInherit)"
+						AdditionalIncludeDirectories="$(OUTDIR)"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCResourceCompilerTool"
+						PreprocessorDefinitions="_DEBUG;_AFXDLL;$(NoInherit)"
+						AdditionalIncludeDirectories="$(OUTDIR)"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QserverConfig.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="qservermsg.mc">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Compiling message file $(InputPath)"
+						CommandLine="mc &quot;$(InputName)&quot;
+"
+						Outputs="qservermsg.h;qservermsg.rc"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Compiling message file $(InputPath)"
+						CommandLine="mc &quot;$(InputName)&quot;
+"
+						Outputs="qservermsg.h;qservermsg.rc"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QServerSavInfo.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QsIsPlatinumCustomer.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QSSesEvent.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QuarantineServer.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QuarantineServerII.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="QuarantineServerItem.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="SampleEventDetection.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="serverthreads.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="StdAfx.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						UsePrecompiledHeader="1"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						UsePrecompiledHeader="1"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\..\Shareable_code\unlicensed\DebugNET\BugslayerUtil\SuperAssertEx.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\..\shareable_code\unlicensed\SymSafer\src\SymSaferRegistry.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="threadpool.cpp">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions=""
+						BasicRuntimeChecks="3"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="util.c">
+				<FileConfiguration
+					Name="Unicode Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="1"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="NDEBUG;_ATL_STATIC_REGISTRY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						UsePrecompiledHeader="0"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						Optimization="0"
+						AdditionalIncludeDirectories=""
+						PreprocessorDefinitions="_DEBUG;SESDEBUG;SY;WIN32;_WINDOWS;_UNICODE;_AFXDLL;SYM_WIN;SYM_WIN32;$(NoInherit)"
+						BasicRuntimeChecks="3"
+						UsePrecompiledHeader="0"
+						BrowseInformation="1"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="AvisConfig.h">
+			</File>
+			<File
+				RelativePath="AVScanner.h">
+			</File>
+			<File
+				RelativePath="const.h">
+			</File>
+			<File
+				RelativePath="CopyItemData.h">
+			</File>
+			<File
+				RelativePath="Enumerator.h">
+			</File>
+			<File
+				RelativePath="EnumQserverItemsVariant.h">
+			</File>
+			<File
+				RelativePath="eresource.h">
+			</File>
+			<File
+				RelativePath="EventData.h">
+			</File>
+			<File
+				RelativePath="EventDetection.h">
+			</File>
+			<File
+				RelativePath="FileNameParse.h">
+			</File>
+			<File
+				RelativePath="NavAPICallbacks.h">
+			</File>
+			<File
+				RelativePath="ProccessSamples.h">
+			</File>
+			<File
+				RelativePath="qdefs.h">
+			</File>
+			<File
+				RelativePath="QserverConfig.h">
+			</File>
+			<File
+				RelativePath="QServerSavInfo.h">
+			</File>
+			<File
+				RelativePath="QSSesEvent.h">
+			</File>
+			<File
+				RelativePath="QuarantineServer.h">
+			</File>
+			<File
+				RelativePath="QuarantineServerII.h">
+			</File>
+			<File
+				RelativePath="QuarantineServerItem.h">
+			</File>
+			<File
+				RelativePath="Resource.h">
+			</File>
+			<File
+				RelativePath="serverthreads.h">
+			</File>
+			<File
+				RelativePath="StdAfx.h">
+			</File>
+			<File
+				RelativePath="threadpool.h">
+			</File>
+			<File
+				RelativePath="util.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			<File
+				RelativePath="AvisConfig.rgs">
+			</File>
+			<File
+				RelativePath="CopyItemData.rgs">
+			</File>
+			<File
+				RelativePath="EnumQserverItemsVariant.rgs">
+			</File>
+			<File
+				RelativePath="EnumSavVirusInfo.rgs">
+			</File>
+			<File
+				RelativePath="qserver.rgs">
+			</File>
+			<File
+				RelativePath="QserverConfig.rgs">
+			</File>
+			<File
+				RelativePath="QServerSavInfo.rgs">
+			</File>
+			<File
+				RelativePath="QuarantineServer.rgs">
+			</File>
+			<File
+				RelativePath="QuarantineServerII.rgs">
+			</File>
+			<File
+				RelativePath="QuarantineServerItem.rgs">
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

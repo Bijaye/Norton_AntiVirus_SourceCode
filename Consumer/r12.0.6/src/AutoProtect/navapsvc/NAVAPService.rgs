@@ -1,0 +1,47 @@
+HKCR
+{
+	Navapsvc.NAVAPService.1 = s 'NAVAPService Class'
+	{
+		CLSID = s '{142FB276-7C38-4BB4-B475-3F9233B3EFF8}'
+	}
+	Navapsvc.NAVAPService = s 'NAVAPService Class'
+	{
+		CLSID = s '{142FB276-7C38-4BB4-B475-3F9233B3EFF8}'
+		CurVer = s 'Navapsvc.NAVAPService.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {142FB276-7C38-4BB4-B475-3F9233B3EFF8} = s 'NAVAPService Class'
+		{
+			ProgID = s 'Navapsvc.NAVAPService.1'
+			VersionIndependentProgID = s 'Navapsvc.NAVAPService'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{D5BDD990-589C-44AC-B7B8-B7CB4AF509BA}'
+			'TypeLib' = s '{F743EA98-42BD-4E2C-A221-3F7B646748C7}'
+		}
+	}
+}
+
+HKLM
+{
+	NoRemove SYSTEM
+	{
+		NoRemove CurrentControlSet
+		{
+			NoRemove Services
+			{
+				NoRemove EventLog
+				{
+					NoRemove Application
+					{
+						ForceRemove navapsvc
+						{
+							val EventMessageFile = s '%MODULE%'
+							val TypesSupported =  d '7'
+						}
+					}
+				}
+			}
+		}
+	}
+}

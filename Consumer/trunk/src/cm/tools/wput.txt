@@ -1,0 +1,46 @@
+Usage: wput [options] [file]... [url]...
+  url        ftp://[username[:password]@]hostname[:port][/[path/][file]]
+
+Startup:
+  -V, --version         Display the version of wput and exit.
+  -h, --help            Print this help-screen
+
+Logging and input file:
+  -o,  --output-file=FILE      log messages to FILE
+  -a,  --append-output=FILE    append log messages to FILE
+  -q,  --quiet                 quiet (no output)
+  -v,  --verbose               be verbose
+  -d,  --debug                 debug output
+  -nv, --less-verbose          be less verbose
+  -i,  --input-file=FILE       read the URLs from FILE
+  -s,  --sort                  sorts all input URLs by server-ip and path
+       --basename=PATH         snip PATH off each file when appendig to an URL
+  -I,  --input-pipe=COMMAND    take the output of COMMAND as data-source
+  -R,  --remove-source-files   unlink files upon successful upload
+
+Upload:
+       --bind-address=ADDR     bind to ADDR (hostname or IP) on local host
+  -t,  --tries=NUMBER          set retry count to NUMBER (-1 means infinite)
+  -nc, --dont-continue         do not resume partially-uploaded files
+  -u,  --reupload              do not skip already completed files
+       --skip-larger           do not upload files if remote size is larger
+       --skip-existing         do not upload files that exist remotely
+  -N,  --timestamping          don't re-upload files unless newer than remote
+  -T,  --timeout=10th-SECONDS  set various timeouts to 10th-SECONDS
+  -w,  --wait=10th-SECONDS     wait 10th-SECONDS between uploads. (default: 0)
+       --random-wait           wait from 0...2*WAIT secs between uploads.
+       --waitretry=SECONDS     wait SECONDS between retries of an upload
+  -l,  --limit-rate=RATE       limit upload rate to RATE
+  -nd, --no-directories        do not create any directories
+  -Y,  --proxy=http/socks/off  set proxy type or turn off
+       --proxy-user=NAME       set the proxy-username to NAME
+       --proxy-pass=PASS       set the proxy-password to PASS
+
+FTP-Options:
+  -p,  --port-mode             no-passive, turn on port mode ftp (def. pasv)
+  -A,  --ascii                 force ASCII  mode-transfer
+  -B,  --binary                force BINARY mode-transfer
+       --force-tls             force the useage of TLS
+
+See the wput(1) for more detailed descriptions of the options.
+Mail bug reports and suggestions to <itooktheredpill@gmx.de>

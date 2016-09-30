@@ -1,0 +1,68 @@
+#########################################################################
+#                                                                       #
+# This is the configuration profile for the AVIS Analysis Center Sample #
+# Communications application                                            #
+#                                                                       #
+#########################################################################
+
+# Use gatewayCount to specify the number of gateways with which sample communications
+# should be established. Gateway URLs will be expected in the form:
+# "gatewayAddress1 = <gateway1 URL>"
+# "gatewayAddress2 = <gateway2 URL>"
+#        .
+#        .
+#        .
+# "gatewayAddress<n> = <gateway<n> URL>", where <n> is the value specified in "gatewayCount"
+gatewayCount    = 1
+#gatewayAddress1 = http://avisgw1.watson.ibm.com:888
+#gatewayAddress1 = http://navajo.watson.ibm.com:2847
+gatewayAddress1 = http://pilot.gateways.dis.symantec.com:2847
+
+# Specify parameters for proxy firewall.
+#firewallType = 
+#socksAddress = 
+#proxyAddress = proxy.cupertino.symantec.com:80
+#proxyUsername = 
+#proxyPassword = 
+
+# timeouts/retries (seconds)
+connectTimeout = 20
+connectRetries = 2
+sendRequestTimeout = 20
+sendRequestDataTimeout = 20
+receiveResponseTimeout = 100
+receiveResponseDataTimeout = 100
+
+# transaction timeout monitoring (seconds)
+timeoutTransactionConnected = 30
+timeoutImportSampleTransactionCompleted = 60
+timeoutReportStatusTransactionCompleted = 10
+timeoutExportSignatureTransactionCompleted = 30*60
+
+# sample storage
+SampleStoragePath = \\HERSTEIN\sampleStorage
+
+#signature storage
+SignatureStoragePath = \\HERSTEIN\signatureStorage
+
+# Specify polling intervals (in seconds) for each task.
+sampleImporterDelayAfterNoSamplesAtGateway = 5
+StatusReporterPollingInterval = 2
+SignatureExporterPollingInterval = 5
+ClientDelayAfterNetworkError = 5
+
+# Specify parameters for logging.
+enableWinInetLogging = off
+enableTracing = on
+
+# Specify use of SSL in specific transactions
+sampleImporterUseSSL = off
+signatureExporterUseSSL = off
+ignoreInvalidCertificateServerName = FALSE
+
+# Specify critical error options
+allowUserToRespondToCriticalError = yes
+soundAlarmOnCriticalError = on
+
+# Special Debug/Testing options
+ignoreXErrorCrumbled = off

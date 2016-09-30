@@ -1,0 +1,9 @@
+iff "%PLATFORM" NE ".OS2" then
+
+call mk macroheu %1
+if exist make.err copy build.err+make.err build.err
+
+else
+    wmake /f S:macroheu.wmk /L build.err
+endiff
+   

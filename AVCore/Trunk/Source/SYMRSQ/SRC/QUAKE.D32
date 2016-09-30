@@ -1,0 +1,277 @@
+;************************************************************************
+;*                                                                      *
+;* $Header:   S:/SYMRSQ/VCS/quake.d3v   1.1   22 Feb 1996 15:16:12   YVANG  $ *
+;*                                                                      *
+;* Description:                                                         *
+;*      In general, you NEVER need a DEF file for WIN32, but if you     *
+;*      want to export routines which are not being exported using      *
+;*      declspec(dllexport) (SYM_EXPORT), then you will need to         *
+;*      explicitly export them.   Note that this COMPLEMENTS the        *
+;*      declspec(dllexport) scheme, rather than replaces it.            *
+;*                                                                      *
+;************************************************************************
+;* $Log:   S:/SYMRSQ/VCS/quake.d3v  $ *
+;  
+;     Rev 1.1   22 Feb 1996 15:16:12   YVANG
+;  Renamed the functions prefixed with NavwHelp to the ones with StdHelpEx,
+;  which are the NAV versions of Quake's StdHelp.  
+;  
+;     Rev 1.0   24 May 1995 13:19:18   BARRY
+;  Initial revision.
+;  
+;     Rev 1.23   04 May 1995 10:29:46   KEITH
+;  Add DBCSIsLeadByte to exports
+;  
+;     Rev 1.22   03 May 1995 20:45:24   BRAD
+;  Added FileIsOpen2
+;  
+;     Rev 1.21   03 May 1995 12:30:50   MFALLEN
+;  Still trying to make it work.
+;  
+;     Rev 1.20   03 May 1995 10:09:56   MFALLEN
+;  Renamed StdHelp exported functions. We should now be using NavwHelp family.
+;  
+;     Rev 1.19   02 May 1995 13:07:14   MFALLEN
+;  ShellLink...()
+;  
+;     Rev 1.18   27 Apr 1995 11:51:18   MFALLEN
+;  Added DiskGetCurrentLockState()
+;  
+;     Rev 1.17   26 Apr 1995 13:52:38   BRAD
+;  Added NG_SetGroupBoxSunken
+;  
+;     Rev 1.16   20 Apr 1995 17:49:02   MFALLEN
+;  NameValidatePathEx
+;  
+;     Rev 1.15   06 Apr 1995 20:21:10   MFALLEN
+;  ConfigSwitchCount()
+;  
+;     Rev 1.14   06 Apr 1995 19:49:32   MFALLEN
+;  ConfigParamCount
+;  
+;     Rev 1.13   06 Apr 1995 16:31:24   SZIADEH
+;  added FileGetDateTimeString() used in SYMINTEG.
+;  
+;     Rev 1.12   29 Mar 1995 17:12:38   MFALLEN
+;  Replaced NameGetIllegalChars() with NameReturnIllegalChars()
+;  
+;     Rev 1.11   27 Mar 1995 16:39:12   DALLEE
+;  Added NameReturnExtensionEx() - winmisc.cpp, FileIsDOSExecutable()
+;  
+;     Rev 1.10   27 Mar 1995 16:38:24   MFALLEN
+;  
+;     Rev 1.9   24 Mar 1995 09:36:26   MFALLEN
+;  StdHelpOnContextHelpEx()
+;  
+;     Rev 1.8   23 Mar 1995 16:23:50   SZIADEH
+;  added NameReturnRoot() used in n_scan.cpp in the NAVWORK project.
+;  
+;     Rev 1.7   16 Mar 1995 15:29:20   AMATIC
+;  Added StdhelpGetHelpInfo()
+;  quake.d32 -> S:\symnav\vcs\quake.d3v
+;  Enter description of changes made.
+;  
+;     Rev 1.6   15 Mar 1995 20:11:18   MFALLEN
+;  Added SystemGetWindowsType()
+;  
+;     Rev 1.5   15 Mar 1995 19:52:14   MFALLEN
+;  Added Ctl3dAutoSubclass and Ctl3dSubclassDlgEx
+;  
+;     Rev 1.4   10 Mar 1995 14:07:56   AMATIC
+;  
+;     Rev 1.3   10 Mar 1995 13:25:26   AMATIC
+;  Added New StdHelp Func: "StdHelpOnContextHelp()"
+;  
+;     Rev 1.2   09 Mar 1995 17:34:20   BRIANF
+;
+;     Rev 1.1   08 Mar 1995 16:44:00   BARRY
+;  Added CPL_Dialog for NPS
+;
+;     Rev 1.0   02 Mar 1995 13:29:10   BRIANF
+;  Initial revision.
+;
+;************************************************************************
+
+EXPORTS
+
+_ConvertLongToString
+_ConvertWordToString
+_CheckVersion@8
+ConfigFileInit
+ConfigFileReadString
+ConfigFileReadValue
+ConfigFileTerminate
+ConfigFileWriteString
+ConfigFileWriteValue
+ConfigParamCount
+ConfigParamGet
+ConfigParamToUpper
+ConfigSwitchCount
+ConfigSwitchSet
+ConvertDateToEncoded
+ConvertEncodedDateToNormal
+ConvertEncodedTimeToNormal
+ConvertLongToString
+ConvertStringToLong
+ConvertStringToWord
+ConvertTimeToEncoded
+ConvertWordToString
+CPL_ChangeDialog
+CPL_Dialog
+CPL_DialogDynamic
+CPL_EndDialog
+CPL_GetCurDlg
+CPL_HitTestTabGlobal
+CRCFile
+Ctl3dAutoSubclass
+Ctl3dSubclassDlgEx
+Ctl3dColorChange
+Ctl3dCtlColorEx
+Ctl3dRegister
+Ctl3dSubclassCtl
+Ctl3dSubclassDlg
+Ctl3dUnregister
+DateGetCurrentDateTime
+DBCSInstalled
+DBCSIsLeadByte
+DirGet
+DirHasChildren
+DiskAbsOperation
+DiskBlockDevice
+DiskExists
+DiskFreeAvailGet
+DiskGenericIOCTL
+DiskGenericIOCTLError
+DiskGet
+DiskGetBootDrive
+DiskGetClusterSize
+DiskGetCurrentLockState
+DiskGetDriveList
+DiskGetInfo
+DiskGetPhysicalInfo
+DiskGetType
+DiskHasBootRecord
+DiskIsFixed
+DiskIsNetwork
+DiskIsRemovable
+DiskIsSubst
+DiskReset
+DiskSet
+DiskUnscrambleBIOSCoding
+DOSGetDate
+DOSGetExtendedError
+DOSGetTime
+DosTimeToFileTime
+FileCopy
+FileCreate
+FileCreateTemporary
+FileDelete
+FileExists
+FileFindClose
+FileFindFirst
+FileFindFirstAttr
+FileFindNext
+FileGetAttr
+FileGetTime
+FileIsOpen2
+FileKill
+FileLength
+FileOpen
+FileRename
+FileSetAttr
+FileSetSize
+FileSetTime
+FileGetDateTimeString
+FileTimeToDosTime
+FreeVxD
+GetProtModePtr
+hstrcpy
+HugeOemToAnsiBuff
+LoadVxD
+MemAlloc
+MemCopyPhysical
+MemFree
+MemReAlloc
+MessageDisplay
+NameAppendExtension
+NameAppendFile
+NameReturnIllegalChars
+NameGetType
+NameIsDevice
+NameIsExecutableInitDir
+NameIsRoot
+NameIsWildcard
+NameParsePath
+NameReturnExtension
+NameReturnExtensionEx
+NameReturnFile
+NameReturnLongName
+NameReturnPath
+NameReturnRoot
+NameReturnShortName
+NameSeparatePath
+NameShortenFileName
+NameStripExtension
+NameStripFile
+NameToFull
+NameValidatePath
+NameValidatePathEx
+NameWildcardMatch
+NDL_DisplaySelectedDrives
+NDL_GetSelected
+NDL_InitDrives
+NDL_SelectByMask
+NDL_SelectByName
+NDL_TypeBoxCheck
+NG_AddSpeedSearch
+NG_BrowseForFolder
+NG_CenterDialog
+NG_ColorChange
+NG_Done
+NG_Draw3DFrame
+NG_DrawCanvas
+NG_FontGet
+NG_Init
+NG_SetChildSmallFont
+NG_SetFontsInDialog
+NG_SetGroupBoxSunken
+NIntlGetValidDate
+NIntlGetValidTime
+NIntlInit
+NIntlTimeToLongString
+NMsgBox
+NPTPrintDialog
+NSetIntlDate
+NSetIntlLongDate
+NSetIntlTime
+PasswordVerify
+ShellLinkCreate
+ShellLinkDestroy
+ShellLinkExists
+StdAboutBox
+StdDirSelect
+StdHelpActivate
+StdHelpExContextMenu
+StdHelpFromDialog
+StdHelpFromHelp
+StdHelpFromID
+StdHelpExGetHelpInfo
+StdHelpExInit
+StdHelpExOnContextHelp
+STdHelpSetContext
+StdHelpShutdown
+StdExPopupHelpFromDialog
+StringAppendNChars
+SYMCheckVersions
+SYMKRNLCheckVersion
+SYMstrchr
+SystemGetWindowsType
+SzzFindNext
+SzzStripDuplicates
+VolumeLabelGet
+VolumeLabelSet
+VolumeSupportsLFN
+WinIniLoadAppend
+WinIniLoadCheck
+WinIniLoadRemove
+

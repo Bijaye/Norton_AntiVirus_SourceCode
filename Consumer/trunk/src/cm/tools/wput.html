@@ -1,0 +1,824 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0039)http://wput.sourceforge.net/wput.1.html -->
+<!-- Creator     : groff version 1.18.1 --><!-- CreationDate: Sun Jan 30 20:52:45 2005 --><HTML><HEAD><TITLE>Manpage of wput(1)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2900.2802" name=GENERATOR>
+<META content=text/css name=Content-Style><LINK href="/.v6box.css" type=text/css 
+rel=stylesheet></HEAD>
+<BODY>
+<H1 align=center>wput</H1><A 
+href="http://wput.sourceforge.net/wput.1.html#NAME">NAME</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#SYNOPSIS">SYNOPSIS</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#DESCRIPTION">DESCRIPTION</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#URL&#8722;Input&#8722;Handling">URL&#8722;Input&#8722;Handling</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#Guessing Local File">Guessing 
+Local File</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#OPTIONS">OPTIONS</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#DIAGNOSTICS">DIAGNOSTICS</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#BUGS">BUGS</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#SEE ALSO">SEE ALSO</A><BR><A 
+href="http://wput.sourceforge.net/wput.1.html#AUTHOR">AUTHOR</A><BR>
+<HR>
+<A name=NAME></A>
+<H2>NAME</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>wput &#8722; A wget&#8722;like ftp&#8722;uploader</P></TD></TR></TBODY></TABLE><A 
+name=SYNOPSIS></A>
+<H2>SYNOPSIS</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>wput [<I>option</I>]... [ <I><SMALL>file</SMALL></I> ]... [ 
+      <I><SMALL>URL</SMALL></I> ]...</P></TD></TR></TBODY></TABLE><A 
+name=DESCRIPTION></A>
+<H2>DESCRIPTION</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>Wput is a free utility that is able to upload files to a 
+ftp-server.</P><!-- INDENTATION -->
+      <P>Wput is non&#8722;interactive and background-capable. It can upload files or 
+      whole directories and is meant to be a robust client even for unstable 
+      connections and will therefore retry to upload a file, if the connection 
+      broke.</P><!-- INDENTATION -->
+      <P>Wput supports resuming, so it automatically continues uploading from 
+      the point where the previous upload stopped, meaning that you can kill 
+      Wput anytime and it will (if the remote ftp&#8722;server supports this, being 
+      most likely the case) finish the partial uploaded file.</P><!-- INDENTATION -->
+      <P>Wput supports connections through proxies, allowing you to use it in an 
+      environment that can access the internet only via a proxy or to provide 
+      anonymity by hiding your ip&#8722;address to the server. For SOCKSv5&#8722;proxies 
+      Wput supports also listening mode, allowing you to use port-mode ftp 
+      through a proxy (useful if the remote ftp is behind a firewall or a 
+      gateway).</P><!-- INDENTATION -->
+      <P>Wput supports timestamping, so it will (in the ideal case and if 
+      timestamping is enabled) only upload files, that are newer than the 
+      remote-file.</P><!-- INDENTATION -->
+      <P>The upload-rate of Wput can be restricted, so that Wput won’t eat all 
+      available bandwidth.</P></TD></TR></TBODY></TABLE><A 
+name=URL&#8722;Input&#8722;Handling></A>
+<H2>URL&#8722;Input&#8722;Handling</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>URLs are recognized by the ftp://&#8722;prefix</P><!-- INDENTATION -->
+      <P>Wput first reads the URLs from command-line, and associates the first 
+      file with the first URL, the second file with the second URL etc. It then 
+      transmits the file/URL combinations that are already complete. In 
+      situations where more URLs than files are specified, Wput tries to guess 
+      the local filename from the URL. Afterwards, Wput uses the &#8722;&#8722;input&#8722;file 
+      (if any) and reads the URLs using the same sheme as above. If there are 
+      still files remaining, but no URL has been specified for them, Wput uses 
+      the last known URL for each of the files.</P><!-- INDENTATION -->
+      <P>So you can specify e.g. one URL and read all filenames from a file. Or 
+      use <I>wput *.txt ftp://host</I>, to transfer all *.txt-files. So 
+      <I>EXAMPLES</I> for further examples.</P><!-- INDENTATION -->
+      <P>To be on the safe side, it is recommended to supply the files before 
+      the URLs.</P></TD></TR></TBODY></TABLE><A name="Guessing Local File"></A>
+<H2>Guessing Local File</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>If Wput has an URL without a corresponding filename, Wput tries to 
+      guess the local file’s location. e.g. using wput 
+      ftp://host/directory/path/file, Wput will look out for 
+      /directory/path/file. If not found, Wput looks for ./directory/path/file, 
+      ./path/file and ./file.</P></TD></TR></TBODY></TABLE><A name=OPTIONS></A>
+<H2>OPTIONS</H2><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;V</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;version</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Display the version of wput.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;h</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;help</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Print a help screen, with a short description of wput’s command-line 
+      options.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;b</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;background</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Go to background immediately after startup. If no output file is given, 
+      wput will redirect its output to "./wputlog"</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;o</B> <I>logfile</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;output&#8722;file=</B><I>logfile</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Log all messages to <I>logfile</I>.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;a</B> <I>logfile</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;append&#8722;output=</B><I>logfile</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Append all logged messages to <I>logfile</I>.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;q</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;quiet</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Turn off Wput’s output.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;v</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;verbose</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Turn on verbose output. This gives some more information about what 
+      Wput does. If you specify this flag twice, you get debug 
+  output.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="4%">
+      <P><B>&#8722;nv</B></P></TD>
+    <TD width="83%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;less&#8722;verbose</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Be less verbose. That means reducing Wput’s output to a minimun. 
+      Specifiing this flag more often is equal to the --quiet flag. Some people 
+      also like combining the -v and -nv flags, being quite 
+  senseless.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;i</B> <I>file</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;input&#8722;file=</B><I>file</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Reads URLs and filenames from <I>file</I>. If there are URLs on the 
+      command-line too, these will be retrieved first, unless sorting is 
+      enabled. See also the URL-Input-Handling section. If <I>file</I> is &#8722;, the 
+      URLs will be read from stdin. If you want to pipe the contents of the file 
+      that shall be uploaded to stdin, this cannot be done (yet). But you can 
+      use the --input-pipe flag and read the contents a) from a named pipe -I 
+      "cat named.pipe; echo &gt; /dev/null" or b) directly from the command, 
+      that outputs the data. (See --input-pipe) Do <B>not</B> do things like 
+      <I>find | wput ftp://host/ &#8722;i &#8722;</I>! Wput would upload all files from the 
+      current directory (since the first output of find will be ’.’) and 
+      afterwards each file again (since find postes its name to Wput. And 
+      further problematic is that Wput will upload each directory that is given 
+      by find and since find itself recurses all directories, the files would be 
+      uploaded three times (or even more often for further subdirectories). Use 
+      <I>wput ftp://host/</I> to upload everything from the local directory. Or 
+      use <I>find ! &#8722;type d | wput ftp://host/ &#8722;i &#8722;</I> to tell find, not to 
+      output directories.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;s</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;sort</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If sorting is enabled Wput first reads all URLs from any input-devices 
+      available and will sort them before transmitting each file. The sorting 
+      order is: ip/hostname, port, username, password, directory, filename. 
+      Sorting requires a bit more memory since all data needs to be hold 
+      there.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;basename=</B><I>path</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>This option causes Wput to snip <I>path</I> from all input&#8722;files when 
+      they are connected to the URL. wput /usr/share/doc.tgz ftp://host/ would 
+      create ftp://host//usr/share/doc.tgz, whereas specifing /usr/share/ as 
+      basename will result in ftp://host/doc.tgz being 
+created.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;I</B> <I>command</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;input&#8722;pipe=</B><I>command</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If no file/directory can be "guessed" (see "Guessing Local File") from 
+      the URL, the output of <I>command</I> <B>is taken as file-input. command 
+      is invoked as follows:</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>command ftp "username" "ip/hostname" port "remote_directory" 
+      "remote_filename"</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=4 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%"></TD>
+    <TD width="2%"></TD>
+    <TD width="82%">
+      <P>The hostname is only supplied if the ip cannot be resolved. If you do 
+      not want these parameters to confuse the programm from which you read the 
+      contents, use something like ’-I "cat file; echo &gt; /dev/null"’ so that 
+      these parameters are passed to echo and to /dev/null afterwards. Since the 
+      progressbar is not capable of handling unknown filesizes, the filesize is 
+      set to 1 GiB. Therefore the ETA shows a wrong value.</P></TD>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;R</B></P></TD>
+    <TD width="2%"></TD>
+    <TD width="82%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;remove&#8722;source&#8722;files</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Unlinks/deletes files that have been successfully 
+  transmitted.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;bind&#8722;address=</B> 
+<I><SMALL>ADDRESS</SMALL></I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>When making client <SMALL>TCP/IP</SMALL> connections, <TT>bind()</TT> 
+      to <I><SMALL>ADDRESS</SMALL></I> on the local machine. 
+      <I><SMALL>ADDRESS</SMALL></I> may be specified as a hostname or 
+      <SMALL>IP</SMALL> address. This option can be useful if your machine is 
+      bound to multiple IPs.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;t</B> <I>number</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;tries=</B><I>number</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Set number of retries to <I>number</I>. Specify -1 for infinite 
+      retrying. The default is to retry 3 times, with some exceptions on fatal 
+      errors.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="4%">
+      <P><B>&#8722;nc</B></P></TD>
+    <TD width="83%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;dont&#8722;continue</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If this flag is specified, resuming will be turned off, meaning that a 
+      remote file being smaller than the local one will be overwritten. To skip 
+      this file, you have to enable &#8722;&#8722;skip&#8722;existing. See also 
+      <I>USAGE.resumehandling</I></P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;u</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;reupload</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If this flag is specified, a remote file having the same size as the 
+      local one is to be uploaded. Skipping is default.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;skip&#8722;larger</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If this flag is specified, a remote file being larger than the local 
+      one will be skipped. Default is reuploading it.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;skip&#8722;existing</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If this flag is specified, the upload of a file will be skipped if the 
+      remote file already exists.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;N</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;timestamping</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If timestamping is enabled, Wput will retrieve a directory list and 
+      parse it to determine the remote file&#8722;date. If the local file is newer 
+      than the remote one (there is a default allowed timevariance of 5 seconds, 
+      which can be adjusted in the <I>wputrc</I>-file) it is uploaded, otherwise 
+      skipped. The local date is dermined by the mtime (time of last 
+      modification), using the current time-zone. This should be equal to the 
+      output of ls &#8722;l. Since you usually do not want to resume existing files, 
+      you should employ the &#8722;&#8722;reupload &#8722;&#8722;dont-continue flags as 
+  well.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;l</B> <I>RATE</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;limit&#8722;rate=</B><I>RATE</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If you don’t want Wput to eat up all available bandwidth, specify this 
+      flag. <I>RATE</I> is a numeric value. The units ’K’ (for KiB) and ’M’ (for 
+      MiB) are understood. The upload rate is limited on average, meaning that 
+      if you limit the rate to 10K and Wput was just able to send with 5K for 
+      the first seconds, it will send (if possible) afterwards more than 10K 
+      until the average rate of 10K is fulfilled.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;no&#8722;directories</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If Wput is unable to CWD into a directory, it will try to create it. If 
+      this is not the desired behaviour specify this flag to force Wput not to 
+      create any directories.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;Y</B> <I>MODE</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;proxy=</B><I>MODE</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>MODE can be either <I>http</I> for http-based proxies (such as SQUID), 
+      <I>socks</I> for SOCKSv5 proxies or <I>off</I> to disable the 
+  proxy.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;proxy-user=</B><I>NAME</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If the proxy&#8722;server requires authentication, use <I>NAME</I> as 
+      user-name. You need to specify &#8722;&#8722;proxy-pass too. These information can 
+      also be stored in the wputrc&#8722;file.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;proxy-pass=</B><I>PASS</I></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Specifies the password to use for the proxy.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;p</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;port&#8722;mode</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Per default, Wput uses passive mode ftp, which works well for most 
+      configurations. If passive mode fails, Wput automatically falls back to 
+      port mode. If you want Wput to start using port mode ftp, specify this 
+      flag.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;A</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;ascii</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Wput automatically determines which transfer&#8722;format to use, by looking 
+      at the file-extensions. Certain files are recognized as ASCII. These are: 
+      txt, c, java, cpp, sh, f, f90, f77, f95, bas", pro, csh, ksh, conf, htm, 
+      html, php, pl, cgi, inf, js, asp, bat, cfm, css, dhtml, diz, h, hpp, ini, 
+      mak, nfo, shtml, shtm, tcl, pas Specifying this flag forces Wput to use 
+      ASCII mode file transfers.</P></TD></TR></TBODY></TABLE><!-- TABS -->
+<TABLE cellSpacing=0 cols=3 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="11%"></TD>
+    <TD width="2%">
+      <P><B>&#8722;B</B></P></TD>
+    <TD width="85%"></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;binary</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>Specifiing this flag forces Wput to use BINARY mode file 
+    transfers.</P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P><B>&#8722;&#8722;force-tls</B></P></TD></TR></TBODY></TABLE><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="17%"></TD>
+    <TD width="82%">
+      <P>If this flag is specified and Wput is linked with the OpenSSL-library, 
+      the flag enforces the usage of TLS: If no TLS&#8722;connection can be 
+      established the process will cancel and not try to go on with an 
+      unencrypted connection.</P></TD></TR></TBODY></TABLE><A name=DIAGNOSTICS></A>
+<H2>DIAGNOSTICS</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>Normally, the exit status is 0 if either everything went fine or there 
+      was nothing to do. If some files were skipped during the upload (due to 
+      timestamping or resume&#8722;rules) the exit status is set to 1. If some files 
+      failed to be transmitted due to an remote error, exit status is 2. If some 
+      files failed and some others were skipped, exit status is 3. For general 
+      problems like failure of some system-functions the exit status is 
+  4.</P></TD></TR></TBODY></TABLE><A name=BUGS></A>
+<H2>BUGS</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>You are welcome to send bug reports and suggestions about Wput to 
+      &lt;<B>hagen (at) itooktheredpill.dyndns.org</B>&gt;.</P><!-- INDENTATION -->
+      <P>Please send all available information that might concern this bug (e.g. 
+      Operating System and what can be done to reproduce the error). Supply also 
+      the debug-output (but remove confidential data if any), which helps a lot 
+      analysing the problem. If you use a wputrc file, it might also be useful 
+      to provide the relevant parts of it.</P><!-- INDENTATION -->
+      <P>If there is a crash due to a segfault or similar, try to run it in a 
+      debugger, e.g. <TT>gdb ‘which wput‘ core</TT> and type <TT>where</TT> to 
+      get the backtrace. It would also be great help if you could recompile wput 
+      with memory-debugging support (make clean; make memdbg; [make install]) 
+      and use this debug-dump.</P></TD></TR></TBODY></TABLE><A name="SEE ALSO"></A>
+<H2>SEE ALSO</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>Many options can be set in a wputrc file. For its documentation consult 
+      the sample file provided by Wput. There are some USAGE.* files in the doc/ 
+      directory of Wput. These contain further information and samples on how to 
+      use Wput.</P></TD></TR></TBODY></TABLE><A name=AUTHOR></A>
+<H2>AUTHOR</H2><!-- INDENTATION -->
+<TABLE cellSpacing=0 cols=2 cellPadding=0 rules=none width="100%" border=0 
+frame=void>
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD width="10%"></TD>
+    <TD width="89%">
+      <P>Wput is written by Hagen Fritsch &lt;hagen (at) 
+      itooktheredpill.dyndns.org&gt;</P></TD></TR></TBODY></TABLE>
+<HR>
+</BODY></HTML>

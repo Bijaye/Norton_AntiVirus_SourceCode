@@ -1,0 +1,100 @@
+:-----------------------------------------------------------------------:
+: This is an UPDATE.BTM for QUAKE's language projects.
+:
+: This file is called before the UPDATE.BAT in the main project.
+: Any language-specific files should be MOVE'd or DEL'd by this
+: file, before the main UPDATE.BAT runs.
+:-----------------------------------------------------------------------:
+: $Log:   N:/navxutil/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 21:05:50   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 16:06:26   BARRY
+:  Initial revision.
+:  
+:     Rev 1.2   16 Feb 1994 18:54:14   DALLEE
+:  Support TARGET directory.
+:-----------------------------------------------------------------------:
+
+:Copy the English version to PROJ areas.  Ignore the rest.
+if "%LANG%" = "ENGLISH" goto end
+
+:Check to see if the directories are there before I copy.
+:i.e. S:\RUSSIAN\BATCH\LIBQAK1.WIN
+iff not isdir %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET then
+        if exist %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET del %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+        @echo %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET does not exist!
+        @echo Making the directory %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+	pause
+        mkdir %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+endiff
+:i.e. S:\RUSSIAN\BINQAK1.WIN
+iff not isdir %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM% then
+	if exist %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM% del %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+	@echo %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM% does not exist!
+	@echo Making the directory %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+	pause
+	mkdir %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+endiff
+:i.e. S:\RUSSIAN\LIBQAK1.WIN
+iff not isdir %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM% then
+	if exist %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM% del %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM%
+	@echo %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM% does not exist!
+	@echo Making the directory %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM%
+	pause
+	mkdir %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM%
+endiff
+
+:Copy/Move all translatable information into language areas.
+if exist *.res         move *.res         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.err         move *.err         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist MAKEFILE.BAT  move MAKEFILE.BAT  %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+
+if exist *.exe         copy *.exe         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.exe         move *.exe         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.386         copy *.386         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.386         move *.386         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.ovl         copy *.ovl         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.ovl         move *.ovl         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.sys         copy *.sys         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.sys         move *.sys         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.dat         copy *.dat         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.dat         move *.dat         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.dsp         copy *.dsp         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.dsp         move *.dsp         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.nbb         copy *.nbb         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.nbb         move *.nbb         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.prs         copy *.prs         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.prs         move *.prs         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.nss         copy *.nss         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.nss         move *.nss         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.hlp         copy *.hlp         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.hlp         move *.hlp         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.map         move *.map         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+
+if exist *.sym         copy *.sym         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.sym         move *.sym         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.dll         copy *.dll         %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist *.dll         move *.dll         %LANGPRE\%LANG%\BIN%PROJVERS%%PLATFORM%
+
+if exist *.lib         move *.lib         %LANGPRE\%LANG%\LIB%PROJVERS%%PLATFORM%
+
+:This is where special files will go.
+
+:end
+
+if exist *.res       move *.res       %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+if exist utilstr.obj move utilstr.obj %LANGPROJ\LIB%PROJVERS%%PLATFORM%\%TARGET
+

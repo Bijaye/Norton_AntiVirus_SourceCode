@@ -1,0 +1,62 @@
+// Copyright (C) 1998 Symantec Corporation
+//*****************************************************************************
+// $Header:   S:/INCLUDE/VCS/nscvers.rcv   1.0   21 Aug 1998 12:50:10   TSmith  $
+//
+// Description: This resource script defines the global version resource for
+//              the Savannah environment.
+//
+//              To use in a particular project, remove any existing version
+//              resource from the resource script and include this file.
+//
+//              Also, you MUST #define the following project specific
+//              information in the resource script before the
+//              include statement:
+//
+//                  VR_FILEDESCRIPTION
+//                  VR_INTERNALNAME
+//                  VR_ORIGINALFILENAME
+//
+//              You may also want to override the following definitions
+//              depending on the specifics of the particular project:
+//
+//                  VR_FILEVERSION
+//                  VR_FILEOS
+//                  VR_FILETYPE
+//                  VR_FILESUBTYPE
+//
+//*****************************************************************************
+// $Log:   S:/INCLUDE/VCS/nscvers.rcv  $
+// 
+//    Rev 1.0   21 Aug 1998 12:50:10   TSmith
+// Initial revision.
+//*****************************************************************************
+#include "qs.h"
+
+VS_VERSION_INFO         VERSIONINFO
+   FILEVERSION          VR_FILEVERSION
+   PRODUCTVERSION       VR_PRODUCTVERSION
+   FILEFLAGSMASK        VR_FILEFLAGSMASK
+   FILEFLAGS            VR_FILEFLAGS
+   FILEOS               VR_FILEOS
+   FILETYPE             VR_FILETYPE
+   FILESUBTYPE          VR_FILESUBTYPE
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"                    // U.S. English, Multilingual Windows
+    BEGIN
+      VALUE "CompanyName",      VR_PUBLISHERNAME
+      VALUE "FileDescription",  VR_FILEDESCRIPTION
+      VALUE "FileVersion",      VR_FILEVERSIONSTRING
+      VALUE "InternalName",     VR_INTERNALNAME
+      VALUE "LegalCopyright",   VR_COPYRIGHT
+      VALUE "OriginalFilename", VR_ORIGINALFILENAME
+      VALUE "ProductName",      VR_PRODUCTNAME
+      VALUE "ProductVersion",   VR_PRODUCTVERSIONSTRING
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252    // U.S. English, Multilingual Windows
+  END
+END

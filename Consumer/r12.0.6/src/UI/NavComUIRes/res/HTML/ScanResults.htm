@@ -1,0 +1,106 @@
+<html>
+<head>
+        <BASE HREF="res://navcomui.loc">
+	<meta id="charset_ScanProg" http-equiv="Content-Type" content="text/html; charset=iso8859-1" />
+	<meta http-equiv="MSThemeCompatible" content="Yes" />
+	<link rel="stylesheet" type="text/css" href="NavScan.css" />
+	<title>Scan Results</title>
+	
+	<script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+	<script language="javascript">
+		function OnLoad()
+		{ 
+			InitSymButton( Finished ); 			
+			InitSymButton( Quarantine ); 			
+		}
+	</script>		
+	
+</head>
+
+<body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" scroll="no" onLoad="OnLoad()">
+
+	<!-------------------------------------- Header ------------------------------------------------>
+
+	<h1 id="title"></h1>
+	<a id="MoreInfo" href="#" tabindex="6" class="headerLink">more info</a>
+	
+
+
+	<!-------------------------------------- Text Discription ------------------------------------------------>
+	<div id="ScanState" class="GreenScanState"></div>
+	<h2 id="description"  class="ScanDescription"></h2>
+		
+	<!--------------------------------------- Stats  Area ------------------------------------------------>
+
+	<div id = "div1" class="StatsAreaResults" style="width:100%; top:140px; padding-left:25px; padding-right:25px;">
+
+		<table cellspacing="0px" cellpadding="0px" id="Table1" border=0>
+                        <tr id = "tr1" style="padding-top:20px; padding-bottom:7px; padding-left:7px; padding-right:7px;">
+				<td colspan="1" nowrap class="tdDescription">Total files scanned</td>
+                                <td align=left id="TotalFilesScanned" class="tdValue">0</td>                                
+                                <td> </td>
+			</tr>
+			<tr>
+				<td colspan="2" class="tdSolidRowSpacer" id="scanres_td1"></td>
+			</tr>
+                        <tr id = "tr2" style="padding-top:20px; padding-bottom:7px; padding-right:7px; padding-left:7px;">
+                                <td id="RisksLabel" colspan="1" nowrap class="tdDescription">Viruses, spyware and other secuirty risks</td>
+                                <td id="" nowrap class="tdValue"><b><a id="ViewDetailsText" href="#" tabindex="3">View Details</a><b></td><td> </td>
+				
+			</tr>
+                        <tr>
+				<td colspan="2" class="tdSolidRowSpacer" id="scanres_td2"></td>
+			</tr>
+			<tr id = "tr3" style="padding:7px">
+				<td colspan="1" id = "td1" nowrap class="tdDescription" style="padding-left:30px; ">Detected</td>
+                                <td align=left id="ThreatsDetected" class="tdValue">0</td><td> </td>
+			</tr>
+			<tr id = "tr10" style="padding-right:100px">
+				<td colspan="2" class="tdRowSpacer" id="scanres_td3"></td>
+			</tr>
+			<tr id = "tr4" style="padding:7px">
+				<td id = "td2" colspan="1" nowrap class="tdDescription" style="padding-left:30px">Resolved</td>
+                                <td align=left id="ThreatsRepairedRemoved" class="tdValue">0</td><td> </td>
+			</tr>
+			<tr>
+				<td colspan="2" class="tdRowSpacer" id="scanres_td4"></td>
+			</tr>
+			<tr id = "tr5" style="padding:7px">
+				<td colspan="1" nowrap class="tdDescription" style="padding-left:30px" id = "td_9">Remaining</td>
+                                <td align=left id="ThreatsRemaining" class="tdValue">0</td><td> </td>
+				<td> </td>
+			</tr>
+                        <tr id = "tr11" style="padding-top:3px;">
+			    <td colspan="2" id="scanres_td5">
+			        <table id="tGeneralNotes">
+			            <tr>
+			                <td id = "td12" style="padding-top:5px;">
+			                    <img id="GeneralNotesImage" src="about.gif" style="margin-right:10px;"></img></span>
+			                </td>
+                                        <td id = "td14" valign=BOTTOM>
+			                    <span id="GeneralNotesText"></span>
+                                            <a href="#" id="ManualRemoval" tabindex="4"><span id="ManualRemovalText"></span></a>
+                                            <a href="#" id="LaunchQuarantine" tabindex="5"><span id="QuarantineNameText"></span></a>
+			                </td>
+			            </tr>
+			        </table>
+			    </td>
+			</tr>
+		</table>
+
+	</div>
+
+	<!--------------------------------------- Button  Area ------------------------------------------------>
+
+	<div class="buttonArea">
+                <span id="QuarantineButton" class="symButton" style="position:absolute; left:8px; margin-top:5px; margin-left:22px; margin-right:8px; width:96px; height:24px;">
+                        <button id="Quarantine" accesskey="Q" type="SUBMIT" class="symButton" tabindex="2" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">Q</u>uarantine</button>
+                </span>
+		<span class="symButton" id = "span1" style="position:absolute; right:8px; margin-top:5px; margin-right:22px; margin-left:8px; width:96px; height:24px;">
+                        <button id="Finished" accesskey="F" type="SUBMIT" class="symButton" tabindex="1" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">F</u>inish</button>
+		</span>
+	</div>
+	
+</body>	
+</html>	

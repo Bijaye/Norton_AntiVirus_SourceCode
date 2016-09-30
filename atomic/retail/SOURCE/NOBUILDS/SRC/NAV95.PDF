@@ -1,0 +1,59 @@
+[PDF]
+Version=1.0
+
+[Complete Setup]
+CommandLine=setup.exe -s -sms -mnavwnt.mif
+CommandName=Complete
+UserInputRequired=FALSE
+SupportedPlatforms=Windows95
+
+[Deinstall Setup]
+CommandLine=setup.exe C:\WINDOWS\IsUninst.exe -f"C:\Program Files\Norton AntiVirus\nav95.isu" -c"C:\Program Files\Norton AntiVirus\NAVINST95.DLL" 
+CommandName=Deinstall
+UserInputRequired=FALSE
+SupportedPlatforms=Windows95
+
+[Manual Setup]
+CommandLine=setup.exe 
+CommandName=Manual
+UserInputRequired=TRUE
+SupportedPlatforms=Windows95
+SynchronousSystemExitRequired=TRUE
+
+[Package Definition]
+Product=Norton AntiVirus 5.0 for Windows
+Version=5.0
+Comment=Norton AntiVirus 5.0 for Windows
+SetupVariations=Complete, Deinstall, Manual
+ErrorCodes=Yes
+Company=Symantec Corporation
+ImportDirectory=.
+SetupDirectory=.
+Environments=Windows95
+Capabilities=Local Setup, Import
+;TelephoneSupportNumber=
+RebootAfterInstall=Yes
+RebootAfterDeInstall=Yes
+
+[SMS Import Commands]
+cmd 1=
+
+[Setup Package for Inventory]
+InventoryThisPackage=TRUE
+Detection Rule Part 1=file 1
+
+[file 1]
+FILE=NAVW32.EXE
+COLLECT=FALSE
+Checksum=
+CRC=
+DATE=
+SIZE=
+TIME=
+BYTE=
+WORD=
+LONG=
+TOKEN 1=
+TOKEN 2=
+TOKEN 3=
+TOKEN 4=

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Change all filenames in the directory to lowercase
+
+for file in *
+do
+    mv $file `echo $file | sed -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/`
+done

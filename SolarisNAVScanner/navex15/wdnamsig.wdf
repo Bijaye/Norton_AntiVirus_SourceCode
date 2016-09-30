@@ -1,0 +1,7115 @@
+;****************************************************************************
+; Copyright 1996 Symantec, Peter Norton Product Group
+;****************************************************************************
+; WDNAMSIG.WDF
+;
+; $Header:   S:/NAVEX/VCS/wdnamsig.wdv   1.142   12 Jan 1999 14:16:50   relniti  $
+;
+; This source file contains definitions for the heuristic Word viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/wdnamsig.wdv  $
+   
+      Rev 1.142   12 Jan 1999 14:16:50   relniti
+   #10513 W97M.vmpck1.bg VID_VMPCK1BG
+   
+      Rev 1.141   15 Dec 1998 11:14:52   relniti
+   BOUFFON for W97M.VMPCK1.BF
+   
+      Rev 1.140   08 Dec 1998 19:23:24   ppak
+   CI 8749: Added AKRNL for VMPCK1.BE
+   
+      Rev 1.139   29 Nov 1998 20:24:08   relniti
+   VMacro W97M November98
+   
+      Rev 1.138   29 Nov 1998 19:13:48   relniti
+   VMacro Processing November 98
+   
+      Rev 1.137   16 Nov 1998 15:27:56   AOONWAL
+   Added MALAYSIA1998
+   
+      Rev 1.136   13 Nov 1998 23:36:18   Relniti
+   #7358 W97M.VMPCK1.BD 0x6501 VID_VMPCK1BD
+   
+      Rev 1.135   09 Nov 1998 11:24:40   Relniti
+   VMacro Processing: 64af, b1-b5, b8:
+    W97M.Astia.C, Chack.L, Godzilla.A, Iis.C, Nightshade.D, Nottice.J, VMPCK1.BC
+   
+      Rev 1.134   09 Nov 1998 10:18:06   Relniti
+   VMacro Processing 110998: 64a1-ae:
+    WM.Aber.A, Alliance.I, Concept.CO, CP, Fries.A, Mental.D, Niceday.Z,
+       NOP.Z:De, Tanjung.A, Toten.D:De, Wazzu.FJ, FL, FM, FO
+   
+      Rev 1.133   05 Nov 1998 13:08:44   ECHIEN
+   Added Macro_run and newmacro
+   
+      Rev 1.132   29 Oct 1998 16:39:50   ppak
+   Added MYPICTURE for Formater.B (CI 5906)
+   
+      Rev 1.131   22 Oct 1998 18:55:24   AOONWAL
+   Added "FICHIEROUVRIR"
+   
+      Rev 1.130   22 Oct 1998 10:13:24   AOONWAL
+   Added FO1, AC1, FSA1, and FS1 for W97M.DNTC Family
+   
+      Rev 1.129   21 Oct 1998 14:00:50   relniti
+   zoo: 6496-9a W97M.Encr.A, Minimal.I, N, NJWMDLK1.H, Carrier.B
+   
+      Rev 1.128   21 Oct 1998 12:03:36   relniti
+   VMacro 102198: reuse 646A-6B, add 648A-8C for
+    W97M.Iis.A, Metamorph.A, Passbox.A, VMPCK2.D,E
+   
+      Rev 1.127   21 Oct 1998 11:30:42   relniti
+   VMacro 102198: 6466-6489, & reusing 63c8, 645E, 6464, 6463
+    W97M.VMPCK1.D,L-S,V,X-Z,AA-AX,AZ
+   
+      Rev 1.126   21 Oct 1998 10:49:24   relniti
+   VMacro 102198: 6452-6465, and reusing 644B
+    W97M.Iis.B, Inquisitor.A, Jedi.D,E,F, Lena.A, Lizard.A, Lulung.A,
+         Outbreak.A,B, Rubbish.A,B,C, Smac.A, Steroid.H,I, Storm.A, ZMK.N
+   
+      Rev 1.125   21 Oct 1998 09:45:42   relniti
+   VMacro 102198: 6448-6451
+    W97M.Beep.A, Carrier.A, Casc.A, Chack.G,H, Cola.A, Dreams.A,B, Gipsy.A,
+         Groov.D
+   
+      Rev 1.124   20 Oct 1998 13:51:46   AOONWAL
+   Added "ANTIMARC"
+   
+      Rev 1.123   20 Oct 1998 07:41:22   relniti
+   VMacro Processing 102098: 6435-6447:
+    WM.Padania.D:It, Rats.F, Rehenes.B, Sidor.B, Sig.A, Twno.AL, Twno.AM:Tw,
+    Twno.AN:Tw, VP.A, Wazzu.EV, Wazzu.EW, Wazzu.EY, Wazzu.EZ, Wazzu.FA,
+    Wazzu.FB, Wazzu.FC, Wazzu.FE, Wazzu.FG, Wazzu.FI,
+   
+   
+      Rev 1.122   18 Oct 1998 14:58:44   relniti
+   VMacro Processing 101898:
+    6428-6434: Parol.A, President.A, Query.A, Schumann.X:De, Stall.B,
+    Stupid.A.trojan, Svetlana.A.int, Swlabs.R, TM.A, Ultras.C, Unhas.C,
+    Vaca.A, WME.A
+   
+      Rev 1.121   18 Oct 1998 14:30:14   relniti
+   VMacro Processing 101698:
+   ADD 6412-6427: CopyCap.B, CountTen.F, Ferias.A, Kompu.L, Kompu.M, Kompu.N,
+    Lupita.A, Matey.A, Mental.E, Mercado.C:Br, Milli.A, Miminal.AC, Mortal.A,
+    Munch.B, Narmol.A, Nein.A, Niceday.X, Niceday.y, NJWMDLK1.P, Nop.Y:De
+    NoPrint.C, Nuclear.AD
+   
+      Rev 1.120   09 Oct 1998 19:22:36   relniti
+   VMacro Processing 100898: 6406-6410:
+    WM.FHD.A, Gabi.A, Gob.A, GoldFish.G,H, Hawk.A, Ivana.Variant, Ivana.B,C,D,
+       Kann.B:De
+   
+      Rev 1.119   09 Oct 1998 14:46:06   relniti
+   VMacro Processing 100898: 63f5-6405
+    WM.ABC.B, Appder.Y,Z, Bond.A, Concept,CL,CM,CN, Crow.A, DelMacro.A,
+       DelWord.A, Dirty.A, Divina.S,U,V, DMV.M,O,P
+   
+      Rev 1.118   08 Oct 1998 10:05:50   ECHIEN
+   Changed SGV to SVGA... typo
+   
+      Rev 1.117   08 Oct 1998 10:05:12   ECHIEN
+   Added SGV
+   
+      Rev 1.116   02 Oct 1998 11:32:36   relniti
+   ADD W97M.Solafish.A VID_SOLAFISH 61D8 for #5205
+   
+      Rev 1.115   10 Sep 1998 16:31:22   relniti
+   ADD VID_IVANAA 61D0 for WM.Ivana.A on issue #4508
+   
+      Rev 1.114   02 Sep 1998 13:37:48   JWILBER
+   Added name "TAOA" for WM.NOP.L, VID 61b4, for CI 4230.
+ 
+      Rev 1.113   01 Sep 1998 15:46:42   relniti
+   VID_SHIVER 63F0 for O97M.Shiver.A
+ 
+      Rev 1.112   21 Aug 1998 17:09:28   jwilber
+   Added name "DLLERROR" for WM.Formater.A, VID 61b2, for CI 2679.
+ 
+      Rev 1.111   21 Aug 1998 09:52:52   RELNITI
+   ZOO: 63E7-EB: XM.Disaster.A, AM.Jaring.intended, AM.Accessiv.C,
+    W97M.Bernie.A, W97M.Chaos.A
+ 
+      Rev 1.110   20 Aug 1998 12:44:08   RELNITI
+   VMacro: 63DF-E6: WM.SWLABS.Q, SWT.A.trojan, Toten.C:De, Veneno.B:De,
+    Wazzu.ES,ET,EU, Therese.A
+ 
+      Rev 1.109   19 Aug 1998 20:44:38   RELNITI
+   VMacro 63D0-D5: WM.Colors.BZ, CA, Concept.CK, Counter.C, Criminal.A, Crypt.A
+ 
+      Rev 1.108   19 Aug 1998 18:05:58   ECHIEN
+   Added TiebugXXSR
+ 
+      Rev 1.107   19 Aug 1998 18:01:50   RELNITI
+   No change.
+ 
+      Rev 1.106   19 Aug 1998 16:40:58   RELNITI
+   ADD W97M.Troz.A trojan 63ce
+ 
+      Rev 1.105   19 Aug 1998 00:00:10   RELNITI
+   ZOO Macro: 63c9-63cc W97M.PolyM.A, W97M.Remark, WM.Marbles, WM.Anarchy.5838
+ 
+      Rev 1.104   18 Aug 1998 12:37:36   ECHIEN
+   Added Name only counter
+ 
+      Rev 1.103   14 Aug 1998 16:53:30   jwilber
+   Added name TIE for W97M.Kitty.A, VID 61a4, for CI 2609.  MIS lost
+   the first checkin.
+ 
+      Rev 1.102   12 Aug 1998 18:08:54   RELNITI
+   ADD VID_CONCEPTCN 61A0 WM.Concept.CN for #2598
+ 
+      Rev 1.101   11 Aug 1998 21:29:20   jwilber
+   Added names for WM.Breaktime.A, VID 619c, for CI 2583:
+   VISIO, GETTIME, SAVENEW, and SAVENORMAL.
+ 
+      Rev 1.100   11 Aug 1998 12:52:40   RELNITI
+   VMacro W97M: 63BE-C6: W97M.Minimal.AB, President.A, Ulang.A, Unhelpful.A,
+     VMPCK1.B, ZMK.I, K, M
+ 
+      Rev 1.99   11 Aug 1998 10:19:30   RELNITI
+   VMacro W97M: MBug.A-I 63b5-bD VID_MBUGA-VID_MBUGI
+ 
+      Rev 1.98   06 Aug 1998 10:55:10   RELNITI
+   ZOO Macro: W97M.Kitty.B 63a7
+              W97M.Nono.A  63a8
+ 
+      Rev 1.97   03 Aug 1998 15:39:50   jwilber
+   Added name sig for "THISDOCUMENT" to detect W97M.Jerk.A, VID 6196,
+   for CI 2529.
+ 
+      Rev 1.96   28 Jul 1998 19:41:24   RELNITI
+   W97M.Jedi.C for #2505
+ 
+      Rev 1.95   07 Jul 1998 12:30:06   RELNITI
+   ADD VID_ZMKJ 639C for W97M.ZMK.J
+ 
+      Rev 1.94   22 Jun 1998 17:22:44   JWILBER
+   Added sig for NAME_BEGIN_FILEOPEN for macro names that begin with
+   "FILEOPEN..."
+ 
+      Rev 1.93   17 Jun 1998 02:10:24   RELNITI
+   ZOO Work 061698: Vesselin's W97M Collection
+ 
+      Rev 1.92   05 Jun 1998 16:11:00   RELNITI
+   ADD BUERONEU
+ 
+      Rev 1.91   05 Jun 1998 15:10:08   AOONWAL
+   Added "GROOVIE" and "ORBIT" to the NAME list
+ 
+      Rev 1.90   03 Jun 1998 12:39:26   RELNITI
+   ADD Strangedays
+ 
+      Rev 1.89   31 May 1998 03:14:54   RELNITI
+   ZOO MACRO May98c: 6309-6326:
+    W97M.AOS.A, Crazy.A, B, Elbag.A, Gambler.B, Jack.A, B, NightShade.C,
+         Box.G, H, Cipher.A, LameJoke.A, Multi.A, B, C, D, Steroid.D, E,
+         Acid.A, ZMK.D, Multi.E, DWMVCK1.B, A, Eraser.R, U, Talon.I, J,
+         Vampire.J, N, VMPCK1.A
+ 
+      Rev 1.88   29 May 1998 15:29:48   RELNITI
+   ZOO MACRO MAY98b: 6300-6308:
+    W97M.AntiSR1.B, Bismark.F, Box.F, Hate.A, Steph.A, Steroid.A, Killer.A,
+         Edds.A, Pomp.A
+ 
+      Rev 1.87   20 May 1998 16:54:16   relniti
+   REVERTING Rev 1.86
+ 
+      Rev 1.86   13 May 1998 00:29:20   JWILBER
+   Modified APPDER and AUTOOPEN names, so anything can follow them,
+   like "AUTOOPEN1", as was done for AUTOCLOSE back in May 97.  This
+   was done for CI 1926, for an almost-Appder.S infection.
+ 
+      Rev 1.85   12 May 1998 12:58:22   relniti
+   VMacro Processing 051298: 62EE-62F9
+    Appder.V, W, Boom.C:De, Fehler.A:De, Kann.A, Mensagem.A, NJ-WMDLK1.O,
+    Padania.A, B:It, Pelo.A, Stall.A, Swlabs.P
+ 
+      Rev 1.84   05 May 1998 21:12:12   relniti
+   ADD 6154 W97M.Chack.A for #1887
+ 
+      Rev 1.83   05 May 1998 11:36:24   relniti
+   ADD 62E8-62EB for W97M.AntiSR1.A, W97M.Blee.A, W97M.Disco.B,C
+ 
+      Rev 1.82   04 May 1998 08:42:00   relniti
+   ZOO Macro: 62E7 WM.Angus.A
+ 
+      Rev 1.81   29 Apr 1998 21:55:34   relniti
+   VMacro Batch Processing 043098: 62DE-62E3:
+    Clock.M:De, Kompu.K, MDMA.BD, Mentes.A, Padania.C, Swlabs.O
+ 
+      Rev 1.80   29 Apr 1998 20:54:40   relniti
+   VMacro Batch PRocessing 042998
+ 
+      Rev 1.79   20 Apr 1998 11:24:18   RELNITI
+   VMacro Batch Processing 042098
+ 
+      Rev 1.78   10 Apr 1998 14:51:24   RELNITI
+   VMacro Batch Processing Apr98b: NameSig for
+   Twno.AC:Tw, Twno.AH:Tw, Twno.AI:Tw, Twno.AK:Tw, Uka.C,
+   Ultra.A, Ultra.B, Unhas.B, Wazzu.BL, Wazzu.DT, Wazzu.DV, Wazzu.DW,
+   Wazzu.DY, Wazzu.DZ, Wazzu.EA, Wazzu.EB, Wazzu.EE, Wazzu.EF, Wazzu.EG,
+   Wazzu.EH, Wazzu.EI, Wazzu.EJ, Wazzu.EK, Wazzu.EL, Wazzu.EM
+ 
+      Rev 1.77   09 Apr 1998 11:42:42   RELNITI
+   VMacro Batch Processing Apr98:
+   Gest.A, Goblin.A, Gsis.B, KillLuf.C, Ler.A, Mental.A, Mercado.B:Br,
+   Niceday.V, Nop.U:De, Nop.V:De, Nop.W:De, Nop.X:De, Onyx.A:De, Safwan.B,
+   Theatre.D:Tw, Thebman.A, Tribute.A, Tribute.B
+ 
+      Rev 1.76   08 Apr 1998 11:18:26   RELNITI
+   VMacro Batch Processing Mar98: Appder.R, Attach.A, Colors.BY,
+    Concept.CG, CopyCap.A, Decaf.A, Divina.P, Doggie.F, Dude.A, Dust.A,
+    DZT.I, Easy.C, Elohim.A
+ 
+      Rev 1.75   03 Apr 1998 16:26:28   AOONWAL
+   Added "MACRO1" and "MACRO10" for WM.Munch.B
+ 
+      Rev 1.74   30 Mar 1998 18:08:40   AOONWAL
+   Added macro name "INJEKT" for W97M.Steroid
+ 
+      Rev 1.73   30 Mar 1998 14:51:04   AOONWAL
+   Added three macro names:
+   PLOAD, AEX, TMNFT
+ 
+      Rev 1.72   13 Mar 1998 22:55:12   RELNITI
+   MODIFYING NameSig that has HIGH-ASCII character(s). This character
+    is simply skipped.
+ 
+      Rev 1.71   02 Mar 1998 17:35:20   AOONWAL
+ 
+   Added "LOADIT" and "INSTALLIT"
+ 
+      Rev 1.70   12 Feb 1998 20:14:20   RELNITI
+   VMACRO Batch Processing: ADD NameSig needed for:
+   Appder.Q, Attention.B, Breeder.A, Chaos.C, CleanUp.A, Concept.BY, Concept.BZ,
+   Concept.CA, Concept.CB, Concept.CE, Divina.O, Dracula.B, Wazzu.DG, Fake.A,
+   Grass.A:De, Gurre.A, Hassle.B, Innuendo.A, Kompu.J, HaBir.A, Lorax.A,
+   Minimal.AA, NewYear.A:Fr, NOP.R:Br, NOP.S:Es, NOP.T:It, NoPrint.B, Nottice.C,
+   Peaceful.A, Alliance.G, SC.A, Sidor.A, Spell.A, Swlabs.K, Tabula.A:De,
+   Taguchi.A, Twno.AG, Uka.B, Unhas.A, VHDL.C:Tw, Wazzu.DQ
+ 
+      Rev 1.69   30 Jan 1998 16:00:04   RELNITI
+   ADD NIGHTSHADEKILLER
+ 
+      Rev 1.68   28 Jan 1998 17:41:54   JWILBER
+   Reconciled w/ DEFWORK by adding VICTORTAN for WM.Concept.CA,
+   60fc, and GAMBLE and USERFORM998 for WM.Gamble.A, 60f9.
+ 
+      Rev 1.67   19 Jan 1998 18:20:54   RELNITI
+   Jan98 Blitz: Joe Wells' collection
+ 
+      Rev 1.66   15 Jan 1998 02:23:28   JWILBER
+   Moved def for "NOCAL" name to XL97SIGS.WDF.
+ 
+      Rev 1.65   15 Jan 1998 01:50:30   JWILBER
+   Added name "NOCAL" for XM.Laroux.AG, VID 60ed, CI 1016.
+ 
+      Rev 1.64   13 Jan 1998 16:03:36   RELNITI
+   Jan98 blitz
+ 
+      Rev 1.63   09 Jan 1998 05:41:32   JWILBER
+   Added CARTMAN for WM.Cartman, VID 60e6, CI 964.
+ 
+      Rev 1.62   29 Dec 1997 17:54:32   JWILBER
+   Modified during Jan98 build.
+ 
+      Rev JAN98  29 Dec 1997 15:09:16   RELNITI
+   add vicodines & viewvbcode
+ 
+      Rev JAN98  18 Dec 1997 17:05:20   RELNITI
+   VMacro Batch Processing 12/18/97
+ 
+      Rev 1.61   05 Dec 1997 14:15:54   RELNITI
+   ADD RVSAMPLE for WM.Bishkek doc infection
+ 
+      Rev 1.60   04 Dec 1997 23:05:04   RELNITI
+   REMOVE a '.' from the ID
+ 
+      Rev 1.59   04 Dec 1997 22:35:12   RELNITI
+   VMacro Batch Processing 120497:
+   Alliance.C, D, E, F, Bishkek.A, Clock.K, Concept.BT, BU, BV, BX,
+   Counter.A, DMV.I, Eraser.S:Tw, FiveA.A, Germ.A, Gnomo.A, Groben.A,
+   Gsis.A, Kompu.I, MDMA.AJ, Mercado.A:Br, Minimal.U, V, W, Nop.P:De, Q:Es,
+   Ochoy.A, Schoo.A, Tamago.B:Br, Trash.A, Twno.AE:Tw, Wazzu.DH, Wazzu.DM,
+   Wompat.A, Wompie.A, Yaka.B
+ 
+      Rev 1.58   20 Nov 1997 19:53:46   JWILBER
+   Modified during Dec97 build.
+ 
+      Rev DEC97  19 Nov 1997 15:21:06   RELNITI
+   ADD VHDL
+ 
+      Rev DEC97  14 Nov 1997 18:51:46   RELNITI
+   ADD SLOT
+ 
+      Rev DEC97  12 Nov 1997 12:10:40   RELNITI
+   ADD INFLUENZA
+ 
+      Rev 1.57   31 Oct 1997 13:13:46   RELNITI
+   ADD NAME_ONLY_SHOW2
+ 
+      Rev 1.56   27 Oct 1997 12:49:14   JWILBER
+   Added mods made during NOV97 build.
+ 
+      Rev NOV97  24 Oct 1997 11:00:26   RELNITI
+   VMacro Batch Processing 102497 ADD Some Macro Name for:
+   Cap.BA,BB,BC,BD, Colors.BT, Concept.BT, Crema.A, Date.C,D, Easy.B,
+   Enfk.A.Kit, Friendly.B:De, Gas.B, Horn.A, Johnny.P, KillProt.B, Lord.A,
+   Malice.A, MG.A, MG.B, Minimal.U, Muck.Z,AA,AB, NJ-WMVCK2.C, NOP.O:De,
+   Npad.DL,DM,DN,DO,DP,DQ,DR,DS,DT,DU,DV,DW,DX,DY,DZ,EA,EB,EC,ED,
+   OldPad.A,B, Plushad.A, Pwd.A, Ramses.A:It, Rapi.AM,AM1, Saver.B,
+   Schumann.D:De, Shadow.A, ShowOff.CI,CJ, Silly.A, Spooky.E:De,
+   Switcher.I, Tamago.A, Temple.I, Twno.AD:Tw, TwoLines.R, Uka.A,
+   Wazzu.CY,CZ,DA,DB,DC,DD,DE,DF,DI,DJ, WiederOeffnen.A:De
+ 
+      Rev 1.55   14 Oct 1997 11:50:04   CFORMUL
+   Added FICHIERENREGISTRER
+ 
+      Rev 1.54   07 Oct 1997 23:51:46   RELNITI
+   ADD DISASTER
+ 
+      Rev 1.53   07 Oct 1997 21:19:18   RELNITI
+   VMacro Batch Processing 100797: 0x4cF7-0x4cFF and 0x6000-0x600E for
+    Alien.H, Ammy.A:Tw, Cap.AV, Cap.AW, Cap.AX, Cap.AY, Cap.AZ,
+    Colors.BS, Concept.BQ,
+    Concept.BR, Muck.Q, Muck.S, Muck.T, Muck.U, Muck.V, Muck.W, Muck.X,
+    Nottice.A, Npad.DK, Nuclear.U, Setmd.B:Tw, Switcher.H, Wazzu.CW, Wazzu.CX
+ 
+      Rev 1.52   23 Sep 1997 23:41:20   JWILBER
+   Modified during Oct97 def build.
+ 
+      Rev Sep97  23 Sep 1997 16:26:58   RELNITI
+   VMacro Batch Processing 092397 0x4cDC - 0x4cED for:
+   Cap.AT, Cap.AU, Colors.BR, Concept.BP, DZT.H, India.A, Lamah.A:Br,
+   NPad.DE, NPad.DF, NPad.DG, NPad.DH, NPad.DI, NPad.DJ, ShowOff.CF
+   ShowOff.CG, ShowOff.CH, Switcher.G, Twno.AA:Tw
+ 
+      Rev Sep97  22 Sep 1997 13:11:24   ECHIEN
+   Added EVAHZG for Niknat.A
+ 
+      Rev 1.51   11 Sep 1997 16:41:46   RELNITI
+   ADD "DAKOTA"
+ 
+      Rev 1.50   10 Sep 1997 12:13:42   DANG
+   Added macros for Gas.A for CI#38
+ 
+      Rev 1.49   09 Sep 1997 15:30:02   RELNITI
+   VMacro Batch Processing 090997: 4cA7-4cBD:
+    Cap.AH, .AI, .AJ, .AK, .AL, .AM, Concept.BN, DMV.H, Lox.B, MDMA.Z, Mess.A,
+    Minimal.S, .T, Muck.O, Npad.CZ, Nuclear.T, Oblom.E, ShowOff.CB, .CC,
+    SuperStitious.A, Wazzu.CS, .CT, .CU
+ 
+      Rev 1.48   26 Aug 1997 14:28:18   RELNITI
+   VMacro Batch Processing 082697
+ 
+      Rev 1.47   15 Aug 1997 18:14:50   RELNITI
+   VMacro Batch Processing 081597
+ 
+      Rev 1.46   14 Aug 1997 19:38:20   AOONWAL
+   Added "VISIOOPEN" and "VISIOCLOSE" to the list of macros
+ 
+      Rev 1.45   07 Aug 1997 18:35:20   RELNITI
+   ADD CHAKA
+ 
+      Rev 1.44   07 Aug 1997 17:35:46   RELNITI
+   ADD one for WM.Dub.A
+ 
+      Rev 1.43   05 Aug 1997 19:08:04   RELNITI
+   ADD "OHYES" from VMacro Batch Processing 080597
+ 
+      Rev 1.42   04 Aug 1997 19:45:02   RELNITI
+   ADD some for WM.Schumann's
+ 
+      Rev 1.41   01 Aug 1997 19:00:16   RELNITI
+   VMacro Batch Processing Chinese 080197
+ 
+      Rev 1.40   01 Aug 1997 18:32:16   RELNITI
+   VMacro Batch Processing 080197
+ 
+      Rev 1.39   29 Jul 1997 19:01:24   RELNITI
+   ADD some for VMacro Posting Processing 072997
+ 
+      Rev 1.38   29 Jul 1997 17:07:12   RELNITI
+   ADD some from VMacro Posting Processing 071797
+ 
+      Rev 1.37   28 Jul 1997 12:51:20   AOONWAL
+   Modified during AUG97 build
+ 
+      Rev AUG97  22 Jul 1997 16:17:14   RELNITI
+   ADD "ACTUALVIRUS"
+ 
+      Rev AUG97   21 Jul 1997 17:07:34   RELNITI
+   ADD ZMB
+ 
+      Rev 1.36   16 Jul 1997 19:21:58   RELNITI
+   ADD some from VMacro Posting Processing
+ 
+      Rev 1.35   16 Jul 1997 15:54:14   RELNITI
+   ADD a few for Concept.AX
+ 
+      Rev 1.34   01 Jul 1997 12:07:52   RELNITI
+   ADD FO, FS, DNTC
+ 
+      Rev 1.33   23 Jun 1997 15:33:00   AOONWAL
+   Modified during JULY97 build
+ 
+      Rev JULY97 23 Jun 1997 10:31:38   ECHIEN
+   Added COpyoffilesaveas
+ 
+      Rev JULY97 20 Jun 1997 15:09:08   RELNITI
+   ADD several Dutch name for Cap
+ 
+      Rev JULY97 18 Jun 1997 16:12:30   RELNITI
+   ADD detection for name started w/ VIRUS or VISPY
+ 
+      Rev JULY97 16 Jun 1997 15:00:26   JWILBER
+   Added NAME_ANY_NAME to use for poly defs.
+ 
+      Rev 1.32   13 Jun 1997 20:45:48   RELNITI
+   ADD ORDO, QUICKSILVER
+ 
+      Rev 1.31   13 Jun 1997 20:35:12   RELNITI
+   ADD some for Red.A:De, Makrone.A:De
+ 
+      Rev 1.30   13 Jun 1997 20:12:10   RELNITI
+   ADD 2 for Vampire:Tw
+ 
+      Rev 1.29   13 Jun 1997 19:44:48   RELNITI
+   ADD some for Swlabs.C, etc...
+ 
+      Rev 1.28   13 Jun 1997 15:34:02   RELNITI
+   ADD a bunch for Chinese Macro Viruses
+ 
+      Rev 1.27   13 Jun 1997 14:00:50   RELNITI
+   add some for WM.Zashib, Veneno:Sp, Socks
+ 
+      Rev 1.26   13 Jun 1997 12:34:30   RELNITI
+   ADD a bunch of NAMSIG
+ 
+      Rev 1.25   10 Jun 1997 23:23:52   JWILBER
+   Added "9 Blank" name sig for CI 12165.
+ 
+      Rev 1.24   10 Jun 1997 11:56:32   JWILBER
+   Added name def for SYSTEM32, from WM.Safwan, 4d13.
+ 
+      Rev 1.23   09 Jun 1997 17:47:48   RELNITI
+   ADD 6, 7, 8 BLANKS
+ 
+      Rev 1.22   05 Jun 1997 11:35:14   CFORMUL
+   Added NameSig for VISUALAND
+ 
+      Rev 1.21   13 May 1997 14:57:04   ECHIEN
+   Added Userform999 Sparkle Userform900 Frenzy
+ 
+      Rev 1.20   12 May 1997 21:17:34   RELNITI
+   MODIFY AAAZAO, AAAZFS, FILESAVEAS, AUTOCLOSE to let any characters
+    follow them
+ 
+      Rev 1.19   08 May 1997 16:58:04   DANG
+   Added macro names for Concept.AN
+ 
+      Rev 1.18   08 May 1997 15:44:50   DANG
+   Added COPYSAVEAS and COPYOPEN for NOP.K from CI#11781
+ 
+      Rev 1.17   05 May 1997 13:13:00   ECHIEN
+   Added Name Only AO for Concept.AL
+ 
+      Rev 1.16   04 May 1997 10:58:16   ECHIEN
+   Added MSWFC and MSWAO for MSWA
+ 
+      Rev 1.15   03 May 1997 11:26:50   ECHIEN
+   Added CRUD for Talon.H and Password for Talon.B
+ 
+      Rev 1.14   03 May 1997 09:41:12   ECHIEN
+   Added DEED for Wm.Talon.A
+ 
+      Rev 1.13   03 May 1997 09:29:14   ECHIEN
+   Added AEDUB FCDUB KILLIT MESSAGE EXEKILLER ANNIHILATOR
+   NEWDOCINSERT SEARCHDESTROYER for Wm.Dub.A
+ 
+      Rev 1.12   02 May 1997 12:24:08   RELNITI
+   REMOVING Duplicate
+ 
+      Rev 1.11   02 May 1997 12:20:40   RELNITI
+   ADD a bunch of them
+ 
+      Rev 1.10   02 May 1997 10:49:54   ECHIEN
+   Added XXXXX
+ 
+      Rev 1.9   01 May 1997 10:48:54   RELNITI
+   ADD README
+ 
+      Rev 1.8   01 May 1997 09:31:04   RELNITI
+   ADD some for WM.Simple & WM.Nop.H
+ 
+      Rev 1.7   30 Apr 1997 12:03:40   RELNITI
+   ADD some for WM.HiAC & Cap (Dutch)
+ 
+      Rev 1.6   18 Apr 1997 17:54:10   AOONWAL
+   Modified during DEV1 malfunction
+ 
+      Rev ABID  16 Apr 1997 11:44:26   RELNITI
+   ADD some for WM.CVCK1, CVCK1.A, ERASER.O:Tw, ShowOff.AC
+ 
+      Rev 1.5   10 Apr 1997 16:28:54   RELNITI
+   ADD some for Dark.D, Talon.G
+ 
+      Rev 1.4   10 Apr 1997 10:59:58   RELNITI
+   ADD some for NOP.G, WallPaper.A, Talon.D, Cap.C
+ 
+      Rev 1.3   09 Apr 1997 19:44:38   RELNITI
+   ADD some for CAP.C, DARK.C, ERASER.K, ERASER.N, NOP.G
+ 
+      Rev 1.2   09 Apr 1997 12:02:54   RELNITI
+   ADD some for Mercy.A, Sam.A, Bertik.A, Hilight.A, Mota, NJ-WMDLK1.F
+ 
+      Rev 1.1   09 Apr 1997 10:03:30   RELNITI
+   ADD some for Dark.B & Messenger.A:De
+ 
+      Rev 1.0   07 Apr 1997 16:44:58   CFORMUL
+   Initial revision.
+
+;
+;****************************************************************************
+
+#################################################################
+#
+# N a m e   S i g n a t u r e s
+#
+#################################################################
+
+[NameSigStart]
+[Comment]       Only CKE
+[ID]            NAME_ONLY_CKE
+[Signature]     SeekSet(0) "CKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LOOK
+[ID]            NAME_ONLY_LOOK
+[Signature]     SeekSet(0) "LOOK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHARETHEFUN
+[ID]            NAME_ONLY_SHARETHEFUN
+[Signature]     SeekSet(0) "SHARETHEFUN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILECLOSEALL
+[ID]            NAME_ONLY_FILECLOSEALL
+[Signature]     SeekSet(0) "FILECLOSEALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXIT
+[ID]            NAME_ONLY_EXIT
+[Signature]     SeekSet(0) "EXIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXIT_
+[ID]            NAME_ONLY_EXIT_
+[Signature]     SeekSet(0) "EXIT_" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSLOTHAE
+[ID]            NAME_ONLY_MSLOTHAE
+[Signature]     SeekSet(0) "MSLOTHAE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSLOTHSA
+[ID]            NAME_ONLY_MSLOTHSA
+[Signature]     SeekSet(0) "MSLOTHSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSLOTHAO
+[ID]            NAME_ONLY_MSLOTHAO
+[Signature]     SeekSet(0) "MSLOTHAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLVER
+[ID]            NAME_ONLY_TOOLVER
+[Signature]     SeekSet(0) "TOOLVER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CLEANALL
+[ID]            NAME_ONLY_CLEANALL
+[Signature]     SeekSet(0) "CLEANALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRYXONE
+[ID]            NAME_ONLY_STRYXONE
+[Signature]     SeekSet(0) "STRYXONE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRYXTWO
+[ID]            NAME_ONLY_STRYXTWO
+[Signature]     SeekSet(0) "STRYXTWO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOEXITSCAN
+[ID]            NAME_ONLY_AUTOEXITSCAN
+[Signature]     SeekSet(0) "AUTOEXITSCAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPENSCAN
+[ID]            NAME_ONLY_AUTOOPENSCAN
+[Signature]     SeekSet(0) "AUTOOPENSCAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEOPENSCAN
+[ID]            NAME_ONLY_FILEOPENSCAN
+[Signature]     SeekSet(0) "FILEOPENSCAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHELLOPENSCAN
+[ID]            NAME_ONLY_SHELLOPENSCAN
+[Signature]     SeekSet(0) "SHELLOPENSCAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSERTAUTOTEXTINTOMACRO
+[ID]            NAME_ONLY_INSERTAUTOTEXTINTOMACRO
+[Signature]     SeekSet(0) "INSERTAUTOTEXTINTOMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "APPDER"
+[ID]            NAME_ONLY_APPDER
+[Signature]     SeekSet(0) "APPDER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CK
+[ID]            NAME_ONLY_CK
+[Signature]     SeekSet(0) "CK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CK1
+[ID]            NAME_ONLY_CK1
+[Signature]     SeekSet(0) "CK1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACTION
+[ID]            NAME_ONLY_ACTION
+[Signature]     SeekSet(0) "ACTION" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ôFFNEN
+[ID]            NAME_ONLY_OFFNEN
+#[Signature]     SeekSet(0) 0xD6 "FFNEN" AtEnd()
+[Signature]     SeekSet(0) SeekCur(1) "FFNEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SPEICHERN
+[ID]            NAME_ONLY_SPEICHERN
+[Signature]     SeekSet(0) "SPEICHERN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATUMUNDUHRZEIT
+[ID]            NAME_ONLY_DATUMUNDUHRZEIT
+[Signature]     SeekSet(0) "DATUMUNDUHRZEIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIALLESSPEICHERN
+[ID]            NAME_ONLY_DATEIALLESSPEICHERN
+[Signature]     SeekSet(0) "DATEIALLESSPEICHERN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FCLOSE
+[ID]            NAME_ONLY_FCLOSE
+[Signature]     SeekSet(0) "FCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FA
+[ID]            NAME_ONLY_FA
+[Signature]     SeekSet(0) "FA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOWRUN
+[ID]            NAME_ONLY_NOWRUN
+[Signature]     SeekSet(0) "NOWRUN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEWFS
+[ID]            NAME_ONLY_NEWFS
+[Signature]     SeekSet(0) "NEWFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEWAO
+[ID]            NAME_ONLY_NEWAO
+[Signature]     SeekSet(0) "NEWAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OFXX
+[ID]            NAME_ONLY_OFXX
+[Signature]     SeekSet(0) "OFXX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CFXX
+[ID]            NAME_ONLY_CFXX
+[Signature]     SeekSet(0) "CFXX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHOW
+[ID]            NAME_ONLY_SHOW
+[Signature]     SeekSet(0) "SHOW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHOW_
+[ID]            NAME_ONLY_SHOW2
+[Signature]     SeekSet(0) "SHOW_" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DOGGIE
+[ID]            NAME_ONLY_DOGGIE
+[Signature]     SeekSet(0) "DOGGIE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PARADISE
+[ID]            NAME_ONLY_PARADISE
+[Signature]     SeekSet(0) "PARADISE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GANGSTERZ
+[ID]            NAME_ONLY_GANGSTERZ
+[Signature]     SeekSet(0) "GANGSTERZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRYX1
+[ID]            NAME_ONLY_STRYX1
+[Signature]     SeekSet(0) "STRYX1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRYX2
+[ID]            NAME_ONLY_STRYX2
+[Signature]     SeekSet(0) "STRYX2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DOKUMENTSCHLIE·EN
+[ID]            NAME_ONLY_DOKUMENTSCHLIEBEN
+#[Signature]     SeekSet(0) "DOKUMENTSCHLIE" 0xE1 "EN" AtEnd()
+[Signature]     SeekSet(0) "DOKUMENTSCHLIE" SeekCur(1) "EN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SPOOKY
+[ID]            NAME_ONLY_SPOOKY
+[Signature]     SeekSet(0) "SPOOKY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIîFFNEN
+[ID]            NAME_ONLY_DATEIOFFNEN
+#[Signature]     SeekSet(0) "DATEI" 0xD6 "FFNEN" AtEnd()
+[Signature]     SeekSet(0) "DATEI" SeekCur(1) "FFNEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDOKVORLAGEN
+[ID]            NAME_ONLY_DATEIDOKVORLAGEN
+[Signature]     SeekSet(0) "DATEIDOKVORLAGEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FAST
+[ID]            NAME_ONLY_FAST
+[Signature]     SeekSet(0) "FAST" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TALK
+[ID]            NAME_ONLY_TALK
+[Signature]     SeekSet(0) "TALK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CANCEL
+[ID]            NAME_ONLY_CANCEL
+[Signature]     SeekSet(0) "CANCEL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ABBRECHEN
+[ID]            NAME_ONLY_ABBRECHEN
+[Signature]     SeekSet(0) "ABBRECHEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INFIZIEREN
+[ID]            NAME_ONLY_INFIZIEREN
+[Signature]     SeekSet(0) "INFIZIEREN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXTRASMACRO
+[ID]            NAME_ONLY_EXTRASMACRO
+[Signature]     SeekSet(0) "EXTRASMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISCHLIE·EN
+[ID]            NAME_ONLY_DATEISCHLIEBEN
+#[Signature]     SeekSet(0) "DATEISCHLIE" 0xE1 "EN" AtEnd()
+[Signature]     SeekSet(0) "DATEISCHLIE" SeekCur(1) "EN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISCHLIE·ENODERALLESSCHLIE·EN
+[ID]            NAME_ONLY_DATEISCHLIEBENODERALLESSCHLIEBEN
+#[Signature]     SeekSet(0) "DATEISCHLIE" 0xE1 "ENODERALLESSCHLIE" 0XE1 "EN" AtEnd()
+[Signature]     SeekSet(0) "DATEISCHLIE" SeekCur(1) "ENODERALLESSCHLIE" SeekCur(1) "EN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LADING
+[ID]            NAME_ONLY_LADING
+[Signature]     SeekSet(0) "LADING" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IKWORDNIETGOED1
+[ID]            NAME_ONLY_IKWORDNIETGOED1
+[Signature]     SeekSet(0) "IKWORDNIETGOED1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IKWORDNIETGOED2
+[ID]            NAME_ONLY_IKWORDNIETGOED2
+[Signature]     SeekSet(0) "IKWORDNIETGOED2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Letter Then 4 digits (OutLaw)
+[ID]            NAME_LETTER_FOUR_DIGITS
+[Signature]     SeekSet(0) ScanSlide(1, 'A' - 'Z')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOP
+[ID]            NAME_ONLY_NOP
+[Signature]     SeekSet(0) "NOP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DMV
+[ID]            NAME_ONLY_DMV
+[Signature]     SeekSet(0) "DMV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VAUTONEW
+[ID]            NAME_ONLY_VAUTONEW
+[Signature]     SeekSet(0) "VAUTONEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VFILESAVEAS
+[ID]            NAME_ONLY_VFILESAVEAS
+[Signature]     SeekSet(0) "VFILESAVEAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MICROSOFT03
+[ID]            NAME_ONLY_MICROSOFT03
+[Signature]     SeekSet(0) "MICROSOFT03" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MICROSOFT01
+[ID]            NAME_ONLY_MICROSOFT01
+[Signature]     SeekSet(0) "MICROSOFT01" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MICROSOFT02
+[ID]            NAME_ONLY_MICROSOFT02
+[Signature]     SeekSet(0) "MICROSOFT02" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MICROSOFT04
+[ID]            NAME_ONLY_MICROSOFT04
+[Signature]     SeekSet(0) "MICROSOFT04" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MICROSOFT05
+[ID]            NAME_ONLY_MICROSOFT05
+[Signature]     SeekSet(0) "MICROSOFT05" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BÅRONEU
+[ID]            NAME_ONLY_BURONEU
+#[Signature]     SeekSet(0) "B" 0x81 "RONEU" AtEnd()
+[Signature]     SeekSet(0) "B" SeekCur(1) "RONEU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BUERONEU
+[ID]            NAME_ONLY_BUERONEU
+[Signature]     SeekSet(0) "BUERONEU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DROP
+[ID]            NAME_ONLY_DROP
+[Signature]     SeekSet(0) "DROP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DROPBAK
+[ID]            NAME_ONLY_DROPBAK
+[Signature]     SeekSet(0) "DROPBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOEXECBAK
+[ID]            NAME_ONLY_AUTOEXECBAK
+[Signature]     SeekSet(0) "AUTOEXECBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPENBAK
+[ID]            NAME_ONLY_AUTOOPENBAK
+[Signature]     SeekSet(0) "AUTOOPENBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIôFFNENBAK
+[ID]            NAME_ONLY_DATEIOFFNENBAK
+#[Signature]     SeekSet(0) "DATEI" 0XD6 "FFNENBAK" AtEnd()
+[Signature]     SeekSet(0) "DATEI" SeekCur(1) "FFNENBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXTRASMAKROBAK
+[ID]            NAME_ONLY_EXTRASMAKROBAK
+[Signature]     SeekSet(0) "EXTRASMAKROBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIBEENDENBAK
+[ID]            NAME_ONLY_DATEIBEENDENBAK
+[Signature]     SeekSet(0) "DATEIBEENDENBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDRUCKENBAK
+[ID]            NAME_ONLY_DATEIDRUCKENBAK
+[Signature]     SeekSet(0) "DATEIDRUCKENBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISPEICHERNBAK
+[ID]            NAME_ONLY_DATEISPEICHERNBAK
+[Signature]     SeekSet(0) "DATEISPEICHERNBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISPEICHERNUNTERBAK
+[ID]            NAME_ONLY_DATEISPEICHERNUNTERBAK
+[Signature]     SeekSet(0) "DATEISPEICHERNUNTERBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDRUCKENSTANDARDBAK
+[ID]            NAME_ONLY_DATEIDRUCKENSTANDARDBAK
+[Signature]     SeekSet(0) "DATEIDRUCKENSTANDARDBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DUMMY
+[ID]            NAME_ONLY_DUMMY
+[Signature]     SeekSet(0) "DUMMY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISPEICHERN
+[ID]            NAME_ONLY_DATEISPEICHERN
+[Signature]     SeekSet(0) "DATEISPEICHERN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDRUCKENSTANDARD
+[ID]            NAME_ONLY_DATEIDRUCKENSTANDARD
+[Signature]     SeekSet(0) "DATEIDRUCKENSTANDARD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SYSTEM
+[ID]            NAME_ONLY_SYSTEM
+[Signature]     SeekSet(0) "SYSTEM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISPEICHERNUNTER
+[ID]            NAME_ONLY_DATEISPEICHERNUNTER
+[Signature]     SeekSet(0) "DATEISPEICHERNUNTER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEINEU
+[ID]            NAME_ONLY_DATEINEU
+[Signature]     SeekSet(0) "DATEINEU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TELEFONICA
+[ID]            NAME_ONLY_TELEFONICA
+[Signature]     SeekSet(0) "TELEFONICA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIBEENDEN
+[ID]            NAME_ONLY_DATEIBEENDEN
+[Signature]     SeekSet(0) "DATEIBEENDEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDRUCKEN
+[ID]            NAME_ONLY_DATEIDRUCKEN
+[Signature]     SeekSet(0) "DATEIDRUCKEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDHELP
+[ID]            NAME_ONLY_WORDHELP
+[Signature]     SeekSet(0) "WORDHELP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANTIMARC
+[ID]            NAME_ONLY_ANTIMARC
+[Signature]     SeekSet(0) "ANTIMARC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANTIVIRUS
+[ID]            NAME_ONLY_ANTIVIRUS
+[Signature]     SeekSet(0) "ANTIVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDHELPNT
+[ID]            NAME_ONLY_WORDHELPNT
+[Signature]     SeekSet(0) "WORDHELPNT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSERTPBREAK
+[ID]            NAME_ONLY_INSERTPBREAK
+[Signature]     SeekSet(0) "INSERTPBREAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSREPAGINAT
+[ID]            NAME_ONLY_TOOLSREPAGINAT
+[Signature]     SeekSet(0) "TOOLSREPAGINAT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DRAWBRINGINFROUT
+[ID]            NAME_ONLY_DRAWBRINGINFROUT
+[Signature]     SeekSet(0) "DRAWBRINGINFROUT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STARTOFDOC
+[ID]            NAME_ONLY_STARTOFDOC
+[Signature]     SeekSet(0) "STARTOFDOC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSERTPAGEBREAK
+[ID]            NAME_ONLY_INSERTPAGEBREAK
+[Signature]     SeekSet(0) "INSERTPAGEBREAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAŸ€“
+[ID]            NAME_ONLY_AAAD9DBD2
+#[Signature]     SeekSet(0) "AAA" 0xD9 0xDB 0xD2 AtEnd()
+[Signature]     SeekSet(0) "AAA" SeekCur(3) AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAÀ –
+[ID]            NAME_ONLY_AAACBCAD0
+#[Signature]     SeekSet(0) "AAA" 0xCB 0xCA 0xD0 AtEnd()
+[Signature]     SeekSet(0) "AAA" SeekCur(3) AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DOCCLOSE
+[ID]            NAME_ONLY_DOCCLOSE
+[Signature]     SeekSet(0) "DOCCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ŒPAYLOAD
+[ID]            NAME_ONLY_CEPAYLOAD
+#[Signature]     SeekSet(0) 0xCE "PAYLOAD" AtEnd()
+[Signature]     SeekSet(1) "PAYLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSSPELLING
+[ID]            NAME_ONLY_TOOLSSPELLING
+[Signature]     SeekSet(0) "TOOLSSPELLING" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VCLOSE
+[ID]            NAME_ONLY_VCLOSE
+[Signature]     SeekSet(0) "VCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VOPEN
+[ID]            NAME_ONLY_VOPEN
+[Signature]     SeekSet(0) "VOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LOAD
+[ID]            NAME_ONLY_LOAD
+[Signature]     SeekSet(0) "LOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HAHA
+[ID]            NAME_ONLY_HAHA
+[Signature]     SeekSet(0) "HAHA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDITSIZE
+[ID]            NAME_ONLY_EDITSIZE
+[Signature]     SeekSet(0) "EDITSIZE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESORT
+[ID]            NAME_ONLY_FILESORT
+[Signature]     SeekSet(0) "FILESORT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only F1
+[ID]            NAME_ONLY_F1
+[Signature]     SeekSet(0) "F1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only F2
+[ID]            NAME_ONLY_F2
+[Signature]     SeekSet(0) "F2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOOM
+[ID]            NAME_ONLY_BOOM
+[Signature]     SeekSet(0) "BOOM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CITPYRC
+[ID]            NAME_ONLY_CITPYRC
+[Signature]     SeekSet(0) "CITPYRC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRYPTIC
+[ID]            NAME_ONLY_CRYPTIC
+[Signature]     SeekSet(0) "CRYPTIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only K
+[ID]            NAME_ONLY_K
+[Signature]     SeekSet(0) "K" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only A678
+[ID]            NAME_ONLY_A678
+[Signature]     SeekSet(0) "A678" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only I8U9Y13
+[ID]            NAME_ONLY_I8U9Y13
+[Signature]     SeekSet(0) "I8U9Y13" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PARA
+[ID]            NAME_ONLY_PARA
+[Signature]     SeekSet(0) "PARA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SITE
+[ID]            NAME_ONLY_SITE
+[Signature]     SeekSet(0) "SITE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOEXIT
+[ID]            NAME_ONLY_AUTOEXIT
+[Signature]     SeekSet(0) "AUTOEXIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "AAAZAO...
+[ID]            NAME_ONLY_AAAZAO
+[Signature]     SeekSet(0) "AAAZAO"
+# AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "AAAZFS...
+[ID]            NAME_ONLY_AAAZFS
+[Signature]     SeekSet(0) "AAAZFS"
+# AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "AUTOCLOSE"
+[ID]            NAME_ONLY_AUTOCLOSE
+[Signature]     SeekSet(0) "AUTOCLOSE" AtEnd()
+#AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "AUTOEXEC"
+[ID]            NAME_ONLY_AUTOEXEC
+[Signature]     SeekSet(0) "AUTOEXEC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "AUTOOPEN...."  anything can follow AUTOOPEN
+[ID]            NAME_ONLY_AUTOOPEN
+[Signature]     SeekSet(0) "AUTOOPEN"
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XAAZAO
+[ID]            NAME_ONLY_XAAZAO
+[Signature]     SeekSet(0) "XAAZAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XAAZFS
+[ID]            NAME_ONLY_XAAZFS
+[Signature]     SeekSet(0) "XAAZFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XAYLOAD
+[ID]            NAME_ONLY_XAYLOAD
+[Signature]     SeekSet(0) "XAYLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XUTOOPEN
+[ID]            NAME_ONLY_XUTOOPEN
+[Signature]     SeekSet(0) "XUTOOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "FILEEXIT"
+[ID]            NAME_ONLY_FILEEXIT
+[Signature]     SeekSet(0) "FILEEXIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "FILENEW"
+[ID]            NAME_ONLY_FILENEW
+[Signature]     SeekSet(0) "FILENEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "FILESAVE"
+[ID]            NAME_ONLY_FILESAVE
+[Signature]     SeekSet(0) "FILESAVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "FILESAVEAS...
+[ID]            NAME_ONLY_FILESAVEAS
+[Signature]     SeekSet(0) "FILESAVEAS"
+#AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "MACROS"
+[ID]            NAME_ONLY_MACROS
+[Signature]     SeekSet(0) "MACROS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "PAYLOAD"
+[ID]            NAME_ONLY_PAYLOAD
+[Signature]     SeekSet(0) "PAYLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSERTPAYLOAD
+[ID]            NAME_ONLY_INSERTPAYLOAD
+[Signature]     SeekSet(0) "INSERTPAYLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DROPSURIV
+[ID]            NAME_ONLY_DROPSURIV
+[Signature]     SeekSet(0) "DROPSURIV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "TOOLSMACRO"
+[ID]            NAME_ONLY_TOOLSMACRO
+[Signature]     SeekSet(0) "TOOLSMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOB
+[ID]            NAME_ONLY_BOB
+[Signature]     SeekSet(0) "BOB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ALICE
+[ID]            NAME_ONLY_ALICE
+[Signature]     SeekSet(0) "ALICE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COLIN
+[ID]            NAME_ONLY_COLIN
+[Signature]     SeekSet(0) "COLIN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTONEW
+[ID]            NAME_ONLY_AUTONEW
+[Signature]     SeekSet(0) "AUTONEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only A146
+[ID]            NAME_ONLY_A146
+[Signature]     SeekSet(0) "A146" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPAE
+[ID]            NAME_ONLY_RPAE
+[Signature]     SeekSet(0) "RPAE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPFS
+[ID]            NAME_ONLY_RPFS
+[Signature]     SeekSet(0) "RPFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPAO
+[ID]            NAME_ONLY_RPAO
+[Signature]     SeekSet(0) "RPAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT1
+[ID]            NAME_ONLY_DAT1
+[Signature]     SeekSet(0) "DAT1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT2
+[ID]            NAME_ONLY_DAT2
+[Signature]     SeekSet(0) "DAT2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT3
+[ID]            NAME_ONLY_DAT3
+[Signature]     SeekSet(0) "DAT3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT4
+[ID]            NAME_ONLY_DAT4
+[Signature]     SeekSet(0) "DAT4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT5
+[ID]            NAME_ONLY_DAT5
+[Signature]     SeekSet(0) "DAT5" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT6
+[ID]            NAME_ONLY_DAT6
+[Signature]     SeekSet(0) "DAT6" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT7
+[ID]            NAME_ONLY_DAT7
+[Signature]     SeekSet(0) "DAT7" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT8
+[ID]            NAME_ONLY_DAT8
+[Signature]     SeekSet(0) "DAT8" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT9
+[ID]            NAME_ONLY_DAT9
+[Signature]     SeekSet(0) "DAT9" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT10
+[ID]            NAME_ONLY_DAT10
+[Signature]     SeekSet(0) "DAT10" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT11
+[ID]            NAME_ONLY_DAT11
+[Signature]     SeekSet(0) "DAT11" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT12
+[ID]            NAME_ONLY_DAT12
+[Signature]     SeekSet(0) "DAT12" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT13
+[ID]            NAME_ONLY_DAT13
+[Signature]     SeekSet(0) "DAT13" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT14
+[ID]            NAME_ONLY_DAT14
+[Signature]     SeekSet(0) "DAT14" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT17
+[ID]            NAME_ONLY_DAT17
+[Signature]     SeekSet(0) "DAT17" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT18
+[ID]            NAME_ONLY_DAT18
+[Signature]     SeekSet(0) "DAT18" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INFO
+[ID]            NAME_ONLY_INFO
+[Signature]     SeekSet(0) "INFO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COOLIO
+[ID]            NAME_ONLY_COOLIO
+[Signature]     SeekSet(0) "COOLIO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEOPEN
+[ID]            NAME_ONLY_FILEOPEN
+[Signature]     SeekSet(0) "FILEOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Begin FILEOPEN
+[ID]            NAME_BEGIN_FILEOPEN
+[Signature]     SeekSet(0) "FILEOPEN"
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEPRINT
+[ID]            NAME_ONLY_FILEPRINT
+[Signature]     SeekSet(0) "FILEPRINT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MISTERX
+[ID]            NAME_ONLY_MISTERX
+[Signature]     SeekSet(0) "MISTERX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSCUSTOMIZE
+[ID]            NAME_ONLY_TOOLSCUSTOMIZE
+[Signature]     SeekSet(0) "TOOLSCUSTOMIZE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRESENTV
+[ID]            NAME_ONLY_PRESENTV
+[Signature]     SeekSet(0) "PRESENTV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRESENTW
+[ID]            NAME_ONLY_PRESENTW
+[Signature]     SeekSet(0) "PRESENTW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRESENTZ
+[ID]            NAME_ONLY_PRESENTZ
+[Signature]     SeekSet(0) "PRESENTZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VGOJOHNNY
+[ID]            NAME_ONLY_VGOJOHNNY
+[Signature]     SeekSet(0) "VGOJOHNNY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSWFS
+[ID]            NAME_ONLY_MSWFS
+[Signature]     SeekSet(0) "MSWFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILECLOSE
+[ID]            NAME_ONLY_FILECLOSE
+[Signature]     SeekSet(0) "FILECLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWAE
+[ID]            NAME_ONLY_TWAE
+[Signature]     SeekSet(0) "TWAE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWEX
+[ID]            NAME_ONLY_TWEX
+[Signature]     SeekSet(0) "TWEX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWFS
+[ID]            NAME_ONLY_TWFS
+[Signature]     SeekSet(0) "TWFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWFSA
+[ID]            NAME_ONLY_TWFSA
+[Signature]     SeekSet(0) "TWFSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEQUIT
+[ID]            NAME_ONLY_FILEQUIT
+[Signature]     SeekSet(0) "FILEQUIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FCFINISH
+[ID]            NAME_ONLY_FCFINISH
+[Signature]     SeekSet(0) "FCFINISH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AOPNFINISH
+[ID]            NAME_ONLY_AOPNFINISH
+[Signature]     SeekSet(0) "AOPNFINISH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ATOM
+[ID]            NAME_ONLY_ATOM
+[Signature]     SeekSet(0) "ATOM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPFO
+[ID]            NAME_ONLY_RPFO
+[Signature]     SeekSet(0) "RPFO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPTC
+[ID]            NAME_ONLY_RPTC
+[Signature]     SeekSet(0) "RPTC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPTM
+[ID]            NAME_ONLY_RPTM
+[Signature]     SeekSet(0) "RPTM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RPFSA
+[ID]            NAME_ONLY_RPFSA
+[Signature]     SeekSet(0) "RPFSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MCAFEE1
+[ID]            NAME_ONLY_MCAFEE1
+[Signature]     SeekSet(0) "MCAFEE1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEPRINTDEFAULT
+[ID]            NAME_ONLY_FILEPRINTDEFAULT
+[Signature]     SeekSet(0) "FILEPRINTDEFAULT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CTFBORNIN83
+[ID]            NAME_ONLY_CTFBORNIN83
+[Signature]     SeekSet(0) "CTFBORNIN83" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DIAMONDSUTRA
+[ID]            NAME_ONLY_DIAMONDSUTRA
+[Signature]     SeekSet(0) "DIAMONDSUTRA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CTFISTCCLLESS11
+[ID]            NAME_ONLY_CTFISTCCLLESS11
+[Signature]     SeekSet(0) "CTFISTCCLLESS11" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSTALL
+[ID]            NAME_ONLY_INSTALL
+[Signature]     SeekSet(0) "INSTALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MVDKMAIN
+[ID]            NAME_ONLY_MVDKMAIN
+[Signature]     SeekSet(0) "MVDKMAIN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MVDKABOUT
+[ID]            NAME_ONLY_MVDKABOUT
+[Signature]     SeekSet(0) "MVDKABOUT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UNINSTALL
+[ID]            NAME_ONLY_UNINSTALL
+[Signature]     SeekSet(0) "UNINSTALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MVDKPAYLOAD
+[ID]            NAME_ONLY_MVDKPAYLOAD
+[Signature]     SeekSet(0) "MVDKPAYLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MACROMANAGER
+[ID]            NAME_ONLY_MACROMANAGER
+[Signature]     SeekSet(0) "MACROMANAGER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORD6MENU
+[ID]            NAME_ONLY_WORD6MENU
+[Signature]     SeekSet(0) "WORD6MENU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SH7397
+[ID]            NAME_ONLY_SH7397
+[Signature]     SeekSet(0) "SH7397" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SH7607
+[ID]            NAME_ONLY_SH7607
+[Signature]     SeekSet(0) "SH7607" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SH9213
+[ID]            NAME_ONLY_SH9213
+[Signature]     SeekSet(0) "SH9213" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXTRASMAKRO
+[ID]            NAME_ONLY_EXTRASMAKRO
+[Signature]     SeekSet(0) "EXTRASMAKRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NM4593
+[ID]            NAME_ONLY_NM4593
+[Signature]     SeekSet(0) "NM4593" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NM7606
+[ID]            NAME_ONLY_NM7606
+[Signature]     SeekSet(0) "NM7606" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NM8315
+[ID]            NAME_ONLY_NM8315
+[Signature]     SeekSet(0) "NM8315" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAGNUM
+[ID]            NAME_ONLY_MAGNUM
+[Signature]     SeekSet(0) "MAGNUM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LONERAIDER
+[ID]            NAME_ONLY_LONERAIDER
+[Signature]     SeekSet(0) "LONERAIDER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NIKI
+[ID]            NAME_ONLY_NIKI
+[Signature]     SeekSet(0) "NIKI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEAPRI
+[ID]            NAME_ONLY_FILEAPRI
+[Signature]     SeekSet(0) "FILEAPRI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESALVACONNOME
+[ID]            NAME_ONLY_FILESALVACONNOME
+[Signature]     SeekSet(0) "FILESALVACONNOME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEESCI
+[ID]            NAME_ONLY_FILEESCI
+[Signature]     SeekSet(0) "FILEESCI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEMACRO
+[ID]            NAME_ONLY_FILEMACRO
+[Signature]     SeekSet(0) "FILEMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILECHIUDI
+[ID]            NAME_ONLY_FILECHIUDI
+[Signature]     SeekSet(0) "FILECHIUDI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESALVA
+[ID]            NAME_ONLY_FILESALVA
+[Signature]     SeekSet(0) "FILESALVA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDMACRO1
+[ID]            NAME_ONLY_WORDMACRO1
+[Signature]     SeekSet(0) "WORDMACRO1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDMACRO2
+[ID]            NAME_ONLY_WORDMACRO2
+[Signature]     SeekSet(0) "WORDMACRO2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEMPAUTOEXEC
+[ID]            NAME_ONLY_TEMPAUTOEXEC
+[Signature]     SeekSet(0) "TEMPAUTOEXEC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEMPFILEOPEN
+[ID]            NAME_ONLY_TEMPFILEOPEN
+[Signature]     SeekSet(0) "TEMPFILEOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEMPFILESAVE
+[ID]            NAME_ONLY_TEMPFILESAVE
+[Signature]     SeekSet(0) "TEMPFILESAVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEMPAUTOOPEN
+[ID]            NAME_ONLY_TEMPAUTOOPEN
+[Signature]     SeekSet(0) "TEMPAUTOOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NF
+[ID]            NAME_ONLY_NF
+[Signature]     SeekSet(0) "NF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DARKSIDE1
+[ID]            NAME_ONLY_DARKSIDE1
+[Signature]     SeekSet(0) "DARKSIDE1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HERRAMMACRO
+[ID]            NAME_ONLY_HERRAMMACRO
+[Signature]     SeekSet(0) "HERRAMMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUN
+[ID]            NAME_ONLY_FUN
+[Signature]     SeekSet(0) "FUN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIE
+[ID]            NAME_ONLY_ARCHIE
+[Signature]     SeekSet(0) "ARCHIE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEST
+[ID]            NAME_ONLY_TEST
+[Signature]     SeekSet(0) "TEST" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ADULTSEX
+[ID]            NAME_ONLY_ADULTSEX
+[Signature]     SeekSet(0) "ADULTSEX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CEEFOUR
+[ID]            NAME_ONLY_CEEFOUR
+[Signature]     SeekSet(0) "CEEFOUR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILETEMPLATES
+[ID]            NAME_ONLY_FILETEMPLATES
+[Signature]     SeekSet(0) "FILETEMPLATES" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CKMBBLSSUNTEMPLE
+[ID]            NAME_ONLY_CKMBBLSSUNTEMPLE
+[Signature]     SeekSet(0) "CKMBBLSSUNTEMPLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSAUTOCORRECT
+[ID]            NAME_ONLY_TOOLSAUTOCORRECT
+[Signature]     SeekSet(0) "TOOLSAUTOCORRECT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHANKINMANISSHOSHI6F200P
+[ID]            NAME_ONLY_CHANKINMANISSHOSHI6F200P
+[Signature]     SeekSet(0) "CHANKINMANISSHOSHI6F200P" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRAJNAPARAMITADIAMONDSUTRA
+[ID]            NAME_ONLY_PRAJNAPARAMITADIAMONDSUTRA
+[Signature]     SeekSet(0) "PRAJNAPARAMITADIAMONDSUTRA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WWUPDATED
+[ID]            NAME_ONLY_WWUPDATED
+[Signature]     SeekSet(0) "WWUPDATED" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DANILOFFMUDAK
+[ID]            NAME_ONLY_DANILOFFMUDAK
+[Signature]     SeekSet(0) "DANILOFFMUDAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOP
+[ID]            NAME_ONLY_AUTOOP
+[Signature]     SeekSet(0) "AUTOOP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIMER
+[ID]            NAME_ONLY_TIMER
+[Signature]     SeekSet(0) "TIMER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIMER_
+[ID]            NAME_ONLY_TIMER_
+[Signature]     SeekSet(0) "TIMER_" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSRUN
+[ID]            NAME_ONLY_MSRUN
+[Signature]     SeekSet(0) "MSRUN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRUMMACRO
+[ID]            NAME_ONLY_STRUMMACRO
+[Signature]     SeekSet(0) "STRUMMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ALIGNMENT
+[ID]            NAME_ONLY_ALIGNMENT
+[Signature]     SeekSet(0) "ALIGNMENT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BORDERSSET
+[ID]            NAME_ONLY_BORDERSSET
+[Signature]     SeekSet(0) "BORDERSSET" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXITROUTINE
+[ID]            NAME_ONLY_EXITROUTINE
+[Signature]     SeekSet(0) "EXITROUTINE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FFFGGG
+[ID]            NAME_ONLY_FFFGGG
+[Signature]     SeekSet(0) "FFFGGG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GGGFFF
+[ID]            NAME_ONLY_GGGFFF
+[Signature]     SeekSet(0) "GGGFFF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GREENFURY
+[ID]            NAME_ONLY_GREENFURY
+[Signature]     SeekSet(0) "GREENFURY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BLASTCDRIVE
+[ID]            NAME_ONLY_BLASTCDRIVE
+[Signature]     SeekSet(0) "BLASTCDRIVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DNZ
+[ID]            NAME_ONLY_DNZ
+[Signature]     SeekSet(0) "DNZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDITCUT
+[ID]            NAME_ONLY_EDITCUT
+[Signature]     SeekSet(0) "EDITCUT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDITCOPY
+[ID]            NAME_ONLY_EDITCOPY
+[Signature]     SeekSet(0) "EDITCOPY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only J
+[ID]            NAME_ONLY_J
+[Signature]     SeekSet(0) "J" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWAC
+[ID]            NAME_ONLY_TWAC
+[Signature]     SeekSet(0) "TWAC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWFC
+[ID]            NAME_ONLY_TWFC
+[Signature]     SeekSet(0) "TWFC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWFE
+[ID]            NAME_ONLY_TWFE
+[Signature]     SeekSet(0) "TWFE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWFQ
+[ID]            NAME_ONLY_TWFQ
+[Signature]     SeekSet(0) "TWFQ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAAAA
+[ID]            NAME_ONLY_AAAAAA
+[Signature]     SeekSet(0) "AAAAAA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAAAB
+[ID]            NAME_ONLY_AAAAAB
+[Signature]     SeekSet(0) "AAAAAB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAAAC
+[ID]            NAME_ONLY_AAAAAC
+[Signature]     SeekSet(0) "AAAAAC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAAAD
+[ID]            NAME_ONLY_AAAAAD
+[Signature]     SeekSet(0) "AAAAAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VCK
+[ID]            NAME_ONLY_VCK
+[Signature]     SeekSet(0) "VCK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HORSES
+[ID]            NAME_ONLY_HORSES
+[Signature]     SeekSet(0) "HORSES" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIREN
+[ID]            NAME_ONLY_VIREN
+[Signature]     SeekSet(0) "VIREN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XXGRUNTXX1
+[ID]            NAME_ONLY_XXGRUNTXX1
+[Signature]     SeekSet(0) "XXGRUNTXX1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XXGRUNTXX2
+[ID]            NAME_ONLY_XXGRUNTXX2
+[Signature]     SeekSet(0) "XXGRUNTXX2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BLACKEND
+[ID]            NAME_ONLY_BLACKEND
+[Signature]     SeekSet(0) "BLACKEND" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT15
+[ID]            NAME_ONLY_DAT15
+[Signature]     SeekSet(0) "DAT15" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAT16
+[ID]            NAME_ONLY_DAT16
+[Signature]     SeekSet(0) "DAT16" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CAP (from WM.Social/Cap.A)
+[ID]            NAME_ONLY_CAP
+[Signature]     SeekSet(0) "CAP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BADBOY
+[ID]            NAME_ONLY_BADBOY
+[Signature]     SeekSet(0) "BADBOY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOPS
+[ID]            NAME_ONLY_NOPS
+[Signature]     SeekSet(0) "NOPS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOPSA
+[ID]            NAME_ONLY_NOPSA
+[Signature]     SeekSet(0) "NOPSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOPO
+[ID]            NAME_ONLY_NOPO
+[Signature]     SeekSet(0) "NOPO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUCKIT
+[ID]            NAME_ONLY_FUCKIT
+[Signature]     SeekSet(0) "FUCKIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOX1
+[ID]            NAME_ONLY_BOX1
+[Signature]     SeekSet(0) "BOX1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOX
+[ID]            NAME_ONLY_BOX
+[Signature]     SeekSet(0) "BOX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEAD
+[ID]            NAME_ONLY_DEAD
+[Signature]     SeekSet(0) "DEAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TESTBAK
+[ID]            NAME_ONLY_TESTBAK
+[Signature]     SeekSet(0) "TESTBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WMVH
+[ID]            NAME_ONLY_WMVH
+[Signature]     SeekSet(0) "WMVH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIEDEMO
+[ID]            NAME_ONLY_BIEDEMO
+[Signature]     SeekSet(0) "BIEDEMO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKEMACROS
+[ID]            NAME_ONLY_MAKEMACROS
+[Signature]     SeekSet(0) "MAKEMACROS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GAME
+[ID]            NAME_ONLY_GAME
+[Signature]     SeekSet(0) "GAME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ERASER
+[ID]            NAME_ONLY_ERASER
+[Signature]     SeekSet(0) "ERASER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ZLOCKMACRO
+[ID]            NAME_ONLY_ZLOCKMACRO
+[Signature]     SeekSet(0) "ZLOCKMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AOB
+[ID]            NAME_ONLY_AOB
+[Signature]     SeekSet(0) "AOB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RTR
+[ID]            NAME_ONLY_RTR
+[Signature]     SeekSet(0) "RTR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RETRO
+[ID]            NAME_ONLY_RETRO
+[Signature]     SeekSet(0) "RETRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FSAB
+[ID]            NAME_ONLY_FSAB
+[Signature]     SeekSet(0) "FSAB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PURITAN
+[ID]            NAME_ONLY_PURITAN
+[Signature]     SeekSet(0) "PURITAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOMERCY
+[ID]            NAME_ONLY_NOMERCY
+[Signature]     SeekSet(0) "NOMERCY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOMERCY2
+[ID]            NAME_ONLY_NOMERCY2
+[Signature]     SeekSet(0) "NOMERCY2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ORGANIZER
+[ID]            NAME_ONLY_ORGANIZER
+[Signature]     SeekSet(0) "ORGANIZER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NIGHTSHADE
+[ID]            NAME_ONLY_NIGHTSHADE
+[Signature]     SeekSet(0) "NIGHTSHADE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PLONG
+[ID]            NAME_ONLY_PLONG
+[Signature]     SeekSet(0) "PLONG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TZ
+[ID]            NAME_ONLY_TZ
+[Signature]     SeekSet(0) "TZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MRG2
+[ID]            NAME_ONLY_MRG2
+[Signature]     SeekSet(0) "MRG2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSCONCEPT
+[ID]            NAME_ONLY_MSCONCEPT
+[Signature]     SeekSet(0) "MSCONCEPT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEPOOTUA
+[ID]            NAME_ONLY_NEPOOTUA
+[Signature]     SeekSet(0) "NEPOOTUA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SAEVASELIF
+[ID]            NAME_ONLY_SAEVASELIF
+[Signature]     SeekSet(0) "SAEVASELIF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MRGBOMB
+[ID]            NAME_ONLY_MRGBOMB
+[Signature]     SeekSet(0) "MRGBOMB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHELLOPEN
+[ID]            NAME_ONLY_SHELLOPEN
+[Signature]     SeekSet(0) "SHELLOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MTF1
+[ID]            NAME_ONLY_MTF1
+[Signature]     SeekSet(0) "MTF1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RIRIN2
+[ID]            NAME_ONLY_RIRIN2
+[Signature]     SeekSet(0) "RIRIN2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only METULTAH
+[ID]            NAME_ONLY_METULTAH
+[Signature]     SeekSet(0) "METULTAH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RIRIN
+[ID]            NAME_ONLY_RIRIN
+[Signature]     SeekSet(0) "RIRIN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MRG3
+[ID]            NAME_ONLY_MRG3
+[Signature]     SeekSet(0) "MRG3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MRG4
+[ID]            NAME_ONLY_MRG4
+[Signature]     SeekSet(0) "MRG4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ROULETTE
+[ID]            NAME_ONLY_ROULETTE
+[Signature]     SeekSet(0) "ROULETTE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LPT
+[ID]            NAME_ONLY_LPT
+[Signature]     SeekSet(0) "LPT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only B52
+[ID]            NAME_ONLY_B52
+[Signature]     SeekSet(0) "B52" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LAZY
+[ID]            NAME_ONLY_LAZY
+[Signature]     SeekSet(0) "LAZY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LEMON
+[ID]            NAME_ONLY_LEMON
+[Signature]     SeekSet(0) "LEMON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MELON
+[ID]            NAME_ONLY_MELON
+[Signature]     SeekSet(0) "MELON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only QV01
+[ID]            NAME_ONLY_QV01
+[Signature]     SeekSet(0) "QV01" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DARKSIDE1B
+[ID]            NAME_ONLY_DARKSIDE1B
+[Signature]     SeekSet(0) "DARKSIDE1B" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOPLANTILLAS
+[ID]            NAME_ONLY_ARCHIVOPLANTILLAS
+[Signature]     SeekSet(0) "ARCHIVOPLANTILLAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPEN1
+[ID]            NAME_ONLY_AUTOOPEN1
+[Signature]     SeekSet(0) "AUTOOPEN1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIRENLIST1
+[ID]            NAME_ONLY_VIRENLIST1
+[Signature]     SeekSet(0) "VIRENLIST1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIRENLIST2
+[ID]            NAME_ONLY_VIRENLIST2
+[Signature]     SeekSet(0) "VIRENLIST2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Letter Then 4 digits than ANIK (Mercy.A)
+[ID]            NAME_LETTER_FOUR_DIGITS_ANIK
+[Signature]     SeekSet(0) ScanSlide(1, 'A' - 'Z')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     "ANIK"
+[Signature]     AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Letter Then 4 digits than LOVE (Mercy.A)
+[ID]            NAME_LETTER_FOUR_DIGITS_LOVE
+[Signature]     SeekSet(0) ScanSlide(1, 'A' - 'Z')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     "LOVE"
+[Signature]     AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Letter Then 8 digits
+[ID]            NAME_LETTER_EIGHT_DIGITS
+[Signature]     SeekSet(0) ScanSlide(1, 'A' - 'Z')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     ScanSlide(1, '0' - '9') ScanSlide(1, '0' - '9')
+[Signature]     AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MONDAY
+[ID]            NAME_ONLY_MONDAY
+[Signature]     SeekSet(0) "MONDAY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSMACR
+[ID]            NAME_ONLY_TOOLSMACR
+[Signature]     SeekSet(0) "TOOLSMACR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILETEMPLATE
+[ID]            NAME_ONLY_FILETEMPLATE
+[Signature]     SeekSet(0) "FILETEMPLATE" AtEnd()
+[NameSigEnd]
+[NameSigStart]
+[Comment]       Only XXXAO
+[ID]            NAME_ONLY_XXXAO
+[Signature]     SeekSet(0) "XXXAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XXXFS
+[ID]            NAME_ONLY_XXXFS
+[Signature]     SeekSet(0) "XXXFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XXXFSA
+[ID]            NAME_ONLY_XXXFSA
+[Signature]     SeekSet(0) "XXXFSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only YYYAO
+[ID]            NAME_ONLY_YYYAO
+[Signature]     SeekSet(0) "YYYAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PREZENTIT
+[ID]            NAME_ONLY_PREZENTIT
+[Signature]     SeekSet(0) "PREZENTIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NO2
+[ID]            NAME_ONLY_NO2
+[Signature]     SeekSet(0) "NO2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOABRIR
+[ID]            NAME_ONLY_ARCHIVOABRIR
+[Signature]     SeekSet(0) "ARCHIVOABRIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOGUARDAR
+[ID]            NAME_ONLY_ARCHIVOGUARDAR
+[Signature]     SeekSet(0) "ARCHIVOGUARDAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOGUARDARCOMO
+[ID]            NAME_ONLY_ARCHIVOGUARDARCOMO
+[Signature]     SeekSet(0) "ARCHIVOGUARDARCOMO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOCERRAROCERRARTODO
+[ID]            NAME_ONLY_ARCHIVOCERRAROCERRARTODO
+[Signature]     SeekSet(0) "ARCHIVOCERRAROCERRARTODO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DARKSIDE1C
+[ID]            NAME_ONLY_DARKSIDE1C
+[Signature]     SeekSet(0) "DARKSIDE1C" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PC97270
+[ID]            NAME_ONLY_PC97270
+[Signature]     SeekSet(0) "PC97270" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODEL
+[ID]            NAME_ONLY_MODEL
+[Signature]     SeekSet(0) "MODEL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TAOA
+[ID]            NAME_ONLY_TAOA
+[Signature]     SeekSet(0) "TAOA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TAOA2
+[ID]            NAME_ONLY_TAOA2
+[Signature]     SeekSet(0) "TAOA2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MENU
+[ID]            NAME_ONLY_MENU
+[Signature]     SeekSet(0) "MENU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SCRAMBLE
+[ID]            NAME_ONLY_SCRAMBLE
+[Signature]     SeekSet(0) "SCRAMBLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MENTOR
+[ID]            NAME_ONLY_MENTOR
+[Signature]     SeekSet(0) "MENTOR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SCRAMBLE2
+[ID]            NAME_ONLY_SCRAMBLE2
+[Signature]     SeekSet(0) "SCRAMBLE2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LITHIUM
+[ID]            NAME_ONLY_LITHIUM
+[Signature]     SeekSet(0) "LITHIUM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HAYO
+[ID]            NAME_ONLY_HAYO
+[Signature]     SeekSet(0) "HAYO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STDOPEN
+[ID]            NAME_ONLY_STDOPEN
+[Signature]     SeekSet(0) "STDOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STEALTH
+[ID]            NAME_ONLY_STEALTH
+[Signature]     SeekSet(0) "STEALTH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEFEATAV
+[ID]            NAME_ONLY_DEFEATAV
+[Signature]     SeekSet(0) "DEFEATAV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STDCLOSE
+[ID]            NAME_ONLY_STDCLOSE
+[Signature]     SeekSet(0) "STDCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STLHOPEN
+[ID]            NAME_ONLY_STLHOPEN
+[Signature]     SeekSet(0) "STLHOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ABOUTCVCK
+[ID]            NAME_ONLY_ABOUTCVCK
+[Signature]     SeekSet(0) "ABOUTCVCK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSTALLME
+[ID]            NAME_ONLY_INSTALLME
+[Signature]     SeekSet(0) "INSTALLME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STLHCLOSE
+[ID]            NAME_ONLY_STLHCLOSE
+[Signature]     SeekSet(0) "STLHCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACTIONDATE
+[ID]            NAME_ONLY_ACTIONDATE
+[Signature]     SeekSet(0) "ACTIONDATE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CREATEVIRII
+[ID]            NAME_ONLY_CREATEVIRII
+[Signature]     SeekSet(0) "CREATEVIRII" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELPPSSHELP
+[ID]            NAME_ONLY_HELPPSSHELP
+[Signature]     SeekSet(0) "HELPPSSHELP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UNINSTALLME
+[ID]            NAME_ONLY_UNINSTALLME
+[Signature]     SeekSet(0) "UNINSTALLME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELPTIPOFTHEDAY
+[ID]            NAME_ONLY_HELPTIPOFTHEDAY
+[Signature]     SeekSet(0) "HELPTIPOFTHEDAY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACTION2
+[ID]            NAME_ONLY_ACTION2
+[Signature]     SeekSet(0) "ACTION2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELPABOUT
+[ID]            NAME_ONLY_HELPABOUT
+[Signature]     SeekSet(0) "HELPABOUT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GUESS
+[ID]            NAME_ONLY_GUESS
+[Signature]     SeekSet(0) "GUESS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ABBNEW
+[ID]            NAME_ONLY_ABBNEW
+[Signature]     SeekSet(0) "ABBNEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILECLOSEORCLOSEALL
+[ID]            NAME_ONLY_FILECLOSEORCLOSEALL
+[Signature]     SeekSet(0) "FILECLOSEORCLOSEALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HI
+[ID]            NAME_ONLY_HI
+[Signature]     SeekSet(0) "HI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AC
+[ID]            NAME_ONLY_AC
+[Signature]     SeekSet(0) "AC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SIMPLE
+[ID]            NAME_ONLY_SIMPLE
+[Signature]     SeekSet(0) "SIMPLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FICHIERENREGISTRER
+[ID]            NAME_ONLY_FICHIERENREGISTRER
+[Signature]     SeekSet(0) "FICHIERENREGISTRER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FICHIERENREGISTRERSOUS
+[ID]            NAME_ONLY_FICHIERENREGISTRERSOUS
+[Signature]     SeekSet(0) "FICHIERENREGISTRERSOUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only README
+[ID]            NAME_ONLY_README
+[Signature]     SeekSet(0) "README" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XXXXX
+[ID]            NAME_ONLY_XXXXX
+[Signature]     SeekSet(0) "XXXXX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CFFSA
+[ID]            NAME_ONLY_CFFSA
+[Signature]     SeekSet(0) "CFFSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CFFO
+[ID]            NAME_ONLY_CFFO
+[Signature]     SeekSet(0) "CFFO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CFFS
+[ID]            NAME_ONLY_CFFS
+[Signature]     SeekSet(0) "CFFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AOP
+[ID]            NAME_ONLY_AOP
+[Signature]     SeekSet(0) "AOP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FSA
+[ID]            NAME_ONLY_FSA
+[Signature]     SeekSet(0) "FSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDITAUTOTEXT
+[ID]            NAME_ONLY_EDITAUTOTEXT
+[Signature]     SeekSet(0) "EDITAUTOTEXT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AEDUB
+[ID]            NAME_ONLY_AEDUB
+[Signature]     SeekSet(0) "AEDUB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FCDUB
+[ID]            NAME_ONLY_FCDUB
+[Signature]     SeekSet(0) "FCDUB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KILLIT
+[ID]            NAME_ONLY_KILLIT
+[Signature]     SeekSet(0) "KILLIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MESSAGE
+[ID]            NAME_ONLY_MESSAGE
+[Signature]     SeekSet(0) "MESSAGE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXEKILLER
+[ID]            NAME_ONLY_EXEKILLER
+[Signature]     SeekSet(0) "EXEKILLER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANNIHILATOR
+[ID]            NAME_ONLY_ANNIHILATOR
+[Signature]     SeekSet(0) "ANNIHILATOR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEWDOCINSERT
+[ID]            NAME_ONLY_NEWDOCINSERT
+[Signature]     SeekSet(0) "NEWDOCINSERT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SEARCHDESTROYER
+[ID]            NAME_ONLY_SEARCHDESTROYER
+[Signature]     SeekSet(0) "SEARCHDESTROYER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEED
+[ID]            NAME_ONLY_DEED
+[Signature]     SeekSet(0) "DEED" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRUD
+[ID]            NAME_ONLY_CRUD
+[Signature]     SeekSet(0) "CRUD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PASSWORD
+[ID]            NAME_ONLY_PASSWORD
+[Signature]     SeekSet(0) "PASSWORD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSWFC
+[ID]            NAME_ONLY_MSWFC
+[Signature]     SeekSet(0) "MSWFC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MSWAO
+[ID]            NAME_ONLY_MSWAO
+[Signature]     SeekSet(0) "MSWAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AO
+[ID]            NAME_ONLY_AO
+[Signature]     SeekSet(0) "AO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COPYSAVEAS
+[ID]            NAME_ONLY_COPYSAVEAS
+[Signature]     SeekSet(0) "COPYSAVEAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COPYOPEN
+[ID]            NAME_ONLY_COPYOPEN
+[Signature]     SeekSet(0) "COPYOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "PAYLOADR"
+[ID]            NAME_ONLY_PAYLOADR
+[Signature]     SeekSet(0) "PAYLOADR" AtEnd()
+[NameSigEnd]
+
+
+[NameSigStart]
+[Comment]       "AAAZAOR"
+[ID]            NAME_ONLY_AAAZAOR
+[Signature]     SeekSet(0) "AAAZAOR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "AAAZFSR"
+[ID]            NAME_ONLY_AAAZFSR
+[Signature]     SeekSet(0) "AAAZFSR" AtEnd()
+[NameSigEnd]
+
+
+[NameSigStart]
+[Comment]       Only FRENZY
+[ID]            NAME_ONLY_FRENZY
+[Signature]     SeekSet(0) "FRENZY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM999
+[ID]            NAME_ONLY_USERFORM999
+[Signature]     SeekSet(0) "USERFORM999" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SPARKLE
+[ID]            NAME_ONLY_SPARKLE
+[Signature]     SeekSet(0) "SPARKLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM900
+[ID]            NAME_ONLY_USERFORM900
+[Signature]     SeekSet(0) "USERFORM900" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VISUALAND
+[ID]            NAME_ONLY_VISUALAND
+[Signature]     SeekSet(0) "VISUALAND" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SYSTEM32
+[ID]            NAME_ONLY_SYSTEM32
+[Signature]     SeekSet(0) "SYSTEM32" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]           6 blanks
+[ID]                NAME_6_BLANK
+[Signature]         SeekSet(0) "      " AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]           7 blanks
+[ID]                NAME_7_BLANK
+[Signature]         SeekSet(0) "       " AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]           8 blanks
+[ID]                NAME_8_BLANK
+[Signature]         SeekSet(0) "        " AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]           9 blanks
+[ID]                NAME_9_BLANK
+[Signature]         SeekSet(0) "         " AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PESAN
+[ID]            NAME_ONLY_PESAN
+[Signature]     SeekSet(0) "PESAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COPYOFAUTOOPEN
+[ID]            NAME_ONLY_COPYOFAUTOOPEN
+[Signature]     SeekSet(0) "COPYOFAUTOOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NORMALAUTO
+[ID]            NAME_ONLY_NORMALAUTO
+[Signature]     SeekSet(0) "NORMALAUTO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COPYOFFILEEXIT
+[ID]            NAME_ONLY_COPYOFFILEEXIT
+[Signature]     SeekSet(0) "COPYOFFILEEXIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COPYOFFILESAVE
+[ID]            NAME_ONLY_COPYOFFILESAVE
+[Signature]     SeekSet(0) "COPYOFFILESAVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ATEXC
+[ID]            NAME_ONLY_ATEXC
+[Signature]     SeekSet(0) "ATEXC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FLSVV
+[ID]            NAME_ONLY_FLSVV
+[Signature]     SeekSet(0) "FLSVV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FLSVVS
+[ID]            NAME_ONLY_FLSVVS
+[Signature]     SeekSet(0) "FLSVVS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TLSMCR
+[ID]            NAME_ONLY_TLSMCR
+[Signature]     SeekSet(0) "TLSMCR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FLOPVVV
+[ID]            NAME_ONLY_FLOPVVV
+[Signature]     SeekSet(0) "FLOPVVV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FCLCCC
+[ID]            NAME_ONLY_FCLCCC
+[Signature]     SeekSet(0) "FCLCCC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IMPROVEVVVV5
+[ID]            NAME_ONLY_IMPROVEVVVV5
+[Signature]     SeekSet(0) "IMPROVEVVVV5" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDDE
+[ID]            NAME_ONLY_WORDDE
+[Signature]     SeekSet(0) "WORDDE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDSU
+[ID]            NAME_ONLY_WORDSU
+[Signature]     SeekSet(0) "WORDSU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FORMATSTYLE
+[ID]            NAME_ONLY_FORMATSTYLE
+[Signature]     SeekSet(0) "FORMATSTYLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIEWTOOLBARS
+[ID]            NAME_ONLY_VIEWTOOLBARS
+[Signature]     SeekSet(0) "VIEWTOOLBARS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VICTORWIDJAJA
+[ID]            NAME_ONLY_VICTORWIDJAJA
+[Signature]     SeekSet(0) "VICTORWIDJAJA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HARKONE
+[ID]            NAME_ONLY_HARKONE
+[Signature]     SeekSet(0) "HARKONE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEFEND
+[ID]            NAME_ONLY_DEFEND
+[Signature]     SeekSet(0) "DEFEND" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODULE3
+[ID]            NAME_ONLY_MODULE3
+[Signature]     SeekSet(0) "MODULE3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODULE4
+[ID]            NAME_ONLY_MODULE4
+[Signature]     SeekSet(0) "MODULE4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODULE1
+[ID]            NAME_ONLY_MODULE1
+[Signature]     SeekSet(0) "MODULE1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODULE2
+[ID]            NAME_ONLY_MODULE2
+[Signature]     SeekSet(0) "MODULE2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEFENDER
+[ID]            NAME_ONLY_DEFENDER
+[Signature]     SeekSet(0) "DEFENDER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VEXIT
+[ID]            NAME_ONLY_VEXIT
+[Signature]     SeekSet(0) "VEXIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VFSAV
+[ID]            NAME_ONLY_VFSAV
+[Signature]     SeekSet(0) "VFSAV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VMACRO
+[ID]            NAME_ONLY_VMACRO
+[Signature]     SeekSet(0) "VMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOOGIE
+[ID]            NAME_ONLY_BOOGIE
+[Signature]     SeekSet(0) "BOOGIE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JOKE
+[ID]            NAME_ONLY_JOKE
+[Signature]     SeekSet(0) "JOKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TFGAMV
+[ID]            NAME_ONLY_TFGAMV
+[Signature]     SeekSet(0) "TFGAMV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KILL
+[ID]            NAME_ONLY_KILL
+[Signature]     SeekSet(0) "KILL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only THETIME
+[ID]            NAME_ONLY_THETIME
+[Signature]     SeekSet(0) "THETIME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SUNBEAM
+[ID]            NAME_ONLY_SUNBEAM
+[Signature]     SeekSet(0) "SUNBEAM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACTIVE
+[ID]            NAME_ONLY_ACTIVE
+[Signature]     SeekSet(0) "ACTIVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ATTACK
+[ID]            NAME_ONLY_ATTACK
+[Signature]     SeekSet(0) "ATTACK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INACTIVE
+[ID]            NAME_ONLY_INACTIVE
+[Signature]     SeekSet(0) "INACTIVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANAKAE
+[ID]            NAME_ONLY_ANAKAE
+[Signature]     SeekSet(0) "ANAKAE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANAKAO
+[ID]            NAME_ONLY_ANAKAO
+[Signature]     SeekSet(0) "ANAKAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANAKSA
+[ID]            NAME_ONLY_ANAKSA
+[Signature]     SeekSet(0) "ANAKSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANAKSMU
+[ID]            NAME_ONLY_ANAKSMU
+[Signature]     SeekSet(0) "ANAKSMU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ZASHIB
+[ID]            NAME_ONLY_ZASHIB
+[Signature]     SeekSet(0) "ZASHIB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MUTAGEN
+[ID]            NAME_ONLY_MUTAGEN
+[Signature]     SeekSet(0) "MUTAGEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KNELL
+[ID]            NAME_ONLY_KNELL
+[Signature]     SeekSet(0) "KNELL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VENENO
+[ID]            NAME_ONLY_VENENO
+[Signature]     SeekSet(0) "VENENO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TRAVEL1
+[ID]            NAME_ONLY_TRAVEL1
+[Signature]     SeekSet(0) "TRAVEL1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TRAVEL2
+[ID]            NAME_ONLY_TRAVEL2
+[Signature]     SeekSet(0) "TRAVEL2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TRINITRON
+[ID]            NAME_ONLY_TRINITRON
+[Signature]     SeekSet(0) "TRINITRON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOSALIR
+[ID]            NAME_ONLY_ARCHIVOSALIR
+[Signature]     SeekSet(0) "ARCHIVOSALIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSERTVENENO
+[ID]            NAME_ONLY_INSERTVENENO
+[Signature]     SeekSet(0) "INSERTVENENO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOIMPRIMIR
+[ID]            NAME_ONLY_ARCHIVOIMPRIMIR
+[Signature]     SeekSet(0) "ARCHIVOIMPRIMIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHIVOIMPRIMIRPREDETER
+[ID]            NAME_ONLY_ARCHIVOIMPRIMIRPREDETER
+[Signature]     SeekSet(0) "ARCHIVOIMPRIMIRPREDETER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SOK
+[ID]            NAME_ONLY_SOK
+[Signature]     SeekSet(0) "SOK" AtEnd()
+[NameSigEnd]
+
+
+[NameSigStart]
+[Comment]       Only TOKYO
+[ID]            NAME_ONLY_TOKYO
+[Signature]     SeekSet(0) "TOKYO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LAOS
+[ID]            NAME_ONLY_LAOS
+[Signature]     SeekSet(0) "LAOS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAV
+[ID]            NAME_ONLY_AAV
+[Signature]     SeekSet(0) "AAV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only A
+[ID]            NAME_ONLY_A
+[Signature]     SeekSet(0) "A" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only B
+[ID]            NAME_ONLY_B
+[Signature]     SeekSet(0) "B" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EMPEROR
+[ID]            NAME_ONLY_EMPEROR
+[Signature]     SeekSet(0) "EMPEROR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIRUSMESSAGE
+[ID]            NAME_ONLY_VIRUSMESSAGE
+[Signature]     SeekSet(0) "VIRUSMESSAGE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NBA
+[ID]            NAME_ONLY_NBA
+[Signature]     SeekSet(0) "NBA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FOM
+[ID]            NAME_ONLY_FOM
+[Signature]     SeekSet(0) "FOM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SKAMMY
+[ID]            NAME_ONLY_SKAMMY
+[Signature]     SeekSet(0) "SKAMMY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ZERO
+[ID]            NAME_ONLY_ZERO
+[Signature]     SeekSet(0) "ZERO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRASH
+[ID]            NAME_ONLY_CRASH
+[Signature]     SeekSet(0) "CRASH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KILLDRV
+[ID]            NAME_ONLY_KILLDRV
+[Signature]     SeekSet(0) "KILLDRV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VAMPIRE
+[ID]            NAME_ONLY_VAMPIRE
+[Signature]     SeekSet(0) "VAMPIRE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VAMP
+[ID]            NAME_ONLY_VAMP
+[Signature]     SeekSet(0) "VAMP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRONE
+[ID]            NAME_ONLY_MAKRONE
+[Signature]     SeekSet(0) "MAKRONE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRONE1
+[ID]            NAME_ONLY_MAKRONE1
+[Signature]     SeekSet(0) "MAKRONE1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRONE2
+[ID]            NAME_ONLY_MAKRONE2
+[Signature]     SeekSet(0) "MAKRONE2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRONE3
+[ID]            NAME_ONLY_MAKRONE3
+[Signature]     SeekSet(0) "MAKRONE3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEMPO
+[ID]            NAME_ONLY_TEMPO
+[Signature]     SeekSet(0) "TEMPO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ABC
+[ID]            NAME_ONLY_ABC
+[Signature]     SeekSet(0) "ABC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RED
+[ID]            NAME_ONLY_RED
+[Signature]     SeekSet(0) "RED" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ORDO
+[ID]            NAME_ONLY_ORDO
+[Signature]     SeekSet(0) "ORDO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only QUICKSILVER
+[ID]            NAME_ONLY_QUICKSILVER
+[Signature]     SeekSet(0) "QUICKSILVER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Matches any name - great for polys
+[ID]            NAME_ANY_NAME
+[Signature]     SeekSet(0)
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       VISPY...
+[ID]            NAME_START_VISPY
+[Signature]     SeekSet(0) "VISPY"
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       VIRUS...
+[ID]            NAME_START_VIRUS
+[Signature]     SeekSet(0) "VIRUS"
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BESTANDOPENEN
+[ID]            NAME_ONLY_BESTANDOPENEN
+[Signature]     SeekSet(0) "BESTANDOPENEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BESTANDOPSLAAN
+[ID]            NAME_ONLY_BESTANDOPSLAAN
+[Signature]     SeekSet(0) "BESTANDOPSLAAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BESTANDSJABLONEN
+[ID]            NAME_ONLY_BESTANDSJABLONEN
+[Signature]     SeekSet(0) "BESTANDSJABLONEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BESTANDOPSLAANALS
+[ID]            NAME_ONLY_BESTANDOPSLAANALS
+[Signature]     SeekSet(0) "BESTANDOPSLAANALS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BESTSLUITENOFALLESSLUITEN
+[ID]            NAME_ONLY_BESTSLUITENOFALLESSLUITEN
+[Signature]     SeekSet(0) "BESTSLUITENOFALLESSLUITEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COPYOFFILESAVEAS
+[ID]            NAME_ONLY_COPYOFFILESAVEAS
+[Signature]     SeekSet(0) "COPYOFFILESAVEAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FO
+[ID]            NAME_ONLY_FO
+[Signature]     SeekSet(0) "FO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FO1
+[ID]            NAME_ONLY_FO1
+[Signature]     SeekSet(0) "FO1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AC1
+[ID]            NAME_ONLY_AC1
+[Signature]     SeekSet(0) "AC1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FSA1
+[ID]            NAME_ONLY_FSA1
+[Signature]     SeekSet(0) "FSA1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FS1
+[ID]            NAME_ONLY_FS1
+[Signature]     SeekSet(0) "FS1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FS
+[ID]            NAME_ONLY_FS
+[Signature]     SeekSet(0) "FS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DNTC
+[ID]            NAME_ONLY_DNTC
+[Signature]     SeekSet(0) "DNTC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LPT1
+[ID]            NAME_ONLY_LPT1
+[Signature]     SeekSet(0) "LPT1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LPT2
+[ID]            NAME_ONLY_LPT2
+[Signature]     SeekSet(0) "LPT2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CANON
+[ID]            NAME_ONLY_CANON
+[Signature]     SeekSet(0) "CANON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EPSON
+[ID]            NAME_ONLY_EPSON
+[Signature]     SeekSet(0) "EPSON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MYMESSAGE
+[ID]            NAME_ONLY_MYMESSAGE
+[Signature]     SeekSet(0) "MYMESSAGE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOD
+[ID]            NAME_ONLY_NOD
+[Signature]     SeekSet(0) "NOD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIBERIUM
+[ID]            NAME_ONLY_TIBERIUM
+[Signature]     SeekSet(0) "TIBERIUM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DCLOSEAN
+[ID]            NAME_ONLY_DCLOSEAN
+[Signature]     SeekSet(0) "DCLOSEAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TCLOSEAN
+[ID]            NAME_ONLY_TCLOSEAN
+[Signature]     SeekSet(0) "TCLOSEAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NUKEPOWER
+[ID]            NAME_ONLY_NUKEPOWER
+[Signature]     SeekSet(0) "NUKEPOWER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOEXECNUKE
+[ID]            NAME_ONLY_AUTOEXECNUKE
+[Signature]     SeekSet(0) "AUTOEXECNUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEOPENNUKE
+[ID]            NAME_ONLY_FILEOPENNUKE
+[Signature]     SeekSet(0) "FILEOPENNUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SHELLOPENNUKE
+[ID]            NAME_ONLY_SHELLOPENNUKE
+[Signature]     SeekSet(0) "SHELLOPENNUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESAVEASNUKE
+[ID]            NAME_ONLY_FILESAVEASNUKE
+[Signature]     SeekSet(0) "FILESAVEASNUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSMACRONUKE
+[ID]            NAME_ONLY_TOOLSMACRONUKE
+[Signature]     SeekSet(0) "TOOLSMACRONUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILETEMPLATESNUKE
+[ID]            NAME_ONLY_FILETEMPLATESNUKE
+[Signature]     SeekSet(0) "FILETEMPLATESNUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPENNUKE
+[ID]            NAME_ONLY_AUTOOPENNUKE
+[Signature]     SeekSet(0) "AUTOOPENNUKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NUCLEARPOWER
+[ID]            NAME_ONLY_NUCLEARPOWER
+[Signature]     SeekSet(0) "NUCLEARPOWER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JJAE
+[ID]            NAME_ONLY_JJAE
+[Signature]     SeekSet(0) "JJAE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JJFO
+[ID]            NAME_ONLY_JJFO
+[Signature]     SeekSet(0) "JJFO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JJFS
+[ID]            NAME_ONLY_JJFS
+[Signature]     SeekSet(0) "JJFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JJTM
+[ID]            NAME_ONLY_JJTM
+[Signature]     SeekSet(0) "JJTM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JJAO
+[ID]            NAME_ONLY_JJAO
+[Signature]     SeekSet(0) "JJAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ZMB
+[ID]            NAME_ONLY_ZMB
+[Signature]     SeekSet(0) "ZMB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACTUALVIRUS
+[ID]            NAME_ONLY_ACTUALVIRUS
+[Signature]     SeekSet(0) "ACTUALVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OCTAV1
+[ID]            NAME_ONLY_OCTAV1
+[Signature]     SeekSet(0) "OCTAV1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OCTAV2
+[ID]            NAME_ONLY_OCTAV2
+[Signature]     SeekSet(0) "OCTAV2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HALIM
+[ID]            NAME_ONLY_HALIM
+[Signature]     SeekSet(0) "HALIM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WILLIAMTO
+[ID]            NAME_ONLY_WILLIAMTO
+[Signature]     SeekSet(0) "WILLIAMTO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JUSTIFYPARA
+[ID]            NAME_ONLY_JUSTIFYPARA
+[Signature]     SeekSet(0) "JUSTIFYPARA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MACROONFILE
+[ID]            NAME_ONLY_MACROONFILE
+[Signature]     SeekSet(0) "MACROONFILE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BLACKDEATH
+[ID]            NAME_ONLY_BLACKDEATH
+[Signature]     SeekSet(0) "BLACKDEATH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CLOSE
+[ID]            NAME_ONLY_CLOSE
+[Signature]     SeekSet(0) "CLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LUCIFER
+[ID]            NAME_ONLY_LUCIFER
+[Signature]     SeekSet(0) "LUCIFER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MON
+[ID]            NAME_ONLY_MON
+[Signature]     SeekSet(0) "MON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SPLASH
+[ID]            NAME_ONLY_SPLASH
+[Signature]     SeekSet(0) "SPLASH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DUMMYAO
+[ID]            NAME_ONLY_DUMMYAO
+[Signature]     SeekSet(0) "DUMMYAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DUMMYFS
+[ID]            NAME_ONLY_DUMMYFS
+[Signature]     SeekSet(0) "DUMMYFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CONAIR
+[ID]            NAME_ONLY_CONAIR
+[Signature]     SeekSet(0) "CONAIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARCHFIEND
+[ID]            NAME_ONLY_ARCHFIEND
+[Signature]     SeekSet(0) "ARCHFIEND" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOSAVE
+[ID]            NAME_ONLY_AUTOSAVE
+[Signature]     SeekSet(0) "AUTOSAVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSOPTIONS
+[ID]            NAME_ONLY_TOOLSOPTIONS
+[Signature]     SeekSet(0) "TOOLSOPTIONS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WINUPDATE
+[ID]            NAME_ONLY_WINUPDATE
+[Signature]     SeekSet(0) "WINUPDATE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDSYSTEM
+[ID]            NAME_ONLY_WORDSYSTEM
+[Signature]     SeekSet(0) "WORDSYSTEM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BAG1
+[ID]            NAME_ONLY_BAG1
+[Signature]     SeekSet(0) "BAG1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BAG2
+[ID]            NAME_ONLY_BAG2
+[Signature]     SeekSet(0) "BAG2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MULAI
+[ID]            NAME_ONLY_MULAI
+[Signature]     SeekSet(0) "MULAI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SIMPAN
+[ID]            NAME_ONLY_SIMPAN
+[Signature]     SeekSet(0) "SIMPAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEW
+[ID]            NAME_ONLY_NEW
+[Signature]     SeekSet(0) "NEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PIRE
+[ID]            NAME_ONLY_PIRE
+[Signature]     SeekSet(0) "PIRE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VAMPIRE2
+[ID]            NAME_ONLY_VAMPIRE2
+[Signature]     SeekSet(0) "VAMPIRE2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INNLIB
+[ID]            NAME_ONLY_INNLIB
+[Signature]     SeekSet(0) "INNLIB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HILFEINFO
+[ID]            NAME_ONLY_HILFEINFO
+[Signature]     SeekSet(0) "HILFEINFO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INNOCENCE
+[ID]            NAME_ONLY_INNOCENCE
+[Signature]     SeekSet(0) "INNOCENCE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DOBAK
+[ID]            NAME_ONLY_DOBAK
+[Signature]     SeekSet(0) "DOBAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OHYES
+[ID]            NAME_ONLY_OHYES
+[Signature]     SeekSet(0) "OHYES" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SDDUPLICATE
+[ID]            NAME_ONLY_SDDUPLICATE
+[Signature]     SeekSet(0) "SDDUPLICATE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHAKA
+[ID]            NAME_ONLY_CHAKA
+[Signature]     SeekSet(0) "CHAKA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VISIOOPEN
+[ID]            NAME_ONLY_VISIOOPEN
+[Signature]     SeekSet(0) "VISIOOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VISIOCLOSE
+[ID]            NAME_ONLY_VISIOCLOSE
+[Signature]     SeekSet(0) "VISIOCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIMOR
+[ID]            NAME_ONLY_TIMOR
+[Signature]     SeekSet(0) "TIMOR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOMERCYE
+[ID]            NAME_ONLY_NOMERCYE
+[Signature]     SeekSet(0) "NOMERCYE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOMERCYI
+[ID]            NAME_ONLY_NOMERCYI
+[Signature]     SeekSet(0) "NOMERCYI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MT
+[ID]            NAME_ONLY_MT
+[Signature]     SeekSet(0) "MT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEKOBELL
+[ID]            NAME_ONLY_NEKOBELL
+[Signature]     SeekSet(0) "NEKOBELL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FP
+[ID]            NAME_ONLY_FP
+[Signature]     SeekSet(0) "FP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HLP
+[ID]            NAME_ONLY_HLP
+[Signature]     SeekSet(0) "HLP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SCR
+[ID]            NAME_ONLY_SCR
+[Signature]     SeekSet(0) "SCR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TMC
+[ID]            NAME_ONLY_TMC
+[Signature]     SeekSet(0) "TMC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELP
+[ID]            NAME_ONLY_HELP
+[Signature]     SeekSet(0) "HELP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AGENTGH
+[ID]            NAME_ONLY_AGENTGH
+[Signature]     SeekSet(0) "AGENTGH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DOM
+[ID]            NAME_ONLY_DOM
+[Signature]     SeekSet(0) "DOM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FREE
+[ID]            NAME_ONLY_FREE
+[Signature]     SeekSet(0) "FREE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WANT
+[ID]            NAME_ONLY_WANT
+[Signature]     SeekSet(0) "WANT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CUS
+[ID]            NAME_ONLY_CUS
+[Signature]     SeekSet(0) "CUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EOP
+[ID]            NAME_ONLY_EOP
+[Signature]     SeekSet(0) "EOP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ESA
+[ID]            NAME_ONLY_ESA
+[Signature]     SeekSet(0) "ESA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NIZ
+[ID]            NAME_ONLY_NIZ
+[Signature]     SeekSet(0) "NIZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OEX
+[ID]            NAME_ONLY_OEX
+[Signature]     SeekSet(0) "OEX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OOP
+[ID]            NAME_ONLY_OOP
+[Signature]     SeekSet(0) "OOP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PLT
+[ID]            NAME_ONLY_PLT
+[Signature]     SeekSet(0) "PLT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WEV
+[ID]            NAME_ONLY_WEV
+[Signature]     SeekSet(0) "WEV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CROM
+[ID]            NAME_ONLY_CROM
+[Signature]     SeekSet(0) "CROM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CUST
+[ID]            NAME_ONLY_CUST
+[Signature]     SeekSet(0) "CUST" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ESAA
+[ID]            NAME_ONLY_ESAA
+[Signature]     SeekSet(0) "ESAA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OOP1
+[ID]            NAME_ONLY_OOP1
+[Signature]     SeekSet(0) "OOP1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MESSA
+[ID]            NAME_ONLY_MESSA
+[Signature]     SeekSet(0) "MESSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WATCH
+[ID]            NAME_ONLY_WATCH
+[Signature]     SeekSet(0) "WATCH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BEEPER
+[ID]            NAME_ONLY_BEEPER
+[Signature]     SeekSet(0) "BEEPER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only THEVWARNING
+[ID]            NAME_ONLY_THEVWARNING
+[Signature]     SeekSet(0) "THEVWARNING" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TOOLSCUSTOMIZETOOLBAR
+[ID]            NAME_ONLY_TOOLSCUSTOMIZETOOLBAR
+[Signature]     SeekSet(0) "TOOLSCUSTOMIZETOOLBAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only POO
+[ID]            NAME_ONLY_POO
+[Signature]     SeekSet(0) "POO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PERSILMAN
+[ID]            NAME_ONLY_PERSILMAN
+[Signature]     SeekSet(0) "PERSILMAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CLEARKEPEK
+[ID]            NAME_ONLY_CLEARKEPEK
+[Signature]     SeekSet(0) "CLEARKEPEK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only I
+[ID]            NAME_ONLY_I
+[Signature]     SeekSet(0) "I" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only R
+[ID]            NAME_ONLY_R
+[Signature]     SeekSet(0) "R" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only S
+[ID]            NAME_ONLY_S
+[Signature]     SeekSet(0) "S" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GAS
+[ID]            NAME_ONLY_GAS
+[Signature]     SeekSet(0) "GAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DAKOTA
+[ID]            NAME_ONLY_DAKOTA
+[Signature]     SeekSet(0) "DAKOTA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EVAHZG
+[ID]            NAME_ONLY_EVAHZG
+[Signature]     SeekSet(0) "EVAHZG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARQUIVOABRIR
+[ID]            NAME_ONLY_ARQUIVOABRIR
+[Signature]     SeekSet(0) "ARQUIVOABRIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARQUIVOSALVARCOMO
+[ID]            NAME_ONLY_ARQUIVOSALVARCOMO
+[Signature]     SeekSet(0) "ARQUIVOSALVARCOMO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WININIT
+[ID]            NAME_ONLY_WININIT
+[Signature]     SeekSet(0) "WININIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DISASTER
+[ID]            NAME_ONLY_DISASTER
+[Signature]     SeekSet(0) "DISASTER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CREMA
+[ID]            NAME_ONLY_CREMA
+[Signature]     SeekSet(0) "CREMA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LITTLEHORN
+[ID]            NAME_ONLY_LITTLEHORN
+[Signature]     SeekSet(0) "LITTLEHORN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MG001
+[ID]            NAME_ONLY_MG001
+[Signature]     SeekSet(0) "MG001" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOSAVEAS
+[ID]            NAME_ONLY_AUTOSAVEAS
+[Signature]     SeekSet(0) "AUTOSAVEAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATA1
+[ID]            NAME_ONLY_DATA1
+[Signature]     SeekSet(0) "DATA1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATA2
+[ID]            NAME_ONLY_DATA2
+[Signature]     SeekSet(0) "DATA2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATA
+[ID]            NAME_ONLY_DATA
+[Signature]     SeekSet(0) "DATA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MTE
+[ID]            NAME_ONLY_MTE
+[Signature]     SeekSet(0) "MTE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RAMSES
+[ID]            NAME_ONLY_RAMSES
+[Signature]     SeekSet(0) "RAMSES" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESTAMPA
+[ID]            NAME_ONLY_FILESTAMPA
+[Signature]     SeekSet(0) "FILESTAMPA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESTAMPAPREDEF
+[ID]            NAME_ONLY_FILESTAMPAPREDEF
+[Signature]     SeekSet(0) "FILESTAMPAPREDEF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UTILMACRO
+[ID]            NAME_ONLY_UTILMACRO
+[Signature]     SeekSet(0) "UTILMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FERRAMMACRO
+[ID]            NAME_ONLY_FERRAMMACRO
+[Signature]     SeekSet(0) "FERRAMMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARQUIVOMODELOS
+[ID]            NAME_ONLY_ARQUIVOMODELOS
+[Signature]     SeekSet(0) "ARQUIVOMODELOS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SWEETPAKISPRATIWI
+[ID]            NAME_ONLY_SWEETPAKISPRATIWI
+[Signature]     SeekSet(0) "SWEETPAKISPRATIWI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIAUTOEXEC
+[ID]            NAME_ONLY_PAKISPRATIWIAUTOEXEC
+[Signature]     SeekSet(0) "PAKISPRATIWIAUTOEXEC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIAUTOOPEN
+[ID]            NAME_ONLY_PAKISPRATIWIAUTOOPEN
+[Signature]     SeekSet(0) "PAKISPRATIWIAUTOOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIFILEOPEN
+[ID]            NAME_ONLY_PAKISPRATIWIFILEOPEN
+[Signature]     SeekSet(0) "PAKISPRATIWIFILEOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIFILESAVE
+[ID]            NAME_ONLY_PAKISPRATIWIFILESAVE
+[Signature]     SeekSet(0) "PAKISPRATIWIFILESAVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIAUTOCLOSE
+[ID]            NAME_ONLY_PAKISPRATIWIAUTOCLOSE
+[Signature]     SeekSet(0) "PAKISPRATIWIAUTOCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIFILESAVEAS
+[ID]            NAME_ONLY_PAKISPRATIWIFILESAVEAS
+[Signature]     SeekSet(0) "PAKISPRATIWIFILESAVEAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWITOOLSMACRO
+[ID]            NAME_ONLY_PAKISPRATIWITOOLSMACRO
+[Signature]     SeekSet(0) "PAKISPRATIWITOOLSMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWIFILETEMPLATES
+[ID]            NAME_ONLY_PAKISPRATIWIFILETEMPLATES
+[Signature]     SeekSet(0) "PAKISPRATIWIFILETEMPLATES" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAKISPRATIWITOOLSCUSTOMIZE
+[ID]            NAME_ONLY_PAKISPRATIWITOOLSCUSTOMIZE
+[Signature]     SeekSet(0) "PAKISPRATIWITOOLSCUSTOMIZE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INFLUENZA
+[ID]            NAME_ONLY_INFLUENZA
+[Signature]     SeekSet(0) "INFLUENZA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SLOT
+[ID]            NAME_ONLY_SLOT
+[Signature]     SeekSet(0) "SLOT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VHDL
+[ID]            NAME_ONLY_VHDL
+[Signature]     SeekSet(0) "VHDL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AOSAMPLE
+[ID]            NAME_ONLY_AOSAMPLE
+[Signature]     SeekSet(0) "AOSAMPLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FOSAMPLE
+[ID]            NAME_ONLY_FOSAMPLE
+[Signature]     SeekSet(0) "FOSAMPLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FSSAMPLE
+[ID]            NAME_ONLY_FSSAMPLE
+[Signature]     SeekSet(0) "FSSAMPLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only REMOVEVACCINE
+[ID]            NAME_ONLY_REMOVEVACCINE
+[Signature]     SeekSet(0) "REMOVEVACCINE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GENERATION
+[ID]            NAME_ONLY_GENERATION
+[Signature]     SeekSet(0) "GENERATION" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEEXIT0
+[ID]            NAME_ONLY_FILEEXIT0
+[Signature]     SeekSet(0) "FILEEXIT0" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAAAA
+[ID]            NAME_ONLY_AAAAA
+[Signature]     SeekSet(0) "AAAAA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORMS
+[ID]            NAME_ONLY_WORMS
+[Signature]     SeekSet(0) "WORMS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GNULL
+[ID]            NAME_ONLY_GNULL
+[Signature]     SeekSet(0) "GNULL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GARQIMPRIMIR
+[ID]            NAME_ONLY_GARQIMPRIMIR
+[Signature]     SeekSet(0) "GARQIMPRIMIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIBLIOTECA
+[ID]            NAME_ONLY_BIBLIOTECA
+[Signature]     SeekSet(0) "BIBLIOTECA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARQUIVOIMPRIMIR
+[ID]            NAME_ONLY_ARQUIVOIMPRIMIR
+[Signature]     SeekSet(0) "ARQUIVOIMPRIMIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARQUIVOIMPRIMIRPADR?O
+[ID]            NAME_ONLY_ARQUIVOIMPRIMIRPADR_O
+[Signature]     SeekSet(0) "ARQUIVOIMPRIMIRPADR"
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OEMLOGO
+[ID]            NAME_ONLY_OEMLOGO
+[Signature]     SeekSet(0) "OEMLOGO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OEMCLOSE
+[ID]            NAME_ONLY_OEMCLOSE
+[Signature]     SeekSet(0) "OEMCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MEOCLOSE
+[ID]            NAME_ONLY_MEOCLOSE
+[Signature]     SeekSet(0) "MEOCLOSE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VNULL
+[ID]            NAME_ONLY_VNULL
+[Signature]     SeekSet(0) "VNULL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VARQIMPRIMIR
+[ID]            NAME_ONLY_VARQIMPRIMIR
+[Signature]     SeekSet(0) "VARQIMPRIMIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARQUIVOSALVAR
+[ID]            NAME_ONLY_ARQUIVOSALVAR
+[Signature]     SeekSet(0) "ARQUIVOSALVAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UTILPERSONALIZAR
+[ID]            NAME_ONLY_UTILPERSONALIZAR
+[Signature]     SeekSet(0) "UTILPERSONALIZAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FERRAMPERSONALIZAR
+[ID]            NAME_ONLY_FERRAMPERSONALIZAR
+[Signature]     SeekSet(0) "FERRAMPERSONALIZAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUCKYOU
+[ID]            NAME_ONLY_FUCKYOU
+[Signature]     SeekSet(0) "FUCKYOU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARD01
+[ID]            NAME_ONLY_ARD01
+[Signature]     SeekSet(0) "ARD01" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARD02
+[ID]            NAME_ONLY_ARD02
+[Signature]     SeekSet(0) "ARD02" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARD03
+[ID]            NAME_ONLY_ARD03
+[Signature]     SeekSet(0) "ARD03" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ARD04
+[ID]            NAME_ONLY_ARD04
+[Signature]     SeekSet(0) "ARD04" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GETRID
+[ID]            NAME_ONLY_GETRID
+[Signature]     SeekSet(0) "GETRID" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VERIDENT
+[ID]            NAME_ONLY_VERIDENT
+[Signature]     SeekSet(0) "VERIDENT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPEN2
+[ID]            NAME_ONLY_AUTOOPEN2
+[Signature]     SeekSet(0) "AUTOOPEN2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BJTRADEMARK
+[ID]            NAME_ONLY_BJTRADEMARK
+[Signature]     SeekSet(0) "BJTRADEMARK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GRBACK
+[ID]            NAME_ONLY_GRBACK
+[Signature]     SeekSet(0) "GRBACK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VERIDENT2
+[ID]            NAME_ONLY_VERIDENT2
+[Signature]     SeekSet(0) "VERIDENT2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SAVE000
+[ID]            NAME_ONLY_SAVE000
+[Signature]     SeekSet(0) "SAVE000" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only APPTOOLSM
+[ID]            NAME_ONLY_APPTOOLSM
+[Signature]     SeekSet(0) "APPTOOLSM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ONE
+[ID]            NAME_ONLY_ONE
+[Signature]     SeekSet(0) "ONE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WOMPIE
+[ID]            NAME_ONLY_WOMPIE
+[Signature]     SeekSet(0) "WOMPIE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESAVEALL
+[ID]            NAME_ONLY_FILESAVEALL
+[Signature]     SeekSet(0) "FILESAVEALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEOPENX
+[ID]            NAME_ONLY_FILEOPENX
+[Signature]     SeekSet(0) "FILEOPENX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ASLIAUTOEXEC
+[ID]            NAME_ONLY_ASLIAUTOEXEC
+[Signature]     SeekSet(0) "ASLIAUTOEXEC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANTIMACROSVIRUS
+[ID]            NAME_ONLY_ANTIMACROSVIRUS
+[Signature]     SeekSet(0) "ANTIMACROSVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPENX
+[ID]            NAME_ONLY_AUTOOPENX
+[Signature]     SeekSet(0) "AUTOOPENX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RVSAMPLE
+[ID]            NAME_ONLY_RVSAMPLE
+[Signature]     SeekSet(0) "RVSAMPLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DELTA
+[ID]            NAME_ONLY_DELTA
+[Signature]     SeekSet(0) "DELTA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ALEVIRUS
+[ID]            NAME_ONLY_ALEVIRUS
+[Signature]     SeekSet(0) "ALEVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SAOCAETANODOSUL
+[ID]            NAME_ONLY_SAOCAETANODOSUL
+[Signature]     SeekSet(0) "SAOCAETANODOSUL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NATTU
+[ID]            NAME_ONLY_NATTU
+[Signature]     SeekSet(0) "NATTU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GUIDASUPPORTO
+[ID]            NAME_ONLY_GUIDASUPPORTO
+[Signature]     SeekSet(0) "GUIDASUPPORTO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GUIDAINFORMAZIONI
+[ID]            NAME_ONLY_GUIDAINFORMAZIONI
+[Signature]     SeekSet(0) "GUIDAINFORMAZIONI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AP
+[ID]            NAME_ONLY_AP
+[Signature]     SeekSet(0) "AP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TM
+[ID]            NAME_ONLY_TM
+[Signature]     SeekSet(0) "TM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILE1
+[ID]            NAME_ONLY_FILE1
+[Signature]     SeekSet(0) "FILE1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEA
+[ID]            NAME_ONLY_FILEA
+[Signature]     SeekSet(0) "FILEA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VICODINES
+[ID]            NAME_ONLY_VICODINES
+[Signature]     SeekSet(0) "VICODINES" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIEWVBCODE
+[ID]            NAME_ONLY_VIEWVBCODE
+[Signature]     SeekSet(0) "VIEWVBCODE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CARTMAN
+[ID]            NAME_ONLY_CARTMAN
+[Signature]     SeekSet(0) "CARTMAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OUTBREAK
+[ID]            NAME_ONLY_OUTBREAK
+[Signature]     SeekSet(0) "OUTBREAK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COP
+[ID]            NAME_ONLY_COP
+[Signature]     SeekSet(0) "COP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DOK
+[ID]            NAME_ONLY_DOK
+[Signature]     SeekSet(0) "DOK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DSU
+[ID]            NAME_ONLY_DSU
+[Signature]     SeekSet(0) "DSU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WRD
+[ID]            NAME_ONLY_WRD
+[Signature]     SeekSet(0) "WRD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUNFUNFUN1
+[ID]            NAME_ONLY_FUNFUNFUN1
+[Signature]     SeekSet(0) "FUNFUNFUN1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUNFUNFUN2
+[ID]            NAME_ONLY_FUNFUNFUN2
+[Signature]     SeekSet(0) "FUNFUNFUN2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUNFUNFUN3
+[ID]            NAME_ONLY_FUNFUNFUN3
+[Signature]     SeekSet(0) "FUNFUNFUN3" AtEnd()
+[NameSigEnd]
+
+
+[NameSigStart]
+[Comment]       Only RATSMAGIC
+[ID]            NAME_ONLY_RATSMAGIC
+[Signature]     SeekSet(0) "RATSMAGIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BG
+[ID]            NAME_ONLY_BG
+[Signature]     SeekSet(0) "BG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only DW97MVCK
+[ID]               NAME_ONLY_DW97MVCK
+[Signature]        SeekSet(0) "DW97MVCK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMRETRO
+[ID]               NAME_ONLY_FRMRETRO
+[Signature]        SeekSet(0) "FRMRETRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMSTARTFORM
+[ID]               NAME_ONLY_FRMSTARTFORM
+[Signature]        SeekSet(0) "FRMSTARTFORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOAD
+[ID]               NAME_ONLY_FRMPAYLOAD
+[Signature]        SeekSet(0) "FRMPAYLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMMACROS
+[ID]               NAME_ONLY_FRMMACROS
+[Signature]        SeekSet(0) "FRMMACROS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMSTEALTH
+[ID]               NAME_ONLY_FRMSTEALTH
+[Signature]        SeekSet(0) "FRMSTEALTH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMMAKEVIRUS
+[ID]               NAME_ONLY_FRMMAKEVIRUS
+[Signature]        SeekSet(0) "FRMMAKEVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMVIRUSSOURCENAME
+[ID]               NAME_ONLY_FRMVIRUSSOURCENAME
+[Signature]        SeekSet(0) "FRMVIRUSSOURCENAME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMVIRUSBODY
+[ID]               NAME_ONLY_FRMVIRUSBODY
+[Signature]        SeekSet(0) "FRMVIRUSBODY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADBEEP
+[ID]               NAME_ONLY_FRMPAYLOADBEEP
+[Signature]        SeekSet(0) "FRMPAYLOADBEEP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPOLYMORPHIC
+[ID]               NAME_ONLY_FRMPOLYMORPHIC
+[Signature]        SeekSet(0) "FRMPOLYMORPHIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADEXITWINDOWS
+[ID]               NAME_ONLY_FRMPAYLOADEXITWINDOWS
+[Signature]        SeekSet(0) "FRMPAYLOADEXITWINDOWS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADMESSAGEBOX
+[ID]               NAME_ONLY_FRMPAYLOADMESSAGEBOX
+[Signature]        SeekSet(0) "FRMPAYLOADMESSAGEBOX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADCHANGESTATUSBAR
+[ID]               NAME_ONLY_FRMPAYLOADCHANGESTATUSBAR
+[Signature]        SeekSet(0) "FRMPAYLOADCHANGESTATUSBAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADSETPASSWORD
+[ID]               NAME_ONLY_FRMPAYLOADSETPASSWORD
+[Signature]        SeekSet(0) "FRMPAYLOADSETPASSWORD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADCHANGECAPTION
+[ID]               NAME_ONLY_FRMPAYLOADCHANGECAPTION
+[Signature]        SeekSet(0) "FRMPAYLOADCHANGECAPTION" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]          Only FRMPAYLOADOFFICEASSISTANT
+[ID]               NAME_ONLY_FRMPAYLOADOFFICEASSISTANT
+[Signature]        SeekSet(0) "FRMPAYLOADOFFICEASSISTANT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BISMARK
+[ID]            NAME_ONLY_BISMARK
+[Signature]     SeekSet(0) "BISMARK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CALENDAR
+[ID]            NAME_ONLY_CALENDAR
+[Signature]     SeekSet(0) "CALENDAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CMD
+[ID]            NAME_ONLY_CMD
+[Signature]     SeekSet(0) "CMD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OPIM
+[ID]            NAME_ONLY_OPIM
+[Signature]     SeekSet(0) "OPIM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GAMBLE
+[ID]            NAME_ONLY_GAMBLE
+[Signature]     SeekSet(0) "GAMBLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM998
+[ID]            NAME_ONLY_USERFORM998
+[Signature]     SeekSet(0) "USERFORM998" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VICTORTAN
+[ID]            NAME_ONLY_VICTORTAN
+[Signature]     SeekSet(0) "VICTORTAN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NIGHTSHADEKILLER
+[ID]            NAME_ONLY_NIGHTSHADEKILLER
+[Signature]     SeekSet(0) "NIGHTSHADEKILLER" AtEnd()
+[NameSigEnd]
+
+#VMacro Feb98
+[NameSigStart]
+[Comment]       Only AAZAO
+[ID]            NAME_ONLY_AAZAO
+[Signature]     SeekSet(0) "AAZAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AAZFS
+[ID]            NAME_ONLY_AAZFS
+[Signature]     SeekSet(0) "AAZFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DBOMB
+[ID]            NAME_ONLY_DBOMB
+[Signature]     SeekSet(0) "DBOMB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CUSTOM
+[ID]            NAME_ONLY_CUSTOM
+[Signature]     SeekSet(0) "CUSTOM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PWRPNT
+[ID]            NAME_ONLY_PWRPNT
+[Signature]     SeekSet(0) "PWRPNT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FOXZ
+[ID]            NAME_ONLY_FOXZ
+[Signature]     SeekSet(0) "FOXZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELPWORDPERFECTHELP
+[ID]            NAME_ONLY_HELPWORDPERFECTHELP
+[Signature]     SeekSet(0) "HELPWORDPERFECTHELP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EXTRASW
+[ID]            NAME_BEGIN_EXTRASW
+[Signature]     SeekSet(0) "EXTRASW"
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FORM
+[ID]            NAME_ONLY_FORM
+[Signature]     SeekSet(0) "FORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ECO
+[ID]            NAME_ONLY_ECO
+[Signature]     SeekSet(0) "ECO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KEEP
+[ID]            NAME_ONLY_KEEP
+[Signature]     SeekSet(0) "KEEP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SPREAD
+[ID]            NAME_ONLY_SPREAD
+[Signature]     SeekSet(0) "SPREAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEPRINTPREVIEW
+[ID]            NAME_ONLY_FILEPRINTPREVIEW
+[Signature]     SeekSet(0) "FILEPRINTPREVIEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PEACE
+[ID]            NAME_ONLY_PEACE
+[Signature]     SeekSet(0) "PEACE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ID
+[ID]            NAME_ONLY_ID
+[Signature]     SeekSet(0) "ID" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IT
+[ID]            NAME_ONLY_IT
+[Signature]     SeekSet(0) "IT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NFO
+[ID]            NAME_ONLY_NFO
+[Signature]     SeekSet(0) "NFO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NFS
+[ID]            NAME_ONLY_NFS
+[Signature]     SeekSet(0) "NFS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NFT
+[ID]            NAME_ONLY_NFT
+[Signature]     SeekSet(0) "NFT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NTM
+[ID]            NAME_ONLY_NTM
+[Signature]     SeekSet(0) "NTM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XXX
+[ID]            NAME_ONLY_XXX
+[Signature]     SeekSet(0) "XXX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NFSA
+[ID]            NAME_ONLY_NFSA
+[Signature]     SeekSet(0) "NFSA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NAO
+[ID]            NAME_ONLY_NAO
+[Signature]     SeekSet(0) "NAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MIR
+[ID]            NAME_ONLY_MIR
+[Signature]     SeekSet(0) "MIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUCKER
+[ID]            NAME_ONLY_FUCKER
+[Signature]     SeekSet(0) "FUCKER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SOKKER
+[ID]            NAME_ONLY_SOKKER
+[Signature]     SeekSet(0) "SOKKER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only M1
+[ID]            NAME_ONLY_M1
+[Signature]     SeekSet(0) "M1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only M2
+[ID]            NAME_ONLY_M2
+[Signature]     SeekSet(0) "M2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only M3
+[ID]            NAME_ONLY_M3
+[Signature]     SeekSet(0) "M3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only M4
+[ID]            NAME_ONLY_M4
+[Signature]     SeekSet(0) "M4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOLD
+[ID]            NAME_ONLY_AUTOOLD
+[Signature]     SeekSet(0) "AUTOOLD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FORMATTABULATOR
+[ID]            NAME_ONLY_FORMATTABULATOR
+[Signature]     SeekSet(0) "FORMATTABULATOR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NIGRO
+[ID]            NAME_ONLY_NIGRO
+[Signature]     SeekSet(0) "NIGRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JJAB
+[ID]            NAME_ONLY_JJAB
+[Signature]     SeekSet(0) "JJAB" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LOADIT
+[ID]            NAME_ONLY_LOADIT
+[Signature]     SeekSet(0) "LOADIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSTALLIT
+[ID]            NAME_ONLY_INSTALLIT
+[Signature]     SeekSet(0) "INSTALLIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PLOAD
+[ID]            NAME_ONLY_PLOAD
+[Signature]     SeekSet(0) "PLOAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AEX
+[ID]            NAME_ONLY_AEX
+[Signature]     SeekSet(0) "AEX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TMNFT
+[ID]            NAME_ONLY_TMNFT
+[Signature]     SeekSet(0) "TMNFT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INJEKT
+[ID]            NAME_ONLY_INJEKT
+[Signature]     SeekSet(0) "INJEKT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MACRO1
+[ID]            NAME_ONLY_MACRO1
+[Signature]     SeekSet(0) "MACRO1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MACRO10
+[ID]            NAME_ONLY_MACRO10
+[Signature]     SeekSet(0) "MACRO10" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SKULL
+[ID]            NAME_ONLY_SKULL
+[Signature]     SeekSet(0) "SKULL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UTILS
+[ID]            NAME_ONLY_UTILS
+[Signature]     SeekSet(0) "UTILS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TWO
+[ID]            NAME_ONLY_TWO
+[Signature]     SeekSet(0) "TWO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELLO
+[ID]            NAME_ONLY_HELLO
+[Signature]     SeekSet(0) "HELLO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CS77
+[ID]            NAME_ONLY_CS77
+[Signature]     SeekSet(0) "CS77" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STARDUST
+[ID]            NAME_ONLY_STARDUST
+[Signature]     SeekSet(0) "STARDUST" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HITLER
+[ID]            NAME_ONLY_HITLER
+[Signature]     SeekSet(0) "HITLER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOEOPEN
+[ID]            NAME_ONLY_AUTOEOPEN
+[Signature]     SeekSet(0) "AUTOEOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEMENTIA
+[ID]            NAME_ONLY_DEMENTIA
+[Signature]     SeekSet(0) "DEMENTIA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CONTROL
+[ID]            NAME_ONLY_CONTROL
+[Signature]     SeekSet(0) "CONTROL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MADCOW
+[ID]            NAME_ONLY_MADCOW
+[Signature]     SeekSet(0) "MADCOW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRÑSENTATION
+[ID]            NAME_ONLY_PR_SENTATION
+[Signature]     SeekSet(0) "PR" SeekCur(1) "SENTATION" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ILMD
+[ID]            NAME_ONLY_ILMD
+[Signature]     SeekSet(0) "ILMD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDRUCKENV
+[ID]            NAME_ONLY_DATEIDRUCKENV
+[Signature]     SeekSet(0) "DATEIDRUCKENV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEISPEICHERNUNTERV
+[ID]            NAME_ONLY_DATEISPEICHERNUNTERV
+[Signature]     SeekSet(0) "DATEISPEICHERNUNTERV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DATEIDRUCKENSTANDARDV
+[ID]            NAME_ONLY_DATEIDRUCKENSTANDARDV
+[Signature]     SeekSet(0) "DATEIDRUCKENSTANDARDV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LADYDI
+[ID]            NAME_ONLY_LADYDI
+[Signature]     SeekSet(0) "LADYDI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TRIBUTE
+[ID]            NAME_ONLY_TRIBUTE
+[Signature]     SeekSet(0) "TRIBUTE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KILLAV
+[ID]            NAME_ONLY_KILLAV
+[Signature]     SeekSet(0) "KILLAV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ULTRAS
+[ID]            NAME_ONLY_ULTRAS
+[Signature]     SeekSet(0) "ULTRAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GUERRILLA
+[ID]            NAME_ONLY_GUERRILLA
+[Signature]     SeekSet(0) "GUERRILLA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FIRE
+[ID]            NAME_ONLY_FIRE
+[Signature]     SeekSet(0) "FIRE" AtEnd()
+[NameSigEnd]
+
+
+[NameSigStart]
+[Comment]       Only BOX2
+[ID]            NAME_ONLY_BOX2
+[Signature]     SeekSet(0) "BOX2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only A1
+[ID]            NAME_ONLY_A1
+[Signature]     SeekSet(0) "A1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only B1
+[ID]            NAME_ONLY_B1
+[Signature]     SeekSet(0) "B1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AO1
+[ID]            NAME_ONLY_AO1
+[Signature]     SeekSet(0) "AO1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VORTEX
+[ID]            NAME_ONLY_VORTEX
+[Signature]     SeekSet(0) "VORTEX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VORTEX2
+[ID]            NAME_ONLY_VORTEX2
+[Signature]     SeekSet(0) "VORTEX2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VORTEX3
+[ID]            NAME_ONLY_VORTEX3
+[Signature]     SeekSet(0) "VORTEX3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VORTEX4
+[ID]            NAME_ONLY_VORTEX4
+[Signature]     SeekSet(0) "VORTEX4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VORTEX5
+[ID]            NAME_ONLY_VORTEX5
+[Signature]     SeekSet(0) "VORTEX5" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIZATCH
+[ID]            NAME_ONLY_BIZATCH
+[Signature]     SeekSet(0) "BIZATCH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MEDIA
+[ID]            NAME_ONLY_MEDIA
+[Signature]     SeekSet(0) "MEDIA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WITHOUT
+[ID]            NAME_ONLY_WITHOUT
+[Signature]     SeekSet(0) "WITHOUT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UNIFORM
+[ID]            NAME_ONLY_UNIFORM
+[Signature]     SeekSet(0) "UNIFORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TREMOR
+[ID]            NAME_ONLY_TREMOR
+[Signature]     SeekSet(0) "TREMOR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CASINO
+[ID]            NAME_ONLY_CASINO
+[Signature]     SeekSet(0) "CASINO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SIRIUS
+[ID]            NAME_ONLY_SIRIUS
+[Signature]     SeekSet(0) "SIRIUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SMEG
+[ID]            NAME_ONLY_SMEG
+[Signature]     SeekSet(0) "SMEG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEQUILA
+[ID]            NAME_ONLY_TEQUILA
+[Signature]     SeekSet(0) "TEQUILA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VIROGEN
+[ID]            NAME_ONLY_VIROGEN
+[Signature]     SeekSet(0) "VIROGEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KILLER
+[ID]            NAME_ONLY_KILLER
+[Signature]     SeekSet(0) "KILLER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LISTMACROS
+[ID]            NAME_ONLY_LISTMACROS
+[Signature]     SeekSet(0) "LISTMACROS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PANZA
+[ID]            NAME_ONLY_PANZA
+[Signature]     SeekSet(0) "PANZA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only RANMA
+[ID]            NAME_ONLY_RANMA
+[Signature]     SeekSet(0) "RANMA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USCITA
+[ID]            NAME_ONLY_USCITA
+[Signature]     SeekSet(0) "USCITA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIPANZA
+[ID]            NAME_ONLY_BIPANZA
+[Signature]     SeekSet(0) "BIPANZA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOMACRO
+[ID]            NAME_ONLY_NOMACRO
+[Signature]     SeekSet(0) "NOMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TRIPANZA
+[ID]            NAME_ONLY_TRIPANZA
+[Signature]     SeekSet(0) "TRIPANZA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "NOPEN"
+[ID]            NAME_ONLY_NOPEN
+[Signature]     SeekSet(0) "NOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "FC"
+[ID]            NAME_ONLY_FC
+[Signature]     SeekSet(0) "FC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "FUSR_1"
+[ID]            NAME_ONLY_FUSR_1
+[Signature]     SeekSet(0) "FUSR_1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "BLEEFORM"
+[ID]            NAME_ONLY_BLEEFORM
+[Signature]     SeekSet(0) "BLEEFORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "DISCO"
+[ID]            NAME_ONLY_DISCO
+[Signature]     SeekSet(0) "DISCO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "CYBERHACK"
+[ID]            NAME_ONLY_CYBERHACK
+[Signature]     SeekSet(0) "CYBERHACK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       "CYBERFORM"
+[ID]            NAME_ONLY_CYBERFORM
+[Signature]     SeekSet(0) "CYBERFORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NTTHNTA
+[ID]            NAME_ONLY_NTTHNTA
+[Signature]     SeekSet(0) "NTTHNTA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FINDVIRUS
+[ID]            NAME_ONLY_FINDVIRUS
+[Signature]     SeekSet(0) "FINDVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRO1
+[ID]            NAME_ONLY_MAKRO1
+[Signature]     SeekSet(0) "MAKRO1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRO2
+[ID]            NAME_ONLY_MAKRO2
+[Signature]     SeekSet(0) "MAKRO2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRO3
+[ID]            NAME_ONLY_MAKRO3
+[Signature]     SeekSet(0) "MAKRO3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRO4
+[ID]            NAME_ONLY_MAKRO4
+[Signature]     SeekSet(0) "MAKRO4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAKRO0
+[ID]            NAME_ONLY_MAKRO0
+[Signature]     SeekSet(0) "MAKRO0" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MIKEVELYN
+[ID]            NAME_ONLY_MIKEVELYN
+[Signature]     SeekSet(0) "MIKEVELYN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHIUDIDOC
+[ID]            NAME_ONLY_CHIUDIDOC
+[Signature]     SeekSet(0) "CHIUDIDOC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEMODELLI
+[ID]            NAME_ONLY_FILEMODELLI
+[Signature]     SeekSet(0) "FILEMODELLI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IN
+[ID]            NAME_ONLY_IN
+[Signature]     SeekSet(0) "IN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IP
+[ID]            NAME_ONLY_IP
+[Signature]     SeekSet(0) "IP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRISTALL
+[ID]            NAME_ONLY_CRISTALL
+[Signature]     SeekSet(0) "CRISTALL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OUTILSMACRO
+[ID]            NAME_ONLY_OUTILSMACRO
+[Signature]     SeekSet(0) "OUTILSMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDITIONINSERTIONAUTO
+[ID]            NAME_ONLY_EDITIONINSERTIONAUTO
+[Signature]     SeekSet(0) "EDITIONINSERTIONAUTO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KLAFRM
+[ID]            NAME_ONLY_KLAFRM
+[Signature]     SeekSet(0) "KLAFRM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KIM
+[ID]            NAME_ONLY_KIM
+[Signature]     SeekSet(0) "KIM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HATE
+[ID]            NAME_ONLY_HATE
+[Signature]     SeekSet(0) "HATE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only POMPLASTIC
+[ID]            NAME_ONLY_POMPLASTIC
+[Signature]     SeekSet(0) "POMPLASTIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDDSHEAD
+[ID]            NAME_ONLY_EDDSHEAD
+[Signature]     SeekSet(0) "EDDSHEAD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UKIL
+[ID]            NAME_ONLY_UKIL
+[Signature]     SeekSet(0) "UKIL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SILICONC
+[ID]            NAME_ONLY_SILICONC
+[Signature]     SeekSet(0) "SILICONC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANGLEOFSIN
+[ID]            NAME_ONLY_ANGLEOFSIN
+[Signature]     SeekSet(0) "ANGLEOFSIN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRAZY
+[ID]            NAME_ONLY_CRAZY
+[Signature]     SeekSet(0) "CRAZY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WICKED
+[ID]            NAME_ONLY_WICKED
+[Signature]     SeekSet(0) "WICKED" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GABLE
+[ID]            NAME_ONLY_GABLE
+[Signature]     SeekSet(0) "GABLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JACKAL
+[ID]            NAME_ONLY_JACKAL
+[Signature]     SeekSet(0) "JACKAL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM
+[ID]            NAME_ONLY_USERFORM
+[Signature]     SeekSet(0) "USERFORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KID
+[ID]            NAME_ONLY_KID
+[Signature]     SeekSet(0) "KID" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SLOTNEW
+[ID]            NAME_ONLY_SLOTNEW
+[Signature]     SeekSet(0) "SLOTNEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MACRO
+[ID]            NAME_ONLY_MACRO
+[Signature]     SeekSet(0) "MACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CIPHER
+[ID]            NAME_ONLY_CIPHER
+[Signature]     SeekSet(0) "CIPHER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MULTIVIRUS
+[ID]            NAME_ONLY_MULTIVIRUS
+[Signature]     SeekSet(0) "MULTIVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ALIENF97
+[ID]            NAME_ONLY_ALIENF97
+[Signature]     SeekSet(0) "ALIENF97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COLORFLASH
+[ID]            NAME_ONLY_COLORFLASH
+[Signature]     SeekSet(0) "COLORFLASH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NOCHANCE98
+[ID]            NAME_ONLY_NOCHANCE98
+[Signature]     SeekSet(0) "NOCHANCE98" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BITCH
+[ID]            NAME_ONLY_BITCH
+[Signature]     SeekSet(0) "BITCH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only X
+[ID]            NAME_ONLY_X
+[Signature]     SeekSet(0) "X" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACID
+[ID]            NAME_ONLY_ACID
+[Signature]     SeekSet(0) "ACID" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MESSAGEBOX
+[ID]            NAME_ONLY_MESSAGEBOX
+[Signature]     SeekSet(0) "MESSAGEBOX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MULTIVIRUS2
+[ID]            NAME_ONLY_MULTIVIRUS2
+[Signature]     SeekSet(0) "MULTIVIRUS2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORDARTV
+[ID]            NAME_ONLY_WORDARTV
+[Signature]     SeekSet(0) "WORDARTV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SLAM97
+[ID]            NAME_ONLY_SLAM97
+[Signature]     SeekSet(0) "SLAM97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODNAME
+[ID]            NAME_ONLY_MODNAME
+[Signature]     SeekSet(0) "MODNAME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHRISTY
+[ID]            NAME_ONLY_CHRISTY
+[Signature]     SeekSet(0) "CHRISTY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BEAUTY
+[ID]            NAME_ONLY_BEAUTY
+[Signature]     SeekSet(0) "BEAUTY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BEAUTY2
+[ID]            NAME_ONLY_BEAUTY2
+[Signature]     SeekSet(0) "BEAUTY2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only REVENGE
+[ID]            NAME_ONLY_REVENGE
+[Signature]     SeekSet(0) "REVENGE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRANGEDAYS
+[ID]            NAME_ONLY_STRANGEDAYS
+[Signature]     SeekSet(0) "STRANGEDAYS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GROOVIE
+[ID]            NAME_ONLY_GROOVIE
+[Signature]     SeekSet(0) "GROOVIE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ORBIT
+[ID]            NAME_ONLY_ORBIT
+[Signature]     SeekSet(0) "ORBIT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTODESTRUCTOR98
+[ID]            NAME_ONLY_AUTODESTRUCTOR98
+[Signature]     SeekSet(0) "AUTODESTRUCTOR98" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOUMBOX
+[ID]            NAME_ONLY_BOUMBOX
+[Signature]     SeekSet(0) "BOUMBOX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORD97VIRUS1
+[ID]            NAME_ONLY_WORD97VIRUS1
+[Signature]     SeekSet(0) "WORD97VIRUS1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEWMACROS
+[ID]            NAME_ONLY_NEWMACROS
+[Signature]     SeekSet(0) "NEWMACROS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HAVIX
+[ID]            NAME_ONLY_HAVIX
+[Signature]     SeekSet(0) "HAVIX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIOHAZARD
+[ID]            NAME_ONLY_BIOHAZARD
+[Signature]     SeekSet(0) "BIOHAZARD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MULTIVIRUS3
+[ID]            NAME_ONLY_MULTIVIRUS3
+[Signature]     SeekSet(0) "MULTIVIRUS3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JOKER
+[ID]            NAME_ONLY_JOKER
+[Signature]     SeekSet(0) "JOKER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KIDCHAOS
+[ID]            NAME_ONLY_KIDCHAOS
+[Signature]     SeekSet(0) "KIDCHAOS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SLAM
+[ID]            NAME_ONLY_SLAM
+[Signature]     SeekSet(0) "SLAM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GREETZ
+[ID]            NAME_ONLY_GREETZ
+[Signature]     SeekSet(0) "GREETZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MDPVIRUS97
+[ID]            NAME_ONLY_MDPVIRUS97
+[Signature]     SeekSet(0) "MDPVIRUS97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ATOMICF97
+[ID]            NAME_ONLY_ATOMICF97
+[Signature]     SeekSet(0) "ATOMICF97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORMM
+[ID]            NAME_ONLY_USERFORMM
+[Signature]     SeekSet(0) "USERFORMM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORMT
+[ID]            NAME_ONLY_USERFORMT
+[Signature]     SeekSet(0) "USERFORMT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only THUNDERBYTEAMV
+[ID]            NAME_ONLY_THUNDERBYTEAMV
+[Signature]     SeekSet(0) "THUNDERBYTEAMV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INSTALLATION
+[ID]            NAME_ONLY_INSTALLATION
+[Signature]     SeekSet(0) "INSTALLATION" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PROTECTION
+[ID]            NAME_ONLY_PROTECTION
+[Signature]     SeekSet(0) "PROTECTION" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ATBAMV
+[ID]            NAME_ONLY_ATBAMV
+[Signature]     SeekSet(0) "ATBAMV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SATAN666
+[ID]            NAME_ONLY_SATAN666
+[Signature]     SeekSet(0) "SATAN666" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SYADEGNARTS
+[ID]            NAME_ONLY_SYADEGNARTS
+[Signature]     SeekSet(0) "SYADEGNARTS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EPSILON97
+[ID]            NAME_ONLY_EPSILON97
+[Signature]     SeekSet(0) "EPSILON97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ZMK98FAV
+[ID]            NAME_ONLY_ZMK98FAV
+[Signature]     SeekSet(0) "ZMK98FAV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ZMK98BM
+[ID]            NAME_ONLY_ZMK98BM
+[Signature]     SeekSet(0) "ZMK98BM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GAMESVIRUS
+[ID]            NAME_ONLY_GAMESVIRUS
+[Signature]     SeekSet(0) "GAMESVIRUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM1
+[ID]            NAME_ONLY_USERFORM1
+[Signature]     SeekSet(0) "USERFORM1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM2
+[ID]            NAME_ONLY_USERFORM2
+[Signature]     SeekSet(0) "USERFORM2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only USERFORM3
+[ID]            NAME_ONLY_USERFORM3
+[Signature]     SeekSet(0) "USERFORM3" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAIXVIRUS97
+[ID]            NAME_ONLY_PAIXVIRUS97
+[Signature]     SeekSet(0) "PAIXVIRUS97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAIXMSG1
+[ID]            NAME_ONLY_PAIXMSG1
+[Signature]     SeekSet(0) "PAIXMSG1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAIXMSG2
+[ID]            NAME_ONLY_PAIXMSG2
+[Signature]     SeekSet(0) "PAIXMSG2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHESSAV
+[ID]            NAME_ONLY_CHESSAV
+[Signature]     SeekSet(0) "CHESSAV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRYPTORV97
+[ID]            NAME_ONLY_CRYPTORV97
+[Signature]     SeekSet(0) "CRYPTORV97" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANTHRAX
+[ID]            NAME_ONLY_ANTHRAX
+[Signature]     SeekSet(0) "ANTHRAX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRONOSTIC
+[ID]            NAME_ONLY_PRONOSTIC
+[Signature]     SeekSet(0) "PRONOSTIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WORLDCUP98
+[ID]            NAME_ONLY_WORLDCUP98
+[Signature]     SeekSet(0) "WORLDCUP98" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JEDI_MAGIC
+[ID]            NAME_ONLY_JEDI_MAGIC
+[Signature]     SeekSet(0) "JEDI_MAGIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only THISDOCUMENT
+[ID]            NAME_ONLY_THISDOCUMENT
+[Signature]     SeekSet(0) "THISDOCUMENT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only URKEL
+[ID]            NAME_ONLY_URKEL
+[Signature]     SeekSet(0) "URKEL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MBUG
+[ID]            NAME_ONLY_MBUG
+[Signature]     SeekSet(0) "MBUG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NROBOT
+[ID]            NAME_ONLY_NROBOT
+[Signature]     SeekSet(0) "NROBOT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SKELETON
+[ID]            NAME_ONLY_SKELETON
+[Signature]     SeekSet(0) "SKELETON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FRANK
+[ID]            NAME_ONLY_FRANK
+[Signature]     SeekSet(0) "FRANK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FRANK2
+[ID]            NAME_ONLY_FRANK2
+[Signature]     SeekSet(0) "FRANK2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UNI
+[ID]            NAME_ONLY_UNI
+[Signature]     SeekSet(0) "UNI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WHO
+[ID]            NAME_ONLY_WHO
+[Signature]     SeekSet(0) "WHO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CLINTON
+[ID]            NAME_ONLY_CLINTON
+[Signature]     SeekSet(0) "CLINTON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SIBU
+[ID]            NAME_ONLY_SIBU
+[Signature]     SeekSet(0) "SIBU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PRESIDENT
+[ID]            NAME_ONLY_PRESIDENT
+[Signature]     SeekSet(0) "PRESIDENT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HELPER
+[ID]            NAME_ONLY_HELPER
+[Signature]     SeekSet(0) "HELPER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TEST1
+[ID]            NAME_ONLY_TEST1
+[Signature]     SeekSet(0) "TEST1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MULTIVIRUS4
+[ID]            NAME_ONLY_MULTIVIRUS4
+[Signature]     SeekSet(0) "MULTIVIRUS4" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WNW
+[ID]            NAME_ONLY_WNW
+[Signature]     SeekSet(0) "WNW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HIDER98
+[ID]            NAME_ONLY_HIDER98
+[Signature]     SeekSet(0) "HIDER98" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILEOP
+[ID]            NAME_ONLY_FILEOP
+[Signature]     SeekSet(0) "FILEOP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FILESA
+[ID]            NAME_ONLY_FILESA
+[Signature]     SeekSet(0) "FILESA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VISIO
+[ID]            NAME_ONLY_VISIO
+[Signature]     SeekSet(0) "VISIO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GETTIME
+[ID]            NAME_ONLY_GETTIME
+[Signature]     SeekSet(0) "GETTIME" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SAVENEW
+[ID]            NAME_ONLY_SAVENEW
+[Signature]     SeekSet(0) "SAVENEW" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SAVENORMAL
+[ID]            NAME_ONLY_SAVENORMAL
+[Signature]     SeekSet(0) "SAVENORMAL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LEV0L0R
+[ID]            NAME_ONLY_LEV0L0R
+[Signature]     SeekSet(0) "LEV0L0R" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIE
+[ID]            NAME_ONLY_TIE
+[Signature]     SeekSet(0) "TIE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only Counter
+[ID]            NAME_ONLY_COUNTER
+[Signature]     SeekSet(0) "COUNTER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only Clara
+[ID]            NAME_ONLY_CLARA
+[Signature]     SeekSet(0) "CLARA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TROZ
+[ID]            NAME_ONLY_TROZ
+[Signature]     SeekSet(0) "TROZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIEBUGXXSR
+[ID]            NAME_ONLY_TIEBUGXXSR
+[Signature]     SeekSet(0) "TIEBUGXXSR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only OXMAIN
+[ID]            NAME_ONLY_OXMAIN
+[Signature]     SeekSet(0) "OXMAIN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DEMENZ
+[ID]            NAME_ONLY_DEMENZ
+[Signature]     SeekSet(0) "DEMENZ" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CRYPT
+[ID]            NAME_ONLY_CRYPT
+[Signature]     SeekSet(0) "CRYPT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only THEERASER
+[ID]            NAME_ONLY_THEERASER
+[Signature]     SeekSet(0) "THEERASER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHAOS
+[ID]            NAME_ONLY_CHAOS
+[Signature]     SeekSet(0) "CHAOS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DLLERROR
+[ID]            NAME_ONLY_DLLERROR
+[Signature]     SeekSet(0) "DLLERROR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SENTRY
+[ID]            NAME_ONLY_SENTRY
+[Signature]     SeekSet(0) "SENTRY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOLD
+[ID]            NAME_ONLY_BOLD
+[Signature]     SeekSet(0) "BOLD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IVANA
+[ID]            NAME_ONLY_IVANA
+[Signature]     SeekSet(0) "IVANA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only EDITUNDO
+[ID]            NAME_ONLY_EDITUNDO
+[Signature]     SeekSet(0) "EDITUNDO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only UNDERLINE
+[ID]            NAME_ONLY_UNDERLINE
+[Signature]     SeekSet(0) "UNDERLINE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SOLAR
+[ID]            NAME_ONLY_SOLAR
+[Signature]     SeekSet(0) "SOLAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SVGA
+[ID]            NAME_ONLY_SVGA
+[Signature]     SeekSet(0) "SVGA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ANTIAPP
+[ID]            NAME_ONLY_ANTIAPP
+[Signature]     SeekSet(0) "ANTIAPP" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOND
+[ID]            NAME_ONLY_BOND
+[Signature]     SeekSet(0) "BOND" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BONE
+[ID]            NAME_ONLY_BONE
+[Signature]     SeekSet(0) "BONE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JUA
+[ID]            NAME_ONLY_JUA
+[Signature]     SeekSet(0) "JUA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JOEA
+[ID]            NAME_ONLY_JOEA
+[Signature]     SeekSet(0) "JOEA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CROWFUCK
+[ID]            NAME_ONLY_CROWFUCK
+[Signature]     SeekSet(0) "CROWFUCK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FAKE
+[ID]            NAME_ONLY_FAKE
+[Signature]     SeekSet(0) "FAKE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STEALTHACTIVATE
+[ID]            NAME_ONLY_STEALTHACTIVATE
+[Signature]     SeekSet(0) "STEALTHACTIVATE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GABI1
+[ID]            NAME_ONLY_GABI1
+[Signature]     SeekSet(0) "GABI1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only GABI2
+[ID]            NAME_ONLY_GABI2
+[Signature]     SeekSet(0) "GABI2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DG
+[ID]            NAME_ONLY_DG
+[Signature]     SeekSet(0) "DG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PANZER
+[ID]            NAME_ONLY_PANZER
+[Signature]     SeekSet(0) "PANZER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VFAC
+[ID]            NAME_ONLY_VFAC
+[Signature]     SeekSet(0) "VFAC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VFAE
+[ID]            NAME_ONLY_VFAE
+[Signature]     SeekSet(0) "VFAE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VFAO
+[ID]            NAME_ONLY_VFAO
+[Signature]     SeekSet(0) "VFAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STRING
+[ID]            NAME_ONLY_STRING
+[Signature]     SeekSet(0) "STRING" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HIDE
+[ID]            NAME_ONLY_HIDE
+[Signature]     SeekSet(0) "HIDE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INFECTDOCUMENT
+[ID]            NAME_ONLY_INFECTDOCUMENT
+[Signature]     SeekSet(0) "INFECTDOCUMENT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INFECTTEMPLATE
+[ID]            NAME_ONLY_INFECTTEMPLATE
+[Signature]     SeekSet(0) "INFECTTEMPLATE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SEL
+[ID]            NAME_ONLY_SEL
+[Signature]     SeekSet(0) "SEL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MILI
+[ID]            NAME_ONLY_MILI
+[Signature]     SeekSet(0) "MILI" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only STANDARD
+[ID]            NAME_ONLY_STANDARD
+[Signature]     SeekSet(0) "STANDARD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PLAY
+[ID]            NAME_ONLY_PLAY
+[Signature]     SeekSet(0) "PLAY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only JULEK
+[ID]            NAME_ONLY_JULEK
+[Signature]     SeekSet(0) "JULEK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DLF
+[ID]            NAME_ONLY_DLF
+[Signature]     SeekSet(0) "DLF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NCLS
+[ID]            NAME_ONLY_NCLS
+[Signature]     SeekSet(0) "NCLS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VPN
+[ID]            NAME_ONLY_VPN
+[Signature]     SeekSet(0) "VPN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VCLS
+[ID]            NAME_ONLY_VCLS
+[Signature]     SeekSet(0) "VCLS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only QUERY
+[ID]            NAME_ONLY_QUERY
+[Signature]     SeekSet(0) "QUERY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SVETA
+[ID]            NAME_ONLY_SVETA
+[Signature]     SeekSet(0) "SVETA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ALE
+[ID]            NAME_ONLY_ALE
+[Signature]     SeekSet(0) "ALE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACAO
+[ID]            NAME_ONLY_ACAO
+[Signature]     SeekSet(0) "ACAO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DIAAGORA
+[ID]            NAME_ONLY_DIAAGORA
+[Signature]     SeekSet(0) "DIAAGORA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ELIASHIM
+[ID]            NAME_ONLY_ELIASHIM
+[Signature]     SeekSet(0) "ELIASHIM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FECHEICYA
+[ID]            NAME_ONLY_FECHEICYA
+[Signature]     SeekSet(0) "FECHEICYA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INVISIVEL
+[ID]            NAME_ONLY_INVISIVEL
+[Signature]     SeekSet(0) "INVISIVEL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only KILLCHICO
+[ID]            NAME_ONLY_KILLCHICO
+[Signature]     SeekSet(0) "KILLCHICO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ALEVIRUSSCS
+[ID]            NAME_ONLY_ALEVIRUSSCS
+[Signature]     SeekSet(0) "ALEVIRUSSCS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VACA
+[ID]            NAME_ONLY_VACA
+[Signature]     SeekSet(0) "VACA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ABREAIMEU
+[ID]            NAME_ONLY_ABREAIMEU
+[Signature]     SeekSet(0) "ABREAIMEU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WSS
+[ID]            NAME_ONLY_WSS
+[Signature]     SeekSet(0) "WSS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WWUPDAT
+[ID]            NAME_ONLY_WWUPDAT
+[Signature]     SeekSet(0) "WWUPDAT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MIRASS
+[ID]            NAME_ONLY_MIRASS
+[Signature]     SeekSet(0) "MIRASS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IFILEOPEN
+[ID]            NAME_ONLY_IFILEOPEN
+[Signature]     SeekSet(0) "IFILEOPEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IFILESAVE
+[ID]            NAME_ONLY_IFILESAVE
+[Signature]     SeekSet(0) "IFILESAVE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FUCKEROFFER
+[ID]            NAME_ONLY_FUCKEROFFER
+[Signature]     SeekSet(0) "FUCKEROFFER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IFILESAVEAS
+[ID]            NAME_ONLY_IFILESAVEAS
+[Signature]     SeekSet(0) "IFILESAVEAS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SIGNATURE
+[ID]            NAME_ONLY_SIGNATURE
+[Signature]     SeekSet(0) "SIGNATURE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CASCADE
+[ID]            NAME_ONLY_CASCADE
+[Signature]     SeekSet(0) "CASCADE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COCACOLA
+[ID]            NAME_ONLY_COCACOLA
+[Signature]     SeekSet(0) "COCACOLA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DREAM
+[ID]            NAME_ONLY_DREAM
+[Signature]     SeekSet(0) "DREAM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HDAYBY
+[ID]            NAME_ONLY_HDAYBY
+[Signature]     SeekSet(0) "HDAYBY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only DNA
+[ID]            NAME_ONLY_DNA
+[Signature]     SeekSet(0) "DNA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MODUL1
+[ID]            NAME_ONLY_MODUL1
+[Signature]     SeekSet(0) "MODUL1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LENA
+[ID]            NAME_ONLY_LENA
+[Signature]     SeekSet(0) "LENA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LIZARD
+[ID]            NAME_ONLY_LIZARD
+[Signature]     SeekSet(0) "LIZARD" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LUNGCHEN
+[ID]            NAME_ONLY_LUNGCHEN
+[Signature]     SeekSet(0) "LUNGCHEN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CHENLUNG
+[ID]            NAME_ONLY_CHENLUNG
+[Signature]     SeekSet(0) "CHENLUNG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only U1GQRBCSL
+[ID]            NAME_ONLY_U1GQRBCSL
+[Signature]     SeekSet(0) "U1GQRBCSL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only V101
+[ID]            NAME_ONLY_V101
+[Signature]     SeekSet(0) "V101" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only WIN98
+[ID]            NAME_ONLY_WIN98
+[Signature]     SeekSet(0) "WIN98" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CB4111
+[ID]            NAME_ONLY_CB4111
+[Signature]     SeekSet(0) "CB4111" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CB_RUN
+[ID]            NAME_ONLY_CB_RUN
+[Signature]     SeekSet(0) "CB_RUN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NETSTORM
+[ID]            NAME_ONLY_NETSTORM
+[Signature]     SeekSet(0) "NETSTORM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIESR
+[ID]            NAME_ONLY_TIESR
+[Signature]     SeekSet(0) "TIESR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only URKELSR
+[ID]            NAME_ONLY_URKELSR
+[Signature]     SeekSet(0) "URKELSR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIEBUGXSR
+[ID]            NAME_ONLY_TIEBUGXSR
+[Signature]     SeekSet(0) "TIEBUGXSR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIEBUGXISR
+[ID]            NAME_ONLY_TIEBUGXISR
+[Signature]     SeekSet(0) "TIEBUGXISR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIEBUGVX
+[ID]            NAME_ONLY_TIEBUGVX
+[Signature]     SeekSet(0) "TIEBUGVX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIEBUGA
+[ID]            NAME_ONLY_TIEBUGA
+[Signature]     SeekSet(0) "TIEBUGA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BRIGL
+[ID]            NAME_ONLY_BRIGL
+[Signature]     SeekSet(0) "BRIGL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MANU
+[ID]            NAME_ONLY_MANU
+[Signature]     SeekSet(0) "MANU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NACHOS
+[ID]            NAME_ONLY_NACHOS
+[Signature]     SeekSet(0) "NACHOS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only CORE
+[ID]            NAME_ONLY_CORE
+[Signature]     SeekSet(0) "CORE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TIEBUGIV
+[ID]            NAME_ONLY_TIEBUGIV
+[Signature]     SeekSet(0) "TIEBUGIV" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only YVONNE
+[ID]            NAME_ONLY_YVONNE
+[Signature]     SeekSet(0) "YVONNE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAANTRIM
+[ID]            NAME_ONLY_IRAANTRIM
+[Signature]     SeekSet(0) "IRAANTRIM" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAARDS
+[ID]            NAME_ONLY_IRAARDS
+[Signature]     SeekSet(0) "IRAARDS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAARMAGH
+[ID]            NAME_ONLY_IRAARMAGH
+[Signature]     SeekSet(0) "IRAARMAGH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRABALLYMONEY
+[ID]            NAME_ONLY_IRABALLYMONEY
+[Signature]     SeekSet(0) "IRABALLYMONEY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRABANBRIDGE
+[ID]            NAME_ONLY_IRABANBRIDGE
+[Signature]     SeekSet(0) "IRABANBRIDGE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRABELFASTCITY
+[ID]            NAME_ONLY_IRABELFASTCITY
+[Signature]     SeekSet(0) "IRABELFASTCITY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRACARRICKFERGUS
+[ID]            NAME_ONLY_IRACARRICKFERGUS
+[Signature]     SeekSet(0) "IRACARRICKFERGUS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRACOLCRAINE
+[ID]            NAME_ONLY_IRACOLCRAINE
+[Signature]     SeekSet(0) "IRACOLCRAINE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRACRAIGAVON
+[ID]            NAME_ONLY_IRACRAIGAVON
+[Signature]     SeekSet(0) "IRACRAIGAVON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRADERRYCITY
+[ID]            NAME_ONLY_IRADERRYCITY
+[Signature]     SeekSet(0) "IRADERRYCITY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRADOWN
+[ID]            NAME_ONLY_IRADOWN
+[Signature]     SeekSet(0) "IRADOWN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRADUNGANNON
+[ID]            NAME_ONLY_IRADUNGANNON
+[Signature]     SeekSet(0) "IRADUNGANNON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRALARNE
+[ID]            NAME_ONLY_IRALARNE
+[Signature]     SeekSet(0) "IRALARNE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRALIMAVADY
+[ID]            NAME_ONLY_IRALIMAVADY
+[Signature]     SeekSet(0) "IRALIMAVADY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRALISBURN
+[ID]            NAME_ONLY_IRALISBURN
+[Signature]     SeekSet(0) "IRALISBURN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAMAGHERAFELT
+[ID]            NAME_ONLY_IRAMAGHERAFELT
+[Signature]     SeekSet(0) "IRAMAGHERAFELT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAMOURNE
+[ID]            NAME_ONLY_IRAMOURNE
+[Signature]     SeekSet(0) "IRAMOURNE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAMOYLE
+[ID]            NAME_ONLY_IRAMOYLE
+[Signature]     SeekSet(0) "IRAMOYLE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRANEWRY
+[ID]            NAME_ONLY_IRANEWRY
+[Signature]     SeekSet(0) "IRANEWRY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRANEWTONABBEY
+[ID]            NAME_ONLY_IRANEWTONABBEY
+[Signature]     SeekSet(0) "IRANEWTONABBEY" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRANORTHDOWN
+[ID]            NAME_ONLY_IRANORTHDOWN
+[Signature]     SeekSet(0) "IRANORTHDOWN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRAOMAGH
+[ID]            NAME_ONLY_IRAOMAGH
+[Signature]     SeekSet(0) "IRAOMAGH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only IRASTRABANE
+[ID]            NAME_ONLY_IRASTRABANE
+[Signature]     SeekSet(0) "IRASTRABANE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only VERMON
+[ID]            NAME_ONLY_VERMON
+[Signature]     SeekSet(0) "VERMON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only METAMORPH
+[ID]            NAME_ONLY_METAMORPH
+[Signature]     SeekSet(0) "METAMORPH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PASSBOX
+[ID]            NAME_ONLY_PASSBOX
+[Signature]     SeekSet(0) "PASSBOX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ROACH
+[ID]            NAME_ONLY_ROACH
+[Signature]     SeekSet(0) "ROACH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MVG
+[ID]            NAME_ONLY_MVG
+[Signature]     SeekSet(0) "MVG" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only XUTE
+[ID]            NAME_ONLY_XUTE
+[Signature]     SeekSet(0) "XUTE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FICHIEROUVRIR
+[ID]            NAME_ONLY_FICHIEROUVRIR
+[Signature]     SeekSet(0) "FICHIEROUVRIR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MYPICTURE
+[ID]            NAME_ONLY_MYPICTURE
+[Signature]     Seekset(0) "MYPICTURE" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MACRO_RUN
+[ID]            NAME_ONLY_MACRO_RUN
+[Signature]     Seekset(0) "MACRO_RUN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only NEWMACRO
+[ID]            NAME_ONLY_NEWMACRO
+[Signature]     Seekset(0) "NEWMACRO" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ACL
+[ID]            NAME_ONLY_ACL
+[Signature]     SeekSet(0) "ACL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BEGIN
+[ID]            NAME_ONLY_BEGIN
+[Signature]     SeekSet(0) "BEGIN" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FRI13X
+[ID]            NAME_ONLY_FRI13X
+[Signature]     SeekSet(0) "FRI13X" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOCLOSEX
+[ID]            NAME_ONLY_AUTOCLOSEX
+[Signature]     SeekSet(0) "AUTOCLOSEX" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FRI13
+[ID]            NAME_ONLY_FRI13
+[Signature]     SeekSet(0) "FRI13" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BEGINF
+[ID]            NAME_ONLY_BEGINF
+[Signature]     SeekSet(0) "BEGINF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AUTOOPENF
+[ID]            NAME_ONLY_AUTOOPENF
+[Signature]     SeekSet(0) "AUTOOPENF" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only ASTIA
+[ID]            NAME_ONLY_ASTIA
+[Signature]     SeekSet(0) "ASTIA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only TITASIC
+[ID]            NAME_ONLY_TITASIC
+[Signature]     SeekSet(0) "TITASIC" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FICHIERENREGISTRERTOUT
+[ID]            NAME_ONLY_FICHIERENREGISTRERTOUT
+[Signature]     SeekSet(0) "FICHIERENREGISTRERTOUT" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FICHIERFERMER
+[ID]            NAME_ONLY_FICHIERFERMER
+[Signature]     SeekSet(0) "FICHIERFERMER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FICHIERNOUVEAU
+[ID]            NAME_ONLY_FICHIERNOUVEAU
+[Signature]     SeekSet(0) "FICHIERNOUVEAU" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MAGIA
+[ID]            NAME_ONLY_MAGIA
+[Signature]     SeekSet(0) "MAGIA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only LIH
+[ID]            NAME_ONLY_LIH
+[Signature]     SeekSet(0) "LIH" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only YEAR4FEAR
+[ID]            NAME_ONLY_YEAR4FEAR
+[Signature]     SeekSet(0) "YEAR4FEAR" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only MALAYSIA1998
+[ID]            NAME_ONLY_MALAYSIA1998
+[Signature]     SeekSet(0) "MALAYSIA1998" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only INNORMAL
+[ID]            NAME_ONLY_INNORMAL
+[Signature]     SeekSet(0) "INNORMAL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only I3OMI3ER
+[ID]            NAME_ONLY_I3OMI3ER
+[Signature]     SeekSet(0) "I3OMI3ER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only APVBK
+[ID]            NAME_ONLY_APVBK
+[Signature]     SeekSet(0) "APVBK" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIOSKILLER
+[ID]            NAME_ONLY_BIOSKILLER
+[Signature]     SeekSet(0) "BIOSKILLER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BIOSKILLER1
+[ID]            NAME_ONLY_BIOSKILLER1
+[Signature]     SeekSet(0) "BIOSKILLER1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only FAKER
+[ID]            NAME_ONLY_FAKER
+[Signature]     SeekSet(0) "FAKER" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only SIGNOS
+[ID]            NAME_ONLY_SIGNOS
+[Signature]     SeekSet(0) "SIGNOS" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only HA
+[ID]            NAME_ONLY_HA
+[Signature]     SeekSet(0) "HA" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAY1
+[ID]            NAME_ONLY_PAY1
+[Signature]     SeekSet(0) "PAY1" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only PAY2
+[ID]            NAME_ONLY_PAY2
+[Signature]     SeekSet(0) "PAY2" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only AKRNL
+[ID]            NAME_ONLY_AKRNL
+[Signature]     Seekset(0) "AKRNL" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only BOUFFON
+[ID]            NAME_ONLY_BOUFFON
+[Signature]     Seekset(0) "BOUFFON" AtEnd()
+[NameSigEnd]
+
+[NameSigStart]
+[Comment]       Only COLORINM
+[ID]            NAME_ONLY_COLORINM
+[Signature]     Seekset(0) "COLORINM" AtEnd()
+[NameSigEnd]
+

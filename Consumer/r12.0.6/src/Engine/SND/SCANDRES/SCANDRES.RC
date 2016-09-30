@@ -1,0 +1,688 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "scandres.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "version.h"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "scandres.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""version.h""\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_USER_INFO2 DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "User Information"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         135,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,81,159
+    LTEXT           "Please provide the following information.",
+                    IDC_STATIC_INFO2_HEADING,94,10,214,12
+    LTEXT           "&Address (use both lines if necessary)",
+                    IDC_STATIC_ADDRESS,94,29,223,8
+    EDITTEXT        IDC_EDIT_ADDRESS1,94,39,214,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_ADDRESS2,94,56,214,14,ES_AUTOHSCROLL
+    LTEXT           "&City or town",IDC_STATIC_CITY,94,75,94,8
+    EDITTEXT        IDC_EDIT_CITY,94,85,94,14,ES_AUTOHSCROLL
+    LTEXT           "&State/Province",IDC_STATIC_STATE_PROVINCE,191,75,70,10
+    EDITTEXT        IDC_EDIT_STATE_PROVINCE,191,85,68,14,ES_AUTOHSCROLL
+    LTEXT           "&Zip Code",IDC_STATIC_ZIP_CODE,262,75,55,8
+    EDITTEXT        IDC_EDIT_ZIP_CODE,262,85,46,14,ES_AUTOHSCROLL
+    LTEXT           "C&ountry/Region",IDC_STATIC_COUNTRY,94,104,223,8
+    COMBOBOX        IDC_COMBO_COUNTRY,94,114,163,60,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "&Tech Support Tracking Number (only if issued by Tech Support)",
+                    IDC_STATIC_ATLAS_NUMBER,94,133,223,8
+    EDITTEXT        IDC_EDIT_ATLAS_NUMBER,94,143,104,14,ES_AUTOHSCROLL
+END
+
+IDD_USER_INFO1 DIALOG  0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "User Information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         135,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    LTEXT           "Please provide the following information.  Fields marked with an asterisk (*) are required to process your submission.",
+                    IDC_STATIC,96,7,214,24
+    LTEXT           "&First Name (*)",IDC_STATIC_FIRSTNAME,96,35,71,8
+    EDITTEXT        IDC_EDIT_FIRSTNAME,94,45,70,14,ES_AUTOHSCROLL
+    LTEXT           "&Last Name (*)",IDC_STATIC_LASTNAME,173,35,125,8
+    EDITTEXT        IDC_EDIT_LASTNAME,172,45,137,14,ES_AUTOHSCROLL
+    LTEXT           "&Company Name",IDC_STATIC_COMPANY,94,78,216,8
+    EDITTEXT        IDC_EDIT_COMPANY,94,88,212,14,ES_AUTOHSCROLL
+    LTEXT           "&E-mail address (*)  [e.g., jsmith@business.com]",
+                    IDC_STATIC_EMAIL,94,105,216,8
+    EDITTEXT        IDC_EDIT_EMAIL,94,115,214,12,ES_AUTOHSCROLL
+    LTEXT           "&Phone number",IDC_STATIC_PHONE,96,134,98,8
+    EDITTEXT        IDC_EDIT_PHONE,94,147,100,14,ES_AUTOHSCROLL
+    LTEXT           "F&ax number",IDC_STATIC_FAX,200,134,110,8
+    EDITTEXT        IDC_EDIT_FAX,200,147,108,14,ES_AUTOHSCROLL
+END
+
+IDD_CORP_INFO DIALOG  0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Corporate Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "We ask this additional info of our corporate users.",
+                    IDC_STATIC_CORP_INFO_HEADING,94,8,208,18
+    LTEXT           "&If applicable, please provide your Platinum/Gold Support Number",
+                    IDC_STATIC_PLAT_OR_GOLD_NUMBER,94,28,216,19,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PLAT_OR_GOLD_NUMBER,94,51,206,14,ES_AUTOHSCROLL
+    LTEXT           "&Please select one or more platforms for which you would like to receive virus definitions",
+                    IDC_STATIC_ADDITIONAL_SETS,94,85,214,22
+    CONTROL         135,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,81,159
+    CONTROL         "List1",IDC_LISTCTRL_PLATFORMS,"SysListView32",
+                    LVS_REPORT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,
+                    94,108,206,58
+END
+
+IDD_USER_INFO3 DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Additional Info"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Symptoms (describe the problem)",IDC_STATIC_SYMPTOMS2,
+                    96,7,208,8
+    CONTROL         "Popups (only when browser running)",IDC_CHK_SYMPTOM01,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,96,17,214,10
+    CONTROL         "Popups (even when browser is not running)",
+                    IDC_CHK_SYMPTOM02,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    96,27,214,10
+    CONTROL         "Slow system performance",IDC_CHK_SYMPTOM03,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,96,37,214,10
+    CONTROL         "Unwanted browser home page modification",
+                    IDC_CHK_SYMPTOM04,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    96,47,214,10
+    CONTROL         "Unwanted buttons or toolbars added to browser",
+                    IDC_CHK_SYMPTOM05,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    96,57,214,10
+    CONTROL         "Unwanted applications added to desktop",
+                    IDC_CHK_SYMPTOM06,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    96,67,214,10
+    CONTROL         "Browser goes to unwanted web pages",IDC_CHK_SYMPTOM07,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,96,77,214,10
+    CONTROL         "Existing applications no longer working",
+                    IDC_CHK_SYMPTOM08,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    96,87,214,10
+    LTEXT           "&Additional Symptoms (describe the problem)",
+                    IDC_STATIC_SYMPTOMS,96,98,208,8
+    EDITTEXT        IDC_EDIT_SYMPTOMS,96,108,212,32,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | WS_VSCROLL,WS_EX_ACCEPTFILES
+    COMBOBOX        IDC_COMBO_COUNTRY,96,154,124,60,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         135,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,81,159
+    LTEXT           "&Where Infection Occurred",
+                    IDC_STATIC_COUNTRY_OF_INFECTION,96,143,214,11
+END
+
+IDD_REVIEW DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Review"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "The following items will be sent to Symantec Security Response for further analysis.  If any of the information below is incorrect, click Back to correct the information.  Choosing Next will submit the items.",
+                    IDC_REVIEW_HEADING,94,12,216,47
+    CONTROL         136,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    CONTROL         "",IDC_EDIT_SUMMARY,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOCOLUMNHEADER | WS_BORDER | 
+                    WS_TABSTOP,96,61,210,63
+    CONTROL         "Specify &custom SMTP server (optional)",
+                    IDC_CHECK_CUSTOM_SERVER,"Button",BS_AUTOCHECKBOX | 
+                    BS_MULTILINE | WS_TABSTOP,96,126,207,10
+    LTEXT           "Outgoing &Mail Server name (SMTP) or IP address",
+                    IDC_STATIC_SMTP_SERVER,96,140,206,8
+    EDITTEXT        IDC_EDIT_SMTP_SERVER,96,150,210,14,ES_AUTOHSCROLL
+END
+
+IDD_WIZDLG DIALOG  0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Base Class Dialog",IDC_WIZDLG,125,71,58,8
+    CONTROL         137,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+END
+
+IDD_ACCEPTED_FILES DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Accepted Items"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "List2",IDC_LIST_ACCEPTED_FILES,"SysListView32",
+                    LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,
+                    101,54,205,105
+    LTEXT           "The items listed below were accepted by Symantec Security Response as being valid for submission:",
+                    IDC_STATIC_ACCEPTED_FILES,101,15,205,19
+    CONTROL         137,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+END
+
+IDD_REJECTED_FILES DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "List2",IDC_LIST_REJECTED_FILES,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_NOSORTHEADER | 
+                    WS_BORDER | WS_TABSTOP,101,63,204,65
+    LTEXT           "These items were rejected by Symantec Security Response as invalid for submission. Select an item below to see the reason.\n\nYou can submit one invalid item per day. In Norton Quarantine and Restore, select one item, then click Submit Item.",
+                    IDC_STATIC_REJECTED_FILES,101,7,209,56
+    CONTROL         133,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    LTEXT           "",IDC_EDIT_REJECTED_FILE_DESC,101,134,204,32,SS_SUNKEN
+END
+
+IDD_WRAP_UP DIALOG  0, 0, 317, 173
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Thank You!"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Thank you for your submission. The Symantec Security Response team will analyze your items and respond to you.",
+                    IDC_WRAP_UP_TEXT1,98,8,194,40
+    CONTROL         133,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    LTEXT           "WRAPUP_TEXT_FINISH",IDC_WRAP_UP_TEXT2,98,58,194,40
+END
+
+IDD_WELCOME DIALOG  0, 0, 317, 173
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Welcome to Scan and Deliver"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         139,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    LTEXT           "How Scan and Deliver works:",IDC_STATIC_WELCOME_TITLE,
+                    106,7,192,20
+    LTEXT           "This Wizard leads you through the process of submitting infected or suspicious items to the Symantec Security Response for further analysis.  You will be asked to enter some information about yourself, your system, and the problem items.",
+                    IDC_STATIC_WELCOME_EXPLANATION,106,31,192,56
+    LTEXT           "This Wizard sends copies of the problem items to our labs at Symantec Security Response, leaving the originals in Quarantine.  You can change your mind and exit the Wizard any time before actually submitting the items.",
+                    IDC_STATIC_WELCOME_EXPLANATION2,106,95,192,71
+END
+
+IDD_DETERMINED_CLEAN_FILES DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Determined Clean Items"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "List2",IDC_LIST_DETERMINED_CLEAN_FILES,"SysListView32",
+                    LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,
+                    101,44,204,65
+    LTEXT           "The items listed below have been determined to be clean and NOT infected.",
+                    IDC_STATIC_NOT_INFECTED,101,11,204,26
+    CONTROL         133,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    LTEXT           "These items do NOT contain a security risk.  It is possible that at one time Norton AntiVirus may have incorrectly identified these items as infected.  Please run LiveUpdate to learn how to obtain the latest definition files.",
+                    IDC_STATIC_DETERMINED_CLEAN_EXPLANATION,102,118,206,42
+END
+
+IDD_FILE_OF_THE_DAY DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Rejected Item"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "List2",IDC_LIST_FILE_OF_THE_DAY,"SysListView32",
+                    LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,
+                    101,52,204,33
+    LTEXT           "The item below was rejected by Symantec Security Response for the reason listed.  However, you may still choose to submit this item if you wish it to be analyzed.  You will be allowed one such submission per day.",
+                    IDC_STATIC_REJECTED_FILES,101,7,209,43
+    CONTROL         133,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,80,159
+    LTEXT           "Would you like to submit this item today?",
+                    IDC_STATIC_FILE_OF_THE_DAY_YES_NO,101,143,201,10
+    CONTROL         "&Yes",IDC_RADIO_FILE_OF_THE_DAY_YES,"Button",
+                    BS_AUTORADIOBUTTON,101,157,34,9
+    CONTROL         "N&o",IDC_RADIO_FILE_OF_THE_DAY_NO,"Button",
+                    BS_AUTORADIOBUTTON,141,157,34,9
+    LTEXT           "Reason for rejection",IDC_STATIC_REASON_FOR_REJECTION,
+                    101,89,204,8
+    LTEXT           "",IDC_EDIT_FILE_OF_THE_DAY,101,100,204,38,SS_SUNKEN
+END
+
+IDD_PROGRESS_DIALOG DIALOGEX 0, 0, 240, 94
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Cancel",IDCANCEL,95,73,50,14
+    CONTROL         "Progress1",IDC_PROGDLG_PROGRESS,"msctls_progress32",
+                    WS_BORDER,16,52,203,13
+    LTEXT           " 0 %",IDC_PROGDLG_PERCENT,111,41,18,8
+    LTEXT           "",IDC_PROGDLG_STATUS,16,14,203,23,SS_CENTERIMAGE
+END
+
+IDD_SEND_ADDL_INFO DIALOGEX 0, 0, 317, 173
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Send Additional Information"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         139,IDC_BITMAP,"Static",SS_BITMAP | SS_SUNKEN,7,7,81,159
+    LTEXT           "Items submitted to Symantec Security Response become the property of Symantec Corporation.  In some cases, items may be shared with the antivirus community.",
+                    IDC_STATIC_WELCOME_EXPLANATION,106,7,192,33
+    LTEXT           "When this occurs, Symantec uses industry-standard encryption and may anonymize data to help protect the integrity of the content and your privacy.",
+                    IDC_STATIC_WELCOME_EXPLANATION3,106,40,192,65
+    CONTROL         "&Yes (recommended)",IDC_BTN_CHOOSE_YES,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,113,133,185,
+                    10
+    CONTROL         "&No",IDC_BTN_CHOOSE_NO,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,113,144,185,10
+    LTEXT           "Submit additional system information to Symantec?",
+                    IDC_STATIC,106,116,192,16
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_USER_INFO1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_CORP_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_USER_INFO3, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_REVIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 287
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+        HORZGUIDE, 13
+        HORZGUIDE, 158
+    END
+
+    IDD_WIZDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_ACCEPTED_FILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 101
+        VERTGUIDE, 306
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_REJECTED_FILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 101
+        VERTGUIDE, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_WRAP_UP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_WELCOME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 106
+        VERTGUIDE, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_DETERMINED_CLEAN_FILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 101
+        VERTGUIDE, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_FILE_OF_THE_DAY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 101
+        VERTGUIDE, 305
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_PROGRESS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+
+    IDD_SEND_ADDL_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        VERTGUIDE, 96
+        VERTGUIDE, 106
+        VERTGUIDE, 298
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SDBMP_REJECTEDFILES_256 BITMAP                  "Res\\sda256.BMP"
+IDB_SDBMP_WRAPUP_256    BITMAP                  "Res\\sde256.BMP"
+IDB_SDBMP_INFO_256      BITMAP                  "Res\\sdc256.BMP"
+IDB_SDBMP_REVIEW_256    BITMAP                  "Res\\sdd256.BMP"
+IDB_SDBMP_ACCEPTEDFILES_256 BITMAP                  "Res\\sdb256.BMP"
+IDB_SDBMP_WELCOME_256   BITMAP                  "Res\\Sd0256.bmp"
+IDB_SDBMP_ACCEPTEDFILES_16 BITMAP                  "Res\\sdb16.BMP"
+IDB_SDBMP_INFO_16       BITMAP                  "Res\\sdc16.BMP"
+IDB_SDBMP_REJECTEDFILES_16 BITMAP                  "Res\\sda16.BMP"
+IDB_SDBMP_REVIEW_16     BITMAP                  "Res\\sdd16.BMP"
+IDB_SDBMP_WELCOME_16    BITMAP                  "Res\\Sd016.bmp"
+IDB_SDBMP_WRAPUP_16     BITMAP                  "Res\\sde16.BMP"
+IDB_SDBMP_CHECKBOXES    BITMAP                  "Res\\sdbmp_ch.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// SOCKSRVR
+//
+
+IDR_SOCK_SRVR_NAME_CORPORATE SOCKSRVR                "SockCorp.bin"
+IDR_SOCK_SRVR_NAME_RETAIL SOCKSRVR                "SockRetl.bin"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_SCAN_WIZARD_CAPTION "Scan and Deliver Wizard"
+    IDS_NAME                "&Name"
+    IDS_ADDRESS             "&Address"
+    IDS_CITY                "&City"
+    IDS_STATE_PROVINCE      "&State/Province"
+    IDS_ZIP_CODE            "&Zip Code"
+    IDS_COUNTRY             "C&ountry"
+    IDS_PHONE               "&Phone"
+    IDS_FAX                 "&Fax"
+    IDS_EMAIL               "&Email"
+    IDS_OPERATING_SYSTEM    "Operating System"
+    IDS_NAV_VERSION         "NAV Version"
+    IDS_LANGUAGE_OF_PRODUCT "Language of Product"
+    IDS_VIRUS_DEFINITIONS_DATE "Virus Definitions Date"
+    IDS_CORPORATE_SUPPORT_NUMBER "Platinum/Gold Support Number"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STRIP_FILE_CONTENT  "Strip File Content"
+    IDS_SMTP_SERVER         "SMTP Server"
+    IDS_STATE_PROVINCE_OF_INFECTION "State/Province of Infection"
+    IDS_COUNTRY_OF_INFECTION "Country of Infection"
+    IDS_SYMPTOMS            "Symptoms"
+    IDS_TYPE_OF_INFECTIONS  "Type of Infection(s)"
+    IDS_CASE_NUMBER         "Case number"
+    IDS_COMPANY             "Company"
+    IDS_COLNAME_THREAT_NAME "Name"
+    IDS_DEFAULT_SMTP_SERVER "sarcscan.symantec.com"
+    IDS_DEFAULT_SMTP_SERVER_DISPLAY_TEXT "Default"
+    IDS_SARC_EMAIL_CORPORATE "XTIKTIZO^{HZIXHXZU\025HBVZUO^X\025XTV"
+    IDS_SARC_EMAIL_RETAIL   "I^OZRW{HZIXHXZU\025HBVZUO^X\025XTV"
+    IDS_SARC_TEMP_TEST_SARC_EMAIL_SERVER "exnn-sarcscan-1.symantec.com"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SARC_ERROR_PACKAGE_CREATION 
+                            "Error in creating the Symantec Security Response package."
+    IDS_SARC_ERROR_INVALID_QUARANTINE_DIRECTORY 
+                            "The Quarantine directory is invalid."
+    IDS_SARC_ERROR_UNABLE_TO_STRIP_FILE "Unable to strip file contents."
+    IDS_SARC_ERROR_RETAIL_BACKEND_BUSY 
+                            "The Symantec Security Response server is busy right now, please try again later."
+    IDS_SARC_ERROR_CORPORATE_BACKEND_BUSY 
+                            "The Symantec Security Response server is busy; would you like to continue anyway?"
+    IDS_SARC_ERROR_RETAIL_FALSE_POSITIVE 
+                            "The Symantec Security Response file filters have determined that the items you are attempting to submit contain only false positives. The submission process will terminate."
+    IDS_SARC_ERROR_CORPORATE_FALSE_POSITIVE 
+                            "The Symantec Security Response file filters have determined that the items you are attempting to submit contain only false positives. Do you wish to continue anyway?"
+    IDS_SARC_ERROR_BACKEND_STATUS 
+                            "Error in communicating with the Symantec Security Response socket server; please try again later."
+    IDS_WRAPUP_USER_CANCEL1 "You have cancelled the Scan and Deliver Wizard.  No items have been forwarded to Symantec Security Response or moved from their current Quarantine area."
+    IDS_WRAPUP_USER_CANCEL2 " "
+    IDS_WRAPUP_GENERAL_FAILURE1 
+                            "An error occurred; no items have been forwarded to Symantec Security Response or moved from their current Quarantine area."
+    IDS_WRAPUP_GENERAL_FAILURE2 " "
+    IDS_TRIVIAL_NO_COMPRESSED 
+                            "%s does not accept compressed files for submission to Symantec Security Response.  Please submit uncompressed files."
+    IDS_TRIVIAL_POSSIBLE_THREAT "This item does not appear to be infected."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_WRAPUP_NO_ACCEPTED_FILES1 
+                            "None of the items you selected in this session qualified for submission to Symantec Security Response."
+    IDS_PROGRESS_CAPTION    "Processing"
+    IDS_WRAPUP_NO_ACCEPTED_FILES2 " "
+    IDS_SARC_ERROR_PACKAGE_SIZE_TOO_BIG 
+                            "The submission package for Symantec Security Response is greater than the allowable size limit. Please remove some files and try again."
+    IDS_GENERIC_REVIEW_PAGE_INFO 
+                            "Your file package is now ready to be submitted to Symantec Security Response. Click the ""Next"" button to continue, or ""Cancel"" to quit."
+    IDS_DEF_ANNUITY_MESSAGE "Your virus definitions subscription has expired. If you have already sent payment for a subscription renewal, click ""Yes"" to continue."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_WRAP_UP_FINISH1     "Thank you for your submission. The Symantec Security Response team will analyze your items and respond to you."
+    IDS_WRAP_UP_FINISH2     "You will receive a response within a week. (Average response time is within 48 hours.) If you do not receive a response, please contact Technical Support at http://service.symantec.com for more information. "
+    IDS_REQUIRED_FIELDS     "Please fill in all the required fields (marked with an asterisk) in order to continue."
+    IDS_FILE_OF_THE_DAY_CANCEL1 
+                            "You have chosen not to submit the rejected item.  You still have the option to submit a single rejected item today."
+    IDS_FILE_OF_THE_DAY_CANCEL2 " "
+    IDS_VIRUS_DEFS_NOT_PAID1 
+                            "Your virus definitions subscription has expired; please contact Symantec customer service to renew your subscription."
+    IDS_VIRUS_DEFS_NOT_PAID2 " "
+    IDS_PROGRESS_CREATING_PACKAGE 
+                            "Creating package for Symantec Security Response."
+    IDS_PROGRESS_COMPRESSING "Compressing items for delivery."
+    IDS_PROGRESS_ANALYZING  "Analyzing selected items."
+    IDS_PROGRESS_PREPARING  "Preparing to send package to Symantec Security Response."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROGRESS_INITIALIZING "Initiating connection."
+    IDS_PROGRESS_TRANSMITTING "Transmitting data."
+    IDS_SARC_ERROR_PACKAGE_NOT_SENT 
+                            "The file package has not been delivered to Symantec Security Response."
+    IDS_WRAPUP_SINGLE_REJECTED_FILE1 
+                            "TEXT FOR IDS_WRAPUP_SINGLE_REJECTED_FILE1 TO GO HERE"
+    IDS_WRAPUP_SINGLE_REJECTED_FILE2 
+                            "TEXT FOR IDS_WRAPUP_SINGLE_REJECTED_FILE2 TO GO HERE"
+    IDS_WRAPUP_INVALID_TIME_LAPSE1 
+                            "You have already submitted a single rejected item today.  If you still wish to submit the item you have selected, please try again tomorrow."
+    IDS_WRAPUP_INVALID_TIME_LAPSE2 " "
+    IDS_WRAPUP_SINGLE_COMPRESSED_FILE1 
+                            "The item you have selected is not valid for submission to Symantec Security Response because it is a compressed file."
+    IDS_WRAPUP_SINGLE_COMPRESSED_FILE2 " "
+    IDS_SARC_ERROR_RETAIL_ALL_CLEAN 
+                            "All of the items that you tried to submit were determined by Symantec Security Response to be free of security risks."
+    IDS_SARC_ERROR_CORPORATE_ALL_CLEAN 
+                            "All of the items that you tried to submit were determined by Symantec Security Response to be free of security risks.  Would you like to continue anyway?"
+    IDS_EMPTY_CUSTOM_SMTP_SERVER 
+                            "If you wish to use a custom SMTP server, you must specify an appropriate server in the field.  Otherwise, you must clear the ""Specify custom SMTP server"" checkbox."
+    IDS_CAPTION_USER_INFORMATION "User Information"
+    IDS_CAPTION_FILE_OF_THE_DAY "Rejected Item"
+    IDS_CAPTION_ACCEPTED_FILES "Accepted Items"
+    IDS_CAPTION_CORPORATE_INFO "Corporate Information"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CAPTION_REJECTED_FILES "Rejected Items"
+    IDS_CAPTION_REVIEW      "Review"
+    IDS_CAPTION_WELCOME     "Welcome to Scan and Deliver"
+    IDS_CAPTION_WRAP_UP     "Thank You!"
+    IDS_CAPTION_STANDARD_MESGBOX "Scan and Deliver"
+    IDS_INVALID_EMAIL_ADDRESS 
+                            "Please enter an email address with a valid format (e.g., name@company.com)."
+    IDS_WRAPUP_SARC_ERROR_CREATE_PACKAGE1 
+                            "An error occured while trying to create a submission package to send to Symantec Security Response. Please try again, or if the problem persists, contact Symantec technical support."
+    IDS_WRAPUP_SARC_ERROR_CREATE_PACKAGE2 " "
+    IDS_WRAPUP_SARC_ERROR_SEND_TO_SARC1 
+                            "An error occured while trying to submit your file package to Symantec Security Response. Please try again, or if the problem persists, contact Symantec technical support."
+    IDS_WRAPUP_SARC_ERROR_SEND_TO_SARC2 " "
+    IDS_REVIEW_FIRST_NAME   "First Name:"
+    IDS_REVIEW_LAST_NAME    "Last Name:"
+    IDS_REVIEW_EMAIL_ADDRESS "Email Address:"
+    IDS_REVIEW_FILES        "Item(s) to be submitted to Symantec Security Response:"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_REVIEW_NAME         "Name:"
+    IDS_SYMANTEC_MAIN_WEB_SERVER "www.symantec.com"
+    IDS_SARC_ERROR_BACKEND_NO_CONNECT 
+                            "Scan and Deliver was unable to establish a connection to Symantec.  Please connect to the internet and hit retry.  If you cannot connect to the internet at this time, hit cancel."
+    IDS_SARC_ERROR_RETAIL_BACKEND_NO_STATUS 
+                            "An error occured while trying to connect to the Symantec Security Response server. Please try again later, or if the problem persists, contact Symantec technical support."
+    IDS_SARC_ERROR_CORPORATE_BACKEND_NO_STATUS 
+                            "An error occured while trying to determine the status of the Symantec Security Response server. Please try again later, or if the problem persists, contact Symantec technical support.  Would you like to try and continue anyway?"
+    IDS_ARE_YOU_SURE_YOU_WANT_TO_CANCEL "Are you sure you want to cancel?"
+    IDS_ERROR_UPDATING_ITEMS 
+                            "Scan and Deliver encountered an error while updating the status of items in Quarantine.  All accepted items were sent."
+    IDS_ERROR_STARTING_SUBMISSION 
+                            "Scan and Deliver encountered an error while starting the submission.  Please re-install %s."
+    IDS_EMAIL_BODY          "TRANSMISSION ERROR:  Your submission was not properly received at the Symantec\nResponse Center.  Please submit your quarantined item(s)\nagain.  The item(s) are located in the ""Items Submitted to Symantec Security Response"" section\nof your Quarantine console."
+    IDS_WRAP_UP_FINISH2_CORP 
+                            "Under normal circumstances, you will receive a response within two business days.  If you do not, please contact Technical Support for more information.  In some cases, additional information or items may be required. "
+    IDS_WRAPUP_SARC_ERROR_FALSE_POSITIVES1 
+                            "All of the items that you selected for submission were determined to be false positives.  These items are not infected by any known security risks.  It is safe to use them."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_WRAPUP_SARC_ERROR_FALSE_POSITIVES2 
+                            "Please run LiveUpdate.  If the items you selected for submission are still incorrectly detected, then wait a week and run LiveUpdate again.  There is no reason to call Technical support at this time."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

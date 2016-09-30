@@ -1,0 +1,70 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+; This file replaces the project file for the Intel server; it is for DEC.
+[OPTIONS]
+ERRORLOG=navalpha.LOG
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+CONTENTS=NAVW_INFO_ABOUT_NAV
+TITLE=Norton AntiVirus for Windows NT
+CNT=NAVWNT.CNT
+COPYRIGHT=Copyright (c) 1994-98Symantec Corp.
+HLP=navdecsr.HLP
+
+[FILES]
+nthbtn.rtf
+nttask.rtf
+navopts.rtf
+Navchelp.rtf
+navhbtn.rtf
+Navtask.rtf
+navdic.rtf
+ntintro.rtf
+Navintro.rtf
+
+[MAP]
+#include <navwhlp5.h>
+
+[WINDOWS]
+MAIN="Norton AntiVirus",,25604,(r15269887),(r8454143)
+TASK="Norton AntiVirus Task",,25604,(r15269887),(r8454143),f2
+TERM="",,0,(r14876671),(r12632256),f2
+
+maintwo=,(584,102,410,870),0,(255,255,224),(255,255,224),
+[CONFIG]
+;MAIN
+BrowseButtons()
+
+[CONFIG-TASK]
+;TASK
+BrowseButtons()
+
+[EXCLUDE]
+NAV95
+NETSCAN               ; Netscape scanner
+SCANNER               ; Non-Netscape scanner
+VIRUS SENSOR
+OBSOLETE
+VLA
+NODEC
+NODECNT
+NODEC95
+INOCULATION
+
+[INCLUDE]
+NET
+NT
+PASSWORD
+NTSRV
+DEC
+[BUILDTAGS]
+NT
+NODECNT
+DEC
+NAV95
+VLA
+NTSRV
+INOCULATION
+OBSOLETE
+PASSWORD
+NODEC

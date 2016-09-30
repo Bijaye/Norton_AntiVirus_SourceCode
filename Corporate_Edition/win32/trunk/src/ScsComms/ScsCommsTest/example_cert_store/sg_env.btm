@@ -1,0 +1,15 @@
+md .\certs\login_ca
+iff %? == 0 then
+	touch /c .\certs\login_ca\index.txt
+	echo 01 > .\certs\login_ca\serial.dat
+endiff
+md .\certs\server
+iff %? == 0 then
+	touch /c .\certs\server\index.txt
+	echo 01 > .\certs\server\serial.dat
+endiff
+md .\certs\user_login
+iff %? == 0 then
+	touch /c .\certs\user_login\index.txt
+	echo 01 > .\certs\user_login\serial.dat
+endiff

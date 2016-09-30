@@ -1,0 +1,94 @@
+::
+:: $Header:   S:/EMULATOR/VCS/update.btv   1.13   19 Aug 1996 13:07:22   DALLEE  $
+::
+::      This batch file copies all emulator source and resultant output
+:: files to the appropriate NEWVIR and VIRLIB 8 areas.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/EMULATOR/VCS/update.btv  $
+:  
+:     Rev 1.13   19 Aug 1996 13:07:22   DALLEE
+:  Don't copy .LIBs to global BIN directories.
+:  
+:     Rev 1.12   26 Mar 1996 10:56:46   GWESTER
+:  Before the .CPP, .MAK, and .BTM files are copied from the trunk to the QAK8
+:  branch, we need to change the permissions on the target file. (When building,
+:  this target is read-only.) We also change the permissions back afterward.
+:  
+:     Rev 1.11   07 Mar 1996 11:32:02   BARRY
+:  Fix typo
+:  
+:     Rev 1.7   07 Mar 1996 10:20:18   BARRY
+:  Copies source files to branch and LIB files to LIB targets
+:  depending on %1 argument
+:  
+:     Rev 1.6   04 Mar 1996 16:22:28   CNACHEN
+:  Updated cache.h to pamcache.h
+:  
+:  
+:     Rev 1.5   04 Mar 1996 16:02:28   CNACHEN
+:  Added CACHE support.
+:  
+:     Rev 1.4   27 Feb 1996 18:45:44   CNACHEN
+:  Added COVER.H support.
+:  
+:     Rev 1.3   27 Feb 1996 11:22:40   RJACKSO
+:  Added line to copy PAM*.LIB to the root LIB directories where they belong.
+:
+:     Rev 1.2   26 Feb 1996 17:17:50   CNACHEN
+:  Only copies source files to quake8 if run from trunk.
+:
+:     Rev 1.1   26 Feb 1996 17:08:04   CNACHEN
+:  Second revision...
+:
+:     Rev 1.0   26 Feb 1996 17:00:38   CNACHEN
+:  Initial revision.
+:
+::------------------------------------------------------------------------
+
+IFF "%1"=="DO_SOURCE" THEN
+IFF "%PROJVERS%" ne "" THEN
+: This section is called by BUILD.BTM on the branch to copy the source
+: files from the trunk to the branch
+
+: Use the attrib command to change the write permission on the target file,
+: so that we can overwrite it. When doing builds, the target file is
+: read-only.
+attrib -R %PROJ%\SRC%PROJVERS%\*.cpp
+copy %PROJ%\SRC\*.cpp %PROJ%\SRC%PROJVERS%
+attrib +R %PROJ%\SRC%PROJVERS%\*.cpp
+
+attrib -R %PROJ%\SRC%PROJVERS%\*.mak
+copy %PROJ%\SRC\*.mak %PROJ%\SRC%PROJVERS%
+attrib +R %PROJ%\SRC%PROJVERS%\*.mak
+
+attrib -R %PROJ%\SRC%PROJVERS%\update.btm
+copy %PROJ%\SRC\update.btm %PROJ%\SRC%PROJVERS%
+attrib +R %PROJ%\SRC%PROJVERS%\update.btm
+
+copy %PROJPRE%\INCLUDE\SRC\cpu.h                 %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\datafile.h            %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\exclude.h             %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\ident.h               %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\opcode.h              %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\page.h                %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\pamapi.h              %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\prepair.h             %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\profile.h             %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\proto.h               %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\search.h              %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\sigex.h               %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\cover.h               %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+copy %PROJPRE%\INCLUDE\SRC\pamcache.h            %PROJPRE%\INCLUDE\SRC%PROJVERS%\*.*
+
+ENDIFF
+ELSE
+: This section is called by MKUPDATE to move the target files to their
+: destination
+
+if exist *.*    copy *.*    %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.dll  copy *.dll  %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib  copy *.lib  %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+
+ENDIFF

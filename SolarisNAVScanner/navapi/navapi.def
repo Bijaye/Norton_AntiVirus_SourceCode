@@ -1,0 +1,30 @@
+LIBRARY        navapi16
+DESCRIPTION     'NAVAPI Scanning Engine Module.  Copyright (C) Symantec Corp. 1990-1998.'
+EXETYPE         WINDOWS
+CODE            PRELOAD  MOVEABLE    DISCARDABLE
+DATA            PRELOAD  MOVEABLE    SINGLE
+HEAPSIZE        4096
+EXPORTS         WEP                       @1      RESIDENTNAME PRIVATE
+                NAVEngineInit             @2
+                NAVEngineClose            @3
+                NAVScanFile               @4
+                NAVScanBoot               @5
+                NAVScanMasterBoot         @6
+                NAVDeleteFile             @7
+                NAVScanMemory             @8
+                NAVRepairFile             @9
+                NAVRepairBoot             @10
+                NAVRepairMasterBoot       @11
+                NAVFreeVirusHandle        @12
+                NAVGetVirusInfo           @13
+                NAVGetVirusDefCount       @14
+                NAVLoadVirusDef           @15
+                NAVReleaseVirusDef        @16
+                NAVGetVirusDefInfo        @17
+                NAVLoadVirusDefTable      @18
+                NAVReleaseVirusDefTable   @19
+                NAVGetVirusDefTableCount  @20
+                NAVGetVirusDefTableInfo   @21
+                NAVGetNavapiVersionString @22
+                NAVGetVirusDBInfo         @23
+

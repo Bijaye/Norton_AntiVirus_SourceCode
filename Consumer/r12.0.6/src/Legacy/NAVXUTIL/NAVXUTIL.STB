@@ -1,0 +1,192 @@
+// Copyright 1994-1997 Symantec Corporation
+//***************************************************************************
+//
+// $Header:   N:/NAVXUTIL/VCS/navxutil.stv   1.9   23 Sep 1998 00:30:52   tcashin  $
+//
+// Description:
+//
+//***************************************************************************
+// $Log:   N:/NAVXUTIL/VCS/navxutil.stv  $
+// 
+//    Rev 1.9   23 Sep 1998 00:30:52   tcashin
+// Added the scan started string.
+// 
+//    Rev 1.8   23 Sep 1998 00:07:24   tcashin
+// Added string to log access denied errors.
+// 
+//    Rev 1.7   17 Sep 1998 14:35:04   tcashin
+// Added a log string to include scan results statistics.
+// 
+//    Rev 1.6   15 May 1998 09:52:58   JBRENNA
+// Update IDS_DRIVELOCKED_SYMSTAT_UNKNOWN such that the last sentance makes
+// sense.
+// 
+//    Rev 1.5   31 May 1997 15:38:46   KSACKIN
+// Changed IDS_SCHEDULEDLLNAME to IDS_SCHEDULERNT.  This is becuase we no longer
+// call into a DLL for the NT scheduler, but rather check for an executable.
+//
+//    Rev 1.4   21 May 1997 16:29:12   TIVANOV
+// new string for the long message file
+//
+//    Rev 1.3   19 May 1997 14:59:02   TIVANOV
+// new string for the quarantine file name
+//
+//    Rev 1.2   09 May 1997 16:58:34   TIVANOV
+// new strings for the quarantine log
+//
+//    Rev 1.1   24 Apr 1997 17:02:48   JBRENNA
+// Tesla port: Add IDS_ERR_NAVAP_OPEN_EX.
+//
+//***************************************************************************
+
+// ****************************************************************************
+// String table for NAV TSR creation.
+// ****************************************************************************
+STRINGTABLE
+BEGIN
+   IDS_ERR_NAVTSR,              "Unable to update Auto-Protect settings."
+   IDS_RELOAD_TSR,              "Options that affect the Auto-Protect settings have changed.\n\nYou must reload Auto-Protect for the new options to take effect."
+
+   IDS_UPDATINGTSR,             "Updating Auto-Protect settings ..."
+END
+
+//************************************************************************
+// String Tables
+//************************************************************************
+
+STRINGTABLE
+BEGIN
+   IDS_NAV,                     "Norton AntiVirus"
+   IDS_DOS_EXECUTABLE,          "EXE COM"
+   IDS_ERR_INVALIDEXT,          "The extension entered is invalid."
+   IDS_ERR_EXTEXISTS,           "The extension entered already exists."
+   IDS_DEF_ACTIFILE,            "activity.log"
+   IDS_DEF_QUARANRINEFILE,      "quarant.txt"
+   IDS_DEF_LONGCUSTOMMESSAGE,   "longmsg.txt"
+
+   IDS_CONSOLETEMPLATE,         "%02u-%02u-%u %u:%02u:%02u %s: %s"
+   IDS_ALERT_VIRUSALERT,        "NAV VIRUS ALERT from: %s [%u] %s"
+   IDS_ALERT_INOC_CHANGE,       "NAV INOC. CHANGE from: %s [%u] %s"
+   IDS_ALERT_END_SCAN,          "NAV SCAN COMPLETED from: %s [%u]"
+   IDS_ALERT_VIRLIST_CHANGE,    "NAV VIRUS LIST CHANGE from: %s [%u]"
+   IDS_ALERT_BOOT_INOC_CHANGE,  "NAV BOOT CHANGED from: %s [%u]"
+   IDS_ALERT_MBOOT_INOC_CHANGE, "NAV MASTER BOOT CHANGED from: %s [%u]"
+
+   IDS_LOG_SCANNER,             "Windows Scanner"
+
+   IDS_LOG_MEMORYISINFECTED,    "The %s%s virus was found in memory."
+   IDS_LOG_FILEISINFECTED,      "The file\r\n%s\r\nis infected with the %s virus."
+   IDS_LOG_FILEWASINFECTED,     "The file\r\n%s\r\nwas infected with the %s virus."
+   IDS_LOG_CONTAINERFILEISINFECTED,   "%s is infected with the %s virus."
+   IDS_LOG_CONTAINERFILEWASINFECTED,  "%s was infected with the %s virus."
+   IDS_LOG_BOOTISINFECTED,      "The boot record of drive %s\r\nis infected with the %s virus."
+   IDS_LOG_BOOTWASINFECTED,     "The boot record of drive %s\r\nwas infected with the %s virus."
+   IDS_LOG_MBRISINFECTED,       "The master boot record of hard drive #%d is infected\r\nwith the %s virus."
+   IDS_LOG_MBRWASINFECTED,      "The master boot record of hard drive #%d was infected\r\nwith the %s virus."
+   IDS_LOG_ZIPFILEISINFECTED,   "The file %s in the compressed file\r\n%s\r\nis infected with the %s virus."
+   IDS_LOG_FILEEXCLUDE,         "The file\r\n%s\r\nwas added to the exclusions list."
+   IDS_LOG_FILEINOC_CHANGE,     "The file\r\n%s\r\nhas changed since inoculation."
+   IDS_LOG_FILEINOC_NEW,        "The file\r\n%s\r\nwas detected as not inoculated."
+   IDS_LOG_VIRLISTCHANGED,      "The virus list has changed."
+   IDS_LOG_UNINOCULATED,        "The file\r\n%s\r\nwas uninoculated."
+   IDS_LOG_UNINOCULATEFAILED,   "Unable to uninoculate the file\r\n%s"
+   IDS_LOG_SCANSTART,           "Virus scanning started."
+   IDS_LOG_SCANEND,             "Virus scanning completed.\r\nItems scanned:  %s"
+   IDS_LOG_SCANEND_NONE,        "Virus scanning completed.\r\nNo items scanned."
+   IDS_LOG_SCANEND_STATS,       "Virus scanning completed.\r\nItems scanned: %s\r\nMaster boot records:\r\n\tScanned:\t\t%d\r\n\tInfected:\t\t%d\r\n\tRepaired:\t\t%d\r\nBoot records:\r\n\tScanned:\t\t%d\r\n\tInfected:\t\t%d\r\n\tRepaired:\t\t%d\r\nFiles:\r\n\tScanned:\t\t%d\r\n\tInfected:\t\t%d\r\n\tRepaired:\t\t%d\r\n\tQuar'ed:\t\t%d\r\n\tDeleted:\t\t%d"
+   IDS_LOG_SCANINTERRUPTED,     "Virus scanning interrupted while scanning:  %s"
+   IDS_LOG_SCANINTERRUPTED_NONE,"Virus scanning interrupted while scanning.\r\nNo items scanned."
+   IDS_LOG_ACCESSDENIED_FILE,   "Access denied to file: %s"
+   IDS_LOG_ACCESSDENIED_DIR,    "Access denied to directory: %s"
+
+   IDS_LOG_INTEG_CREATEFAILED,  "Unable to inoculate boot records and system files on drive %s."
+   IDS_LOG_INTEG_MBCHANGED,     "The master boot record of hard drive #%d has changed since inoculation."
+   IDS_LOG_INTEG_BOOTCHANGED,   "The boot record of drive %s has changed since inoculation."
+   IDS_LOG_INTEG_SYSFILECHANGED,"The file\r\n%s\r\nhas changed since inoculation."
+   IDS_LOG_INTEG_NOTEXIST,      "Unable to open inoculation file."
+   IDS_LOG_INTEG_REINOCULATED,  "The boot records and system files of drive %s were reinoculated."
+
+   IDS_LOGACTION_INTEG_MBREPAIRED,    "The master boot record was repaired."
+   IDS_LOGACTION_INTEG_MBREPAIRFAILED,"Unable to repair master boot record."
+   IDS_LOGACTION_INTEG_BOOTREPAIRED, "The boot record was repaired."
+   IDS_LOGACTION_INTEG_BOOTREPAIRFAILED,"Unable to repair the boot record."
+   IDS_LOGACTION_INTEG_SYSFILEREPAIRED, "The file was repaired."
+   IDS_LOGACTION_INTEG_SYSFILEREPAIRFAILED, "Unable to repair the system file."
+
+   IDS_LOGACTION_NOACTION,              "No action was taken."
+   IDS_LOGACTION_BOOTISINFECTED,        "The boot record is infected."
+   IDS_LOGACTION_FILEREPAIRED,          "The file was repaired."
+   IDS_LOGACTION_REPAIRFAILED,          "Unable to repair this file."
+   IDS_LOGACTION_DELETED,               "The file was deleted."
+   IDS_LOGACTION_DELETEFAILED,          "Unable to delete this file."
+   IDS_LOGACTION_BOOTREPAIRED,          "The boot record was repaired."
+   IDS_LOGACTION_BOOTNOTREPAIRED,       "Unable to repair the boot record."
+   IDS_LOGACTION_EXCLUDE_VIRUS,         "This file was excluded from future virus checks."
+   IDS_LOGACTION_EXCLUDE_INOC,          "This file was excluded from future inoculation checks."
+   IDS_LOGACTION_REINOCULATED,          "This file was reinoculated."
+   IDS_LOGACTION_REINOCULATEFAILED,     "Unable to reinoculate this file."
+   IDS_LOGACTION_INOCULATED,            "This file was inoculated."
+   IDS_LOGACTION_INOCULATEFAILED,       "Unable to inoculate this file."
+   IDS_LOGACTION_INOCULATEREPAIRED,     "This file was repaired using inoculation information."
+   IDS_LOGACTION_INOCULATEREPAIRFAILED, "This file could not be repaired using the inoculation information."
+   IDS_LOGACTION_NOTINOCULATED,         "This file has never been inoculated."
+   IDS_LOGACTION_HALTCPU,               "The computer was shutdown."
+   IDS_LOGACTION_MBRISINFECTED,         "The master boot record is infected."
+   IDS_LOGACTION_MBRREPAIRED,           "The master boot record was repaired."
+   IDS_LOGACTION_MBRNOTREPAIRED,        "Unable to repair the master boot record."
+   IDS_LOGACTION_QUARANTINED,           "This file was quarantined."
+   IDS_LOGACTION_QUARANTINEFAILED,      "Unable to quarantine this file."
+
+   IDS_DEFAULT,                 "DEFAULT"
+   IDS_BOOT,                    " Boot"
+   IDS_FILE,                    " File"
+   IDS_BOOTRECORD,              "Boot record"
+   IDS_MEMORY,                  "Memory"
+   IDS_UNKNOWNVIRUS,            "Unknown virus"
+   IDS_HARD_DRIVE_LC,           "hard drive #%d"
+
+   IDS_BOOTACCESS, "Unable to read the boot record on drive %c:. Check to make sure the drive is ready."
+   IDS_DRIVEACCESS,"Unable to access drive %c:. Put a disk into the drive."
+   IDS_DRIVELOCKED,"Unable to access drive %c:.  The drive is locked by a disk utility.  Scan again later when the disk is no longer locked."
+
+   IDS_VXDAUTOLOAD_CAPTION, "Norton AntiVirus Auto-Protect"
+   IDS_VXDAUTOLOAD_YES, "Norton AntiVirus Auto-Protect will be loaded automatically the next time you restart your computer."
+   IDS_VXDAUTOLOAD_YES_ASKLOADNOW, "Norton AntiVirus Auto-Protect will be loaded automatically the next time you restart your computer.  Would you like to load it now?"
+   IDS_VXDAUTOLOAD_NO, "Norton AntiVirus Auto-Protect will not automatically load the next time you restart your computer."
+   IDS_VXDAUTOLOAD_NO_NOWLOADED, "Norton AntiVirus Auto-Protect will not automatically load the next time you restart your computer.  Would you like to unload it now?"
+   IDS_AUTOPROTECT, "NAVAPW32.EXE"
+   IDS_DRIVELOCKED_SYMSTAT, "Unable to access drive %c:. The drive is locked by %s.    You may wish to retry again later when the disk is no longer locked."
+   IDS_DRIVELOCKED_SYMSTAT_BOOT, "Unable to access the master boot record of drive %c:. The drive is locked by %s. Select Skip to stop the scan of this drive or Continue to scan the rest of this drive.  You may wish to retry again later when the master boot record is no longer locked."
+   IDS_DRIVELOCKED_SYMSTAT_MBR, "Unable to access the boot record of drive %c:. The drive is locked by %s. Select Skip to stop the scan of this drive or Continue to scan the rest of this drive.  You may wish to retry again later when the boot record is no longer locked."
+   IDS_DRIVELOCKED_UNKNOWN_APP, "an unknown disk utility"
+   IDS_BOOTACCESS_PHYS, "Unable to read the boot record on hard drive #%d. Check to make sure the drive is ready."
+   IDS_DRIVELOCKED_PHYS,"Unable to access hard drive #%d.  The drive is in use by a disk utility.  Scan again later when the disk is no longer in use."
+   IDS_DRIVELOCKED_PHYS_SYMSTAT_MBR, "Unable to scan the boot record of hard drive #%d:. The drive is in use by %s. Select Skip to stop the scan of this drive or Continue to scan the rest of this drive.  You may wish to retry again later when the drive is no longer in use."
+   IDS_NAVAPSVC_NAME, "NAV Auto-Protect"
+   IDS_HKEY_APPPATH, "SOFTWARE\\Symantec\\SharedUsage\\s32stat.dll"
+   IDS_SCHEDULER,       "NSCHED32.EXE"
+   IDS_SCHEDULERNT,     "NSCHEDNT.EXE"
+
+   IDS_DRIVELOCKED_SYMSTAT_UNKNOWN, "Unable to scan drive %c: because it is currently in use. You may wish to retry again later when the drive is no longer in use."
+   IDS_DRIVELOCKED_SYMSTAT_BOOT_UNKNOWN, "Unable to scan the boot record of drive %c: because it is currently in use. Select Skip to stop the scan of this drive or Continue to scan the rest of this drive. You may wish to retry again later when the drive is no longer in use."
+   IDS_DRIVELOCKED_SYMSTAT_MBR_UNKNOWN, "Unable to scan the master boot record of drive %c: because it is currently in use. Select Skip to stop the scan of this drive or Continue to scan the rest of this drive.  You may wish to retry again later when the drive is no longer in use."
+
+   IDS_DRIVELOCKED_REPAIR_SYMSTAT, "Unable to repair drive %c: because it is in use by %s. Please retry the repair when %s is no longer running."
+   IDS_DRIVELOCKED_REPAIR_SYMSTAT_UNKNOWN, "Unable to repair drive %c: because it is currently in use. Please retry the repair when the drive is no longer in use."
+   IDS_DRIVELOCKED_REPAIR_SYMSTAT_BOOT, "Unable to repair the boot record of drive %c: because it is in use by %s. Select Skip to skip the repair of this drive. Please retry the repair when %s is no longer running."
+   IDS_DRIVELOCKED_REPAIR_SYMSTAT_BOOT_UNKNOWN, "Unable to repair the boot record of drive %c: because it is currently in use. Select Skip to skip the repair of this drive.  Please retry the repair when the drive is no longer in use."
+   IDS_DRIVELOCKED_REPAIR_SYMSTAT_MBR, "Unable to repair the master boot record of drive %c: because it is in use by %s. Select Skip to skip the repair of this drive.  Please retry the repair when %s is no longer running."
+   IDS_DRIVELOCKED_REPAIR_SYMSTAT_MBR_UNKNOWN, "Unable to repair the master boot record of drive %c: because it is currently in use. Select Skip to skip the repair of this drive.  Please retry the repair when the drive is no longer in use."
+
+   IDS_NAVAP_SERVICE_NAME,          "NAV Auto-Protect"
+   IDS_ERR_NAVAP_OPEN,              "Unable to Open NAV Auto-Protect Service"
+   IDS_ERR_NAVAP_START,             "Unable to Start NAV Auto-Protect Service"
+   IDS_ERR_NAVAP_STOP,              "Unable to Stop NAV Auto-Protect Service"
+   IDS_ERR_NAVAP_OPEN_EX,           "Unable to open the NAV Auto-Protect Service; you must have\nadministrator privileges to start or stop services."
+
+   IDS_PRINTCONTAINERFILE_BEGIN,  "The file "
+   IDS_PRINTCONTAINERFILE_MID,    " in compressed file "
+   IDS_PRINTCONTAINERFILE_END,    "."
+
+   IDS_LOG_CONTAINERCUTOFF,       "..."
+END

@@ -1,0 +1,56 @@
+// PROPRIETARY/CONFIDENTIAL. Use of this product is subject to license terms.
+// Copyright (c) 2006, Symantec Corporation, All rights reserved.
+// HPPProtectionProviderUI.idl : IDL source for HPPProtectionProviderUI
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (HPPProtectionProviderUI.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(3DF841FB-5316-48B4-B78A-AA62200897D3),
+	dual,
+	nonextensible,
+	helpstring("IHPPProtectionProvider Interface"),
+	pointer_default(unique)
+]
+interface IHPPProtectionProvider : IDispatch{
+};
+[
+	object,
+	uuid(2E9218D3-0CF5-4502-B308-63AC5EE5D137),
+	dual,
+	nonextensible,
+	helpstring("IHPPProtection Interface"),
+	pointer_default(unique)
+]
+interface IHPPProtection : IDispatch{
+};
+[
+	uuid(1C68BD0A-0264-4D90-904E-69D63F9090FC),
+	version(1.0),
+	helpstring("HPPProtectionProviderUI 1.0 Type Library")
+]
+library HPPProtectionProviderUILib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(425DC6B2-28B6-41D2-AE94-0CE5E1CE7D9F),
+		helpstring("HPPProtectionProvider Class")
+	]
+	coclass HPPProtectionProvider
+	{
+		[default] interface IHPPProtectionProvider;
+	};
+	[
+		uuid(8F2A22EF-84F3-4BD7-B8FB-D8F90310B0CA),
+		helpstring("HPPProtection Class")
+	]
+	coclass HPPProtection
+	{
+		[default] interface IHPPProtection;
+	};
+};

@@ -1,0 +1,4156 @@
+;Copyright 1998 Symantec Corporation
+;*******************************************************************************
+;
+; $Header: //depot/Tools/Mk/envset.inf#108 $
+;
+; Description:  ENVSET.INF is used by the build system to map drives and setup
+;               a users  environment  to build  specific projects in specified
+;               product areas.
+;
+;*******************************************************************************
+;
+; ENVSET.INF Syntax:
+;
+;               The format for the product header line is:
+;                    [<product name>]
+;
+;               Comment lines begin with ';'.
+;
+;               Reserved keywords:
+;                    BRANCHES=[branch name:hot char] [, ...]
+;                    DEFBRANCH=[branch name]
+;                    Map=<drive letter>, <root Mapping> [,<current directory>]
+;                    MKTOOLS=<make tools path>
+;                    SET=<environment variable>,<text>
+;                    TITLE=<menu title text>
+;
+;               The letter menu choice for the language must be in upper case
+;                    LANGUAGES=<language:hotkey> [,<language:hotkey>, ...]
+;                    DEFLANGUAGE=<default language>
+;
+;*******************************************************************************
+;
+; $Log: $
+;
+;*******************************************************************************
+;----------------------------APACHE---------------------------------------------
+[APACHE]
+title=NU 9.0
+
+Map=S:,USSM-DEV2\VOL2:APACHE\SOURCE
+Map=I:,USSM-DEV2\VOL2:APACHE\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL2:APACHE\%LANG%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G,Japanese:K
+deflanguage=English
+BRANCHES=DBCS:J,NEC:N,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ATHENA--------------------------------------------
+[ATHENA]
+title=NAV 6.0 OEM FOR WIN95 AND NT
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\ATHENA\SOURCE
+Map=N:,USSM-DEV4\VOL2:NAV\ATHENA\%LANG%
+Map=I:,USSM-DEV4\VOL2:NAV\ATHENA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ATLANTA--------------------------------------------
+[ATLANTA]
+title=NSDU V2
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL5:NAV\ATLANTA\SOURCE
+Map=N:,USSM-DEV1\VOL5:NAV\ATLANTA\%LANG%
+Map=I:,USSM-DEV1\VOL5:NAV\ATLANTA\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ATLANTIS-----------------------------------------------
+[ATLANTIS]
+title=NU v5.0 for Windows 9x
+
+Map=S:,USSM-DEV2\VOL3:ATLANTIS\
+Map=I:,USSM-DEV2\VOL3:ATLANTIS\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------ATOMIC--------------------------------------------
+[ATOMIC]
+title=NAV 5.0 FOR WIN95 AND NT
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\ATOMIC\SOURCE
+Map=N:,USSM-DEV4\VOL2:NAV\ATOMIC\%LANG%
+Map=I:,USSM-DEV4\VOL2:NAV\ATOMIC\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREN
+Map=T:,USSM-DEV4\VOL1:NAV\AVCORE\avcoren
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ATOMICC--------------------------------------------
+[ATOMICC]
+title=NAV 5.0 FOR WIN95 AND NT Corporate
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\ATOMICC\SOURCE
+Map=N:,USSM-DEV4\VOL2:NAV\ATOMICC\%LANG%
+Map=I:,USSM-DEV4\VOL2:NAV\ATOMICC\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREN
+Map=T:,USSM-DEV4\VOL1:NAV\AVCORE\avcoren
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVBUNDLE-------------------------------------------
+[AVBUNDLE]
+title=AVBUNDLE
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\AVBUNDLE\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\AVBUNDLE\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\AVBUNDLE\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\VOL2:NAV\ROSWELL
+Map=T:,USSM-DEV1\VOL2:NAV\AVDOCS
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOMP---------------------------------------------
+[AVCOMP]
+title=NAV COMP
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL5:NAV\AVCOMP
+Map=I:,USSM-DEV1\VOL5:NAV\AVCOMP\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=S:
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------AVCORE---------------------------------------------
+[AVCORE]
+title=NAV CORE
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKF:F,QAKG:G,QAKH:H,QAKO:O,QAKP:P,QAKQ:Q,R
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=c:\bld_area\navapi41\avcore\source\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREN---------------------------------------------
+[AVCOREN]
+title=NAV CORE
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREN\SOURCE
+Map=N:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREN\%LANG%
+Map=I:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREN\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREN
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREOC---------------------------------------------
+[AVCOREOC]
+title=NAV CORE
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOC\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOC\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOC\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOC
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREOR---------------------------------------------
+[AVCOREOR]
+title=NAV CORE Retail Branch
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOR\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOR\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOR\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV62---------------------------------------------
+[AVCOREORNAV62]
+title=NAV CORE Retail Branch for NAV v6.2
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV62\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV62\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV62\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV7---------------------------------------------
+[AVCOREORNAV7]
+title=NAV CORE Retail Branch for NAV v7.0
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV7\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV7\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV7\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV701---------------------------------------------
+[AVCOREORNAV701]
+title=NAV CORE Retail Branch for NAV v7.01
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV701\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV701\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV701\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOR701SPSD---------------------------------------------
+[AVCOR701SPSD]
+title=NAV CORE Retail Branch for NAV v7.01 SPSD
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOR701SPSD\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOR701SPSD\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOR701SPSD\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV705---------------------------------------------
+[AVCOREORNAV705]
+title=NAV CORE Retail Branch for NAV v7.05
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV705\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV705\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV705\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV708---------------------------------------------
+[AVCOREORNAV708]
+title=NAV CORE Retail Branch for NAV v7.08
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV708\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV708\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV708\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV710---------------------------------------------
+[AVCOREORNAV710]
+title=NAV CORE Retail Branch for NAV v7.10
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV710\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV710\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV710\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV72---------------------------------------------
+[AVCOREORNAV72]
+title=NAV CORE Retail Branch for NAV v7.2
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV72\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV72\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV72\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREORNAV8---------------------------------------------
+[AVCOREORNAV8]
+title=NAV CORE Retail Branch for NAV v8.0 
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV8\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV8\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV8\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:BLD_AREA\COREOR.15\COREOR
+
+; Standard environment variables to be set
+SET SRCPRE=S:
+SET LANGPRE=N:
+SET LANGDRIVE=N:
+SET COREPRE=L:
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+prodhook=s:\INCLUDE\src
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+;----------------------------33B---------------------------------------------
+[BUILD33B]
+title=NAV CORE SPECIAL FOR PARTAIL BUILDS
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\AVCORE\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\AVCORE\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\AVCORE\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKN:N
+defbranch=QAKN
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVDOCS---------------------------------------------
+[AVDOCS]
+title=AVDOCS
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\AVDOCS\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\AVDOCS\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\AVDOCS\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------Backstroke-----------------------------------------------
+[BACKSTROKE]
+title=Norton CleanSweep v4.51
+
+Map=S:,USSM-DEV2\VOL3:UNINSTALL\BACKSTROKE
+Map=I:,USSM-DEV2\VOL3:UNINSTALL\BACKSTROKE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------BeefCake-----------------------------------------------
+[BEEFCAKE]
+title=NU NT Version 3.0
+
+Map=S:,USSM-DEV2\VOL3:BEEFCAKE\
+Map=I:,USSM-DEV2\VOL3:BEEFCAKE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------BHAWK----------------------------------------------
+[BHAWK]
+title=BHAWK
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\BHAWK\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\BHAWK\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\BHAWK\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------BORG-----------------------------------------------
+[BORG]
+title=NU Version 3.0
+
+Map=S:,USSM-DEV2\VOL3:BORG\SOURCE
+Map=I:,USSM-DEV2\VOL3:BORG\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:BORG\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=DAVI:D,BRNCH:1,DBCS:J,IOM:I,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CARPATHIA------------------------------------------
+[CARPATHIA]
+title=NU Version 3.0
+
+Map=S:,USSM-DEV2\VOL3:CARPATHIA\SOURCE
+Map=I:,USSM-DEV2\VOL3:CARPATHIA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:CARPATHIA\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=BRNCH:1,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CMTOOLS--------------------------------------------
+[CMTOOLS]
+title=CM Build Tools
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:CMTOOLS\SOURCE
+Map=N:,USSM-DEV1\VOL1:CMTOOLS\%LANG%
+Map=I:,USSM-DEV1\VOL1:CMTOOLS\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+branches=QAKB:B,QAKZ:Z;
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CMDOCS---------------------------------------------
+[CMDOCS]
+title=CM Documentation
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:CMDOCS\SOURCE
+Map=N:,USSM-DEV1\VOL1:CMDOCS\%LANG%
+Map=I:,USSM-DEV1\VOL1:CMDOCS\SOURCE\INCLUDE\SRC%PROJVERS%
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CMTRNG-----------------------------------------------
+[CMTRNG]
+title=CM Training Area
+
+Map=S:,USSM-DEV1\QUAKE:CMTRNG\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CMTRNG\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CMTRNG\%LANG%
+;map=r:,ussm-dev1\tools:tools,MKTEST60
+Map=V:,USSM-DEV1\QUAKE:CORE
+
+; Standard environment variables to be set
+mktools=r:\mktest60
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=QAKD:D,QAKE:E,QAKF:F,QAKG:G,QAKH:H,QAKI:I,QAKJ:J,QAKK:K,QAKL:L,QAKM:M,:N
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mktest60\VCS.CFG
+set ISLVINI=r:\mktest60
+set LIBPATH=r:\mktest60
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CMVOYGR--------------------------------------------
+[CMVOYGR]
+title=CM GUI Browser
+
+; Drives to Map
+Map=S:,USSM-TOOLS\TOOLS:\TOOLSRCS\CMVOYGR\SOURCE
+Map=N:,USSM-TOOLS\TOOLS:\TOOLSRCS\CMVOYGR\%LANG%
+Map=I:,USSM-TOOLS\TOOLS:\TOOLSRCS\CMVOYGR\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CompUSA CD-----------------------------------------
+[CompUSACD]
+title=CompUSA CD
+
+Map=S:,USSM-DEV2\VOL3:CompUSACD\SOURCE
+Map=I:,USSM-DEV2\VOL3:CompUSACD\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:CompUSACD\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=BRNCH:1,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CORE-----------------------------------------------
+[CORE]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+Map=V:,USSM-DEV1\QUAKE:CORE
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=QAKD:D,QAKE:E,QAKF:F,QAKG:G,QAKH:H,QAKI:I,QAKJ:J,QAKK:K,QAKM:M,QAKO:O,QAKP:P,QAKQ:Q,R
+DEFBRANCH=
+prodhook=c:\bld_area\navapi41\core\source\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CORE2K-----------------------------------------------
+[CORE2K]
+title=Inter-Product\Platform
+
+; Drives to Map
+Map=S:,\\USSM-DEV2\VOL1
+;Map=I:,\\USSM-DEV2\VOL1\CORE\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,\\USSM-DEV2\VOL1
+
+SET BUILDTYPE=1
+SET SRCPRE=s:\CORE\SOURCE
+SET LANGPRE=n:\CORE\%LANG%
+SET LANGDRIVE=n:\CORE\%LANG%
+SET COREPRE=
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+SET VC_SYS=PERFORCE
+SET VCSCFG=R:\MK\VCS.CFG
+SET ISLVINI=R:\MK
+SET LIBPATH=R:\MK
+;
+;Standard Configuration Settings:
+checkplatdirs=true
+prodhook=s:\CORE\SOURCE\INCLUDE\src%projvers%
+languages=English:E
+deflanguage=English
+branches=
+defbranch=
+mktools=r:\mk
+
+;----------------------------CORESDK--------------------------------------------
+[CORESDK]
+title=CORE Software Development Kit
+
+Map=S:,USSM-DEV1\QUAKE:CORESDK\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORESDK\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:CORESDK\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------CORETOOLS------------------------------------------
+[CORETOOLS]
+title=CORE Tools
+
+Map=S:,USSM-DEV1\QUAKE:CORETOOLS\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORETOOLS\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:CORETOOLS\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------DEFWORK--------------------------------------------
+[DEFWORK]
+title=Work area for NAV Defs
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\DEFWORK\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\DEFWORK\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\DEFWORK\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,:F
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------DEFWORKS-------------------------------------------
+[DEFWORKS]
+title=Work area for NAV Defs
+
+; Drives to Map
+Map=S:,USSM-STANDBY\VOL2:NAV\DEFWORK\SOURCE
+Map=N:,USSM-STANDBY\VOL2:NAV\DEFWORK\%LANG%
+Map=I:,USSM-STANDBY\VOL2:NAV\DEFWORK\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,:F
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------DANTE----------------------------------------------
+[Dante]
+title=Picasso J PICASSO
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\DANTE\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\DANTE\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\DANTE\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\VOL2:NAV\PICJQAK
+Map=T:,USSM-DEV1\VOL2:NAV\PICJDOS
+Map=U:,USSM-DEV1\VOL2:NAV\PICJCOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,Japanese:J
+deflanguage=English
+branches=DAN1:1,:0
+DEFBRANCH=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------DAVINCI--------------------------------------------
+[DAVINCI]
+title=NU95/NT Help Files
+
+Map=S:,USSM-DEV2\VOL3:DAVINCI\SOURCE
+Map=I:,USSM-DEV2\VOL3:DAVINCI\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:DAVINCI\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=BRNCH:1,DBCS:J,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------DOSNAV---------------------------------------------
+[DOSNAV]
+title=DOSNAV
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\DOSNAV\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\DOSNAV\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\DOSNAV\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=t:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+;----------------------------ENGINE---------------------------------------------
+[ENGINE]
+title=NAV Virlib Engine
+;
+;Same as EDBC. Used for DBC system.  Different mappings.
+;Changes here must be made there and vice-versa.
+;
+; Drives to Map
+Map=S:,SARA1\VOL1:SARC\ENGINE\TRUNK\SOURCE
+Map=N:,SARA1\VOL1:SARC\ENGINE\TRUNK\%LANG%
+Map=I:,SARA1\VOL1:SARC\ENGINE\TRUNK\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,SARA1\VOL1:CORE\CORE.07\CORE
+
+; Standard environment variables to be set
+SET SRCPRE=S:
+SET LANGPRE=N:
+SET LANGDRIVE=N:
+SET COREPRE=L:
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+branches=
+defbranch=
+prodhook=s:\INCLUDE\src
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------EDBC-------------------------------------
+[EDBC]
+title=NAV Virlib Engine
+;
+;Same as ENGINE. Used for DBC system.  Different mappings.
+;Changes here must be made there and vice-versa.
+;
+; Drives to Map
+Map=S:,SARA1\VOL1:SARCBOT\ENGINE\TRUNK\SOURCE
+Map=N:,SARA1\VOL1:SARCBOT\ENGINE\TRUNK\%LANG%
+Map=I:,SARA1\VOL1:SARCBOT\ENGINE\TRUNK\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,SARA1\VOL1:CORE\CORE.07\CORE
+
+; Standard environment variables to be set
+SET SRCPRE=S:
+SET LANGPRE=N:
+SET LANGDRIVE=N:
+SET COREPRE=L:
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+branches=
+defbranch=
+prodhook=s:\INCLUDE\src
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ESTEIN16---------------------------------------------
+[ESTEIN16]
+title=ESTEIN16
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\ESTEIN\WIN16\TRUNK\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\ESTEIN\WIN16\TRUNK\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\ESTEIN\WIN16\TRUNK\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=t:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ESTEIN32--------------------------------------------
+[ESTEIN32]
+title=ESTEIN32
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\ESTEIN\WIN32\TRUNK\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\ESTEIN\WIN32\TRUNK\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\ESTEIN\WIN32\TRUNK\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ETWWW----------------------------------------------
+[ETWWW]
+title=External Test Website
+
+; Drives to Map
+Map=S:,USSM-TOOLS\TOOLS:\TOOLSRCS\ETWWW\SOURCE
+Map=N:,USSM-TOOLS\TOOLS:\TOOLSRCS\ETWWW\%LANG%
+Map=I:,USSM-TOOLS\TOOLS:\TOOLSRCS\ETWWW\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------Firefly-----------------------------------------------
+[Firefly]
+title=Nav for Firewalls
+
+Map=S:,USSM-DEV1\VOL1:nav\Firefly\
+Map=I:,USSM-DEV1\VOL1:nav\Firefly\INCLUDE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------GAZELLE--------------------------------------------
+[Gazelle]
+title=Gazelle
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\GAZELLE\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\GAZELLE\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\GAZELLE\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------GARLIC---------------------------------------------
+[GARLIC]
+title=GARLIC
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\GARLIC\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\GARLIC\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\GARLIC\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=t:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------GRYPHON--------------------------------------------
+[GRYPHON]
+title=NAV NT
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL5:NAV\GRYPHON\SOURCE
+Map=N:,USSM-DEV1\VOL5:NAV\GRYPHON\%LANG%
+Map=I:,USSM-DEV1\VOL5:NAV\GRYPHON\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=t:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=t:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------HAN-----------------------------------------------
+[HAN]
+title=NAVNLM 5
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\HAN\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\HAN\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\HAN\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+Map=W:,USSM-DEV1\QUAKE:QUAKE
+;Map=V:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=V:,USSM-SARC\SARC:NAV\VIRLIB
+;Map=U:,USSM-DEV1\VOL2:NAV\MARIO
+;The old Mario and Yoda areas that used to be called "Luke"
+;will be combined in HAN.
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------HAWKING---------------------------------------------
+[HAWKING]
+title=Hawking
+
+; Drives to Map
+Map=S:,USSM-DEV2\VOL1:NAV\hawking\src
+Map=I:,USSM-DEV2\VOL1:NAV\hawking\src\include
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=S:
+prodhook=c:\bld_area\defutils\hawking\include
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------HPC------------------------------------------------
+[HPC]
+title=Healthy PC 2.0
+
+Map=S:,USSM-DEV4\VOL2:ADV\HPC\SOURCE
+Map=I:,USSM-DEV4\VOL2:ADV\HPC\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL2:ADV\HPC\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=t:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=t:,USSM-SARC\SARC:NAV\VIRLIB
+Map=u:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+mktools=r:\mk
+
+; Standard environment variables to be set
+languages=English:E,German:G,Japanese:K
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------HPC2-----------------------------------------------
+[HPC2]
+title=Healthy PC 2.0 (Second Area)
+
+Map=S:,USSM-DEV4\VOL2:ADV\HPC2\SOURCE
+Map=I:,USSM-DEV4\VOL2:ADV\HPC2\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL2:ADV\HPC2\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+Map=U:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+mktools=r:\mk
+
+; Standard environment variables to be set
+languages=English:E,German:G,Japanese:K
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NAVCORP--------------------------------------------
+[NAVCORP]
+title=NAV Corporate Edition
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\NAVCORP
+Map=I:,USSM-DEV1\VOL1:NAV\NAVCORP\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOC
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOC
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NAVCORP7.5--------------------------------------------
+[NAVCORP7.5]
+title=NAV Corporate Edition v. 7.5
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\NAVCORP
+Map=I:,USSM-DEV1\VOL1:NAV\NAVCORP\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREPC
+Map=T:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREPC
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NAVCORP7.5BV------------------------------------------
+[NAVCORP7.5BV]
+title=NAV Corporate Edition v. 7.5 for Beaverton
+
+; Drives to Map
+Map=S:,USBV-DEV3\DEV\DEV\NAV\NAVCORP
+Map=I:,USBV-DEV3\DEV\DEV\NAV\NAVCORP\INCLUDE
+Map=L:,USBV-DEV3\DEV\DEV\CORE\COREPC
+Map=T:,USBV-DEV3\DEV\DEV\NAV\AVCORE\AVCOREPC
+;map=r:,usbv-dev3\tools\tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NAVCORP80--------------------------------------------
+[NAVCORP80]
+title=NAV Corporate Edition v. 8.0
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\NAVCORP
+Map=I:,USSM-DEV1\VOL1:NAV\NAVCORP\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+
+; Standard environment variables to be set
+set BUILDTYPE=3
+set vc_sys=Perforce
+set SRCPRE=S:
+set LANGPRE=S:
+set LANGDRIVE=S:
+set COREPRE=L:
+set FAMPRE=T:
+SET SRCROOT=.
+SET LANGROOT=RES
+
+; Standard configuration settings
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE
+checkplatdirs=false
+
+;----------------------------TURBO--------------------------------------------
+[TURBO]
+title=NAV 7.0 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\TURBO
+Map=I:,USSM-DEV4\VOL2:NAV\TURBO\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV7
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------SYDNEY--------------------------------------------
+[SYDNEY]
+title=NAV 7.08 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\SYDNEY
+Map=I:,USSM-DEV4\VOL2:NAV\SYDNEY\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV708
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------SYD--------------------------------------------
+[SYD]
+title=NAV 7.2 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\SYD
+Map=I:,USSM-DEV4\VOL2:NAV\SYD\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV72
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;---------------------------QANTAS--------------------------------------------
+[QANTAS]
+title=NAV 7.05 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\QANTAS
+Map=I:,USSM-DEV4\VOL2:NAV\QANTAS\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV705
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------AUSSIE--------------------------------------------
+[AUSSIE]
+title=NAV 7.07 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\AUSSIE
+Map=I:,USSM-DEV4\VOL2:NAV\AUSSIE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV708
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------TAHOE--------------------------------------------
+[TAHOE]
+title=NAV 7.10 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\TAHOE
+Map=I:,USSM-DEV4\VOL2:NAV\TAHOE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV710
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------ILIAD--------------------------------------------
+[ILIAD]
+title=NAV
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\ILIAD\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\ILIAD\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\ILIAD\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOC
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOC
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+
+;----------------------------Jackalope-----------------------------------------------
+[JACKALOPE]
+title=NU Version 4.0
+
+Map=S:,USSM-DEV2\VOL2:ADV\JACKALOPE\
+Map=I:,USSM-DEV2\VOL2:ADV\JACKALOPE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------JASON----------------------------------------------
+[Jason]
+title=Jason 1.x
+
+; Drives to Map
+Map=S:,USSM-DEV2\VOL2:NUWIN\1.0\SRC
+Map=N:,USSM-DEV2\VOL2:NUWIN\1.0\%LANG%
+Map=I:,USSM-DEV2\VOL2:NUWIN\1.0\SRC\INCLUDE\SRC
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------JUPITER--------------------------------------------
+[JUPITER]
+title=NAV IEG (Solaris)
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\JUPITER\
+Map=I:,USSM-DEV1\VOL1:NAV\JUPITER\INCLUDE\
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------KIRIN----------------------------------------------
+[KIRIN]
+title=KIRIN
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\KIRIN\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\KIRIN\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\KIRIN\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,Japanese:J
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------Komodo-----------------------------------------------
+[KOMODO]
+title=Norton System Center
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\KOMODO\
+Map=I:,USSM-DEV1\VOL1:NAV\KOMODO\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------LABTOOLS-------------------------------------------
+[LABTOOLS]
+title=Lab Tools
+
+Map=S:,USSM-QA\VOL3:QA\LT\SOURCE
+Map=I:,USSM-QA\VOL3:QA\LT\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-QA\VOL3:QA\LT\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------LEMMA----------------------------------------------
+[LEMMA]
+title=PC Tuneup Update Based off of Typhoon.08H
+
+Map=S:,USSM-DEV4\VOL2:ADV\LEMMA\SOURCE
+Map=I:,USSM-DEV4\VOL2:ADV\LEMMA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL2:ADV\LEMMA\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+Map=U:,USSM-DEV2\VOL1:ADV\NUCore
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G,Japanese:K
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------LIVEREG-------------------------------------------
+[LIVEREG]
+title=Live Registration
+
+Map=S:,USSM-DEV1\QUAKE:LIVEREG\SOURCE
+Map=I:,USSM-DEV1\QUAKE:LIVEREG\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:LIVEREG\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------LU14--------------------------------------
+[LU14]
+title=LiveUpdate v1.4
+
+Map=S:,USSM-DEV1\QUAKE:LU14\SOURCE
+Map=I:,USSM-DEV1\QUAKE:LU14\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:LU14\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------LU2------------------------------------------------
+[LU2]
+title=LiveUpdate v2.0
+
+Map=S:,USSM-DEV1\QUAKE:LU2\SOURCE
+Map=I:,USSM-DEV1\QUAKE:LU2\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:LU2\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------LONESTAR-------------------------------------------
+[Lonestar]
+title=Lonestar
+
+; Drives to Map
+Map=S:,USSM-DEV2\VOL2:LONESTAR\SOURCE
+Map=N:,USSM-DEV2\VOL2:LONESTAR\%LANG%
+Map=I:,USSM-DEV2\VOL2:LONESTAR\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------MARIO----------------------------------------------
+[Mario]
+title=Mario
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\MARIO\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\MARIO\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\MARIO\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------MATRIX--------------------------------------------
+;
+; MATRIXSB (MATRIX-SB) is a special definition of MATRIX for the SARCBOT (SB)
+; automation system.  Changes made here should also be made to MATRIX if
+; appropriate.  MATRIX is where the developers work.  MATRIXSB is where
+; SARCBOT works.  SARCBOT=KOBEBOT.
+;
+[MATRIX]
+title=SARC Matrix Technologies
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\MATRIX\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\MATRIX\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\MATRIX\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+set SRCROOT=SRC
+set LANGROOT=SRC
+
+
+;----------------------------MATRIXSB--------------------------------------------
+;
+; MATRIXSB (MATRIX-SB) is a special definition of MATRIX for the SARCBOT (SB)
+; automation system.  Changes made here should also be made to MATRIX if
+; appropriate.  MATRIX is where the developers work.  MATRIXSB is where
+; SARCBOT works.  SARCBOT=KOBEBOT.
+;
+[MATRIXSB]
+title=SARC Matrix Technologies
+
+; Drives to Map
+Map=S:,SARA1\VOL1:SARCBOT\MATRIXSB\SOURCE
+Map=N:,SARA1\VOL1:SARCBOT\MATRIXSB\%LANG%
+Map=L:,SARA1\VOL1:CORE\CORE.07\CORE
+
+; Standard environment variables to be set
+set SRCPRE=S:
+set LANGPRE=N:
+set LANGDRIVE=N:
+set COREPRE=L:
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+
+; Standard configuration settings
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\SRC%projvers%
+
+
+
+;----------------------------MAVERICK-------------------------------------------
+[Maverick]
+title=NU For Win'96
+
+Map=S:,USSM-DEV4\VOL1\ADV:MAVERICK\SOURCE
+Map=I:,USSM-DEV4\VOL1\ADV:MAVERICK\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL1\ADV:MAVERICK\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+;----------------------------MAKE TOOLS-----------------------------------------
+[MK]
+title=Make tools
+
+; Drives to Map
+;map=r:,USSM-DEV1\TOOLS:TOOLS
+;map=r:,USSM-DEV1\TOOLS:TOOLS
+
+; Standard environment variables to be set
+languages=English:E
+deflanguage=English
+mktools=r:\mk
+prodhook=s:\INCLUDE
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NAVDX--------------------------------------------
+[NAVDX]
+title=NAV Command Line Scanner Product Area
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\NAVDX
+Map=I:,USSM-DEV4\VOL2:NAV\NAVDX\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV7
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NEWVIR---------------------------------------------
+[NEWVIR]
+title=VIRUS LIB v. ??.x linked to Core
+;
+; NEWVIRSB (NEWVIR-SB) is a special definition of NEWVIR for the SARCBOT
+; automation system.  Changes made here should also be made to NEWVIRSB if
+; appropriate.  NEWVIR is where the developers work.  NEWVIRSB is where
+; SARCBOT works.
+;
+
+; Drives to Map
+Map=S:,SARA1\VOL1:SARC\VIRLIB\SOURCE
+Map=N:,SARA1\VOL1:SARC\VIRLIB\%LANG%
+Map=I:,SARA1\VOL1:SARC\VIRLIB\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,SARA1\VOL1:CORE\CORE.07\CORE
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,QAKK:K,QAKM:M,:N
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NEWVIRSB---------------------------------------------
+[NEWVIRSB]
+title=VIRUS LIB v. ??.x linked to Core
+;
+; NEWVIRSB (NEWVIR-SB) is a special definition of NEWVIR for the SARCBOT
+; automation system.  Changes made here should also be made to NEWVIR if
+; appropriate.  NEWVIR is where the developers work.  NEWVIRSB is where
+; SARCBOT works.
+;
+
+; Drives to Map
+Map=S:,SARA1\VOL1:VIRLIB\SOURCE
+Map=N:,SARA1\VOL1:VIRLIB\%LANG%
+Map=I:,SARA1\VOL1:VIRLIB\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,SARA1\VOL1:CORE\CORE.07\CORE
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,QAKK:K,QAKM:M,:N
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NEWVIRS--------------------------------------------
+[NEWVIRS]
+title=VIRUS LIB v. ??.x linked to Core - Test Standby server
+
+; Drives to Map
+Map=S:,USSM-STANDBY\VOL2:NAV\VIRLIB\SOURCE
+Map=N:,USSM-STANDBY\VOL2:NAV\VIRLIB\%LANG%
+Map=I:,USSM-STANDBY\VOL2:NAV\VIRLIB\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,:K
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NHAWK----------------------------------------------
+[NHAWK]
+title=NHAWK
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\NHAWK\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\NHAWK\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\NHAWK\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+Map=U:,USSM-DEV1\VOL5:NAV\AVCOMP
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NIRVANA--------------------------------------------
+[Nirvana]
+title=Nirvana
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\NIRVANA\SOURCE
+Map=N:,USSM-DEV4\VOL2:NAV\NIRVANA\%LANG%
+Map=I:,USSM-DEV4\VOL2:NAV\NIRVANA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NU-----------------------------------------------
+[NU]
+title=Norton Utilities (Trunk)
+
+Map=S:,USSM-DEV2\VOL3:NU\
+Map=I:,USSM-DEV2\VOL3:NU\INCLUDE
+Map=L:,USSM-DEV2\VOL3:COREL_BUILDS\COREL.22\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NU5-----------------------------------------------
+[NU5]
+title=Norton Utilities v5.0 (ATLANTIS)
+
+Map=S:,USSM-DEV2\VOL3:NU5\
+Map=I:,USSM-DEV2\VOL3:NU5\INCLUDE
+Map=L:,USSM-DEV2\VOL3:COREL_BUILDS\COREL.21\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NU6-----------------------------------------------
+[NU6]
+title=Norton Utilities v6.0 (BONSAI)
+
+;Map=S:,USSM-DEV2\VOL3:NU6\NU
+;Map=I:,USSM-DEV2\VOL3:NU6\NU\INCLUDE
+;Map=L:,USSM-DEV2\VOL3:COREL_BUILDS\COREL.22\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=c:\depot\norton_utilities\trunk\src\include       
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------NUCore---------------------------------------------
+[NUCore]
+title=NU 9.0
+
+Map=S:,USSM-DEV2\VOL1:ADV\NUCore\SOURCE
+Map=I:,USSM-DEV2\VOL1:ADV\NUCore\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL1:ADV\NUCore\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G,Japanese:N
+deflanguage=English
+BRANCHES=NUC1:1,NUC2:2,NUC3:3,NUC4:4,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------NZR------------------------------------------------
+[NZR]
+title=Norton Zip Rescue v2.0
+
+Map=S:,USSM-DEV4\VOL3:ADV\BLD_AREA\BORGNZR.BASE\BORG\SOURCE
+Map=I:,USSM-DEV4\VOL3:ADV\BLD_AREA\BORGNZR.BASE\BORG\SOURCE\INCLUDE
+Map=L:,USSM-DEV3\NU:BLD_AREA\JACKCORE.01\CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------ODYSSEY--------------------------------------------
+[ODYSSEY]
+title=NAV 6.0 FOR WIN95 AND NT
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\ODYSSEY\SOURCE
+Map=N:,USSM-DEV4\VOL2:NAV\ODYSSEY\%LANG%
+Map=I:,USSM-DEV4\VOL2:NAV\ODYSSEY\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------OLDINSTALL-----------------------------------------
+[OLDINSTALL]
+title=OLD INSTALLER
+
+Map=S:,USSM-DEV1\QUAKE:OLDINSTALL\SOURCE
+Map=I:,USSM-DEV1\QUAKE:OLDINSTALL\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:OLDINSTALL\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------OLDLIVEUPDATE--------------------------------------
+[OLDLIVEUPDATE]
+title=OLD LIVEUPDATE
+
+Map=S:,USSM-DEV1\QUAKE:OLDLIVEUPDATE\SOURCE
+Map=I:,USSM-DEV1\QUAKE:OLDLIVEUPDATE\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=N:,USSM-DEV1\QUAKE:OLDLIVEUPDATE\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PATCHY2K_------------------------------------------
+[PATCHY2K]
+title=NU Inlines
+
+Map=S:,USSM-DEV2\VOL3:PATCHY2K\SOURCE
+Map=I:,USSM-DEV2\VOL3:PATCHY2K\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:PATCHY2K\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=DAVI:D,BRNCH:1,DBCS:J,IOM:I,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PHOENIXPATCH------------------------------------------
+[PHOENIXPATCH]
+title=NSW Inlines
+
+Map=S:,USSM-DEV2\VOL3:PHOENIXPATCH\SOURCE
+Map=I:,USSM-DEV2\VOL3:PHOENIXPATCH\SOURCE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+set vc_sys=PERFORCE     
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.  
+SET LANGROOT=RES
+
+;----------------------------PICASSO--------------------------------------------
+[Picasso]
+title=Picasso
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:nav\Picasso\SOURCE
+Map=N:,USSM-DEV1\VOL2:nav\Picasso\%LANG%
+Map=I:,USSM-DEV1\VOL2:nav\Picasso\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+Map=T:,USSM-DEV1\VOL2:NAV\DOSNAV
+Map=U:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PICJCOR--------------------------------------------
+[PICJCOR]
+title=Picasso J CORE
+
+Map=S:,USSM-DEV1\VOL2\NAV:PICJCOR\SOURCE
+Map=I:,USSM-DEV1\VOL2\NAV:PICJCOR\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV1\VOL2\NAV:PICJCOR\%LANG%
+Map=V:,USSM-DEV1\VOL2\NAV:PICJCOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E,Japanese:J
+deflanguage=English
+branches=DAN1:1,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PICJDOS--------------------------------------------
+[PICJDOS]
+title=Picasso J DOSNAV
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\PICJDOS\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\PICJDOS\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\PICJDOS\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\VOL2:NAV\PICJCOR
+Map=T:,USSM-DEV1\VOL2:NAV\PICJNEW
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,Japanese:J
+deflanguage=English
+branches=DAN1:1,:0
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PICJNEW--------------------------------------------
+[PICJNEW]
+title=Picasso J NEWVIR
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\PICJNEW\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\PICJNEW\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\PICJNEW\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\VOL2:NAV\PICJCOR
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,Japanese:J
+deflanguage=English
+branches=DAN1:1,:0
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PICJQAK--------------------------------------------
+[PICJQAK]
+title=Picasso J QUAKE
+
+Map=S:,USSM-DEV1\VOL2:NAV\PICJQAK\SOURCE
+Map=I:,USSM-DEV1\VOL2:NAV\PICJQAK\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV1\VOL2:NAV\PICJQAK\%LANG%
+Map=V:,USSM-DEV1\VOL2:NAV\PICJQAK
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E,Japanese:J
+deflanguage=English
+branches=DAN1:1,:0
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PILEDRVR-------------------------------------------
+[PileDrvr]
+title=NT Pack, ver 1.0
+
+Map=S:,USSM-DEV2\VOL3:ADV\PILEDRVR\SOURCE
+Map=I:,USSM-DEV2\VOL3:ADV\PILEDRVR\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:ADV\PILEDRVR\%LANG%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PIRANHA--------------------------------------------
+[Piranha]
+title=PC Tuneup Update
+
+Map=S:,USSM-DEV4\VOL2:ADV\PIRANHA\SOURCE
+Map=I:,USSM-DEV4\VOL2:ADV\PIRANHA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL2:ADV\PIRANHA\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=t:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=t:,USSM-SARC\PIRANHA:NAV\VIRLIB
+Map=U:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G,Japanese:K
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PYRO-----------------------------------------------
+[PYRO]
+title=NAV NT
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\PYRO\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\PYRO\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\PYRO\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------PYS------------------------------------------------
+[PYS]
+title=Protect Your Site
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\PYS\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\PYS\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\PYS\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------QSERVER--------------------------------------------
+[QSERVER]
+title=QUARANTINE SERVER COMPONENT
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\QSERVER\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\QSERVER\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\QSERVER\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------QUAKE----------------------------------------------
+[QUAKE]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:QUAKE\SOURCE
+Map=I:,USSM-DEV1\QUAKE:QUAKE\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:QUAKE\%LANG%
+Map=V:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAK0:0,QAK2:2,QAK3:3,QAK4:4,QAK5:5,QAK6:6,QAK7:7,QAK8:8,QAK9:9,QAKA:A,QAKB:B,QAKC:C
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------QUIKSLVR-------------------------------------------
+[QUIKSLVR]
+title=NAVIEG using Pyro Area
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\PYRO\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\PYRO\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\PYRO\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------QA-------------------------------------------------
+[QA]
+title=QA Tools w\CORE
+
+Map=S:,USSM-QA\VOL3:QA\SOURCE
+Map=N:,USSM-QA\VOL3:QA\%LANG%
+Map=I:,USSM-QA\VOL3:QA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------OLDQA----------------------------------------------
+[OLDQA]
+title=QA Tools w\Quake
+
+Map=S:,USSM-QA\VOL3:qa\SOURCE
+Map=N:,USSM-QA\VOL3:qa\%LANG%
+Map=I:,USSM-QA\VOL3:qa\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ROSWELL--------------------------------------------
+[ROSWELL]
+title=ROSWELL
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\ROSWELL\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\ROSWELL\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\ROSWELL\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ROSNEC---------------------------------------------
+[ROSNEC]
+title=ROSNEC
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\ROSNEC\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\ROSNEC\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\ROSNEC\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------SATORI---------------------------------------------
+[SATORI]
+title=JAVA
+
+Map=S:,USSM-DEV2\VOL3:ADV\SATORI\SOURCE
+Map=I:,USSM-DEV2\VOL3:ADV\SATORI\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL3:ADV\SATORI\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MKTEST53
+
+; Standard environment variables to be set
+mktools=r:\mktest53
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mktest53
+set LIBPATH=r:\mktest53
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------SAVANNA--------------------------------------------
+[Savanna]
+title=Savanna
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\SAVANNA\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\SAVANNA\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\SAVANNA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------SAVANNAH--------------------------------------------
+[SAVANNAH]
+title=SAVANNAH
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL5:NAV\SAVANNAH\SOURCE
+Map=N:,USSM-DEV1\VOL5:NAV\SAVANNAH\%LANG%
+Map=I:,USSM-DEV1\VOL5:NAV\SAVANNAH\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------SCORPIO--------------------------------------------
+[SCORPIO]
+title=NU v7.0
+
+; Drives to Map
+Map=S:,USSM-DEV2\VOL2:NU\7.0\SCORPIO\SOURCE
+Map=N:,USSM-DEV2\VOL2:NU\7.0\SCORPIO\%LANG%
+Map=I:,USSM-DEV2\VOL2:NU\7.0\SCORPIO\SOURCE\INCLUDE\SRC
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+;----------------------------Sphinx-----------------------------------------------
+[SPHINX]
+title=Norton Internet Utiltiies
+
+Map=S:,USSM-DEV2\VOL1:ADV\Sphinx\
+Map=I:,USSM-DEV2\VOL1:ADV\Sphinx\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------SPRINT-----------------------------------------------
+[SPRINT]
+title=Norton Internet Security v2.0 for Windows NT
+
+Map=S:,USSM-DEV2\VOL1:ADV\Sprint\
+Map=I:,USSM-DEV2\VOL1:ADV\Sprint\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------SphinxET3-----------------------------------------------
+[SPHINXET3]
+title=Norton Internet Utiltiies (ET3 Branch)
+
+Map=S:,USSM-DEV2\VOL1:ADV\SphinxET3\
+Map=I:,USSM-DEV2\VOL1:ADV\SphinxET3\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------SPRING-----------------------------------------------
+[SPRING]
+title=Norton 2000
+
+Map=S:,USSM-DEV2\VOL3:spring\
+Map=I:,USSM-DEV2\VOL3:spring\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------STQA-----------------------------------------------
+[STQA]
+title=Shared Tech QA
+
+Map=S:,USSM-DEV1\QUAKE:STQA\SOURCE
+Map=N:,USSM-DEV1\QUAKE:STQA\%LANG%
+Map=T:,USSM-DEV1\QUAKE:OLDLIVEUPDATE
+Map=I:,USSM-DEV1\QUAKE:STQA\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------SNIPER---------------------------------------------
+[SNIPER]
+title=Healthy PC
+
+Map=S:,USSM-DEV4\VOL2:ADV\SNIPER\SOURCE
+Map=I:,USSM-DEV4\VOL2:ADV\SNIPER\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL2:ADV\SNIPER\%LANG%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;Map=t:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=t:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G,Japanese:K
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+;----------------------------SYMBASIC-------------------------------------------
+[Symbasic]
+title=Symantec Basic
+
+Map=S:,USSM-DEV1\VOL5:NAV\SYMBASIC\SOURCE
+Map=N:,USSM-DEV1\VOL5:NAV\SYMBASIC\%LANG%
+Map=I:,USSM-DEV1\VOL5:NAV\SYMBASIC\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+branches=QAK0:0,QAK1:1,QAK2:2,QAK3:3,QAK4:4,:5
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------ATHENS--------------------------------------------
+[ATHENS]
+title=STONE MOUNTAIN
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\ATHENS\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\ATHENS\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\ATHENS\SOURCE\INCLUDE\src%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------SWAT-----------------------------------------------
+[SWAT]
+title=SWAT
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\SWAT\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\SWAT\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\SWAT\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------TESLA----------------------------------------------
+[TESLA]
+title=NAV NT
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL1:NAV\TESLA\SOURCE
+Map=N:,USSM-DEV1\VOL1:NAV\TESLA\%LANG%
+Map=I:,USSM-DEV1\VOL1:NAV\TESLA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;Map=T:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+Map=U:,USSM-DEV1\VOL1:NAV\AVCORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------TATA-----------------------------------------------
+[TATA]
+title=Work area for code going to Tata
+
+Map=S:,USSM-DEV1\VOL2:NAV\TATA\
+Map=I:,USSM-DEV1\VOL2:NAV\TATA\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------THUNDER--------------------------------------------
+[THUNDER]
+title=NAV 6.2 FOR WIN95 AND NT
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\THUNDER\SOURCE
+Map=N:,USSM-DEV4\VOL2:NAV\THUNDER\%LANG%
+Map=I:,USSM-DEV4\VOL2:NAV\THUNDER\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV62
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+set FAMILYVERS=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+
+;----------------------------TONKA----------------------------------------------
+[TONKA]
+title=TONKA
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\TONKA\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\TONKA\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\TONKA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-SARC\SARC:NAV\VIRLIB
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------TOOLTEST-------------------------------------------
+[TOOLTEST]
+title=Test ENV using SUBST
+
+SUBST S: W:\SOURCE
+SUBST N: W:\ENGLISH
+SUBST I: W:\SOURCE\INCLUDE\SRC%PROJVERS%
+SUBST
+
+;Map=S:,USSM-DEV1\QUAKE:PICJCOR\SOURCE
+;Map=I:,USSM-DEV1\QUAKE:PICJCOR\SOURCE\INCLUDE\SRC%PROJVERS%
+;Map=N:,USSM-DEV1\QUAKE:PICJCOR\%LANG%
+;Map=V:,USSM-DEV1\QUAKE:PICJCOR
+;;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=QAKD:D,QAKE:E,QAKF:F,QAKG:G,QAKH:H,QAKI:I,QAKJ:J,QAKK:K,:L
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;------------------------------------------------------------------------
+[TORITO]
+title=NAV 8.0 FOR WIN9X AND NT AND 2001
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\TORITO
+Map=I:,USSM-DEV1\VOL2:NAV\TORITO\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:BLD_AREA\COREOR.15\COREOR
+Map=T:,USSM-DEV1\VOL2:NAV\AVCORE\AVCOREORNAV8
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------TURBO--------------------------------------------
+[TURBO]
+title=NAV 7.0 FOR WIN9X AND NT AND 2000
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL2:NAV\TURBO
+Map=I:,USSM-DEV4\VOL2:NAV\TURBO\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREOR
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE\AVCOREORNAV7
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set FAMILYVERS=
+prodhook=s:\INCLUDE
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------USHI-----------------------------------------------
+[USHI]
+title=NU For Win'96 Japanese
+
+Map=S:,USSM-DEV4\VOL1:ADV\USHI\SOURCE
+Map=I:,USSM-DEV4\VOL1:ADV\USHI\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV4\VOL1:ADV\USHI\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,German:G
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------VENICE---------------------------------------------
+[VENICE]
+title=STS Software Tracking System 2.0
+
+Map=S:,USSM-DEV1\VOL1:STS\SOURCE
+Map=N:,USSM-DEV1\VOL1:STS\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------VIRLIB---------------------------------------------
+[Virlib]
+title=VIRUS LIB v. ??.x
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\VIRLIB\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\VIRLIB\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\VIRLIB\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:QUAKE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAK3:3,QAK4:4,QAK6:6,QAK8:8,VIR9:9,:T
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------V--------------------------------------------------
+[V]
+title=NU Version 4.0
+
+Map=S:,USSM-DEV2\VOL2:ADV\V\SOURCE
+Map=I:,USSM-DEV2\VOL2:ADV\V\SOURCE\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+
+;----------------------------Vogon----------------------------------------------
+[Vogon]
+title=NUNT Ver 3
+
+; Drives to Map
+Map=S:,USSM-DEV2\VOL2:ADV\VOGON\SOURCE
+Map=I:,USSM-DEV2\VOL2:ADV\VOGON\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL2:ADV\vogon\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------WEEKLY1---------------------------------------------
+[WEEKLY1]
+title=WEEKLY1 Virus Definitions
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\WEEKLY1\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\WEEKLY1\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\WEEKLY1\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,QAKM:M,:N
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------WEEKLY2---------------------------------------------
+[WEEKLY2]
+title=WEEKLY2 Virus Definitions
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\WEEKLY2\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\WEEKLY2\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\WEEKLY2\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,QAKM:M,:N
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------WEEKLY3---------------------------------------------
+[WEEKLY3]
+title=WEEKLY3 Virus Definitions
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\WEEKLY3\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\WEEKLY3\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\WEEKLY3\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,QAKM:M,:N
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------WEEKLY4---------------------------------------------
+[WEEKLY4]
+title=WEEKLY4 Virus Definitions
+
+; Drives to Map
+Map=S:,USSM-SARC\SARC:NAV\WEEKLY4\SOURCE
+Map=N:,USSM-SARC\SARC:NAV\WEEKLY4\%LANG%
+Map=I:,USSM-SARC\SARC:NAV\WEEKLY4\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=QAKE:E,QAKF:F,QAKJ:J,QAKM:M,:N
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------YODA-----------------------------------------------
+[YODA]
+title=YODA
+
+; Drives to Map
+Map=S:,USSM-DEV1\VOL2:NAV\YODA\SOURCE
+Map=N:,USSM-DEV1\VOL2:NAV\YODA\%LANG%
+Map=I:,USSM-DEV1\VOL2:NAV\YODA\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=T:,USSM-DEV1\VOL1:NAV\AVCORE
+Map=W:,USSM-DEV1\QUAKE:QUAKE
+;Map=V:,USSM-DEV1\VOL2:NAV\VIRLIB
+Map=V:,USSM-SARC\SARC:NAV\VIRLIB
+Map=U:,USSM-DEV1\VOL2:NAV\MARIO
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------Zaphod---------------------------------------------
+[Zaphod]
+title=NU NT
+Map=S:,USSM-DEV2\VOL1:ADV\zaphod\SOURCE
+Map=I:,USSM-DEV2\VOL1:ADV\zaphod\SOURCE\INCLUDE\SRC%PROJVERS%
+Map=N:,USSM-DEV2\VOL1:ADV\zaphod\%LANG%
+Map=L:,USSM-DEV1\QUAKE:CORE
+Map=t:,USSM-DEV2\VOL1:ADV\NUCore
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PVCS
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------Cartman-----------------------------------------------
+[CARTMAN]
+title=NU Version 3.0
+
+Map=S:,USSM-DEV2\VOL3:CARTMAN\
+Map=I:,USSM-DEV2\VOL3:CARTMAN\INCLUDE
+Map=L:,USSM-DEV1\QUAKE:CORE\COREL
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E
+deflanguage=English
+BRANCHES=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+; The follwing is not case or content sensitive (yet)
+set vc_sys=PERFORCE
+; Wont remove this until we test polymake without it.
+set vcscfg=r:\mk\VCS.CFG
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------Event-----------------------------------------------
+[EVENT]
+title=SymEvent
+
+Map=S:,USSM-DEV1\QUAKE:event\
+;map=r:,ussm-dev1\tools:tools,MK
+Map=V:,USSM-DEV1\QUAKE:CORE
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------Stat--------------------------------------------
+[STAT]
+title=SymEvent
+
+Map=S:,USSM-DEV1\QUAKE:stat\
+;map=r:,ussm-dev1\tools:tools,MK
+Map=V:,USSM-DEV1\QUAKE:CORE
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=
+DEFBRANCH=
+prodhook=s:\INCLUDE
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=.
+SET LANGROOT=RES
+
+;----------------------------COREL-------------------------------------------
+[COREL]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\COREL\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\COREL\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\COREL\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=:L
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------COREN-------------------------------------------
+[COREN]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\COREN\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\COREN\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\COREN\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=:N
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------COREOC-------------------------------------------
+[COREOC]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\COREOC\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\COREOC\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\COREOC\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=:O
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------COREOR-------------------------------------------
+[COREOR]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\COREOR\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\COREOR\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\COREOR\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=:O
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------COREPC-----------------------------------------------
+[COREPC]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\COREPC\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\COREPC\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\COREPC\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=:P
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------COREQC-----------------------------------------------
+[COREQC]
+title=Inter-Product\Platform
+
+Map=S:,USSM-DEV1\QUAKE:CORE\COREQC\SOURCE
+Map=I:,USSM-DEV1\QUAKE:CORE\COREQC\SOURCE\INCLUDE\src%PROJVERS%
+Map=N:,USSM-DEV1\QUAKE:CORE\COREQC\%LANG%
+;map=r:,ussm-dev1\tools:tools,MK
+
+
+; Standard environment variables to be set
+mktools=r:\mk
+BINDRIVE=V:\
+SET BINDRIVE=V:\
+languages=English:E
+deflanguage=English
+branches=:Q
+DEFBRANCH=
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=PERFORCE
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREPC---------------------------------------------
+[AVCOREPC]
+title=NAV AVCORE Enterprise Branch
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREPC\SOURCE
+Map=N:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREPC\%LANG%
+Map=I:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREPC\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREPC
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------AVCOREQC---------------------------------------------
+[AVCOREQC]
+title=NAV AVCORE Enterprise Q Branch
+
+; Drives to Map
+Map=S:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREQC\SOURCE
+Map=N:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREQC\%LANG%
+Map=I:,USSM-DEV4\VOL1:NAV\AVCORE\AVCOREQC\SOURCE\INCLUDE\SRC%projvers%
+Map=L:,USSM-DEV1\QUAKE:CORE\COREQC
+;map=r:,ussm-dev1\tools:tools,MK
+
+; Standard environment variables to be set
+mktools=r:\mk
+languages=English:E,French:F,German:G,Spanish:S,Italian:I
+deflanguage=English
+branches=
+defbranch=
+set LANGPRE=S:
+set LANGDRIVE=N:
+prodhook=s:\INCLUDE\src%projvers%
+set vc_sys=Perforce
+set vcscfg=r:\mk\VCS.CFG
+set ISLVINI=r:\mk
+set LIBPATH=r:\mk
+SET SRCROOT=SRC
+SET LANGROOT=SRC
+
+;----------------------------GLOBAL DEFINES-------------------------------------
+[_global]
+total=2
+product=QUAKE,1,QUAKE Inter-Product\Platform
+product=CORE,2,CORE Inter-Product\Platform
+product=TATA,3,Work area for TATA
+product=GRYPHON,4,NAV NT
+product=KIRIN,5,KIRIN
+product=JACKALOPE,6,NU Version 4.0
+product=TNTQA,7,TNT QA Tools
+product=QA,8,QA Tools
+product=NIRVANA,9,NAV 3.0x
+product=NESTLE,10,NT Tools
+product=Dosnav,11,Dosnav
+product=Socrates,12,Help Desk v1.0
+product=MERCURY,14,NAVIEG for Solaris v1.0
+product=APACHE,15,NU for Win 95
+product=PICJQAK,16,Picasso J (QUAKE)
+product=PICJCOR,17,Picasso J (CORE)
+product=PICJNEW,18,Picasso J (NEWVIR)
+product=PICJDOS,19,Picasso J (DOSNAV)
+product=DANTE,20,Picasso J (PICASSO)
+product=VIRLIB,21,Virus Family Library
+product=NUCore,22,NU Family Library
+product=Maverick,23,NU for Win 96
+product=PileDrvr,24,NT Pack v1.0
+product=LABTOOLS,25,QA Labtools
+product=ZAPHOD,29,NU NT
+product=NEWVIR,30,Virus Family Library linked to CORE
+product=NEWVIRS,30,Virus Family Library linked to CORE
+product=OLDQA,31,QA Tools with Quake
+product=VENICE,32,STS version 2.0
+product=JATAYU,33,NAV Server Sentry 3.0
+product=MARIO,34,NAV NLM 2.0
+product=SNIPER,36,Healthy PC
+product=AVCORE,41,NAV CORE
+product=CARPATHIA,43,Carpathia
+product=DEFWORK,44,NAV Def Work Area
+product=DEFWORKS,44,NAV Def Work Area
+product=USHI,46,NU for Win 96 Japanese
+product=PYS,47,Protect Your Site
+product=PICASSO,48,Picasso
+product=TESLA,49,Tesla
+product=PYRO,50,Pyro
+product=CHEETAH,51,NAVNLM
+product-PIRANHA,52,PC Tune-up Update
+product=VOGON,53,NUNT Ver 3
+product=LEMMA,54,PC Tune-Up base off of Typhoon.08H
+product=LONESTAR,55,Lonestar
+product=GRYPHNEC,57,NAV NT NEC
+product=AVCOMP,59,NAV COMP
+product=SATORI,60,JAVA
+product=SWAT,61,SWAT
+product=ATOMIC,62,NAV 5.0
+product=HAN,63,NAVNLM 5
+product=DAVINCI,64
+product=QUIKSLVR,65,Pyro
+product=ATHENS,66,Athens
+product=LU2,67,LiveUpdate 2.0
+product=BEEFCAKE,68, NU NT 3.0
+product=ODYSSEY,69,NAV 6.0
+product=ILIAD,70,NAV
+product=KOMODO,71,NSC
+product=V,72,NSW 3.0
+product=SPHINX,73,NIU
+product=ATLANTIS,74,NU v5.0 for Windows 9x
+product=AVCOREORNAV701SPSD,75,AvCoreOR Nav 7.01 for SPSD
+product=TAHOE,76, NAV  v7.10 for Windows 9x, ME, NT 2000
+product=AVCOREORNAV710,77,AvCoreOR Nav 7.10
+

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo Removing files from bin.sd
+rm bin.sd/* >/dev/null 2>&1
+
+echo Removing files from bin.sr
+rm bin.sr/* >/dev/null 2>&1
+
+for dir in symkunix heur avenge emulator engine15 crc32 df macroheu olessapi navex15 cmdline navapi
+do
+    echo Cleaning $dir
+    cd $dir
+    make -f unix.mak clean >/dev/null 2>&1
+    rm make.err >/dev/null 2>&1
+    cd ..
+done

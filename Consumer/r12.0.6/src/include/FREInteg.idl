@@ -1,0 +1,100 @@
+// FREInteg.idl : IDL source for FREInteg.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (FREInteg.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(23779855-3D92-4E9F-9178-AB142B58E674),
+		helpstring("IFREIntegrator Interface"),
+		pointer_default(unique)
+	]
+	interface IFREIntegrator : IUnknown
+	{
+		[helpstring("method IntegrateXMLFile")] HRESULT IntegrateXMLFile(BSTR bszXMLFile);
+		[helpstring("method IntegrateXML")] HRESULT IntegrateXML(IDispatch* pDispXMLDoc);
+		[helpstring("method GetXMLToFile")] HRESULT GetXMLToFile(BSTR bszXMLFile);
+		[helpstring("method GetXML")] HRESULT GetXML(IDispatch** pDispXMLDoc);
+	};
+	[
+		object,
+		uuid(8F0B2C01-2D76-497B-9747-53FA2BCBA220),
+		helpstring("IFREIntegEx Interface"),
+		pointer_default(unique)
+	]
+	interface IFREIntegEx : IUnknown
+	{
+		[helpstring("method IntegrateXMLFile")] HRESULT IntegrateXMLFile(BSTR bszXMLFile, VARIANT_BOOL bEncrypt);
+		[helpstring("method GetXMLToFile")] HRESULT GetXMLToFile(BSTR bszXMLFile, VARIANT_BOOL bEncrypt);
+		[helpstring("method IntegrateXMLFile2")] HRESULT IntegrateXMLFile2(BSTR bszXMLFile, VARIANT_BOOL bEncrypt, VARIANT_BOOL bShowUI, long nDesc, long lParentWnd);
+		[helpstring("method GetXMLToFile2")] HRESULT GetXMLToFile2(BSTR bszXMLFile, VARIANT_BOOL bEncrypt, VARIANT_BOOL bShowUI, long nDesc, long lParentWnd);
+	};
+	[
+		object,
+		uuid(9F0B2C01-2D76-497B-9747-53FA2BCBA220),
+		helpstring("IFREOptions Interface"),
+		pointer_default(unique)
+	]
+	interface IFREOptions : IUnknown
+	{
+		[helpstring("method IgnoreInstallRunning")] HRESULT IgnoreInstallRunning();
+		[helpstring("method QuitOnError")] HRESULT QuitOnError(VARIANT_BOOL bQuit);
+		[helpstring("method SetMultiUserMode")] HRESULT SetMultiUserMode();
+		[helpstring("method SetProgressCallback")] HRESULT SetProgressCallback(long pProgressPtr);
+	};
+	[
+		object,
+		uuid(AF0B2C01-2D76-497B-9747-53FA2BCBA220),
+		helpstring("IFREProcEnum Interface"),
+		pointer_default(unique)
+	]
+	interface IFREProcEnum : IUnknown
+	{
+		[helpstring("method GetProcessor")] HRESULT GetProcessor(VARIANT_BOOL bExport, long lIndex, BSTR* bProcessorName, long* plProc);
+		[helpstring("method GetProcessorCount")] HRESULT GetProcessorCount(long* plCount);
+		[helpstring("method SetFileForEnum")] HRESULT SetFileForEnum(BSTR bFileName, VARIANT_BOOL bEncrypt);
+	};
+	[
+		object,
+		uuid(BF0B2C01-2D76-497B-9747-53FA2BCBA220),
+		helpstring("IFREProcActivate Interface"),
+		pointer_default(unique)
+	]
+	interface IFREProcActivate : IUnknown
+	{
+		[helpstring("method AddProcessor")] HRESULT AddProcessor(long freProc);
+		[helpstring("method ExcludeProcessor")] HRESULT ExcludeProcessor(long freProc);
+		[helpstring("method SetProcessorFlags")] HRESULT SetProcessorFlags(long freProc, DWORD dwFlags);
+		[helpstring("method SetProcessorPriority")] HRESULT SetProcessorPriority(long freProc, long lPriority);
+	};
+
+[
+	uuid(28D557D9-9F72-4A93-87C2-8A0D7DCEA0CD),
+	version(1.0),
+	helpstring("FREInteg 1.0 Type Library")
+]
+library FREINTEGLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(7CA87530-E5EB-4B82-92DB-6299B2116A0A),
+		helpstring("FREIntegrator Class")
+	]
+	coclass FREIntegrator
+	{
+		[default] interface IFREIntegrator;
+	};
+	[
+		uuid(72E492DD-B841-4D9C-8EBC-3BAC9711F6E5),
+		helpstring("FREIntegEx Class")
+	]
+	coclass FREIntegEx
+	{
+		[default] interface IFREIntegEx;
+	};
+};

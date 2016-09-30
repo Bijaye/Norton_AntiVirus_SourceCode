@@ -1,0 +1,123 @@
+#######################################################################
+# 
+# target file: AVISACSampleComm.prf
+# 
+# target directory: D:\avis
+# 
+# target machine: rainier.avis (within Immune System analysis center)
+# 
+# target application: AVISACSampleComm.exe and AVISACSignatureComm.exe
+#  
+# This profile contains configuration parameters for the sample importer
+# and signature exporter programs that run on the rainier.avis machine
+# within the Immune System analysis center.
+# 
+#######################################################################
+
+#----------------------------------------------------------------------
+# The "gatewayXxxxxx" parameters specify which Immune System gateways
+# the AVISACSampleComm.exe program will import samples from, and the
+# AVISACSignatureComm.exe program will export definition packages to.
+# 
+# The "gatewayCount" parameter specifies how many "gatewayAddressX"
+# parameters are specified.
+# 
+# The "gatewayAddressX" parameters specify the complete Internet URL of
+# the machine in each gateway array that the sample importer and
+# signature exporter will communicate with.
+# 
+# Note: The protocol ("http" or "https") and port number ("2847" or
+# "2848") in each URL must agree with the "sampleImporterUseSSL" and
+# "signatureExporterUseSSL" parameters.
+#----------------------------------------------------------------------
+
+gatewayCount = 2
+gatewayAddress1 = https://gw01inside01.gw01.dis.symantec.com:2848
+gatewayAddress2 = https://gw02inside01.gw02.dis.symantec.com:2848
+
+#----------------------------------------------------------------------
+# The "connectRetries" parameter specifes the maximum number of
+# connection attempts for the Microsoft WinINET communications library.
+# 
+# The "xxxxTimeout" parameters specify the maximum time, in seconds,
+# that the Microsoft WinINET library will wait for network operations to
+# complete.
+# 
+# For further information on this parameter, refer to the Microsoft
+# documentation for the INTERNET_OPTION_xxxx flags of the
+# CInternetSession::SetOption() method.
+#----------------------------------------------------------------------
+
+connectRetries = 2
+connectTimeout = 240
+sendRequestTimeout = 240
+sendRequestDataTimeout = 240
+receiveResponseTimeout = 240
+receiveResponseDataTimeout = 240
+
+#----------------------------------------------------------------------
+# The "timeoutXxxxxxx" parameters specify the maximum time, in seconds,
+# that the sample importer and signature exporter will wait for
+# transactions with Immune System gateways to complete.
+#----------------------------------------------------------------------
+
+timeoutTransactionConnected = 240
+timeoutImportSampleTransactionCompleted = 1800
+timeoutReportStatusTransactionCompleted = 240
+timeoutExportSignatureTransactionCompleted = 1800
+
+#----------------------------------------------------------------------
+# The "SampleStoragePath" parameter specifies the directory where
+# sample attributes and contents are stored by the sample importer.
+#----------------------------------------------------------------------
+
+SampleStoragePath = \\rushmore\sampleStorage
+
+#----------------------------------------------------------------------
+# The "SignatureStoragePath" parameter specifies the directory where
+# the signature exporter gets definition packages.
+#----------------------------------------------------------------------
+
+SignatureStoragePath = \\rushmore\signatureStorage
+
+#----------------------------------------------------------------------
+# The "xxxxPollingInterval" parameters specify the time intervals, in
+# seconds, for connecting to the Immune System gateways.
+#----------------------------------------------------------------------
+
+sampleImporterDelayAfterNoSamplesAtGateway = 60
+StatusReporterPollingInterval = 60
+SignatureExporterPollingInterval = 60
+ClientDelayAfterNetworkError = 5
+
+#----------------------------------------------------------------------
+# The "enableXxxx" parameters enable or disable (values "on" or "off",
+# respectively) logging for the sample importer and signature exporter.
+#----------------------------------------------------------------------
+
+enableWinInetLogging = on
+enableTracing = on
+
+#----------------------------------------------------------------------
+# The "xxxxxxUseSSL" parameters enable or disable (values "on" or "off",
+# respectively) the use of SSL in the sample importer and signature
+# exporter.
+# 
+# Note: The "xxxxxxUseSSL" parameters must agree with the protocol
+# ("http" or "https") and port number ("2847" or "2848") in the
+# "gatewayAddressX" parameters.
+#----------------------------------------------------------------------
+
+sampleImporterUseSSL = on
+signatureExporterUseSSL = on
+
+#----------------------------------------------------------------------
+# The "xxxCriticalError" parameters specify whether or not an alarm will
+# be sounded and a dialog window will be displayed when a critical error
+# occurs.
+#----------------------------------------------------------------------
+
+allowUserToRespondToCriticalError = yes
+soundAlarmOnCriticalError = on
+
+#######################################################################

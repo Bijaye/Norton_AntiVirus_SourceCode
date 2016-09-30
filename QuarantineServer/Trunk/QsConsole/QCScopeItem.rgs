@@ -1,0 +1,26 @@
+HKCR
+{
+	Qscon.QCScopeItem.1 = s 'QCScopeItem Class'
+	{
+		CLSID = s '{FC219AC3-2730-4ADF-A5B7-93581BB11E41}'
+	}
+	Qscon.QCScopeItem = s 'QCScopeItem Class'
+	{
+		CLSID = s '{FC219AC3-2730-4ADF-A5B7-93581BB11E41}'
+		CurVer = s 'Qscon.QCScopeItem.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {FC219AC3-2730-4ADF-A5B7-93581BB11E41} = s 'QCScopeItem Class'
+		{
+			ProgID = s 'Qscon.QCScopeItem.1'
+			VersionIndependentProgID = s 'Qscon.QCScopeItem'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{26140C78-B554-11D2-8F45-3078302C2030}'
+		}
+	}
+}

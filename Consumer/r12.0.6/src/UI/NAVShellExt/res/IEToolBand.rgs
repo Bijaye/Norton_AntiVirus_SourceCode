@@ -1,0 +1,42 @@
+HKCR
+{
+	Symantec.Norton.AntiVirus.IEToolBand.1 = s 'Symantec.Norton.AntiVirus.IEToolBand Class'
+	{
+		CLSID = s '{42CDD1BF-3FFB-4238-8AD1-7859DF00B1D6}'
+	}
+	Symantec.Norton.AntiVirus.IEToolBand = s 'Symantec.Norton.AntiVirus.IEToolBand Class'
+	{
+		CLSID = s '{42CDD1BF-3FFB-4238-8AD1-7859DF00B1D6}'
+		CurVer = s 'Symantec.Norton.AntiVirus.IEToolBand.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {42CDD1BF-3FFB-4238-8AD1-7859DF00B1D6} = s 'Norton AntiVirus'
+		{
+			ProgID = s 'Symantec.Norton.AntiVirus.IEToolBand.1'
+			VersionIndependentProgID = s 'Symantec.Norton.AntiVirus.IEToolBand'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{2292E927-BD89-40DE-999A-4E72CE0EAA4F}'
+		}
+	}
+}
+HKLM
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove 'Internet Explorer'
+			{
+				NoRemove Toolbar
+				{
+					ForceRemove val '{42CDD1BF-3FFB-4238-8AD1-7859DF00B1D6}' = s 'Norton AntiVirus'
+				}
+			}
+		}
+	}
+}

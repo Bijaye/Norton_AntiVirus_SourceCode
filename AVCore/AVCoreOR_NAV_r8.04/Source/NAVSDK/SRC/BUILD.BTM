@@ -1,0 +1,66 @@
+: Copyright 1995 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/NAVSDK/VCS/build.btv   1.7   09 Dec 1997 18:46:20   DALLEE  $
+:                                                                       :
+: Description:                                                          :
+:       Build file for NAVSDK                                           :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/NAVSDK/VCS/build.btv  $
+:  
+:     Rev 1.7   09 Dec 1997 18:46:20   DALLEE
+:  Added SDKAVAPI to make. Custom version of AVAPI1(N32CORES) w/o exports.
+:  
+:     Rev 1.6   02 Dec 1997 14:35:24   DALLEE
+:  Renamed NAVOEMx makefiles to NAVSDKx.
+:  Placed NAVDEFS first in make - NAVSDK will link to NAVDEFS.LIB.
+:  
+:     Rev 1.5   02 Dec 1997 09:25:58   tcashin
+:  Build the new NAVDEF32.DLL
+:  
+:     Rev 1.4   29 Apr 1997 15:15:18   JBRENNA
+:  Ensure CORE_SOFT is defined by calling DECPLAT.BTM.
+:  
+:     Rev 1.3   28 Apr 1997 18:28:32   JBRENNA
+:  Convert to new CORE_* platform specification.
+:  
+:     Rev 1.2   31 May 1996 10:06:50   TCASHIN
+:  Build NAVOEM, NAVOEMR (repair-enabled version) and NAVOEM.VXD.
+:  
+:     Rev 1.1   15 Apr 1996 17:10:54   TCASHIN
+:  Took out references to navdemo.
+:  
+:     Rev 1.0   14 Jul 1995 15:54:02   MARKL
+:  Initial revision.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+                                        : Define CORE_SOFT
+Call DecPlat.Btm
+
+iff "%CORE_SOFT" EQ "" then
+
+    : NAVDEFS and SDKAVAPI must be made first. NAVSDK(R) will link to both.
+
+    call mk navdefs %&
+    if exist make.err copy build.err+make.err build.err
+
+    call mk sdkavapi %&
+
+    call mk navsdk %&
+    if exist make.err copy build.err+make.err build.err
+
+    call mk navsdkr %&
+    if exist make.err copy build.err+make.err build.err
+
+endiff
+
+iff "%CORE_SOFT" EQ "V" then
+
+    call mk SYMKVxD %&
+    if exist make.err copy build.err+make.err build.err
+
+endiff
+

@@ -1,0 +1,86 @@
+Norton-Alert-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+        enterprises
+              FROM RFC1155-SMI
+	OBJECT-TYPE
+	      FROM RFC-1212
+	TRAP-TYPE
+              FROM RFC-1215
+        DisplayString
+              FROM RFC1213-MIB;
+
+
+symantec         OBJECT IDENTIFIER ::= { enterprises 393 }
+nortonAlert      OBJECT IDENTIFIER ::= { symantec 11 }
+
+
+-- Norton Alert Object
+
+computerName  OBJECT-TYPE
+              SYNTAX    DisplayString (SIZE (0..48))
+              ACCESS    read-only
+              STATUS    optional
+              DESCRIPTION
+                        "The computer that generated the trap."
+              ::= { nortonAlert 1 }
+
+alertMessage  OBJECT-TYPE
+              SYNTAX    DisplayString (SIZE (0..384))
+              ACCESS    read-only
+              STATUS    deprecated
+              DESCRIPTION
+                        "The text of the alert message."
+              ::= { nortonAlert 2 }
+
+
+
+-- Norton Alert Traps
+
+criticalAlarm    TRAP-TYPE
+                 ENTERPRISE  nortonAlert
+                 VARIABLES   {
+                             computerName,
+                             alertMessage
+                             }
+                 DESCRIPTION "Norton Critical Alert"
+                    --#TYPE  "NortonAlert Critical"
+                 --#SUMMARY  "%s Norton Alert: %s"
+               --#ARGUMENTS  {0, 1}
+                --#SEVERITY  CRITICAL       
+               --#TIMEINDEX  2
+                   --#STATE  DEGRADED
+               ::= 1
+
+minorAlarm       TRAP-TYPE
+                 ENTERPRISE  nortonAlert
+                 VARIABLES   {
+                             computerName,
+                             alertMessage
+                             }
+                DESCRIPTION  "Norton Minor Alert"
+                    --#TYPE  "NortonAlert Warning"
+                 --#SUMMARY  "%s Norton Alert: %s"
+               --#ARGUMENTS  {0, 1}
+                --#SEVERITY  MINOR
+               --#TIMEINDEX  2
+                   --#STATE  OPERATIONAL
+               ::= 2
+         
+infoAlarm        TRAP-TYPE
+                 ENTERPRISE  nortonAlert
+                 VARIABLES   {
+                             computerName,
+                             alertMessage 
+                             }
+                DESCRIPTION  "Norton Informational Alert"
+                    --#TYPE  "NortonAlert Informational"
+                 --#SUMMARY  "%s Norton Alert: %s"
+               --#ARGUMENTS  {0, 1}
+                --#SEVERITY  INFORMATIONAL
+               --#TIMEINDEX  2
+                   --#STATE  OPERATIONAL
+               ::= 3
+
+
+END               

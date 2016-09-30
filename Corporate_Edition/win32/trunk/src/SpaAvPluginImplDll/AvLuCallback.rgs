@@ -1,0 +1,26 @@
+HKCR
+{
+	SpaAvPluginImplDll.AvLuCallback.1 = s 'AvLuCallback Class'
+	{
+		CLSID = s '{C95DB47C-20CE-4fc9-8C63-4E9F05C2679E}'
+	}
+	SpaAvPluginImplDll.AvLuCallback = s 'AvLuCallback Class'
+	{
+		CLSID = s '{C95DB47C-20CE-4fc9-8C63-4E9F05C2679E}'
+		CurVer = s 'SpaAvPluginImplDll.AvLuCallback.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C95DB47C-20CE-4fc9-8C63-4E9F05C2679E} = s 'AvLuCallback Class'
+		{
+			ProgID = s 'SpaAvPluginImplDll.AvLuCallback.1'
+			VersionIndependentProgID = s 'SpaAvPluginImplDll.AvLuCallback'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{BB8325C0-118B-4dc1-AE72-5A47F485EF7C}'
+		}
+	}
+}

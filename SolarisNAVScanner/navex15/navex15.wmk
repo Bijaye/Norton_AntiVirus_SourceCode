@@ -1,0 +1,139 @@
+!define BLANK ""
+.cpp : $(%include)
+.h : $(%include)
+
+.cpp.obj :
+  if not exist $[&.cpp copy $[@ . > nul
+ *wpp386 $^&.cpp -w4 -e25 -wcd726 -dSYM_OS2 -dNAVEX15 -dNDEBUG -zq -od -d2 -bd -5r -bt=os2 -mf
+
+LIBOS2DIR = s:\lib.os2
+
+#################################################################
+# This section contains the dependency list
+#################################################################
+
+OBJS =  query.obj    &
+        navexsf.obj  &
+        navexsb.obj  &
+        navexsp.obj  &
+        navexsm.obj  &
+        navexrf.obj  &
+        navexrb.obj  &
+        navexrp.obj  &
+        navexrh.obj  &
+        navexshr.obj &
+        nvxbtshr.obj &
+        navexent.obj &
+        booscan.obj  &
+        bootype.obj  &
+        datadir.obj  &
+        inifile.obj  &
+        trojscan.obj &
+        pespscan.obj &
+        aolpw.obj
+
+MACROLIBS =                       &
+        $(LIBOS2DIR)\crc32.lib    &
+        $(LIBOS2DIR)\olessapi.lib &
+        $(LIBOS2DIR)\wd7api.lib   &
+        $(LIBOS2DIR)\o97api.lib   &
+        $(LIBOS2DIR)\xl5api.lib   &
+        $(LIBOS2DIR)\macroheu.lib &
+        $(LIBOS2DIR)\acsapi.lib   &
+        $(LIBOS2DIR)\ppapi.lib    &
+        $(LIBOS2DIR)\df.lib
+
+MSXOBJS =          &
+        msx.obj    &
+        msxadd.obj &
+        msxcrc.obj &
+        msxdb.obj  &
+        msxl1.obj  &
+        msxl2.obj
+
+MACROOBJS =          &
+        wddecsig.obj &
+        ldmcrsig.obj &
+        mcrscn15.obj &
+        mcrrpr15.obj &
+        offcsc15.obj &
+        wdapsg15.obj &
+        wdavsg15.obj &
+        wdscan15.obj &
+        wdrepr15.obj &
+        wdsigutl.obj &
+        mcrsgutl.obj &
+        wd7scn15.obj &
+        o97scn15.obj &
+        xl97rpr.obj  &
+        o97rpr15.obj &
+        olessos.obj  &
+        mcrheusc.obj &
+        wd7heusc.obj &
+        mvp.obj      &
+        copy.obj     &
+        builtin.obj  &
+        mcrxclud.obj &
+        w97heusc.obj &
+        w97obj.obj   &
+        w97str.obj   &
+        xl5scn.obj   &
+        xl5rpr.obj   &
+        xl4scn.obj   &
+        xl4rpr.obj   &
+        xlrprsht.obj &
+        a2scn.obj    &
+        a97scn.obj   &
+        acsos.obj    &
+        w7h2sght.obj &
+        w7h2scan.obj &
+        excelheu.obj &
+        xlheusc.obj  &
+        dfos.obj     &
+        ppscan.obj   &
+        nvx15inf.obj &
+        $(MSXOBJS)
+
+NEPEOBJS =           &
+        nepescan.obj &
+        nepeshr.obj  &
+        neperep.obj  &
+        remotex.obj  &
+        winsig.obj
+
+JAVAOBJS =           &
+        javascan.obj &
+        javashr.obj  &
+        javasig.obj
+
+#################################################################
+# This section contains the commands to actually build it
+#################################################################
+
+navexo2a.dll :       &
+        navex15.obj  &
+        naventry.obj &
+        $(OBJS)      &
+        $(MACROOBJS) &
+        $(NEPEOBJS)  &
+        $(JAVAOBJS)  &
+        $(MACROLIBS) &
+        .AUTODEPEND
+
+ @%write navexo2a.lk1 FILE navex15.obj,naventry.obj
+ @for %i in ( $(OBJS) ) do @%append navexo2a.lk1 FILE %i
+ @for %i in ( $(MACROOBJS) ) do @%append navexo2a.lk1 FILE %i
+ @for %i in ( $(NEPEOBJS) ) do @%append navexo2a.lk1 FILE %i
+ @for %i in ( $(JAVAOBJS) ) do @%append navexo2a.lk1 FILE %i
+ @for %i in ( $(MACROLIBS) ) do @%append navexo2a.lk1 LIBRARY %i
+
+!ifneq BLANK ""
+ *wlib -q -n -b navexo2a.imp 
+ @%append navexo2a.lk1 LIBR navexo2a.imp
+!endif
+ *wlink name navexo2a d all SYS os2v2 dll initi termi op m exp EXTQueryInterface op maxe=25 op q op symf op many @navexo2a.lk1
+!ifneq BLANK ""
+ rc -i $[: -i $(%WATCOM)\h -i $(%WATCOM)\h\os2  navexo2a.dll
+!endif
+ wlib -n -b navexo2a.lib +navexo2a.dll
+

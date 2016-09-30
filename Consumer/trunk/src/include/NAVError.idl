@@ -1,0 +1,54 @@
+// NAVError.idl : IDL source for NAVError.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVError.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(398AC4EF-98C4-4ABC-A538-C2EE8C5380A1),
+		dual,
+		helpstring("INAVCOMError Interface"),
+		pointer_default(unique)
+	]
+	interface INAVCOMError : IDispatch
+	{
+		[propget, id(1), helpstring("property Message")] HRESULT Message([out, retval] BSTR *pVal);
+		[propput, id(1), helpstring("property Message")] HRESULT Message([in] BSTR newVal);
+		[propget, id(2), helpstring("property ID")] HRESULT ErrorID([out, retval] long *pVal);
+		[propput, id(2), helpstring("property ID")] HRESULT ErrorID([in] long newVal);
+		[propget, id(6), helpstring("property ModuleID")] HRESULT ModuleID([out, retval] long *pVal);
+		[propput, id(6), helpstring("property ModuleID")] HRESULT ModuleID([in] long newVal);
+		[propget, id(7), helpstring("property HResult")] HRESULT HResult([out, retval] long *pVal);
+		[propput, id(7), helpstring("property HResult")] HRESULT HResult([in] long newVal);
+		[id(10), helpstring("method LogAndDisplay")] HRESULT LogAndDisplay([in] long hwnd);
+		[id(11), helpstring("method Show")] HRESULT Show(BOOL bDisplay, BOOL bLog, long hWnd);
+		[propget, id(12), helpstring("property ForcedErrorID")] HRESULT ForcedErrorID([out, retval] long *pVal);
+		[propput, id(12), helpstring("property ForcedErrorID")] HRESULT ForcedErrorID([in] long newVal);
+		[propget, id(13), helpstring("property ForcedModuleID")] HRESULT ForcedModuleID([out, retval] long *pVal);
+		[propput, id(13), helpstring("property ForcedModuleID")] HRESULT ForcedModuleID([in] long newVal);
+		[propget, id(14), helpstring("property ErrorResource")] HRESULT ErrorResourceID([out, retval] long* pVal);
+		[propput, id(14), helpstring("property ErrorResource")] HRESULT ErrorResourceID([in] long newVal);
+	};
+
+[
+	uuid(D0FB5093-C2F0-4280-AAC9-3C35C6980FD8),
+	version(1.0),
+	helpstring("NAVError 1.0 Type Library")
+]
+library NAVERRORLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(917E992D-B4F9-433A-BCFE-3AEC0370A765),
+		helpstring("NAVCOMError Class")
+	]
+	coclass NAVCOMError
+	{
+		[default] interface INAVCOMError;
+	};
+};

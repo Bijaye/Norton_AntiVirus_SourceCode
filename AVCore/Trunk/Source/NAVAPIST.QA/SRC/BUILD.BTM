@@ -1,0 +1,19 @@
+: Copyright 1998 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/NAVAPIST.QA/VCS/build.btv   1.0   19 Aug 1998 17:34:52   NMILLER  $                                                              :
+:                                                                       :
+: Description: Build file for NAVAPIST.QA                                  :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/NAVAPIST.QA/VCS/build.btv  $
+:  
+:     Rev 1.0   19 Aug 1998 17:34:52   NMILLER
+:  Initial revision.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+
+    call mk stscan %&
+    if exist make.err copy build.err+make.err build.err

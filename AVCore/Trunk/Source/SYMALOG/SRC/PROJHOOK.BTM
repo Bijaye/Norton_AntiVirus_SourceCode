@@ -1,0 +1,27 @@
+::**********************************************************************
+::
+:: PROJHOOK.BTM
+::
+:: This project hook file is for the SYMUTIL project.  It ensures
+:: that the SYMUTIL project builds correctly as a DOS, WIN, or NLM
+:: project.
+::
+::**********************************************************************
+:: 10/07/92 MSL File Created
+::**********************************************************************
+
+loadbtm on
+iff "%1" == "INIT" then
+                                        :: Entering the Project so
+                                        :: perform initialization tasks.
+
+                                        :: Initialize Watcom Compiler.
+
+
+elseiff "%1" == "CLEANUP" then
+                                        :: Exiting the project so perform
+                                        :: the required clean up.
+else
+    Echo Invalid PROJHOOK parameter 1 - MUST be INIT or CLEANUP!!
+endiff
+

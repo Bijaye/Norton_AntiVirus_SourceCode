@@ -1,0 +1,127 @@
+:::::::::::::::::::::::::::::::::::::::::::::::
+:: Simple script to create bootable NAV CD
+:: ISO images.
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+set bldnum=%1
+set cmdir=c:\depot\Norton_AntiVirus\Consumer\trunk\src\cm
+set mainroot=c:\bld_area\navcon_r14.2_iso
+set layoutdir=%mainroot%\layouts
+set isodir=%mainroot%\ISOs
+set toolsdir=%cmdir%\tools
+set diskimages=%cmdir%\diskette-images
+set BUILDFLAGDIR=\Build_Flags\NavConsumer\cmbuild
+set LASTSUCCESSNAVFILE=r14.2_cmbuild_last_success_bldnum.txt
+set postdir=H:\Unreleased_Builds\NAV\r14.2
+
+::::::::::::::::::::::::::::::::::::::::::::::
+:: Layouts
+::::::::::::::::::::::::::::::::::::::::::::::
+
+set LAYOUT1=NV142007
+
+::::::::::::::::::::::::::::::::::::::::::::::
+:: Server Tests
+::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::
+:: Check to See if the J Drive Is Mounted
+::::::::::::::::::::::::::::::::::::::::::::::
+
+iff not isdir "j:\archive_flags" then
+    echo Can't find connection to the J drive.  Attempting to map...
+    echo.
+    net use j: /d /y
+    net use j: %ARCHIVES%
+    iff %? ne 0 then 
+      echo *** ERROR ***      Unable to attach to %ARCHIVESERVER.
+      set ERRORMSG=OTHERERROR Unable to attach to %ARCHIVESERVER..
+      goto /i errmsg
+    endiff
+else
+    echo archives are already mapped to j:.
+endiff
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+:: Check to See if the H Drive Is Mounted
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+iff not isdir "%POSTDIR%" then
+    echo \\ussm-cpd was not found.
+    echo.
+    set ERRORMSG=OTHERERROR ussm-cpd connection not found.
+    goto /i errmsg
+else
+    echo ussm-cpd is mapped to h:.
+endiff
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+:: Delete the previous project space
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+rmdir /s /q %mainroot%
+md %mainroot%
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+:: Make the ISO and layouts directories
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+md %layoutdir%
+md %isodir%
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+:: Get the last completed NAV build number
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+set BLDNUMFILEHANDLE=%@FILEOPEN[j:%BUILDFLAGDIR%\%LASTSUCCESSNAVFILE%,read]
+set LAST_BUILD_NUM=%@FILEREAD[%BLDNUMFILEHANDLE%]
+echo LAST_BUILD_NUM = %LAST_BUILD_NUM%
+echo.
+
+rem Closing file...
+set BLDCLOSEHANDLE=%@FILECLOSE[%BLDNUMFILEHANDLE%]
+set BLDNUM=%LAST_BUILD_NUM%
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+:: Copy the layouts to the local machine
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+xcopy /d/f/i/e %postdir%\%BLDNUM%\Layouts\CD_Retail\%LAYOUT1% %layoutdir%\%LAYOUT1%
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+:: Make the %LAYOUT1% image
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+cd %layoutdir%
+
+copy %diskimages%\BOOTIMG.BIN %layoutdir%\%LAYOUT1%\
+
+@call %toolsdir%\mkisofs.exe -r -J -l -b BOOTIMG.BIN -c BOOTCAT.BIN -hide BOOTIMG.BIN -hide BOOTCAT.BIN -hide-joliet BOOTIMG.BIN -hide-joliet BOOTCAT.BIN -V "%LAYOUT1%" -o %isodir%\%LAYOUT1%_b%bldnum%.iso %LAYOUT1%
+
+del %layoutdir%\%LAYOUT1%\BOOTIMG.BIN
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+:: Post ISOs to USSM-CPD
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+mkdir %postdir%\%BLDNUM%\Layouts\ISOs
+
+xcopy /d/f/i/e %isodir% %postdir%\%BLDNUM%\Layouts\ISOs
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+:: Complete
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+exit
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::
+:: Iso image creation failed
+:::::::::::::::::::::::::::::::::::::::::::::::
+
+:ERRMSG
+
+echo Iso image creation failed
+
+exit 1

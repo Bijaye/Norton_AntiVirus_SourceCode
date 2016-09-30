@@ -1,0 +1,26 @@
+HKCR
+{
+	NAVLicense.NAVLicenseInfo.1 = s 'NAVLicenseInfo Class'
+	{
+		CLSID = s '{049BD180-1EEB-4881-84BB-2A6AC3304005}'
+	}
+	NAVLicense.NAVLicenseInfo = s 'NAVLicenseInfo Class'
+	{
+		CLSID = s '{049BD180-1EEB-4881-84BB-2A6AC3304005}'
+		CurVer = s 'NAVLicense.NAVLicenseInfo.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {049BD180-1EEB-4881-84BB-2A6AC3304005} = s 'NAVLicenseInfo Class'
+		{
+			ProgID = s 'NAVLicense.NAVLicenseInfo.1'
+			VersionIndependentProgID = s 'NAVLicense.NAVLicenseInfo'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{1C3159CA-948C-4290-A920-4C804DF9FB7D}'
+		}
+	}
+}

@@ -1,0 +1,78 @@
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  CreateWipeInfoRegDBEntries
+//
+//  Purpose:  This function will create necessary keys and values for
+//            WipeInfo.
+//
+//    Input:  none
+//
+//  Returns:  0 always
+//
+// Comments:
+//////////////////////////////////////////////////////////////////////////
+
+function CreateWipeInfoRegDBEntries()
+    STRING szKey, szValue, szProgram, szPath;
+    STRING szShortTarget, szShortSymantec, szShortCommon, szShortWinDir;
+    STRING szBinString[255];
+    NUMBER nReturn, nType, nSize;
+begin
+    nReturn = 0;
+    RegDBSetDefaultRoot( HKEY_LOCAL_MACHINE );
+
+    // Create base helpfile entries
+
+    Disable( LOGGING );
+    szKey = WINDOWS_HELP_KEY;
+    RegDBCreateKeyEx( szKey, "" );
+    Enable( LOGGING );
+
+    // Register ourselves under InstalledApps
+
+    szKey = "\\SOFTWARE\\Symantec\\InstalledApps";
+    Disable( LOGGING );
+    RegDBCreateKeyEx( szKey, "" );
+    Enable( LOGGING );
+
+    // Create short paths for various dirs
+
+    szShortWinDir = WINDIR;
+    StrRemoveLastSlash( szShortWinDir );
+    LongPathToShortPath( szShortWinDir );
+
+    szShortTarget = g_szTarget;
+    StrRemoveLastSlash( szShortTarget );
+    LongPathToShortPath( szShortTarget );
+
+    szShortSymantec = g_szSymantec;
+    StrRemoveLastSlash( szShortSymantec );
+    LongPathToShortPath( szShortSymantec );
+
+    szShortCommon = g_szSymCommon;
+    StrRemoveLastSlash( szShortCommon );
+    LongPathToShortPath( szShortCommon );
+
+    //szPath = szShortTarget;
+    szPath = szShortTarget + ";" + szShortSymantec;
+
+    szProgram = g_szTarget ^ "WIPINFSE.EXE";
+
+    szKey = "\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\WIPINFSE.EXE";
+    RegDBCreateKeyEx( szKey, "" );
+    RegDBSetKeyValueEx( szKey, "Path", REGDB_STRING, szPath, -1 );
+    RegDBSetKeyValueEx( szKey, "", REGDB_STRING, szProgram, -1 );
+
+
+    szKey = "\\SOFTWARE\\Microsoft\\Windows\\Help";
+    RegDBSetKeyValueEx( szKey, "WIPINFSE.HLP", REGDB_STRING, g_szTarget, -1 );
+	
+	//Remove the Desktop icon if the user doesn't want it.
+	if ( g_bEnableWipeInfo ) then
+		szKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\explorer\\Desktop\\NameSpace\\{30424D42-5946-11D2-B8E5-006097C9C6FF}";
+		RegDBDeleteKey( szKey );
+	endif;
+    return( nReturn );
+
+end;
+

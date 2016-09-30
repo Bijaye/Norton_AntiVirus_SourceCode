@@ -1,0 +1,23 @@
+HKCR
+{
+	SavUI.ResultsViewCOMAdapter.1 = s 'ResultsViewCOMAdapter Class'
+	{
+		CLSID = s '{84AC6BE7-8CF2-4e67-A80E-32ACD3D7C381}'
+	}
+	SavUI.ResultsViewCOMAdapter = s 'ResultsViewCOMAdapter Class'
+	{
+		CLSID = s '{84AC6BE7-8CF2-4e67-A80E-32ACD3D7C381}'
+		CurVer = s 'SavUI.ResultsViewCOMAdapter.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {84AC6BE7-8CF2-4e67-A80E-32ACD3D7C381} = s 'ResultsViewCOMAdapter Class'
+		{
+			ProgID = s 'SavUI.ResultsViewCOMAdapter.1'
+			VersionIndependentProgID = s 'SavUI.ResultsViewCOMAdapter'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{C0155A1A-11F1-4178-BE82-32FA1BB6AA5D}'
+		}
+	}
+}

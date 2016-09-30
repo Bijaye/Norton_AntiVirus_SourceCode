@@ -1,0 +1,17 @@
+::Update Batch file for the Quake SYMINTG
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%
+
+iff exist *.dll then
+    copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%
+endiff
+
+iff exist *.map then
+    copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%
+endiff
+
+iff exist *.sym then
+    copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%
+endiff
+
+copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%

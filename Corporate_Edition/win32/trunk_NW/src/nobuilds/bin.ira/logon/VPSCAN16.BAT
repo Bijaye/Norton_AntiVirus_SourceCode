@@ -1,0 +1,1 @@
+%1\VSCAND.EXE /CM /S=0 /V /C /SE

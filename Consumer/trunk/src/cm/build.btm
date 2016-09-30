@@ -1,0 +1,307 @@
+@echo off
+:BatchFileStart
+rem Clear out evidence of a previous run.
+   set BMODE=
+   set DEVBLD=
+   set cm_dir=%@full[%@path[%_batchname]]
+   set src_dir=%@full[..]
+   set msdev_path=%@full[..\SDK\msvc6sp5\COMMON\MSDev98\Bin\]
+   set vc98bin_path=%@full[..\SDK\msvc6sp5\VC98\Bin\]
+   set PATH=%PATH%;%vc98bin_path%
+   set bldlog=%cm_dir%build.err
+   set make_err=%cm_dir%make.err
+   set PHASE=0
+   set CCSYNC_PARAMS=
+   set vc_tools_path=%@full[..\..\Nobuilds\msvc7\Common7\Tools\Bin\]
+   set XPSP2_dlls_path=%@full[..\..\Nobuilds\Windows_dlls\XP_SP2]
+
+timer on /1
+
+rem Prepare to build.  Parse command-line parameters.
+
+   do param = 1 to 127
+      shift 1
+      iff "%0"=="" then
+         shift -%param%
+         goto continue
+      endiff
+
+      set this_param=%@upper[%0]
+
+      iff "%this_param"=="IDA" then
+         	set BMODE=IDA
+      elseiff "%this_param"=="IRA" then
+         	set BMODE=IRA
+      elseiff "%@upper[%0]"=="/DBG_BTM" then
+         	set DBG_BTM=/DBG_BTM
+      elseiff "%@upper[%0]"=="/DEVBLD" then
+         	set DEVBLD=/DEVBLD
+      elseiff "%@upper[%0]"=="/NOMAP" then
+         	set NOMAP=1
+      elseiff "%@upper[%0]"=="/PHASE" then
+		shift 1 
+		set PHASE=%0
+      elseiff "%@upper[%0]"=="/KEY" then
+		shift 1 
+		set KEY=%0
+      elseiff "%@upper[%0]"=="/RETAIL" then
+  	 	set RETAIL=/RETAIL
+      elseiff "%@upper[%0]"=="/OEM" then
+  	 	set OEM=/OEM
+      elseiff "%@upper[%0]"=="/TRIAL" then
+  	 	set TRIAL=/TRIAL
+      elseiff "%@upper[%0]"=="/RENTAL" then
+  	 	set RENTAL=/RENTAL
+      elseiff "%@upper[%0]"=="/SUITE" then
+  	 	set SUITE=/SUITE
+      elseiff "%@upper[%0]"=="/VENDOR" then
+  	 	set VENDOR=/VENDOR
+      elseiff "%@upper[%0]"=="/TEST" then
+  	 	set TEST=/TEST
+      elseiff "%@upper[%0]"=="/CCBUILD" then
+  	 	shift 1
+  	 	set CCSYNC_PARAMS=%CCSYNC_PARAMS% /CCBUILD %0
+      elseiff "%@upper[%0]"=="/SPBUILD" then
+  	 	shift 1
+  	 	set CCSYNC_PARAMS=%CCSYNC_PARAMS% /SPBUILD %0
+      endiff
+   enddo
+   shift -127
+
+:continue
+    if "%DBG_BTM" NE "" echo on
+    
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+
+rem /////////////////////////////////////////////////////////////
+rem set up the log file and start timer
+rem 
+	SET bldlog=%root%NAV_BLD.log
+	>%bldlog
+	timer on /2
+	set a= **** NAV 11.0.3 master build started %_date - %_time ****
+	gosub logthis
+	gosub logblank
+	set a=Building Logging Enabled -- %bldlog
+	gosub logthis
+	gosub logblank
+
+
+rem /////////////////////////////////////////////////////////////
+rem Set up some local variables and settings
+rem
+	on break cancel
+	setlocal
+
+	
+rem	/////////////////////////////////////////////////////////////
+rem Look for command-line params we recognize.
+rem
+
+rem set so we can skip rebuilding the binary and go straight to the 
+rem digital signing or building the MSI
+goto phase%phase
+
+rem /////////////////////////////////////////////////////////////
+rem phase0:
+rem env's to torito, re-maps all drives to local source locations
+rem
+:phase0 
+    gosub logblank
+    SET a=***Starting Build steps at Phase 0***
+    gosub logthis
+    
+    ::
+    :: Prepare drive mappings to core. 
+    :: (Previously we used env for CM builds. However, there's
+    :: no need for that.)
+    ::
+    
+    iff x%DEVBLD NE x then
+    	subst r: /d
+    	net use r: /delete
+    	net use r: \\ussm-dev1\tools
+    endiff
+
+    REM sync down the cc files from the network
+    call %root%CCsync.btm %CCSYNC_PARAMS%
+    If %errorlevel% != 0 Quit 1
+    
+   
+    rem Change the file attribute of Help files from Read-Only, so we can build the help projects.
+    rem we dont build help any more! dont do this....
+    rem attrib -r /s %root%..\Help\*.*
+
+rem /////////////////////////////////////////////////////////////
+rem phase1: calls msdev to build master workspace for release
+rem also creates release .MSI install
+rem
+:phase1
+	set a=(%_DATE - %_TIME): Starting release build of master workspace.
+	gosub logthis
+	
+	rem we use the | tee feature of 4NT to generate a log file that we search for errors.  this is only 
+	rem used on 4NT.  On 4DOS we just do a start /WAIT and check the return code.
+	iff "%_CMDPROC"=="4NT" then
+		iff "%BMODE%" NE "IDA" then
+			rem Build the master workspace
+			rem %root%..\..\Nobuilds\msvc7\common7\ide\devenv.com /Rebuild Release "%root%..\Norton AntiVirus.sln" /project NAVIDL /projectconfig "Release|Win32"
+			%root%..\..\Nobuilds\msvc7\common7\ide\devenv.com /Rebuild Release "%root%..\Norton AntiVirus.sln" /project NAVToolbox /projectconfig "Release MT|Win32"
+			%root%..\..\Nobuilds\msvc7\COMMON7\IDE\devenv.com "%root..\Norton AntiVirus.sln" /Rebuild Release | tee %root%\master.log
+			
+			rem Build the resource solution
+			%root%..\..\Nobuilds\msvc7\COMMON7\IDE\devenv.com "%root..\Norton AntiVirus Resources.sln" /build Release | tee /A %root%\master.log
+			
+			iff %? != 0 then	  
+		  		goto errexit
+			endiff
+			
+			%root%\grep.exe "succeeded, [^0].* failed" %root%\master.log
+			iff %? != 1 then
+				goto errexit
+			endiff
+
+		endiff
+	endiff
+
+rem now that all the dlls are created, rebase them to our unofficially designated address range
+call %root%..\cm\Rebase.btm
+
+rem Commenting out, we have Vista now also
+rem TODO: Decide what to do about binding
+rem Now bind the binaries to windows XP SP2 dlls to optimize loading time
+rem %vc_tools_path%bind -u -p %XPSP2_dlls_path%;%src_dir%\BIN\BIN.IRA -v %src_dir%\BIN\BIN.IRA\*.dll %src_dir%\BIN\BIN.IRA\*.exe %src_dir%\BIN\BIN.IRA\branding\Symantec\NAV\AVRES.dll
+	
+:phase2
+
+:phase2.05
+	set a=(%_DATE - %_TIME): Starting SuiteOwner Update Process.
+	gosub logthis
+	call %root%..\cm\UpdateSuiteOwners.btm %DBG_BTM
+	iff %? != 0 then	  
+	  goto errexit
+	endiff
+	
+:phase2.1	
+	set a=(%_DATE - %_TIME): Starting XLok Auto Wrap Process.
+	gosub logthis
+	call %root%..\cm\XINSTALL.btm %DBG_BTM
+	iff %? != 0 then	  
+	  goto errexit
+	endiff
+
+:phase2.11
+	set a=(%_DATE - %_TIME): Starting Generating SOS isStatus.loc Process.
+	gosub logthis
+	
+	call Update_SOS_Resource.btm
+	
+:phase2.15
+	rem Temporary phase to copy BIN.IRA files to BIN.IRU files that are not available in UNICODE yet (unconverted projects and licensing files)
+    rem TODO: Must remove this when UNICODE conversion is complete and UNICODE licensing files available
+	copy /ZS %root%..\BIN\BIN.IRA\*.dll %root%..\BIN\BIN.IRU\
+	copy /ZS %root%..\BIN\BIN.IRA\*.exe %root%..\BIN\BIN.IRU\
+	copy /ZS %root%..\BIN\BIN.IRA\*.loc %root%..\BIN\BIN.IRU\
+	
+:phase2.2	
+	set a=(%_DATE - %_TIME): Starting Signing Process.
+	gosub logthis
+	call %root%..\cm\DigiSign.btm %DEVBLD %DBG_BTM
+	iff %? != 0 then	  
+	  goto errexit
+	endiff
+
+:phase5
+	set a=(%_DATE - %_TIME): Starting MSI build.
+	gosub logthis	
+	call ..\install\msi\BuildBaseModule.btm %DEVBLD% %RETAIL% %OEM% %TRIAL% %RENTAL% %SUITE% %TEST%
+	iff %? != 0 then
+	  goto errexit
+	endiff
+	SET a=(%_DATE - %_TIME): Release build of master workspace finished.
+	gosub logthis
+
+:phase6
+	set a=(%_DATE - %_TIME): Starting layout.btm
+	gosub logthis	
+	call ..\cm\layout.btm %DEVBLD% %RETAIL% %OEM% %TRIAL% %RENTAL% %SUITE% %TEST% %VENDOR%
+	iff %? != 0 then
+	  goto errexit
+	endiff
+		
+rem /////////////////////////////////////////////////////////////
+rem output a summary at the end of the build, search the log
+rem for any errors, log the final build time, local env vars
+rem and quit.
+rem
+	gosub logblank
+	gosub logblank
+	echo ************************************************************
+	echo ********************* summary ****************************** >> %bldlog
+	echo ************************************************************
+	  
+    SET a=*** NAV 11.0.3 master build time %@timer[2] (%_DATE - %_TIME) ***
+    gosub logthis
+	SET a=Release Build successful.
+	gosub logthis	
+    endlocal
+    quit 0
+
+
+rem /////////////////////////////////////////////////////////////
+rem exit routine for case of broken build...
+rem output ERROR!! and E-mail errors to appropriate people.
+rem
+:errexit
+    SET a=*** NAV 11.0.3 master build time %@timer[2] (%_DATE - %_TIME) ***
+    gosub logthis
+
+    echo **********************************************************************
+    echo ********************************************************************** >> %bldlog
+    echo ******************** ERROR(S) IN BUILD!! *****************************
+    echo ******************** ERROR(S) IN BUILD!! ***************************** >> %bldlog
+    echo **********************************************************************
+    echo ********************************************************************** >> %bldlog
+    echo (Refer to %bldlog for more info on errors.)
+
+    endlocal
+    quit 1
+
+
+rem /////////////////////////////////////////////////////////////
+rem logging subroutines
+rem 
+:logthis		rem log string stored in a
+    echo %a
+    echo %a >> %bldlog
+    return
+:logblank		rem log a blank line 
+    echo .. 
+    echo .. >> %bldlog
+    return
+
+
+rem /////////////////////////////////////////////////////////////
+rem If Version number of 4NT/DOS is not compatible...
+rem
+:errVer
+	iff "%_CMDPROC"=="4DOS" then
+	    echo Error:  Need 4DOS 5.x or greater.  Current version is %_4VER
+	elseiff "%_CMDPROC"=="4NT" then
+	    echo Error:  Need 4NT version 3.x or greater.  Current version is %_4VER
+	elseiff "%_CMDPROC"=="TCMD32" then
+	    echo Error:  Need TakeCommand 2.x or greater.  Current version is %_4VER
+	else
+	    echo Error:  Need 4DOS 5.x or greater, 4NT version 3.x or greater, or TakeCommand 2.x or greater.
+	endiff
+    quit 1

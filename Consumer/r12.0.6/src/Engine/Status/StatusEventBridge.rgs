@@ -1,0 +1,26 @@
+HKCR
+{
+	Status.CStatusEventBridge.1 = s 'StatusEventBridge Class'
+	{
+		CLSID = s '{1277150D-F6BC-4C8A-B4FA-052AA0406BCA}'
+	}
+	Status.CStatusEventBridge = s 'StatusEventBridge Class'
+	{
+		CLSID = s '{1277150D-F6BC-4C8A-B4FA-052AA0406BCA}'
+		CurVer = s 'Status.StatusEventBridge.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {1277150D-F6BC-4C8A-B4FA-052AA0406BCA} = s 'StatusEventBridge Class'
+		{
+			ProgID = s 'Status.StatusEventBridge.1'
+			VersionIndependentProgID = s 'Status.StatusEventBridge'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{54CC4A82-E256-4AB1-BA85-F8FF36619969}'
+		}
+	}
+}

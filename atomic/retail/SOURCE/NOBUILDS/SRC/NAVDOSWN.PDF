@@ -1,0 +1,59 @@
+[PDF]
+Version=1.0
+
+[Complete Setup]
+CommandLine=setup.exe /b /s
+CommandName=Complete
+UserInputRequired=FALSE
+SupportedPlatforms=Windows 3.1
+
+[Deinstall Setup]
+CommandLine=setup.exe /b /U 
+CommandName=Deinstall
+UserInputRequired=FALSE
+SupportedPlatforms=Windows 3.1
+
+[Manual Setup]
+CommandLine=setup.exe 
+CommandName=Manual
+UserInputRequired=TRUE
+SupportedPlatforms=Windows 3.1
+SynchronousSystemExitRequired=TRUE
+
+[Package Definition]
+Product=Nav for DOS/WIN
+Version=4.0
+Comment=Norton AntiVirus for DOS/WIN 4.0
+SetupVariations=Complete, Deinstall, Manual
+ErrorCodes=Yes
+Company=Symantec Corporation
+ImportDirectory=.
+SetupDirectory=.
+Environments=Windows 3.1
+Capabilities=Local Setup, Import
+;TelephoneSupportNumber=
+RebootAfterInstall=Yes
+RebootAfterDeInstall=Yes
+
+[SMS Import Commands]
+cmd 1=
+
+[Setup Package for Inventory]
+InventoryThisPackage=TRUE
+Detection Rule Part 1=file 1
+
+[file 1]
+FILE=NAVW.EXE
+COLLECT=FALSE
+Checksum=
+CRC=
+DATE=
+SIZE=
+TIME=
+BYTE=
+WORD=
+LONG=
+TOKEN 1=
+TOKEN 2=
+TOKEN 3=
+TOKEN 4=

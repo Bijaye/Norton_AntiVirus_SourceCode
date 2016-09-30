@@ -1,0 +1,30 @@
+;;************************************************************************
+;;
+;; $Header:   S:\navex\vcs\navex32.d3v   1.0   13 Oct 1995 13:05:04   DCHI  $
+;;
+;; Description:
+;;      Contains NAVEX WINDOWS 32-BIT DEF file.
+;;
+;;************************************************************************
+;; $Log:   S:\navex\vcs\navex32.d3v  $
+;  
+;     Rev 1.0   13 Oct 1995 13:05:04   DCHI
+;  Initial revision.
+;;
+;;************************************************************************
+
+LIBRARY         NAVEX32
+DESCRIPTION     'NAVEX External AV Interface.  Copyright (C) Symantec Corp. 1990-1995.'
+EXETYPE         WINDOWS
+CODE            PRELOAD  MOVEABLE    DISCARDABLE
+DATA            PRELOAD  MOVEABLE    SINGLE
+HEAPSIZE        4096
+EXPORTS         WEP                     @1      RESIDENTNAME PRIVATE
+                EXTScanFile             @2
+                EXTScanBoot             @3
+                EXTScanPart             @4
+                EXTScanMemory           @5
+                EXTRepairFile           @6
+                EXTRepairBoot           @7
+                EXTRepairPart           @8
+

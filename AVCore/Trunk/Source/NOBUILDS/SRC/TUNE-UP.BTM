@@ -1,0 +1,124 @@
+: Search and replace for:
+:   Dates stamps. For example, 08-01-95
+:   MONYR.TXT files. For example, aug95.txt
+
+@echo off
+cls
+if "%1" == "" goto help
+
+iff isdir s:\builds then
+        echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+        echo บ                This can only be executed from a build area.                 บ
+        echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+        goto end
+endiff
+
+
+text
+Usage: TUNE-UP.BTM <drive:\dest\> <drive:\>
+
+       Where:    arg1: Local drive and dir to build to...
+                 arg2: Diskette drive letter to transfer files to...
+
+        NOTE:    If arg1 == a:, reconsider!
+endtext
+
+DATE 07-24-96
+TIME 00:00:00
+
+cls
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ TuneUp!    NOTE: Second .BTM attempt for a TuneUp build!                    บ
+echo บ                  Please report errors/problems to Shane Coursen @ x4177     บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo.
+
+copy s:\source\virscan.dat\lib.dos\inscanb.dat %1inscanb.dat
+if not exist %1inscanb.dat pause
+
+copy s:\source\virscan.dat\lib.dos\inscanf.dat %1inscanf.dat
+if not exist %1inscanf.dat pause
+
+copy s:\source\virscan.dat\lib.dos\inscanm.dat %1inscanm.dat
+if not exist %1inscanm.dat pause
+
+copy s:\source\virscan.dat\lib.dos\intsrb.dat %1intsrb.dat
+if not exist %1intsrb.dat pause
+
+copy s:\source\virscan.dat\lib.dos\intsrf.dat %1intsrf.dat
+if not exist %1intsrf.dat pause
+
+copy s:\source\navex\lib.w32\navex32.dll %1navex32.dll
+if not exist %1navex32.dll pause
+
+copy s:\source\bin.dos\virscan.dat %1virscan.dat
+if not exist %1virscan.dat pause
+
+copy s:\SOURCE\VIRSCAN.INF\lib.dos\virscan.inf %1virscan.inf
+if not exist %1virscan.inf pause
+
+echo.
+echo Transfer complete.  One moment please...Zipping files
+
+fd %1*.* /d07-24-96 /t0:00:00 /s
+
+s:\source\nobuilds\src\pkzip -! -ex %1`08TUN96.zip` %1*.*
+s:\source\nobuilds\src\pkzip %1`08TUN96.ZIP` -z < s:\english\virscan.inf\src\TUNSIG.TXT
+
+cls
+fd %1*.zip /d07-24-96 /t0:00:00 /s
+
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ TuneUp!          Cleaning up.  One moment please...                         บ
+echo บ                  Please report errors/problems to Shane Coursen @ x4177     บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo.
+
+if exist %1inscanb.dat erase %1inscanb.dat
+if exist %1inscanf.dat erase %1inscanf.dat
+if exist %1inscanm.dat erase %1inscanm.dat
+if exist %1intsrb.dat erase %1intsrb.dat
+if exist %1intsrf.dat erase %1intsrf.dat
+if exist %1navex32.dll erase %1navex32.dll
+if exist %1virscan.dat erase %1virscan.dat
+if exist %1virscan.inf erase %1virscan.inf
+
+
+cls
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ Transferring files to diskette.  One moment please                          บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo.
+
+copy %1'08TUN96.ZIP' %2
+
+goto end
+
+:help
+text
+Usage: TUNE-UP.BTM <drive:\dest\> <drive:\>
+
+       Where:    arg1: Local drive and dir to build to...
+                 arg2: Diskette drive letter to transfer files to...
+
+       For example, typing:  TUNE-UP c:\jul\ a:\
+       first copies all files to C:\JUL.  Once complete,
+       TUNE-UP.ZIP is finally transferred to the A: drive.
+
+       NOTE: Remember to include trailing backslashes in both args!
+       NOTE: You *don't* want arg1 to point to a diskette!
+
+endtext
+
+:end
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ                                 Finished!                                   บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+
+
+
+:end
+
+
+

@@ -1,0 +1,34 @@
+::
+:: $Header:   S:/navalog/VCS/build.btv   1.0   06 Feb 1997 20:55:06   RFULLER  $
+::
+:: Build file for NAVINOC project.
+::------------------------------------------------------------------------
+:: $Log:   S:/navalog/VCS/build.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 20:55:06   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:52:24   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 10:14:40   BARRY
+:  Initial revision.
+:  
+:     Rev 1.4   13 Dec 1994 13:46:32   MFALLEN
+:  
+::------------------------------------------------------------------------
+
+                                        :: Complain if updating only a single
+                                        :: target.
+                                        :: This is set TRUE in BUILDALL.BTM
+iff "%__UpdateAll" != "TRUE" then
+    echo.
+    echo *** Warning:  You are only updating part of the %PROJNAME% project.
+    echo To update the entire project, run %PROJ%\SRC\BUILDALL.BTM
+    echo.
+endiff
+
+
+call mk navalog %1
+
+if exist make.err copy build.err+make.err build.err

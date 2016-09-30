@@ -1,0 +1,693 @@
+;****************************************************************************
+; Copyright 1997 Symantec, Peter Norton Product Group
+;****************************************************************************
+; XLVARSIG.WDF
+;
+; $Header:   S:/NAVEX/VCS/xlvarsig.wdv   1.9   14 Jan 1999 18:17:32   relniti  $
+;
+; This source file contains alg definitions for the Excel macro viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/xlvarsig.wdv  $
+   
+      Rev 1.9   14 Jan 1999 18:17:32   relniti
+   0x6531 VID_LAROUXEO_VAR1 XM.Laroux.EO.var
+   
+      Rev 1.8   14 Jan 1999 15:23:16   relniti
+   0X6530 VID_LAROUXBO_VAR1 XM.Laroux.BO.var
+   
+      Rev 1.7   14 Jan 1999 11:56:20   relniti
+   XM.Laroux.DX.var
+   
+      Rev 1.6   04 Aug 1998 14:36:34   DCHI
+   Added Excel heuristic call-off signature.
+   
+      Rev 1.5   03 Aug 1998 17:44:00   RELNITI
+   REWORK the repair on XM.Extras variant
+   
+      Rev 1.4   03 Aug 1998 16:07:22   RELNITI
+   ADD XM.Extras Variant
+   
+      Rev 1.3   28 May 1998 18:28:10   RELNITI
+   REMOVE unnecessary LAROUX97_ONSHEETACTIVATE             
+   MODIFY type II MacroSig to scan for *.* instead of *.xls
+   RE-ARRANGE sigs
+   
+      Rev 1.2   16 Apr 1998 21:18:00   RELNITI
+   RE-arrange the detection
+   
+      Rev 1.1   16 Apr 1998 13:17:24   RELNITI
+   ADD Laroux.A, D, E, M variant detection
+   
+      Rev 1.0   15 Apr 1998 10:50:44   RELNITI
+   Initial revision.
+;
+;****************************************************************************
+
+[MacroSigStart]
+[Comment]       Laroux.A: Sheets("laroux").Copy
+[ID]            LAROUXA95_SHEETSCOPY
+[Signature]     0xAD 0x00 0x06 0x00 ScanStringI(1, "laroux") 0x24 0x00
+[Signature]     SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.A: FileName:=Application.StartupPath & "/" & "PERSONAL.XLS"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "PERSONAL.XLS", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUXA95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "PERSONAL.XLS"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 0x0C 0x00
+[Signature]     ScanStringI(1, "personal.xls") 0x11 0x00 0xC8 0x00
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.A: Workbooks("PERSONAL.XLS").Sheets("laroux").Copy
+#Workbooks("PERSONAL.XLS").Sheets("laroux").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUXA95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("PERSONAL.XLS").Sheets("laroux").Copy
+[Signature]     0xAD 0x00 0x06 0x00 ScanStringI(1, "laroux")
+[Signature]     0xAD 0x00 0x0C 0x00 ScanStringI(1, "personal.xls")
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.A non PERSONAL.XLS: FileName:=Application.StartupPath & "/" & "*.XLS"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "*.XLS", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUX95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "*.*"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 HotByteSkip()
+[Signature]     ScanString(2, 0x11) 0x00 0xC8 0x00
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.A non PERSONAL.XLS: Workbooks("*.*").Sheets("laroux").Copy
+#Workbooks("*.XLS").Sheets("laroux").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUX95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("*.XLS").Sheets("laroux").Copy
+[Signature]     0xAD 0x00 0x06 0x00 ScanStringI(1, "laroux")
+[Signature]     0xAD 0x00 HotByteSkip()
+[Signature]     ScanString(2, 0x24) 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.A non Laroux sheet: Workbooks("PERSONAL.XLS").Sheets("*").Copy
+#Workbooks("PERSONAL.XLS").Sheets("*").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUX95_WORKBOOK_SHEETSCOPY2
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("PERSONAL.XLS").Sheets("*").Copy
+[Signature]     0xAD 0x00 HotByteSkip() ScanString(3, 0xAD)
+[Signature]     0x00 0x0C 0x00 ScanStringI(1, "personal.xls")
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+
+[MacroSigStart]
+[Comment]       Laroux.D: FileName:=Application.StartupPath & "/" & "BINV.XLS"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "BINV.XLS", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUXD95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "BINV.XLS"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 0x08 0x00
+[Signature]     ScanStringI(1, "BINV.XLS") 0x11 0x00 0xC8 0x00 
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.D: Workbooks("binv.xls").Sheets("laroux").Copy
+#Workbooks("binv.xls").Sheets("laroux").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUXD95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("binv.xls").Sheets("laroux").Copy
+[Signature]     0xAD 0x00 0x06 0x00 ScanStringI(1, "laroux")
+[Signature]     0xAD 0x00 0x08 0x00 ScanStringI(1, "binv.xls")
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+
+[MacroSigStart]
+[Comment]       Laroux.E: Sheets("pldt").Copy
+[ID]            LAROUXE95_SHEETSCOPY
+[Signature]     0xAD 0x00 0x04 0x00 ScanStringI(1, "pldt") 0x24 0x00
+[Signature]     SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.E: FileName:=Application.StartupPath & "/" & "PLDT.XLS"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "PLDT.XLS", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUXE95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "PLDT.XLS"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 0x08 0x00
+[Signature]     ScanStringI(1, "PLDT.XLS") 0x11 0x00 0xC8 0x00
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.E: Workbooks("PLDT.XLS").Sheets("pldt").Copy
+#Workbooks("PLDT.XLS").Sheets("pldt").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUXE95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("PLDT.XLS").Sheets("pldt").Copy
+[Signature]     0xAD 0x00 0x04 0x00 ScanStringI(1, "pldt")
+[Signature]     0xAD 0x00 0x08 0x00 ScanStringI(1, "PLDT.XLS")
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.E non PLDT.XLS: Workbooks("*.XLS").Sheets("pldt").Copy
+#Workbooks("*.XLS").Sheets("pldt").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUX95E_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("*.*").Sheets("pldt").Copy
+[Signature]     0xAD 0x00 0x04 0x00 ScanStringI(1, "pldt")
+[Signature]     0xAD 0x00 HotByteSkip()
+[Signature]     ScanString(2, 0x24) 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.E non PLDT sheet: Workbooks("PLDT.XLS").Sheets("*").Copy
+#Workbooks("PLDT.XLS").Sheets("*").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUX95E_WORKBOOK_SHEETSCOPY2
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("PLDT.XLS").Sheets("*").Copy
+[Signature]     0xAD 0x00 HotByteSkip() ScanString(3, 0xAD)
+[Signature]     0x00 0x08 0x00 ScanStringI(1, "PLDT.XLS")
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+
+[MacroSigStart]
+[Comment]       Laroux.M: Sheets("VIRUS-EDY").Copy
+[ID]            LAROUXM95_SHEETSCOPY
+[Signature]     0xAD 0x00 0x09 0x00 ScanStringI(1, "VIRUS-EDY") 0x00 0x24 0x00
+[Signature]     SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       LAROUX.M: FileName:=Application.StartupPath & "/" & "A-A.XLS"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "A-A.XLS", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUXM95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "A-A.XLS"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 0x07 0x00
+[Signature]     ScanStringI(1, "A-A.XLS") 0x00 0x11 0x00 0xC8 0x00
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       LAROUX.M: Workbooks("A-A.XLS").Sheets("VIRUS-EDY").Copy
+#Workbooks("A-A.XLS").Sheets("VIRUS-EDY").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUXM95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("A-A.XLS").Sheets("VIRUS-EDY").Copy
+[Signature]     0xAD 0x00 0x09 0x00 ScanStringI(1, "VIRUS-EDY") 0x00
+[Signature]     0xAD 0x00 0x07 0x00 ScanStringI(1, "A-A.XLS") 0x00
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+
+[MacroSigStart]
+[Comment]       Laroux.DX: Sheets("laroux").Copy
+[ID]            LAROUXDX95_SHEETSCOPY
+[Signature]     0xAD 0x00 0x07 0x00 ScanStringI(1, "results") 0x00 0x24 0x00
+[Signature]     SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.DX: Workbooks("RESULTS.XLS").Sheets("results").Copy
+#Workbooks("RESULTS.XLS").Sheets("results").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUXDX95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("PERSONAL.XLS").Sheets("laroux").Copy
+[Signature]     0xAD 0x00 0x07 0x00 ScanStringI(1, "results") 0x00
+[Signature]     0xAD 0x00 0x0B 0x00 ScanStringI(1, "RESULTS.XLS") 0x00
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.DX: FileName:=Application.StartupPath & "/" & "RESULTS.XLS"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "RESULTS.XLS", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUXDX95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "PERSONAL.XLS"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 0x0B 0x00
+[Signature]     ScanStringI(1, "RESULTS.XLS") 0x00 0x11 0x00 0xC8 0x00
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.BO: Sheets("gay").Copy
+[ID]            LAROUXBO95_SHEETSCOPY
+[Signature]     0xAD 0x00 0x03 0x00 ScanStringI(1, "gay") 0x00 0x24 0x00
+[Signature]     SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.BO: Workbooks("gay.xls").Sheets("gay").Copy
+#Workbooks("gay.xls").Sheets("gay").Copy before:= Workbooks(n4$).Sheets(1)
+[ID]            LAROUXBO95_WORKBOOK_SHEETSCOPY
+#before:= Workbooks(n4$).Sheets(1)
+[Signature]     0xA3 0x00 0x01 0x00 0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4)
+[Signature]     0x25 0x00 SeekCur(4) 0xC8 0x00 SeekCur(2)
+#Workbooks("PERSONAL.XLS").Sheets("gay").Copy
+[Signature]     0xAD 0x00 0x03 0x00 ScanStringI(1, "gay") 0x00
+[Signature]     0xAD 0x00 0x07 0x00 ScanStringI(1, "gay.xls") 0x00
+[Signature]     0x24 0x00 SeekCur(4) 0x25 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.BO: FileName:=Application.StartupPath & "/" & "gay.xls"
+#Workbooks(Newname$) .SaveAs FileName:=Application.StartupPath
+# & "/" & "gay.xls", FileFormat:= xlNormal _
+# ,Password:="", WriteResPassword:="", ReadOnlyRecommended:= _
+# False, CreateBackUp:=False
+[ID]            LAROUXBO95_XLSTARTDROP
+#multi line opcode
+[Signature]     0x9D 0x00 0x08 0x00 SeekCur(8)
+#Filename := Application.StartupPath & "/" & "GAY.XLS"
+[Signature]     0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2) 0xAD 0x00 0x01 0x00
+[Signature]     0x2F 0x00 0x11 0x00 0xAD 0x00 0x07 0x00
+[Signature]     ScanStringI(1, "gay.xls") 0x00 0x11 0x00 0xC8 0x00
+#that should be enough... but if needed, uncomment the following signatures
+#FileFormat := xlNormal
+#[Signature]     SeekCur(2) 0x20 0x00 SeekCur(2) 0xC8 0x00 SeekCur(2)
+#Password := ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#WriteResPassword = ""
+#[Signature]     0xAD 0x00 0x00 0x00 0xC8 0x00 SeekCur(2)
+#ReadOnlyRecommended = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#createBackUp = False
+#[Signature]     0xAE 0x00 0xC8 0x00 SeekCur(2)
+#Workbooks(newname$) .SaveAs
+#[Signature]     0x20 0x20 SeekCur(2) 0x24 0x00 SeekCur(4) 0x42 0x40
+[MacroSigEnd]
+
+
+[MacroSigStart]
+[Comment]       Laroux.EO: Sheets("guyan").Copy
+[ID]            LAROUXEO95_SHEETSCOPY
+[Signature]     0xAD 0x00 0x05 0x00 ScanStringI(1, "guyan") 0x00 0x20 0x00
+[Signature]     SeekCur(2) 0x21 0x00 Seekcur(2) 0x24 0x00
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Laroux.EO: FileName:=Application.StartupPath & "/" & "gay.xls"
+#Workbooks("PERSONAL.XLS").Save
+[ID]            LAROUXEO95_XLSTARTDROP
+[Signature]     0xAD 0x00 0x0C 0x00 ScanStringI(1, "PERSONAL.XLS")
+[Signature]     0x24 0x00
+[MacroSigEnd]
+
+
+
+
+#########################################################################
+# Excel Variant Level 1: uses the same set of dropped file and sheet name
+#  as the original. For example (personal.xls, laroux), (pldt.xls, pldt)
+#########################################################################
+[UnknownVirusSigStart]
+[Comment]       Laroux.A variant: personal.xls + laroux sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXA_VAR1
+[Signature]     MacroSig(LAROUXA95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXA95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXA95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.D variant: binv.xls + laroux sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXD_VAR1
+[Signature]     MacroSig(LAROUXA95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXD95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXD95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.E variant: PLDT.XLS + pldtsheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXE_VAR1
+[Signature]     MacroSig(LAROUXE95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXE95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXE95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       LAROUX.M variant: A-A.XLS + VIRUS-EDY sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXM_VAR1
+[Signature]     MacroSig(LAROUXM95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXM95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXM95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.BO variant: GAY.XLS + GAY sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBO_VAR1
+[Signature]     MacroSig(LAROUXBO95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXBO95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXBO95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.DX variant: RESULTS.XLS + results sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDX_VAR1
+[Signature]     MacroSig(LAROUXDX95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXDX95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXDX95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.EO variant: PERSONAL.XLS + GUYAN sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXEO_VAR1
+[Signature]     MacroSig(LAROUXEO95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUXEO95_XLSTARTDROP) and
+[Signature]     (MacroSig(MACRO_SIG_SAVEAS_0) or
+[Signature]      MacroSig(MACRO_SIG_SAVEAS_1))
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+
+
+#########################################################################
+# Excel Variant Level 2: uses the same set of sheet name but the dropped
+#  file could be named anything.
+#  as the original. For example (*.*, laroux), (*.*, pldt)
+#########################################################################
+[UnknownVirusSigStart]
+[Comment]       Laroux.A non PERSONAL.XLS variant: *.xls + laroux sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXA_VAR2
+[Signature]     MacroSig(LAROUXA95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUX95_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUX95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.E non PLDT.XLS variant: *.xls + PLDT sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXE_VAR2
+[Signature]     MacroSig(LAROUXE95_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUX95E_WORKBOOK_SHEETSCOPY) and
+[Signature]     MacroSig(LAROUX95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+
+#########################################################################
+# Excel Variant Level 3 uses the same dropped file but the sheet name
+#  could be anything.
+#  For example (personal.xls, *), (pldt.xls, *)
+#########################################################################
+[UnknownVirusSigStart]
+[Comment]       Laroux.A non Laroux sheet variant: personal.xls + * sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXA_VAR3
+[Signature]     MacroSig(LAROUX95_WORKBOOK_SHEETSCOPY2) and
+[Signature]     MacroSig(LAROUXA95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Laroux.E non pldt sheet variant: PLDT.XLS + * sheet
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_LAROUXE_VAR3
+[Signature]     MacroSig(LAROUX95E_WORKBOOK_SHEETSCOPY2) and
+[Signature]     MacroSig(LAROUXE95_XLSTARTDROP)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+
+[MacroSigStart]
+[Comment]       Extras: ??? = "EXTRAS.XLS"
+[ID]            EXTRAS95_SHEETNAMING1
+[Signature]     0xAD 0x00 0x0A 0x00 NameSig(NAME_25_CHARACTERS) ScanStringI(1, "EXTRAS.XLS") 0x27 0x00
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Extras: IF Left(Application.OperatingSystem, 3) = "Mac" THEN
+[ID]            EXTRAS95_SHEETNAMING2
+[Signature]     0xAD 0x00 0x03 0x00 NameSig(NAME_25_CHARACTERS) ScanStringI(1, "Mac") 0x00
+[Signature]     0x05 0x00 0x94 0x00
+[Signature]     SeekCur(-30) 0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2)
+[Signature]      0xa3 0x00 0x03 0x00 0x24 0x00
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Extras: ??? = "Macintosh Extras"
+[ID]            EXTRAS95_SHEETNAMING3
+[Signature]     0xAD 0x00 0x10 0x00 NameSig(NAME_25_CHARACTERS) ScanStringI(1,"Macintosh Extras") 0x27 0x00
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Extras: ELSEIF Left(Application.OperatingSystem, 10) = "Windows 3." THEN
+[ID]            EXTRAS95_SHEETNAMING4
+[Signature]     0xAD 0x00 0x0A 0x00 NameSig(NAME_25_CHARACTERS) ScanStringI(1, "Windows 3.") 0x06 0x00
+[Signature]     SeekCur(-34) 0x20 0x00 SeekCur(2) 0x21 0x00 SeekCur(2)
+[Signature]      0xa3 0x00 0x0A 0x00 0x24 0x00
+[NotFullSet]
+[MacroSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       XM.Extras
+[Type]          XL95
+[QAStatus]      PASSED
+[ID]            VID_EXTRAS_VAR
+[Signature]     MacroSig(EXTRAS95_SHEETNAMING1) and
+[Signature]     MacroSig(EXTRAS95_SHEETNAMING2) and
+[Signature]     MacroSig(EXTRAS95_SHEETNAMING3) and
+[Signature]     MacroSig(EXTRAS95_SHEETNAMING4)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+
+######################################################################
+# EXCEL HEURISTIC CALL OFF SIGNATURES
+######################################################################
+# These signatures MUST BE THE ABSOLUTE LAST in Unknown Macro Sigs
+######################################################################
+
+[NameSigStart]
+[Comment]       dir
+[ID]            NAME_SIG_dir
+[Signature]     SeekSet(0) "dir" AtEnd()
+[NameSigEnd]
+
+[MacroSigStart]
+[Comment]       Searches for "saveas" or "savecopyas" with a lowercase 's'
+[ID]            MACRO_SIG_SAVEAS_0
+[Signature]     's' NameSig(NAME_SIG_dir) ScanStringI(1,"ave")
+[Signature]     BegOr()
+[Signature]         ScanStringI(1,"as") Or() ScanStringI(1,"copyas")
+[Signature]     EndOr()
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Searches for "saveas" or "savecopyas" with an uppercase 'S'
+[ID]            MACRO_SIG_SAVEAS_1
+[Signature]     'S' NameSig(NAME_SIG_dir) ScanStringI(1,"ave")
+[Signature]     BegOr()
+[Signature]         ScanStringI(1,"as") Or() ScanStringI(1,"copyas")
+[Signature]     EndOr()
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Searches for "copy" with a lowercase 'c'
+[ID]            MACRO_SIG_COPY_0
+[Signature]     'c' NameSig(NAME_SIG_dir) ScanStringI(1,"opy")
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Searches for "copy" with an uppercase 'C'
+[ID]            MACRO_SIG_COPY_1
+[Signature]     'C' NameSig(NAME_SIG_dir) ScanStringI(1,"opy")
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Searches for "add" with a lowercase 'a'
+[ID]            MACRO_SIG_ADD_0
+[Signature]     'a' NameSig(NAME_SIG_dir) ScanStringI(1,"dd")
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Searches for "add" with an uppercase 'A'
+[ID]            MACRO_SIG_ADD_1
+[Signature]     'A' NameSig(NAME_SIG_dir) ScanStringI(1,"dd")
+[NotFullSet]
+[MacroSigEnd]
+
+# This signature searches for "saveas" or "savecopyas"
+# and "copy" or "add"
+
+[UnknownVirusSigStart]
+[Comment]       Excel 5.0/95 heuristic call-off signatures
+[Type]          XL95
+[QAStatus]      HEU
+[ID]            VID_XH
+[Signature]     (MacroSig(MACRO_SIG_SAVEAS_0) or
+[Signature]      MacroSig(MACRO_SIG_SAVEAS_1)) and
+[Signature]     (MacroSig(MACRO_SIG_COPY_0) or
+[Signature]      MacroSig(MACRO_SIG_COPY_1) or
+[Signature]      MacroSig(MACRO_SIG_ADD_0) or
+[Signature]      MacroSig(MACRO_SIG_ADD_1))
+[Repair]        NoRepair
+[UnknownVirusSigEnd]
+
+

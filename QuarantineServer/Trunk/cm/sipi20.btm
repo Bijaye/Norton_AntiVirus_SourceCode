@@ -1,0 +1,46 @@
+pushd
+
+cd ..\..\..\release\SESA2
+
+if exist .\SIPI.qs call del /s /y /x /z SIPI.qs
+call MD SIPI.qs
+
+cd sipi
+
+if not exist .\SIP call MD SIP
+cd SIP
+
+if not exist .\eventsink call MD eventsink
+if not exist .\help call MD help
+if not exist .\schema call MD schema
+if not exist .\schema\resources call MD schema\resources
+if not exist .\schema\setting call MD schema\setting
+if not exist .\productinfo call MD productinfo
+if not exist .\war call MD war
+if not exist .\prepost call MD prepost
+if not exist .\prepost\lib call MD prepost\lib
+if not exist .\mof call MD mof
+if not exist .\instance call MD instance
+
+cd ..\..
+
+xcopy /e /k /r /q .\SIPI\*.*  .\SIPI.qs\
+
+cd SIPI.qs
+cd SIP
+cd schema
+set build_err=..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\build.err
+call ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\copybin ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\XML\sip2\CentralQuarantine_1_0_pi.xml
+call ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\copybin ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\XML\sip2\CentralQuarantine_1_0_ep.xml
+cd ..\productinfo
+call ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\copybin ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\XML\sip2\productInfo.properties
+
+cd ..\..
+
+java -jar ..\AppSupport\lib\java\3dparty\ant.jar validate
+java -jar ..\AppSupport\lib\java\3dparty\ant.jar 
+set bret=%?
+if %? != %bret% set ret=%bret
+
+
+popd

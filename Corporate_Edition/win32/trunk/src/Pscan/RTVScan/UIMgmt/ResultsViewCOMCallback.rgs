@@ -1,0 +1,23 @@
+HKCR
+{
+	Rtvscan.ResultsViewCOMCallback.1 = s 'ResultsViewCOMCallback Class'
+	{
+		CLSID = s '{314F8196-D31F-456B-BAA6-0A87FEEC20E4}'
+	}
+	Rtvscan.ResultsViewCOMCallback = s 'ResultsViewCOMCallback Class'
+	{
+		CLSID = s '{314F8196-D31F-456B-BAA6-0A87FEEC20E4}'
+		CurVer = s 'Rtvscan.ResultsViewCOMCallback.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {314F8196-D31F-456B-BAA6-0A87FEEC20E4} = s 'ResultsViewCOMCallback Class'
+		{
+			ProgID = s 'Rtvscan.ResultsViewCOMCallback.1'
+			VersionIndependentProgID = s 'Rtvscan.ResultsViewCOMCallback'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{9D75182B-19F7-469B-83CB-180FE3338F33}'
+		}
+	}
+}

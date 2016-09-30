@@ -1,0 +1,205 @@
+@echo off
+rem Copy the SCF and SCFA merge modules into the clientspec.  This is necessary because
+rem these files are posted to a file server instead of being checked into the Perforce
+rem Release area.
+rem By David Luxford, 2004 May 4
+rem
+rem Return values (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem     0 - Success
+rem     2 - Build failed while in process
+rem     3 - No 4DOS
+rem     4 - 4DOS too old
+rem     5 - CONFIG failed
+rem     6 - CLIENTROOT variable not specified
+rem     7 - CLIENTROOT invalid
+rem
+rem Uses:
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+rem     BINARYSOURCECOMMONCLIENT
+rem     BINARYSOURCEBEHAVIORBLOCKING
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  "%_BATCHNAME" on %_DATE at %_TIME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+
+:Initialize
+rem ** Initialize
+cdd "%@PATH["%_BATCHNAME"]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+
+if %errorlevel% != 0 goto ErrorConfig
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+set commonClientTargetRoot=%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK
+set behaviorBlockingTargetRoot=%CLIENTROOT%\Release\BehaviorBlocking
+set SourceScanAndDeliver=%CLIENTROOT%\components\ScanAndDeliver
+set ccEraserTargetRoot=%CLIENTROOT%\Release\ccEraser
+
+:StartBuild
+echo * Creating common client directory structure...
+if isdir "%commonClientTargetRoot%" attrib -r -s -h /s /q "%commonClientTargetRoot%\*.*" >&nul
+if isdir "%commonClientTargetRoot%" del /s /q /y /x /z "%commonClientTargetRoot%\*.*" >&nul
+if not isdir "%commonClientTargetRoot%" mkdir /s "%commonClientTargetRoot%"
+md /s "%commonClientTargetRoot%\bin\bin.ira"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%commonClientTargetRoot%\bin\bin.ira\consumer"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%commonClientTargetRoot%\bin\bin.ira\enterprise"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%commonClientTargetRoot%\lib"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%commonClientTargetRoot%\include"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%commonClientTargetRoot%\nobuilds"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%commonClientTargetRoot%\MergeModules"
+if %errorlevel% != 0 goto BuildFailed
+
+
+echo * Creating ScanAndDeliver directory structure...
+if isdir "%SourceScanAndDeliver%" attrib -r -s -h /s /q "%SourceScanAndDeliver%\*.*" >&nul
+if isdir "%SourceScanAndDeliver%" del /s /q /y /x /z "%SourceScanAndDeliver%\*.*" >&nul
+
+if not isdir "%SourceScanAndDeliver%" mkdir /s "%SourceScanAndDeliver%"
+if %errorlevel% != 0 goto BuildFailed
+if not isdir "%SourceScanAndDeliver%\src\release" mkdir /s "%SourceScanAndDeliver%\src\release"
+if %errorlevel% != 0 goto BuildFailed
+if not isdir "%SourceScanAndDeliver%\src\debug" mkdir /s "%SourceScanAndDeliver%\src\debug"
+if %errorlevel% != 0 goto BuildFailed
+if not isdir "%SourceScanAndDeliver%\src\include" mkdir /s "%SourceScanAndDeliver%\src\include"
+if %errorlevel% != 0 goto BuildFailed
+
+
+echo * Creating SymProtect directory structure...
+if isdir "%behaviorBlockingTargetRoot%" attrib -r -s -h /s /q "%behaviorBlockingTargetRoot%\*.*" >&nul
+if isdir "%behaviorBlockingTargetRoot%" del /s /q /y /x /z "%behaviorBlockingTargetRoot%\*.*" >&nul
+if not isdir "%behaviorBlockingTargetRoot%" mkdir /s "%behaviorBlockingTargetRoot%"
+md /s "%behaviorBlockingTargetRoot%\Include"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\MergeModules"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\MSI"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\Manifest"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\Docs"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\Samples"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\ntu.x86.vc71.Release"
+if %errorlevel% != 0 goto BuildFailed
+md /s "%behaviorBlockingTargetRoot%\ntu.x86.vc71.Debug"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Creating ccEraser directory structure...
+if isdir "%ccEraserTargetRoot%" attrib -r -s -h /s /q "%ccEraserTargetRoot%\*.*" >&nul
+if isdir "%ccEraserTargetRoot%" del /s /q /y /x /z "%ccEraserTargetRoot%\*.*" >&nul
+if not isdir "%ccEraserTargetRoot%" mkdir /s "%ccEraserTargetRoot%"
+if not isdir "%ccEraserTargetRoot%\bin\bin.iru" md /s "%ccEraserTargetRoot%\bin\bin.iru"
+if %errorlevel% != 0 goto BuildFailed
+if not isdir "%ccEraserTargetRoot%\bin\bin.idu" md /s "%ccEraserTargetRoot%\bin\bin.idu"
+if %errorlevel% != 0 goto BuildFailed
+if not isdir "%ccEraserTargetRoot%\include" md /s "%ccEraserTargetRoot%\include"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying files...
+xcopy /s /e "%BINARYSOURCECOMMONCLIENT%\bin\bin.ira\*.exe"                      "%commonClientTargetRoot%\bin\bin.ira"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCECOMMONCLIENT%\lib"                                    "%commonClientTargetRoot%\lib"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCECOMMONCLIENT%\include"                                "%commonClientTargetRoot%\include"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCECOMMONCLIENT%\nobuilds"                               "%commonClientTargetRoot%\nobuilds"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCECOMMONCLIENT%\MergeModules"                           "%commonClientTargetRoot%\MergeModules"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Copying ScanAndDeliver directory structure...
+xcopy /s /e "%BinarySourceScanAndDeliver%\release"                           "%SourceScanAndDeliver%\src\release\"
+if %errorlevel% != 0 .AND. %errorlevel% != 2 goto BuildFailed
+xcopy /s /e "%BinarySourceScanAndDeliver%\debug"                             "%SourceScanAndDeliver%\src\debug\"
+if %errorlevel% != 0 .AND. %errorlevel% != 2 goto BuildFailed
+xcopy /s /e "%BinarySourceScanAndDeliver%\include"                           "%SourceScanAndDeliver%\src\include\"
+if %errorlevel% != 0 .AND. %errorlevel% != 2 goto BuildFailed
+
+
+echo ** Copying SymProtect...
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\Include"                            "%behaviorBlockingTargetRoot%\Include"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\MergeModules"                       "%behaviorBlockingTargetRoot%\MergeModules"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\MSI"                                "%behaviorBlockingTargetRoot%\MSI"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\Manifest"                           "%behaviorBlockingTargetRoot%\Manifest"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\Docs"                               "%behaviorBlockingTargetRoot%\Docs"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\Samples"                            "%behaviorBlockingTargetRoot%\Samples"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\ntu.x86.vc71.Release"               "%behaviorBlockingTargetRoot%\ntu.x86.vc71.Release"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e "%BINARYSOURCEBEHAVIORBLOCKING%\ntu.x86.vc71.Debug"                 "%behaviorBlockingTargetRoot%\ntu.x86.vc71.Debug"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Copying ccEraser Files....
+xcopy /s /e "%BinarySourceCcEraser%\ntu.x86.32bit.Release\bin.redist\*.dll"							"%ccEraserTargetRoot%\bin\bin.iru"
+if %errorlevel% != 0 .AND. %errorlevel% != 2 goto BuildFailed
+xcopy /s /e "%BinarySourceCcEraser%\ntu.x86.32bit.Debug\bin.redist\*.dll"							"%ccEraserTargetRoot%\bin\bin.idu"
+if %errorlevel% != 0 .AND. %errorlevel% != 2 goto BuildFailed
+xcopy /s /e "%BinarySourceCcEraser%\Include"										"%ccEraserTargetRoot%\include"
+if %errorlevel% != 0 .AND. %errorlevel% != 2 goto BuildFailed
+
+echo ===                                               ===
+echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+echo ===                                               ===
+set returnVal=0
+goto RealEnd
+
+
+:BuildFailed
+set returnVal=2
+echo ===                                               ===
+echo `!=*>` FAILED:  Code %returnVal%:  Error detected! `<*=!`
+echo `!=*>` INFO:  At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+echo ===                                               ===
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS not detected!  The 4DOS shell is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS too old!  Version 3.02B or later is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorConfig
+set returnVal=5
+echo `!=*>` FAILED:  Code %returnVal%:  CONFIG failed!  Unable to build. `<*=!`
+goto RealEnd
+
+:ErrorNoClientRoot
+set returnVal=6
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable not set! `<*=!`
+goto RealEnd
+
+:ErrorBadClientRoot
+set returnVal=7
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable invalid! `<*=!`
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  "%_BATCHNAME" on %_DATE at %_TIME
+quit %returnVal%

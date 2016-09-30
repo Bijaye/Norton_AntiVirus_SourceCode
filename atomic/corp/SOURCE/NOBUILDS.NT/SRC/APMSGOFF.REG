@@ -1,0 +1,15 @@
+REGEDIT4
+
+// This file changes the way Norton AntiVirus Auto-Protect works.
+//
+// When you import this file into your registry, the Auto-Protect message
+// displayed during shutdown is disabled. This will avoid a problem with
+// some video drivers where the system appears to hang during shutdown.
+// Your floppy drives are still scanned for viruses if Norton AntiVirus 
+// is configured to do so.
+// Import APMSGON.REG into your registry to re-enable the message.
+//
+// You must restart Windows for this change to take effect.
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus\Auto-Protect\InternalSettings]
+"ShowUIWhileScanningBoot"=dword:00000000

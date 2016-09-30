@@ -1,0 +1,35 @@
+@echo off
+
+echo.
+echo Creating Norton AntiVirus Bootable CD floppy disk
+echo.
+echo Please run the following command on the floppy
+echo before you continue generating the floppy disk
+echo.
+echo    format a: /V:Emergency /S /F:2.88
+echo.
+pause
+
+echo.
+echo Creating Norton AntiVirus Bootable CD floppy disk
+echo Please insert a formatted 2.88 bootable floppy disk
+echo.
+pause
+
+:format a: /V:Emergency /S /F:2.88
+:attrib -r -s -h  a:\*.*
+:del a:\drvspace.bin
+:del a:\command.com
+
+md %projpre%Install\EDisk\BootCDContents
+copy %projpre%Install\EDisk\BootCD\*.* %projpre%Install\EDisk\BootCDContents
+
+fd %projpre%Install\EDisk\BootCDContents\io.sys /d04-23-99 /t22:22:00
+attrib +r +s +h  %projpre%Install\EDisk\BootCDContents\io.sys
+attrib +r +s +h  %projpre%Install\EDisk\BootCDContents\msdos.sys
+
+copy %projpre%Bin.dvx\Navdx.* %projpre%Install\EDisk\BootCDContents
+
+echo.
+echo Norton AntiVirus Bootable CD floppy disk Completed!
+echo.

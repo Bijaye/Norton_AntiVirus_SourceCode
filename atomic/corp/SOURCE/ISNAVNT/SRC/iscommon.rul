@@ -1,0 +1,1853 @@
+//===========================================================================
+//
+// $Header:   S:/ISNAVNT/VCS/iscommon.ruv   1.32   20 Nov 1998 16:36:48   rchinta  $
+//
+// Description: 9x-NT common routines.
+//
+//===========================================================================
+// $Log:   S:/ISNAVNT/VCS/iscommon.ruv  $
+//
+//    Rev 1.32   20 Nov 1998 16:36:48   rchinta
+// The OEM product uses the OEM specific product name for
+// registration.
+//
+//    Rev 1.31   26 Oct 1998 13:51:12   mdunn
+// Added CompareFileVersions()
+//
+//    Rev 1.29   15 Oct 1998 21:42:14   mdunn
+// Nuked CheckIfSettingsCanBeKept()
+//
+//    Rev 1.28   13 Oct 1998 17:16:44   mdunn
+// Fixed UpdateLiveUpdate() so it, like, works.
+//
+//    Rev 1.27   28 Sep 1998 18:03:46   mdunn
+// Added logic so that install will:
+//   overwrite 5.00 options
+//   prompt before overwriting options from 5.01+
+//   ask 'are you sure?' when installing over a newer version of NAV.
+//
+//    Rev 1.26   24 Sep 1998 17:57:24   VGLOSTE
+// Made the OEM changes.
+//
+//    Rev 1.25   13 Aug 1998 12:04:26   mdunn
+// Added ReadTrialLengthSwitch()
+//
+//    Rev 1.24   21 Jul 1998 16:09:06   jtaylor
+// Updated the install to be able to register users in retail mode or the whole machine in corporate mode.
+//
+//    Rev 1.23   17 Jul 1998 13:40:08   mdunn
+// In DecrementLiveUpdateUsageCounts(), bail out immediately if LU isn't
+// being installed.
+//
+//    Rev 1.22   15 Jul 1998 21:56:16   mdunn
+// OK, I think we _finally_ have SetDialogBitmap() finalized now (we can use
+// both 16- and 256-color BMPs on everything 'cept DEC).
+//
+//    Rev 1.21   30 Jun 1998 12:56:12   mdunn
+// Now using 256-color BMPs for everything.
+//
+//    Rev 1.20   30 Jun 1998 11:13:54   mdunn
+// Fixed 117289 - worked around IS buggyness which was always overwriting the
+// settings files.
+//
+//    Rev 1.19   29 Jun 1998 18:27:08   mdunn
+// Added DeleteOldSequenceNumbers().
+//
+//    Rev 1.18   11 Jun 1998 11:59:48   jbelden
+// Changed value checked for EnterDisk from 0 to OK.  EnterDisk
+// valid return values are OK or <0
+//
+//    Rev 1.17   11 Jun 1998 00:32:52   mdunn
+// Now using only 16-color BMPs on 9x due to lack of space on disk 1.
+//
+//    Rev 1.16   11 Jun 1998 00:17:44   mdunn
+// #ifdef'ed out a couple of functions not used on 9x... trying to reduce
+// space usage on disk1!
+//
+//    Rev 1.15   10 Jun 1998 18:58:40   mdunn
+// little tweaks
+//
+//    Rev 1.14   10 Jun 1998 16:43:34   mdunn
+// Resurrected AddFolderInternetShortcut().
+//
+//    Rev 1.13   09 Jun 1998 11:00:00   mdunn
+// Nuked AddFolderInternetShortcut() since it isn't used anymore.
+//
+//    Rev 1.12   03 Jun 1998 18:41:22   mdunn
+// Removed reference to obsolete Netscape dialog.
+//
+//    Rev 1.11   23 May 1998 16:14:24   mdunn
+// SetDialogBitmap() now always sets 16-color bitmaps on Alpha.
+//
+//    Rev 1.10   21 May 1998 22:03:32   mdunn
+// Added SetDialogBitmap().
+//
+//    Rev 1.9   07 May 1998 19:17:10   mdunn
+// #ifdef'ed out AddFolderInternetShortcut()
+//
+//    Rev 1.8   04 May 1998 22:12:54   mdunn
+// Now displaying the gradient background only if the system's running in
+// > 256 color mode.  Displaying it in 256 colors got ugly sometimes due to
+// palette horkage.
+//
+//
+//    Rev 1.7   01 May 1998 09:55:06   mdunn
+// New version handling - reading the PublicVersion and PublicRevision from
+// VERSION.DAT, and using the versions in the LU CmdLine2 and the SymReg call.
+//
+//    Rev 1.6   12 Mar 1998 15:56:18   mdunn
+// Added background bitmap
+//
+//    Rev 1.5   11 Mar 1998 11:48:20   mdunn
+// Fixed variable name in SetLUProductName() that was breaking the Alpha
+// version.
+//
+//    Rev 1.4   09 Mar 1998 12:11:18   mdunn
+// More 95 and NT merging
+//
+//    Rev 1.3   05 Mar 1998 16:57:20   mdunn
+// Now calling the Shared Tech LU installer.
+//
+//    Rev 1.2   02 Mar 1998 17:28:14   mdunn
+// Moved UpdateFilesFromArchive() out of the common RUL and H files - the
+// merged version was choking and not extracting the virus defs correctly.
+//
+//    Rev 1.1   02 Mar 1998 15:27:00   mdunn
+// Added SetLUProductName()
+//
+//    Rev 1.0   26 Feb 1998 13:05:40   mdunn
+// Initial revision.
+//
+//    Rev 1.0   26 Feb 1998 12:55:52   mdunn
+// Initial revision.
+//===========================================================================
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: AddFolderInternetShortcut
+//
+//  Purpose: This function creates an internet shortcut.
+//  Internet Shortcuts created by this function will be logged iff logging is
+//  enabled at the time this function is called.  This function will have
+//  undefined behavior if the user is trying to create and internet shortcut
+//  to the temporary install directory(SUPPORTDIR).
+//
+//  Note, since the .url files were not universally supported, this function
+//  has been modified to always generate .html files that redirect to the
+//  desired web page.
+//
+// Parameters:
+//   szProgramFolder    - For 95 and NT 4.0, this determines the location of the
+//                        URL file. For NT 3.51, this determines the ProgMan
+//                        file group to place the icon for the HTML file.
+//   szHtmlFolder       - Only used on NT 3.51. This specifies the location for
+//                        the redirecting HTML file created. Callers can always
+//                        pass in TARGETDIR.
+//   szItemName         - String to display to the user.
+//   szURL              - Universal Resource Locator. Ex: "http://www.symantec.com".
+//   szWorkingDir       - Working directory for the URL file.
+//   szIconPath         - Icon path for the URL file.
+//   nIcon              - Resource ID for the icon.
+///////////////////////////////////////////////////////////////////////////////
+
+function    AddFolderInternetShortcut(szProgramFolder, szHtmlFolder, szItemName, szURL,
+                                      szWorkingDir, szIconPath, nIcon)
+    BOOL    bRetVal;
+    NUMBER  nvFileHandle;
+    STRING  szMsg;
+    STRING  szItemSuffix;
+    NUMBER  nResult;
+    STRING  szFileDestFolder;
+    STRING  szShortCutKey;
+    NUMBER  nFlag;
+    STRING  szCommandLine;
+
+begin
+
+    // initialize the return value
+    bRetVal = TRUE;
+
+    szFileDestFolder = szHtmlFolder;
+    szItemSuffix     = ".htm";
+
+    // set the file mode to append open files
+    OpenFileMode(FILE_MODE_APPEND);
+
+    // create the file in the temporary InstallShield working directory
+    nResult = CreateFile(nvFileHandle, SUPPORTDIR, szItemName + szItemSuffix);
+    if nResult != 0 then
+        NumToStr( szMsg, nResult );
+        bRetVal = FALSE;
+        goto Exit_Function;
+    endif;
+
+    szMsg = "<html><head><title>" + @NAV_PRODUCT_NAME + "</title>";
+    WriteLine(nvFileHandle, szMsg);
+
+    szMsg = '<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=' + szURL + '">';
+    WriteLine(nvFileHandle, szMsg);
+
+    szMsg = '</HEAD><body text="#000000" bgcolor="#FFFFFF">';
+    WriteLine(nvFileHandle, szMsg);
+
+    szMsg = "<p>" + @HTML_ATTEMPT_TO_CONNECT + "</p>";
+    WriteLine (nvFileHandle, szMsg);
+
+    szMsg = @HTML_IF_UNABLE;
+    WriteLine(nvFileHandle, szMsg);
+
+    szMsg = @HTML_CLICK + ' <A href="' + szURL + '">' + @HTML_HERE_TO_BE_FORWARDED;
+    WriteLine(nvFileHandle, szMsg);
+
+    szMsg = "</BODY></HTML>";
+    WriteLine(nvFileHandle, szMsg);
+
+    nResult = CloseFile(nvFileHandle);
+    if nResult != 0 then
+        NumToStr(szMsg, nResult);
+        bRetVal = FALSE;
+        goto Exit_Function;
+    endif;
+
+    // need to use xcopy in order to have this shortcut logged for uninstallation,
+    // so save the current source and target directory values
+    VarSave(SRCTARGETDIR);
+
+    // copy the shortcut to the program folder
+    SRCDIR        = SUPPORTDIR;
+    TARGETDIR     = szFileDestFolder;
+
+    g_nTempResult = XCopyFile(szItemName + szItemSuffix, "", COMP_NORMAL | LOCKEDFILE);
+
+    // delete the original copy of the shortcut
+    TARGETDIR = SUPPORTDIR;
+    DeleteFile(szItemName + szItemSuffix);
+
+    // restore the source and target variables
+    VarRestore(SRCTARGETDIR);
+
+
+    // We have to add a ProgMan item to point to the new
+    // redirecting HTML file.
+    szCommandLine = szFileDestFolder ^ szItemName + szItemSuffix;
+    szShortCutKey = "";
+    nFlag         = REPLACE;
+
+    LongPathToQuote(szCommandLine, TRUE);
+
+    AddFolderIcon (szProgramFolder, szItemName, szCommandLine, szWorkingDir,
+                    szIconPath, nIcon, szShortCutKey, nFlag);
+
+Exit_Function:
+    return (bRetVal);
+
+end;    // AddFolderInternetShortcut
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    BuildVersionString()
+//
+// Description:
+//  Builds a string from major, minor, and incremental revision
+//  numbers.  This string can then be passed on to CompareVersionNumbers().
+//
+// Input:
+//  nMajor: The major revision
+//  nMinor1: The minor revision
+//  nMinor2: The incremental revision
+//
+// Returns:
+//  svVersionString: The string constructed by this fn.
+//
+//////////////////////////////////////////////////////////////////////////
+//  9/19/97 Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function BuildVersionString ( svVersionString, nMajor, nMinor1, nMinor2 )
+begin
+    svVersionString = "";
+    svVersionString[0] = nMajor;
+    svVersionString[1] = nMinor1;
+    svVersionString[2] = nMinor2;
+    svVersionString[3] = 0;             // EOS sentinel
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: ComposeGroupItemExceptionList
+//
+//  Purpose: Creates string list of program group items to preserve. Items
+//           read from "PreserveGroupItems" section of CONFIG.INF file.
+//
+//     Args: szConfigFile   - Fully qualified name of configuration file.
+//           listExceptions - Reference to INITIALIZED string list to
+//                            hold list of items.
+//
+///////////////////////////////////////////////////////////////////////////////
+// 09/30/97 TSMITH  - Function created.
+///////////////////////////////////////////////////////////////////////////////
+function ComposeGroupItemExceptionList(szConfigFile, listExceptions)
+    STRING  svResult;
+    STRING  szDelimeters;
+    STRING  szKey;
+    STRING  szValue;
+    NUMBER  nResult;
+    BOOL    bResult;
+    BOOL    bRetValue;
+    LIST    listSectionKeys;
+begin
+    // Error out if either of the input parameters are empty.
+    if (("" = szConfigFile) || (LIST_NULL = listExceptions)) then
+        bResult = -1;
+        goto  CleanupAndExit;
+    endif;
+
+    // Initialize list for inf file section keys.
+    listSectionKeys = ListCreate(STRINGLIST);
+
+    // List creation failure usually means very low memory so abort install.
+    if (LIST_NULL = listSectionKeys) then
+        MessageBox(@ERROR_CREATING_PROGRAM_ITEM_LIST, SEVERE);
+        abort;
+    endif;
+
+    if (0 > GetProfString(szConfigFile, PRESERVE_GROUP_ITEMS, "", svResult)) then
+        bResult = -1;
+        goto CleanupAndExit;
+    endif;
+
+    szDelimeters = "";
+    StrGetTokens(listSectionKeys, svResult, szDelimeters);
+    nResult = ListGetFirstString(listSectionKeys, szKey);
+
+    while (0 = nResult)
+        GetProfString(szConfigFile, PRESERVE_GROUP_ITEMS, szKey, svResult);
+        nResult = ListAddString(listExceptions, svResult, AFTER);
+        nResult = ListGetNextString(listSectionKeys, szKey);
+    endwhile;
+
+CleanupAndExit:
+
+    if (LIST_NULL != listSectionKeys) then
+        ListDestroy(listSectionKeys);
+    endif;
+
+    return bResult;
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    CompareFileVersions
+//
+// Description:
+//  Compares two file version strings (e.g., "4.72.3110.9") and returns a
+//  number indicating if they are equal, or if not, which is older.
+//
+// Input:
+//  szVer1, szVer2: The version strings to compare.
+//
+// Returns:
+//  -1: szVer1 is older
+//   0: versions are equal
+//   1: szVer1 is newer
+//
+//////////////////////////////////////////////////////////////////////////
+// 10/26/98 Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function CompareFileVersions ( szVer1, szVer2 )
+    NUMBER nRet;
+    NUMBER nDummy;
+    LIST   lVer1;
+    LIST   lVer2;
+    STRING szNum1;
+    STRING szNum2;
+    NUMBER nNum1;
+    NUMBER nNum2;
+    BOOL   bDone;
+begin
+    nRet = 0;
+    bDone = FALSE;
+
+    lVer1 = ListCreate ( STRINGLIST );
+    lVer2 = ListCreate ( STRINGLIST );
+
+    if ( lVer1 = LIST_NULL || lVer2 = LIST_NULL )
+    then
+        return nRet;                    // nothing more we can do...
+    endif;
+
+    StrGetTokens ( lVer1, szVer1, "." );
+    StrGetTokens ( lVer2, szVer2, "." );
+
+    ListGetFirstString ( lVer1, szNum1 );
+    ListGetFirstString ( lVer2, szNum2 );
+
+    repeat
+        StrToNum ( nNum1, szNum1 );
+        StrToNum ( nNum2, szNum2 );
+
+        if ( nNum1 > nNum2 )
+        then
+            nRet = 1;                   // szVer1 is newer
+            bDone = TRUE;
+        elseif ( nNum1 < nNum2 )
+        then
+            nRet = -1;
+            bDone = TRUE;               // szVer2 is newer
+        endif;
+
+        if ( 0 != ListGetNextString ( lVer1, szNum1 ) ||
+             0 != ListGetNextString ( lVer2, szNum2 ) )
+        then
+            bDone = TRUE;
+        endif;
+    until ( bDone );
+
+    ListDestroy ( lVer1 );
+    ListDestroy ( lVer2 );
+
+    return nRet;
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  CompareVersionNumbers
+//
+//  Purpose:  This function takes two Strings, each encoding a version number
+//            of the product.  (3 bytes/characters long ).  It will do a
+//            a numerical compare.
+//
+//  Note:     Pass 1 for bCheckMinor2 to include the MINOR2 part of the
+//            version in the comparison.  Pass 0 to ignore it (this will
+//            make 5.0.0 match 5.0.4, for example).
+//
+///////////////////////////////////////////////////////////////////////////////
+// 2/20/98 Mike Dunn -- Added ability to ignore the MINOR2 portion of the
+//                      version numbers.
+///////////////////////////////////////////////////////////////////////////////
+
+function    CompareVersionNumbers( szOnSystem, szInstall, bCheckMinor2 )
+    NUMBER      nIndex;
+    NUMBER      nMaxIndex;
+begin
+
+    if ( bCheckMinor2 ) then
+        nMaxIndex = 2;
+    else
+        nMaxIndex = 1;
+    endif;
+
+    // Compare the first number
+    for nIndex = 0 to nMaxIndex
+        if( szOnSystem[nIndex] < szInstall[nIndex] ) then
+            return INSTALLING_OVER_OLDER_VERSION;
+        elseif szOnSystem[nIndex] > szInstall[nIndex] then
+            return INSTALLING_OVER_NEWER_VERSION;
+        endif;
+    endfor;
+
+    return INSTALLING_OVER_SAME_VERSION;
+end;    // CompareVersionNumbers
+
+
+#ifndef WIN9X_BUILD
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: DecrementLiveUpdateUsageCounts
+//
+//  Purpose: This function stops the services (and is usually called when
+//           something has gone wrong during the service installation).  If
+//           the "delete" argument is TRUE, then the services are actually
+//           deleted (usually to cleanup).
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DecrementLiveUpdateUsageCounts(szLiveUpdatePath)
+    LIST        liveUpdateList;
+    NUMBER      nCount;
+    NUMBER      nResult;
+    NUMBER      nSize;
+    NUMBER      nType;
+    STRING      szCurrentStr;
+    STRING      szUsage;
+    STRING      szValueName;
+
+begin
+
+    if ( !g_bInstallLiveUpdate ) then
+        return;
+    endif;
+
+    // since this function accesses the registry, set the default root
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+
+    // create the file list
+    liveUpdateList = ListCreate(STRINGLIST);
+
+    // add the LU files to the list
+    ListAddString(liveUpdateList, "S32LIVE1.DLL", AFTER);
+    ListAddString(liveUpdateList, "S32LUHF1.DLL", AFTER);
+    ListAddString(liveUpdateList, "S32LUHM1.DLL", AFTER);
+    ListAddString(liveUpdateList, "S32LUIS1.DLL", AFTER);
+    ListAddString(liveUpdateList, "S32LUUZ1.DLL", AFTER);
+
+
+    // loop through the list and process entries
+    nResult = ListGetFirstString(liveUpdateList, szCurrentStr);
+    while(nResult = 0)
+
+        // derive full key in for the shared usage
+        szValueName = szLiveUpdatePath ^ szCurrentStr;
+
+        // get the shared file's usage count
+        if (RegDBGetKeyValueEx(MSSHARED_DLL_KEY, szValueName, nType, szUsage
+                                                            , nSize) = 0) then
+            StrToNum(nCount, szUsage);
+            if (nCount > 1) then
+                nCount = nCount - 1;
+                NumToStr(szUsage, nCount);
+                RegDBSetKeyValueEx(MSSHARED_DLL_KEY, szValueName, REGDB_NUMBER
+                                                                , szUsage, -1);
+            else
+                RegDBDeleteValue(MSSHARED_DLL_KEY, szValueName);
+            endif;
+        endif;
+
+        nResult = ListGetNextString(liveUpdateList, szCurrentStr);
+
+    endwhile;
+
+    ListDestroy(liveUpdateList);
+
+end;    // DecrementLiveUpdateUsageCounts
+#endif  // ndef WIN9X_BUILD
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    DeleteOldSequenceNumbers()
+//
+// Description:
+//  Deletes LU sequence numbers so that the next LU session will pick
+//  up any available patches/defs/etc.
+//
+//////////////////////////////////////////////////////////////////////////
+// 6/29/98 Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function DeleteOldSequenceNumbers()
+    STRING szCmdLineKey, szProductName;
+    LIST   listCmdLines;
+    NUMBER nType, nSize, nRet;
+begin
+
+    listCmdLines = ListCreate ( STRINGLIST );
+
+    if ( LIST_NULL = listCmdLines ) then
+        return;
+    endif;
+
+                                        // First get a list of all the
+                                        // CmdLinex keys.
+
+    RegDBSetDefaultRoot ( HKEY_LOCAL_MACHINE );
+
+    if ( 0 > RegDBQueryKey ( NAV_LU_CMDLINES_KEY, REGDB_KEYS,
+                             listCmdLines ) ) then
+        return;
+    endif;
+
+
+    if ( 0 != ListGetFirstString ( listCmdLines, szCmdLineKey ) )
+        goto bailout;
+
+
+    repeat
+                                        // Get the product name.  This
+                                        // value determines the name of
+                                        // the key we need to delete under
+                                        // the LiveUpdate sequences key.
+
+        nRet = RegDBGetKeyValueEx ( NAV_LU_CMDLINES_KEY ^ szCmdLineKey,
+                                    NAV_LU_PRODUCT_NAME, nType,
+                                    szProductName, nSize );
+
+        if ( nRet = 0 ) then
+            RegDBDeleteKey ( SYM_LU_SEQUENCES_KEY ^ szProductName );
+        endif;
+    until ( 0 != ListGetNextString ( listCmdLines, szCmdLineKey ) );
+
+
+bailout:
+    ListDestroy ( listCmdLines );
+
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DialogShowADVOPanel1
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DialogShowADVOPanel1()
+    NUMBER  nSilentValue;
+    NUMBER  nvDlgName;
+    NUMBER  retVal;
+    STRING  svSection;
+
+begin
+
+    if (MODE = SILENTMODE) then
+        SdMakeName(svSection, IDS_ADVO1, "", nvDlgName);
+        SilentReadData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , g_nTempResult);
+
+        return (g_nTempResult);
+    endif;
+
+    g_bTempResult = FALSE;
+    while (g_bTempResult = FALSE)
+
+        retVal = WaitOnDialog(IDS_ADVO1);
+        switch (retVal)
+
+            case  DLG_CLOSE:
+                g_bTempResult = TRUE;
+
+                Enable ( BACKBUTTON ); //&^
+
+            case  DLG_ERR:
+                g_bTempResult = TRUE;
+
+            case  DLG_INIT:
+                Disable ( BACKBUTTON );
+
+                g_bTempResult = FALSE;
+
+            case  BACK:
+                g_bTempResult = TRUE;
+
+            case  NEXT:
+                g_bTempResult = TRUE;
+
+            default:
+                // check standard handling
+                if ((SdIsStdButton(retVal)) && (SdDoStdButton(retVal))) then
+                    g_bTempResult = TRUE;
+                endif;
+        endswitch;
+    endwhile;
+
+    EndDialog(IDS_ADVO1);
+
+    // record data produced by this dialog
+    SdMakeName(svSection, IDS_ADVO1, "", nvDlgName);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER, "", retVal);
+
+    return (retVal);
+
+end;   // DialogShowADVOPanel1
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DialogShowADVOPanel2
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DialogShowADVOPanel2()
+    NUMBER  nSilentValue;
+    NUMBER  nvDlgName;
+    NUMBER  retVal;
+    STRING  svSection;
+
+begin
+
+    if (MODE = SILENTMODE) then
+        SdMakeName(svSection, IDS_ADVO2, "", nvDlgName);
+        SilentReadData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER
+                                                                , g_szTempStr
+                                                                , g_nTempResult);
+
+        return (g_nTempResult);
+    endif;
+
+    g_bTempResult = FALSE;
+    while (g_bTempResult = FALSE)
+
+        retVal = WaitOnDialog(IDS_ADVO2);
+        switch (retVal)
+
+            case  DLG_CLOSE:
+                g_bTempResult = TRUE;
+
+            case  DLG_ERR:
+                g_bTempResult = TRUE;
+
+            case  DLG_INIT:
+                g_bTempResult = FALSE;
+
+            case  BACK:
+                g_bTempResult = TRUE;
+
+            case  NEXT:
+                g_bTempResult = TRUE;
+
+            default:
+                // check standard handling
+                if ((SdIsStdButton(retVal)) && (SdDoStdButton(retVal))) then
+                    g_bTempResult = TRUE;
+                endif;
+        endswitch;
+    endwhile;
+
+    EndDialog(IDS_ADVO2);
+
+    // record data produced by this dialog
+    SdMakeName(svSection, IDS_ADVO2, "", nvDlgName);
+    SilentWriteData(svSection, SILENT_VALUE_NAME_RESULT, DATA_NUMBER, "", retVal);
+
+    return (retVal);
+
+end;   // DialogShowADVOPanel2
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: DialogShowSdLicense
+//
+//  Purpose: This function displays the license agreement dialog.
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    DialogShowSdLicense()
+    NUMBER  nResult;
+    STRING  szLicenseFile;
+    STRING  szMsg;
+    STRING  szQuestion;
+    STRING  szTitle;
+begin
+
+    szLicenseFile = SRCDIR ^ "license.txt";
+    szTitle    = "";
+    szMsg      = "";
+    szQuestion = "";
+    nResult    = SdLicense(szTitle, szMsg, szQuestion, szLicenseFile);
+
+    return nResult;
+
+end;    // DialogShowSdLicense
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: DialogShowSdStartCopy
+//
+//   Purpose: This function displays the dialog preceding the start of the
+//            file copying process.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    DialogShowSdStartCopy()
+    NUMBER nResult;
+    STRING szTitle, szMsg;
+begin
+
+    // make sure the setup review list is current
+    UpdateSetupReviewList();
+
+    // display the setup review dialog (note -- g_listSetupReview should have
+    // been fully initialized by this point)
+    szTitle = "";
+    szMsg   = "";
+    nResult = SdStartCopy(szTitle, szMsg, g_listSetupReview);
+
+    return nResult;
+
+end;    // DialogShowSdStartCopy
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: DialogShowSdWelcome
+//
+//  Purpose: This function handles the standard welcome dialog.
+//
+//
+///////////////////////////////////////////////////////////////////////////////
+function    DialogShowSdWelcome()
+    NUMBER  nResult;
+    STRING  szMsg;
+    STRING  szTitle;
+begin
+
+    szTitle = "";
+    szMsg   = "";
+    nResult = SdWelcome(szTitle, szMsg);
+
+    return nResult;
+
+end;    // DialogShowSdWelcome
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: GetSkuNumber
+//
+//  Purpose: This function reads the "partnum.dat" file for the SKU number for
+//           the product being installed.  If we successfully read the data,
+//           a value of TRUE is returned and the input argument will be
+//           initialized with the read value; if the data is not successfully
+//           read, a value of FALSE will be returned and the input argument
+//           will be initialized with a default SKU number.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    GetSkuNumber(svSkuNumber)
+    BOOL    bResult;
+    BOOL    bRetVal;
+    STRING  svResult;
+    STRING  szFilename;
+
+begin
+
+    // initialize the return value
+    bRetVal = TRUE;
+
+    // initialize the filename
+    szFilename = TARGETDIR ^ "partnum.dat";
+
+    // read the SKU number from "partnum.dat"; if we succeed use the file value,
+    // else, use the default defined value
+    bResult = GetProfString(szFilename, "PartNumber", "SKU", svResult);
+    if (0 = bResult) then
+        svSkuNumber = svResult;
+    else
+        svSkuNumber = DEFAULT_SKU_NUMBER;
+        bRetVal = FALSE;    // no data read, use the default
+    endif;
+
+    return (bRetVal);
+
+end;    // GetSkuNumber
+
+
+#ifndef WIN9X_BUILD
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: IsPrevVerWithLU
+//
+//  Purpose: This function checks to see if the version of NAV currently
+//           installed on the target system is older than the first version
+//           of NAV that shipped with LiveUpdate.  If so, a value of TRUE
+//           is returned; else, a value of FALSE is returned.
+//
+//           NOTE: it's assumed that the caller of this function has already
+//                 determined that NAV is already installed on the target
+//                 system.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    IsPrevVerWithLU(szInstalledVersionData)
+    BOOL    bResult;
+    NUMBER  nRetVal;
+    STRING  szLiveUpdateVersion;
+
+begin
+
+    // initialize the LU string variable with the first version of this product
+    // that shipped LiveUpdate
+    szLiveUpdateVersion = "";
+    szLiveUpdateVersion[0] = NAV_1ST_LU_MAJOR;
+    szLiveUpdateVersion[1] = NAV_1ST_LU_MINOR1;
+    szLiveUpdateVersion[2] = NAV_1ST_LU_MINOR2;
+    szLiveUpdateVersion[3] = NAV_1ST_LU_MINOR3;
+
+    // see if the version currently installed on the target system is older than the
+    // first version of NAV that shipped with LiveUpdate
+    nRetVal = CompareVersionNumbers(szInstalledVersionData, szLiveUpdateVersion, 1);
+    if (INSTALLING_OVER_OLDER_VERSION = nRetVal) then
+        // the installed version of NAV did not ship with LiveUpdate
+        bResult = FALSE;
+    else
+        // the installed version of NAV shipped with LiveUpdate
+        bResult = TRUE;
+    endif;
+
+    return (bResult);
+
+end;    // IsPrevVerWithLU
+#endif  // ndef WIN9X_BUILD
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetDialogBitmap
+//
+//  Purpose:  Returns the filename of a bitmap whose number is passed in.
+//            The filename is picked based on the color depth of the system.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function SetDialogBitmap ( nBitmapNumber )
+
+    STRING szFilename;
+
+begin
+    NumToStr ( szFilename, nBitmapNumber );
+
+#ifdef DEC_ALPHA_BUILD
+                                        // We only have 256-color BMPs on DEC.
+    szFilename = SUPPORTDIR ^ "install" + szFilename + ".bmp";
+#else
+    if ( g_bUseHiColorBMPs ) then
+        szFilename = SUPPORTDIR ^ "install" + szFilename + ".bmp";
+    else
+        szFilename = SUPPORTDIR ^ "inst16_" + szFilename + ".bmp";
+    endif;
+#endif  // ndef DEC
+
+    DialogSetInfo( DLG_INFO_ALTIMAGE, szFilename, 0);
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  NetscapeInstalled
+//
+//  Purpose:  This function checks to see if Netscape is installed on the
+//            target system.  It first looks for valid registry entries,
+//            and if those are found we look for the main EXE.  If both of
+//            these tests are successful, a value of TRUE is returned;
+//            else, FALSE if returned.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    NetscapeInstalled()
+    BOOL    bFoundNetscape;
+    BOOL    bRegKeySuccess;
+    NUMBER  nResult;
+    NUMBER  nvSize;
+    NUMBER  nvType;
+    STRING  svValue;
+    STRING  svRegKey;
+
+begin
+
+    bFoundNetscape = FALSE;
+
+    // This code checks to see if netscape 4.0??? is installed.
+    if (0 != RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE)) then
+        goto  DetectOlderNetscape;
+    endif;
+
+    // Check to see if the Netscape key exists.
+    nResult = RegDBKeyExist(NETSCAPE_KEY);
+    if (1 != nResult) then
+        goto  DetectOlderNetscape;
+    endif;
+
+    // Get the major version key
+    nResult = RegDBGetKeyValueEx(NETSCAPE_KEY, "CurrentVersion", nvType, svValue
+                                                                        , nvSize);
+    if (0 != nResult) then
+        goto  DetectOlderNetscape;
+    endif;
+
+    // Make sure that the size of the string is at least 2 characters
+    if( nvSize < 2 ) then
+        goto DetectOlderNetscape;
+    endif;
+
+    // Check the first 2 characters of the string to see if they are "4."
+    if ( svValue[0] != '4' || svValue[1] != '.' ) then
+        goto  DetectOlderNetscape;
+    endif;
+
+    // Now check to make sure that the key for the correct version is there
+    nResult = RegDBKeyExist(NETSCAPE_KEY + "\\" + svValue);
+    if (1 != nResult) then
+        goto  DetectOlderNetscape;
+    endif;
+
+    // Now read the program directory.
+    svRegKey = NETSCAPE_KEY + "\\" + svValue + "\\Main";
+    nResult = RegDBGetKeyValueEx(svRegKey,
+                                 "Install Directory",
+                                 nvType,
+                                 svValue,
+                                 nvSize);
+    if (0 = nResult) then
+        bFoundNetscape = Is(FILE_EXISTS, svValue ^ "\\Program\\Netscape.exe");
+        goto ExitFunction;
+    endif;
+
+DetectOlderNetscape:
+
+    // This code checks to see if netscape 2-3 are installed.
+
+    // set the default root from which to search
+    if (0 != RegDBSetDefaultRoot(HKEY_CURRENT_USER)) then
+        goto  ExitFunction;
+    endif;
+
+    // see if the key exists
+    nResult = RegDBKeyExist(NETSCAPE_MAIN_REGKEY);
+    if (1 != nResult) then
+        goto  ExitFunction;
+    endif;
+
+    // get the "Mozilla" value
+    nResult = RegDBGetKeyValueEx(NETSCAPE_MAIN_REGKEY, "Mozilla", nvType, svValue
+                                                                        , nvSize);
+    if (0 != nResult) then
+        goto  ExitFunction;
+    endif;
+
+    // see if the first six characters contain "Good-<2 | 3 | 4>"
+    bRegKeySuccess = FALSE;
+    g_szTempStr = "Good-4";
+    if ((FALSE = bRegKeySuccess)  &&  (svValue % g_szTempStr)) then
+        bRegKeySuccess = TRUE;
+    endif;
+
+    g_szTempStr = "Good-3";
+    if ((FALSE = bRegKeySuccess)  &&  (svValue % g_szTempStr)) then
+        bRegKeySuccess = TRUE;
+    endif;
+
+    g_szTempStr = "Good-2";
+    if ((FALSE = bRegKeySuccess)  &&  (svValue % g_szTempStr)) then
+        bRegKeySuccess = TRUE;
+    endif;
+
+    // finally, if we've passed the registry key tests, make sure that the
+    // main executable is where it's supposed to be
+    if (TRUE = bRegKeySuccess) then
+        // get the path from the "Install Directory" value
+        nResult = RegDBGetKeyValueEx(NETSCAPE_MAIN_REGKEY, "Install Directory"
+                                                                        , nvType
+                                                                        , svValue
+                                                                        , nvSize);
+        if (0 = nResult) then
+            bFoundNetscape = Is(FILE_EXISTS, svValue ^ "\\Program\\Netscape.exe");
+        endif;
+    endif;
+
+
+ExitFunction:
+    return (bFoundNetscape);
+
+end;    // NetscapeInstalled
+
+
+#ifdef NAV_TRIAL_VERSION
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    ReadTrialLengthSwitch
+//
+// Description:
+//  Reads the INSTOPTS.INI switch that controls the trial length.  The
+//  # of days in the trial period is returned in szTrialLength as a
+//  string.
+//
+// Input:
+//  szTrialLength: [out] Receives the trial length in days.
+//
+//////////////////////////////////////////////////////////////////////////
+//  8/13/98  Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function ReadTrialLengthSwitch ( szTrialLength )
+    NUMBER nValue;
+begin
+
+    GetProfInt ( g_szInstallOptsFile, INSTALL_OPTIONS_SECTION,
+                 TRIAL_LENGTH_SWITCH, nValue );
+
+    switch ( nValue )
+        case 2:
+            szTrialLength = "60";
+
+        case 3:
+            szTrialLength = "90";
+
+        default:
+            szTrialLength = "30";
+    endswitch;
+end;
+
+#endif  // ifdef NAV_TRIAL_VERSION
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  ReleaseCustomDialogs
+//
+//  Purpose:  This function releases resources associated with the custom
+//            dialogs.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    ReleaseCustomDialogs()
+begin
+
+    // release any resources allocated for custom dialogs
+    ReleaseDialog(IDS_INITIAL_SETTINGS);
+    ReleaseDialog(IDS_EXIT_DIALOG);
+    ReleaseDialog(IDS_KEEP_SETTINGS);
+    ReleaseDialog(IDS_ADVO1);
+    ReleaseDialog(IDS_ADVO2);
+    ReleaseDialog(IDS_SCAN_FOR_VIRUSES);
+
+end;    // ReleaseCustomDialogs
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  RemoveFolderContentsExceptList
+//
+//  Purpose:  Removes all items in the specified folder except those specified
+//            in the exception list.  This function will also remove the folder
+//            if it is empty after item removal.
+//
+//     Args:  szFolderName - Full name of folder to remove contents of.
+//            listExceptions - List of items to preserve, by name.
+//
+//    Notes:  This function only handles top level items: i.e. items in
+//            "szFolderName". Individual items within a subfolder below this
+//            level are not supported.
+//
+///////////////////////////////////////////////////////////////////////////////
+// 09/30/97 TSMITH  - Function created.
+// 11/25/97 JTAYLOR - Added folder removal if empty.
+///////////////////////////////////////////////////////////////////////////////
+function RemoveFolderContentsExceptList(szFolderName, listExceptions)
+    NUMBER  nResult;
+    STRING  szItem, szFoo;
+    LIST    listItemsStr, listFoldersStr;
+    BOOL    bDeleteFolder;
+begin
+    // Validate parameters.
+    if (("" = szFolderName) || (LIST_NULL = listExceptions)) then
+        // Fail silently(?)
+        goto ErrorOut;
+    endif;
+
+    bDeleteFolder = TRUE;
+
+    // Initialize lists for folder items and sub folders.
+    listItemsStr = ListCreate(STRINGLIST);
+    listFoldersStr = ListCreate(STRINGLIST);
+
+    if ((LIST_NULL = listItemsStr) || (LIST_NULL = listFoldersStr)) then
+        MessageBox(@ERROR_CREATING_PROGRAM_ITEM_LIST, SEVERE);
+        abort;
+    endif;
+
+    // Get the item list from the specified folder/group
+    if (TRUE = g_bIsShellExplorer) then
+        nResult = GetFolderNameList(szFolderName, listItemsStr, listFoldersStr);
+    else
+        nResult = GetItemNameList(szFolderName, listItemsStr);
+    endif;
+
+    if (nResult < 0) then
+        // Fail silently(?)
+        goto ErrorOut;
+    endif;
+
+    // Initialize item list iteration.
+    nResult = ListGetFirstString(listItemsStr, szItem);
+
+    // Iterate the item list.
+    while (END_OF_LIST != nResult)
+        // Must call this every time to have list searched from beginning.
+        nResult = ListGetFirstString(listExceptions, szFoo);
+
+        // If the current item isn't in the exception list, remove it.
+        if (ListFindString(listExceptions, szItem) != 0) then
+            DeleteFolderIcon(szFolderName, szItem);
+        else
+            bDeleteFolder = FALSE;
+        endif;
+
+        // On to the next item.
+        nResult = ListGetNextString(listItemsStr, szItem);
+    endwhile;
+
+    // Only process the list of subfolders when the shell is Explorer
+    // since Program Manager doesn't support sub groups.
+    if (TRUE = g_bIsShellExplorer) then
+        // Initialize folder list iteration.
+        nResult = ListGetFirstString(listFoldersStr, szItem);
+
+        // Iterate the folders list.
+        while (END_OF_LIST != nResult)
+            // Must call this every time to have list searched from beginning.
+            ListGetFirstString(listExceptions, szFoo);
+
+            // If the current item isn't in the exception list, remove it.
+            if (ListFindString(listExceptions, szItem) != 0) then
+                DeleteProgramFolder(szFolderName ^ szItem);
+            else
+                bDeleteFolder = FALSE;
+            endif;
+
+            // On to the next item.
+            nResult = ListGetNextString(listFoldersStr, szItem);
+        endwhile;
+    endif;
+
+    if (TRUE = bDeleteFolder) then
+        DeleteProgramFolder( szFolderName );
+    endif;
+
+ErrorOut:
+
+    if (LIST_NULL != listItemsStr) then
+        ListDestroy(listItemsStr);
+    endif;
+
+    if (LIST_NULL != listFoldersStr) then
+        ListDestroy(listItemsStr);
+    endif;
+
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    SetLUProductName
+//
+// Description:
+//  Returns the product name to store in the registry, based on a base
+//  name which is passed in.  The new name has "Trial" and/or "NEC" tacked
+//  on to the end.
+//
+// Parameters:
+//  szBaseName: [in] The base name to start from.
+//  svNameToUse: [out] The modified name appropriate for the product.
+//
+//////////////////////////////////////////////////////////////////////////
+// 2/27/98 Mike Dunn -- function created.
+//////////////////////////////////////////////////////////////////////////
+
+function SetLUProductName ( szBaseName, svNameToUse )
+begin
+    svNameToUse = szBaseName;
+
+#ifdef  DEC_ALPHA_BUILD                 // dec alpha only
+    svNameToUse = svNameToUse +  " DEC/Alpha";
+#endif
+
+    if ( g_bHWIsNEC ) then
+        svNameToUse = svNameToUse + " NEC";
+    endif;
+
+#ifdef NAV_TRIAL_VERSION
+    svNameToUse = svNameToUse + " Trial";
+#endif
+
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: SetupVirusDefs
+//
+//  Purpose: This function initializes the virus definitions component with
+//           a target directory.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    SetupVirusDefs()
+    BOOL    bResult;
+    NUMBER  nResult;
+    STRING  szComponentName;
+
+begin
+
+    // initialize the return value
+    bResult = TRUE;
+
+    // try to get a target directory for the virus definitions component
+    if (FALSE = GetDefsDirectory(TARGETDIR, g_szDefUtilsDir, TRUE)) then
+        bResult = FALSE;
+        //goto  Exit_Function;
+    else
+    	g_nvHawkingStatus = HAWKING_TEMP_DIR_ONLY;
+    endif;
+
+    return (bResult);
+
+end;    // SetupVirusDefs
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: SetupMicroVirusDefs
+//
+//  Purpose: This function initializes the virus definitions component with
+//           a target directory for non hub virus defs.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    SetupMicroVirusDefs()
+    BOOL    bResult;
+    NUMBER  nResult;
+    STRING  szComponentName;
+
+begin
+
+    // initialize the return value
+    bResult = TRUE;
+
+    // try to get a target directory for the virus definitions component
+    if (FALSE = GetDefsDirectory(TARGETDIR, g_szDefUtilsDir, FALSE)) then
+        bResult = FALSE;
+    else
+    	g_nvHawkingStatus = HAWKING_TEMP_DIR_ONLY;
+    endif;
+
+    return (bResult);
+end;    // SetupMicroVirusDefs
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function: CheckValidOS
+//
+//  Purpose: This function verifies that the installation is running under
+//           the specified OS.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    CheckValidOS ( nOSID )
+    BOOL    bRetVal;
+    NUMBER  nvResult;
+    STRING  svResult;
+
+begin
+
+    GetSystemInfo ( OS, nvResult, svResult );
+
+    if ( nvResult = nOSID ) then
+        bRetVal = TRUE;
+    else
+        bRetVal = FALSE;
+    endif;
+
+    return bRetVal;
+
+end;    // CheckValidOS
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  DialogShowKeepSettings
+//
+//  Purpose:
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    DialogShowKeepSettings()
+    NUMBER  nSilentValue;
+    NUMBER  nvDlgName;
+    NUMBER  retVal;
+    STRING  svSection;
+
+begin
+
+    // if we're running in silent mode, always install fresh settings
+    if (MODE = SILENTMODE) then
+        return (NEXT);
+    endif;
+
+    g_bTempResult = FALSE;
+    while (g_bTempResult = FALSE)
+
+        retVal = WaitOnDialog(IDS_KEEP_SETTINGS);
+        switch (retVal)
+
+            case  DLG_CLOSE:
+                g_bTempResult = TRUE;
+
+            case  DLG_ERR:
+                g_bTempResult = TRUE;
+
+            case  DLG_INIT:
+                if (TRUE = g_bKeepSettings) then
+                    CtrlSetState(IDS_KEEP_SETTINGS, IDC_KEEP_SETTINGS_YES
+                                                            , BUTTON_CHECKED);
+                    CtrlSetState(IDS_KEEP_SETTINGS, IDC_KEEP_SETTINGS_NO
+                                                            , BUTTON_UNCHECKED);
+                else
+                    CtrlSetState(IDS_KEEP_SETTINGS, IDC_KEEP_SETTINGS_YES
+                                                            , BUTTON_UNCHECKED);
+                    CtrlSetState(IDS_KEEP_SETTINGS, IDC_KEEP_SETTINGS_NO
+                                                            , BUTTON_CHECKED);
+                endif;
+                Delay(1);
+
+            case  BACK:
+                g_bTempResult = TRUE;
+
+            case  NEXT:
+                g_bTempResult = TRUE;
+
+            case  IDC_KEEP_SETTINGS_NO:
+                g_bKeepSettings = FALSE;
+
+            case  IDC_KEEP_SETTINGS_YES:
+                g_bKeepSettings = TRUE;
+
+            default:
+                // check standard handling
+                if ((SdIsStdButton(retVal)) && (SdDoStdButton(retVal))) then
+                    g_bTempResult = TRUE;
+                endif;
+        endswitch;
+    endwhile;
+
+    EndDialog(IDS_KEEP_SETTINGS);
+    return (retVal);
+
+end;   // DialogShowKeepSettings
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  OnlineRegistration
+//
+//  Purpose:  This function brings up the online registration stuff.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    OnlineRegistration()
+    BOOL        bResult;
+    NUMBER      nResult;
+    STRING      szCommandLine;
+    STRING      szDllPath;
+    STRING      szSkuNumber;
+    STRING      szVersionParam;
+    STRING      szInstallationType;
+
+begin
+
+    if (MODE = SILENTMODE || TRUE = g_bCorpVersion) then
+        return;
+    endif;
+
+    // load the symreg DLL
+    szDllPath = COMMONFILES ^ "Symantec Shared" ^ SYMREG_DLL_NAME;
+    nResult = UseDLL(szDllPath);
+
+    // get the SKU number
+    bResult = GetSkuNumber(szSkuNumber);
+    if ((FALSE = bResult)  &&  ("" = szSkuNumber)) then
+        szSkuNumber = DEFAULT_SKU_NUMBER;
+    endif;
+
+    // finish formatting the sku number
+     szSkuNumber= "/sku:" + szSkuNumber;
+
+    // Read the public version from VERSION.DAT
+    if ( 0 > GetProfString ( g_szAppPath ^ "version.dat",
+                             "Versions", "PublicVersion",
+                             szVersionParam ) ) then
+                                        // GetProfString() failed, so fall
+                                        // back to a default version.
+        szVersionParam = SYMREG_PRODUCT_VERSION;
+    endif;
+
+    szVersionParam = "/ver:" + szVersionParam;
+    szInstallationType = SYMREG_INSTALLATION_TYPE_RETL;
+
+    // initialize the command-line
+#ifdef OEM_BUILD
+    szCommandLine = SYMREG_PRODUCT_NAME_OEM
+                        + szVersionParam
+                        + szSkuNumber
+                        + SYMREG_PRODUCT_COMPANY
+                        + SYMREG_PRODUCT_LANGUAGE
+                        + szInstallationType;
+#else
+    szCommandLine = SYMREG_PRODUCT_NAME
+                        + szVersionParam
+                        + szSkuNumber
+                        + SYMREG_PRODUCT_COMPANY
+                        + SYMREG_PRODUCT_LANGUAGE
+                        + szInstallationType;
+#endif
+
+    // call the symreg function
+    bResult = RegisterUser(NULL, NULL, szCommandLine, 0);
+
+    // release the DLL and return
+    nResult = UnUseDLL(szDllPath);
+    return (bResult);
+
+end;    // OnlineRegistration
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    SaveSettingsFilesBeforeISBlowsThemAway
+//
+// Description:
+//  The sole purpose of this fn is to work around a bug in bloody IS.  If
+//  g_bKeepSettings is TRUE, all the New Settings components are deselected
+//  properly, but IS *STILL* installs the files!   aaarrgh!
+//
+//////////////////////////////////////////////////////////////////////////
+// 6/29/98 Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function SaveSettingsFilesBeforeISBlowsThemAway()
+    LIST   listFiles;
+    STRING szFile;
+begin
+
+    listFiles = ListCreate(STRINGLIST);
+
+    if ( LIST_NULL = listFiles ) then
+        return;                     // out of memory
+    endif;
+
+    // ***NOTE***  If you change this list, be sure to change the list in
+    // RestoreBlownAwaySettingsFiles() too!
+    ListAddString ( listFiles, "navalert.dat", AFTER );
+    ListAddString ( listFiles, "navopts.dat",  AFTER );
+    ListAddString ( listFiles, "quaropts.dat", AFTER );
+    ListAddString ( listFiles, "scancfg.dat",  AFTER );
+    ListAddString ( listFiles, "navstart.dat", AFTER );
+    ListAddString ( listFiles, "exclude.dat",  AFTER );
+    ListAddString ( listFiles, "excludel.dat", AFTER );
+
+    VarSave ( SRCTARGETDIR );
+    Disable(LOGGING);
+
+    SRCDIR = TARGETDIR;
+    TARGETDIR = SUPPORTDIR;
+
+    if ( 0 != ListGetFirstString ( listFiles, szFile ) ) goto bailout;
+
+    repeat
+        CopyFile ( szFile, szFile );
+    until ( 0 != ListGetNextString ( listFiles, szFile ) );
+
+    Enable(LOGGING);
+    VarRestore ( SRCTARGETDIR );
+
+bailout:
+    ListDestroy ( listFiles );
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:    RestoreBlownAwaySettingsFiles
+//
+// Description:
+//  Copies settings files back to the TARGETDIR after IS blows them away
+//  against our wishes.  (See comments in the previous function.)
+//
+//////////////////////////////////////////////////////////////////////////
+//  6/29/98 Mike Dunn -- function created
+//////////////////////////////////////////////////////////////////////////
+
+function RestoreBlownAwaySettingsFiles()
+    LIST    listFiles;
+    STRING  szFile;
+begin
+    listFiles = ListCreate(STRINGLIST);
+
+    if ( LIST_NULL = listFiles ) then
+        return;                     // out of memory
+    endif;
+
+    // ***NOTE***  If you change this list, be sure to change the list in
+    // SaveSettingsFilesBeforeISBlowsThemAway() too!
+    ListAddString ( listFiles, "navalert.dat", AFTER );
+    ListAddString ( listFiles, "navopts.dat",  AFTER );
+    ListAddString ( listFiles, "quaropts.dat", AFTER );
+    ListAddString ( listFiles, "scancfg.dat",  AFTER );
+    ListAddString ( listFiles, "navstart.dat", AFTER );
+    ListAddString ( listFiles, "exclude.dat",  AFTER );
+    ListAddString ( listFiles, "excludel.dat", AFTER );
+
+    VarSave ( SRCTARGETDIR );
+    Disable(LOGGING);
+
+    SRCDIR = SUPPORTDIR;
+
+    if ( 0 != ListGetFirstString ( listFiles, szFile ) ) goto bailout;
+
+    repeat
+        CopyFile ( szFile, szFile );
+    until ( 0 != ListGetNextString ( listFiles, szFile ) );
+
+    Enable(LOGGING);
+    VarRestore ( SRCTARGETDIR );
+
+bailout:
+    ListDestroy ( listFiles );
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetupScreen
+//
+//  Purpose:  This function establishes  the screen look.  This includes
+//            colors, fonts, and text to be displayed.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+function    SetupScreen()
+begin
+
+    Disable ( BACKGROUND );             // Hide the changes we're about to make...
+
+    SetTitle(@TITLE_MAIN, 24, WHITE);
+    SetTitle(@TITLE_CAPTIONBAR, 0, BACKGROUNDCAPTION); // caption bar text
+
+    if ( g_bUseHiColorBMPs ) then
+        PlaceBitmap ( ISUSER, IDB_BACKGROUND_BITMAP, 0, 0, TILED );
+    endif;
+
+    Enable(BACKGROUND);                 // Bam!  Here's your cool background
+
+    Delay(1);
+
+end;    // SetupScreen
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  ShowPostCopyDialogs
+//
+//  Purpose:  This function manages the display and navigation
+//            the standard dialogs that exist in a setup.
+//
+///////////////////////////////////////////////////////////////////////////////
+function    ShowPostCopyDialogs()
+    NUMBER  nResult;
+begin
+
+    Dlgs_OnlineRegistration:
+        OnlineRegistration();
+
+    Dlg_Advotorial_SymantecSupport:
+        SetDialogBitmap(6);
+
+        nResult = DialogShowADVOPanel1();
+        if (BACK = nResult) then
+            goto  Dlgs_OnlineRegistration;
+        endif;
+
+    Dlg_Advotorial_LiveUpdate:
+        SetDialogBitmap(7);
+
+        nResult = DialogShowADVOPanel2();
+
+        if (BACK = nResult) then
+            goto  Dlg_Advotorial_SymantecSupport;
+        endif;
+
+    Dlg_ScanForViruses:
+        // does the user wish to scan for viruses?
+        SetDialogBitmap(8);
+
+        nResult = DialogShowScanForViruses();
+        if (BACK = nResult) then
+            goto  Dlg_Advotorial_LiveUpdate;
+        endif;
+
+    return 0;
+
+end;    // ShowPostCopyDialogs
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateVirusDefs
+//
+//  Purpose:  Retrieves virus specific path information & calls generic
+//            function 'UpdateFilesFromArchive' to perform actual file
+//            handling.
+//
+///////////////////////////////////////////////////////////////////////////////
+function UpdateVirusDefs()
+    NUMBER nType;
+    NUMBER nSize;
+    NUMBER nResult;
+    STRING szIncomingDefDir;
+begin
+    // Get the virus defs location from registry.
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    nType = REGDB_STRING;
+    nResult = RegDBGetKeyValueEx(SYMANTEC_INSTALLED_APPS_KEY, "AVENGEDEFS", nType, szIncomingDefDir, nSize);
+
+    if (nResult < 0) then
+        return nResult;
+    endif;
+
+    // Put together the 'extract to' path.
+    szIncomingDefDir = szIncomingDefDir ^ "INCOMING";
+    return UpdateFilesFromArchive(g_szInstallOptsFile, @ADMIN_DEF_ARCHIVE, szIncomingDefDir);
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateNavOpts
+//
+//  Purpose:  Calls generic file update function to expand NAV options archive
+//            into the NAV install directory.
+//
+///////////////////////////////////////////////////////////////////////////////
+function UpdateNavOpts()
+begin
+    return UpdateFilesFromArchive(g_szInstallOptsFile, @ADMIN_OPTS_ARCHIVE, TARGETDIR);
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateLiveUpdate
+//
+//  Purpose:  Gets LiveUpdate specific path info and calls generic
+//            function 'UpdateFilesFromArchive' to do actual file handling.
+//
+///////////////////////////////////////////////////////////////////////////////
+function UpdateLiveUpdate()
+    NUMBER nType;
+    NUMBER nResult;
+    NUMBER nSize;
+    STRING szLiveUpdateDir;
+begin
+
+    RegDBSetDefaultRoot(HKEY_LOCAL_MACHINE);
+    nType = REGDB_STRING;
+    nResult = RegDBGetKeyValueEx(SYMANTEC_SHAREDUSAGE_KEY, "LiveUpdate1", nType, szLiveUpdateDir, nSize);
+
+    if (nResult < 0) then
+        return nResult;
+    endif;
+
+    return UpdateFilesFromArchive(g_szInstallOptsFile, @ADMIN_LU_ARCHIVE, szLiveUpdateDir);
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// Function:  UpdateFilesFromArchive
+//
+//  Purpose:  Queries install options ini file for specified data file archive
+//            and copies and extracts it to the specified location.
+//
+//     Args:  szIniFile - Fully qualifed name of install options file.
+//            szSection - Ini section name to query.
+//            szTargetDir - Final location for expanded files.
+//
+///////////////////////////////////////////////////////////////////////////////
+function UpdateFilesFromArchive(szIniFile, szSection, szExtractTargetDir)
+    STRING szSelfExtPgm;
+    STRING szSelfExtDisk;
+    STRING szSelfExtArgs;
+    STRING szSrcRoot;
+    STRING szDisk;
+    STRING szMsg;
+    STRING szIncomingDefDir;
+    STRING szCurDir;
+    STRING szOrgCurDir;
+    NUMBER nSize;
+    NUMBER nResult;
+    NUMBER nPos;
+    NUMBER nType;
+begin
+    // Make sure the ini file is where it needs to be.
+    if (Is(FILE_EXISTS, g_szInstallOptsFile) <= 0) then
+        return -1;
+    endif;
+
+    // Save the items this function may alter.
+    VarSave(SRCTARGETDIR);
+    nResult = GetCurrentDirectory(256, &szOrgCurDir);
+
+    // Check the install options file to determine if the files
+    // should be updated from an external, self extracting zip file.
+    nResult = GetProfString(szIniFile, szSection, @ADMIN_SELF_EXTRACTOR, szSelfExtPgm);
+
+    // If the entry could not be retrieved or is empty, exit.
+    if ((nResult < 0) || ("" = szSelfExtPgm)) then
+        // No error return value (-1) since this may fail legitimately.
+        return 0;
+    endif;
+
+    TARGETDIR = SUPPORTDIR;
+
+    GetProfString(szIniFile, szSection, @ADMIN_ARGUMENTS, szSelfExtArgs);
+    GetProfString(szIniFile, szSection, @ADMIN_DISK, szSelfExtDisk);
+
+    // Establish the current working directory
+    SetCurrentDirectory(SRCDIR);
+    szCurDir = SRCDIR;
+
+    // Try the current source directory for the file.
+    if (Is(FILE_EXISTS, szSelfExtPgm)) then
+        goto DoFileCopy;
+    else
+        // Call Win32 to change directory using relative path.
+        SetCurrentDirectory("..");
+        SetCurrentDirectory(szSelfExtDisk);
+        GetCurrentDirectory(256, &szCurDir);
+        nResult = Is(FILE_EXISTS, szSelfExtPgm);
+        SRCDIR = szCurDir;
+
+        if (TRUE = nResult) then
+            goto DoFileCopy;
+        else
+            Sprintf(szMsg, @DEF_UPDATE_MSG_FMT, szSelfExtPgm);
+            nResult = EnterDisk(szMsg, szSelfExtPgm);
+            if (OK = nResult) then
+                // SRCDIR should be set by EnterDisk
+                goto DoFileCopy;
+            else
+                goto UserCancel;
+            endif;
+        endif;
+    endif;
+
+DoFileCopy:
+    nResult = XCopyFile(szSelfExtPgm, "", COMP_NORMAL);
+    SetCurrentDirectory(szExtractTargetDir);
+    LaunchAppAndWait(SUPPORTDIR ^ szSelfExtPgm, szSelfExtArgs, WAIT);
+
+UserCancel:
+    VarRestore(SRCTARGETDIR);
+    nResult = SetCurrentDirectory(szOrgCurDir);
+end;
+
+
+
+
+
+
+
+
+
+

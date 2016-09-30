@@ -1,0 +1,153 @@
+// SavMainUI.idl : IDL source for SavMainUI
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (SavMainUI.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "ProtectionProvider.idl";
+
+[
+	object,
+	uuid(E7329452-FE39-4129-AB0F-5F8FD0AC628C),
+	dual,
+	nonextensible,
+	helpstring("ISavProtectionProvider Interface"),
+	pointer_default(unique)
+]
+interface ISavProtectionProvider : IDispatch
+{
+    [id(1)] HRESULT RunQuickScan( [in] HWND parentWindow, [out] DWORD* savErrorCode );
+    [id(2)] HRESULT RunFullScan( [in] HWND parentWindow, [out] DWORD* savErrorCode );
+    
+};
+
+[
+	object,
+	uuid(C804B01E-7AAF-47E7-99A8-B2232E4C478C),
+	dual,
+	nonextensible,
+	helpstring("ISavAutoprotectFilesystem Interface"),
+	pointer_default(unique)
+]
+interface ISavAutoprotectFilesystem : IDispatch
+{
+};
+
+[
+	object,
+	uuid(B5B6EE2A-384B-4A29-875A-9D519A85D538),
+	dual,
+	nonextensible,
+	helpstring("ISavAutoprotectInternetEmail Interface"),
+	pointer_default(unique)
+]
+interface ISavAutoprotectInternetEmail : IDispatch
+{
+};
+
+[
+	object,
+	uuid(0E5C40A5-B097-4616-B212-C091476FDF2B),
+	dual,
+	nonextensible,
+	helpstring("ISavAutoprotectNotes Interface"),
+	pointer_default(unique)
+]
+interface ISavAutoprotectNotes : IDispatch
+{
+};
+
+[
+	object,
+	uuid(B13F9599-E69D-4A36-A6A7-85CA52AC1892),
+	dual,
+	nonextensible,
+	helpstring("ISavAutoprotectExchange Interface"),
+	pointer_default(unique)
+]
+interface ISavAutoprotectExchange : IDispatch
+{
+};
+
+[
+	uuid(72DCBB81-94A9-4499-86E5-1188FAC09630),
+	version(1.0),
+	helpstring("SavMainUI 1.0 Type Library")
+]
+library SavMainUILib
+{
+	importlib("stdole2.tlb");
+
+	[
+		uuid(DEDC07E8-EE02-4AB9-8DE3-15808156CB49),
+		helpstring("SavProtectionProvider Class"),
+        noncreatable
+	]
+	coclass SavProtectionProvider
+	{
+		[default] interface ISavProtectionProvider;
+	};
+
+	[
+		uuid(CED1DFB3-4A7D-463F-985C-DBF75C52680B),
+		helpstring("SavAutoprotectFilesystem Class"),
+        noncreatable
+	]
+	coclass SavAutoprotectFilesystem
+	{
+		[default] interface ISavAutoprotectFilesystem;
+	};
+
+	[
+		uuid(9A4A52A6-7B83-403D-A6C9-1C8A492687CD),
+		helpstring("SavAutoprotectInternetEmail Class"),
+        noncreatable
+	]
+	coclass SavAutoprotectInternetEmail
+	{
+		[default] interface ISavAutoprotectInternetEmail;
+	};
+
+	[
+		uuid(AB08D3A3-260C-4CAB-BC71-8784DF963C8F),
+		helpstring("SavAutoprotectNotes Class"),
+        noncreatable
+	]
+	coclass SavAutoprotectNotes
+	{
+		[default] interface ISavAutoprotectNotes;
+	};
+
+	[
+		uuid(3839D6F2-9AC5-4F95-9A47-504FB453ACBD),
+		helpstring("SavAutoprotectExchange Class"),
+        noncreatable
+	]
+	coclass SavAutoprotectExchange
+	{
+		[default] interface ISavAutoprotectExchange;
+	};
+
+    [
+        uuid(AE78D5A2-46A3-43BB-A166-1B0018F0F21B),
+        helpstring("SavConfigureableScan Class"),
+        noncreatable
+    ]
+    coclass SavConfigureableScan
+    {
+        [default] interface IProtection_ConfigureableScan;
+        interface IProtection_ConfigureableScan_Scheduled;
+    };
+
+    [
+	    uuid(173883C3-C6CF-4D17-9889-CDC51DCFF5E1),
+	    helpstring("ConfigureableScanCollection Class"),
+        noncreatable
+    ]
+    coclass ConfigureableScanCollection
+    {
+	    [default] interface IProtection_ConfigureableScan_Container;
+    };
+};

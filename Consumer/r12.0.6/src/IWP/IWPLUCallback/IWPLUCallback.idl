@@ -1,0 +1,28 @@
+// IWPLUCallback.idl : IDL source for IWPLUCallback
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (IWPLUCallback.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(9B422879-A1BF-44C4-AC83-B4308A1B2272),
+	version(1.0),
+	helpstring("IWPLUCallback 1.0 Type Library")
+]
+library IWPLUCallbackLib
+{
+	importlib("stdole2.tlb");
+	importlib("ProductRegCOM.tlb");
+
+	[
+		uuid(AAB62FF5-ADA5-4C99-8BEA-64EF0C3F50F3),
+		helpstring("luIWPCallback Class")
+	]
+	coclass luIWPCallback
+	{
+		[default] interface IluCallback;
+	};
+};

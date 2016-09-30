@@ -1,0 +1,23 @@
+Platform=Win98
+;This script file supports and has been tested with
+;CA ETrust AntiVirus 7.0
+
+;
+; While testing on Windows XP, Uninstall my cause an exception after what appears
+; to be a successful uninstall.  However, if you run the uninstall from the Add/Remove
+; Programs dialog, you will find the same problem, so I believe the problem to be
+; within the Uninstall itself and not this utility.
+
+runprogram=HKEY_LOCAL_MACHINE,SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\eTrust AntiVirus, UninstallString
+
+;  Initial prompt to uninstall
+SendAffirmativeToWindowWithButtonClick=Confirm File Deletion,&Yes, 60
+
+;  Finished uninstalling
+SendAffirmativeToWindowWithButtonClick=Remove Programs From Your Computer,Ok,120
+
+
+; Message to tell user to Reboot
+SendAffirmativeToWindowWithButtonClick=Uninstall,Ok, 120
+
+

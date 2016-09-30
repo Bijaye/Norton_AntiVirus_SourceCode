@@ -1,0 +1,70 @@
+; -----------------------------------------------------------------
+; File name:  TKKE165.DEF
+;
+; This is the module definition file for a multiple-segment DLL.
+; It demonstrates how to use the SEGMENTS statement to specify the
+; attributes of a code segment.
+;
+; Development Team:  Dan Ruder
+;
+; Written by Microsoft Product Support Services, Windows Developer Support.
+;
+; Copyright (c) 1991, 1992 Microsoft Corporation.  All rights reserved.
+; -----------------------------------------------------------------
+
+
+LIBRARY  TKKE16O
+
+DESCRIPTION  '16Bit side of Thunking DLL.'
+EXETYPE  WINDOWS
+
+SEGMENTS
+        WEPSEG      PRELOAD FIXED
+
+CODE    PRELOAD MOVEABLE DISCARDABLE
+DATA    PRELOAD MOVEABLE SINGLE
+
+HEAPSIZE 5120
+
+IMPORTS
+        C16ThkSL01      = KERNEL.631
+        ThunkConnect16  = KERNEL.651
+
+EXPORTS
+        THK_THUNKDATA16                 @1      RESIDENTNAME
+        DllEntryPoint                   @2      RESIDENTNAME
+        WEP                             @4      RESIDENTNAME
+        DiskGetPhysicalInfo16           @100    RESIDENTNAME
+        DiskAbsOperation16              @101    RESIDENTNAME
+        DiskBlockDevice16               @102    RESIDENTNAME
+        DiskMapLogToPhyParams16         @103    RESIDENTNAME
+        DiskGetInfo16                   @104    RESIDENTNAME
+        DiskGetBootDrive16              @105    RESIDENTNAME
+        DiskResetDOS16                  @106    RESIDENTNAME
+        DiskReset16                     @107    RESIDENTNAME
+        EISACMOSRead16                  @109    RESIDENTNAME
+        EISACMOSWrite16                 @110    RESIDENTNAME
+        CMOSRead16                      @111    RESIDENTNAME
+        CMOSWrite16                     @112    RESIDENTNAME
+        HWIsEISA16                      @113    RESIDENTNAME
+        HWIsMicroChannel16              @114    RESIDENTNAME
+        DiskGetHDParams16               @115    RESIDENTNAME
+        DiskGetPhysicalType16           @116    RESIDENTNAME
+        DiskIsCompressed16              @117    RESIDENTNAME
+        DiskIsDoubleSpace16             @118    RESIDENTNAME
+        DiskIsBlockDevice16             @119    RESIDENTNAME
+        DiskIsSubst16                   @120    RESIDENTNAME
+        DiskIsDriveSpace16              @121    RESIDENTNAME
+        DiskIsStacker16                 @122    RESIDENTNAME
+        _DiskIsDoubleSpace16            @123    RESIDENTNAME
+        DiskRecToFloppyAbsDiskRec16     @124    RESIDENTNAME
+        DiskGetLockedTable16            @125    RESIDENTNAME
+        DiskGetDASDType16               @126    RESIDENTNAME
+        DiskGetDriverTable16            @127    RESIDENTNAME
+        StackerGetUnitData16            @128    RESIDENTNAME
+        StackerPutUnitData16            @129    RESIDENTNAME
+        STK20DiskBlockDeviceThunk16     @130    RESIDENTNAME
+        GetFreeSystemResources16        @131    RESIDENTNAME
+        SystemHeapInfo16                @132    RESIDENTNAME
+        StackerFlushDrive16             @133    RESIDENTNAME
+        HWIsPCI16                       @134    RESIDENTNAME

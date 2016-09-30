@@ -1,0 +1,141 @@
+**********************************************************************
+**                                                                  **
+**  Special Information about Unique Computer Viruses TECHNOTE.TXT  **
+**                                                                  **
+**  Symantec AntiVirus Research Center (SARC)         July 1, 1997  **
+**                                                                  **
+**********************************************************************
+
+
+ * Adding Program File extensions to Detect/Repair Excel Viruses
+ * Norton AntiVirus Program Upgrades
+ * Disappearing Hard Drives
+ * Additional Information
+
+
+**********************************************************************
+** Adding Program File Extensions to Detect/Repair Excel Viruses   **
+**********************************************************************
+In order for NAV (all versions and platforms) to detect and repair the 
+XM.Laroux virus, you must add ".XL?" to the program files extension 
+list. Without this addition, NAV will ignore all Excel spreadsheets and 
+not report infections.
+     
+Detailed instructions on making the additions are available in the NAV 
+User's Guides.
+     
+Norton AntiVirus 3.0
+     Chapter 8, Customizing Virus Checking, "Adding Program File 
+     Extensions"
+     
+Norton AntiVirus 95
+     Chapter 10, Customizing scanning, "Specifying program file 
+     Extensions"
+     
+Norton AntiVirus Scanner for Windows NT
+     Chapter 6, Customizing Norton AntiVirus, "Specifying program file 
+     Extensions"
+     
+Norton AntiVirus for NetWare 2.0
+     Chapter 6, Defining Program Files and Extension, "Protecting Program 
+     Files"
+
+
+**********************************************************************
+** Norton AntiVirus Program Upgrades                                **
+**********************************************************************
+If your version of Norton AntiVirus (NAV.EXE, NAVW.EXE or NAVW32.EXE) 
+is dated before June 1, 1996, you should update it with the latest 
+program updates available. As viruses continue to be discovered with 
+alarming regularity, the NAV virus definitions files have grown in 
+size to counter the latest threats. Applying the patches will ensure 
+that your installation will continue to accept the latest (and 
+largest) virus definitions files. Using older versions of Norton 
+AntiVirus can cause false detections when the new virus definitions 
+are installed.
+
+
+Norton AntiVirus 3.10 Engine Update (UPDATEME.EXE) 
+--------------------------------------------------
+To upgrade your Norton AntiVirus 3.0 program:
+
+  * Download the file called UPDATEME.EXE
+  * Place the file in an empty directory and execute the file
+    to extract its components.
+  * Enter:  PATH;  at the DOS prompt.
+    Don’t forget the semicolon. This command temporarily disables 
+    your path statement and will prevent corruption of NAV Network 
+    Manager installations.
+  * Run UPDATE.EXE to create a set of install files.
+    To place these files on floppies and create a new installation 
+    disk set, enter A:\ when it prompts for a location to EXTRACT the
+    files to.
+  * From DOS, run INSTALL.EXE.
+
+  * After applying this patch, you must also update your virus 
+    definition set.
+
+
+NAV for Windows 95 v1.0, 95.0b Large Volume Update (NAV95OB.EXE)
+----------------------------------------------------------------
+This latest patch also adds support for Microsoft Service Pack 2 (FAT
+32/large volumes) and will be required to apply the July 1997
+virus definitions set.
+
+To upgrade your Norton AntiVirus for Windows 95 program:
+
+  * Download the file called NAV95OB.EXE
+  * Place the file in an empty folder and execute the file
+    to begin the installation process.
+
+  * After applying this patch, you must also update your virus 
+    definition set.
+
+
+If you need additional instructions, a FaxBack service is available
+at (541) 984-2490.  Request documents 4200 and 4221.
+
+UPDATEME.EXE and NAV95OB.EXE are located where the monthly virus
+definitions files update are normally found. They are available for
+download from the Symantec BBS, the Symantec FTP or Web site,
+CompuServe, America Online, or Microsoft Network. You can also call
+Customer Service at (800) 441-7234 to order a disk set.
+
+
+**********************************************************************
+**  Disappearing Hard Drives                                        **
+**********************************************************************
+Several viruses, such as Frankenstein and Stoned.Empire.Monkey, cause
+your hard disk to "disappear" when booting from a clean floppy disk.
+This occurs because the virus either encrypts or relocates the hard
+disk partition table (a vital part of the disk's system area). 
+
+All "appears" well when you boot from your hard disk because the
+virus actives in memory and tells DOS where the partition table is
+relocated, or acts as the partition table itself. If you boot clean,
+DOS can't find the partition table and the virus isn't around to give
+directions. You may receive an "Invalid drive specification" or
+similar error when trying to access the hard disk.
+
+When you boot clean so NAV can repair such an infection, the hard
+disk will not appear in the drive list. Don't worry! NAV, with the
+default options enabled, will bypass DOS and look directly at the
+hard disk to check the system area for infection, no matter what you
+scan. For example, scanning a floppy disk will scan memory, the
+floppy disk, and the system area of the hard disk. If such an
+infection is discovered, you are alerted appropriately.
+
+NOTE: IDE hard drives larger than 1024 cylinders often require the
+use of additional driver or overlay files. If you have such a drive,
+you may need to include these additional files on your Norton
+AntiVirus Rescue Disk to ensure recovery from virus emergencies. Make
+sure that any special driver or overlay files for your hard drive,
+which are part of your normal system configuration, are included on
+your rescue disk.
+
+
+**********************************************************************
+**  Additional Information                                          **
+**********************************************************************
+Additional information regarding this virus definitions update can be
+found in UPDATE.TXT and WHATSNEW.TXT.

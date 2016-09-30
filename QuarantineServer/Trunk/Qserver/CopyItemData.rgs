@@ -1,0 +1,23 @@
+HKCR
+{
+	Qserver.CopyItemData.1 = s 'CopyItemData Class'
+	{
+		CLSID = s '{E04E15C7-BD46-11D2-B661-0020AFEED321}'
+	}
+	Qserver.CopyItemData = s 'CopyItemData Class'
+	{
+		CLSID = s '{E04E15C7-BD46-11D2-B661-0020AFEED321}'
+		CurVer = s 'Qserver.CopyItemData.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E04E15C7-BD46-11D2-B661-0020AFEED321} = s 'CopyItemData Class'
+		{
+			ProgID = s 'Qserver.CopyItemData.1'
+			VersionIndependentProgID = s 'Qserver.CopyItemData'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{C60B0154-894B-11D2-8E5F-2A0712000000}'
+			'TypeLib' = s '{C60B0153-894B-11D2-8E5F-2A0712000000}'
+		}
+	}
+}

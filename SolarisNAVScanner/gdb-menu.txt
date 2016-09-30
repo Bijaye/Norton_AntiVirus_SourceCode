@@ -1,0 +1,357 @@
+Aliases
+-------
+delete breakpoints -- Delete some breakpoints or auto-display expressions
+disable breakpoints -- Disable some breakpoints
+ni -- Step one instruction
+si -- Step one instruction exactly
+stepping -- Specify single-stepping behavior at a tracepoint
+tp -- Set a tracepoint at a specified line or function or address
+where -- Print backtrace of all stack frames
+ws -- Specify single-stepping behavior at a tracepoint
+
+Breakpoints
+-----------
+awatch -- Set a watchpoint for an expression
+break -- Set breakpoint at specified line or function
+catch -- Set breakpoints to catch exceptions that are raised
+clear -- Clear breakpoint at specified line or function
+commands -- Set commands to be executed when a breakpoint is hit
+condition -- Specify breakpoint number N to break only if COND is true
+delete -- Delete some breakpoints or auto-display expressions
+disable -- Disable some breakpoints
+enable -- Enable some breakpoints
+hbreak -- Set a hardware assisted  breakpoint
+ignore -- Set ignore-count of breakpoint number N to COUNT
+rbreak -- Set a breakpoint for all functions matching REGEXP
+rwatch -- Set a read watchpoint for an expression
+tbreak -- Set a temporary breakpoint
+thbreak -- Set a temporary hardware assisted breakpoint
+watch -- Set a watchpoint for an expression
+
+Data
+----
+call -- Call a function in the program
+delete display -- Cancel some expressions to be displayed when program stops
+disable display -- Disable some expressions to be displayed when program stops
+disassemble -- Disassemble a specified section of memory
+display -- Print value of expression EXP each time the program stops
+enable display -- Enable some expressions to be displayed when program stops
+inspect -- Same as "print" command
+output -- Like "print" but don't put in value history and don't print newline
+print -- Print value of expression EXP
+printf -- Printf "printf format string"
+ptype -- Print definition of type TYPE
+set -- Evaluate expression EXP and assign result to variable VAR
+set variable -- Evaluate expression EXP and assign result to variable VAR
+undisplay -- Cancel some expressions to be displayed when program stops
+whatis -- Print data type of expression EXP
+x -- Examine memory: x/FMT ADDRESS
+
+Files
+-----
+add-shared-symbol-files -- Load the symbols from shared objects in the dynamic linker's link map
+add-symbol-file -- Usage: add-symbol-file FILE ADDR
+cd -- Set working directory to DIR for debugger and program being debugged
+core-file -- Use FILE as core dump for examining memory and registers
+directory -- Add directory DIR to beginning of search path for source files
+exec-file -- Use FILE as program for getting contents of pure memory
+file -- Use FILE as program to be debugged
+forward-search -- Search for regular expression (see regex(3)) from last line listed
+list -- List specified function or line
+load -- Dynamically load FILE into the running program
+path -- Add directory DIR(s) to beginning of search path for object files
+pwd -- Print working directory
+reverse-search -- Search backward for regular expression (see regex(3)) from last line listed
+search -- Search for regular expression (see regex(3)) from last line listed
+section -- Change the base address of section SECTION of the exec file to ADDR
+set gnutarget -- Set the current BFD target
+sharedlibrary -- Load shared object library symbols for files matching REGEXP
+show gnutarget -- Show the current BFD target
+symbol-file -- Load symbol table from executable file FILE
+
+Internals
+---------
+maintenance -- Commands for use by GDB maintainers
+maintenance check-symtabs -- Check consistency of psymtabs and symtabs
+maintenance demangle -- Demangle a C++ mangled name
+maintenance dump-me -- Get fatal error; make debugger dump its core
+maintenance info -- Commands for showing internal info about the program being debugged
+maintenance info breakpoints -- Status of all breakpoints
+maintenance info sections -- List the BFD sections of the exec and core files
+maintenance info sol-threads -- Show info on Solaris user threads
+maintenance print -- Maintenance command for printing GDB internal state
+maintenance print msymbols -- Print dump of current minimal symbol definitions
+maintenance print objfiles -- Print dump of current object file definitions
+maintenance print psymbols -- Print dump of current partial symbol definitions
+maintenance print statistics -- Print statistics about internal gdb state
+maintenance print symbols -- Print dump of current symbol definitions
+maintenance print type -- Print a type chain for a given symbol
+maintenance space -- Set the display of space usage
+maintenance time -- Set the display of time usage
+maintenance translate-address -- Translate a section name and address to a symbol
+set targetdebug -- Set target debugging
+set watchdog -- Set watchdog timer
+show targetdebug -- Show target debugging
+show watchdog -- Show watchdog timer
+
+Obscure
+-------
+complete -- List the completions for the rest of the line as a command
+remote <command> -- Send a command to the remote monitor
+set annotate -- Set annotation_level
+show annotate -- Show annotation_level
+stop -- There is no `stop' command
+
+Running
+-------
+attach -- Attach to a process or file outside of GDB
+continue -- Continue program being debugged
+detach -- Detach a process or file previously attached
+finish -- Execute until selected stack frame returns
+handle -- Specify how to handle a signal
+info handle -- What debugger does when program gets various signals
+jump -- Continue program being debugged at specified line or address
+kill -- Kill execution of program being debugged
+next -- Step program
+nexti -- Step one instruction
+run -- Start debugged program
+set args -- Set argument list to give program being debugged when it is started
+set environment -- Set environment variable value to give the program
+show args -- Show argument list to give program being debugged when it is started
+signal -- Continue program giving it signal specified by the argument
+step -- Step program until it reaches a different source line
+stepi -- Step one instruction exactly
+target -- Connect to a target machine or process
+thread -- Use this command to switch between threads
+thread apply -- Apply a command to a list of threads
+apply all -- Apply a command to all threads
+tty -- Set terminal for future runs of program being debugged
+unset environment -- Cancel environment variable VAR for the program
+until -- Execute until the program reaches a source line greater than the current
+
+Stack
+-----
+backtrace -- Print backtrace of all stack frames
+bt -- Print backtrace of all stack frames
+down -- Select and print stack frame called by this one
+frame -- Select and print a stack frame
+return -- Make selected stack frame return to its caller
+select-frame -- Select a stack frame without printing anything
+up -- Select and print stack frame that called this one
+
+Status
+------
+info -- Generic command for showing things about the program being debugged
+show -- Generic command for showing things about the debugger
+                                                 
+info address -- Describe where symbol SYM is stored
+info all-registers -- List of all registers and their contents
+info architecture -- List supported target architectures
+info args -- Argument variables of current stack frame
+info breakpoints -- Status of user-settable breakpoints
+info catch -- Exceptions that can be caught in the current stack frame
+info common -- Print out the values contained in a Fortran COMMON block
+info copying -- Conditions for redistributing copies of GDB
+info dcache -- Print information on the dcache performance
+info display -- Expressions to display when program stops
+info files -- Names of targets and files being debugged
+info float -- Print the status of the floating point unit
+info frame -- All about selected stack frame
+info functions -- All function names
+info handle -- What debugger does when program gets various signals
+info line -- Core addresses of the code for a source line
+info locals -- Local variables of current stack frame
+info processes -- Show process status information using /proc entry
+info program -- Execution status of the program
+info registers -- List of integer registers and their contents
+info scope -- List the variables local to a scope
+info set -- Show all GDB settings
+info sharedlibrary -- Status of loaded shared object libraries
+info signals -- What debugger does when program gets various signals
+info source -- Information about the current source file
+info sources -- Source files in the program
+info stack -- Backtrace of the stack
+info symbol -- Describe what symbol is at location ADDR
+info target -- Names of targets and files being debugged
+info terminal -- Print inferior's saved terminal status
+info threads -- IDs of currently known threads
+info tracepoints -- Status of tracepoints
+info types -- All type names
+info variables -- All global and static variable names
+info warranty -- Various kinds of warranty you do not have
+info watchpoints -- Synonym for ``info breakpoints''
+
+show annotate -- Show annotation_level
+show architecture -- Show architecture of target
+show args -- Show argument list to give program being debugged when it is started
+show auto-solib-add -- Show autoloading of shared library symbols
+show check -- Show the status of the type/range checker
+show commands -- Show the history of commands you typed
+show complaints -- Show max number of complaints about incorrect symbols
+show confirm -- Show whether to confirm potentially dangerous operations
+show convenience -- Debugger convenience ("$foo") variables
+show copying -- Conditions for redistributing copies of GDB
+show demangle-style -- Show the current C++ demangling style
+show directories -- Current search path for finding source files
+show editing -- Show editing of command lines as they are typed
+show endian -- Show endianness of target
+show environment -- The environment to give the program
+show gnutarget -- Show the current BFD target
+show height -- Show number of lines gdb thinks are in a page
+show history -- Generic command for showing command history parameters
+show input-radix -- Show default input radix for entering numbers
+show language -- Show the current source language
+show listsize -- Show number of source lines gdb will list by default
+show output-radix -- Show default output radix for printing of values
+show paths -- Current search path for finding object files
+show print -- Generic command for showing print settings
+show prompt -- Show gdb's prompt
+show radix -- Show the default input and output number radices
+show remotebaud -- Show baud rate for remote serial I/O
+show remotebreak -- Show whether to send break if interrupted
+show remotecache -- Show cache use for remote targets
+show remotedebug -- Show debugging of remote protocol
+show remotedevice -- Show device for remote serial I/O
+show remotelogbase -- Show 
+show remotelogfile -- Show filename for remote session recording
+show remotetimeout -- Show timeout limit to wait for target to respond
+show remotewritesize -- Show the maximum number of bytes in each memory write packet
+show solib-absolute-prefix -- Show prefix for loading absolute shared library symbol files
+show solib-search-path -- Show the search path for loading non-absolute shared library symbol files
+show stop-on-solib-events -- Show stopping for shared library events
+show symbol-reloading -- Show dynamic symbol table reloading multiple times in one run
+show targetdebug -- Show target debugging
+show user -- Show definitions of user defined commands
+show values -- Elements of value history around item number IDX (or last ten)
+show verbose -- Show verbosity
+show version -- Show what version of GDB this is
+show warranty -- Various kinds of warranty you do not have
+show watchdog -- Show watchdog timer
+show width -- Show number of characters gdb thinks are in a line
+show write -- Show writing into executable and core files
+
+Support
+-------
+define -- Define a new command name
+document -- Document a user-defined command
+dont-repeat -- Don't repeat this command
+down-silently -- Same as the `down' command
+echo -- Print a constant string
+help -- Print list of commands
+if -- Execute nested commands once IF the conditional expression is non zero
+info architecture -- List supported target architectures
+make -- Run the ``make'' program using the rest of the line as arguments
+overlay -- Commands for debugging overlays
+overlay auto -- Enable automatic overlay debugging
+overlay list-overlays -- List mappings of overlay sections
+overlay load-target -- Read the overlay mapping state from the target
+overlay manual -- Enable overlay debugging
+overlay map-overlay -- Assert that an overlay section is mapped
+overlay off -- Disable overlay debugging
+overlay unmap-overlay -- Assert that an overlay section is unmapped
+quit -- Exit gdb
+set architecture -- Set architecture of target
+set auto-solib-add -- Set autoloading of shared library symbols
+set check range -- Set range checking
+set check type -- Set type checking
+set complaints -- Set max number of complaints about incorrect symbols
+set confirm -- Set whether to confirm potentially dangerous operations
+set demangle-style -- Set the current C++ demangling style
+set editing -- Set editing of command lines as they are typed
+set endian -- Set endianness of target
+set endian auto -- Select target endianness automatically
+set endian big -- Set target as being big endian
+set endian little -- Set target as being little endian
+set height -- Set number of lines gdb thinks are in a page
+set history -- Generic command for setting command history parameters
+set input-radix -- Set default input radix for entering numbers
+set language -- Set the current source language
+set listsize -- Set number of source lines gdb will list by default
+set output-radix -- Set default output radix for printing of values
+set print address -- Set printing of addresses
+set print array -- Set prettyprinting of arrays
+set print asm-demangle -- Set demangling of C++ names in disassembly listings
+set print demangle -- Set demangling of encoded C++ names when displaying symbols
+set print object -- Set printing of object's derived type based on vtable info
+set print pretty -- Set prettyprinting of structures
+set print sevenbit-strings -- Set printing of 8-bit characters in strings as \nnn
+set print static-members -- Set printing of C++ static members
+set print union -- Set printing of unions interior to structures
+set print vtbl -- Set printing of C++ virtual function tables
+set prompt -- Set gdb's prompt
+set radix -- Set default input and output number radices
+set remotecache -- Set cache use for remote targets
+set solib-absolute-prefix -- Set prefix for loading absolute shared library symbol files
+set solib-search-path -- Set the search path for loading non-absolute shared library symbol files
+set stop-on-solib-events -- Set stopping for shared library events
+set symbol-reloading -- Set dynamic symbol table reloading multiple times in one run
+set verbose -- Set verbosity
+set width -- Set number of characters gdb thinks are in a line
+set write -- Set writing into executable and core files
+shell -- Execute the rest of the line as a shell command
+show architecture -- Show architecture of target
+show auto-solib-add -- Show autoloading of shared library symbols
+show check range -- Show range checking
+show check type -- Show type checking
+show complaints -- Show max number of complaints about incorrect symbols
+show confirm -- Show whether to confirm potentially dangerous operations
+show demangle-style -- Show the current C++ demangling style
+show editing -- Show editing of command lines as they are typed
+show endian -- Show endianness of target
+show height -- Show number of lines gdb thinks are in a page
+show history -- Generic command for showing command history parameters
+show input-radix -- Show default input radix for entering numbers
+show language -- Show the current source language
+show listsize -- Show number of source lines gdb will list by default
+show output-radix -- Show default output radix for printing of values
+show print address -- Show printing of addresses
+show print array -- Show prettyprinting of arrays
+show print asm-demangle -- Show demangling of C++ names in disassembly listings
+show print demangle -- Show demangling of encoded C++ names when displaying symbols
+show print object -- Show printing of object's derived type based on vtable info
+show print pretty -- Show prettyprinting of structures
+show print sevenbit-strings -- Show printing of 8-bit characters in strings as \nnn
+show print static-members -- Show printing of C++ static members
+show print union -- Show printing of unions interior to structures
+show print vtbl -- Show printing of C++ virtual function tables
+show prompt -- Show gdb's prompt
+show radix -- Show the default input and output number radices
+show remotecache -- Show cache use for remote targets
+show solib-absolute-prefix -- Show prefix for loading absolute shared library symbol files
+show solib-search-path -- Show the search path for loading non-absolute shared library symbol files
+show stop-on-solib-events -- Show stopping for shared library events
+show symbol-reloading -- Show dynamic symbol table reloading multiple times in one run
+show verbose -- Show verbosity
+show width -- Show number of characters gdb thinks are in a line
+show write -- Show writing into executable and core files
+source -- Read commands from a file named FILE
+up-silently -- Same as the `up' command
+while -- Execute nested commands WHILE the conditional expression is non zero
+
+Tracepoints
+-----------
+actions -- Specify the actions to be taken at a tracepoint
+collect -- Specify one or more data items to be collected at a tracepoint
+delete tracepoints -- Delete specified tracepoints
+disable tracepoints -- Disable specified tracepoints
+enable tracepoints -- Enable specified tracepoints
+end -- Ends a list of commands or actions
+passcount -- Set the passcount for a tracepoint
+save-tracepoints -- Save current tracepoint definitions as a script
+tdump -- Print everything collected at the current tracepoint
+tfind -- Select a trace frame;
+tfind end -- Synonym for 'none'
+tfind line -- Select a trace frame by source line
+tfind none -- De-select any trace frame and resume 'live' debugging
+tfind outside -- Select a trace frame whose PC is outside the given range
+tfind pc -- Select a trace frame by PC
+tfind range -- Select a trace frame whose PC is in the given range
+tfind start -- Select the first trace frame in the trace buffer
+tfind tracepoint -- Select a trace frame by tracepoint number
+trace -- Set a tracepoint at a specified line or function or address
+tstart -- Start trace data collection
+tstatus -- Display the status of the current trace data collection
+tstop -- Stop trace data collection
+while-stepping -- Specify single-stepping behavior at a tracepoint
+
+

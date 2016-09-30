@@ -1,0 +1,51 @@
+@echo off
+
+echo.
+echo Create 'Norton AntiVirus Corporate Edition' bootable CD floppy disk.
+echo.
+
+echo.
+echo Please insert a 2.88 MB diskette into the A: drive.
+echo.
+pause
+
+format a: /V:Emergency /S /F:2.88
+
+:========================================================================
+:
+:  Changed the attributes on the system files so we can copy over them.
+:  Also, del drvspace.bin because we need the diskspace.
+:
+:========================================================================
+
+echo.
+echo Modifying system file attributes...
+echo.
+attrib -r -s -h  a:\*.*
+del a:\drvspace.bin
+del a:\command.com
+
+:========================================================================
+:
+:  Copy our files onto the floppy and reset the attributes on the system
+:  files.
+:
+:========================================================================
+echo.
+echo Copying files...
+echo.
+copy .\BootCD\*.* a:
+copy ..\Nobuilds\rescue\pc\navdx.exe a:
+copy ..\Nobuilds\rescue\pc\navdx.ovl a:
+
+echo.
+echo Resetting system file attributes...
+echo.
+fd a:io.sys /d08-26-00 /t22:22:00
+attrib +r +s +h  a:\io.sys
+attrib +r +s +h  a:\msdos.sys
+attrib +r a:\command.com
+
+echo.
+echo Norton AntiVirus Corporate Edition bootable CD floppy disk completed successfully!
+echo.

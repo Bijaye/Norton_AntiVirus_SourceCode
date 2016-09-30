@@ -1,0 +1,53 @@
+How to build Quarantine Server ver 2.0 (Jedi):
+--------------------------------------------------
+jim hill 1/3/00   6-503-4719 or 1-503-547-2690
+
+First, you'll need to create a client spec based on BUILD_QSERVER or BUILD_QSERVER_JEDI.
+In addition to the previous Quarantine files in ver 1.0 this will also pull down the new
+AvisConsole files.
+
+Once you've done this, and sync'd down all of the areas referenced by the
+client spec, go to the QuarantineServer\CM folder and run BUILD.BTM.
+
+This batch file will do a complete release build of all of the Quarantine Server
+components, including AvisConsole.dll.
+
+You can also perform a debug build by specifying /DBG on the command line.
+
+You can inspect the build results by examining the file MAKE.ERR.
+
+
+build.btm calls the following files:
+
+bqs.btm - builds the qserver projects
+bice.btm - copys the IcePack binaries to the dir where the Qserver files are stored
+bqsislls.btm - builds the installer dll project(s)
+bqsi.btm - builds the installer projects
+
+
+
+
+
+
+How to build Quarantine Server ver 1.0 (Obi-Wan):
+--------------------------------------------------
+First, you'll need to create a client spec based on BUILD_QSERVER.
+
+Once you've done this, and sync'd down all of the areas referenced by the
+client spec, go to the QuarantineServer\CM folder and run BUILD.BTM.
+
+This batch file will do a complete release build of all of the Quarantine Server
+components.
+
+You can also perform a debug build by specifying /DBG on the command line.
+
+You can inspect the build results by examining the file MAKE.ERR.
+
+
+Ed 4-13
+
+build.btm calls the following files:
+
+bqs.btm - builds the qserver projects
+bqsislls.btm - builds the installer dll project(s)
+bqsi.btm - builds the installer projects

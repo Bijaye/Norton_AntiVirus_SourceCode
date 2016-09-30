@@ -1,0 +1,15 @@
+#include <windows.h>
+
+#if !defined(SYM_WIN32)
+#include <ver.h>
+#endif
+                                        // Include quake version stamp
+#define VR_FILEDESCRIPTION      "Symantec API Library\0"
+#define VR_INTERNALNAME         "SYMNAV\0"
+#define VR_ORIGINALFILENAME     "SYMNAV.DLL\0"
+
+#include "quake.ver"
+
+rcinclude symfat.rc
+rcinclude symfmt.rc
+rcinclude symsys.rc

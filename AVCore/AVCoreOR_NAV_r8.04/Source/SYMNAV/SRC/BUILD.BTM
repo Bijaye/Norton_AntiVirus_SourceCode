@@ -1,0 +1,36 @@
+: Copyright 1993-1996 Symantec Corporation                              :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/SYMNAV/VCS/build.btv   1.10   30 Apr 1997 22:35:04   JBRENNA  $
+:                                                                       :
+: Description:                                                          :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/SYMNAV/VCS/build.btv  $
+:  
+:     Rev 1.10   30 Apr 1997 22:35:04   JBRENNA
+:  Replace .WIN with .WRA and .WDA.
+:  
+:     Rev 1.9   28 Apr 1997 18:53:08   bsobel
+:  Platform changes
+:  
+:     Rev 1.8   14 Aug 1996 15:58:48   DALLEE
+:  Removed some of old junk:
+:  Bulky revision comments, since this is a fairly simple build batch now and
+:    is the baseline for KIRIN.
+:  Deletion of custom quake replacement files from source dir -- used to 
+:    do this in NEWVIR/VIRLIB when the archives couldn't be deleted because
+:    they were used on a branch.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+call mk symnav %&
+if exist make.err copy build.err+make.err build.err
+
+iff "%@index[ .WRA .WDA .IDA .IRA , %PLATFORM ]" NE "-1" then
+    call mk krnlthk %&
+    copy 32to16.asm %proj%\src%PROJVERS%
+    if exist make.err copy build.err+make.err build.err
+endiff
+

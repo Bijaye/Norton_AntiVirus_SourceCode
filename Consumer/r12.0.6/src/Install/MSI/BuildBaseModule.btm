@@ -1,0 +1,585 @@
+@echo off
+setlocal
+
+rem ------------------------------------
+rem set the bbmroot to the locaiton of this batch file.
+rem all relative paths are now relative to this 
+rem ------------------------------------
+set bbmroot=%@path[%_batchname%]%
+rem If the last character in bbmroot is not a '\', then append one.
+iff %@SUBSTR[%bbmroot%,%@EVAL[%@LEN[%bbmroot%]-1],1] NE \ then 
+    set bbmroot=%bbmroot%\
+endiff
+
+rem -----------------------------------
+rem Set some global variables
+rem -----------------------------------
+set MSI_FOLDER=%bbmroot%..\msi\
+set SCRIPT_FOLDER=%bbmroot%..\msi\scripts\
+set OUT_FOLDER=%bbmroot%..\release\
+set BUILD_MERGE=%bbmroot%..\msi\BuildMergeModule.btm
+set GET_BUILD=%bbmroot%..\msi\GetBuild.btm
+set BUILD_H=%bbmroot%..\..\include\build.h
+set MSREDIST_MM=%bbmroot%..\..\..\SDKs\InstallToolBox\MSRedist
+set ITB_MM=%bbmroot%..\..\..\SDKs\InstallToolBox\MSI
+set RETAIL_TITLE_NAME=Norton AntiVirus 2006
+set SCSS_TITLE_NAME=Norton Virus Protection
+set SCSS_TITLE_NAME_LEGACY=Norton AntiVirus
+set INPUT_NAME=NAV
+set GLOBAL_PRODUCT_CODE={C6F5B6CF-609C-428E-876F-CA83176C021B}
+set GLOBAL_PACKAGE_CODE={B61D573B-F6D5-4650-A03D-E0948E47A2E5}
+set GLOBAL_PRO_PRODUCT_CODE={C6B28661-7910-442E-ADDD-72EAA8395380}
+set GLOBAL_PRO_PACKAGE_CODE={BCC98AAB-E53B-40F6-A86E-4708EB157910}
+set GLOBAL_UPGRADE_CODE={68C33091-72FA-4DB8-A40E-8CEAE4552D73}
+set GLOBAL_PRO_UPGRADE_CODE={CD05B6DD-65EC-43AC-BE00-73394F19B3AA}
+set DEVBLD=
+set ALL=1
+
+rem -----------------------------
+rem check for known parameters
+rem -----------------------------
+do param = 1 to 127
+  shift 1
+  iff "%0"=="" then
+     shift -%param%
+     goto continue
+  endiff
+  iff "%@upper[%0]"=="/RETAIL" then
+  	 set RETAIL=/RETAIL
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/PRO" then
+  	 set PRO=/PRO
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/OEM" then
+  	 set OEM=/OEM
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/TRIAL" then
+  	 set TRIAL=/TRIAL
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/RENTAL" then
+  	 set RENTAL=/RENTAL
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/SUITE" then
+  	 set SUITE=/SUITE
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/VENDOR" then
+  	 set VENDOR=/VENDOR
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/TEST" then
+  	 set TEST=/TEST
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/NOMERGE" then
+     set JMP_MODE=NOMERGE
+  endiff
+  iff "%@upper[%0]"=="/DEVBLD" then
+      set DEVBLD=/DEVBLD
+  endiff
+enddo
+shift -127
+
+:continue
+echo Not Building Merge Modules.
+if "%JMP_MODE%"=="NOMERGE" goto DoneMerge
+
+echo Building Merge Modules
+call %BUILD_MERGE %DEVBLD%
+iff %? != 0 then	  
+  	goto errorout
+endiff
+
+echo Gathering Build Version Information.
+call %GET_BUILD %BUILD_H%
+iff %? != 0 then
+	goto errorout
+endiff
+
+echo Build Version is %build_ver%
+
+:DoneMerge
+
+:OptionsMigrate
+%bbmroot%DATtoMSI.exe "%bbmroot%..\..\nobuilds\configfiles\navopts.dat" "%bbmroot%..\release\options.msm" NAVOpts.dll.4124D671_2D75_404A_A325_DE402285E640
+iff %? != 0 then	  
+  	goto errorout
+endiff
+
+:RETAIL
+iff %RETAIL% == /RETAIL .OR. %ALL% == 1 then
+	rem -----------------------------
+	rem Build the NAV Retail Install
+	rem -----------------------------
+	set OUTPUT_NAME=NAV_RETAIL
+	set NTPRODUCTNAME=NAVNT 2006
+	set WIN32PRODUCTNAME=NAV95 2006
+	set PRODUCT_CODE=%GLOBAL_PRODUCT_CODE%
+	set PACKAGE_CODE=%GLOBAL_PACKAGE_CODE%
+	set UPGRADE_CODE=%GLOBAL_UPGRADE_CODE%
+	set TITLE_NAME=%RETAIL_TITLE_NAME%
+	set NO_NSC=0
+	set EXTRA_PROPERTIES=
+	gosub BuildWSI
+endiff
+
+:RETAIL_NONSC
+iff %RETAIL% == /RETAIL .OR. %ALL% == 1 then
+	rem -----------------------------
+	rem Build the NAV Retail Install
+	rem -----------------------------
+	set OUTPUT_NAME=NAV_RETAIL_NONSC
+	set NTPRODUCTNAME=NAVNT 2006
+	set WIN32PRODUCTNAME=NAV95 2006
+	set PRODUCT_CODE=%GLOBAL_PRODUCT_CODE%
+	set PACKAGE_CODE=%GLOBAL_PACKAGE_CODE%
+	set UPGRADE_CODE=%GLOBAL_UPGRADE_CODE%
+	set TITLE_NAME=%RETAIL_TITLE_NAME%
+	set NO_NSC=1
+	set EXTRA_PROPERTIES=
+	gosub BuildWSI
+endiff
+
+:RETAILPRO
+iff %PRO% == /PRO .OR. %RETAIL% == /RETAIL .OR. %ALL% == 1 then
+	rem -----------------------------
+	rem Build the NAVPRO Retail Install
+	rem -----------------------------
+	set OUTPUT_NAME=NAV_PRO_RETAIL 
+	set NTPRODUCTNAME=NAVNT 2006
+	set WIN32PRODUCTNAME=NAV95 2006
+	set PRODUCT_CODE=%GLOBAL_PRO_PRODUCT_CODE%
+	set PACKAGE_CODE=%GLOBAL_PRO_PACKAGE_CODE%
+	set UPGRADE_CODE=%GLOBAL_PRO_UPGRADE_CODE%
+	set TITLE_NAME=%RETAIL_TITLE_NAME%
+	set NO_NSC=0
+	set EXTRA_PROPERTIES="NAVPRO" "1"
+ 	gosub BuildWSI
+endiff
+
+:MSRedist
+set TITLE_NAME=MSRedist
+set PRODUCT_VER=%build_ver%
+set INPUT_NAME=MSRedist
+set OUTPUT_NAME=MSRedist
+set PRODUCT_CODE={ED85C054-59D4-4DD1-92D3-3D0009C1DF29}
+
+copy %MSI_FOLDER%empty.wsi %MSI_FOLDER%MSRedist.wsi
+
+set NEW_FEATURE=MSVCRT
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\VC6\Msvcrt.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=MSVCP60
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\VC6\Msvcp60.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=ATL71
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\VC71\VC_User_ATL71_RTL_X86_---.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=CRT71
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\VC71\VC_User_CRT71_RTL_X86_---.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=STL71
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\VC71\VC_User_STL71_RTL_X86_---.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=MFC71
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\MFC71\VC_User_MFC71_RTL_X86_---.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=XML30
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%MSREDIST_MM%\MSXML3.0\msxml3.msm"] %NEW_FEATURE% INSTALLDIR
+
+set NEW_FEATURE=itbdef
+cscript.exe %SCRIPT_FOLDER%AddFeature.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %NEW_FEATURE% Complete INSTALLDIR 48
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%%INPUT_NAME%.wsi %@SFN["%ITB_MM%itbdef.msm"] %NEW_FEATURE%
+
+%SCRIPT_FOLDER%msisr.exe "%MSI_FOLDER%%INPUT_NAME%.wsi" Directory 3 [MSISR.EXTFILES] "%OUTPUT_NAME%"
+%SCRIPT_FOLDER%msisr.exe "%MSI_FOLDER%%INPUT_NAME%.wsi" Directory 3 [MSISR.ProductName] "%TITLE_NAME%"
+
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%MSRedist.wsi %OUT_FOLDER%MSRedist.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%MSRedist.wsi %OUT_FOLDER%MSRedist.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+
+rem **Update the summary info on the output
+cscript.exe %SCRIPT_FOLDER%WiSumInf.vbs %OUT_FOLDER%MSRedist.msi LastAuthor="Symantec Corporation" Title="%TITLE_NAME%" Revision="%PRODUCT_CODE%"
+
+:PARENT_RETAIL
+rem build the Parent MSI
+copy %MSI_FOLDER%Parent.wsi %MSI_FOLDER%Parent_RETAIL.wsi
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%Parent_RETAIL.wsi %bbmroot%..\release\ParentDist.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%Parent_RETAIL.wsi %OUT_FOLDER%Parent_RETAIL.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%Parent_RETAIL.wsi %OUT_FOLDER%Parent_RETAIL.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+del /y %OUT_FOLDER%\External\NORTON\AVSTE.dll
+
+:PARENT_TRIAL
+rem build the Parent MSI
+copy %MSI_FOLDER%Parent.wsi %MSI_FOLDER%Parent_TRIAL.wsi
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%Parent_TRIAL.wsi %bbmroot%..\release\ParentDist.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%Parent_TRIAL.wsi %OUT_FOLDER%Parent_TRIAL.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%Parent_TRIAL.wsi %OUT_FOLDER%Parent_TRIAL.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+del /y %OUT_FOLDER%\External\NORTON\AVSTE.dll
+
+:PARENT_SOS
+rem build the Parent MSI
+copy %MSI_FOLDER%Parent.wsi %MSI_FOLDER%PARENT_SOS.wsi
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%PARENT_SOS.wsi %bbmroot%..\release\SOSDist.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%Parent_SOS.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\Install\DJSNETCN.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%PARENT_SOS.wsi %OUT_FOLDER%PARENT_SOS.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%PARENT_SOS.wsi %OUT_FOLDER%PARENT_SOS.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+del /y %OUT_FOLDER%\External\NORTON\AVSTE.dll
+
+:PARENT_SOS_STAGING
+rem build the Parent MSI
+copy %MSI_FOLDER%Parent.wsi %MSI_FOLDER%PARENT_SOS_STAGING.wsi
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%PARENT_SOS_STAGING.wsi %bbmroot%..\release\SOSDist_Staging.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%Parent_SOS_STAGING.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\Install\DJSNETCN.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%PARENT_SOS_STAGING.wsi %OUT_FOLDER%PARENT_SOS_STAGING.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%PARENT_SOS_STAGING.wsi %OUT_FOLDER%PARENT_SOS_STAGING.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+del /y %OUT_FOLDER%\External\NORTON\AVSTE.dll
+
+:PARENT_NOCASHBOX
+rem Build Parent MSI without the SharedRental merge module
+copy %MSI_FOLDER%Parent.wsi %MSI_FOLDER%Parent_NOCASHBOX.wsi
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%Parent_NOCASHBOX.wsi %bbmroot%..\release\ParentDist.msm
+cscript.exe %SCRIPT_FOLDER%RemoveMergeModule.vbs %MSI_FOLDER%Parent_NOCASHBOX.wsi  %bbmroot%..\..\..\SDKs\Licensing\CLT\Install\SharedRental.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%PARENT_NOCASHBOX.wsi %OUT_FOLDER%PARENT_NOCASHBOX.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%PARENT_NOCASHBOX.wsi %OUT_FOLDER%PARENT_NOCASHBOX.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+del /y %OUT_FOLDER%\External\NORTON\AVSTE.dll
+
+:SymLT_XLOK
+rem build the SymLT MSI
+copy %MSI_FOLDER%SymLT.wsi %MSI_FOLDER%SymLT_XLOK.wsi
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%SymLT_XLOK.wsi" Directory 3 "MSISRSymLT" "XLOK"
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\CCPD_Retail_Licensing_Technology.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\SYMLCENGLUREG.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymUIHlp.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymBbaAx.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\WebReg.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymSubWz.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymCAbt.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%SymLT_XLOK.wsi %OUT_FOLDER%SymLT_XLOK.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%SymLT_XLOK.wsi %OUT_FOLDER%SymLT_XLOK.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_XLOK.msi" Directory 3 "XLOK" "SymLT"
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_XLOK.msi" Registry 6 "[MSISR.UIDLLNAME]" "SymUIHlp.dll"
+
+:SymLT_XLOK_BETA
+rem build the SymLT MSI
+copy %MSI_FOLDER%SymLT.wsi %MSI_FOLDER%SymLT_XLOK_BETA.wsi
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%SymLT_XLOK_BETA.wsi" Directory 3 "MSISRSymLT" "XLOK_BETA"
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\Beta\CCPD_Retail_Licensing_Technology.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\Beta\SYMLCENGLUREG.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymUIHlp.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymBbaAx.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\WebReg.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymSubWz.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymCAbt.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %OUT_FOLDER%SymLT_XLOK_BETA.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%SymLT_XLOK_BETA.wsi %OUT_FOLDER%SymLT_XLOK_BETA.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_XLOK_BETA.msi" Directory 3 "XLOK_BETA" "SymLT"
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_XLOK_BETA.msi" Registry 6 "[MSISR.UIDLLNAME]" "SymUIHlp.dll"
+
+:SymLT_XLOK_OEMTRY
+rem build the SymLT MSI
+copy %MSI_FOLDER%SymLT.wsi %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi" Directory 3 "MSISRSymLT" "XLOK_OEMTRY"
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\CCPD_Retail_Licensing_Technology.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\SYMLCENGLUREG.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymUIHlp.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymBbaAx.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\WebReg.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymSubWz.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymCAbt.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\DRMLFC.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %OUT_FOLDER%SymLT_XLOK_OEMTRY.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%SymLT_XLOK_OEMTRY.wsi %OUT_FOLDER%SymLT_XLOK_OEMTRY.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_XLOK_OEMTRY.msi" Directory 3 "XLOK_OEMTRY" "SymLT"
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_XLOK_OEMTRY.msi" Registry 6 "[MSISR.UIDLLNAME]" "SymUIHlp.dll"
+
+:SymLT_SCSS_XLOK
+rem build the SymLT MSI
+copy %MSI_FOLDER%SymLT.wsi %MSI_FOLDER%SymLT_SCSS_XLOK.wsi
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%SymLT_SCSS_XLOK.wsi" Directory 3 "MSISRSymLT" "SCSSXLOK"
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SharedRental.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymUSCSS.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\CCPD_Retail_Licensing_Technology.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %bbmroot%..\..\..\SDKs\SymLCEng\install\release\SYMLCENGLUREG.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymCAbt.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %bbmroot%..\release\SCSSCommon.msm
+cscript.exe %SCRIPT_FOLDER%AddMergeModule.vbs %MSI_FOLDER%SymLT_XLOK.wsi %bbmroot%..\..\..\SDKs\Licensing\CLT\install\SymCAbt.msm
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %OUT_FOLDER%SymLT_SCSS_XLOK.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%SymLT_SCSS_XLOK.wsi %OUT_FOLDER%SymLT_SCSS_XLOK.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_SCSS_XLOK.msi" Directory 3 "SCSSXLOK" "SymLT"
+%SCRIPT_FOLDER%\msisr.exe "%OUT_FOLDER%SymLT_SCSS_XLOK.msi" Registry 6 "[MSISR.UIDLLNAME]" "SymUSCSS.dll"
+
+:IWP
+rem encrypt the defaultrules.xml
+%bbmroot%..\..\IWP\FREConv.exe e "%bbmroot%..\..\IWP\DefaultRules.xml" "%bbmroot%..\..\IWP\DefRules.dat"
+
+rem build the IWP MSI
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%IWP.wsi %OUT_FOLDER%IWP.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%IWP.wsi %OUT_FOLDER%IWP.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+
+:SHORTCUT_RETAIL
+	set SHORTCUT_OUTPUT=ShortCut_Retail
+	set SHORTCUT_TITLE_YEAR=%RETAIL_TITLE_NAME%
+	set SHORTCUT_TITLE=Norton AntiVirus
+	gosub BuildShortCut
+
+:SHORTCUT_SOS
+	set SHORTCUT_OUTPUT=ShortCut_SCSS
+	set SHORTCUT_TITLE_YEAR=%SCSS_TITLE_NAME%
+	set SHORTCUT_TITLE=%SCSS_TITLE_NAME%
+	gosub BuildShortCut
+
+:SHORTCUT_SOS_LEGACY
+	set SHORTCUT_OUTPUT=ShortCut_SCSS_LEGACY
+	set SHORTCUT_TITLE_YEAR=%SCSS_TITLE_NAME_LEGACY%
+	set SHORTCUT_TITLE=%SCSS_TITLE_NAME_LEGACY%
+	gosub BuildShortCut
+		
+goto exit
+
+
+:BuildWSI
+rem ***********************************************************************
+rem Generic WSI building function									CDAVIS
+rem The following variables must be set before calling this subroutine:
+rem
+rem %OUTPUT_NAME% : Name of the resulting MSI file
+rem %NTPRODUCTNAME% : Product name that will go into the registry on NT
+rem %PRODUCT_CODE% : MSI Product Code
+rem %UPGRADE_CODE% : MSI Upgrade Code
+rem %TITLE_NAME% : Product Name for MSI and Shortcut Name Desktop
+rem %NAVPRO% : If this is 1, NAVPRO merge modules will be added
+rem %NO_NSC% : If this is 1, the NSC merge modules will be removed
+rem %EXTRA_PROPERTIES% : Any extra properties needed in the MSI
+rem
+rem ***********************************************************************
+echo.
+echo.
+echo.------------------------------------------------------------------
+echo Building %OUTPUT_NAME% Installer
+echo.------------------------------------------------------------------
+echo.
+
+echo Making a copy of NAV.WSI file so we can modify it
+if exist %OUT_FOLDER%%OUTPUT_NAME%.msi del /zq %OUT_FOLDER%%OUTPUT_NAME%.msi
+copy %MSI_FOLDER%%INPUT_NAME%.WSI %MSI_FOLDER%%OUTPUT_NAME%.WSI
+attrib -r  %MSI_FOLDER%%OUTPUT_NAME_RETAIL%.WSI
+
+rem ** User MSISR to change some variables specific to this layout
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%OUTPUT_NAME%.wsi" Shortcut 12 [MSISR.PCSHORTCUT] "%TITLE_NAME%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%OUTPUT_NAME%.wsi" Registry 6 [MSISR.NTPRODUCTNAME] "%NTPRODUCTNAME%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%OUTPUT_NAME%.wsi" Property 2 [MSISR.PRODUCTCODE] "%PRODUCT_CODE%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%OUTPUT_NAME%.wsi" Property 2 [MSISR.UPGRADECODE] "%UPGRADE_CODE%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%OUTPUT_NAME%.wsi" Property 2 [MSISR.PRODUCTNAME] "%TITLE_NAME%"
+
+rem ** Remove the NSC Mergemodules if its a NONSC install
+iff %NO_NSC% == 1 then
+	cscript.exe %SCRIPT_FOLDER%RemoveMergeModule.vbs %MSI_FOLDER%%OUTPUT_NAME%.wsi  %bbmroot%..\..\..\SDKs\NSC\BIN.IRA\NSCRegister.msm
+endiff
+
+rem ** Compile the wsi into a msi
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%%OUTPUT_NAME%.wsi %OUT_FOLDER%%OUTPUT_NAME%.msi ProductVersion "%build_ver%" %EXTRA_PROPERTIES%
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%%OUTPUT_NAME%.wsi %OUT_FOLDER%%OUTPUT_NAME%.msi ProductVersion "%build_ver%" %EXTRA_PROPERTIES%	
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+
+rem **Update the summary info on the output
+cscript.exe %SCRIPT_FOLDER%WiSumInf.vbs %OUT_FOLDER%%OUTPUT_NAME%.msi Author="Symantec Corporation" LastAuthor="Symantec Corporation" Title="%TITLE_NAME%"  Revision="%PACKAGE_CODE%"
+
+iff not exist %OUT_FOLDER%%OUTPUT_NAME%.msi then
+	set ERROR_IN=%OUTPUT_NAME%.wsi
+	goto errorout
+endiff
+
+return
+
+:BuildShortCut
+echo Making a copy of SHORT.WSI file so we can modify it
+if exist %OUT_FOLDER%%SHORTCUT_OUTPUT%.msi del /zq %OUT_FOLDER%%SHORTCUT_OUTPUT%.msi
+copy %MSI_FOLDER%SHORT.WSI %MSI_FOLDER%%SHORTCUT_OUTPUT%.WSI
+attrib -r  %MSI_FOLDER%%SHORTCUT_OUTPUT%.WSI
+
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%SHORTCUT_OUTPUT%.wsi" Property 2 [MSISR.PCSHORTCUT] "%SHORTCUT_TITLE_YEAR%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%SHORTCUT_OUTPUT%.wsi" Property 2 [MSISR.PCSHORTCUT2] "%SHORTCUT_TITLE%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%SHORTCUT_OUTPUT%.wsi" Shortcut 12 [MSISR.PCSHORTCUT] "%SHORTCUT_TITLE_YEAR%"
+%SCRIPT_FOLDER%\msisr.exe "%MSI_FOLDER%%SHORTCUT_OUTPUT%.wsi" Shortcut 12 [MSISR.PCSHORTCUT2] "%SHORTCUT_TITLE%"
+iff "%DEVBLD%" == "/DEVBLD" then
+	rem ** Compile the wsi into a msi in silent mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAsSilent.vbs %MSI_FOLDER%%SHORTCUT_OUTPUT%.wsi %OUT_FOLDER%%SHORTCUT_OUTPUT%.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+else
+	rem ** Compile the wsi into a msi in normal mode
+	cscript.exe %SCRIPT_FOLDER%WiseSaveAs.vbs %MSI_FOLDER%%SHORTCUT_OUTPUT%.wsi %OUT_FOLDER%%SHORTCUT_OUTPUT%.msi
+	iff %? != 0 then	  
+  		goto errorout
+	endiff
+endiff
+
+return
+
+
+
+rem ***********************************************************************
+rem * Function to print out an error in bright white on red, must set:
+rem * %ERROR_IN%  - .The error that occurred
+rem ***********************************************************************
+:errorout
+COLOR bright white on bright red
+echo.
+echo ==================================================================
+echo  Error while building %ERROR_IN%
+echo ==================================================================
+echo.
+COLOR white on black
+quit -1
+
+
+rem ***********************************************************************
+rem * Exit function
+rem ***********************************************************************
+:exit
+endlocal
+quit 0

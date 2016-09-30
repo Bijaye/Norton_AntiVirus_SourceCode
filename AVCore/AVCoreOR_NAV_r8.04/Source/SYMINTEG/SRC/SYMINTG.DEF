@@ -1,0 +1,22 @@
+;***********************************************************************
+
+LIBRARY         SYMINTEG
+DESCRIPTION     'Integ.  Copyright (C) Symantec Corp. 1990-1993.'
+EXETYPE         WINDOWS
+CODE            PRELOAD MOVEABLE DISCARDABLE
+DATA            PRELOAD MOVEABLE SINGLE
+
+HEAPSIZE        1024
+
+EXPORTS         WEP                             @1  RESIDENTNAME PRIVATE
+                IntegSelfTest
+                IntegCreate
+                IntegAddEntry
+                IntegGetSystemNames
+                IntegVerifyEntry
+                IntegVerify
+                IntegRepairEntry
+                IntegRepair
+                IntegVerifyDatabaseMatch
+
+

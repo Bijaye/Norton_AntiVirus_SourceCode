@@ -1,0 +1,340 @@
+**********************************************************************
+**                                                                  **
+**  What's New in the NAV Virus Definitions Files      WHATSNEW.TXT **
+**                                                                  **
+**  Symantec AntiVirus Research Center (SARC)           May 9 ,2000 **
+**                                                                  **
+**********************************************************************
+This document contains the following topics:
+
+ * Virus Alerts
+ * New Technologies
+ * Changes Incorporated Into This Update
+ * Enabling Scanning Features
+ * Additional Information
+
+**********************************************************************
+** Virus Alerts                                                     **
+**********************************************************************
+VBS.LoveLetter, a new worm which has been wide-spread since May 4th,
+is detected by this definitions set.  
+
+The ten most commonly reported viruses, worldwide:
+
+    1  VBS.LoveLetter.A
+    2  WScript.KakWorm
+    3  VBS.Network
+    4  W95.CIH
+    5  Happy99.Worm
+    6  Worm.ExploreZip
+    7  W97M.ColdApe
+    8  W97M.Ethan
+    9  W97M.Melissa
+   10  WM.Cap
+
+**********************************************************************
+** New Technologies                                                 **
+**********************************************************************
+
+DATE         Technologies Added
+----         ------------------
+8/19/98    * Excel heuristics which detect and repair new and unknown
+             macro viruses in Excel 95 & 97 documents.
+
+9/16/98    * Added repair for encrypted Excel 97 documents.
+
+10/21/98   * Heuristics to detect AOL Password Stealer Trojans.
+           * WORD Heuristics improvement to increase detection rate.
+
+12/17/98   * Macro Exclusion Engine to speed up the scanning for Word
+             and Excel documents.
+           * PowerPoint engine to scan PowerPoint related viruses.
+             To enable this technology please read "Enabling/Disabling
+             PowerPoint Scanning" section later in this document.
+
+02/18/99   * Detection and repair of macro viruses in Word and Excel
+             2000 documents.
+
+05/12/99   * Added repair for PowerPoint viruses.
+           * Improved heuristics to detect more WORD 97 related
+             viruses.
+
+06/10/99   * Menu repair technology for WORD macro viruses that change
+             command bar customizations in NORMAL.DOT.
+
+07/12/99   * Added support for scanning of Ichitaro 8/9 documents.
+             (Ichitaro is a Japanese word processing program).
+
+08/19/99   * Added detection and repair for embedded documents inside
+             PowerPoint 97.
+
+11/22/99   * Added detection and repair for Trojans embedded in OLE
+             files, such as Windows scrap files and MS Office
+             documents.
+           * Added detection for viruses which infect Microsoft
+             Project documents (P98M.Corner.A, for example).
+
+02/10/00   * Added support for scanning of UNIX executables.
+           * Added detection for infected Visio documents.
+
+**********************************************************************
+** Changes Incorporated Into This Virus Definitions Update          **
+**********************************************************************
+New virus definitions:
+
+        Virus Name                Infection Type          Week added
+        ----------                --------------          ----------
+         911BAT.Worm.B             File infector           05/04/00
+        Backdoor.Asylum           File infector           05/09/00
+        Backdoor.DonaldDick       File infector           04/10/00
+        Backdoor.Eclypse          File infector           05/04/00
+        Backdoor.Fantasy          File infector           05/04/00
+        Backdoor.Frenzy           File infector           05/09/00
+        Backdoor.Muie             File infector           05/09/00
+        backdoor.netbus.12        File infector           05/09/00
+        Backdoor.Ping.B           File infector           04/13/00
+        Backdoor.Ping.C           File infector           05/04/00
+        Backdoor.Poly             File infector           05/04/00
+        Backdoor.PolyDrop         File infector           05/04/00
+        Backdoor.Prosiak          File infector           04/24/00
+        Backdoor.Tasmer           File infector           04/24/00
+        Backdoor.Wincrash         File infector           05/09/00
+        Beard.Trojan              File infector           05/04/00
+        CLRC.554                  File infector           05/04/00
+        DonaldD.Trojan.B          File infector           04/10/00
+        FEC(b)                    Boot infector           05/04/00
+        FEC.Dropper               File infector           05/04/00
+        ICQ.PWS.Trojan            File infector           05/09/00
+        Intd.Leprosy.TheThing     File infector           05/04/00
+        IRC.Csr.Worm              File infector           05/04/00
+        Irok.Trojan.Worm(G1)      File infector           04/13/00
+        Irok.Trojan.Worm(G2)      File infector           04/13/00
+        Irok.Trojan.Worm.B        File infector           04/10/00
+        Leonard.1179              File infector           04/24/00
+        Linux.Dies.969            File infector           04/13/00
+        Movie.Pif.Worm.B          File infector           05/09/00
+        MSU_A.271                 File infector           04/24/00
+        Netsphere.Trojan          File infector           05/04/00
+        O97M.Hopper.U             File infector           05/04/00
+        PHX.823 (x)               File infector           04/10/00
+        PWS.Hooker.Trojan         File infector           05/04/00
+        PWSteal.Coced.Trojan      File infector           04/24/00
+        PWSteal.LoveLetter        File infector           05/04/00
+        PWSTEAL.Trojan.C          File infector           04/13/00
+        Rfpmgrtoet.Trojan         File infector           04/24/00
+        Scap.855                  File infector           04/13/00
+        Stoned.HM (db)            Boot infector           05/09/00
+        TinyOpts.Trojan           File infector           04/24/00
+        Trojan.Aleph.B            File infector           04/24/00
+        Trojan.Bat.Format.FR      File infector           05/09/00
+        Trojan.Bat.Winuck         File infector           04/13/00
+        Trojan.Call911            File infector           05/04/00
+        Trojan.Platan.G           File infector           04/24/00
+        Trojan.Rhino              File infector           04/24/00
+        Trojan.WinDac             File infector           05/04/00
+        VBS.Fool.B                File infector           04/24/00
+        VBS.Freelove.A            File infector           04/10/00
+        VBS.LoveLetter.(HTM)      File infector           05/05/00
+        VBS.LoveLetter.A          File infector           05/04/00
+        VBS.LoveLetter.A(1)       File infector           05/05/00
+        VBS.LoveLetter.B(1)       File infector           05/05/00
+        VBS.LoveLetter.C(1)       File infector           05/05/00
+        VBS.LoveLetter.E          File infector           05/08/00
+        VBS.LoveLetter.E(1)       File infector           05/08/00
+        VBS.LoveLetter.E(2)       File infector           05/08/00
+        VBS.LoveLetter.E(3)       File infector           05/08/00
+        VBS.LoveLetter.F          File infector           05/08/00
+        VBS.LoveLetter.F(1)       File infector           05/08/00
+        VBS.LoveLetter.F(2)       File infector           05/08/00
+        VBS.LoveLetter.F(3)       File infector           05/08/00
+        VBS.LoveLetter.G          File infector           05/08/00
+        VBS.LoveLetter.G(1)       File infector           05/08/00
+        VBS.LoveLetter.G(2)       File infector           05/08/00
+        VBS.LoveLetter.G(3)       File infector           05/08/00
+        VBS.LoveLetter.H          File infector           05/08/00
+        VBS.LoveLetter.I          File infector           05/08/00
+        VBS.LoveLetter.K          File infector           05/08/00
+        VBS.LoveLetter.L          File infector           05/08/00
+        VBS.LoveLetter.M          File infector           05/08/00
+        VBS.LoveLetter.N          File infector           05/08/00
+        VBS.LoveLetter.O          File infector           05/08/00
+        VBS.LoveLetter.P          File infector           05/08/00
+        VBS.LoveLetter.Q          File infector           05/08/00
+        VBS.LoveLetter.R          File infector           05/08/00
+        VBS.LoveLetter.S          File infector           05/08/00
+        VBS.LoveLetter.variant    File infector           05/05/00
+        W32.Bolzano.T             File infector           04/10/00
+        W32.Dengue                File infector           04/24/00
+        W32.Gift.32768.B          File infector           04/10/00
+        W32.Gift.34304            File infector           04/10/00
+        W32.Gift.40960            File infector           04/10/00
+        W32.Headline.Worm.Int     File infector           05/04/00
+        W32.HLLP.Cramb            File infector           05/04/00
+        W32.HLLP.Hetis.34304      File infector           05/04/00
+        W32.KMKY.24576            File infector           04/13/00
+        W32.Kriz.4270.G1          File infector           04/13/00
+        W32.Mirc.25088.Worm       File infector           04/24/00
+        W32.Mypics.Worm.36352     File infector           05/09/00
+        W32.Poison.B.Worm         File infector           04/10/00
+        W32.Poison.Worm           File infector           04/10/00
+        W32.PrettyPark.J.Worm     File infector           04/10/00
+        W32.PrettyPark.K.Worm     File infector           04/10/00
+        W32.PrettyPark.L.Worm     File infector           04/24/00
+        W32.PrettyPark.M.Worm     File infector           04/24/00
+        W32.PrettyPark.N.Worm     File infector           04/24/00
+        W32.PrettyPark.O.Worm     File infector           05/04/00
+        W32.Stupid.C              File infector           04/24/00
+        W95.CIH.1363              File infector           04/10/00
+        W95.Fabi.G1               File infector           04/13/00
+        W95.Grenp.2804            File infector           05/04/00
+        W95.Icer.541              File infector           04/24/00
+        W95.Lud.Jez.682           File infector           04/13/00
+        W95.Payk                  File infector           04/24/00
+        W95.Powerful.1592.Int     File infector           04/10/00
+        W95.Powerful.7186.Int     File and Boot infector  04/10/00
+        W95.Psig                  File infector           04/13/00
+        W95.Sab.753               File infector           05/04/00
+        W95.SAB.C                 File infector           04/10/00
+        W95.Santana.1104          File infector           04/24/00
+        W95.Segax.1136            File infector           04/24/00
+        W95.Sexy.384              File infector           04/24/00
+        W95.SGWW.2264             File infector           04/13/00
+        W95.SillyWR.Gen           File infector           05/04/00
+        W95.Smash                 File infector           04/24/00
+        W97M.Aleja.Family         File infector           04/10/00
+        W97M.Alina.A              File infector           04/13/00
+        W97M.Astia.L              File infector           04/10/00
+        W97M.Bogor.A              File infector           04/10/00
+        W97M.Cat.A                File infector           04/10/00
+        W97M.Eight941.F           File infector           04/10/00
+        W97M.Eight941.G           File infector           05/09/00
+        W97M.Eight941.H           File infector           05/09/00
+        W97M.Ferie.A              File infector           04/10/00
+        W97M.Foster               File infector           04/24/00
+        W97M.IIS.U                File infector           04/13/00
+        W97M.IJK.C                File infector           04/24/00
+        W97M.Johnny               File infector           04/13/00
+        W97M.LCM                  File infector           05/04/00
+        W97M.Lupi.C               File infector           05/04/00
+        W97M.MARKER.BZ            File infector           04/24/00
+        W97M.MARKER.CA            File infector           04/24/00
+        W97M.MARKER.CB            File infector           05/09/00
+        W97M.Marker.CR            File infector           05/09/00
+        W97M.Onex.A               File infector           04/24/00
+        W97M.Shab                 File infector           05/09/00
+        W97M.Thus.S               File infector           04/24/00
+        W97M.Thus.T               File infector           05/04/00
+        W97M.Thus.U               File infector           05/04/00
+        W97M.Titch.C              File infector           04/10/00
+        W97M.Ucase                File infector           05/09/00
+        W97M.Verlor.Family        File infector           04/10/00
+        W97M.VMPCK1.DH            File infector           05/04/00
+        W97M.VMPCK1.DJ            File infector           05/09/00
+        W97M.XYZ.A                File infector           05/04/00
+        Win.Non.31995             File infector           04/13/00
+        Win.Non.31995 dropper     File infector           04/13/00
+        Win.Ph33r.1418            File infector           04/24/00
+        Winfig.Trojan             File infector           05/04/00
+        X97M.Automat.AF           File infector           04/13/00
+        X97M.Automat.AH           File infector           05/04/00
+        XM.Automat.AG             File infector           04/24/00
+        XM.Automat.AI             File infector           05/09/00
+        Zhit.1654                 File infector           05/04/00
+
+Name Changes:
+
+        Old Virus Name            New Virus Name          Date changed
+        --------------            --------------          ------------
+        BAT.Chode.Worm         to BAT911.Worm             04/10/00
+        W32.PrettyPark.G.Worm  to W32.PrettyPark.Curr     04/10/00
+        W95.Fosoforo.Int       to W95.Fosforo.Int         04/10/00
+        W97M.Class.EJ          to W97M.Class.EL           04/10/00
+        W97M.Claudio           to W97M.Claud.A            04/10/00
+        W97M.Cobra.L           to W97M.Cobra.O            04/10/00
+        W97M.CViper            to W97M.Viper.A            04/10/00
+        W97M.Marker.CG         to W97M.Marker.CQ          04/10/00
+        W97M.Overlord          to W97M.Verlor.A           04/10/00
+        X97M.Base.A            to X97M.Divi.A/B           04/10/00
+        X97M.Base.B            to X97M.Divi.F             04/10/00
+        X97M.DIVI.D            to X97M.Divi.C             04/10/00
+        X97M.Tracker           to X97M.Divi.D             04/10/00
+
+Deletions:
+
+        Virus Name                Infection Type          Date removed
+        ----------                --------------          ------------
+        Joshi Dropper             Boot infector           05/04/00
+        Narcosis (d)              File infector           05/04/00
+        X97M.Automat.AE           File infector           04/10/00
+
+**********************************************************************
+**  Enabling Scanning Features                                      **
+**********************************************************************
+
+Several scanning features can be enabled through the use of an INF 
+configuration file.  For NAV for Windows 95/NT version 4.x and later, 
+or NAV for OS/2, this configuration file should be called NAVEX15.INF
+and should be placed in the directory where NAV is installed (i.e.,
+C:\Program Files\Norton AntiVirus).  For NAV for Netware version 4.x,
+the file should be called NAVEX15.INF and should be placed in the 
+directory where NAV 4.x is installed (i.e., sys:system\navnlm). For
+NAV for Windows 95/NT version 2.0, NAV 4.x for Windows 3.1/DOS,
+NAVIEG 1.x, or NAVFW 1.x, the file should be named NAVEX.INF and
+should be placed in the directory where NAV is installed (i.e., C:\NAV).
+If this configuration file does not exist, create one in the appropriate
+directory if you want to change the default settings.
+
+To enable a scanning feature for a particular component, one or more 
+entries need to be added to the configuration file under the correct
+section.  For each platform there is a corresponding section that is used 
+in the INF file.  Below is a table of section names and platforms.
+
+Section Name    Platform
+------------    --------
+NAVW32          Windows 95/98/NT
+NAVAP           Windows 95/98/NT Auto-Protect
+NAVDX           DOS
+NAVNLM          Netware
+NAVWIN          Windows 3.1
+NAVOS2          OS/2
+NAVAIX          AIX
+NAVSOL          Solaris
+
+Entries are case insensitive.  Below is a description of possible 
+entries.
+
+1. Files can be excluded from scans by the NAVEX engine.  To exclude a
+specific file from the NAVEX engine scan, add an entry with the full
+path and file name.  This is case insensitive.  No wildcards are allowed.
+To exclude multiple files, add a separate entry for each file.  To exclude
+a file, add an entry like the one below where <PATH> is the full path
+and file name.
+        ExcludeFile = <PATH>
+
+2. Files within a directory can be excluded from scans by the NAVEX engine.
+To exclude all files within a directory, add an entry with the full 
+directory path.  This is case insensitive.  No wildcards are allowed.  This
+does not exclude files located in subdirectories of the specified 
+directory.  To exclude multiple directories, add a separate entry for each
+directory. To exclude a directory, add an entry like the one below where
+<DIRECTORY> is the full path.
+        ExcludeDirectory = <DIRECTORY>
+
+The following example of an INF configuration file excludes two files, 
+NOSCAN.EXE and BIGFILE.DOC, from NAVEX scans for the Windows 95/98/NT 
+scanner.  It excludes the D:\PRIVATE directory from Windows 95/98/NT 
+Auto-Protect.
+
+[NAVW32]
+ExcludeFile = C:\PROGRAM FILES\NOSCAN.EXE
+ExcludeFile = C:\TEMP\BIGFILE.DOC
+
+[NAVAP]
+ExcludeDirectory = D:\PRIVATE
+
+**********************************************************************
+**    Additional Information                                        **
+**********************************************************************
+
+Additional information regarding this virus definitions update can be
+found in UPDATE.TXT and TECHNOTE.TXT.

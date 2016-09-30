@@ -1,0 +1,27 @@
+;Auto-Configuration File for Symantec AntiVirus Corporate Edition Scan and Deliver
+;created for SAVCE Scan and Deliver 04012002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec AntiVirus Corporate Edition Scan and Deliver
+DisplayName=VPC320
+File:Name=vpc32.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=email.alc:EMAIL,http.alc:HTTP
+
+[MATCH:SECTION002]
+ApplicationDescription=Symantec AntiVirus Corporate Edition Scan and Deliver
+DisplayName=VPC321
+File:Name=vpc32.exe
+RequiredDigest=2ac7a88a6f7c9a8f702cd36ec12ed6cdbd4e7bc4
+Rules=email.alc:EMAIL,http.alc:HTTP
+
+[RULE:EMAIL]
+Category=3
+RuleName=Symantec AntiVirus Corporate Edition Scan and Deliver E-mail
+
+[RULE:HTTP]
+Category=0
+RuleName=Symantec AntiVirus Corporate Edition Scan and Deliver HTTP Rule
+
+

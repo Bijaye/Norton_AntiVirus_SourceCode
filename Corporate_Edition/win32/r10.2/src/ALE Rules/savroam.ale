@@ -1,0 +1,21 @@
+;Auto-Configuration File for Symantec AntiVirus Corporate Edition SAVRoam
+;created for SAVRoam, modified 07102002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec AntiVirus Corporate Edition SAVRoam
+DisplayName=SAVROAM0
+File:Name=savroam.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=UDP
+
+[RULE:UDP]
+Action=ALLOW
+Category=0
+Direction=EITHER
+Protocol=UDP
+RemotePorts=2967,26409,38293
+RuleName=AntiVirus Corporate Edition SAVRoam UDP Connection
+
+
+

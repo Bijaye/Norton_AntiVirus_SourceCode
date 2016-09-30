@@ -1,0 +1,33 @@
+; Copyright 1995 Symantec Corporation
+;****************************************************************************
+;
+; $Header:   S:/SYMALOG/VCS/symalog.dev   1.17   29 Jan 1996 18:52:30   RJACKSO  $
+;
+; Description:
+;
+;****************************************************************************
+; $Log:   S:/SYMALOG/VCS/symalog.dev  $
+;  
+;     Rev 1.17   29 Jan 1996 18:52:30   RJACKSO
+;  Changed library for Quake Branch
+;
+;     Rev 1.16   20 Nov 1995 16:39:54   GDZIECI
+;
+;****************************************************************************
+
+LIBRARY        SYMALOGD
+DESCRIPTION    'Activity Log.  Copyright (C) Symantec Corp. 1990-1996.'
+EXETYPE        WINDOWS
+CODE           PRELOAD  MOVEABLE    DISCARDABLE
+DATA           PRELOAD  MOVEABLE    SINGLE
+HEAPSIZE       4096
+EXPORTS        WEP               @1  RESIDENTNAME PRIVATE
+               ALOGBUILDFILE    @10
+               ALOGDONE         @11
+               ALOGGETMAXSIZE   @12
+               ALOGSETMAXSIZE   @14
+               ALOGSTART        @15
+               SetLogFileSize   @16
+               ALOGADD          @18
+               ALOGADDEX        @19
+

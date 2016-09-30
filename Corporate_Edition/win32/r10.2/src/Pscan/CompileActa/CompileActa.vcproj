@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="CompileActa"
+	RootNamespace="CompileActa"
+	SccProjectName="&quot;//depot/Norton_AntiVirus/Corporate_Edition/Win32/trunk/src/Pscan/CompileActa&quot;"
+	SccAuxPath=""
+	SccLocalPath="."
+	SccProvider="MSSCCI:Perforce SCM"
+	Keyword="MakeFileProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Release/CompileActa.tlb"
+				HeaderFileName=""/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="10"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE">
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Debug/CompileActa.tlb"
+				HeaderFileName=""/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath="CompileActa.bat">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="set TempClientRoot=$(ProjectDir)..\..\..\..\..\..
+if exist &quot;%CLIENTROOT%&quot; set TempClientRoot=%CLIENTROOT%
+echo %path%
+cmd.exe /c $(InputPath) &quot;%TempClientRoot%&quot;
+"
+					AdditionalDependencies="$(ProjectDir)..\..\..\..\common\src\pscan\acta.str;$(ProjectDir)..\..\..\..\common\src\pscan\msgs.mc;"
+					Outputs="$(ProjectDir)..\..\..\..\Common\src\pscan\acta.h;$(ProjectDir)..\..\..\..\Common\src\pscan\acta.c"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					CommandLine="set TempClientRoot=$(ProjectDir)..\..\..\..\..\..
+if exist &quot;%CLIENTROOT%&quot; set TempClientRoot=%CLIENTROOT%
+echo %path%
+cmd.exe /c $(InputPath) &quot;%TempClientRoot%&quot;
+"
+					AdditionalDependencies="$(ProjectDir)..\..\..\..\common\src\pscan\acta.str;$(ProjectDir)..\..\..\..\common\src\pscan\msgs.mc;"
+					Outputs="$(ProjectDir)..\..\..\..\Common\src\pscan\acta.h;$(ProjectDir)..\..\..\..\Common\src\pscan\acta.c"/>
+			</FileConfiguration>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

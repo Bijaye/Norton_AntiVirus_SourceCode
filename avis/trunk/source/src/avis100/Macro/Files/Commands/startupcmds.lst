@@ -1,0 +1,33 @@
+#the aim of this command file is to infect one or more document
+#by using an infected template
+
+#restauration of the files that need to be here, from their backup copy
+[RESTORE]Bala
+[RESTORE]Quotes
+[RESTORE]virus
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]Bala
+     [MSAVE]Bala
+   [MCLOSE]Bala
+   [MOPEN]Quotes
+     [MSAVE]Quotes
+   [MCLOSE]Quotes
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+[RESTORE]Checking
+[RESTORE]Stock
+[RESTORE]virus
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]Checking
+   [MOPEN]Stock
+     [MSAVE]Stock
+   [MCLOSE]Stock
+     [MSAVE]Checking
+   [MCLOSE]Checking
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW

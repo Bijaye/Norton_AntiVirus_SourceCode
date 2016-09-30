@@ -1,0 +1,28 @@
+!define BLANK ""
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\olessapi.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\olessapi.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 olessapi.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\olestrnm.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\olestrnm.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 olestrnm.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\summary.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\summary.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 summary.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\olessapi.lib : $(%os2base)\cyprus\navexeng\navex\olessapi\src\olessapi.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\olestrnm.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\summary.obj .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ %create olessapi.lb1
+!ifneq BLANK "olessapi.obj olestrnm.obj summary.obj"
+ @for %i in (olessapi.obj olestrnm.obj summary.obj) do @%append olessapi.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append olessapi.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 olessapi.lib @olessapi.lb1
+

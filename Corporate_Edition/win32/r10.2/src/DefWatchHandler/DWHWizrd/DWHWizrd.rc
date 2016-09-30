@@ -1,0 +1,381 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include <winver.h>\r\n"
+    "#include ""nav.ver""\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\DWHWizrd.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+// RT_MANIFEST
+//
+
+MANIFEST_RESOURCE_ID    RT_MANIFEST     "res\\DWHWizrd.exe.manifest"
+
+/////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\defwatch.ico"
+IDI_ICON1               ICON                    "res\\Scanner8.ico"
+IDI_ICON2               ICON                    "res\\Advotext.ico"
+IDI_ICON3               ICON                    "res\\icon3.ico"
+IDI_ICON4               ICON                    "res\\Nav0.ico"
+IDI_ICON5               ICON                    "res\\Nav1.ico"
+IDI_ICON6               ICON                    "res\\Nav2.ico"
+IDI_ICON7               ICON                    "res\\Nav3.ico"
+IDI_ICON8               ICON                    "res\\Scanner1.ico"
+IDI_ICON9               ICON                    "res\\Scanner2.ico"
+IDI_ICON10              ICON                    "res\\Scanner3.ico"
+IDI_ICON11              ICON                    "res\\Scanner4.ico"
+IDI_ICON12              ICON                    "res\\Scanner5.ico"
+IDI_ICON13              ICON                    "res\\Scanner6.ico"
+IDI_ICON14              ICON                    "res\\Scanner7.ico"
+IDI_ICON15              ICON                    "res\\Advoinfo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_DWHWIZRD_DIALOG DIALOGEX 0, 0, 320, 200
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "DWHWizrd"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,260,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,260,23,50,14
+    LTEXT           "TODO: Place dialog controls here.",IDC_STATIC,50,90,200,
+                    8
+END
+
+IDD_WIZPAGE1 DIALOG  0, 0, 272, 147
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "Updated Virus Protection files have been delivered and installed on your computer.",
+                    IDC_STATIC,81,2,186,18
+    LTEXT           "Symantec AntiVirus may now be able to repair the infected files in Quarantine. The easiest way to check and eliminate viruses is to let Symantec AntiVirus do it automatically.",
+                    IDC_STATIC,81,26,189,33
+    CONTROL         "&Yes (recommended)",IDC_RADIO_AUTOMATIC,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,81,118,143,10
+    CONTROL         "N&o",IDC_RADIO_MANUAL,"Button",BS_AUTORADIOBUTTON,81,
+                    131,120,10
+    LTEXT           "You can process the Quarantine items now, or scan them at a later time. Do You want to continue?",
+                    IDC_STATIC,81,64,184,33
+END
+
+IDD_WIZPAGE2 DIALOGEX 0, 0, 272, 147
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "The following viral threats are Quarantined:",
+                    IDC_STATIC,81,2,189,29
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,81,36,190,73
+    LTEXT           "Click Next to see if these items can be repaired.",
+                    IDC_STATIC,81,119,190,27
+END
+
+IDD_WIZPAGE3 DIALOGEX 0, 0, 272, 147
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "The following threats have been successfully repaired and restored to their original location on your computer.  ",
+                    IDC_STATIC,81,2,189,33
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,81,40,190,64
+    CONTROL         "&Delete threats which are still infected.",IDC_RADIO1,
+                    "Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE | WS_GROUP | 
+                    WS_TABSTOP,81,109,190,10
+    CONTROL         "D&o not delete (your computer will still be infected)",
+                    IDC_RADIO2,"Button",BS_AUTORADIOBUTTON | BS_TOP | 
+                    BS_MULTILINE | NOT WS_VISIBLE,81,122,190,24
+END
+
+IDD_WIZPAGE4 DIALOG  0, 0, 272, 148
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED,0,1,75,146
+    LTEXT           "The following items are Quarantined and isolated from your system. They can be repaired using the standard Quarantine facilities.",
+                    IDC_STATIC,81,2,189,30
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,81,36,190,73
+    PUSHBUTTON      "Ad&vice...",IDC_ADVICE_BUTTON,222,113,50,14,NOT 
+                    WS_VISIBLE | WS_GROUP
+    LTEXT           "",IDC_STATIC,81,138,190,8
+END
+
+IDD_WIZPAGE5 DIALOG  0, 0, 272, 147
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    CONTROL         "Animate",IDC_ANIMATE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,244,81,28,26
+    LTEXT           "Items in Quarantine can not be repaired using the Virus Definition files that have just been delivered. \n\nLeave the infected items in Quarantine. They are isolated from the rest of your system and can cause no further damage.",
+                    IDC_FINISH_TEXT,80,4,186,76
+    PUSHBUTTON      "More &Info...",IDC_MORE_INFO_BUTTON,204,49,61,14,NOT 
+                    WS_VISIBLE | WS_GROUP
+    LTEXT           "As a safety precaution, scan all of the disks you use, including floppies, to make sure you've found the source of the infection.",
+                    IDC_STATIC,81,113,190,33
+END
+
+IDD_WIZPAGE6 DIALOGEX 0, 0, 272, 147
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "Congratulations!  You have eliminated the threats",
+                    IDC_FINISH_TEXT,81,2,186,42
+    LTEXT           "Static",IDC_ITEMS_SCANNED_STATIC,81,56,116,8
+    LTEXT           "Static",IDC_ITEMS_INFECTED_STATIC,81,66,175,8
+    LTEXT           "Static",IDC_ITEMS_REPAIRED_STATIC,81,76,175,8
+    LTEXT           "Static",IDC_ITEMS_QUARANTINED_STATIC,81,86,175,8
+    LTEXT           "Static",IDC_ITEMS_DELETED_STATIC,81,96,175,8
+    PUSHBUTTON      "More &Info...",IDC_MORE_INFO_BUTTON,204,49,61,14,NOT 
+                    WS_VISIBLE | WS_GROUP
+    LTEXT           "As a safety precaution, scan all of the disks you use, including floppies, to make sure you've found the source of the infection.",
+                    IDC_STATIC,81,113,190,33
+END
+
+IDD_WIZPAGE7 DIALOGEX 0, 0, 272, 147
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Symantec AntiVirus Repair Wizard"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    CONTROL         "Button1",IDC_PICTURE,"Button",BS_OWNERDRAW | 
+                    WS_DISABLED | WS_GROUP,0,1,75,146
+    LTEXT           "Symantec AntiVirus can repair these infected Quarantined threats.  You can repair them now and restore them to their original location, or they may be left in Quarantine where they are isolated from the rest of your system.",
+                    IDC_STATIC,81,2,189,47
+    CONTROL         "List1",IDC_LISTVIEW,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,81,51,190,63
+    CONTROL         "&Repair and restore the infected items.",IDC_RADIO1,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,81,
+                    121,188,10
+    CONTROL         "&Leave the items in Quarantine ",IDC_RADIO2,"Button",
+                    BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE,81,133,185,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DWHWIZRD_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_WZ256_0             BITMAP                  "res\\Wz256_0.bmp"
+IDB_WZ_16_0             BITMAP                  "res\\Wz16_0.bmp"
+IDB_WZ_16_7             BITMAP                  "res\\Wz16_7.bmp"
+IDB_WZ_16_6             BITMAP                  "res\\Wz16_6.bmp"
+IDB_WZ_16_4             BITMAP                  "res\\Wz16_4.bmp"
+IDB_WZ_16_3             BITMAP                  "res\\Wz16_3.bmp"
+IDB_WZ_16_5             BITMAP                  "res\\Wz16_5.bmp"
+IDB_WZ256_2             BITMAP                  "res\\WZ256_2.BMP"
+IDB_WZ256_3             BITMAP                  "res\\WZ256_3.BMP"
+IDB_WZ256_5             BITMAP                  "res\\WZ256_5.BMP"
+IDB_WZ256_6             BITMAP                  "res\\WZ256_6.BMP"
+IDB_WZ256_1             BITMAP                  "res\\Wz256_1.bmp"
+IDB_WZ_16_1             BITMAP                  "res\\Wz16_1.bmp"
+IDB_WZ_16_2             BITMAP                  "res\\Wz16_2.bmp"
+IDB_WZ256_7             BITMAP                  "res\\WZ256_7.BMP"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_TEST                "This is a test."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROPSHT_CAPTION     "Symantec AntiVirus Repair Wizard"
+    IDS_RW_NAME             "Name"
+    IDS_RW_VIRUS_NAME       "Virus name"
+    IDS_RW_CLOSE            "&Close"
+    IDS_CANCELREPWIZ_CAPTION "Symantec AntiVirus"
+    IDS_CANCELREPWIZ_BODY   "Your computer is still infected by viruses.\n\nAre you sure you want to Cancel?"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_WIZWHYNOT_BOOTLINE1 "The boot record of drive "
+    IDS_WIZWHYNOT_BOOTLINE2 " is still infected."
+    IDS_WIZWHYNOT_FILESENTENCE "%s%s\n\n\n%s%s\n%s\n"
+    IDS_WIZWHYNOT_FILELINE1 " is still infected."
+    IDS_WIZWHYNOT_FILELINE2 "This item may still be infected for one of the following reasons:\n\n1.  It is currently in use.\nClose all other applications then scan the item again.\n\n2.  You chose not to delete or quarantine it.\nClick OK to return to the Repair Wizard. "
+    IDS_WIZWHYNOT_FILELINE3_95 
+                            "Then click Back and select Delete infected items.\n\n3.  It is on a write-protected disk.\nWrite enable the diskette then scan the item again.\n\n4.  It is infected by a special virus (such as Byway or Dir II) that cannot be repaired while running Windows."
+    IDS_WIZWHYNOT_CONSULT   "Please refer to the User's Guide for details."
+    IDS_WIZWHYNOT_CAPTION   "Advice"
+    IDS_WIZWHYNOT_FILELINE4 "Restart your computer with your rescue boot disk to remove the virus."
+    IDS_WIZWHYNOT_FILELINE3_NT 
+                            "Then click Back and select Delete infected items.\n\n3.  It is on a write-protected disk.\nWrite enable the diskette then scan the item again.\n\n4.  It is infected by a special virus (such as Byway or Dir II) that cannot be repaired while running Windows."
+    IDS_CLOSEREPWIZ_BODY    "Your computer is still infected by viruses.\n\nAre you sure you want to Close?"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SUMM_SCANNED        "%s items scanned."
+    IDS_SUMM_INFECTED       "%s infected items found."
+    IDS_SUMM_CLEANED        "%s infected items repaired."
+    IDS_SUMM_QUARANTINED    "%s infected items quarantined."
+    IDS_REPWIZ_BYPASSREGKEY "NoRepairWizard"
+    IDS_WIZWHYNOT_ZIPSENTENCE "%s%s\n\n%s\n\n%s"
+    IDS_WIZWHYNOT_ZIPLINE1  " is still infected."
+    IDS_WIZWHYNOT_ZIPLINE2  "As a data safety precaution, Symantec AntiVirus does not delete infected compressed files."
+    IDS_WIZWHYNOT_MBRSENTENCE "%s%s%s\n\n%s"
+    IDS_WIZWHYNOT_MBRLINE1  "The master boot record of "
+    IDS_WIZWHYNOT_MBRLINE2  " is still infected."
+    IDS_WIZWHYNOT_BOOTSENTENCE "%s%s%s\n\n%s"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SUMM_DELETED        "%s infected items deleted."
+    IDS_FINISH_TEXT_CONGRATS 
+                            "Congratulations!  You have eliminated the viruses"
+    IDS_FINISH_TEXT_ATTENTION 
+                            "Attention! Symantec AntiVirus has successfully eliminated the direct virus threat on your computer. Infected files have been placed in Quarantine."
+    IDS_RESTORE_OVERWRITE_TITLE "Overwrite warning"
+    IDS_RESTORE_OVERWRITE_FORMAT 
+                            "The file: %s already exists. Do you want to overwrite the file?"
+    IDS_FINISH_TEXT_NO_RESTORE 
+                            "Repairable items in Quarantine can not be restored to their original locations. They can be repaired from Quarantine in Symantec AntiVirus. \n\nThese infected items have been left in Quarantine. They are isolated from the rest of your system and can cause no further damage."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_REPWIZ_DEFAULTREGKEY "RepairWizardDefault"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include <winver.h>
+#include "nav.ver"
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\DWHWizrd.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

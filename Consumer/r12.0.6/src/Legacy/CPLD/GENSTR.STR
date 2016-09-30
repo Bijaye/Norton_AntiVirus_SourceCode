@@ -1,0 +1,143 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/genstr.stv   1.0   06 Feb 1997 20:50:32   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV general options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptGeneralStrings,
+//      LPVOID *        lpOptGeneralArgs,
+//
+//      CheckBoxRec     cbGeneralBackup
+//      CheckBoxRec     cbGeneralScanArchive
+//      TERec           teGeneralBackupExt
+//
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/genstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:32   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   30 Jan 1996 16:21:08   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:55:02   BARRY
+// Initial revision.
+// 
+//    Rev 1.13   10 Feb 1995 13:50:28   DALLEE
+// Back up as verb is two words.
+// 
+//    Rev 1.12   20 Jan 1995 18:52:48   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.11   28 Dec 1994 12:07:46   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.1   30 Nov 1994 17:23:30   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.10   28 Dec 1994 11:55:56   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:48   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.8   08 Sep 1993 17:58:36   BRAD
+    // Removed unused reference to scroll bar.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+
+#include "navdprot.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define GENERAL_LIST_WIDTH          (20)
+#define GENERAL_LIST_HEIGHT         ( 4)
+#define GENERAL_LIST_ITEMS          ( 4)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    [];     // These externs are declared in
+extern ButtonsRec buOkCancelHelp;       //  OPTSTR.CPP
+
+
+//------------------------------------------------------------------------
+// General CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszOptGeneralStrings [] =        // String for general CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %38gGeneral settings",            // BEGIN GROUP
+    "   %C1",                           // cbGeneralBackup
+    "       Back up ^extension: %T2",    // teGeneralBackupExt
+    DIALOG_EMPTY_LINE,
+    "   %C3",                           // cbScanHighMemory
+    "       memory",                    // Continuation of 'cbScanHighMemory'
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    "%B4",                              // buOkCancelHelp
+    DIALOG_END,
+    };
+
+
+//------------------------------------------------------------------------
+// General CP Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbGeneralBackup =
+    {
+    "^Backup file when repairing",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbScanHighMemory =
+    {
+    "Scan high ^memory when scanning",  // Sentence continued in Dlg template
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+static char szGeneralBackupExt [NAVD_PROGRAM_EXT_SIZE + 1];
+
+TERec teGeneralBackupExt =
+    {
+    0, 0,                               // Row, col - internal use
+    (NAVD_PROGRAM_EXT_SIZE + 2),        // Screen width
+    szGeneralBackupExt,                 // String to edit
+    NAVD_PROGRAM_EXT_SIZE,              // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal use
+    TEExtensionFilter,                  // Character validate function
+    0,                                  // Flags
+    NULL,                               // Field validate function
+    };
+
+LPVOID lpOptGeneralArgs [] =            // Arguments to pass to control panel
+    {
+    &cbGeneralBackup,
+    &teGeneralBackupExt,
+    &cbScanHighMemory,
+    &buOkCancelHelp,
+    };
+

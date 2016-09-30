@@ -1,0 +1,47 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+ERRORLOG=NSCHED32.log
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+CONTENTS=IDH_NAVW_HOWTO_SCHEDULE_SCANS
+TITLE=Norton Scheduler
+CNT=nsched32.cnt
+COPYRIGHT=Copr. © 1994-98 Symantec Corp.
+HLP=nsched32.HLP
+
+[FILES]
+schedule.rtf
+
+[MAP]
+#include <s:\include\src\nps_hlp.h>
+[BUILDTAGS]
+NAV95
+VLA
+NTSRV
+INOCULATION
+9x
+PASSWORD
+NODEC
+NT
+
+[WINDOWS]
+;MAIN="Norton Scheduler",,29184,(r15269887),(r8454143),f2
+;TASK="Procedure",,28164,(r15269887),(r8454143),f2;asdfbdf
+;TERM="TermFinder",,0
+MAIN="Norton Scheduler",,28676,(r15269887),(r8454143)
+TASK="Norton Scheduler",,29188,(r15269887),(r8454143),f2
+TERM="TermFinder",,28672,(r15269887),(r8454143),f2
+
+[CONFIG]
+; MAIN
+BrowseButtons()
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-TASK]
+; TASK
+; BrowseButtons()
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-TERM]
+; TERM

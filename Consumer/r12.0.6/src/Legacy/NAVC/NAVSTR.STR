@@ -1,0 +1,676 @@
+// Copyright 1992-1996 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/NAVC/VCS/navstr.stv   1.13   14 Aug 1998 15:25:04   mdunn  $
+//
+// Description:
+//  This is the strings for the DOS NAV main program
+//
+// See Also:
+//***********************************************************************
+// $Log:   N:/NAVC/VCS/navstr.stv  $
+// 
+//    Rev 1.13   14 Aug 1998 15:25:04   mdunn
+// Changes to display the trial period length in the expiration message
+// 
+//    Rev 1.12   13 Jul 1998 11:35:46   JBRENNA
+// Changed the /? help line from "/HEUR[0|1|..." to "/HEUR:[0|1|...". Notice the
+// addition of the ":".
+// 
+//    Rev 1.11   21 Aug 1997 18:53:52   BGERHAR
+// Added /HEUR to command-line help
+// 
+//    Rev 1.10   30 Jul 1997 20:07:32   BGERHAR
+// Wrap long line asking user to insert defs disk and press enter
+// 
+//    Rev 1.9   10 Jul 1997 18:15:02   MKEATIN
+// Now we tell the user to press ENTER after inserting his defs.
+// 
+//    Rev 1.8   10 Jul 1997 14:03:48   MKEATIN
+// Added SZ_LICENSEEXPIRED for the trial version.
+// 
+//    Rev 1.7   09 Jul 1997 10:39:32   MKEATIN
+// Changed "Virus Definitions" to "Norton AntiVirus Definitions".
+// 
+//    Rev 1.6   20 Jun 1997 14:14:42   MKEATIN
+// Changed NAVC to NAVDX
+// 
+//    Rev 1.5   11 Jun 1997 14:53:10   MKEATIN
+// Added /HIMEM
+// 
+//    Rev 1.4   09 Jun 1997 18:35:30   BGERHAR
+// Add AreDefsWild() and misc. clean-up
+// 
+//    Rev 1.3   08 Jun 1997 23:23:44   BGERHAR
+// Clean up filename output during scan
+// 
+//    Rev 1.2   01 Jun 1997 20:34:12   BGERHAR
+// Update definitions/options search logic
+// 
+//    Rev 1.1   12 May 1997 16:03:24   MKEATIN
+// Changed NAVEX.EXP to NAVEX15.EXP
+// 
+// 
+//    Rev 1.0   06 Feb 1997 20:56:40   RFULLER
+// Initial revision
+// 
+//    Rev 1.12   28 Jan 1997 14:02:00   MKEATIN
+// Changed 'NEC' to 'NEC PC-98xx' - to be more specific.
+// 
+//    Rev 1.11   28 Jan 1997 13:59:20   MKEATIN
+// Changed "The program" to "This Program".
+// 
+//    Rev 1.10   28 Jan 1997 10:53:36   MKEATIN
+// Removed a couple of spaces so text would line up.
+// 
+//    Rev 1.9   28 Jan 1997 10:46:08   MKEATIN
+// Fixed return error 13 display for viruses found in files.
+// 
+//    Rev 1.8   27 Jan 1997 17:11:52   MKEATIN
+// Added HELP_ERROR_NEC[]
+// 
+//    Rev 1.7   17 Jan 1997 15:46:28   MKEATIN
+// Added a /PROMPT switch
+// 
+//    Rev 1.6   16 Jan 1997 14:23:58   MKEATIN
+// No change.
+// 
+//    Rev 1.5   15 Jan 1997 13:57:04   MKEATIN
+// Changed 'bypass keys' to 'bypass key'.
+// 
+//    Rev 1.4   13 Jan 1997 18:22:00   MKEATIN
+// Added messages to display if we run on the wrong machine (NEC vs. AT).
+// 
+//    Rev 1.3   09 Jan 1997 15:18:36   MKEATIN
+// Added SZ_DO_NOT_RUN_IN_DOS_BOX[] message.
+// 
+//    Rev 1.2   09 Jan 1997 14:04:48   MKEATIN
+// Added HELP_SCREEN_NEC[]
+// 
+//    Rev 1.1   06 Jan 1997 21:16:34   MKEATIN
+// Added a couple of new strings and rStartup
+// 
+//    Rev 1.0   31 Dec 1996 15:22:02   MKEATIN
+// Initial revision.
+// 
+//    Rev 1.36   30 Dec 1996 20:55:10   JBELDEN
+// correct type
+// 
+//    Rev 1.35   19 Dec 1996 14:49:58   JBELDEN
+// changed boot records to boot record in scanning message.
+// 
+//    Rev 1.34   11 Dec 1996 09:44:16   JBELDEN
+// commented out some of the helperror messages for now.
+// 
+//    Rev 1.33   10 Dec 1996 13:34:04   JBELDEN
+// another change recommended by DOCs
+// 
+//    Rev 1.32   10 Dec 1996 12:27:36   JBELDEN
+// implemented suggestions by documentation.
+// 
+//    Rev 1.31   06 Dec 1996 15:17:52   JBELDEN
+// added string for telling user a reduced virus set is being used.
+// 
+//    Rev 1.30   06 Dec 1996 11:43:38   JBELDEN
+// added virwild.dat
+//
+//    Rev 1.29   04 Dec 1996 11:50:10   JBELDEN
+// removed /nobreak option
+//
+//    Rev 1.28   03 Dec 1996 17:10:22   JBELDEN
+// change mbr message to use drive number instead of letter.
+//
+//    Rev 1.27   03 Dec 1996 13:16:44   JBELDEN
+// added strings for zip scanning
+//
+//    Rev 1.26   02 Dec 1996 19:07:30   JBELDEN
+// aded code for /APPENDLOG switch
+// 
+//    Rev 1.25   27 Nov 1996 11:04:28   JBELDEN
+// changed the description of the cfg switch
+//
+//    Rev 1.24   27 Nov 1996 09:01:34   JBELDEN
+// added message for virus in memory
+//
+//    Rev 1.23   22 Nov 1996 13:26:26   JBELDEN
+// changed size of field for printf for file name being scanned.
+//
+//    Rev 1.21   21 Nov 1996 18:37:44   JBELDEN
+// had to put back buttonrec for rAll*  for /L and /A switch
+// to work
+// 
+//    Rev 1.20   19 Nov 1996 14:09:28   JBELDEN
+// added definitions for /nobeep and /nobreak
+// 
+//    Rev 1.19   14 Nov 1996 15:04:30   JBELDEN
+// cleaned up and removed strings
+// 
+//    Rev 1.17   12 Nov 1996 16:00:54   JBELDEN
+// changed strings used by navdlgerror to be used with printf
+// instead
+//
+//    Rev 1.16   11 Nov 1996 18:58:52   JBELDEN
+// added new error codes to the help screen.
+//
+//    Rev 1.15   11 Nov 1996 14:27:40   JBELDEN
+// changed references to NAV to NAVC
+//
+//    Rev 1.14   08 Nov 1996 15:54:18   JBELDEN
+// remove code that is no longer used
+//
+//    Rev 1.13   16 Oct 1996 12:46:46   JBELDEN
+// removed most of the stuff related to activity logs and
+// printing since they won't be used in TTYSCAN
+//
+//    Rev 1.12   15 Oct 1996 11:55:32   JBELDEN
+// added the /ZIPS and /? switches
+// 
+//    Rev 1.11   14 Oct 1996 11:06:40   JBELDEN
+// chsnged field with for files being scanned to be left aligned
+// with printf.
+// 
+//
+//    Rev 1.10   14 Oct 1996 10:48:54   JBELDEN
+// removed ordninals from strings for ttyscan since switched back
+// to using printf instead of DOSPrint
+//
+//
+//    Rev 1.9   14 Oct 1996 09:46:02   JBELDEN
+// added strings for error messages
+//
+//    Rev 1.8   11 Oct 1996 14:26:32   JBELDEN
+// added switch for logfile removed some others.
+//
+//    Rev 1.7   10 Oct 1996 13:49:12   JBELDEN
+// remove code effected by removeing reports.obj from the project.
+//
+//    Rev 1.6   09 Oct 1996 14:28:40   JBELDEN
+// removed numerous items not used for the TTYSCAN
+//
+//    Rev 1.5   07 Oct 1996 18:09:22   JBELDEN
+// added message for corrupt or missing config files to TTYSCAN
+// messages
+// 
+//    Rev 1.4   04 Oct 1996 15:48:38   JBELDEN
+// added more strings for DOSPrint for TTYSCAN
+// 
+//    Rev 1.3   03 Oct 1996 16:31:00   JBELDEN
+// corrected a few typos and changed a few array names.
+//
+//    Rev 1.2   03 Oct 1996 15:58:12   JBELDEN
+// added several new messages for ttyscan and removed some
+// items that won't be used in this project.
+//
+//    Rev 1.1   03 Oct 1996 14:52:04   JBELDEN
+// added rdoallfiles and changed the nav altered message for
+// ttyscan
+// 
+//    Rev 1.0   02 Oct 1996 14:07:10   JBELDEN
+// Initial revision.
+//***********************************************************************
+
+#include "platform.h"
+#include "xapi.h"
+#include "stddos.h"
+#include "stddlg.h"
+#include "symcfg.h"
+
+#include "ctsn.h"
+
+#include "symalog.h"
+#include "navdprot.h"
+#include "navutil.h"
+#include "menuitem.h"
+#include "defs.h"
+
+
+
+//************************************************************************
+// GLOBAL VARIABLES (often used by many)
+//************************************************************************
+
+char DIALOG_GROUP_END[] = "%g";
+
+#define PROGRAM_NAME_CONSTANT     "Norton AntiVirus Command Line"
+#define NAV_STRING_CONSTANT       "NAVDX"
+
+char SZ_PROGRAM_NAME[]  = PROGRAM_NAME_CONSTANT;
+char SZ_VERSION_STR[]   = "Version 1.0";
+char SZ_VERSION[]       = "";
+char SZ_VERSION_LUIGI[] = "";
+
+
+char SZ_EMPTY[]         = "";
+char SZ_STARS[]         = "*.*";
+
+char SZ_HI_IM_ME[]      = "Norton AntiVirus startup scan...\n";
+char SZ_VMMINIT_FAILED[]= "An error occurred initializing the virtual memory manager.\n" \
+                          "This occurs only in rare situations and may be due to\n" \
+                          "corrupt or missing Norton AntiVirus files. Reinstalling\n" \
+                          "may solve the problem.\n";
+
+char SZ_DO_NOT_RUN_IN_DOS_BOX[] = "This program may not be run in a multitasking DOS box.";
+
+char SZ_RUN_ON_NEC_ONLY[] = "This program runs on NEC PC-98xx computers only.";
+
+char SZ_DO_NOT_RUN_ON_NEC[] = "This program does not run on NEC PC-98xx computers.";
+
+char SZ_BYPASSED[]      = "NAVDX startup scan skipped (bypass key detected).\n";
+
+char SZ_INSERT_DEFS_DISK[] = "Please insert your \"Norton AntiVirus Definitions Disk 1\" in drive %c:\nand press ENTER...\nPress ESC to exit.\n";
+
+char SZ_REPAIR_DELETE_CONTINUE[] = "R)epair, D)elete, C)ontinue?";
+
+char SZ_OPTSDAT_FAILED[] =           // Not startup mode
+    {
+"\nA Norton AntiVirus configuration file is corrupt or\n\
+could not be found. You may need to restore NAVOPTS.DAT\n\
+from your original disks."
+    };
+
+char SZ_STARTDAT_FAILED[] =           // Not startup mode
+    {
+"\nA Norton AntiVirus configuration file is corrupt or\n\
+could not be found. You may need to restore NAVSTART.DAT\n\
+from your original disks."
+    };
+
+ButtonsRec buEllipses =
+    {
+    NULL,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD | NO_DEFAULT,
+    0,                                  // Value - not used
+    0, 0,                               // Row, col
+    0, 0,                               // Pad, gap
+    };
+
+CheckBoxRec rAllNetCB =
+    {
+    "",
+    USE_PAD,
+    0,
+    1,
+    };
+
+CheckBoxRec rAllHardCB =
+    {
+    "",
+    USE_PAD,
+    0,
+    1,
+    };
+
+CheckBoxRec rAllFlopCB =
+    {
+    "",
+    USE_PAD,
+    0,
+    1,
+    };
+
+//-----------------------------------------------------------------------
+// Program name/version and "/?" Help text
+//-----------------------------------------------------------------------
+
+VersionRec PROGRAM_NAME =
+    {
+    PROG_VERSION_FLAG,
+    SZ_PROGRAM_NAME
+    };
+
+char PRODUCT_COPYRIGHT[] = "Copyright 1993-1996 by Symantec Corporation";
+
+
+VersionRec PRODUCT_NAME =
+    {
+    PROD_VERSION_FLAG,
+    SZ_VERSION_STR,
+    SZ_VERSION
+    };
+
+#ifdef NAV_PREVIEW
+char SZ_LICENSEEXPIRED[] =
+    "\nNorton AntiVirus has kept your PC virus-free for the\n"
+    "last %lu days - wouldn't you like it to stay that way?\n\n"
+    "Get your fully licensed copy of Norton AntiVirus today!\n"
+    "Visit www.symantec.com to purchase online, or contact\n"
+    "your favorite local software reseller, your Symantec sales\n"
+    "representative or, in the USA, call 1-800-277-3948 dept. D142.\n\n";
+#endif
+
+char szProductEnvVar[]          = "NAVDX";
+char szProductFileName[]        = NAV_STRING_CONSTANT;
+char SZ_PAUSE[]                 = "*PAUSE*";
+
+char *FILELIST_NAVC_OPTIONS [] =        // List of required NAVC options files
+    {
+    "NAVCOPTS.DAT",
+    "EXCLUDE.DAT",
+    "EXCLUDEL.DAT",
+    SZ_EMPTY
+    };
+
+char *FILELIST_OPTIONS [] =              // List of required options files
+    {
+    "NAVOPTS.DAT",
+    "NAVSTART.DAT",
+    "EXCLUDE.DAT",
+    "EXCLUDEL.DAT",
+    SZ_EMPTY
+    };
+
+char *FILELIST_DEFINITIONS [] =         // List of required definitions files
+    {
+    "VIRSCAN1.DAT",
+    "VIRSCAN2.DAT",
+    "VIRSCAN3.DAT",
+    "VIRSCAN4.DAT",
+    "NAVEX15.EXP",
+    SZ_EMPTY
+    };
+
+char *FILELIST_WILDDEFS [] =            // List of required wild set def files
+    {
+    "VIRWILD1.DAT",
+    "VIRWILD2.DAT",
+    "VIRWILD3.DAT",
+    "VIRWILD4.DAT",
+    //"NAVEX15.EXP",                    // (Might be WILDEX15.DAT)
+    SZ_EMPTY
+    };
+
+char *FILELIST_RESQDEFS [] =            // List of required RESCUE defs files
+    {
+    "RESQLOC.DAT",
+    SZ_EMPTY
+    };
+
+char *HELP_SCREEN [] =
+    {
+    "Find and remove viruses in files, directories, and drives.\n\n",
+    NAV_STRING_CONSTANT" [pathname] [options]\n",
+//    "Options\n",
+    "  pathname          Any valid drive, directory, file, or combination of items.\n",
+    "  /?                Display this help screen.\n",
+    "  /A or /L          Scan All drives or Local drives. A: and B: are skipped.\n",
+    "  /B[+|-]           Enable or disable scanning of boot records.\n",
+    "  /BOOT             Only scan the boot sectors of specified drives.\n",
+    "  /M[+|-]           Enable or disable scanning of memory.\n",
+    "  /MEM              Only scan memory.\n",
+    "  /HEUR:[0|1|2|3]   Set Bloodhound(tm) sensitivity. (0 disables)\n",
+#ifndef NAVSCAN
+    "  /S[+|-]           Enable or disable scanning subdirectories.\n",
+    "  /REPAIR           Repair infected files automatically.\n",
+    "  /DELETE           Delete infected files automatically.\n",
+    "  /PROMPT           Prompt for repair or delete on each infected file.\n",
+    "  /HALT             Halt the system when a virus is found.\n",
+    "  /CFG:[directory]  Specifies the directory containing Norton AntiVirus\n",
+    "                    configuration files.\n",
+    "  /LOG:file         Create a log file.\n",
+    "  /APPENDLOG:file   Append to a log file.\n",
+    "  /DOALLFILES       Scan all files, not just executables.\n",
+    "  /ZIPS             Scan files in compressed files.\n",
+#endif  // NAVSCAN
+//    "  /NOBREAK          Disable Ctrl-C / Ctrl-Break during scanning.\n",
+    "  /NOBEEP           Do not generate any sound.\n",
+    "  /HELPERROR        List all possible DOS errorlevels "NAV_STRING_CONSTANT" returns.\n",
+    SZ_EMPTY
+    };
+
+char *HELP_SCREEN_NEC [] =
+    {
+    "Find and remove viruses in files, directories, and drives.\n\n",
+    NAV_STRING_CONSTANT" [pathname] [options]\n",
+//    "Options\n",
+    "  pathname          Any valid drive, directory, file, or combination of items.\n",
+    "  /?                Display this help screen.\n",
+    "  /A                Scan All drives. Floppies are skipped.\n",
+    "  /L                Scan all Local drives. Floppies are skipped.\n",
+//    "  /B[+|-]           Enable or disable scanning of boot records.\n",
+//    "  /BOOT             Only scan the boot sectors of specified drives.\n",
+    "  /M[+|-]           Enable or disable scanning of memory.\n",
+    "  /MEM              Only scan memory.\n",
+#ifndef NAVSCAN
+    "  /S[+|-]           Enable or disable scanning subdirectories.\n",
+    "  /REPAIR           Repair infected files automatically.\n",
+    "  /DELETE           Delete infected files automatically.\n",
+    "  /PROMPT           Prompt to repair or delete on each infected file.\n",
+    "  /HALT             Halt the system when a virus is found.\n",
+    "  /CFG:[directory]  Specifies the directory containing Norton AntiVirus\n",
+    "                    configuration files.\n",
+    "  /LOG:file         Create a log file.\n",
+    "  /APPENDLOG:file   Append to a log file.\n",
+    "  /DOALLFILES       Scan all files, not just executables.\n",
+    "  /ZIPS             Scan files in compressed files.\n",
+#endif  // NAVSCAN
+//    "  /NOBREAK          Disable Ctrl-C / Ctrl-Break during scanning.\n",
+    "  /NOBEEP           Do not generate any sound.\n",
+    "  /HELPERROR        List all possible DOS errorlevels "NAV_STRING_CONSTANT" returns.\n",
+    SZ_EMPTY
+    };
+
+
+char *HELPERR_SCREEN [] =
+    {
+#ifndef NAVSCAN
+    "DOS errorlevels "NAV_STRING_CONSTANT" returns.\n\n",
+    "    0  No errors occurred and no viruses were found.\n",
+//    "    5  Insufficient memory to load program or complete operation.\n",
+//    "    6  An internal program error has occurred: out of memory error.\n",
+//    "    8  A file required to run NAVDX, such as VIRSCAN.DAT, is missing.\n",
+//    "    9  Incompatible or unrecognized options or option arguments were\n",
+//    "       specified in the command line.\n",
+    "   10  A virus was found in memory.\n",
+    "   11  An internal program error occurred.\n",
+//    "   12  An error occurred while attempting to remove a virus.\n",
+//    "       NAVDX was unable to remove the virus.\n",
+    "   13  One or more viruses were found in the master boot record, boot\n",
+    "       sector, or files.\n",
+    "   15  NAVDX self-check failed; it may be infected or damaged.\n",
+//    "   19  Multiple viruses were found and eliminated.\n",
+//    "  100+ Operating system error; NAVDX adds 100 to the original error number.\n",
+    "  102  CTRL-C or CTRL-BREAK was used to interrupt the Scan.\n",
+#endif
+    SZ_EMPTY
+    };
+
+char *HELPERR_SCREEN_NEC [] =
+    {
+#ifndef NAVSCAN
+    "DOS errorlevels "NAV_STRING_CONSTANT" returns.\n\n",
+    "    0  No errors occurred and no viruses were found.\n",
+//    "    5  Insufficient memory to load program or complete operation.\n",
+//    "    6  An internal program error has occurred: out of memory error.\n",
+//    "    8  A file required to run NAVDX, such as VIRSCAN.DAT, is missing.\n",
+//    "    9  Incompatible or unrecognized options or option arguments were\n",
+//    "       specified in the command line.\n",
+    "   10  A virus was found in memory.\n",
+    "   11  An internal program error occurred.\n",
+//    "   12  An error occurred while attempting to remove a virus.\n",
+//    "       NAVDX was unable to remove the virus.\n",
+    "   13  One or more viruses were found in one or more files.\n",
+    "   15  NAVDX self-check failed; it may be infected or damaged.\n",
+//    "   19  Multiple viruses were found and eliminated.\n",
+//    "  100+ Operating system error; NAVDX adds 100 to the original error number.\n",
+    "  102  CTRL-C or CTRL-BREAK was used to interrupt the Scan.\n",
+#endif
+    SZ_EMPTY
+    };
+
+/*----SKURTZ-----05-25-93 02:49:02pm---------------
+ * Command line switches
+ *-------------------------------------------------*/
+
+CFGTEXTREC rHelpScreen    =  {"?",      CFG_SW_EXACT,};
+CFGTEXTREC rScanAllDrives =  {"A",      CFG_SW_EXACT,};
+CFGTEXTREC rScanLocalDrvs =  {"L",      CFG_SW_EXACT,};
+CFGTEXTREC rScanBootOnOff =  {"B",      CFG_SW_EXACT,};
+CFGTEXTREC rScanBootOnly  =  {"BO",     CFG_SW_MINIMUM,};
+CFGTEXTREC rMemoryScan    =  {"M",      CFG_SW_EXACT,};
+CFGTEXTREC rMemoryOnlyScan=  {"MEM",    CFG_SW_EXACT,};
+CFGTEXTREC rScanHighMem   =  {"HIMEM",  CFG_SW_EXACT,};
+
+CFGTEXTREC rFoundRepairs  =  {"REPA",   CFG_SW_MINIMUM,};
+CFGTEXTREC rFoundDeletes  =  {"DEL",    CFG_SW_MINIMUM,};
+CFGTEXTREC rFoundPrompts  =  {"P",      CFG_SW_MINIMUM,};
+CFGTEXTREC rFoundHaltsCPU =  {"HALT",   CFG_SW_MINIMUM,};
+
+CFGTEXTREC rExportLog     =  {"LOG", CFG_SW_MINIMUM,};
+
+CFGTEXTREC rStartup       =  {"STARTUP",CFG_SW_EXACT,};
+CFGTEXTREC rDefinitions   =  {"CFG",    CFG_SW_MINIMUM,};
+CFGTEXTREC rOptions       =  {"OPT",    CFG_SW_MINIMUM,};
+CFGTEXTREC rHelpErrorLevel=  {"HELPE",  CFG_SW_MINIMUM,};
+CFGTEXTREC rDoAllFiles    =  {"DOAL" ,  CFG_SW_MINIMUM,};
+CFGTEXTREC rZips          =  {"Z",      CFG_SW_MINIMUM,};
+
+CFGTEXTREC rNoBeep        =  {"NOBEEP",  CFG_SW_EXACT,};
+CFGTEXTREC rNoBreak       =  {"NOBREAK", CFG_SW_EXACT,};
+CFGTEXTREC rAppendLog     =  {"APPENDLOG", CFG_SW_EXACT,};
+
+
+
+char  lpszUpdateExcludeError [] =
+    {
+    "Unable to save exclusions list."
+    };
+
+static char * lpszScanDriveText[] =
+    {
+      NULL
+    };
+
+
+
+
+//************************************************************************
+// Virus Information Dlg
+//************************************************************************
+
+char SZ_COM[]                   = ".COM";
+char SZ_EXE[]                   = ".EXE";
+char SZ_SYS[]                   = ".SYS";
+char SZ_FLOPPY[]                = "floppy";
+char SZ_HARD_DISK[]             = "hard disk";
+char SZ_MASTER[]                = "master";
+
+                                        // Likelihood of Virus
+char SZ_COMMON[]                = "common";
+char SZ_RARE[]                  = "rare";
+                                        // Size of Virus ("345 bytes")
+char SZ_BYTES[]                  = "%d bytes";
+
+                                        // Dialog
+char  szVirusInfoTitle[] = "Virus Information";
+
+
+//************************************************************************
+// Activity Log Dlgs
+//************************************************************************
+
+/*---------------05-11-93 02:10:44pm-SKURTZ--------
+ *
+ * Strings for printing various reports
+ *
+ *-------------------------------------------------*/
+
+/* translation note.  These two strings must be the same length. Pad with
+ * spaces if necessary
+ */
+
+char  szYes[]               = "Yes";
+char  szNo[]                = "No ";
+char  szInfectsBootRecord[] = "Boot records";
+char  szInfectsPrograms[]   = "Programs";
+char  szInfectsBoth[]       = "Boot/programs";
+
+
+char  szComments[] = "Comments:";
+
+char  szVLDisplay[] = "Display:  %s1";
+
+char  szVLTitle[] = "Virus name                         Infects";
+
+
+//-----------------------------------------------------------------------
+// The hotkey is different from 'scanSubDirCheckBox' (this is for inoc)
+//-----------------------------------------------------------------------
+CheckBoxRec cxScanSubDir =
+     {
+     "Include ^subdirectories",
+     USE_PAD,
+     TRUE,
+     1,
+     };
+
+// *********************************************************************
+// Strings for TTYSCAN
+//----------------------------------------------------------------------
+
+//------------------------------------------------------------------------
+// Self-Check Strings
+//------------------------------------------------------------------------
+
+char lpszNavAltered[] =
+{
+"The "NAV_STRING_CONSTANT" .EXE file has been altered.  This may\n\
+be due to virus activity.\n\n\
+Please exit all applications  and turn off your computer.\n\
+Then restart your computer from your NAVDX Rescue Disk and\n\
+run "NAV_STRING_CONSTANT".EXE to scan your system for viruses.\n\
+If no virus is found, try reinstalling Norton AntiVirus\n\
+from your original disks.\n"
+};
+
+
+//------------------------------------------------------------------------
+// Scanning Strings
+//------------------------------------------------------------------------
+
+char szScanningMemory[] = { "\nScanning Memory... " };
+char szOK[] = {"OK\n"};
+char szScanningMBR[]  = { "Scanning Master Boot Records... "};
+char szScanningBoot[] = { "Scanning Boot Record... " };
+
+// IPE translation note: gnScanningFileWidth is the number of 
+//                       columns available for the filename. Calculate
+//                       by subtracting 79 from the printable width 
+//                       of szScaningFile. (Do also for gnScanningZipFileWidth)
+
+const int gnScanningFileWidth = 64;     // "Translate gnScanningFileWidth!"
+char szScanningFile[] = { "\rScanning file: %s\r" };
+
+const int gnScanningZipFileWidth = 55;  // "Translate gnScanningZipFileWidth!"   
+char szScanningZipFile[] = { "\rScanning file: %s in file %s\r" };
+                                        // This 'scanning file' is used at the end.
+char szScanningFileEnd[] = { "\rScanning files... DONE" };
+
+char szMBRInfected[]  = { "\nThe master boot record of drive %u is infected with the %s virus.\n" };
+char szBootInfected[] = { "\nThe boot record of drive %c is infected with the %s virus.\n" };
+char szFileInfected[] = { "%s is infected with the %s virus.\n" };
+
+char szMemoryInfected[] = { "\nThe %s virus was found in memory.\n\
+Restart your computer from your NAVDX Rescue Disk and\n\
+run "NAV_STRING_CONSTANT".EXE to scan your system for viruses.\n"};
+
+char szSystemHalted[] = { "\nSystem Halted!\n" };
+
+char szBlankLine[]    = { "\r                                                                               " };
+
+char SZ_ERRORCONFIGFILE[]  = { "\nA Norton AntiVirus configuration file is corrupt or\n\
+could not be found. Reinstall Norton AntiVirus \n\
+from your original disks."
+     };
+
+char szUsingVirWild[] = { "A reduced \"In the wild\" definition set is being used.\n\n" };
+
+//------------------------------------------------------------------------
+// Error Strings
+//------------------------------------------------------------------------
+
+char SZ_OUT_OF_MEMORY[] =
+    {
+    "Out of memory",
+    };
+
+char szLogFileERR[] = { "\nUnable to Create the log file!\n" };

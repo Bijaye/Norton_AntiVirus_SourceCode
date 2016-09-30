@@ -1,0 +1,41 @@
+<html>
+	<head>
+		<title>NAV Scan tasks</title>
+		<meta http-equiv="Content-Language" content="en-us">
+		<meta http-equiv="MSThemeCompatible" content="Yes" />
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<link rel="stylesheet" type="text/css" href="nav2005.css">
+		<script language="Javascript">
+	        // Disable Drag-and-drop support
+            document.ondragstart = function(){return false;}
+        </script>
+	</head>
+
+	<body id="oBody" tabindex=-1 bgcolor=#ffffff onload="parent.taskListLoaded = true" style="margin:0; visibility:hidden">
+		<table id="tableTasks" width="398" cellSpacing="0" cellPadding="0" border="0">
+			<tbody id="oTasks">
+				<!-- Template -->
+				<tr id="oTemplate" style="display:none" onclick="parent.OnItemFocus(this)">
+					<td width="40" id="scanlist_td1"><img id="oTaskIcon" class="navScanTaskIcon" onclick="parent.OnScan(this)" border="0" src="comp.gif" width="20" height="20" title="Select to launch the scan"></td>
+					<td width="275" id="scanlist_td2"><nobr style="width: 275px" id = "nobr1">
+						<a id="oTaskName" class="navTask" onclick="parent.OnScan(this);return false" onfocus="parent.OnItemFocus(this)" href="#" title="Select to launch the scan">Scan</a>
+					</nobr></td>
+					<td width="11" id="oTaskScheduleStatus" style="cursor: default"></td>	<!-- Can be removed. Waiting for a final decision. -->
+					<td width="20" id="scanlist_td3">
+						<a id="oTaskSchedule" title="Schedule" onclick="parent.OnSchedule(this); return false" onfocus="parent.OnItemFocus(this)" href="#" style="visibility:hidden"><img id="oTaskScheduleIcon" class="navScanActionIcon" border="0" src="scheduleOff.gif" width="20" height="20"></a>
+					</td>
+					<td width="20" id="scanlist_td4">
+						<a id="oTaskEdit" title="Edit" onclick="parent.OnEdit(this); return false" onfocus="parent.OnItemFocus(this)" href="#" style="visibility:hidden"><img class="navScanActionIcon" border="0" src="edit.gif" width="20" height="20" id="scanlist_img1"></a>
+					</td>
+					<td width="20" id="scanlist_td5">
+						<a id="oTaskDelete" title="Delete" onclick="parent.OnDelete(this); return false" onfocus="parent.OnItemFocus(this)" href="#" style="visibility:hidden"><img class="navScanActionIcon" border="0" src="delete.gif" width="20" height="20" id="scanlist_img2"></a>
+					</td>
+				</tr>
+				<!-- Separator -->
+				<tr id="oSeparator" style="display:none">
+					<td class="navItemSeparator" colSpan="6" id="scanlist_td6"><img height="1" alt="" src="spacer.gif" width="1" border="0" id="scanlist_img3"></td>
+				</tr>
+			</tbody>
+		</table>
+	</body>
+</html>

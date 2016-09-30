@@ -1,0 +1,1199 @@
+/////////////////////////////////////////////////////////////////////////////
+//  Copyright (c)1997 - Symantec, Peter Norton Computing Group
+/////////////////////////////////////////////////////////////////////////////
+//
+//  $Header:   S:/SETUPBLD/VCS/setup.ruv   1.5   11 Jul 1997 20:11:14   JBRENNA  $
+//
+//  Generic Install Builder Script for InstallShield 5
+//
+//    File Name:  SETUP.RUL
+//
+//  Description:  Script to use for building the install of products
+//
+//       Author:  Bruce Hellstrom       Date:  3-14-97
+//
+//     Comments:  This script can be used to do the preparatory work for the
+//                creation of installations for Norton products.  This setup
+//                builder can fill in the gaps left by the introduction of
+//                InstallShield 5
+//
+//////////////////////////////////////////////////////////////////////////
+
+                                        // Constant declarations.
+
+
+
+declare
+
+#include "setupbld.h"                   // Generic definitions
+#include "sddialog.h"                   // Include script dialog definitions.
+
+#include "prodspec.h"
+
+                                        // Global variable declarations.
+
+    BOOL    bError, bListsExist;
+    LIST    listInfo, listDirs, listFiles;
+    NUMBER  nResult;
+    STRING  szSetupDir, szBasePath;
+    STRING  szCopyError;
+    STRING  szDate, szTime;
+    NUMBER  nvCopyAll, nvCopyMissing;
+
+                                        // Function declarations.
+
+    prototype SetupInstall();
+    prototype SetupScreen();
+    prototype DialogShowSdWelcome();
+    prototype DialogShowSdAskDestPath();
+    prototype DialogShowAskCopyType();
+    prototype DialogShowSdStartCopy();
+    prototype ProcessDirectories();
+    prototype GetDateAndTime();
+    prototype ReCreateIS5Project();
+    prototype CleanUpInstall();
+    prototype RetrieveData();
+    prototype DoTheFileCopy();
+    prototype CreateFileGroups( STRING );
+    prototype DoEnvironmentSubst( STRING, BYREF STRING );
+    prototype SetupEnvironment();
+    prototype GetCopyErrorString( NUMBER, BYREF STRING );
+    prototype KERNEL32.SetEnvironmentVariable( BYREF STRING, BYREF STRING );
+
+
+///////////////////////////////////////////////////////////////////////////////
+//
+//   MAIN PROGRAM
+//
+//      The setup begins here by hiding the visible setup
+//      window.  This is done to allow all the titles, images, etc. to
+//      be established before showing the main window.  The following
+//      logic then performs the setup in a series of steps.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+program
+
+StartHere:
+
+    if ( SetupInstall() < 0 ) then
+        goto end_install;
+    endif;
+
+    Enable( DIALOGCACHE );
+
+Dlg_Start:
+
+
+Dlg_SdWelcome:
+    nResult = DialogShowSdWelcome();
+
+    if (nResult = BACK) then
+        goto Dlg_Start;
+    endif;
+
+Dlg_SdAskDestPath:
+    nResult = DialogShowSdAskDestPath();
+
+    if (nResult = BACK) then
+        goto Dlg_SdWelcome;
+    endif;
+
+Dlg_AskCopyType:
+    nResult = DialogShowAskCopyType();
+
+    if ( nResult = BACK ) then
+        goto Dlg_SdAskDestPath;
+    endif;
+
+Dlg_SdStartCopy:
+    nResult = DialogShowSdStartCopy();
+
+    if (nResult = BACK) then
+        goto Dlg_AskCopyType;
+    endif;
+
+    Disable( DIALOGCACHE );
+
+    if ( ProcessDirectories() < 0 ) then
+        goto end_install;
+    endif;
+
+    GetDateAndTime();
+
+    if ( ReCreateIS5Project() < 0 ) then
+        goto end_install;
+    endif;
+
+    nResult = DoTheFileCopy();
+
+    if ( ( nResult < 0 ) || ( nResult = MISSING_FILES ) ) then
+        goto end_install;
+    endif;
+
+    if ( CreateFileGroups( FILE_GRP_SRC ) < 0 ) then
+        goto end_install;
+    endif;
+
+    goto InstallFinish;
+
+end_install:
+
+    bError = TRUE;
+
+InstallFinish:
+
+    SetStatusWindow( 100, "Finished" );
+    CleanUpInstall();
+    exit;
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetupInstall
+//
+//  Purpose:  This function will set up the beginnings of the process
+//
+//
+//    Input:  none
+//
+//  Returns:  0 always
+//
+// Comments:
+//////////////////////////////////////////////////////////////////////////
+
+function SetupInstall()
+    NUMBER      nResult;
+    STRING      szTargetDirOverride;
+begin;
+                                        // Set up the installation screen.
+    Enable( DEFWINDOWMODE );
+    SetupScreen();
+    SetDialogTitle(DLG_MSG_SEVERE, STR_ERRMSG_CAPTION );
+    SetDialogTitle(DLG_MSG_WARNING, STR_DIALOG_CAPTION );
+    SetDialogTitle(DLG_MSG_INFORMATION, STR_DIALOG_CAPTION);
+    SetDialogTitle(DLG_ASK_OPTIONS, STR_DIALOG_CAPTION);
+
+                                        // Initialize some globals
+    if ( GetEnvVar (ENV_TARGETDIR_OVERRIDE, szTargetDirOverride) = 0 ) then
+        TARGETDIR = szTargetDirOverride;
+    else
+        TARGETDIR = APPBASE_PATH;
+    endif;
+
+    szBasePath = TARGETDIR;
+    szSetupDir = SRCDIR;
+    nvCopyAll = TRUE;
+    nvCopyMissing = FALSE;
+
+    nResult = SetupEnvironment();
+
+    return( nResult );
+
+end;
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetupScreen
+//
+//  Purpose:  This function will set up the screen look.  This includes
+//            colors, fonts, text to be displayed, etc.
+//
+//
+//    Input:  none
+//
+//  Returns:  0 always
+//
+// Comments:
+//////////////////////////////////////////////////////////////////////////
+
+function SetupScreen()
+        STRING szBitmap;
+        STRING svResult;
+        NUMBER nvDx, nvDy;
+        NUMBER nvNumColors;
+begin
+        Enable( INDVFILESTATUS );
+
+        GetExtents( nvDx, nvDy );
+
+        SetColor( BACKGROUND, BK_SOLIDBLUE ); // Solid blue background.
+        SetFont( FONT_TITLE, 0, "Arial" );
+        SetTitle( STR_MAINWIND_CAPTION, 28, YELLOW ); // Caption bar text.
+
+        GetSystemInfo(COLORS, nvNumColors, svResult);
+
+        if ( nvNumColors >= 256 ) then
+            Enable( BITMAP256COLORS );
+        endif;
+
+
+        Enable( BACKGROUND );
+        Enable( BITMAPFADE );
+
+        //PlaceBitmap( SUPPORTDIR ^ "NUNT16.BMP", 1, 10, 10, UPPER_LEFT | BITMAPICON );
+        PlaceWindow( STATUS, 20, 20, LOWER_RIGHT );
+        PlaceWindow( BILLBOARD, 15, 15, UPPER_LEFT );
+
+        Disable( BITMAPFADE );
+        //Disable( BACKGROUNDCAPTION );
+end;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: DialogShowSdWelcome                                             //
+//                                                                           //
+//  Purpose: This function handles the standard welcome dialog.              //
+//                                                                           //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function DialogShowSdWelcome()
+    NUMBER nResult;
+begin
+
+    SdProductName( PRODUCT_NAME );
+    nResult = SdWelcome( STR_DIALOG_CAPTION, STR_WELCOME );
+
+    return nResult;
+end;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: DialogShowSdAskDestPath                                         //
+//                                                                           //
+//  Purpose: This function asks the user for the destination directory.      //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function DialogShowSdAskDestPath()
+    NUMBER nResult;
+begin
+
+    nResult = SdAskDestPath( STR_DIALOG_CAPTION, STR_ASKPATH, szBasePath, 0 );
+
+    if ( nResult != BACK ) then
+        StrRemoveLastSlash(szBasePath);
+        TARGETDIR = szBasePath;
+
+        if ( ExistsDir( szBasePath ) != EXISTS ) then
+            CreateDir( szBasePath );
+        endif;
+    endif;
+
+    return nResult;
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: DialogShowAskCopyType                                           //
+//                                                                           //
+//  Purpose: This function asks the user for the type of file copy.          //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function DialogShowAskCopyType()
+    NUMBER      nResult;
+begin
+
+    nResult = AskOptions( EXCLUSIVE, STR_COPYOPT_MSG, STR_OPT1_FULLCOPY,
+                          nvCopyAll, STR_OPT2_PARTCOPY, nvCopyMissing );
+    return( nResult );
+
+end;
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: DialogShowSdStartCopy                                           //
+//                                                                           //
+//   Purpose: This function displays the dialog preceding the start of the   //
+//            file copying process.                                          //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function DialogShowSdStartCopy()
+    LIST        listInfo;
+    NUMBER      nResult;
+    STRING      szItem, szMsg;
+begin
+
+    listInfo = ListCreate( STRINGLIST );
+
+    ListAddString( listInfo, STR_CONFIRM_BASEDIR, AFTER );
+    ListAddString( listInfo, STR_DEFTAB + szBasePath, AFTER );
+    ListAddString( listInfo, "", AFTER);
+
+    ListAddString( listInfo, STR_CONFIRM_DEFACTIONS, AFTER);
+
+    if ( nvCopyAll = TRUE ) then
+        ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_COPYALL, AFTER);
+    else
+        ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_COPYMISS, AFTER);
+    endif;
+
+    ListAddString( listInfo, "", AFTER);
+
+    ListAddString( listInfo, STR_CONFIRM_ACTIONSTXT, AFTER);
+    ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_CREATDIRS, AFTER);
+    ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_COPYFILES, AFTER);
+    ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_SETDATES, AFTER);
+    ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_FINISH, AFTER);
+    ListAddString( listInfo, STR_DEFTAB + STR_CONFIRM_CREATEFG, AFTER);
+
+
+                                        // Show SdStartCopy dialog to confirm file
+                                        // transfer operation.
+
+    szMsg = STR_CONFIRM_COPYMSG;
+
+    nResult = SdStartCopy( STR_DIALOG_CAPTION, szMsg, listInfo );
+    ListDestroy( listInfo );
+
+    return( nResult );
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  ProcessDirectories
+//
+//  Purpose:  This function retrieves the directory structure and tries
+//            to create the directories for the setup build process
+//
+//    Input:  NONE
+//
+//  Returns:  0 if okay, <0 if an error occurs
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function ProcessDirectories()
+    STRING      szDir, szTempStr;
+    NUMBER      nResult, nItem;
+begin
+
+    SetStatusWindow( 0, "Retrieving data..." );
+    Disable( FEEDBACK_FULL );
+    Enable( STATUS );
+
+    nResult = RetrieveData();
+
+    if ( nResult >= 0 ) then
+        SetStatusWindow( 5, "Creating directories..." );
+
+                                    // Create the variable directories from
+                                    // the file direct.txt
+        nResult = 0;
+        nItem = ListGetFirstString( listDirs, szDir );
+
+        while( ( nItem != END_OF_LIST ) && ( nResult = 0 ) )
+            szTempStr = szBasePath ^ szDir;
+
+            if ( ExistsDir( szTempStr ) != EXISTS ) then
+                if ( CreateDir( szTempStr ) < 0 ) then
+                    SprintfBox( SEVERE, STR_ERRMSG_CAPTION,
+                                STR_ERR_CANTMKDIR, szTempStr );
+                    nResult = -1;
+                endif;
+            endif;
+
+            nItem = ListGetNextString( listDirs, szDir );
+        endwhile;
+    endif;
+
+    return( nResult );
+end;
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: GetDateAndTime                                                  //
+//                                                                           //
+//   Purpose: This function retrieve the date and time to stamp files with   //
+//            from the environment or set values                             //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function GetDateAndTime()
+    LIST        listTemp;
+    NUMBER      nResult;
+    STRING      szTempStr;
+begin
+
+    if ( GetEnvVar( ENV_DATE, szDate ) < 0 ) then
+        GetSystemInfo( DATE, nResult, szTempStr );
+
+        listTemp = ListCreate( STRINGLIST );
+        StrGetTokens( listTemp, szTempStr, "-" );
+
+        ListGetFirstString( listTemp, szDate );
+        ListGetNextString( listTemp, szTempStr );
+        szDate = szDate + "/" + szTempStr;
+        ListGetNextString( listTemp, szTempStr );
+        szDate = szTempStr + "/" + szDate;
+        ListDestroy( listTemp );
+    endif;
+
+    if ( GetEnvVar( ENV_TIME, szTime ) < 0 ) then
+        szTime = DEF_TIME;
+    endif;
+
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: ReCreateIS5Project                                              //
+//                                                                           //
+//   Purpose: This function unzips the IS5 project file and clears out any   //
+//            temporary holding files from the empty directories             //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function ReCreateIS5Project()
+    LIST        listTemp;
+    NUMBER      nResult, nListRet;
+    STRING      szTempStr, szProgram, svPhFile;
+begin
+
+    nResult = 0;
+    szProgram = ZIP_LOCATION ^ ZIPPED_IS5FILE;
+    szTempStr = "/auto " + szBasePath ^ ZIP_DEST;
+    SetStatusWindow( 10, "Unzipping InstallShield 5 Project File..." );
+
+    LaunchAppAndWait( szProgram, szTempStr, WAIT );
+
+    szTempStr = szBasePath ^ ZIP_DEST;
+
+    if ( FindFile( szTempStr, PROJ_NAME, szProgram ) < 0 ) then
+        SprintfBox( SEVERE, STR_ERRMSG_CAPTION,
+                    STR_ERR_UNZIPPROJ, ZIPPED_IS5FILE );
+        nResult = -1;
+    else
+                                    // Find all the ph.txt files and delete them
+
+        listTemp = ListCreate( STRINGLIST );
+        szTempStr = szBasePath ^ ZIP_DEST;
+
+        nListRet = FindAllFiles( szTempStr, PLACEHOLDER_FILE, svPhFile, RESET );
+
+        while( nListRet = 0 )
+            ListAddString( listTemp, svPhFile, AFTER );
+            nListRet = FindAllFiles( szTempStr, PLACEHOLDER_FILE, svPhFile, CONTINUE );
+        endwhile;
+
+        if ( ListCount( listTemp ) > 0 ) then
+            VarSave( SRCTARGETDIR );
+            nListRet = ListGetFirstString( listTemp, svPhFile );
+
+            while( nListRet != END_OF_LIST )
+                ParsePath( szTempStr, svPhFile, PATH );
+                TARGETDIR = szTempStr;
+                ParsePath( szTempStr, svPhFile, FILENAME );
+                DeleteFile( szTempStr );
+                nListRet = ListGetNextString( listTemp, svPhFile );
+            endwhile;
+
+            VarRestore( SRCTARGETDIR );
+        endif;
+
+        ListDestroy( listTemp );
+    endif;
+
+    return( nResult );
+
+end;
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+// Function: CleanUpInstall                                                  //
+//                                                                           //
+//  Purpose: This cleans up the setup.  Anything that should                 //
+//           be released or deleted at the end of the setup should           //
+//           be done here.                                                   //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+function CleanUpInstall()
+    BOOL        bLaunchErr;
+    NUMBER      nvType, nvSize;
+    STRING      szProgram, szTempStr;
+begin
+
+    bLaunchErr = FALSE;
+
+    if ( bListsExist ) then
+        ListDestroy( listDirs );
+        ListDestroy( listFiles );
+    endif;
+
+    if ( !bError ) then
+        if ( AskYesNo( STR_INSTALL_COMPLETE, YES ) = YES ) then
+            RegDBSetDefaultRoot( HKEY_LOCAL_MACHINE );
+
+            if ( RegDBGetKeyValueEx( "\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\IDE.EXE",
+                                     "", nvType, szProgram, nvSize ) < 0 ) then
+                bLaunchErr = TRUE;
+            else
+                szTempStr = szBasePath ^ ZIP_DEST ^ PROJ_NAME;
+
+                if ( LaunchApp( szProgram, szTempStr ) < 0 ) then
+                    bLaunchErr = TRUE;
+                endif;
+            endif;
+
+            if ( bLaunchErr = TRUE ) then
+                SprintfBox( SEVERE, STR_ERRMSG_CAPTION,
+                            STR_ERR_LAUNCHIDE, szTempStr );
+            endif;
+        endif;
+    else
+        MessageBox( STR_INSTALL_INCOMPLETE, INFORMATION );
+    endif;
+
+end;
+
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  RetrieveData
+//
+//  Purpose:  This function retrieves the directory structure and file
+//            data for the setup process
+//
+//    Input:  NONE
+//
+//  Returns:  0 if okay, <0 if an error occurs
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function RetrieveData()
+    BOOL            bDone;
+    LIST            listTemp;
+    STRING          svNewStr, szTempStr, szLine;
+    NUMBER          nRet, nCount, nCtr, nvHandle;
+begin
+
+    nRet = -1;
+    bDone = FALSE;
+    listDirs = ListCreate( STRINGLIST );
+
+    OpenFileMode( FILE_MODE_NORMAL );
+
+                                        // Open directory file
+
+    if ( OpenFile( nvHandle, szSetupDir, FILE_DIRECTORIES ) < 0 ) then
+        SprintfBox( SEVERE, STR_ERRMSG_CAPTION, STR_ERR_NODIRFILE,
+                    szSetupDir ^ FILE_DIRECTORIES );
+        bDone = TRUE;
+    else
+                                        // Add the directories to a list
+
+        while( GetLine( nvHandle, szLine ) = 0 )
+            ListAddString( listDirs, szLine, AFTER );
+        endwhile;
+
+        CloseFile( nvHandle );
+
+                                        // Open the file information file
+
+        if ( OpenFile( nvHandle, szSetupDir, FILE_COPYINFO ) < 0 ) then
+            SprintfBox( SEVERE, STR_ERRMSG_CAPTION, STR_ERR_NOINFOFILE,
+                        szSetupDir ^ FILE_COPYINFO );
+            ListDestroy( listDirs );
+            bDone = TRUE;
+        else
+            listFiles = ListCreate( STRINGLIST );
+
+                                        // Add each non-blank line to a list.
+                                        // separate into the source file and the
+                                        // destination directories
+
+            while( ( GetLine( nvHandle, szLine ) = 0 ) && !bDone )
+                listTemp = ListCreate( STRINGLIST );
+
+                                        // Break the line into it's 4 parts in the
+                                        // temporary string list
+                                        
+                if ( StrLength( szLine ) > 0 ) then
+                    StrGetTokens( listTemp, szLine, "," );
+
+                    nCount = ListCount( listTemp );
+                    
+                                        // The data file has 4 fields:
+                                        // Source path/file, dest directory,
+                                        // dest filename, No Date/Time stamp flag
+
+                    if ( nCount != 4 ) then
+                        SprintfBox( SEVERE, STR_ERRMSG_CAPTION, STR_ERR_BADINFOFILE,
+                                    szSetupDir ^ FILE_COPYINFO, szLine );
+                        ListDestroy( listDirs );
+                        ListDestroy( listFiles );
+                        bDone = TRUE;
+                    else
+                                        // Add the four parts to the main file list
+                                        
+                        ListGetFirstString( listTemp, szTempStr );
+                        ListAddString( listFiles, szTempStr, AFTER );
+                        ListGetNextString( listTemp, szTempStr );
+                        ListAddString( listFiles, szTempStr, AFTER );
+                        ListGetNextString( listTemp, szTempStr );
+                        ListAddString( listFiles, szTempStr, AFTER );
+                        ListGetNextString( listTemp, szTempStr );
+                        ListAddString( listFiles, szTempStr, AFTER );
+                    endif;
+                endif;
+
+                ListDestroy( listTemp );
+            endwhile;
+
+            CloseFile( nvHandle );
+
+        endif;
+
+                                        // Do environment substitution
+
+        if ( !bDone ) then
+            nCount = ListCount( listFiles );
+            nCtr = 0;
+
+            while( nCtr < nCount )
+                                        // Set the current index to the source path/file
+                                        
+                ListSetIndex( listFiles, nCtr );
+                ListCurrentString( listFiles, szTempStr );
+                
+                                        // Get the new expanded string
+
+                DoEnvironmentSubst( szTempStr, svNewStr );
+                
+                                        // Set it back into the list
+
+                ListSetIndex( listFiles, nCtr );
+                ListSetCurrentString( listFiles, svNewStr );
+                
+                                        // Get to the filename
+                nCtr = nCtr + 2;
+                ListSetIndex( listFiles, nCtr );
+                ListCurrentString( listFiles, szTempStr );
+                
+                                        // Get the new expanded string
+
+                DoEnvironmentSubst( szTempStr, svNewStr );
+                
+                                        // Set it back into the list
+
+                ListSetIndex( listFiles, nCtr );
+                ListSetCurrentString( listFiles, svNewStr );
+                nCtr = nCtr + 2;
+            endwhile;
+
+            nRet = 0;
+        endif;
+    endif;
+
+    if ( nRet = 0 ) then
+        bListsExist = TRUE;
+    endif;
+
+    return( nRet );
+
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  DoTheFileCopy
+//
+//  Purpose:  This function copies the files from their build locations
+//            to the directories defined.
+//
+//    Input:  NONE
+//
+//  Returns:  0 if okay, <0 if a fatal error occurs
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function DoTheFileCopy()
+    LIST    listTemp;
+    BOOL    bDoCopy, bStampDate;
+    NUMBER  nRet, nCount, nCtr, nStatus, nInc;
+    NUMBER  nResult, nCopyRet;
+    STRING  szSrcFile, szDestFile;
+    STRING  szNDT, szStatusText, szMsg, szTempStr;
+    STRING  szSource, szTarget;
+begin
+
+    nRet = 0;
+    bDoCopy = TRUE;
+    bStampDate = TRUE;
+                                        // Save the current source/target dir
+    VarSave( SRCTARGETDIR );
+    TARGETDIR = szBasePath;
+    szCopyError = szBasePath ^ FILE_COPYERR;
+    SetStatusWindow( 15, "Copying files..." );
+
+                                        // Delete the copy error file
+    DeleteFile( FILE_COPYERR );
+
+                                        // Setup for the progress bar
+
+    nCount = ListCount( listFiles );
+    nCtr = 0;
+    nStatus = 1500;
+    nInc = 7000 / nCount;
+
+    listTemp = ListCreate( STRINGLIST );
+    nResult = ListGetFirstString( listFiles, szTempStr );
+
+    while( ( nResult != END_OF_LIST ) && ( nRet = 0 ) )
+        bDoCopy = TRUE;
+
+                                        // Split up the file's path and filename
+
+        ParsePath( szSource, szTempStr, PATH );
+        SRCDIR = szSource;
+        ParsePath( szSrcFile, szTempStr, FILENAME );
+
+                                        // Get the destination dir and dest
+                                        // filename
+
+        nResult = ListGetNextString( listFiles, szTarget );
+        nResult = ListGetNextString( listFiles, szDestFile );
+
+                                        // Check to see if we need to stamp the
+                                        // date/time on this file
+
+        ListGetNextString( listFiles, szNDT );
+
+        if ( StrCompare( szNDT, "0" ) = 0 ) then
+            bStampDate = TRUE;
+        else
+            bStampDate = FALSE;
+        endif;
+
+                                        // Copy the file
+
+        TARGETDIR = szBasePath ^ szTarget;
+
+        SetStatusWindow( -1, "Copying file" );
+        StatusUpdate( ON, ( nStatus + ( nInc * nCtr ) ) / 100 );
+
+        if ( nvCopyMissing = TRUE ) then
+            if ( FindFile( TARGETDIR, szDestFile, szTempStr ) = 0 ) then
+                nCopyRet = 0;
+                bDoCopy = FALSE;
+            endif;
+        endif;
+
+        if ( bDoCopy ) then
+            nCopyRet = CopyFile( szSrcFile, szDestFile );
+        else
+            szStatusText = "Skipping file " + szSrcFile;
+            SetStatusWindow( ( nStatus + ( nInc * nCtr ) ) / 100, szStatusText );
+        endif;
+
+
+        if ( nCopyRet < 0 ) then
+            switch( nCopyRet )
+                case COPY_ERR_OPENINPUT:
+                    ListAddString( listTemp, SRCDIR ^ szSrcFile, AFTER );
+
+                default:
+                    GetCopyErrorString( nCopyRet, szTempStr );
+                    SprintfBox( SEVERE, STR_ERRMSG_CAPTION, STR_ERR_COPYERR,
+                                SRCDIR ^ szSrcFile, nCopyRet, szTempStr );
+                    ListDestroy( listTemp );
+                    nRet = -1;
+            endswitch;
+        else                            // Stamp the date/time on the file
+            if ( bStampDate ) then
+                SetFileInfo( TARGETDIR ^ szDestFile, FILE_DATE, 0, szDate );
+                SetFileInfo( TARGETDIR ^ szDestFile, FILE_TIME, 0, szTime );
+            endif;
+        endif;
+
+        nResult = ListGetNextString( listFiles, szTempStr );
+        nCtr = nCtr + 4;
+    endwhile;
+
+                                        // Restore the source/target directory
+    VarRestore( SRCTARGETDIR );
+
+
+    if ( ( nRet = 0 ) && ( ListCount( listTemp ) > 0 ) ) then
+        ListWriteToFile( listTemp, szBasePath ^ FILE_COPYERR );
+        szMsg = STR_LIST_COPYERRS + szBasePath ^ FILE_COPYERR;
+
+        Disable( BACKBUTTON );
+
+        SdStartCopy( STR_DIALOG_CAPTION, szMsg, listTemp );
+        nRet = MISSING_FILES;
+
+        Enable( BACKBUTTON );
+    endif;
+
+    ListDestroy( listTemp );
+
+    return( nRet );
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  CreateFileGroups()
+//
+//  Purpose:  This function will generate the file group files for
+//            use with InstallShield5
+//
+//    Input:  STRING    Directory to signify a file group dir
+//
+//  Returns:  0 if okay, <0 if an error occurs
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function CreateFileGroups( szDataDir )
+    BOOL    bProcessed;
+    STRING  szPath, szSearch, szDir, szNum;
+    STRING  szFindDir, szFile, svFound, szLine;
+    NUMBER  nRet, nResult, nPos, nLen, nDirLen;
+    NUMBER  nvHandle, nOp, nFileCtr;
+begin
+
+    nRet = 0;
+    bProcessed = FALSE;
+    szSearch = szDataDir + "\\";
+    nLen = StrLength( szSearch );
+
+#ifdef _DEBUG
+    SprintfBox( INFORMATION, "Debug", "SearchString = %s", szSearch );
+#endif
+
+    SetStatusWindow( 90, "Creating File Group Files..." );
+
+    nResult = ListGetFirstString( listDirs, szDir );
+
+    while( ( nResult != END_OF_LIST ) && ( nRet = 0 ) )
+        nPos = StrFind( szDir, szSearch );
+        nDirLen = StrLength( szDir );
+
+        if ( ( nPos >= 0 ) && ( nDirLen > ( nPos + nLen ) ) ) then
+            StrSub( szFile, szDir, nPos + nLen, nDirLen - ( nPos + nLen ) );
+            szFile = szFile + FILE_GRP_EXT;
+
+            szFindDir = szBasePath ^ szDir;
+            szPath = szBasePath ^ ZIP_DEST ^ FILE_GRP_DEST;
+
+            OpenFileMode( FILE_MODE_APPEND );
+
+            if ( CreateFile( nvHandle, szPath, szFile ) = 0 ) then
+                nOp = RESET;
+                nFileCtr = 0;
+
+                szLine = FILE_GRP_TOPDIR;
+                WriteLine( nvHandle, szLine );
+
+                while( FindAllFiles( szFindDir, "*.*", svFound, nOp ) = 0 )
+                    NumToStr( szNum, nFileCtr );
+                    szLine = "file" + szNum + "=" + svFound;
+                    WriteLine( nvHandle, szLine );
+
+                    nOp = CONTINUE;
+                    nFileCtr = nFileCtr + 1;
+                endwhile;
+
+                WriteLine( nvHandle, FILE_GRP_LINE1 );
+                WriteLine( nvHandle, FILE_GRP_LINE2 );
+                WriteLine( nvHandle, FILE_GRP_LINE3 );
+                CloseFile( nvHandle );
+                bProcessed = TRUE;
+            else
+                nRet = -1;
+            endif;
+        endif;
+
+        nResult = ListGetNextString( listDirs, szDir );
+    endwhile;
+
+    if ( !bProcessed ) then
+        nRet = -1;
+        MessageBox( STR_ERR_FILEGROUP, SEVERE );
+    endif;
+
+    return( nRet );
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  DoEnvironmentSubst()
+//
+//  Purpose:  This function will substitute environment variable
+//            values into a passed in string
+//
+//    Input:  STRING    String with environment variables (%variable%)
+//            STRING    String to hold the processed string
+//
+//  Returns:  0 if okay, <0 if no substitutions occur
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function DoEnvironmentSubst( szString, svResult )
+    LIST            listParts;
+    NUMBER          nBeg, nLen, nResult, nRet;
+    STRING          szTempStr, szWork, szEnvVar, szSubStr;
+begin
+    nRet = -1;
+    szTempStr = szString;
+    svResult = "";
+    listParts = ListCreate( STRINGLIST );
+
+    nBeg = StrFind( szTempStr, "%" );
+
+    if ( nBeg < 0 ) then
+        svResult = szString;
+    else
+        StrGetTokens( listParts, szTempStr, "%" );
+        nResult = ListGetFirstString( listParts, szWork );
+
+        while( nResult != END_OF_LIST )
+            if ( szWork != "" ) then
+                szSubStr = "%" + szWork + "%";
+
+                nBeg = StrFind( szTempStr, szSubStr );
+
+                if ( nBeg >= 0 ) then
+                    nRet = 0;
+                    nLen = StrLength( szSubStr );
+
+                    if ( GetEnvVar( szWork, szEnvVar ) = 0 ) then
+                        svResult = svResult + szEnvVar;
+                    endif;
+
+                    SetByte( szTempStr, nBeg, 88 );
+                    SetByte( szTempStr, nBeg + nLen - 1, 88 );
+                else
+                    svResult = svResult + szWork;
+                endif;
+            endif;
+
+            nResult = ListGetNextString( listParts, szWork );
+        endwhile;
+    endif;
+
+    ListDestroy( listParts );
+
+    return( nRet );
+
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  SetupEnvironment()
+//
+//  Purpose:  This function will set up certain environment variables
+//            based on the current platform
+//
+//    Input:  NONE
+//
+//  Returns:  0 if okay, <0 if no platform variable set
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function SetupEnvironment()
+    NUMBER  nReturn;
+    STRING  szBmode, szPmode, szDbgSuff, szInstRC, szValue, svPlatform;
+begin
+
+    nReturn = -1;
+    szBmode = ENV_BMODE;
+    szPmode = ENV_PMODE;
+    szDbgSuff = ENV_DBG_SUFF;
+
+    if ( GetEnvVar( "PLATFORM", svPlatform ) = 0 ) then
+        if ( svPlatform = ".IDA" ) then
+            szValue = "D";
+            SetEnvironmentVariable( szBmode, szValue );
+            SetEnvironmentVariable( szDbgSuff, szValue );
+            szValue = "I";
+            SetEnvironmentVariable( szPmode, szValue );
+            nReturn = 0;
+        elseif ( svPlatform = ".IRA" ) then
+            szValue = "R";
+            SetEnvironmentVariable( szBmode, szValue );
+            szValue = "";
+            SetEnvironmentVariable( szDbgSuff, szValue );
+            szValue = "I";
+            SetEnvironmentVariable( szPmode, szValue );
+            nReturn = 0;
+        elseif ( svPlatform = ".ADA" ) then
+            szValue = "D";
+            SetEnvironmentVariable( szBmode, szValue );
+            SetEnvironmentVariable( szDbgSuff, szValue );
+            szValue = "A";
+            SetEnvironmentVariable( szPmode, szValue );
+            nReturn = 0;
+        elseif ( svPlatform = ".ARA" ) then
+            szValue = "R";
+            SetEnvironmentVariable( szBmode, szValue );
+            szValue = "";
+            SetEnvironmentVariable( szDbgSuff, szValue );
+            szValue = "A";
+            SetEnvironmentVariable( szPmode, szValue );
+            nReturn = 0;
+        else
+            MessageBox( STR_ERR_INVPLATFORM, SEVERE );
+        endif;
+
+#ifdef PMODE_OVERRIDE
+        szValue = PMODE_OVERRIDE_VALUE;
+        SetEnvironmentVariable( szPmode, szValue );
+#endif
+
+        if ( !nReturn ) then
+            szValue = INST_RC;
+            szInstRC = "INSTRC";
+            SetEnvironmentVariable( szInstRC, szValue );
+        endif;
+    else
+        MessageBox( STR_ERR_NOPLATFORM, SEVERE );
+    endif;
+
+
+    return( nReturn );
+end;
+
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  GetCopyErrorString()
+//
+//  Purpose:  This function will try to associate a copy error value
+//            with a string
+//
+//    Input:  NUMBER - Error code
+//            STRING - String to hold return
+//
+//  Returns:  0 if okay
+//
+// Comments:
+//
+//////////////////////////////////////////////////////////////////////////
+
+function GetCopyErrorString( nErr, svReturn )
+begin
+
+    switch( nErr )
+        case -1:
+            svReturn = "Unknown error";
+            
+        case -2:
+            svReturn = "Unable to open input file";
+            
+        case -3:
+            svReturn = "Unable to open output file";
+            
+        case -4:
+            svReturn = "Unable to write file";
+            
+        case -6:
+            svReturn = "Memory allocation error";
+            
+        case -9:
+            svReturn = "Source and Target directories conflict";
+            
+        case -27:
+            svReturn = "Unable to create directory";
+            
+        case -36:
+            svReturn = "Private object error";
+            
+        case -37:
+            svReturn = "File transfer process aborted";
+            
+        case -38:
+            svReturn = "Not enough disk space on Target drive";
+            
+        case -46:
+            svReturn = "Target file is read-only";
+            
+        default:
+            svReturn = "Unknown error code";
+            
+    endswitch;
+end;    
+
+
+
+
+
+
+
+
+#include "sddialog.rul"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//  $Log:   S:/SETUPBLD/VCS/setup.ruv  $
+// 
+//    Rev 1.5   11 Jul 1997 20:11:14   JBRENNA
+// Fulling integrate Access database and Trial versions.
+// 
+//    Rev 1.4   11 Jul 1997 10:53:56   JBRENNA
+// Integrate Bruce Hellstrom's CSV parsing changes.
+// 
+//    Rev 1.3   09 Jul 1997 19:33:30   JBRENNA
+// Add support for TARGETDIR_OVERRIDE environment variable.
+// 
+//    Rev 1.2   08 Jul 1997 11:34:56   JBRENNA
+// 1. Add support for multiple products.
+// 2. Add Dec/Alpha support.
+// 
+//    Rev 1.1   01 Jul 1997 20:17:10   BRUCEH
+// Fixed bug when unzipping the project file
+//
+//    Rev 1.0   01 Jul 1997 19:14:32   BRUCEH
+// Initial revision.
+//
+//    Rev 1.7   19 Jun 1997 20:08:34   BRUCEH
+// 1. Streamlined code in setup.rul to be more like IS5
+// 2. Split out string definitions to seperate header file.
+//
+//    Rev 1.6   19 Jun 1997 15:32:42   BRUCEH
+// Added deletion of placeholder files in project directory
+//
+//    Rev 1.5   05 Jun 1997 17:37:08   BRUCEH
+// Updates for build 11
+//
+//    Rev 1.4   03 Jun 1997 21:16:20   BRUCEH
+// Prepare for 6/4 build
+//
+//    Rev 1.3   27 May 1997 15:11:30   BRUCEH
+// Updated to handle IS5 installation of Borg
+//
+//
+////////////////////////////////////////////////////////////////////////////
+

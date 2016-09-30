@@ -1,0 +1,26 @@
+HKCR
+{
+	Symantec.Norton.AntiVirus.ThreatsByVID.1 = s 'ThreatsByVID Class'
+	{
+		CLSID = s '{F181CBB8-795E-4e16-AEB8-254501FE9C30}'
+	}
+	Symantec.Norton.AntiVirus.ThreatsByVID = s 'ThreatsByVID Class'
+	{
+		CLSID = s '{F181CBB8-795E-4e16-AEB8-254501FE9C30}'
+		CurVer = s 'Symantec.Norton.AntiVirus.ThreatsByVID.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F181CBB8-795E-4e16-AEB8-254501FE9C30} = s 'ThreatsByVID Class'
+		{
+			ProgID = s 'Symantec.Norton.AntiVirus.ThreatsByVID.1'
+			VersionIndependentProgID = s 'Symantec.Norton.AntiVirus.ThreatsByVID'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{D323F395-AA30-4DF9-A379-2F3F4819AB00}'
+		}
+	}
+}

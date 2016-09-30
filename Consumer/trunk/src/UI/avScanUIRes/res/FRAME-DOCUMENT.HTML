@@ -1,0 +1,74 @@
+﻿<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+	<title>Norton AntiVirus - Scan</title>
+    	<link rel="stylesheet" type="text/css" href="common.css" />
+    	<link rel="stylesheet" type="text/css" href="FRAME-DOCUMENT.CSS" />
+	</head>
+    <body id="body">
+        <div id="helparea"><a id="helpLink" href="#" tabindex="1" class="ULink" accesskey="h"><u>H</u>elp</a></div>
+	    <div id="statusarea">
+	        <div id="iconarea">
+	            <div id="activityicon" class="acticon"></div>
+	            <div id="icontextarea" class="BlueText">
+	                <div id="iconstatus" class="status">Status:</div>
+	                <div id="iconstatustext" class="statustext">Working</div>
+	            </div>
+	        </div>
+	        <div id="iconareadone" hide="1">
+	            <div id="activityicondone" class="acticon"></div>
+	            <div id="icontextareadone" class="BlueText">
+	                <div id="iconstatustextdone" class="statustext" style="padding-top:15px;padding-left:25px;">Working</div>
+	            </div>
+	        </div>
+	        <div id="statustextandprogress">
+	            <div id="statusrow1">
+	                <div id="statustext" class="BWH">Initializing...</div>
+	            </div>
+	            <div id="subprogarea" class="BWH"><div id="currentfile"></div></div>
+	            <img id="progress" src="console-progressbarv3.gif" class="ProgressBar" />
+	            <input type="progress" id="TPprogress" class="CProgressBar" maxvalue="100" value="0" hide="1" />
+	        </div>
+	    </div>
+        <!-------------------------------------- Tab Links ------------------------------------------------>
+        <div class="tabs" id="tabcontainer">
+          <div class="strip" tabindex="0">
+            <div id="tabsummary" panel="SummaryBody" selected><div id="tabtitlesummary" tabtitle="1">Results Summary</div></div>
+            <div id="tabattention" panel="AttentionBody"><div id="tabtitleattention" tabtitle="1">Attention Required <span class="count" id="RAcount"></span></div></div>
+            <div id="tabdetails" panel="DetailsBody"><div id="tabtitledetails" tabtitle="1">Detailed Results</div></div>
+          </div>
+        <!-- ------------------------------------ Tab Pages ------------------------------------------------>
+          <!-- Results Summary Page -->
+          <div id="SummaryBody" name="SummaryBody" selected>
+           <iframe id="summaryiframe" src="" class="TabFrame"></iframe>
+          </div>
+          <!-- Require Attention Page -->
+          <div id="AttentionBody" name="AttentionBody">
+           <iframe id="attentioniframe" src="" class="TabFrame"></iframe>
+          </div>
+          <!-- Detailed Results Page -->
+          <div id="DetailsBody" name="DetailsBody">
+           <iframe id="detailsiframe" src="" class="TabFrame"></iframe>
+          </div>
+         <div id="command-bar" class="command-bar">
+			<div id="exportdiv"><a href="#" id="export" hide="1" tabindex="1" title="Export" class="ULink" accesskey="x">E<u>x</u>port Results</a></div>
+			<div id="rbuttons" class="VCenter">
+			  <button id="apply" tabindex="2" title="Apply" hide="1">Apply Actions</button>
+			  <button id="next" tabindex="3" title="Next" hide="1">Next</button>
+			  <button id="pause" tabindex="4" title="Pause" disabled>Pause</button>
+			  <button id="stop" tabindex="5" title="Stop Scan" disabled>Stop Scan</button>
+			  <button id="finish" tabindex="6" title="Finish" hide="1">Finish</button>
+			</div>
+			<div id="command-bar-right-spacer"></div>
+		 </div>
+	</body>
+</html>

@@ -1,0 +1,139 @@
+<html>
+    <head>
+        <title id="int_lu_title">Norton Antivirus/Internet/LiveUpdate Options</title>
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script language="JavaScript" src="options_int_lu.js"></script>
+        <link rel="stylesheet" type="text/css" href="navstyle.css">
+        <META ID="charset_int_lu" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1" />
+    </head>
+<body id="body_lu" bottomMargin="0" scroll="no" leftmargin="5" topmargin="5" class="clsDetails" onHelp="parent.CurrentPage.Help();" onLoad="parent.CurrentPage = new LiveUpdatePage();" TABINDEX="-1">
+        <form id="form_lu" name="options_int_lu">
+            <table id="t1" width="425" border="0" height="372" bgcolor="#FFFFFF" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td id="t1_td1" valign="top" height="255" width="381">
+                        <table id="t2" width="425" height="41" border="0" cellspacing="0" cellpadding="0" style="background-image: url('topbg.gif'); background-repeat: no-repeat;">
+                            <tr>
+                                <td id="t2_td1" width="424" height="4" valign="top" align="right" colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr id="t2_tr1" valign="top">
+                                <td id="t2_td2" align="left" height="12" valign="top" style="padding-bottom:1px" width="300">&nbsp;&nbsp;<span class="cutitleb" id="lu_autolu">Automatic LiveUpdate</span></td>
+                                <td id="t2_td3" align="right"><a href='' onClick="parent.CurrentPage.Help(); return false;"><span class="cuhelp" id="bloodhound_help">more info</span></a>&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table id="ALUNotRunning" width="400" height="26" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="t3_td1" colspan="3" height="22" style="padding-left:10px"><span class="culinkhead" id="lu_howtokeep"><b>How 
+                                            to stay updated</b></span></td>
+                            </tr>
+                            <tr>
+                                <td id="t3_1_td1">&nbsp;</td>
+                                <td id="t3_1_td2" width="5%" valign="top">
+			  <input type="checkbox" id="AutomaticLiveUpdate" onclick="OnEnableALUClick(this.checked)" onpropertychange="OnEnableALUChanged(this.checked)">
+                                </td>
+                                <td id="t3_1_td3">
+			  <label for="AutomaticLiveUpdate" accesskey="T" id="ALU_AccessKey"><span id="lu_enableauto"><u>T</u>urn automatic LiveUpdate on (recommended)</span></label>
+                                </td>
+                            </tr>
+                        </table>
+		<table id="ALURunning" width="400" height="26" border="0" cellspacing="0" cellpadding="0" style="display:none;">
+                            <tr>
+                                <td id="ALU_Run_td1" style="padding-left:10px">
+                                    <span id="ALURunning_Text" style="color: red;">
+			    Automatic LiveUpdate is currently running in the background. You will not be able to change any of the automatic LiveUpdate settings until it is finished.
+			    </span>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="423" border="0" cellspacing="0" cellpadding="0" id="lu_tbl_1">
+                            <td id="separator1" align="center" width="423">
+                                <img align="middle" border="0" height="1" src="dots.gif" width="303" id="lu_img_3">
+                            </td>
+                        </table>
+                        <table id="t4" width="400" height="26" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="t4_td1" colspan="3" height="22" style="padding-left:10px"><span class="culinkhead" id="lu_howtokeepdefs"><b>How 
+                                            to keep your virus protection updated</b></span></td>
+                            </tr>
+                            <tr>
+                                <td id="t4_1_td1">&nbsp;</td>
+                                <td id="t4_1_td2" width="5%" valign="top">
+                                    <input type="checkbox" id="ApplyVirusUpdates" onClick="VirusUpdatesChk();">
+                                </td>
+                                <td id="t4_1_td3" valign="top">
+			 <label for="ApplyVirusUpdates" accesskey="v" id="Defs_AccessKey"><span id="lu_virus_notifyme">Apply <u>v</u>irus protection updates (recommended)</span></label>
+                                </td>
+                            </tr>
+                        </table>
+                        <table id="t4_2" width="400" height="26" cellpadding="0" cellspacing="0" border="0">
+                            <tr>
+                                <td id="t4_2_td2" width="10%"></td>
+                                <td id="t4_2_td3" valign="top">
+                                    <input type="radio" name="ApplyUpdates" id="ApplyUpdates_0">
+                                </td>
+                                <td id="t4_2_td4" valign="top">
+              <span class="indent10"><label for="ApplyUpdates_0" accesskey="a" id="Defs_Silent_AccessKey"><u>A</u>pply updates without interrupting me (recommended)</label></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td id="t4_2_td7" width="10%"></td>
+                                <td id="t4_2_td5" valign="top">
+                                    <input type="radio" name="ApplyUpdates" id="ApplyUpdates_1">
+                                </td>
+                                <td id="t4_2_td6" valign="top">
+              <span class="indent10"><label for="ApplyUpdates_1" accesskey="n" id="Defs_Noisy_AccessKey"><u>N</u>otify me when updates are available</label></span>
+                                </td>
+                            </tr>
+                        </table>
+                        <table width="423" border="0" cellspacing="0" cellpadding="0" id="lu_tbl_2">
+                            <td id="separator2" align="center" width="423">
+                                <img align="middle" border="0" height="1" src="dots.gif" width="303" id="lu_img_1">
+                            </td>
+                        </table>
+                        <table id="t5" width="400" height="26" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="t5_td1" colspan="3" height="22" style="padding-left:10px"><span class="culinkhead" id="lu_howtokeepproduct"><b>How 
+                                            to keep %s updated</b></span></td>
+                            </tr>
+                            <tr>
+                                <td id="t5_td2">&nbsp;</td>
+                                <td id="t5_td3" width="5%" valign="top"><input type="checkbox" id="ApplyProductUpdates"></td>
+            <td id="t5_td4"><span class="indent10" id="lu_product_notifyme"><label for="ApplyProductUpdates" accesskey="p" id="Product_AccessKey">Notify me of <span id="productname">%s</span> <u>p</u>rogram updates (recommended)</label></span></td>
+                            </tr>
+                        </table>
+                        <table id="table1Dot" width="423" border="0" cellspacing="0" cellpadding="0">
+                            <td id="separator3" align="center" width="423">
+                                <img align="middle" border="0" height="1" src="dots.gif" width="303" id="lu_img_2">
+                            </td>
+                        </table>
+                        <table id="t4a" width="400" height="26" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="t4a_td1" colspan="3" height="22" style="padding-left:10px"><span class="culinkhead" id="lu_howtoprotect"><b>How 
+                                            to stay protected</b></span></td>
+                            </tr>
+                            <tr>
+                                <td id="t4a_1_td1">&nbsp;</td>
+                                <td id="t4a_1_td2" width="5%" valign="top">
+                                    <input type="checkbox" id="SideEffectScan">
+                                </td>
+                                <td id="t4a_1_td3" valign="top">
+                                    <label for="SideEffectScan" accesskey="q" id="SE_AccessKey">
+                                        <span id="side_effect_text">Run Norton <u>Q</u>uickScan whenever virus definitions have been updated (recommended)</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="t3_td6">
+                        <span id="ALUError" style="color: red; display: none;">
+          Automatic LiveUpdate is not installed or is not installed correctly!
+        </span>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>

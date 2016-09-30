@@ -1,0 +1,321 @@
+**********************************************************************
+Norton AntiVirus for Windows NT Workstation                 README.TXT
+Copyright (c) 1995-1998 Symantec Corporation             December 1998
+
+**********************************************************************
+HOW TO USE THIS DOCUMENT
+**********************************************************************
+To view README.TXT on screen in Notepad or WordPad, maximize the
+Notepad or WordPad window.
+
+To print README.TXT in Notepad or WordPad, choose Print from the File
+menu.  If you use another word processor, select the entire document
+and format the text in 10-point Courier before printing to ensure
+proper spacing.
+
+To print README.TXT from the DOS prompt, type COPY README.TXT PRN:
+
+**********************************************************************
+NORTON ANTIVIRUS NOTES
+**********************************************************************
+This README.TXT file covers compatibility information, late-breaking
+news, and usage tips for Norton AntiVirus for Windows NT Workstation.
+The following topics are discussed:
+
+ * Print versions of Norton AntiVirus Guides
+ * Uninstall Beta versions of Norton AntiVirus
+ * LiveUpdate subscriptions
+ * Uninstalling LiveUpdate
+ * Removing Norton AntiVirus from the Windows Start menu
+ * Installing Norton AntiVirus and Microsoft Outlook 98
+ * Novell NetWare: Installing from long filename (LFN) directories
+ * Options settings from earlier versions of Norton AntiVirus
+ * Scanning Removable Drives
+ * Quarantining non-deletable files
+ * NT 4.0 Service Pack 2
+ * Restart desirable after installing for the first time
+ * Restart your machine after repairing boot viruses
+ * Access privileges required for installation
+ * Short File Name (SFN) alias generation during install
+ * Using the /INTERACTIVE switch with the AT command to schedule scans
+ * Installation from long-filename folders on NetWare servers
+ * Creating a test text file that looks like a virus
+ * Using Netscape with Norton AntiVirus
+ * Changing LiveUpdate automatic schedules
+ * Uninstalling Norton NT Tools
+ * Preventing the Norton AntiVirus Startup Logo Screen from displaying
+ * Long Filenames and LiveUpdate 
+ * Network application performance issues with AutoProtect running
+ * Scanning Magneto-Optical (MO) drives larger than 640 MB
+ * Internet access problems with LiveUpdate
+ * Additional information for system administrators 
+ * Activity Log Access Denied option
+ * Online manuals: "Cannot find or run file" error message
+ * "Rename Error" occurs during installation
+
+**********************************************************************
+
+Print versions of Norton AntiVirus Guides
+-----------------------------------------
+Print versions of the Norton AntiVirus User and Implementation Guides
+can be ordered through Symantec Customer Service.
+
+Uninstall Beta versions of Norton AntiVirus
+-------------------------------------------
+If you tested a Beta version of Norton AntiVirus, uninstall the Beta
+before installing the release version. This removes unneeded files
+that would otherwise remain on your disk and prevents problems that 
+could arise due to changed file formats.
+
+LiveUpdate subscriptions
+------------------------
+With the purchase and installation of Norton AntiVirus 5.0, you 
+automatically qualify for one year free use of LiveUpdate to receive
+virus definition updates.  Your installed Norton AntiVirus program 
+will notify you when your subscription is about to expire and provide
+information on how to extend your subscription to ensure continuing,
+up-to-date protection. 
+
+Uninstalling LiveUpdate
+-----------------------
+Because LiveUpdate is shared among Symantec products, it is not
+uninstalled automatically if you select Uninstall Norton AntiVirus.
+
+To uninstall LiveUpdate, choose Add/Remove Programs from the Windows
+Control Panel and select LiveUpdate.
+
+Removing Norton AntiVirus from the Windows Start menu
+-----------------------------------------------------
+If Uninstall does not remove the Norton AntiVirus program group from
+the Windows Start menu, you must remove it manually. To remove the
+program group, right-click the taskbar, select Properties, click the
+Start Menu Programs tab, click Remove, select Norton AntiVirus, and
+then click Remove.
+
+Installing Norton AntiVirus and Microsoft Outlook 98
+----------------------------------------------------
+If Microsoft Outlook 98 is running during Norton AntiVirus 
+installation, the install will take a long time. Close Microsoft 
+Outlook 98 before installing Norton AntiVirus.
+
+Novell NetWare: Installing from long filename (LFN) directories
+---------------------------------------------------------------
+Norton AntiVirus cannot be installed from long filename (LFN) 
+directories under Novell NetWare.
+
+Options settings from earlier versions of Norton AntiVirus
+----------------------------------------------------------
+Options settings from versions 4.0 and earlier of Norton AntiVirus are
+not preserved when you install Norton AntiVirus 5.0.
+
+Scanning Removable Drives
+-------------------------
+Norton AntiVirus incorrectly identifies removable hard drives as fixed
+drives. Removable drives (such as Zip drives) show up as local hard
+drives even when the "all removable drives" checkbox is not checked.
+
+Quarantining non-deletable files
+--------------------------------
+Norton AntiVirus cannot quarantine non-deletable files (for example,
+files infected by the DirII virus). To manually add these types of 
+files to the Quarantine, open the Quarantine and choose Add Item.
+
+
+Restart your machine after repairing boot viruses
+-------------------------------------------------
+We recommend that you reboot after repairing any boot virus on the
+hard drive. Some boot viruses, mostly stealth types, subtly confuse
+NT and its handling of floppies. Reboot after the repair to ensure
+proper operation. 
+
+Access privileges required for installation
+------------------------------------------- 
+As part of Norton AntiVirus installation, shared Symantec files, which
+are components of all Symantec products, are always installed to 
+\Program Files\Symantec -- even if a custom location for the Norton 
+AntiVirus program files is specified during install. If you do not
+have write (and create, if necessary) privileges to this location, 
+the install will fail.
+
+Short File Name (SFN) alias generation during install
+-----------------------------------------------------
+If you are installing Norton AntiVirus to a custom location that is
+a Long File Name (LFN) folder, SFN alias generation must not be 
+disabled during the install. To re-enable SFN alias generation, run 
+REGEDT32 and change the following registry key entry:
+
+  HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+
+  NtfsDisable8dot3NameCreation should be set to 0 to enable SFN 
+  alias generation.
+
+You must restart your NT machine in order for changes in SFN alias
+generation to take effect. Set the value back to 1 after installation
+to disable SFN alias generation, if desired.
+
+Using the /INTERACTIVE switch with the AT command to schedule scans
+-------------------------------------------------------------------
+You must use the /INTERACTIVE switch to schedule scans with the AT
+command. If NAVWNT is launched from the NT Scheduling Service (AT)
+without the /INTERACTIVE switch, Norton AntiVirus remains in memory
+with no way of terminating. The following examples demonstrate
+correct usage to schedule automatic scans three times per week.
+
+For Windows NT 4.0:
+
+ at 17:30 /interactive /every:M,W,F "c:\Program Files\NAVNT\navwnt" /L
+
+See your Windows NT documentation for more information on using the AT
+command.
+
+Installation from long-filename folders on NetWare servers
+----------------------------------------------------------
+On a Novell NetWare server, you cannot install Norton AntiVirus from
+a long-filename folder.
+
+Creating a test text file that looks like a virus
+-------------------------------------------------
+To create a harmless text file that will be detected as a virus,
+which you can then use to verify detection of viruses, logging and
+functioning of alerts, copy the following line in to a separate file,
+saving it as trigger.com. This file is NOT a virus, but will be
+detected as the "EICAR Test String.70" virus. Disable Auto-Protect
+temporarily before you save the file.
+
+X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+
+Using Netscape with Norton AntiVirus
+------------------------------------
+If Norton AntiVirus is installed as a Netscape helper application, a
+a downloaded file will be lost if Netscape is closed before the 
+download is complete.
+
+Changing LiveUpdate automatic schedules
+---------------------------------------
+The first time that LiveUpdate completes a successful session, it 
+offers to schedule future sessions automatically. If you want to 
+modify or delete the scheduled sessions, access the Norton Program
+Scheduler from the Norton AntiVirus group on the Start menu or the
+Norton AntiVirus main window.
+
+Uninstalling Norton NT Tools
+----------------------------
+If Norton NT Tools is uninstalled after Norton AntiVirus is installed,
+the shared file S32STAT.DLL is removed. Reinstall Norton AntiVirus to 
+correct the problem.
+
+Preventing the Norton AntiVirus Startup Logo Screen from displaying
+-------------------------------------------------------------------
+Some users prefer not to see the startup logo screens that display 
+when Norton AntiVirus components are loaded. They can be disabled
+adding the following Registry entries:
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus\Auto-Protect]
+"DisableSplashScreen"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Clinic]
+"DisableSplashScreen"=dword:00000001
+
+Long Filenames and LiveUpdate 
+-----------------------------
+Long Filenames (LFNs) must be enabled on Windows NT systems to
+install LiveUpdate.
+
+Network application performance issues with AutoProtect running
+---------------------------------------------------------------
+AutoProtect by default, opens files on a network drive in shared mode.
+This can increase the time it takes for an application to load over
+the network. To speedup load time of applications, you can configure
+Auto-Protect to open files in non-shared mode. To do this, 
+double-click the APNTFAST.REG file located in the Norton AntiVirus 
+folder, then restart your computer.
+
+If sharing violations occur after setting AutoProtect to non-shared
+mode, reset Auto-Protect to shared mode. To do this, double-click the
+APNTNORM.REG file, then restart your computer.
+
+Scanning Magneto-Optical (MO) drives larger than 640 MB
+-------------------------------------------------------
+Norton AntiVirus does not properly scan boot records on magneto-
+optical (MO) drives larger than 640 MB.
+
+To disable boot record scans of MO drives larger than 640 MB:
+
+ * Start Norton AntiVirus, click Options, click the Scanner tab,
+   and then uncheck Boot Records in the What To Scan group.
+
+Internet access problems with LiveUpdate
+----------------------------------------
+LiveUpdate operation may be restricted because of firewalls or proxy
+servers.  Contact your network administrator if you have problems
+using LiveUpdate due to your network security policy.
+
+Additional information for system administrators 
+------------------------------------------------
+If you're a system administrator and would like information about
+Norton AntiVirus Administration Tools or other Corporate products,
+please visit our website at:
+
+    http://www.symantec.com/solutions/navcorp.html
+
+Activity Log "Access Denied Errors" option
+------------------------------------------
+The Activity Log includes a new option to report attempts to scan when
+access is denied.  For example, an administrator may try to scan a
+folder to which you have prevented others from accessing by setting
+access permissions.  Norton AntiVirus will report in the Activity Log
+that an attempt was made to scan your restricted-access folder. 
+
+Online manuals: "Cannot find or run file" error message
+-------------------------------------------------------
+You must install Adobe Acrobat Reader to view the Norton AntiVirus
+online manuals. 
+
+To install Adobe Acrobat Reader:
+
+  1 On the Windows Taskbar, click Start, point to Programs, 
+    point to Norton AntiVirus, and click Norton AntiVirus to open
+    the Norton AntiVirus main window.
+
+  2 From the Help menu, point to Product Support Online, and click 
+    Product Support.
+
+  3 In the Product Support help window that appears, click 
+    Install Adobe Acrobat Reader.
+
+Rename Error during Norton AntiVirus installation 
+-------------------------------------------------
+     
+If you experience a Comctl32.dll rename error when installing 
+Norton AntiVirus, an error dialog box on your screen shows 
+the following information:
+     
+    RENAME ERROR
+     
+    An error occurred renaming a file "Cannot create a file when 
+    that file already exists"(error #183).
+     
+    Current File Name: C:\WINNT\System32\Comctl32.dll 
+    New File Name: C:\WINNT\System32\comctl32.bak
+     
+To fix the Comctl32.dll rename error:
+     
+1) From Windows Explorer, access the following directory:
+     
+      \winnt\system32
+     
+2) Right-click the following file:
+     
+      comctl32.bak
+     
+   Select Rename
+     
+3) Type the following as the new name for the file:
+     
+      comctl32.old
+     
+4) Run the Norton AntiVirus install program (setup.exe) again.
+
+**********************************************************************
+                                END OF FILE
+**********************************************************************

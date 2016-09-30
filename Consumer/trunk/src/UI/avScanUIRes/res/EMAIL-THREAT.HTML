@@ -1,0 +1,65 @@
+﻿<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+	<head>
+		<title>Norton AntiVirus - Scan</title>
+    	<link rel="stylesheet" type="text/css" href="common.css" />
+	<link rel="stylesheet" type="text/css" href="EMAIL-THREAT.CSS" />
+	</head>
+	<body id="body">
+	    <div id="statusarea">
+	        <div id="iconarea">
+	            <div id="activityicon"></div>
+	        </div>
+	        <div id="statustextandprogress">
+	            <div id="statusrow1">
+	                <div id="statustext" class="BWH">E-Mail Threat Detected.</div>
+	                <div id="HSpacer1" class="HSpace"></div>
+	                <div id="helparea"><a id="helpLink" href="#" tabindex="1" class="ULink" accesskey="h"><u>H</u>elp</a></div>
+	            </div>
+                <!-- E-mail details section -->
+                <div class="DetailsSection">
+                    <div class="DetailsSectionHeader">
+                        <p class="DetailsSectionHeading">Attention Required...</p>
+                    </div>
+                    <div class="DetailsSectionBody">
+                        <div class="DetailsSectionRowHeadings">
+                            <p class="DetailsSectionRowHeadingEntry">From:</p>
+                            <p class="DetailsSectionRowHeadingEntry">To:</p>
+                            <p class="DetailsSectionRowHeadingEntry">Subject:</p>
+                        </div>
+                        <div class="DetailsSectionRowData">
+                            <p class="DetailsSectionRowDataEntry" id="EMailFrom"></p>
+                            <p class="DetailsSectionRowDataEntry" id="EMailTo" ></p>
+                            <p class="DetailsSectionRowDataEntry" id="EMailSubject"></p>
+                        </div>
+                    </div>
+                </div>
+	        </div>
+	    </div>
+        <div class="tabs" id="tabcontainer">
+        <!-- Require Attention Title -->
+        <div class="AttentionTitle">
+            <p class="AttentionTitleText">Threat Details</p>
+        </div>
+        <!-- Require Attention Page -->
+        <div id="AttentionBody" name="AttentionBody" state="alert" selected>
+            <iframe id="attentioniframe" src="" class="TabFrame"></iframe>
+        </div>
+    	<div id="command-bar" class="command-bar">
+		    <div id="rbuttons" class="VCenter">
+			    <button id="stop" tabindex="2" title="Delete Message" accesskey="d"><u>D</u>elete Message</button>
+			    <button id="apply" tabindex="1" title="Apply" role="default-button" accesskey="a"><u>A</u>pply Actions</button>
+		    </div>
+		    <div id="command-bar-right-spacer"></div>
+	    </div>
+	</body>
+</html>

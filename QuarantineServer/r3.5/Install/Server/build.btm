@@ -1,0 +1,139 @@
+rem Quarantine Server, ISX changes 11/30/2004 DKOWALYSHYN
+: Turn off command echo to display.
+ @Echo off
+
+if isdir "%BuildToolISStandAlone%" goto STARTBUILD
+set BuildToolISStandAlone=C:\ISX\standalone_sp1
+
+:STARTBUILD
+
+set ret=0
+iff "%BUILDINSTALL%"=="NEW" then
+        call ..\..\cm\copybin ..\..\..\..\Release\AMS\bin\Win32-SymantecSigned\*.* .\data\ams
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\shared\BinIntelAnsiWin32Release\qserverps.dll .\data\qserverps.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\shared\BinIntelUnicodeWin32Release\qserver.exe .\data\qserver.exe
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\AVIScommon.dll .\data\AVIScommon.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\AVISFile.dll .\data\AVISFile.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\IcePack.exe .\data\IcePack.exe
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\IcePackAgentComm.dll .\data\IcePackAgentComm.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\IcePackEventMsgs.dll .\data\IcePackEventMsgs.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\ScanExplicit.exe .\data\ScanExplicit.exe
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\Stpdc32i.dll .\data\Stpdc32i.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\VDBUnpacker.dll .\data\VDBUnpacker.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Shared\BinIntelAnsiWin32Release\IcePackTokens.dll .\data\IcePackTokens.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\Dec2Zip.dll .\data\Dec2Zip.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\Dec2.dll .\data\Dec2.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\NoBuilds\license.rtf .\data\license.rtf
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\NoBuilds\dec3.cfg .\data\dec3.cfg
+        call ..\..\cm\copybin ..\NoBuilds\readme.txt .\data\Readme.txt
+        call ..\..\cm\copybin ..\..\..\..\Norton_System_Center\src\install\nobuilds\ie5setup.exe .\data\ie5setup.exe
+        call ..\..\cm\copybin ..\..\..\..\Release\AMS\bin\PDS-SymantecSigned\Pds.dll .\data\Pds.dll
+        call ..\..\cm\copybin ..\..\..\..\Release\AMS\bin\PDS-SymantecSigned\Msgsys.dll .\data\Msgsys.dll
+        call ..\..\cm\copybin ..\..\..\..\Release\AMS\bin\PDS-SymantecSigned\Nts.dll .\data\Nts.dll
+        call ..\..\cm\copybin ..\..\..\..\Release\AMS\bin\PDS-SymantecSigned\Cba.dll .\data\Cba.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\bin.ira\Transman.dll .\data\Transman.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\bin.ira\SCSComms.dll .\data\SCSComms.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\shared\BinIntelAnsiWin32Release\qsinst.dll .\data\qsinst.dll
+        call ..\..\cm\copybin ..\..\..\..\Core_technology\ldvp_shared\src\bin.ira\DefCast.dll .\data\DefCast.dll
+        call ..\..\cm\copybin ..\..\..\..\Release\NavAPI\BinIntelAnsiWin32Release\Navapi32.dll .\data\Navapi32.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\shared\BinIntelAnsiWin32Release\qspak32.dll .\data\qspak32.dll
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\NoBuilds\NavInstNT.dll .\data\NavInstNT.dll
+        call ..\..\cm\copybin ..\..\..\..\Core_technology\ldvp_shared\src\bin.ira\InstallAMS.dll .\data\ams
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\DecSDK.dll .\data\DecSDK.dll
+        call ..\..\cm\copybin ..\..\..\..\Release\ECOM\BinIntelAnsiWin32Release\ecmldr32.DLL .\data\ecmldr32.DLL
+
+        attrib /q /e /s -r ".\Data\*.*"
+
+        if %ret != 0 Goto copyErrorOccurred
+
+	: ----- Sign the files
+	pushd ".\data"
+	attrib *.* -r
+	popd
+	echo ** do signfiles
+	call "..\..\cm\signfiles.btm" %BuildNumber% %BLDDIR%\Norton_AntiVirus\quarantineserver\install\server\data
+	if %errorlevel% != 0 goto SIGNINGERROR
+
+
+        @echo off
+        on break cancel
+        set sourcedir=%@FULL[.\]
+
+        attrib -r "Quarantine Server.ism"
+
+	attrib -r "..\..\..\Corporate_Edition\win32\src\Install\SAV_Secure_MM.ism"
+
+	"%BUILDTOOLISSTANDALONE%\IsSaBld.exe" -p "..\..\..\Corporate_Edition\win32\src\Install\SAV_Secure_MM.ism" -a "Releases" -r "Release" -x
+	if %ret != 0 Goto copyErrorOccurred
+	
+	copy /z "..\..\..\Corporate_Edition\win32\src\Install\SAV_Secure_MM\Releases\Release\DiskImages\DISK1\SAV_Secure_MM.msm" "..\..\..\Corporate_Edition\win32\src\Install\MModules\SAV_Secure_MM.msm"
+	if %ret != 0 Goto copyErrorOccurred
+
+	"%BUILDTOOLISSTANDALONE%\IsSaBld.exe" -p ".\Quarantine Server.ism" -a "QServer" -r "QServer" -o "..\..\..\Corporate_Edition\win32\src\Install\MModules" -x
+	if %ret != 0 Goto copyErrorOccurred
+
+        set ret=%?
+        if %ret != 0 Goto installbuildErrorOccurred
+        Goto END
+
+        :installbuildErrorOccurred
+        Echo Error on building server install; media not built.
+        Pause Press any key to continue
+        quit
+        :copyErrorOccurred
+        Echo Error on copying server binaries; media not built.
+        type %build_err
+        Pause Press any key to continue
+        quit
+
+	:SIGNINGERROR
+	cdd %BLDDIR%\norton_antivirus\quarantineserver\cm
+	python r:\cm\sendmail.py maillist.txt "CM Build Error Notification: Central Quarantine 3.5 Win32 Platform Build %BuildNumber% has Errored files not signed" clientr_errs.txt /q /s
+	quit
+
+else
+        : Save the current search path
+        Set SavePath=%Path%
+
+        : Set the search path to find InstallShield's command line tools
+        Path "%ISHIELD%\Program";%PATH%
+
+        : Create a copy of the .ipr file
+        Copy "Norton AntiVirus Quarantine Server.ipr" Server.ipr
+
+        : Execute the command line compiler
+        Compile "Script Files\setup.rul" -i"%ISHIELD%\Include;Script Files" -v2 > ISBuild.rpt
+
+        : Test for success. Quit if there was a compiler error.
+        If errorlevel 1 goto CompilerErrorOccurred
+
+        : Build the media
+        ISbuild -p"..\Server" -m"Default" >> ISBuild.rpt
+
+        : Test for success. Quit if there was a build error.
+        If errorlevel 1 goto BuildErrorOccurred
+
+        : Skip over the error handling and exit
+        Goto Done
+
+        : Report the compiler error; then exit
+        :CompilerErrorOccurred
+        Echo Error on compile; media not built.
+        Pause Press any key to view report.
+        Type ISBuild.rpt | More
+        Goto Done
+
+        : Report the build error; then exit
+        :BuildErrorOccurred
+        Echo Error on build; media not built.
+        Pause Press any key to view report.
+        Type ISBuild.rpt | More
+
+        :Done
+        : Restore the search path
+        Path=%SavePath%
+        Set SavePath=
+        Del Server.ipr
+endiff
+:END
+

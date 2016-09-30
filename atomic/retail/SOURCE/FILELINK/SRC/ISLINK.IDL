@@ -1,0 +1,136 @@
+/////////////////////////////////////////////////////////////////////
+// ISLINK.IDL - Created - 12/01/97
+//
+// Copyright 1992-1997 Symantec, Peter Norton Product Group
+/////////////////////////////////////////////////////////////////////
+// $Header:   S:/FILELINK/VCS/ISLINK.IDv   1.5   22 Jun 1998 21:45:06   jtaylor  $
+//
+// Description:
+//    This is the Server Link interface
+//
+/////////////////////////////////////////////////////////////////////
+//
+// $Log:   S:/FILELINK/VCS/ISLINK.IDv  $
+// 
+//    Rev 1.5   22 Jun 1998 21:45:06   jtaylor
+// Removed the call to update server quarantine header.  Due to a change in the quarantineItem, it is no longer needed.
+//
+//    Rev 1.4   07 May 1998 20:25:46   SEDWARD
+// Added BOOL argument to Server_CreateQuarantineFile().
+//
+//    Rev 1.3   12 Apr 1998 20:47:40   SEDWARD
+// Added Server_DeleteFile().
+//
+//    Rev 1.2   06 Apr 1998 14:27:38   SEDWARD
+// Added ServerUpdateQuarantineFileHeader; ServerCreateQuarantineFile now takes
+// an [out] parameter so the client has access to the filename created on the
+// server.
+//
+//    Rev 1.1   23 Mar 1998 14:08:30   SEDWARD
+// Use official new UUID; added 'Server_CreateQuarantineFile' and
+// 'Server_WriteFile'.
+//
+//    Rev 1.0   17 Mar 1998 19:45:16   SEDWARD
+// Initial revision.
+//
+//    Rev 1.0   27 Jan 1998 12:39:54   KSACKIN
+// Initial revision.
+//
+//    Rev 1.5   15 Dec 1997 16:09:18   DSACKIN
+// Added ServerReloadOptions
+//
+//    Rev 1.4   11 Dec 1997 15:16:40   DSACKIN
+// Added dwJobID and dwTargetID to all of the file copy commands.
+//
+//    Rev 1.3   03 Dec 1997 19:19:58   DSACKIN
+// Added ServerGetJobCount
+//
+//    Rev 1.2   03 Dec 1997 12:37:50   DSACKIN
+// Added copy file functions.
+//
+//    Rev 1.1   02 Dec 1997 13:52:02   DBuches
+// Added UpdateStatus, StartJob, and StopJob functions.
+//
+//    Rev 1.0   02 Dec 1997 10:43:26   DSACKIN
+// Initial revision.
+//
+/////////////////////////////////////////////////////////////////////
+
+
+import "wtypes.idl";
+
+[
+    uuid( c069eb41-beb9-11d1-a7b1-0000e8d34392 ),
+    version( 1.0 )
+]
+
+interface ISLink
+    {
+
+/////////////////////////////////////////////////////////////////////
+// This is a general purpose function that is used to figure out what
+// protocols to use or to just see if the server service is up and
+// running
+
+    DWORD Server_Ping(void);
+
+/////////////////////////////////////////////////////////////////////
+// These functions are used for file transfer between client and server.
+
+    DWORD Server_CreateFile(
+        [ out ] LPDWORD lphFile,
+        [ in, string ] LPCTSTR lpFileName,
+        [ in ] DWORD dwDesiredAccess,
+        [ in ] DWORD dwShareMode,
+        [ in ] DWORD cbSecurityAttributes,
+        [ in, size_is( cbSecurityAttributes ) ] BYTE* lpSecurityAttributes,
+        [ in ] DWORD dwCreationDistribution,
+        [ in ] DWORD dwFlagsAndAttributes,
+        [ in ] DWORD hTemplateFile,
+        [ out ] LPDWORD lpError);
+
+    DWORD Server_CreateQuarantineFile(
+        [ out ] BOOL * lpbReturn,
+        [ out ] LPDWORD lphFile,
+        [ in, string ] LPCTSTR lpFileName,
+        [ in ] DWORD cbBufferSize,
+        [ in, out, size_is( cbBufferSize ) ] BYTE* lpBuffer,
+        [ out ] LPDWORD lpError);
+
+    DWORD Server_ReadFile(
+        [ out ] BOOL * lpbReturn,
+        [ in ] DWORD hFile,
+        [ in ] DWORD cbBufferSize,
+        [ out, size_is( cbBufferSize ) ] BYTE* lpBuffer,
+        [ in ] DWORD nNumberOfBytesToRead,
+        [ in, out ] LPDWORD lpNumberOfBytesRead,
+        [ in, out ] LPDWORD lpError);
+
+    DWORD Server_WriteQuarantineFile(
+        [ out ] BOOL * lpbReturn,
+        [ in ] DWORD hFile,
+        [ in ] DWORD cbBufferSize,
+        [ in, out, size_is( cbBufferSize ) ] BYTE* lpBuffer,
+        [ in ] DWORD nNumberOfBytesToWrite,
+        [ in, out ] LPDWORD lpNumberOfBytesWrite,
+        [ in, out ] LPDWORD lpError);
+
+    DWORD Server_GetFileTime(
+        [ out ] BOOL * lpbReturn,
+        [ in ] DWORD hFile,
+        [ out ] LPFILETIME lpCreationTime,
+        [ out ] LPFILETIME lpLastAccessTime,
+        [ out ] LPFILETIME lpLastWriteTime,
+        [ out ] LPDWORD lpError);
+
+    DWORD Server_CloseHandle(
+        [ out ] BOOL * lpbReturn,
+        [ in ] DWORD hObject,
+        [ out ] LPDWORD lpError);
+
+    DWORD Server_DeleteFile(
+        [ in ] BOOL * lpbReturn,
+        [ in, string ] LPCTSTR lpFileName,
+        [ out ] LPDWORD lpError);
+
+        }

@@ -1,0 +1,73 @@
+:: $Header:   S:/NAVEXCLU/VCS/build.btv   1.1   21 Mar 1997 19:02:22   DALLEE  $
+::
+:: Build file for NAVEXCLU project.  Updates single platform/target.
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVEXCLU/VCS/build.btv  $
+:  
+:     Rev 1.1   21 Mar 1997 19:02:22   DALLEE
+:  Removed BUILDALL.BAT references.
+:  Added missing QUIT which caused KillCV code to be executed always.
+:  
+:     Rev 1.0   06 Feb 1997 20:57:58   RFULLER
+:  Initial revision
+:  
+:     Rev 1.2   21 Nov 1996 20:08:28   MKEATIN
+:  Added NCX platform
+:  
+:     Rev 1.1   20 Sep 1996 11:24:22   GWESTER
+:  For DOS, DX, DVX, or DVS platforms, debug info will be turned off during
+:  mkupdate's.
+:  
+:     Rev 1.0   20 Mar 1996 09:32:40   BARRY
+:  Initial revision.
+::------------------------------------------------------------------------
+
+setlocal
+                                        :: If CodeView or DEBUG_ALL are active,
+                                        :: and this is DOS, DX, DVX, NXC, or  
+                                        :: DVS, temporarily disable them.
+IF %@index[.DOS.DX.DVX.NCX.DVS.,%PLATFORM] NE -1  gosub killcv
+
+call mk navexclu %&
+
+                                        :: If "killcv" shut off CodeView or DEBUG_ALL,
+                                        :: turn them back on.
+IF %@index[.DOS.DX.DVX.NCX.DVS.,%PLATFORM] NE -1  gosub restorecv
+
+if exist make.err copy build.err+make.err build.err
+
+quit
+
+                                        :: Subroutine "killcv" ...
+:killcv
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+    iff not "%CV%" == "" then
+        set OLD_CV=%CV%
+	    set CV=
+            echo ** Your CV environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/NCX/DVS libraries should never be MKUPDATE'd with debug info!
+	endiff
+    iff not "%DEBUG_ALL%" == "" then
+        set OLD_DEBUG_ALL=%DEBUG_ALL%
+	    set DEBUG_ALL=
+            echo ** Your DEBUG_ALL environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/NCX/DVS libraries should never be MKUPDATE'd with debug info!
+	endiff
+return
+
+                                        :: Subroutine "restorecv" ...
+:restorecv
+    iff not "%OLD_CV%" == "" then
+        set CV=%OLD_CV%
+	    echo ** Your CV environment variable has been restored.
+	endiff
+    iff not "%OLD_DEBUG_ALL%" == "" then
+        set DEBUG_ALL=%OLD_DEBUG_ALL%
+	    echo ** Your DEBUG_ALL environment variable has been restored.
+	endiff
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+return
+
+

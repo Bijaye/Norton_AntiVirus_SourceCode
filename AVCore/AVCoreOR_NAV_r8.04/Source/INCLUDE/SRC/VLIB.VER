@@ -1,0 +1,169 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+// VLIB.VER -- Version resource for Norton AntiVirus Virus Library
+//
+// Copyright 1995 by Symantec Corporation
+//
+/////////////////////////////////////////////////////////////////////////////
+//
+// $Log:   S:/INCLUDE/VCS/vlib.vev  $
+// 
+//    Rev 1.2   11 Jan 1996 16:00:56   JWORDEN
+// Port changes from Quake 8
+// 
+//    Rev 1.1.1.1   04 Dec 1995 16:13:26   MKEATIN
+// Changed VR_FILEVERSION to include VERLIB_VERSION_MINOR instead of 0
+// 
+//    Rev 1.1   16 Jun 1995 12:09:34   DALLEE
+// #include ver.h if ndef(WIN32) or ndef(VOS_DOS)
+// Mirrored Quake's kluge.
+// 
+//    Rev 1.0   14 Jun 1995 11:26:04   MARKL
+// Initial revision.
+// 
+/////////////////////////////////////////////////////////////////////////////
+
+#ifndef _VLIB_VER
+#define _VLIB_VER
+
+
+                                        // Major hack!  AFX doesn't define
+                                        // VER.H stuff yet.  Eventually,
+                                        // we will remove this, but until..
+#if !defined(SYM_WIN32) || !defined (VOS_DOS)
+#   include <ver.h>
+#endif
+
+#ifndef INCL_VIRLIBVER
+#include "vlibver.h"
+#endif
+
+/************************************************************************
+ *									*
+ * BINARY VERSION INFORMATION						*
+ *									*
+ * The following binary resource information should not be overridden.	*
+ * The values defined here should be consistent for all apps within	*
+ * Norton AntiVirus. A few of the values below in the string section	*
+ * can be overridden to individualize a file within NAV. 		*
+ *									*
+ ************************************************************************/                                        
+
+#ifndef VR_FILEVERSION
+#define VR_FILEVERSION          VIRLIB_VERSION_MAJOR, VIRLIB_VERSION_MINOR, VIRLIB_VERSION_INLINE, VIRLIB_BUILD_NUMBER
+#endif
+
+#ifndef VR_PRODVERSION
+#define VR_PRODVERSION          VIRLIB_VERSION_MAJOR, VIRLIB_VERSION_MINOR, VIRLIB_VERSION_INLINE, VIRLIB_BUILD_NUMBER
+#endif
+
+#ifndef VR_FILEFLAGSMASK
+#define VR_FILEFLAGSMASK	0
+#endif
+
+#ifndef VR_FILEFLAGS
+#define VR_FILEFLAGS		0
+#endif                       
+
+#ifndef VR_FILEOS
+#define VR_FILEOS		VOS_DOS_WINDOWS16
+#endif
+
+#ifndef VR_FILETYPE
+  #ifndef _WINDLL
+    #define VR_FILETYPE		VFT_APP
+  #else
+    #define VR_FILETYPE		VFT_DLL
+  #endif
+#endif
+
+#ifndef VR_FILESUBTYPE
+#define VR_FILESUBTYPE		VFT2_UNKNOWN
+#endif
+
+/************************************************************************
+ *									*
+ * STRING VERSION INFORMATION						*
+ *									*
+ * Some of the following string resource information items should be	*
+ * overridden with file specific information.  The items that should	*
+ * be overridden are:							*
+ *									*
+ * 1) VR_FILEDESCRIPTION  - A short description of the file.		*
+ * 2) VR_INTERNALNAME     - Usually the module name.			*
+ * 3) VR_ORIGINALFILENAME - The file name of the module.		*
+ *									*
+ ************************************************************************/                                        
+
+#ifndef VR_FILEDESCRIPTION
+#define VR_FILEDESCRIPTION	VIRLIB_PRODUCT_NAME
+#endif
+
+#ifndef VR_INTERNALNAME
+#define VR_INTERNALNAME		/* */
+#endif
+
+#ifndef VR_ORIGINALFILENAME
+#define VR_ORIGINALFILENAME	/* */
+#endif
+
+#ifndef VR_PUBLISHERNAME
+#define VR_PUBLISHERNAME	"Symantec Corporation"
+#endif
+
+#ifndef VR_FILEVERSIONSTRING
+#define VR_FILEVERSIONSTRING    VIRLIB_PRODUCT_VERSION
+#endif
+
+#ifndef VR_COPYRIGHT
+#define VR_COPYRIGHT		VIRLIB_LEGAL_COPYRIGHT
+#endif
+
+#ifndef VR_PRODUCTNAME
+#define VR_PRODUCTNAME		VIRLIB_PRODUCT_NAME
+#endif
+
+#ifndef VR_PRODUCTVERSIONSTRING
+#define VR_PRODUCTVERSIONSTRING	VIRLIB_PRODUCT_VERSION
+#endif
+
+/************************************************************************
+ *									*
+ * VERSION RESOURCE TEMPLATE						*
+ *									*
+ ************************************************************************/
+
+VS_VERSION_INFO		VERSIONINFO
+  FILEVERSION		VR_FILEVERSION
+  PRODUCTVERSION	VR_PRODVERSION
+  FILEFLAGSMASK		VR_FILEFLAGSMASK
+  FILEFLAGS		VR_FILEFLAGS
+  FILEOS		VR_FILEOS
+  FILETYPE		VR_FILETYPE
+  FILESUBTYPE		VR_FILESUBTYPE
+
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"                    // U.S. English, Multilingual Windows
+    BEGIN
+      VALUE "CompanyName",      VR_PUBLISHERNAME "\0"
+      VALUE "FileDescription",  VR_FILEDESCRIPTION "\0"
+      VALUE "FileVersion",      VR_FILEVERSIONSTRING "\0"
+      VALUE "InternalName",     VR_INTERNALNAME "\0"
+      VALUE "LegalCopyright",   VR_COPYRIGHT "\0"
+      VALUE "OriginalFilename", VR_ORIGINALFILENAME "\0"
+      VALUE "ProductName",      VR_PRODUCTNAME "\0"
+      VALUE "ProductVersion",   VR_PRODUCTVERSIONSTRING "\0"
+    END
+  END
+
+  BLOCK "VarFileInfo"
+  BEGIN 
+    VALUE "Translation", 0x409, 1252    // U.S. English, Multilingual Windows
+  END
+END
+
+
+#endif  // _VLIB_VER
+

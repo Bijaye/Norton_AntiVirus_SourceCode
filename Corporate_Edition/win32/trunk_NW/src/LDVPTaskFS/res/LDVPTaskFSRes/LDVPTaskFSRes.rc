@@ -1,0 +1,545 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "Resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include <winver.h>\r\n"
+    "#include ""nav.ver""\r\n"
+    "#include ""LocVerMsg.rc""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LDVPTASKFS          BITMAP                  "..\\..\\LDVPTaskFSCtl.bmp"
+IDB_LOCKS               BITMAP                  "..\\..\\locks.bmp"
+IDB_SCANSELECTEDISK     BITMAP                  "..\\..\\Scandisk.BMP"
+IDB_SCANFLOP            BITMAP                  "..\\..\\Scanflop.BMP"
+IDB_SCANPCHEALTH        BITMAP                  "..\\..\\ScanPCH.BMP"
+IDB_SCAN_IMAGES         BITMAP                  "..\\..\\ScanImages.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PROPPAGE_LDVPTASKFS DIALOGEX 0, 0, 250, 62
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+END
+
+IDD_SCAN_FLOPPY DIALOGEX 0, 0, 220, 159
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "&Options...",IDC_OPTIONS,170,145,50,14
+    LTEXT           "(title)",IDC_TITLE,7,0,212,15
+    CONTROL         "",IDC_DRIVES,"{91581CB1-0E7B-11D1-9D93-00A0C95C1762}",
+                    WS_TABSTOP,7,18,212,124
+END
+
+IDD_SCAN_RESULTS DIALOGEX 0, 0, 220, 155
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_TITLE,7,0,147,15
+    LTEXT           "",IDC_RESULTS_PH,1,21,219,134
+END
+
+IDD_SCAN_SELECTED DIALOGEX 0, 0, 220, 195
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Files"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "&Options...",IDC_OPTIONS,169,180,50,14
+    LTEXT           "",IDC_TITLE,7,0,212,15
+    CONTROL         "",IDC_DRIVES,"{91581CB1-0E7B-11D1-9D93-00A0C95C1762}",
+                    WS_TABSTOP,7,18,212,157
+END
+
+IDD_QUICK_SCAN DIALOGEX 0, 0, 220, 161
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Quick Scan"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "&Options...",IDC_OPTIONS,170,147,50,14
+    LTEXT           "",IDC_TITLE,7,0,212,15
+    LTEXT           "",IDC_STATIC,14,20,198,88
+END
+
+IDD_FULL_SCAN DIALOGEX 0, 0, 220, 161
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Full Scan"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "&Options...",IDC_OPTIONS,170,147,50,14
+    LTEXT           "",IDC_TITLE,7,0,212,15
+    LTEXT           "",IDC_STATIC,14,20,198,86
+END
+
+IDD_CUSTOM_SCAN DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDI_CUSTOMSCAN,IDC_STATIC,1,2,20,20
+    LTEXT           "(title)",IDC_TITLE,29,1,190,23
+    LTEXT           "(description)",IDC_DESCRIPTION,1,42,218,46,SS_SUNKEN
+    LTEXT           "(schedule information)",IDC_SCHEDULE_INFO,0,109,219,29,
+                    SS_SUNKEN
+    LTEXT           "Description:",IDC_STATIC,1,30,96,8
+    LTEXT           "Schedule:",IDC_STATIC,1,96,97,8
+END
+
+IDD_PREPARING_DLG DIALOGEX 0, 0, 227, 38
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "Please Wait"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Preparing to perform scan. Counting files and folders...",
+                    IDC_STATIC,35,7,184,10
+    LTEXT           "Files:",IDC_STATIC,35,20,17,8
+    LTEXT           "Folders:",IDC_STATIC,109,20,26,8
+    LTEXT           "0",IDC_FILES,57,20,24,8
+    LTEXT           "0",IDC_FOLDERS,137,20,24,8
+    ICON            IDI_WAIT,IDC_STATIC,7,7,20,20
+END
+
+IDD_SCAN_OPTIONS DIALOGEX 0, 0, 262, 260
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Scan Options"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,20,240,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,240,50,14
+    PUSHBUTTON      "Help",IDHELP,130,240,50,14
+    PUSHBUTTON      "&Save Settings",IDC_MAKE_DEFAULT,185,240,57,14
+    CONTROL         "",IDC_UI,"{536604C2-B82E-11D1-8252-00A0C95C0756}",
+                    WS_TABSTOP,7,7,248,223
+END
+
+IDD_SCHEDULE_PAGE DIALOGEX 0, 0, 240, 205
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Schedule"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDI_SCHEDULE,IDC_STATIC,7,4,20,20
+    LTEXT           "",IDC_TITLE,35,7,177,21
+    LTEXT           "Select how often and when you want the scan to occur.",
+                    IDC_STATIC,9,31,201,19
+    LTEXT           "Schedule control",IDC_SCHEDULE,0,55,240,148,WS_TABSTOP
+END
+
+IDD_SAVEAS DIALOGEX 0, 0, 240, 194
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Name/Description"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Type a name and description then click Next.",
+                    IDC_NAME_STATIC,7,28,202,13
+    LTEXT           "Na&me:",IDC_STATIC,7,48,64,8
+    EDITTEXT        IDC_NAME,7,62,202,14,ES_AUTOHSCROLL
+    LTEXT           "&Description:",IDC_STATIC,7,94,59,8
+    EDITTEXT        IDC_TASK_DESCRIPTION,7,106,202,48,ES_MULTILINE | 
+                    WS_VSCROLL
+    LTEXT           "",IDC_TITLE,7,0,212,15
+END
+
+IDD_SCAN_PCHEALTH DIALOGEX 0, 0, 220, 160
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Symantec AntiVirus will scan the local hard disks for viruses and update the LANDesk Client Manager PC Health status.",
+                    IDC_STATIC,76,17,144,27
+    CONTROL         247,IDC_STATIC,"Static",SS_BITMAP | SS_CENTERIMAGE | 
+                    SS_SUNKEN,7,1,67,153
+    LTEXT           "This scan will use the Auto-Protect settings.",
+                    IDC_STATIC,76,46,144,27
+    LTEXT           "PC Health Scan",IDC_TITLE,77,1,143,15
+END
+
+IDD_SELECT_SCAN_TYPE DIALOGEX 0, 0, 220, 209
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Select Scan Type"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "",IDC_STATIC,7,30,199,173,NOT WS_VISIBLE
+    CONTROL         "&Quick Scan",IDC_QSCAN_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,30,46,176,10
+    CONTROL         "&Full Scan",IDC_FSCAN_RADIO,"Button",BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP,30,89,176,10
+    CONTROL         "&Custom Scan",IDC_CSCAN_RADIO,"Button",
+                    BS_AUTORADIOBUTTON | WS_TABSTOP,30,160,176,10
+    LTEXT           "Please select a scan type from the following:",
+                    IDC_STATIC,15,26,175,13
+    LTEXT           "",IDC_TITLE,7,0,212,15
+    LTEXT           "",IDC_QSCAN_STATIC,15,58,191,23,NOT WS_GROUP
+    LTEXT           "",IDC_FSCAN_STATIC,15,100,191,58,NOT WS_GROUP
+    LTEXT           "",IDC_CSCAN_STATIC,15,174,191,29,NOT WS_GROUP
+    CONTROL         "",IDC_FSCAN_IMAGE_FRAME,"Static",SS_BLACKFRAME | NOT 
+                    WS_VISIBLE,15,89,16,16,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_QSCAN_IMAGE_FRAME,"Static",SS_BLACKFRAME | NOT 
+                    WS_VISIBLE,15,46,16,16,WS_EX_TRANSPARENT
+    CONTROL         "",IDC_CSCAN_IMAGE_FRAME,"Static",SS_BLACKFRAME | NOT 
+                    WS_VISIBLE,15,160,16,16,WS_EX_TRANSPARENT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PROPPAGE_LDVPTASKFS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_SCAN_FLOPPY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+    END
+
+    IDD_SCAN_SELECTED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+    END
+
+    IDD_QUICK_SCAN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+    END
+
+    IDD_FULL_SCAN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+    END
+
+    IDD_PREPARING_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 31
+    END
+
+    IDD_SCAN_OPTIONS, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 255
+        HORZGUIDE, 233
+    END
+
+    IDD_SCHEDULE_PAGE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_SAVEAS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 220
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 161
+    END
+
+    IDD_SCAN_PCHEALTH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+    END
+
+    IDD_SELECT_SCAN_TYPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        VERTGUIDE, 206
+        BOTTOMMARGIN, 203
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SCAN_FLOPPY DLGINIT
+BEGIN
+    IDC_DRIVES, 0x376, 76, 0
+0x0000, 0x0000, 0x0202, 0x0000, 0x20de, 0x0000, 0x16a2, 0x0000, 0x0013, 
+0xcdcd, 0xcdcd, 0x0003, 0x0002, 0x0000, 0x0003, 0x0001, 0x0000, 0x0003, 
+0x0000, 0x0000, 0x0003, 0x1000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0003, 
+0x0000, 0x0000, 0x0003, 0x0000, 0x1000, 0x0003, 0x0000, 0x0000, 0x0003, 
+0x0000, 0x0000, 
+    0
+END
+
+IDD_SCAN_SELECTED DLGINIT
+BEGIN
+    IDC_DRIVES, 0x376, 76, 0
+0x0000, 0x0000, 0x0710, 0x0000, 0x23f8, 0x0000, 0x1b98, 0x0000, 0x0013, 
+0xcdcd, 0xcdcd, 0x0003, 0x0002, 0x0000, 0x0003, 0x0001, 0x0000, 0x0003, 
+0x0100, 0x0000, 0x0003, 0x1000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0003, 
+0x0000, 0x0001, 0x0003, 0x0000, 0x1000, 0x0003, 0x0000, 0x0000, 0x0003, 
+0x0000, 0x0000, 
+    0
+END
+
+IDD_SCAN_OPTIONS DLGINIT
+BEGIN
+    IDC_UI, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x2673, 0x0000, 0x256a, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_WAIT                ICON                    "..\\..\\wait.ico"
+IDI_EXTENSIONS          ICON                    "..\\..\\extensio.ico"
+IDI_SCHEDULE            ICON                    "..\\..\\schdevnt.ico"
+IDI_CUSTOMSCAN          ICON                    "..\\..\\customsc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_LDVPTASKFS          "LDVPTask control"
+    IDS_LDVPTASKFS_PPG      "LDVPTask property page"
+    IDS_CLOSE               "&Close"
+    IDS_VIRUSNAME           "Virus name"
+    IDS_FILENAME            "Filename"
+    IDS_SCHEDULE_OPTIONS    "Schedule scan options"
+    IDS_SCAN_PROMPT_DAILY   "  Perform scan every day at %1"
+    IDS_SCAN_PROMPT_WEEKLY  "  Perform scan every %1 at %2"
+    IDS_SCAN_PROMPT_MONTHLY "  Perform scan on day %1 of every month at %2"
+    IDS_CONFIG_SCAN         "&Scan Options----Scan Options"
+    IDS_NOT_READY           "Symantec AntiVirus cannot access drive '%1'."
+    IDS_CONFIG_RTS          "&Auto-Protect Options"
+    IDS_IDLE_SCAN           "&Idle Scan Options"
+    IDS_CONFIG_SCAN_DESCRIPTION 
+                            "These are the default options for the items in the 'Scans' folder."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TASK_NAME_DEFAULT   "Scan"
+    IDS_LDVPTASKFS_PPG_CAPTION "General"
+    IDS_GROUP_HEADER        "&Scan----Scan"
+    IDS_SCAN_FLOPPY         "Scan a &Floppy Disk----Scan a Floppy Disk"
+    IDS_SCAN_FLOPPY_DESCRIPTION 
+                            "Scan a floppy disk for risks. The boot sector and system memory are also scanned for viruses."
+    IDS_SCAN_DRIVE_DESCRIPTION 
+                            "Scan a hard disk or network drive. The boot sector and system memory are also scanned for viruses. A password is required to scan network drives."
+    IDS_SCAN_DRIVE          "Scan a &Hard Disk----Scan a Hard Disk"
+    IDS_SCAN_SELECTED       "&Custom Scan----Custom Scan"
+    IDS_SCAN_SELECTED_DESCRIPTION 
+                            "Scans only the parts of the computer that you want to scan.  You can select specific files and folders.  A password may be required to scan network drives."
+    IDS_EDIT                "E&dit..."
+    IDS_NO_SCAN_DIALOGS     "Symantec AntiVirus could not find ScanDlgs.Dll. Please reinstall the application."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CONFIG_ACTIONS_DESCRIPTION 
+                            "These are the default actions for scans. These options are used when you start a scan manually."
+    IDS_CONFIG_RTS_DESCRIPTION 
+                            "These options are used to scan files as they are accessed. Some of these options may be locked by your administrator."
+    IDS_CONFIG_IDLE_DESCRIPTION 
+                            "These are the options used to scan your computer during idle time."
+    IDS_GROUP_CONFIGURATION "Confi&gure----Configure"
+    IDS_QUICKSCAN           "&Quick Scan----Quick Scan"
+    IDS_EXTENSION_BAD_EXTENSION 
+                            "The extension is not valid. Enter a valid extension. Extensions can be up to three letters."
+    IDS_CONFIGURATION       "Scan Options"
+    IDS_DEFAULT_MESSAGE     "%L Scan\\n%E%V\\nFile:   %P\\nComputer:     %S\\nUser:   %N\\n\\nAction:    %A"
+    IDS_SAVE                "S&ave"
+    IDS_SCAN                "S&can"
+    IDS_EXTENSIONS_DESCRIPT "Enter the extensions of the file types you want to include in the scan."
+    IDS_QUICKSCAN_DESCRIPTION 
+                            "Scans memory and other common infection locations on this computer for viruses and security risks, such as adware and spyware, that are actively infecting this computer.\n\nUse this scan to find risks quickly.  If this scan finds a virus or a security risk, Symantec recommends that you follow up with a full scan."
+    IDS_COULD_NOT_CLEAN     "Could not clean the virus '%1' from file '%2'."
+    IDS_MERIDIAN_POST       "PM"
+    IDS_ACCESSED            "Accessed"
+    IDS_MODIFIED            "Modified"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_SHELLSEL_NONE_SELECTED 
+                            "There must be at least one selected item."
+    IDS_SCAN_PCHEALTH       "&PC Health Scan"
+    IDS_SCAN_PCHEALTH_DESCRIPTION 
+                            "Update the LANDesk Client Manager PC Health status for Symantec AntiVirus."
+    IDS_TASK_NAME_WIZARDMODE "Type a name and description then click Next."
+    IDS_TASK_NAME_NONWIZARDMODE "Change the name or description of this scan."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_APP_NAME            "Symantec AntiVirus"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_BOTH                "Always"
+    IDS_FILE_READ_ERROR     "Symantec AntiVirus could not open '%1'."
+    IDS_LOG_FILTER          "Log Files (*.Log)|*.Log||"
+    IDS_LOCKED_OPTION       "The network administrator has locked this option. It cannot be changed."
+    IDS_FULL_SCAN           "&Full Scan----Full Scan"
+    IDS_FULL_SCAN_DESCRIPTION 
+                            "Scans this entire computer for viruses and security risks such as adware and spyware.\n\nUse this scan to look in the boot sector, in programs loaded into memory, and in all of the files and folders.  A password may be required to scan network drives."
+    IDS_SELECT_SCAN_TYPE    "Select Scan Type"
+    IDS_NEXT                "&Next >"
+    IDS_SCAN_PROMPT_DAILY_RESUME 
+                            "Perform scan every day at %1!s!.  The scan will run for a maximum of %2!d! hours.  If the scan is not complete, resume it on the next day where it left off."
+    IDS_SCAN_PROMPT_WEEKLY_RESUME 
+                            "Perform scan every %1!s! at %2!s!.  The scan will run for a maximum of %3!d! hours.  If the scan is not complete, resume it on the next week where it left off."
+    IDS_SCAN_PROMPT_MONTHLY_RESUME 
+                            "Perform scan on day %1!s! of every month at %2!s!.  The scan will run for a maximum of %3!d! hours.  If the scan is not complete, resume it on the next month where it left off."
+    IDS_QUICKSCAN_DESCRIPTION_SHORT 
+                            "Does a short, fast scan for viruses and other Security Risks such as adware and spyware loaded into memory and other common infection locations on this computer."
+    IDS_FULLSCAN_DESCRIPTION_SHORT 
+                            "Scans this computer for viruses and security risks such as adware and spyware.\n\nUse this scan to look in the boot sector, in programs loaded into memory, and in all of the files and folders.  A password may be required to scan network drives."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_SCHEDULE         "This is not a scheduled scan."
+    IDS_START               "&Start Scan"
+    IDS_STOP                "&Stop"
+    IDS_AC_NOTHING          "None"
+    IDS_AC_BAD              "Unknown"
+    IDS_GL_EVENT_IS_ALERT   "Integrity Shield violation"
+    IDS_GL_EVENT_SCAN_STOP  "Stopped scan"
+    IDS_GL_EVENT_SCAN_START "Started scan"
+    IDS_GL_EVENT_PATTERN_UPDATE "Virus definition file sent to server"
+    IDS_GL_EVENT_INFECTION  "Virus definition match infection"
+    IDS_GL_EVENT_FILE_NOT_OPEN "Unable to open file/folder/drive"
+    IDS_GL_EVENT_LOAD_PATTERN "New virus definition file loaded"
+    IDS_GL_STD_MESSAGE_INFO "Information"
+    IDS_GL_STD_MESSAGE_ERROR "Error"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_GL_EVENT_CHECKSUM   "File checksum failure"
+    IDS_GL_EVENT_TRAP       "Virus behavior"
+    IDS_GL_EVENT_CONFIG_CHANGE "Configuration changed"
+    IDS_LOGGER_Scheduled    "Scheduled Scan"
+    IDS_LOGGER_Manual       "Manual Scan"
+    IDS_LOGGER_Real_Time    "Auto-Protect"
+    IDS_LOGGER_Integrity_Shield "Integrity Shield"
+    IDS_LOGGER_Console      "Symantec AntiVirus Administrator"
+    IDS_LOGGER_VPDOWN       "Virus Definition File Update"
+    IDS_LOGGER_SYSTEM       "System"
+    IDS_LOGGER_Forwarded    "Forwarded"
+    IDS_GL_CAT_INFECTION    "Virus Infection"
+    IDS_GL_CAT_SUMMARY      "Summary"
+    IDS_GL_CAT_PATTERN      "Virus Definition File"
+    IDS_GL_CAT_SECURITY     "Configuration Change"
+    IDS_GL_EVENT_STARTUP    "Server scanner started"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_GL_EVENT_PATTERN_DOWNLOAD "Virus definition file downloaded"
+    IDS_GL_EVENT_SHUTDOWN   "Server scanner stopped"
+    IDS_GL_EVENT_TOO_MANY_VIRUSES "Default scan action auto-changed"
+    IDS_ACTION_MOVE         "Moved"
+    IDS_ACTION_RENAME       "Renamed"
+    IDS_ACTION_DELETE       "Deleted"
+    IDS_ACTION_CLEAN        "Cleaned"
+    IDS_ACTION_LEAVEALONE   "Left Alone"
+    IDS_VIRUSES_FOUND       "Scan complete - %1 risks found."
+    IDS_LOGGER_IDLE         "Idle Scan"
+    IDS_MACRO               "Macro"
+    IDS_NON_MACRO           "Non-Macro"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EXCLUSION_COL_HEADING "Name"
+    IDS_EXCLUSION_COL_CLEANABLE "Cleanable"
+    IDS_EXCLUSION_COL_TYPE  "Virus Type"
+    IDS_SCHEDULE_TEXT       "Select how often and when you want this scan to occur."
+    IDS_START_SCAN_ERROR    "Could not start scan. Scan engine returned error %1."
+    IDS_NO_I_SCAN           "Symantec AntiVirus could not access the scan engine. Please ensure the product is properly installed."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include <winver.h>
+#include "nav.ver"
+#include "LocVerMsg.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

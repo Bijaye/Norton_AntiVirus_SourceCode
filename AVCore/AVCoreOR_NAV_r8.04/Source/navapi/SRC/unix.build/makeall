@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mkdir bin.release
+mkdir bin.debug
+
+for dir in symkunix avenge navapi
+do
+    echo Making $dir
+    cd $dir
+    make -f unix.mak $1 >make.err 2>&1
+    echo "    errors:   `grep error make.err | wc -l`"
+    echo "    warnings: `grep warning make.err | wc -l`"
+    cd ..
+done

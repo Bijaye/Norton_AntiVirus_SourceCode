@@ -1,0 +1,48 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+ERRORLOG=navwnt.log
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+CONTENTS=NAVW_INFO_ABOUT_NAV
+TITLE=Norton AntiVirus for Windows NT
+CNT=navwnt.cnt
+COPYRIGHT=Copr. (c) 1994-98 Symantec Corp.
+HLP=navwnt.hlp
+
+[FILES]
+Navchelp.rtf
+navdic.rtf
+navhbtn.rtf
+Navintro.rtf
+navopts.rtf
+Navtask.rtf
+nthbtn.rtf
+ntintro.rtf
+nttask.rtf
+
+[MAP]
+#include .\navwhlp5.h
+
+[WINDOWS]
+MAIN="Norton AntiVirus",,58372,(r14876671),(r8454143),f2
+TASK="Norton AntiVirus",,25604,(r14876671),(r8454143),f2
+TERM="",,4,(r14876671),(r12632256),f2
+
+[CONFIG]
+BrowseButtons()
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[EXCLUDE]
+DEC
+INOCULATION
+NAV95
+NODEC95
+NTSRV
+VLA
+
+[INCLUDE]
+NODEC
+NODECNT
+NT
+PASSWORD

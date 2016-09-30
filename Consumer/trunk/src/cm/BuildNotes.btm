@@ -1,0 +1,112 @@
+@echo on
+
+setlocal
+
+   set cm_dir=%@full[%@path[%_batchname]]
+   set notes_dir=%cm_dir%BuildNotes\
+   set src_dir=%@full[..]
+   set project=NAV 14.2
+   set build=
+   set ira_dir=%src_dir%\BIN\bin.ira
+   set new_notes=NewBuildNotes.html
+   set old_notes=BuildNotes.html
+   set notes_ini=SymBuildNotes.ini
+   set NOPOST=
+
+   set p4ChgTxt=%tmp\p4chgtxt.txt
+   set p4ChgNum=%tmp\p4chgnum.txt
+   set p4ChangeNum=
+
+
+   do param = 1 to 127
+      shift 1
+      iff "%0"=="" then
+         shift -%param%
+         goto continue
+      endiff
+
+      set this_param=%@upper[%0]
+
+      iff "%@instr[0,7,%this_param]"=="/BUILD:" then
+         set build=%@instr[7,%0]
+      elseiff "%this_param"=="/NOPOST" then
+         set NOPOST=NOPOST
+      endiff
+   enddo
+   shift -127
+
+:continue
+
+   iff x%build==x then
+      echo Usage: %_batchname /BUILD:[BuildNum]
+      quit 255
+   endiff
+   
+%src_dir%\..\SDKs\CommonClient\BIN\bin.ira\SymBuildNotes.exe -ini %cm_dir%%notes_ini% -results %notes_dir%%new_notes%
+
+:: Quit now if we are not posting the new build notes.
+if "%NOPOST%"=="NOPOST" quit 0
+
+:: If the build notes succeeded, check the file in to Perforce.
+:: Also, copy new notes to the Nobuilds directory for the posting script
+:: to pick up.
+:: We use this temporary location for posting so that the posting script
+:: only posts it to the SDK if the build notes generation succeeded.
+
+iff %? == 0 then
+	:: Copy build notes file to Nobuilds.
+	copy %notes_dir%%new_notes% %src_dir\Nobuilds\%old_notes%
+
+	:: Create our changelist specification file
+TEXT > %p4ChgTxt
+# Perforce Change Specification.
+#
+Change:	new
+Status:	new
+
+Description:
+ENDTEXT
+	
+	echo.	Build notes for %project% build %build%. >> %p4ChgTxt
+	
+	p4 change -i < %p4ChgTxt > %p4ChgNum
+	set X=%?
+	iff %X == 0 then
+	    set p4ChangeNum=%@word[1,%@line[%p4ChgNum,0]]
+	else
+	    echo Error: p4 change -i `<` %p4ChgTxt `>` %p4ChgNum
+	    quit 255
+	endiff 
+	
+	   p4 edit -c %p4ChangeNum %notes_dir%%old_notes%
+	set X=%?
+	iff %X != 0 then
+	    echo Error: p4 edit -c %p4ChangeNum %notes_dir%%old_notes%
+	    p4 change -d %p4ChangeNum
+	    quit 255
+	endiff 
+	
+	   copy %notes_dir%%new_notes% %notes_dir%%old_notes%
+	
+	   p4 submit -c %p4ChangeNum
+	set X=%?
+	iff %X == 0 then
+	    echo Files modified and submitted successfully.
+	    echo.
+	else
+	    echo P4 submit failed.
+	    echo.
+	
+	    p4 revert -c %p4ChangeNum %notes_dir%%old_notes%
+	    p4 change -d %p4ChangeNum
+	    quit 255
+	endiff 
+else
+	echo BuildNotes was NOT successfully created, please do the build notes manually
+endiff
+
+
+
+endlocal
+
+quit 0

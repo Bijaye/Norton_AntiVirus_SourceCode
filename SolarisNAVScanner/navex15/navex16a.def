@@ -1,0 +1,27 @@
+;;************************************************************************
+;;
+;; $Header:   S:/NAVEX/VCS/navex16a.dev   1.1   06 Aug 1998 13:24:04   MKEATIN  $
+;;
+;; Description:
+;;      Contains NAVEX WINDOWS 16-BIT DEF file.
+;;
+;;************************************************************************
+;; $Log:   S:/NAVEX/VCS/navex16a.dev  $
+;  
+;     Rev 1.1   06 Aug 1998 13:24:04   MKEATIN
+;  Changed NAVEX16 to NAVEX16a
+;  
+;     Rev 1.0   06 Aug 1998 13:22:08   MKEATIN
+;  Initial revision.
+;
+;;************************************************************************
+
+LIBRARY         NAVEX16a
+DESCRIPTION     'NAVEX External AV Interface.  Copyright (C) Symantec Corp. 1990-1998.'
+EXETYPE         WINDOWS
+CODE            PRELOAD  MOVEABLE    DISCARDABLE
+DATA            PRELOAD  MOVEABLE    SINGLE
+HEAPSIZE        4096
+EXPORTS         WEP                     @1      RESIDENTNAME PRIVATE
+                EXTQueryInterface       @2
+

@@ -1,0 +1,66 @@
+/*
+  4/8/98 this module is responsible for extracting the infected files
+*/
+
+global doExtraction: integer;
+global numToExtract: integer;
+
+
+external rule EnqueueForExtraction(filename: string);
+begin
+trigger off for_current ExtractionThread(filename);
+numToExtract := numToExtract + 1;
+println('# of files enqueued for extraction: ', numToExtract)
+end;
+
+
+/* (Should I put a TTL for this rule ?) */
+rule ExtractionThread(filename: string);
+var
+rc: integer;
+begin
+if
+        doExtraction = 0
+        -->
+                trigger off for_next ExtractionThread(filename);        /* wait until it is safe to extract the file */
+
+        true
+        -->
+                begin
+                println('Extracting ', filename);
+                rc := extractfile(filename);
+                if rc != 0 --> println('EXTRACTION FAILED!') fi;
+                numToExtract := numToExtract - 1;
+                if
+                        numToExtract = 0
+                        -->
+                                begin
+                                println('Stopping extraction sequence');
+                                doExtraction := 0
+                                end
+                fi;
+                skip    /* Let the thread die */
+                end
+fi
+end;
+
+
+external rule PerformExtractionNow;
+begin
+if
+        numToExtract > 0
+        -->
+                begin
+                println('Starting extraction sequence');
+                doExtraction := 1
+                end
+fi
+end;
+
+
+init_action;
+begin
+doExtraction := 0;
+numToExtract := 0
+end.
+

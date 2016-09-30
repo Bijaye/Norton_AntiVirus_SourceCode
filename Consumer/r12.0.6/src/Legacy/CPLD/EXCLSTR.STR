@@ -1,0 +1,402 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/exclstr.stv   1.0   06 Feb 1997 20:50:26   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV exclusions list options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptExcludeStrings,
+//      LPVOID *        lpOptExcludeArgs,
+//
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/exclstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:26   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   30 Jan 1996 16:21:00   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:54:54   BARRY
+// Initial revision.
+// 
+//    Rev 1.22   25 Jun 1995 18:11:56   BARRY
+// Changed to DOS read-only attrib change
+// 
+//    Rev 1.21   10 Feb 1995 13:51:16   DALLEE
+// Add Extension dialog to New Extension.
+// 
+//    Rev 1.20   20 Jan 1995 18:52:46   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.19   09 Jan 1995 16:28:44   DALLEE
+// Use SYM_MAX_PATH-1 for max_len in text edit, since buffers are now commonly
+// SYM_MAX_PATH, not SYM_MAX_PATH + 1.
+// Text edits require buffers of max_len+1 to handle the EOS.
+// 
+//    Rev 1.18   06 Jan 1995 18:48:00   DALLEE
+// Increase exclusion text edit size to SYM_MAX_PATH to handle new long
+// exclusions.
+// 
+//    Rev 1.17   29 Dec 1994 12:50:44   DALLEE
+// Include navopts.h for old MAX_PATH_SIZE define.
+// 
+//    Rev 1.16   28 Dec 1994 12:07:38   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.3   27 Dec 1994 19:28:34   DALLEE
+    // CTS4.H to CTSN.H
+    //
+    //    Rev 1.2   09 Dec 1994 19:32:20   DALLEE
+    // Paths for NAVOPTS.DAT strings to old 144 bytes.
+    //
+    //    Rev 1.1   30 Nov 1994 17:21:58   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.15   28 Dec 1994 11:55:48   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:52   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.12   01 Sep 1993 01:00:10   BRAD
+    // The exclusion list now responds to d-clicks.
+//************************************************************************
+
+#include "platform.h"
+#include "xapi.h"
+#include "stddos.h"
+#include "stddlg.h"
+
+#include "ctsn.h"
+#include "navdprot.h"
+#include "navopts.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define EXCLUDE_ITEMS_LIST_WIDTH    (35)
+#define EXCLUDE_ITEMS_LIST_HEIGHT   ( 6)
+#define EXCLUDE_FROM_OF_WIDTH       (34)
+#define EXCLUDE_FROM_HEIGHT         ( 8)
+#define EXCLUDE_SELECTED_OF_WIDTH   (21)
+
+// These should be in an options header file (OPTIONS.H??)
+#define OPT_LIST_DELAY1             ( 5)
+#define OPT_LIST_DELAY2             ( 2)
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    [];     // These externs are declared in
+extern char szOKButton          [];     //  OPTSTR.CPP
+extern char szCancelButton      [];
+extern char szAddButton         [];
+extern char szEditButton        [];
+extern char szDeleteButton      [];
+extern char szHelpButton        [];
+extern ButtonsRec buOkCancelHelp;
+extern ButtonsRec buEllipses;
+extern ScrollBarRec sbOptScrollBar;
+
+
+//************************************************************************
+// GLOBAL VARIABLES
+//************************************************************************
+
+char SZ_EXCLUDE_FILE_TITLE          [] = "Select File To Exclude";
+char SZ_EXCLUDE_SELECTED_FORMAT     [] = "%-20p:";
+                                        // The next field width must be
+                                        // equal to EXCLUDE_ITEMS_LIST_WIDTH-1
+char SZ_EXCLUDE_LIST_FORMAT         [] = " %34p";
+char SZ_EXCLUDE_ADD_TITLE           [] = "New Exclusion";
+char SZ_EXCLUDE_EDIT_TITLE          [] = "Edit Exclusion";
+
+char szExcludeFromKnownVirus        [] = "^Known virus detection";
+char szExcludeFromUnknownVirus      [] = "^Unknown virus detection";
+char szExcludeFromInocChange        [] = "I^noculation detection";
+char szExcludeFromHardFormat        [] = "^Low-level format of hard disk";
+char szExcludeFromHardBootRecords   [] = "Write to hard ^disk boot records";
+char szExcludeFromFloppyBootRecords [] = "Write to ^floppy disk boot records";
+char szExcludeFromWriteEXE          [] = "Write to ^program files";
+char szExcludeFromAttributeChange   [] = "DOS ^read-only attribute change";
+
+
+//------------------------------------------------------------------------
+// Exclusions CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszOptExcludeStrings [] =        // Strings for exclusions CP dialog
+{
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    " %L1",                             // lrExcludeItems
+    DIALOG_EMPTY_LINE,
+    "  Exclusions for %O2",             // ofExcludeSelectedItem
+    " %38g",                            // BEGIN GROUP
+    "   %O3",                           // &lpofExcludeFrom[0]
+    "   %O4",                           // &lpofExcludeFrom[1]
+    "   %O5",                           // &lpofExcludeFrom[2]
+    "   %O6",                           // &lpofExcludeFrom[3]
+    "   %O7",                           // &lpofExcludeFrom[4]
+    "   %O8",                           // &lpofExcludeFrom[5]
+    "   %O9",                           // &lpofExcludeFrom[6]
+    "   %O10",                          // &lpofExcludeFrom[7]
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B11",                             // buExcludeButtons
+    DIALOG_END,
+    };
+
+
+//------------------------------------------------------------------------
+// Exclusions CP Dialog Controls
+//------------------------------------------------------------------------
+
+ListRec lrExcludeItems =
+    {
+    0, 0,                               // Row, col - internal use?
+    1,                                  // Number of columns
+    EXCLUDE_ITEMS_LIST_WIDTH,           // Width of column
+    EXCLUDE_ITEMS_LIST_HEIGHT,          // Height of list
+    ExcludeListWriteEntry,              // Function to write each entry
+    NULL,                               // do_mouse()
+    NULL,                               // check_match()
+    NULL,                               // event_filter()
+    NULL,                               // Pointers to entries
+    NULL,                               // size of each entry
+    THIN_LIST_BOX | TITLE_LEFT | ACCEPT_DCLICKS,         // Flags
+    &sbOptScrollBar,
+    NULL,                               // (char *) String between columns
+    OPT_LIST_DELAY1, OPT_LIST_DELAY2,   // Tick delays between scrolls
+    0,                                  // Number of list entries
+    0, 0,                               // First entry, active entry
+    0,                                  // Width of separator string
+    "^Items:",                          // Title
+    NULL,                               // User pointer
+    EXCLUDE_ITEMS_LIST_WIDTH,           // Width of entire list
+    0,                                  // BYTERECT - rectangle around list
+    1,                                  // Height of each entry
+    };
+
+char szExcludeSelectedItem [EXCLUDE_SELECTED_OF_WIDTH+1];
+
+OutputFieldRec ofExcludeSelectedItem =
+    {
+    's',                                // Substitute a string
+    LEFT_FIELD,
+    EXCLUDE_SELECTED_OF_WIDTH,          // Maximum width of field
+    szExcludeSelectedItem,              // Data to substitute
+    };
+
+OutputFieldRec lpofExcludeFrom [EXCLUDE_FROM_HEIGHT] =
+    {
+        {
+        's',                            // Substitute a string
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,          // Maximum width of field
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+        {
+        's',
+        LEFT_FIELD | NO_FIRST_DRAW,
+        EXCLUDE_FROM_OF_WIDTH,
+        },
+    };
+
+static char *lpszExcludeButtonsLabels [] =
+    {
+    szOKButton,
+    szCancelButton,
+    szAddButton,
+    szEditButton,
+    szDeleteButton,
+    szHelpButton,
+    NULL,
+    };
+
+ButtonsRec buExcludeButtons =
+    {
+    lpszExcludeButtonsLabels,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD,
+    0,                                  // Value - not used
+    0, 0,                               // Row, col - internal
+    0, 0,                               // Pad, gap
+    };
+
+LPVOID lpOptExcludeArgs [] =            // Arguments to pass to control panel
+    {
+    &lrExcludeItems,
+    &ofExcludeSelectedItem,
+    &lpofExcludeFrom[0],
+    &lpofExcludeFrom[1],
+    &lpofExcludeFrom[2],
+    &lpofExcludeFrom[3],
+    &lpofExcludeFrom[4],
+    &lpofExcludeFrom[5],
+    &lpofExcludeFrom[6],
+    &lpofExcludeFrom[7],
+    &buExcludeButtons,
+    };
+
+
+//------------------------------------------------------------------------
+// Add Exclusions Dialog Strings
+//------------------------------------------------------------------------
+
+static char *lpszExcludeAddStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " ^Item: %T1%B2",                    // teExcludeAddItem, buEllipses
+    "       %C3",
+
+    DIALOG_EMPTY_LINE,
+    " %45gExclude from",                // BEGIN GROUP
+    "   %C4",                           // cbExcludeAddKnownVirus
+    "   %C5",                           // cbExcludeAddUnknownVirus
+    "   %C6",                           // cbExcludeAddInocChange
+    "   %C7",                           // cbExcludeAddHardFormat
+    "   %C8",                           // cbExcludeAddHardBootRecords
+    "   %C9",                           // cbExcludeAddFloppyBootRecords
+    "   %C10",                          // cbExcludeAddWriteEXE
+    "   %C11",                          // cbExcludeAddAttributeChange
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_END
+    };
+
+
+//------------------------------------------------------------------------
+// Add Exclusions Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbExcludeAddKnownVirus =
+    {
+    szExcludeFromKnownVirus,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddUnknownVirus =
+    {
+    szExcludeFromUnknownVirus,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddInocChange =
+    {
+    szExcludeFromInocChange,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddHardFormat =
+    {
+    szExcludeFromHardFormat,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddHardBootRecords =
+    {
+    szExcludeFromHardBootRecords,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddFloppyBootRecords =
+    {
+    szExcludeFromFloppyBootRecords,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddWriteEXE =
+    {
+    szExcludeFromWriteEXE,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbExcludeAddAttributeChange =
+    {
+    szExcludeFromAttributeChange,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+TERec teExcludeAddItem =
+    {
+    0, 0,                               // Row, col - internal use
+    (31 + 2),                           // Screen width
+    NULL,                               // String to edit
+    SYM_MAX_PATH - 1,                   // Max strlen, does not include EOS.
+    0, 0,                               // Insert pt., offset - internal use
+    TEUpperPathWildcardFilter,          // Character validate function
+    0,                                  // Flags
+    NULL,                               // Field validate function
+    };
+
+
+DIALOG dlExcludeAdd =
+    {
+    0, 0,                               // Row, col
+    NORMAL_DIALOG_FLAGS,
+    NULL,                               // Add/Edit title filled in at run time.
+    lpszExcludeAddStrings,
+    &buOkCancelHelp,
+    };
+

@@ -1,0 +1,153 @@
+: Turn off command echo to display.
+@Echo off
+
+if isdir "%BuildToolISStandAlone%" goto STARTBUILD
+set BuildToolISStandAlone=C:\ISX\standalone_sp1
+
+:STARTBUILD
+set ret=0
+iff "%BUILDINSTALL%"=="NEW" then
+        call ..\..\cm\copybin ..\..\..\..\Release\AMS\bin\Win32-SymantecSigned\*.* .\data\ams
+        if %ret != 0 Goto copyErrorOccurred
+	call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\NoBuilds\virusdef\*.* .\data\VirusDef
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\BIN.IRA\SCANDRES.DLL .\data\SCANDRES.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\components\ScanAndDeliver\src\release\SDPCK32I.DLL .\data\SDPCK32I.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\SDSND32I.DLL .\data\SDSND32I.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\SDSOK32I.DLL .\data\SDSOK32I.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\SDSTP32I.DLL .\data\SDSTP32I.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\Shared\BinIntelAnsiWin32Release\IcePackTokens.dll .\data\IcePackTokens.dll
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\Shared\BinIntelAnsiWin32Release\QCInst.dll .\data\QCInst.dll
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\Shared\BinIntelAnsiWin32Release\qserverps.dll .\data\qserverps.dll
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\Shared\BinIntelUnicodeWin32Release\qscon.dll .\data\qscon.dll
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\Shared\BinIntelUnicodeWin32Release\AvisConsole.dll .\data\AvisConsole.dll
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Platform.dat .\data\Platform.dat
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Country.dat .\data\Country.dat
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Release\Navapi\BinIntelAnsiWin32Release\NAVAPI32.DLL .\data\NAVAPI32.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\tech_pubs\corporate\Managed_Security\Help\CS_HTML_Help\enuams2\enuams2.cnt .\data\enuams2.cnt
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\tech_pubs\corporate\Managed_Security\Help\CS_HTML_Help\enuams2\Enuams2.hlp .\data\Enuams2.hlp
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_System_Center\src\install\nobuilds\ie5setup.exe .\data\ie5setup.exe
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\NoBuilds\defloc.dat .\data\defloc.dat
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\tech_pubs\corporate\quarantine\help\QConAvis\Output\AvisConsole.chm .\data\AvisConsole.chm
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin "..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\Symantec Central Quarantine.msc" ".\data\Symantec Central Quarantine.msc"
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\NoBuilds\license.rtf .\data\license.rtf
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\Corporate_Edition\Win32\src\BIN.IRA\SCANDLVR.DLL .\data\SCANDLVR.DLL
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\NoBuilds\readme.txt .\data\Readme.txt
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Norton_AntiVirus\QuarantineServer\Nobuilds\navinstnt.dll .\data\navinstnt.dll
+        if %ret != 0 Goto copyErrorOccurred
+        call ..\..\cm\copybin ..\..\..\..\Core_technology\ldvp_shared\src\bin.ira\InstallAMS.dll .\data\ams
+        if %ret != 0 Goto copyErrorOccurred
+
+        call ..\..\cm\copybin ..\..\..\..\Release\ECOM\BinIntelAnsiWin32Release\ecmldr32.DLL .\data\ecmldr32.DLL
+        if %ret != 0 Goto copyErrorOccurred
+
+        attrib /q /e /s -r ".\Data\*.*"
+        if %ret != 0 Goto copyErrorOccurred
+
+	: ----- Sign the files
+	pushd ".\Data"
+	attrib *.* -r
+	popd
+	echo ** do signfiles
+	call "..\..\cm\signfiles.btm" %BuildNumber% %BLDDIR%\Norton_AntiVirus\quarantineserver\install\console\data
+	if %errorlevel% != 0 goto SIGNINGERROR
+
+
+        @echo off
+        on break cancel
+        set sourcedir=%@FULL[.\]
+
+        attrib -r "Quarantine Console.ism"
+	
+	"%BUILDTOOLISSTANDALONE%\IsSaBld.exe" -p ".\Quarantine Console.ism" -a "Qconsole" -r "Qconsole" -o "..\..\..\Corporate_Edition\win32\src\Install\MModules" -x
+	if %ret != 0 Goto copyErrorOccurred
+
+        set ret=%?
+
+        if %ret != 0 Goto CompilerErrorOccurred
+        Goto END
+
+        :installbuildErrorOccurred
+        Echo Error on building console install; media not built.
+        Pause Press any key to continue
+        quit
+        :copyErrorOccurred
+        Echo Error on copying console binaries; media not built.
+        type %build_err
+        Pause Press any key to continue
+        quit
+
+	:SIGNINGERROR
+	cdd %BLDDIR%\norton_antivirus\quarantineserver\cm
+	python r:\cm\sendmail.py maillist.txt "CM Build Error Notification: Central Quarantine 3.5 Win32 Platform Build %BuildNumber% has Errored files not signed" clientr_errs.txt /q /s
+	quit
+else
+        : Save the current search path
+        Set SavePath=%Path%
+
+        : Set the search path to find InstallShield's command line tools
+        Path "%ISHIELD%\Program";%PATH%
+
+        : Create a copy of the .ipr file
+        Copy "Norton AntiVirus Quarantine Console.ipr" Console.ipr
+
+        : Execute the command line compiler
+        Compile "Script Files\setup.rul" -i"%ISHIELD%\Include;Script Files" -v2 > ISBuild.rpt
+
+        : Test for success. Quit if there was a compiler error.
+        If errorlevel 1 goto CompilerErrorOccurred
+
+        : Build the media
+        ISbuild -p"..\Console" -m"Default" >> ISBuild.rpt
+
+        : Test for success. Quit if there was a build error.
+        If errorlevel 1 goto BuildErrorOccurred
+
+        : Skip over the error handling and exit
+        Goto Done
+
+        : Report the compiler error; then exit
+        :CompilerErrorOccurred
+        Echo Error on compile; media not built.
+        Pause Press any key to view report.
+        Type ISBuild.rpt | More
+        Goto Done
+
+        : Report the build error; then exit
+        :BuildErrorOccurred
+        Echo Error on build; media not built.
+        Pause Press any key to view report.
+        Type ISBuild.rpt | More
+
+        :Done
+        : Restore the search path
+        Path=%SavePath%
+        Set SavePath=
+        Del Console.ipr
+
+endiff
+
+:END
+

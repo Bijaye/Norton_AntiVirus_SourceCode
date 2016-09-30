@@ -1,0 +1,70 @@
+// NavShellExtEx.idl : IDL source for NavShellExtEx
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NavShellExtEx.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+typedef struct _CMINVOKECOMMANDINFOEx {
+    DWORD cbSize;        // sizeof(CMINVOKECOMMANDINFO)
+    DWORD fMask;         // any combination of CMIC_MASK_*
+    HWND hwnd;           // might be NULL (indicating no owner window)
+    LPCSTR lpVerb;       // either a string or MAKEINTRESOURCE(idOffset)
+    LPCSTR lpParameters; // might be NULL (indicating no parameter)
+    LPCSTR lpDirectory;  // might be NULL (indicating no specific directory)
+    int nShow;           // one of SW_ values for ShowWindow() API
+
+    DWORD dwHotKey;
+    HANDLE_PTR hIcon;
+} CMINVOKECOMMANDINFOEx,  *LPCMINVOKECOMMANDINFOEx;
+
+//HKEY_CLASSES_ROOT\Interface\{68284FAA-6A48-11D0-8C78-00C04FD918B4}
+[
+	object,	
+	uuid("68284faa-6a48-11d0-8c78-00c04fd918b4"),
+	dual,	helpstring("IID_IInputObject Interface"),
+	pointer_default(unique)
+]	
+interface IInputObjectEx : IUnknown
+{
+	// *** IInputObject specific methods ***
+	HRESULT UIActivateIO(BOOL fActivate, LPMSG lpMsg);
+	HRESULT HasFocusIO();
+	HRESULT TranslateAcceleratorIO(LPMSG lpMsg);
+};
+
+[
+	object,	
+	uuid("000214E4-0000-0000-C000-000000000046"),
+	dual,	helpstring("IID_IContextMenu Interface"),
+	pointer_default(unique)
+]	
+interface IContextMenuEx : IUnknown
+{
+	HRESULT QueryContextMenu(HMENU hmenu,UINT indexMenu,UINT idCmdFirst,UINT idCmdLast,UINT uFlags);
+	HRESULT InvokeCommand(LPCMINVOKECOMMANDINFOEx lpici);
+	HRESULT GetCommandString(UINT_PTR    idCmd,
+			UINT        uType,
+			UINT      * pwReserved,
+			LPSTR       pszName,
+			UINT        cchMax);
+};
+[
+	uuid(DD5F89EE-9C85-4D42-B366-919387500641),
+	version(1.0),
+	helpstring("NavShellExtEx 1.0 Type Library")
+]
+library NavShellExtExLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(FAD61B3D-699D-49B2-BE16-7F82CB4C59CA),
+		helpstring("IEContextMenu Class")
+	]
+	coclass IEContextMenu
+	{
+		[default] interface IUnknown;
+	};
+};

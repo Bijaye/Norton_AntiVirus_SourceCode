@@ -1,0 +1,438 @@
+// NAVOptions.idl : IDL source for NAVOptions.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVOptions.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+
+cpp_quote("// Return value from CSemaphore::Create()")
+cpp_quote("// meaning that another session is having")
+cpp_quote("// an open options dialog")
+cpp_quote("const S_EXIST = 2;")
+
+
+[
+	uuid(D323F395-AA30-4DF9-A379-2F3F4819AB00),
+	version(1.0),
+	helpstring("Symantec.Norton.AntiVirus.NAVOptions 1.0 Type Library")
+]
+library NAVOPTIONSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions Class Dispatch IDS")
+	] enum INAVOptions_DISPID
+	{ INAVOptions_Show = 500
+	, INAVOptions_Load
+	, INAVOptions_Save
+	, INAVOptions_Get
+	, INAVOptions_Put
+	, NAVOptions_Help
+	, INAVOptions_Default
+	, INAVOptions_Browse
+	, INAVOptions_ValidatePath
+	, INAVOptions_IsDirty = 1000
+	, INAVOptions_LiveUpdate
+	, INAVOptions_DefaultLiveUpdate
+	, INAVOptions_OfficePlugin
+	, INAVOptions_IsTrialValid
+	, INAVOptions_EXCLUSIONS
+	, INAVOptions_SystemMode
+	, INAVOptions_NortonAntiVirusPath
+	, INAVOptions_IsIMInstalled
+	, INAVOptions_ConfigureIM
+	, INAVOptions_NAVError
+	, INAVOptions_IsPasswordDirty
+	, INAVOptions_ALUrunning
+	, INAVOptions_PathExclusionCount
+	, INAVOptions_PathExclusionItemPath
+	, INAVOptions_SetPathExclusionItem
+    , INAVOptions_RemovePathExclusionItem
+    , INAVOptions_SetPathExclusionDefaults
+    , INAVOptions_PathExclusionItemSubFolder
+    , INAVOptions_OEMVendor
+    , INAVOptions_IsHighContrastMode
+    , INAVOptions_HWND
+    , INAVOptions_IWPIsInstalled
+    , INAVOptions_IWPState
+    , INAVOptions_IWPUserWantsOn
+    , INAVOptions_SymProtectEnabled
+    , INAVOptions_SetWorkingDirIWP
+    , INAVOptions_IWPCanEnable
+    , INAVOptions_IWPFirewallOn
+    , INAVOptions_ShowSpywarePage
+    , INAVOptions_InitialPageSpyware
+	, INAVOptions_ProductName
+    , INAVOptions_InitialPage
+    , INAVOptions_ShowPage
+    , INAVOptions_ExclusionType
+	, INAVOptions_AnomalyExclusionCount
+	, INAVOptions_AnomalyExclusionItemName
+    , INAVOptions_RemoveAnomalyExclusionItem
+    , INAVOptions_SetAnomalyExclusionDefaults
+    , INAVOptions_SetAnomalyExclusionItem
+    , INAVOptions_THREATSBYVID
+    , INAVOptions_ValidateExclusionPath
+    , INAVOptions_ThreatCategoryEnabled
+    , INAVOptions_DefaultThreatCategoryEnabled
+    , INAVOptions_IMEnabled
+    , INAVOptions_InvokeIWPDialog
+	, INAVOptions_DefaultIMEnabled
+	, INAVOptions_APExclusionCount
+	, INAVOptions_APExclusionPath
+	, INAVOptions_APExclusionSubFolder
+	, INAVOptions_AddAPExclusion
+	, INAVOptions_DeleteAPExclusion
+	, INAVOptions_SetAPExclusionDefaults
+	, INAVOptions_APEnabled
+	, INAVOptions_SetAPDefaults
+	, INAVOptions_EmailScanIncoming
+	, INAVOptions_EmailScanOutgoing
+	, INAVOptions_EmailScanOEH
+	, INAVOptions_SetEmailPageDefaults
+	, INAVOptions_FeatureName
+	, INAVOptions_SetIWPDefaults
+	, INAVOptions_EditAPExclusion
+    , INAVOptions_AnomalyExclusionItemVid
+	, INAVOptions_PasswordSupported
+    , INAVOptions_Is64Bit
+    , INAVOptions_IsVista
+	} INAVOptions_DISPID;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions LiveUpdate Modes")
+	] enum EAutoUpdateMode
+	{ AutoUpdateMode_ERROR         = 0xFFFFFFFFUL
+	, AutoUpdateMode_PROMPT_ALWAYS = 0	// Always puts up a UI
+	, AutoUpdateMode_DYNAMIC       = 1  // Only puts up a UI if there are noisy packages <- not implemented yet
+	, AutoUpdateMode_SILENT_ONLY   = 2  // Download silent packages only                 <- not implemented per package yet
+	, AutoUpdateMode_SILENT_FORCED = 3  // Only download if there are all silent packages 
+	,
+	} EAutoUpdateMode;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions Auto Live Update states")
+	] enum EALUonResult
+	{ ALUonResult_ERROR         = 0xFFFFFFFFUL // Error getting ALU mode
+	, ALUonResult_OFF		    = 0	// ALU is off
+	, ALUonResult_ON	        = 1  // ALU is on
+	,
+	} EALUonResult;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions Instant Messenger Types")
+	] enum EIMType
+	{ IMTYPE_all = 0
+	, IMTYPE_msn = 1
+	, IMTYPE_aol = 2
+	, IMTYPE_yahoo = 3
+	,
+	} EIMType;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions Class Browsing Type")
+	] enum EBrowseType
+	{ Browse_File       = 0x01
+	, Browse_Directory  = 0x02
+	, Browse_Disk       = 0x04
+	, Browse_Exist      = 0x80
+	,
+	} EBrowseType;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVExclusions Class Exclusion Addition Result Type")
+	] enum EExclusionAddResult
+	{ ExclusionAddResult_Failed
+	, ExclusionAddResult_New
+	, ExclusionAddResult_Exist
+	, ExclusionAddResult_Duplicate
+    , ExclusionAddResult_TooMany
+	,
+	} EExclusionAddResult;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVExclusions Validate Exclusion Result Type")
+	] enum EExclusionValidateResult
+	{ EExclusionValidateResult_Fail
+	, EExclusionValidateResult_Success
+	, EExclusionValidateResult_WildcardInPath
+	, EExclusionValidateResult_Fail_AllPaths
+	,
+	} EExclusionValidateResult;
+
+    // page IDs - must match vars defined in options.js
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions Show")
+	] enum EShowPageID
+	{ ShowPageID_AUTOPROTECT = 1
+	, ShowPageID_EMAIL = 2
+	, ShowPageID_SPYWARE = 3
+    , ShowPageID_INBOUND_FIREWALL = 4
+    , ShowPageID_IM = 5
+    , ShowPageID_WORM_BLOCKING = 6
+    , ShowPageID_AUTO_UPDATE = 7
+    , ShowPageID_LIVE_UPDATE = 8
+    , ShowPageID_REAL_TIME_PROTECTION = 9
+    , ShowPageID_MANUAL_SCAN = 10
+    , ShowPageID_FILE_EXCLUSIONS = 11
+    , ShowPageID_VID_EXCLUSIONS = 12
+    , ShowPageID_OTHER = 13
+	} EShowPageID;
+
+    typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.FilterCategories Type")
+	] enum ENonViralCategories
+	{
+		AllNonVirals = 0,
+		SecurityRisk=4,
+		HackTool,
+		Spyware,
+		Trackware,
+        Dialers,
+        RemoteAccess,
+        Adware,
+        JokePrograms
+	} ENonViralCategories;
+
+	[
+		uuid(085ABFE2-D753-445C-8A2A-D4BD46CE0811),
+		helpstring("Symantec.Norton.AntiVirus.NAVOptions Class")
+	]
+	coclass NAVOptions
+	{
+		[default] interface INAVOptions;
+	};
+
+    [
+        uuid(F181CBB8-795E-4e16-AEB8-254501FE9C30),
+        helpstring("ThreatsByVID Class")
+    ]
+    coclass ThreatsByVID
+    {
+        [default] interface IThreatsByVID;
+    };
+};
+
+[
+	object,
+	uuid(797A7BD8-381F-4479-AD2C-9D63352DD15A),
+	helpstring("IThreatsByVID Interface"),
+	pointer_default(unique)
+]
+interface IThreatsByVID : IDispatch
+{
+	[propget, id(1), helpstring("property Count")] HRESULT Count([out,retval] unsigned long* pulCount);
+	[propget, id(2), helpstring("property ThreatName")] HRESULT ThreatName([in] unsigned long ulIndex, [out,retval] BSTR* bstrName);
+    [propget, id(3), helpstring("property ThreatVID")] HRESULT ThreatVID([in] unsigned long ulIndex, [out,retval] unsigned long* pulVID);
+    [propget, id(4), helpstring("property Filter")] HRESULT Filter([out,retval] ENonViralCategories* peFilterCategory);
+    [propput, id(4), helpstring("property Filter")] HRESULT Filter([in] long lFilterCategory);
+    [propget, id(5), helpstring("property NAVError")] HRESULT NAVERROR([out,retval]  INAVCOMError** ppNavError);
+    [propput, id(5), helpstring("property NAVError")] HRESULT NAVERROR([in]  INAVCOMError* pNavError);
+    [id(6), helpstring("Displays detailed information for a given VID using CommonUI")] HRESULT DisplayDetails([in] unsigned long ulVID, [in] long hwnd);
+};
+
+[
+	object,
+	uuid(FD26F288-761B-4E23-860D-D6C31151F24A),
+	dual,
+	helpstring("Symantec.Norton.AntiVirus.INAVOptions Interface"),
+	pointer_default(unique)
+]
+interface INAVOptions : IDispatch
+{
+	// Methods
+	[id(INAVOptions_Show), helpstring("Show options dialog")]
+	HRESULT Show([in] long hWnd);
+	[id(INAVOptions_Load), helpstring("Load the options file")]
+	HRESULT Load(void);
+	[id(INAVOptions_Save), helpstring("Save the options file")]
+	HRESULT Save(void);
+	[id(INAVOptions_Get), helpstring("Get an option's value")]
+	HRESULT Get([in] BSTR Option, [in] VARIANT Default, [out, retval] VARIANT *Value);
+	[id(INAVOptions_Put), helpstring("Insert or update an Option's value")]
+	HRESULT Put([in] BSTR Option, VARIANT Value);
+	[id(NAVOptions_Help), helpstring("Invoke context help")]
+	HRESULT Help([in] long ID);
+	[id(INAVOptions_Default), helpstring("Set all properties to default values")]
+	HRESULT Default(void);
+	[id(INAVOptions_Browse), helpstring("Browse for a path")]
+	HRESULT Browse([in] EBrowseType BrowseType, [in] BSTR InPath
+	                                          , [out, retval] BSTR *OutPath);
+	[id(INAVOptions_ValidatePath), helpstring("Validate that a path is legal")]
+	HRESULT ValidatePath([in] EBrowseType BrowseType, [in] BSTR Path, [out, retval] BOOL *Valid);
+	// Properties
+	[propget, id(DISPID_VALUE), helpstring("Bogus value")]
+	HRESULT Value([out, retval] BOOL *Value);
+	[propput, id(DISPID_VALUE), helpstring("Bogus value")]
+	HRESULT Value([in] BOOL Value);
+
+	[propget, id(INAVOptions_IsDirty), helpstring("Check if any of the options changed")]
+	HRESULT IsDirty([out, retval] BOOL *IsDirty);
+	[propget, id(INAVOptions_LiveUpdate), helpstring("Enable or disable LiveUpdate")]
+	HRESULT LiveUpdate([out, retval] BOOL *LiveUpdate);
+	[propput, id(INAVOptions_LiveUpdate), helpstring("Enable or disable LiveUpdate")]
+	HRESULT LiveUpdate([in] BOOL LiveUpdate);
+	[propget, id(INAVOptions_OfficePlugin), helpstring("Get Microsoft Office virus protection plugin status")]
+	HRESULT OfficePlugin([out, retval] BOOL *OfficePlugin);
+	[propput, id(INAVOptions_OfficePlugin), helpstring("Enable / disable Microsoft Office virus protection plugin")]
+	HRESULT OfficePlugin([in] BOOL OfficePlugin);
+	[propget, id(INAVOptions_IsTrialValid), helpstring("Is Trialware valid")]
+	HRESULT IsTrialValid([out, retval] BOOL *IsTrialValid);
+	[propget, id(INAVOptions_EXCLUSIONS), helpstring("Cllection of scanning exclusions")]
+	HRESULT EXCLUSIONS([out, retval] IDispatch **EXCLUSIONS);
+	[propget, id(INAVOptions_SystemMode), helpstring("System boot mode")]
+	HRESULT SystemMode([out, retval] long *SystemMode);
+	[propget, id(INAVOptions_NortonAntiVirusPath), helpstring("Norton AntiVirus installation path")]
+	HRESULT NortonAntiVirusPath([out, retval] BSTR *NortonAntiVirusPath);
+	[propget, id(INAVOptions_IsIMInstalled), helpstring("property IsIMInstalled")]
+	HRESULT IsIMInstalled([in] EIMType IMType, [out, retval] BOOL *pVal);
+	[id(INAVOptions_ConfigureIM), helpstring("method Configures IM Scanners")] 
+	HRESULT ConfigureIM([in] EIMType IMType);
+    [propget, id(INAVOptions_NAVError), helpstring("property NAVError")] 
+	HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+	[propput, id(INAVOptions_IsDirty), helpstring("Set that the some of the options have changed")]
+	HRESULT IsDirty([in] BOOL bIsDirty);
+	[propget, id(INAVOptions_IsPasswordDirty), helpstring("property IsPasswordDirty")] 
+	HRESULT IsPasswordDirty([out, retval] BOOL *pVal);
+	[propput, id(INAVOptions_IsPasswordDirty), helpstring("property IsPasswordDirty")] 
+	HRESULT IsPasswordDirty([in] BOOL newVal);
+	[propget, id(INAVOptions_ALUrunning), helpstring("property ALUrunning")] 
+	HRESULT ALUrunning([out, retval] BOOL *pVal);
+	[propget, id(INAVOptions_PathExclusionCount), helpstring("property PathExclusionCount")]
+	HRESULT PathExclusionCount([out, retval] long *pVal);
+	[propget, id(INAVOptions_PathExclusionItemPath), helpstring("property PathExclusionItemPath")] 
+	HRESULT PathExclusionItemPath([in] long index, [out, retval] BSTR *pVal);
+	[id(INAVOptions_SetPathExclusionItem), helpstring("method SetPathExclusionItem")] 
+	HRESULT SetPathExclusionItem([in] long index, [in] BSTR bstrPath, [in] BOOL bSubFolders, [out,retval] EExclusionAddResult *peResult);
+    [id(INAVOptions_RemovePathExclusionItem), helpstring("method RemovePathExclusionItem")]
+	HRESULT RemovePathExclusionItem([in] long index);
+    [id(INAVOptions_SetPathExclusionDefaults), helpstring("method SetPathExclusionDefaults")]
+	HRESULT SetPathExclusionDefaults();
+    [propget, id(INAVOptions_PathExclusionItemSubFolder), helpstring("property PathExclusionItemSubFolder")]
+	HRESULT PathExclusionItemSubFolder([in] long index, [out, retval] BOOL *pVal);
+    [propget, id(INAVOptions_OEMVendor), helpstring("property OEMVendor")] 
+	HRESULT OEMVendor([out, retval] BSTR *pVal);
+    [propget, id(INAVOptions_IsHighContrastMode), helpstring("property IsHighContrastMode")] 
+	HRESULT IsHighContrastMode([out, retval] BOOL *pVal);
+    [propget, id(INAVOptions_HWND), helpstring("property HWND")] 
+	HRESULT HWND([out, retval] long *pVal);
+    [propget, id(INAVOptions_IWPIsInstalled), helpstring("property IWPIsInstalled")] 
+	HRESULT IWPIsInstalled([out, retval] BOOL *pVal);
+    [propget, id(INAVOptions_IWPState), helpstring("property IWPState")] 
+	HRESULT IWPState([out, retval] long *pVal);
+    [propget, id(INAVOptions_IWPUserWantsOn), helpstring("property IWPUserWantsOn")] 
+	HRESULT IWPUserWantsOn([out, retval] BOOL *pVal);
+	[propput, id(INAVOptions_IWPUserWantsOn), helpstring("property IWPUserWantsOn")]
+	HRESULT IWPUserWantsOn([in] BOOL bUserWantsOn);
+    [propget, id(INAVOptions_SymProtectEnabled), helpstring("property SymProtectEnabled")]
+	HRESULT SymProtectEnabled([out, retval] BOOL *bEnable);
+	[propput, id(INAVOptions_SymProtectEnabled), helpstring("property SymProtectEnabled")]
+	HRESULT SymProtectEnabled([in] BOOL bEnable);
+    [id(INAVOptions_SetWorkingDirIWP), helpstring("method SetWorkingDirIWP")]
+	HRESULT SetWorkingDirIWP([in] BOOL bIWPDir);
+    [propget, id(INAVOptions_IWPCanEnable), helpstring("property IWPCanEnable")]
+	HRESULT IWPCanEnable([out, retval] BOOL *bEnable);
+    [propget, id(INAVOptions_IWPFirewallOn), helpstring("property IWPFirewallOn")] 
+	HRESULT IWPFirewallOn([out, retval] BOOL *pOn);
+    [id(INAVOptions_ShowSpywarePage), helpstring("method ShowSpywarePage")]
+	HRESULT ShowSpywarePage([in] long hWnd);
+    [propget, id(INAVOptions_InitialPageSpyware), helpstring("property InitialPageSpyware")]
+	HRESULT InitialPageSpyware([out, retval] BOOL *pbShowSpyware);
+    [propget, id(INAVOptions_ProductName), helpstring("property ProductName")]
+	HRESULT ProductName([out, retval] BSTR *pVal);
+    [propget, id(INAVOptions_InitialPage), helpstring("property InitialPage")]
+	HRESULT InitialPage([out, retval] EShowPageID *peShowPageID);
+	[id(INAVOptions_ShowPage), helpstring("Show specific option dialog page")]
+	HRESULT ShowPage([in] long hWnd, [in] EShowPageID eShowPageID);
+	[propget, id(INAVOptions_AnomalyExclusionCount), helpstring("property AnomalyExclusionCount")]
+	HRESULT AnomalyExclusionCount([out, retval] long *pVal);
+	[propget, id(INAVOptions_AnomalyExclusionItemName), helpstring("property AnomalyExclusionItemName")] 
+	HRESULT AnomalyExclusionItemName([in] long index, [out, retval] BSTR *pVal);
+    [propget, id(INAVOptions_AnomalyExclusionItemVid), helpstring("method AnomalyExclusionItemVid")]
+    HRESULT AnomalyExclusionItemVid([in] long index, [out, retval] unsigned long* pVal);
+    [id(INAVOptions_RemoveAnomalyExclusionItem), helpstring("method RemoveAnomalyExclusionItem")]
+    HRESULT RemoveAnomalyExclusionItem([in] long index);
+    [id(INAVOptions_SetAnomalyExclusionDefaults), helpstring("method SetAnomalyExclusionDefaults")]
+    HRESULT SetAnomalyExclusionDefaults();
+    [id(INAVOptions_SetAnomalyExclusionItem), helpstring("method SetAnomalyExclusionItem")] 
+	HRESULT SetAnomalyExclusionItem([in] unsigned long ulVid, [in] BSTR bstrThreatName, [out,retval] EExclusionAddResult *peResult);
+    [propget, id(INAVOptions_THREATSBYVID), helpstring("retrieve ThreatsbyVID")]
+	HRESULT THREATSBYVID([out, retval] IThreatsByVID **ppThreatsByVID);
+    [id(INAVOptions_ValidateExclusionPath), helpstring("method ValidateExclusionPath")]
+    HRESULT ValidateExclusionPath([in] BSTR bstrExclusion, [out,retval] EExclusionValidateResult *pResult);
+    [propget, id(INAVOptions_ThreatCategoryEnabled), helpstring("method ThreatCategoryEnabled")]
+    HRESULT ThreatCategoryEnabled([in] unsigned long ulCategory, [out,retval] BOOL *pEnabled);
+    [propput, id(INAVOptions_ThreatCategoryEnabled), helpstring("method ThreatCategoryEnabled")]
+    HRESULT ThreatCategoryEnabled([in] unsigned long ulCategory, [in] BOOL bEnabled);
+    [id(INAVOptions_DefaultThreatCategoryEnabled), helpstring("method DefaultThreatCategoryEnabled")]
+    HRESULT DefaultThreatCategoryEnabled([in] unsigned long ulCategory, [out,retval] BOOL *pEnabled);
+    [propget, id(INAVOptions_IMEnabled), helpstring("method IMEnabled")]
+    HRESULT IMEnabled([in] unsigned long ulImType, [out,retval] BOOL *pEnabled);
+    [propput, id(INAVOptions_IMEnabled), helpstring("method IMEnabled")]
+    HRESULT IMEnabled([in] unsigned long ulImType, [in] BOOL bEnabled);
+    [id(INAVOptions_InvokeIWPDialog), helpstring("method InvokeIWPDialog")]
+    HRESULT InvokeIWPDialog([in] unsigned long ulDialog);
+	[id(INAVOptions_DefaultIMEnabled), helpstring("method DefaultIMEnabled")]
+	HRESULT DefaultIMEnabled();
+	[propget, id(INAVOptions_APExclusionCount), helpstring("method APExclusionCount")]
+	HRESULT APExclusionCount([out,retval]unsigned long *pVal);
+	[propget, id(INAVOptions_APExclusionPath), helpstring("method APExclusionPath")]
+	HRESULT APExclusionPath([in] long index, [out, retval] BSTR* pVal);
+	[propget, id(INAVOptions_APExclusionSubFolder), helpstring("method APExclusionSubFolder")]
+	HRESULT APExclusionSubFolder([in] long index, [out, retval] BOOL *pVal);
+	[id(INAVOptions_AddAPExclusion), helpstring("method AddAPExclusion")]
+	HRESULT AddAPExclusion([in] BSTR bstrPath, [in] BOOL bSubFolders, [out,retval] EExclusionAddResult* index);
+	[id(INAVOptions_DeleteAPExclusion), helpstring("method DeleteAPExclusion")]
+	HRESULT DeleteAPExclusion([in] long index);
+	[id(INAVOptions_SetAPExclusionDefaults), helpstring("method SetAPExclusionDefaults")]
+	HRESULT SetAPExclusionDefaults();
+	[propget, id(INAVOptions_APEnabled), helpstring("method APEnabled")]
+	HRESULT APEnabled([out,retval]BOOL *pEnabled);
+	[propput, id(INAVOptions_APEnabled), helpstring("method APEnabled")]
+	HRESULT APEnabled([in] BOOL bEnabled);
+	[id(INAVOptions_SetAPDefaults), helpstring("method SetAPDefaults")]
+	HRESULT SetAPDefaults();
+	[id(INAVOptions_DefaultLiveUpdate), helpstring("Setting default LiveUpdate property")]
+	HRESULT DefaultLiveUpdate();
+	[propget, id(INAVOptions_EmailScanIncoming), helpstring("method EmailScanIncoming")]
+	HRESULT EmailScanIncoming([out,retval] BOOL* bEnabled);
+	[propput, id(INAVOptions_EmailScanIncoming), helpstring("method EmailScanIncoming")]
+	HRESULT EmailScanIncoming([in] BOOL bEnabled);
+	[propget, id(INAVOptions_EmailScanOutgoing), helpstring("method EmailScanOutgoing")]
+	HRESULT EmailScanOutgoing([out,retval] BOOL* bEnabled);
+	[propput, id(INAVOptions_EmailScanOutgoing), helpstring("method EmailScanOutgoing")]
+	HRESULT EmailScanOutgoing([in] BOOL bEnabled);
+	[propget, id(INAVOptions_EmailScanOEH), helpstring("method EmailScanOEH")]
+	HRESULT EmailScanOEH([out,retval] BOOL* bEnabled);
+	[propput, id(INAVOptions_EmailScanOEH), helpstring("method EmailScanOEH")]
+	HRESULT EmailScanOEH([in] BOOL bEnabled);
+	[id(INAVOptions_SetEmailPageDefaults), helpstring("method SetEmailPageDefaults")]
+	HRESULT SetEmailPageDefaults();
+	[propget, id(INAVOptions_FeatureName), helpstring("method FeatureName")]
+	HRESULT FeatureName([out,retval] BSTR* Name);
+	[id(INAVOptions_SetIWPDefaults), helpstring("method SetIWPDefaults")]
+	HRESULT SetIWPDefaults();
+	[id(INAVOptions_EditAPExclusion), helpstring("method EditAPExclusion")]
+	HRESULT EditAPExclusion([in] long lIndex, [in] BSTR bstrPath, [in] BOOL bSubFolders, [out,retval] long* plResult);
+	[propget, id(INAVOptions_PasswordSupported), helpstring("property PasswordSupported")]
+	HRESULT PasswordSupported([out,retval] BOOL* bEnabled);
+    [propget, id(INAVOptions_Is64Bit), helpstring("method Is64Bit")]
+    HRESULT Is64Bit([out,retval] BOOL* pVal);
+    [propget, id(INAVOptions_IsVista), helpstring("method IsVista")]
+    HRESULT IsVista([out,retval] BOOL* pVal);
+};
+

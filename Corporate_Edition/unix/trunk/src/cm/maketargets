@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# Delete any existing targets.lst file...
+rm -f targets.lst
+
+# Determine which platform we are running on...
+case `uname` in
+    SunOS)
+        TARGET_PLATFORM=solaris;;
+    Linux)
+        TARGET_PLATFORM=linux;;
+    AIX)
+        TARGET_PLATFORM=aix;;
+    FreeBSD)
+        TARGET_PLATFORM=freebsd;;
+    *)
+        TARGET_PLATFORM=unknown;;        
+esac
+
+# Determine which hardware we are running on...
+case `uname -m` in
+    i386|i486|i586|i686)
+        TARGET_CPU=intel;;
+    sun4u)
+        TARGET_CPU=sparc;;
+    *)
+        TARGET_CPU=aix;;
+esac
+
+if [ "$TARGET_CPU" = "unknown" ]
+then
+    echo "Unknown hardware type detected!"
+fi
+
+if [ "$TARGET_PLATFORM" = "unknown" ]
+then
+    echo "Unknown platform detected!"
+fi
+
+if [ "$TARGET_PLATFORM" = "linux" ]
+then
+    if [ "$TARGET_CPU" = "intel" ]
+    then
+        echo "SAVScan SAVQuar SymServerLib" > targets.lst
+    fi
+fi
+
+if [ "$TARGET_PLATFORM" = "solaris" ]
+then
+    echo "SAVScan SAVQuar SymServerLib" > targets.lst
+fi
+
+if [ "$TARGET_PLATFORM" = "aix" ]
+then
+    echo "SAVScan SAVQuar SymServerLib" > targets.lst
+fi
+
+if [ "$TARGET_PLATFORM" = "freebsd" ]
+then
+    if [ "$TARGET_CPU" = "intel" ]
+    then
+        echo "SAVScan SAVQuar SymServerLib" > targets.lst
+    fi
+fi
+

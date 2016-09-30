@@ -1,0 +1,132 @@
+@echo off
+
+rem /////////////////////////////////////////////////////////////
+rem set everything up for a build
+rem
+
+	rem find the path of this batch file and set it as the root
+	set root=%@path[%_batchname%]%
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+   		set root=%root%\
+	endiff
+
+	rem Restore all the environment variables from ENV
+	rem call c:\NTSET.BTM
+
+	rem set the work dir and create it if needed
+	set workdir=c:\WORK
+	iff not exist %workdir then
+  		md /s %workdir
+	endiff
+
+	rem initialize the logfile paths and the environment we expect
+	set ErrLog=%root%BLD_ERR.log
+	set MasterLog=%root%NAV_BLD.log
+	set environ=KOBE
+
+	rem set up the drive mappings
+	gosub prebuild
+
+rem ///////////////////////////////////////////////////////////////
+rem build all the projects
+
+	SET a= -BEGINING LEGACY Build at %_time
+	echo %a >> %MasterLog
+	echo %a
+
+	set name=LEGACY\NAVOPTIONS 
+		set type=%name DVX
+			gosub build	
+	set name=LEGACY\COMMON 
+		set type=%name DOS
+			gosub build
+		set type=%name DVX
+			gosub build
+	set name=LEGACY\CPLD
+		set type=%name DVX
+			gosub build
+	set name=LEGACY\GSYMKRNL
+	    set type=%name DVX
+			gosub build
+	set name=LEGACY\NAVEXCLU 
+	    set type=%name DVX
+			gosub build
+	set name=LEGACY\NAVINOC
+	    set type=%name DVX
+			gosub build
+	set name=LEGACY\NAVXUTIL
+	    set type=%name DVX
+			gosub build
+	set name=LEGACY\NAVZIP
+	    set type=%name DVX
+			gosub build
+	set name=LEGACY\NAVC
+	    set type=%name DVX
+			gosub build
+	set name=LEGACY\UNDOBOOT
+	    set type=%name DOS
+			gosub build
+       
+	rem /////////////////////////////////////////////////////////////
+	rem /////////Need to add additional projects here ///////////////
+	rem /////////////////////////////////////////////////////////////
+		
+    	set a= -FINISHED LEGACY Build at %_time
+	echo %a >> %MasterLog
+	echo %a
+
+	quit 0
+
+rem ///////////////////////////////////////////////////////////////
+rem prepare for the build
+rem we check to make sure we are in correct environment.
+rem if not, we bail out with error message, if so , we remap drives..
+:prebuild
+    iff %PRODUCT != %environ then
+ 	 del /zqy %Respath
+ 	 echo ******************************************************** > %errlog
+ 	 echo ********************************************************
+ 	 echo ********* PLEASE ENV TO %environ BEFORE BUILDING! ********** > %errlog	 
+ 	 echo ********* PLEASE ENV TO %environ BEFORE BUILDING! **********
+ 	 echo ******************************************************** > %errlog
+ 	 echo ******************************************************** 
+     QUIT 1
+    endiff
+
+    subst /d s: > %root%out.txt
+    net use s: /delete > %root%out.txt
+    subst s: %root%..\..\consumer > %root%out.txt
+    del /zqy %root%out.txt
+
+    md s:\BIN.DVX
+    md s:\BIN.DOS
+    md s:\LIB.DVX
+    md s:\LIB.DOS	
+
+    RETURN
+
+
+rem ////////////////////////////////////////////////////
+rem BUILDING SUBROUTINE
+:build
+
+	call del /zqy %workdir
+	Set a=  -Beinging build of %type at %_time
+	echo %a >> %MasterLog
+	echo %a
+	call r:\mk\proj %type
+	call r:\mk\mkupdate -a >> %ErrLog
+    iff exist %workdir%\*.err then
+		iff exist %Respath% then
+			call del /zqy %ResPath
+		endiff
+		set a= ERROR in making build of %type at %_time
+		echo %a >> %ErrLog
+		echo %a >> %MasterLog
+		echo %a
+		quit 1
+	endiff
+	set a=  -Finished build of %type at %_time
+	echo %a >> %MasterLog 
+	echo %a
+	return

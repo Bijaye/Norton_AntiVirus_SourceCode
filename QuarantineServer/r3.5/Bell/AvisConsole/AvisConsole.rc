@@ -1,0 +1,1383 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "1 TYPELIB ""AvisConsole.tlb""\r\n"
+    "#define VR_FILEDESCRIPTION ""Avis Console""\r\n"
+    "#define VR_INTERNALNAME ""AVISCONSOLE""\r\n"
+    "#define VR_ORIGINALFILENAME ""AVISCONSOLE.DLL""\r\n"
+    "#include <winver.h>\r\n"
+    "#include ""qsvers.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_AVISCON_16          BITMAP                  "aviscon_.bmp"
+IDB_AVISCON_32          BITMAP                  "bmp00001.bmp"
+IDR_TOOLBAR2            BITMAP                  "toolbar2.bmp"
+IDB_STATE_ARRAY         BITMAP                  "State.bmp"
+IDB_ASCENDING           BITMAP                  "ascend.bmp"
+IDB_DESCENDING          BITMAP                  "descend.bmp"
+IDB_NONE                BITMAP                  "none.bmp"
+IDB_BITMAP2             BITMAP                  "Itemtool.bmp"
+IDR_TOOLBAR1            BITMAP                  "toolbar1.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_AVISCON_MENU MENU 
+BEGIN
+    POPUP "TOP"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "NEW"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+    POPUP "TASK"
+    BEGIN
+        MENUITEM SEPARATOR
+        MENUITEM "&Queue item for automatic analysis", 
+                                                ID_TASK_SUBMITITEMFORAUTOMATICANALYSIS
+
+        MENUITEM "Queue for automatic &delivery of new definitions ", 
+                                                ID_TASK_DELIVERNEWDEFINITIONSFORTHISMACHINE
+
+    END
+    POPUP "VIEW"
+    BEGIN
+        MENUITEM SEPARATOR
+    END
+END
+
+IDR_WHATS_THIS_MENU MENU 
+BEGIN
+    POPUP "Top"
+    BEGIN
+        MENUITEM "What's This?",                ID_WHATS_THIS_MENUITEM
+    END
+    MENUITEM "Edit",                        65535
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_AVISCON DIALOG  0, 0, 195, 127
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Property Page"
+FONT 8, "MS Sans Serif"
+BEGIN
+END
+
+IDD_SAMPLE_PLATFORM DIALOGEX 0, 0, 253, 215
+STYLE DS_SETFONT | DS_CONTEXTHELP | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "AVIS Sample Attributes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,16,34,224,162
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    15,7,25,23,0,HIDC_ICON_BUTTON
+    EDITTEXT        IDC_NAME_EDIT,54,15,176,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_NAME_EDIT
+END
+
+IDD_SAMPLE_ATTRIBUTES DIALOGEX 0, 0, 252, 210
+STYLE DS_SETFONT | DS_CONTEXTHELP | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Sample Attributes"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,16,34,224,162
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    15,7,25,23,0,HIDC_ICON_BUTTON
+    EDITTEXT        IDC_NAME_EDIT,54,15,176,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_NAME_EDIT
+END
+
+IDD_SAMPLE_ACTIONS DIALOGEX 0, 0, 268, 215
+STYLE DS_SETFONT | DS_CONTEXTHELP | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Actions"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Sample",IDC_SAMPLE_SUBMISSION,7,32,254,176,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "&Submission priority:",
+                    IDC_STATIC_SAMPLE_SUBMISSION_PRIORITY,14,47,73,12,0,0,
+                    HIDC_STATIC_SAMPLE_SUBMISSION_PRIORITY
+    EDITTEXT        IDC_SAMPLE_SUBMISSION_PRIORITY,89,44,23,14,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,113,44,11,14
+    LTEXT           "Analysis state:",IDC_STATIC_ANALYSIS_STATE,14,130,74,8,
+                    0,0,HIDC_STATIC_ANALYSIS_STATE
+    EDITTEXT        IDC_ANALYSIS_STATE,89,130,153,32,ES_MULTILINE | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Sample Status:",IDC_STATIC_GATEWAY_COOKIE,14,81,75,11,0,
+                    0,HIDC_STATIC_GATEWAY_COOKIE
+    EDITTEXT        IDC_SAMPLE_STATUS,89,81,50,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Tracking Number:",IDC_STATIC_ISSUE_NUMBER,14,66,72,8,0,
+                    0,HIDC_STATIC_ISSUE_NUMBER
+    EDITTEXT        IDC_ISSUE_NUMBER,89,65,172,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Virus name:",IDC_STATIC_VIRUS_NAME,14,97,74,8,0,0,
+                    HIDC_STATIC_VIRUS_NAME
+    EDITTEXT        IDC_VIRUS_NAME,89,96,136,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    PUSHBUTTON      "&Queue sample for submission",IDC_ACTIONS_SUBMIT_BUTTON,
+                    11,182,116,14,0,0,HIDC_ACTIONS_SUBMIT_BUTTON
+    LTEXT           "Definition needed:",IDC_STATIC_DEF_SEQ_NEEDED,14,114,76,
+                    11,0,0,HIDC_STATIC_DEF_SEQ_NEEDED
+    EDITTEXT        IDC_DEF_SEQUENCE_NEEDED,89,114,137,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,
+                    HIDC_DEF_SEQUENCE_NEEDED
+    PUSHBUTTON      "Queue item for &definition delivery",
+                    IDC_ACTIONS_DELIVER_BUTTON,134,182,122,14,0,0,
+                    HIDC_ACTIONS_DELIVER_BUTTON
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    14,7,25,23,0,HIDC_ICON_BUTTON
+    EDITTEXT        IDC_FILENAME_EDIT,53,15,141,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,
+                    HIDC_FILENAME_EDIT
+    EDITTEXT        IDC_SAMPLE_STATUS_EX,135,47,126,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+END
+
+IDD_AVIS_WEB_COMM_PAGE DIALOGEX 0, 0, 250, 194
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Web Communication"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Symantec Immune System Gateway",IDC_STATIC_GATEWAY,7,6,
+                    236,39,0,WS_EX_TRANSPARENT
+    LTEXT           "&Name",IDC_STATIC_GATEWAY_ADDRESS,13,23,72,10,0,0,
+                    HIDC_STATIC_GATEWAY_ADDRESS
+    COMBOBOX        IDC_COMBO_GATEWAY_ADDRESS,104,20,128,51,CBS_DROPDOWN | 
+                    CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Security",IDC_STATIC_SECURITY,7,54,236,48,0,
+                    WS_EX_TRANSPARENT
+    CONTROL         "Secure &submission",IDC_CHECK_SECURE_SAMPLE_SUBMISSION,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,13,
+                    70,100,8,0,HIDC_CHECK_SECURE_SAMPLE_SUBMISSION
+    CONTROL         "Secure &download",IDC_CHECK_SECURE_DEF_DOWNLOAD,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,13,82,100,8,0,
+                    HIDC_CHECK_SECURE_DEF_DOWNLOAD
+END
+
+IDD_AVIS_POLICY_PAGE DIALOGEX 0, 0, 250, 189
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Sample Policy"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Quarantine",IDC_STATIC,7,7,236,52,0,WS_EX_TRANSPARENT
+    LTEXT           "&Queue check interval",IDC_STATIC_QUEUE_CHECK_INTERVAL,
+                    15,39,116,8,0,0,HIDC_STATIC_QUEUE_CHECK_INTERVAL
+    EDITTEXT        IDC_EDIT_QUEUE_CHECK_INTERVAL,143,36,28,14,
+                    ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_EDIT_QUEUE_CHECK_INTERVAL
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,168,36,11,14
+    LTEXT           "minutes",IDC_STATIC,186,39,38,8
+    GROUPBOX        "Submission",IDC_STATIC,7,66,236,32,0,WS_EX_TRANSPARENT
+    CONTROL         "&Strip user data from sample",IDC_CHECK_STRIP_USER_DATA,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,15,
+                    80,136,8,0,HIDC_CHECK_STRIP_USER_DATA
+    GROUPBOX        "Status",IDC_STATIC,7,103,236,38,0,WS_EX_TRANSPARENT
+    LTEXT           "Status query &Interval",IDC_STATIC_STATUS_INTERVAL2,13,
+                    119,117,8,0,0,HIDC_STATIC_STATUS_INTERVAL2
+    EDITTEXT        IDC_EDIT_STATUS_INTERVAL2,141,118,26,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER,0,HIDC_EDIT_STATUS_INTERVAL2
+    CONTROL         "Spin3",IDC_SPIN_STATUS_INTERVAL5,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,167,
+                    117,11,14
+    LTEXT           "minutes",IDC_STATIC,185,122,44,8
+    CONTROL         "&Automatic sample submission",IDC_CHECK_AUTO_SUBMIT,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,15,
+                    23,137,10,0,HIDC_CHECK_AUTO_SUBMIT
+END
+
+IDD_AVIS_CUSTOMER_PAGE DIALOGEX 0, 0, 235, 156
+STYLE DS_SETFONT | DS_CONTEXTHELP | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Customer Information"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Company name",IDC_STATIC_EDIT_COMPANY_NAME,9,12,70,9,0,
+                    0,HIDC_STATIC_EDIT_COMPANY_NAME
+    EDITTEXT        IDC_EDIT_COMPANY_NAME,84,9,132,14,ES_AUTOHSCROLL
+    LTEXT           "&Account number",IDC_STATIC_EDIT_CUST_ACCT,9,39,70,8,0,
+                    0,HIDC_STATIC_EDIT_CUST_ACCT
+    EDITTEXT        IDC_EDIT_CUST_ACCT,84,36,132,14,ES_AUTOHSCROLL
+    LTEXT           "C&ontact name",IDC_STATIC_EDIT_CONTACT_NAME,9,67,69,8,0,
+                    0,HIDC_STATIC_EDIT_CONTACT_NAME
+    EDITTEXT        IDC_EDIT_CONTACT_NAME,84,65,132,14,ES_AUTOHSCROLL
+    LTEXT           "Contact &telephone",IDC_STATIC_EDIT_CONTACT_PHONE,9,97,
+                    70,8,0,0,HIDC_STATIC_EDIT_CONTACT_PHONE
+    EDITTEXT        IDC_EDIT_CONTACT_PHONE,84,94,132,14,ES_AUTOHSCROLL
+    LTEXT           "Contact &email",IDC_STATIC_EDIT_CONTACT_EMAIL,9,124,71,
+                    8,0,0,HIDC_STATIC_EDIT_CONTACT_EMAIL
+    EDITTEXT        IDC_EDIT_CONTACT_EMAIL,84,121,132,14,ES_AUTOHSCROLL
+END
+
+IDD_CONFIRMDIALOG DIALOGEX 0, 0, 271, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Sample Submission Confirmation"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT1,21,7,179,22,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,21,31,228,120,
+                    0,HIDC_LIST1
+    DEFPUSHBUTTON   "&OK",IDOK,35,162,46,14
+    PUSHBUTTON      "&Cancel",IDCANCEL,108,162,48,14
+    PUSHBUTTON      "&Help",IDC_HELP_BUTTON_DIALOG2,181,162,50,14
+END
+
+IDD_SERVER DIALOG  0, 0, 190, 126
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Attach to Quarantine Server"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "&Server name",IDC_STATIC,7,7,41,8
+    EDITTEXT        IDC_SERVER,7,17,106,14,ES_AUTOHSCROLL
+    LTEXT           "&Username",IDC_STATIC,7,36,33,8
+    EDITTEXT        IDC_USER,7,46,106,14,ES_AUTOHSCROLL
+    LTEXT           "&Password",IDC_STATIC,7,65,32,8
+    EDITTEXT        IDC_PASSWORD,7,75,106,14,ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT           "&Domain",IDC_STATIC,7,94,25,8
+    EDITTEXT        IDC_DOMAIN,7,104,106,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,133,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,133,24,50,14
+END
+
+IDD_AVIS_DEFINITION_POLICY_PAGE DIALOGEX 0, 0, 240, 194
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Definition Policy"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Current",IDC_STATIC_DEF_ACTIVE,7,7,226,36,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "&Active sequence number",IDC_STATIC_DEFS_ACTIVE,14,22,
+                    99,8,0,0,HIDC_STATIC_DEFS_ACTIVE
+    EDITTEXT        IDC_ACTIVE_DEFS_SEQ_NUM,121,19,102,14,ES_READONLY | NOT 
+                    WS_TABSTOP,0,HIDC_ACTIVE_DEFS_SEQ_NUM
+    GROUPBOX        "Download",IDC_STATIC_DEF_DLOAD,7,49,226,34,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "&Certified definitions interval",
+                    IDC_STATIC_DEF_BLESSED_INTERVAL,14,63,104,8,0,0,
+                    HIDC_STATIC_DEF_BLESSED_INTERVAL
+    EDITTEXT        IDC_EDIT_DEFS_BLESSED_INTERVAL,122,60,34,14,
+                    ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_EDIT_DEFS_BLESSED_INTERVAL
+    CONTROL         "Spin2",IDC_SPIN_DEFS_BLESSED_INTERVAL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,156,61,
+                    11,14
+    LTEXT           "minutes",IDC_STATIC,170,63,50,8
+END
+
+IDD_AVIS_FIREWALL_COMM_PAGE DIALOGEX 0, 0, 250, 173
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Firewall"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    LTEXT           "&Firewall name",IDC_STATIC_FIREWALL_ADDRESS,17,44,78,8,
+                    0,0,HIDC_STATIC_FIREWALL_ADDRESS
+    EDITTEXT        IDC_EDIT_PROXY_FIREWALL,99,41,119,14,ES_AUTOHSCROLL,0,
+                    HIDC_EDIT_PROXY_FIREWALL
+    LTEXT           "Firewall Por&t",IDC_STATIC_FIREWALL_PORT,17,62,75,8,0,0,
+                    HIDC_STATIC_FIREWALL_PORT
+    EDITTEXT        IDC_EDIT_FIREWALL_PORT,99,60,33,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER,0,HIDC_EDIT_FIREWALL_PORT
+    CONTROL         "Spin3",IDC_SPIN_FIREWALL_PORT,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,131,61,
+                    11,14
+    LTEXT           "Firewall &User name",IDC_STATIC_FIREWALL_USERNAME,18,82,
+                    77,10,0,0,HIDC_STATIC_FIREWALL_USERNAME
+    EDITTEXT        IDC_EDIT_FIREWALL_USERNAME,99,80,119,14,ES_AUTOHSCROLL,0,
+                    HIDC_EDIT_FIREWALL_USERNAME
+    LTEXT           "Firewall &Password",IDC_STATIC_FIREWALL_PASSWORD,18,103,
+                    79,10,0,0,HIDC_STATIC_FIREWALL_PASSWORD
+    EDITTEXT        IDC_EDIT_FIREWALL_PASSWORD,99,101,120,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL,0,HIDC_EDIT_FIREWALL_PASSWORD
+    GROUPBOX        "HTTP Proxy Firewall",IDC_STATIC,7,6,236,123
+    LTEXT           "This applies only to a Proxy firewall at the customer site",
+                    IDC_STATIC,17,23,207,8
+END
+
+IDD_GENERAL_ERROR DIALOGEX 0, 0, 239, 183
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "General Errors"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_GENERAL_ERROR_EDIT,11,13,216,159,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | NOT WS_TABSTOP,0,
+                    HIDC_GENERAL_ERROR_EDIT
+END
+
+IDD_INSTALL_DEFS_PAGE DIALOGEX 0, 0, 235, 297
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Install Definitions"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Certified definitions",IDC_STATIC_INSTALL2,7,7,221,35,0,
+                    WS_EX_TRANSPARENT
+    CONTROL         "Install on selected &servers",
+                    IDC_CHECK_BLESSED_BROADCAST,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,11,22,150,10,0,
+                    HIDC_CHECK_BLESSED_BROADCAST
+    PUSHBUTTON      "Select ...",IDC_BUTTON_BLESED_SELECT_TARGETS,165,17,59,
+                    19,0,0,HIDC_BUTTON_BLESED_SELECT_TARGETS
+    GROUPBOX        "Definitions that are not yet certified",
+                    IDC_STATIC_INSTALL1,7,49,221,59,0,WS_EX_TRANSPARENT
+    CONTROL         "Install on infected &clients",
+                    IDC_CHECK_UNBLESSED_POINTCAST,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,11,62,150,10,0,
+                    HIDC_CHECK_UNBLESSED_POINTCAST
+    CONTROL         "Install on s&ervers of infected clients",
+                    IDC_CHECK_UNBLESSED_NARROWCAST,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,11,76,150,10,0,
+                    HIDC_CHECK_UNBLESSED_NARROWCAST
+    CONTROL         "Install on selected se&rvers",
+                    IDC_CHECK_UNBLESSED_BROADCAST,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,11,92,150,10,0,
+                    HIDC_CHECK_UNBLESSED_BROADCAST
+    PUSHBUTTON      "Select ...",IDC_BUTTON_UNBLESED_SELECT_TARGETS,165,84,
+                    60,19,0,0,HIDC_BUTTON_UNBLESED_SELECT_TARGETS
+    GROUPBOX        "Delivery",IDC_STATIC_INSTALL3,7,115,221,34,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "Retry &interval",IDC_STATIC_DEFS_DELIVERY_INTERVAL3,11,
+                    132,83,8,0,0,HIDC_STATIC_DEFS_DELIVERY_INTERVAL3
+    EDITTEXT        IDC_EDIT_DEF_DELIVERY_INTERVAL,103,127,40,14,
+                    ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_EDIT_DEF_DELIVERY_INTERVAL
+    CONTROL         "Spin2",IDC_SPIN_DEFS_DELIVERY_INTERVAL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,143,
+                    127,11,14
+    LTEXT           "minutes",IDC_STATIC,159,132,55,8
+    GROUPBOX        "Current Virus Definition File",IDC_STATIC,7,155,221,40
+    LTEXT           "Version:",IDC_STATIC,11,167,40,8
+    LTEXT           "Date:",IDC_STATIC,11,180,38,8
+    LTEXT           "Static",IDC_STATIC_VERSION,82,167,67,8
+    LTEXT           "Static",IDC_STATIC_VD_DATE,82,180,73,8
+    GROUPBOX        "Central Quarantine Account",IDC_STATIC,7,204,221,86
+    EDITTEXT        IDC_USERNAME_EDIT,82,221,114,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD_EDIT,82,244,114,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "&Username:",IDC_STATIC,14,224,55,8,0,WS_EX_RIGHT
+    LTEXT           "&Password:",IDC_STATIC,15,247,54,8,0,WS_EX_RIGHT
+    EDITTEXT        IDC_CONFIRM_EDIT,82,266,114,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Con&firm:",IDC_STATIC,16,269,54,8,0,WS_EX_RIGHT
+END
+
+IDD_SELECTTARGETDIALOG DIALOGEX 0, 0, 271, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Select Targets"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT1,21,7,179,22,ES_MULTILINE | ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    CONTROL         "List1",IDC_SELECT_TARGET_LIST,"SysListView32",
+                    LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,
+                    21,29,192,118,0,HIDC_SELECT_TARGET_LIST
+    DEFPUSHBUTTON   "&OK",IDOK,28,159,40,17,0,0,HIDOK
+    PUSHBUTTON      "&Cancel",IDCANCEL,99,159,38,17,0,0,HIDCANCEL
+    PUSHBUTTON      "&Help",IDC_HELP_BUTTON_DIALOG2,170,159,36,17,0,0,
+                    HIDC_HELP_BUTTON_DIALOG2
+    DEFPUSHBUTTON   "&Add ...",IDADD,223,56,36,22,0,0,HIDADD
+    DEFPUSHBUTTON   "&Delete",IDDELETE,223,97,35,23,0,0,HIDDELETE
+END
+
+IDD_SAMPLE_ERROR DIALOGEX 0, 0, 246, 209
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Errors"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_SAMPLE_ERROR_EDIT,14,35,217,160,ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_READONLY | NOT WS_TABSTOP,0,
+                    HIDC_SAMPLE_ERROR_EDIT
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    15,7,25,23,0,HIDC_ICON_BUTTON
+    EDITTEXT        IDC_NAME_EDIT,54,15,176,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP,0,HIDC_NAME_EDIT
+END
+
+IDD_SAMPLE_OLD_ACTIONS1 DIALOGEX 0, 0, 254, 215
+STYLE DS_SETFONT | DS_CONTEXTHELP | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Actions"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Sample Submission",IDC_SAMPLE_SUBMISSION,7,38,117,170,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "&Submission priority",
+                    IDC_STATIC_SAMPLE_SUBMISSION_PRIORITY,15,58,48,18,0,0,
+                    HIDC_STATIC_SAMPLE_SUBMISSION_PRIORITY
+    EDITTEXT        IDC_SAMPLE_SUBMISSION_PRIORITY,65,57,23,14,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN1,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ARROWKEYS | UDS_NOTHOUSANDS,89,57,11,14
+    LTEXT           "Analysis state:",IDC_STATIC_ANALYSIS_STATE,13,81,46,8,0,
+                    0,HIDC_STATIC_ANALYSIS_STATE
+    EDITTEXT        IDC_ANALYSIS_STATE,65,81,44,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Gateway cookie:",IDC_STATIC_GATEWAY_COOKIE,13,97,41,18,
+                    0,0,HIDC_STATIC_GATEWAY_COOKIE
+    EDITTEXT        IDC_GATEWAY_COOKIE,65,100,45,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Issue Number:",IDC_STATIC_ISSUE_NUMBER,13,119,46,8,0,0,
+                    HIDC_STATIC_ISSUE_NUMBER
+    EDITTEXT        IDC_ISSUE_NUMBER,65,118,46,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP
+    LTEXT           "Virus name:",IDC_STATIC_VIRUS_NAME,14,137,38,8,0,0,
+                    HIDC_STATIC_VIRUS_NAME
+    EDITTEXT        IDC_VIRUS_NAME,65,137,41,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_BORDER | NOT WS_TABSTOP
+    PUSHBUTTON      "&Queue sample for submission",IDC_ACTIONS_SUBMIT_BUTTON,
+                    11,182,109,14,0,0,HIDC_ACTIONS_SUBMIT_BUTTON
+    GROUPBOX        "Definition Delivery",IDC_DEFINITION_DELIVERY,131,38,116,
+                    170,0,WS_EX_TRANSPARENT
+    CONTROL         "&Automatic delivery",IDC_CHECK_SAMPLE_AUTO_DELIVERY,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,137,
+                    62,76,8,0,HIDC_CHECK_SAMPLE_AUTO_DELIVERY
+    LTEXT           "Def sequence needed:",IDC_STATIC_DEF_SEQ_NEEDED,137,78,
+                    47,21,0,0,HIDC_STATIC_DEF_SEQ_NEEDED
+    EDITTEXT        IDC_DEF_SEQUENCE_NEEDED,191,78,42,12,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,
+                    HIDC_DEF_SEQUENCE_NEEDED
+    PUSHBUTTON      "Queue item for &definition delivery",
+                    IDC_ACTIONS_DELIVER_BUTTON,135,182,107,14,0,0,
+                    HIDC_ACTIONS_DELIVER_BUTTON
+    CONTROL         "",IDC_ICON_BUTTON,"Button",BS_OWNERDRAW | WS_DISABLED,
+                    14,7,25,23,0,HIDC_ICON_BUTTON
+    EDITTEXT        IDC_FILENAME_EDIT,53,15,141,14,ES_AUTOHSCROLL | 
+                    ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,0,
+                    HIDC_FILENAME_EDIT
+END
+
+IDD_SELECT_NAV_SERVER_DIALOG DIALOGEX 0, 0, 240, 213
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_CONTEXTHELP | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Select Symantec AntiVirus Servers"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_HEADING,21,7,179,22,ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT 
+                    WS_TABSTOP
+    CONTROL         "List1",IDC_SELECT_NAV_SERVERS_LIST,"SysListView32",
+                    LVS_REPORT | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,
+                    21,29,194,151,0,HIDC_SELECT_NAV_SERVERS_LIST
+    DEFPUSHBUTTON   "&OK",IDOK,28,189,40,17,0,0,HIDOK
+    PUSHBUTTON      "&Cancel",IDCANCEL,99,189,38,17,0,0,HIDCANCEL
+    PUSHBUTTON      "&Help",IDC_HELP_BUTTON_DIALOG2,170,189,36,17,0,0,
+                    HIDC_HELP_BUTTON_DIALOG2
+END
+
+IDD_xALERTING_SET_CONFIG DIALOGEX 0, 0, 248, 212
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Alerting"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Test",IDC_TEST_BUTTON1,103,67,30,12,0,0,
+                    HIDC_TEST_BUTTON1
+    GROUPBOX        "Event Notification",IDC_STATIC,7,90,234,115
+    EDITTEXT        IDC_EDIT_AMS_SERVER_ADDRESS,103,48,118,14,ES_AUTOHSCROLL,
+                    0,HIDC_EDIT_AMS_SERVER_ADDRESS
+    LTEXT           "AMS server name",IDC_STATIC_AMS_SERVER,15,51,57,8
+    GROUPBOX        "General",IDC_STATIC,7,7,234,78
+    CONTROL         "Enable sending alerts",IDC_CHECK_ENABLE_ALERTS,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,14,18,98,10,0,
+                    HIDC_CHECK_ENABLE_ALERTS
+    CONTROL         "List1",IDC_EVENT_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | 
+                    WS_BORDER | WS_TABSTOP,11,99,225,101
+    LTEXT           "Alert check interval",IDC_STATIC11,15,34,62,8
+    LTEXT           "Send test alert",IDC_STATIC,16,69,46,8
+    LTEXT           "minutes",IDC_STATIC12,145,34,25,8
+    CONTROL         "Spin1",IDC_SPIN_ALERT_CHECK_INTERVAL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,127,31,
+                    11,14
+    EDITTEXT        IDC_EDIT_ALERT_CHECK_INTERVAL,103,30,24,14,
+                    ES_AUTOHSCROLL | ES_NUMBER
+END
+
+IDD_ALERTING_SET_CONFIG1 DIALOGEX 0, 0, 248, 212
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Alerting"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "General",-1,7,7,234,78,0,WS_EX_TRANSPARENT
+    CONTROL         "&Send events to AMS",IDC_CHECK_ENABLE_ALERTS1,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,14,18,98,10,0,
+                    HIDC_CHECK_ENABLE_ALERTS1
+    CONTROL         "&NT event log",IDC_CHECK_NT_EVENT_LOG,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,157,17,67,10,
+                    0,HIDC_CHECK_NT_EVENT_LOG
+    LTEXT           "Alert check &interval",IDC_STATIC_ALERT_INTERVAL,15,34,
+                    83,8,0,0,HIDC_STATIC_ALERT_INTERVAL
+    EDITTEXT        IDC_EDIT_ALERT_CHECK_INTERVAL1,103,30,24,14,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin1",IDC_SPIN_ALERT_CHECK_INTERVAL1,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,127,30,
+                    11,14
+    LTEXT           "minutes",IDC_STATIC12,143,34,58,8,0,0,HIDC_STATIC12
+    LTEXT           "&AMS server name",IDC_STATIC_AMS_SERVER,15,51,85,8,0,0,
+                    HIDC_STATIC_AMS_SERVER
+    EDITTEXT        IDC_EDIT_AMS_SERVER_ADDRESS1,103,48,73,14,ES_AUTOHSCROLL,
+                    0,HIDC_EDIT_AMS_SERVER_ADDRESS1
+    PUSHBUTTON      "&Configure",IDC_CONFIG_BUTTON,182,48,50,14
+    LTEXT           "Send &test alert",IDC_STATIC_TEST,16,69,77,8,0,0,
+                    HIDC_STATIC_TEST
+    PUSHBUTTON      "Test",IDC_TEST_BUTTON2,103,67,30,12,0,0,
+                    HIDC_TEST_BUTTON2
+    GROUPBOX        "Configure Event Notification",-1,7,90,234,115
+    CONTROL         "List1",IDC_EVENT_LIST1,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | 
+                    WS_BORDER | WS_TABSTOP,11,99,225,101
+END
+
+IDD_xAVIS_DEFINITION_POLICY_PAGE1 DIALOGEX 0, 0, 240, 194
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_CONTEXTHELP | WS_CHILD | 
+    WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Definition Policy"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Active",IDC_STATIC_DEF_ACTIVE,7,7,226,63,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "Active sequence number",IDC_STATIC_DEFS_ACTIVE,14,19,99,
+                    8,0,0,HIDC_STATIC_DEFS_ACTIVE
+    EDITTEXT        IDC_ACTIVE_DEFS_SEQ_NUM,121,16,102,14,ES_READONLY | NOT 
+                    WS_TABSTOP,0,HIDC_ACTIVE_DEFS_SEQ_NUM
+    LTEXT           "Certified sequence number",IDC_STATIC_DEFS_BLESSED,14,
+                    35,99,8,0,0,HIDC_STATIC_DEFS_BLESSED
+    EDITTEXT        IDC_BLESSED_DEFS_SEQ_NUM,121,33,102,14,ES_READONLY | NOT 
+                    WS_TABSTOP,0,HIDC_BLESSED_DEFS_SEQ_NUM
+    LTEXT           "&Heuristic Level",IDC_STATIC_DEF_HEURISTIC_LEVEL,14,51,
+                    100,8,0,0,HIDC_STATIC_DEF_HEURISTIC_LEVEL
+    EDITTEXT        IDC_EDIT_DEF_HEURISTIC_LEVE2,121,50,24,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER,0,HIDC_EDIT_DEF_HEURISTIC_LEVE2
+    CONTROL         "Spin4",IDC_SPIN_DEF_HEURISTIC_LEVEL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,145,50,
+                    11,13
+    GROUPBOX        "Download",IDC_STATIC_DEF_DLOAD,7,75,226,81,0,
+                    WS_EX_TRANSPARENT
+    LTEXT           "&Certified definitions interval",
+                    IDC_STATIC_DEF_BLESSED_INTERVAL,14,89,100,8,0,0,
+                    HIDC_STATIC_DEF_BLESSED_INTERVAL
+    EDITTEXT        IDC_EDIT_DEFS_BLESSED_INTERVAL,119,86,34,14,
+                    ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_EDIT_DEFS_BLESSED_INTERVAL
+    CONTROL         "Spin2",IDC_SPIN_DEFS_BLESSED_INTERVAL,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,153,87,
+                    11,14
+    LTEXT           "minutes",IDC_STATIC,167,89,28,8
+    LTEXT           "&Non-certified definitions interval",
+                    IDC_STATIC_DEF_NEEDED_INTERVAL2,14,105,101,8,0,0,
+                    HIDC_STATIC_DEF_NEEDED_INTERVAL2
+    EDITTEXT        IDC_EDIT_DEFS_NEEDED_INTERVAL2,119,102,34,14,
+                    ES_AUTOHSCROLL | ES_NUMBER,0,
+                    HIDC_EDIT_DEFS_NEEDED_INTERVAL2
+    CONTROL         "Spin2",IDC_SPIN_DEFS_NEEDED_INTERVAL2,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,152,
+                    103,12,14
+    LTEXT           "minutes",IDC_STATIC,167,105,28,8
+    LTEXT           "Unpacking &timeout",IDC_STATIC_DEF_UNPACK_TIMEOUT,14,
+                    122,97,8,0,0,HIDC_STATIC_DEF_UNPACK_TIMEOUT
+    EDITTEXT        IDC_EDIT_DEF_UNPACK_TIMEOUT,119,118,34,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER,0,HIDC_EDIT_DEF_UNPACK_TIMEOUT
+    CONTROL         "Spin2",IDC_SPIN_DEF_UNPACK_TIMEOUT,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,152,
+                    119,12,14
+    LTEXT           "minutes",IDC_STATIC,167,121,28,8
+    LTEXT           "Definitions &library path",IDC_STATIC_DEF_LIB_PATH,14,
+                    138,97,8,0,0,HIDC_STATIC_DEF_LIB_PATH
+    EDITTEXT        IDC_DEFINITION_LIBRARY_PATH,119,134,84,14,ES_AUTOHSCROLL,
+                    0,HIDC_DEFINITION_LIBRARY_PATH
+    PUSHBUTTON      "...",IDC_FILEDIALOG_BUTTON1,205,134,16,14,0,0,
+                    HIDC_FILEDIALOG_BUTTON1
+    GROUPBOX        "Pruning",IDC_STATIC_DEF_PRUNE,7,161,226,26,0,
+                    WS_EX_TRANSPARENT
+    CONTROL         "&Prune superceded defs",IDC_CHECK_PRUNE_DEFS,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,14,172,114,8,
+                    0,HIDC_CHECK_PRUNE_DEFS
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_AVISCON             REGISTRY                "AvisCon.rgs"
+IDR_AVISCONABOUT        REGISTRY                "AvisConAbout.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_TOOLBAR2 TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_SUBMIT_TO_AVIS
+    BUTTON      ID_DELIVER_DEFS_FROM_AVIS
+END
+
+IDR_TOOLBAR1 TOOLBAR  16, 16
+BEGIN
+    BUTTON      ID_SUBMIT_TO_AVIS1
+    BUTTON      ID_DELIVER_DEFS_FROM_AVIS1
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_SAMPLE_PLATFORM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_SAMPLE_ATTRIBUTES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 203
+    END
+
+    IDD_SAMPLE_ACTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 261
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_AVIS_WEB_COMM_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_AVIS_POLICY_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 182
+    END
+
+    IDD_AVIS_CUSTOMER_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+
+    IDD_CONFIRMDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 264
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_SERVER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+
+    IDD_AVIS_DEFINITION_POLICY_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+
+    IDD_AVIS_FIREWALL_COMM_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 243
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_GENERAL_ERROR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_INSTALL_DEFS_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 290
+    END
+
+    IDD_SELECTTARGETDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 264
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_SAMPLE_ERROR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 239
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 202
+    END
+
+    IDD_SAMPLE_OLD_ACTIONS1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_SELECT_NAV_SERVER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 206
+    END
+
+    IDD_xALERTING_SET_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 241
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 205
+    END
+
+    IDD_ALERTING_SET_CONFIG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 241
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 205
+    END
+
+    IDD_xAVIS_DEFINITION_POLICY_PAGE1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 187
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "AvisConsole"
+    IDS_CONFIRM_PASSWORD_NO_MATCH 
+                            "The password and confirmed password do not match!  Please re-enter password."
+    IDS_AVISCON_DESC        "Symantec Anti-Virus Avis Console. Manages the Avis Client on the Quarantine server machine, and allows forwarding of samples and distribution of new definition sets. "
+    IDS_AVISCON_PROVIDER    "Symantec Corp"
+    IDS_AVISCON_VERSION     "Symantec AntiVirus Avis Console  Version 3.10"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_TASK_SUBMITITEMFORAUTOMATICANALYSIS 
+                            "Submit item to SARK for automatic analysis"
+    ID_TASK_DELIVERNEWDEFINITIONSFORTHISMACHINE 
+                            "Deliver new definitions to users"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COLUMN1_NAME        "Attribute"
+    IDS_COLUMN2_NAME        "Value"
+    IDS_COLUMN3_NAME        "Client Name"
+    IDS_COLUMN4_NAME        "File Name"
+    IDS_SAMPLECONFIRM_TITLE "Sample Submission Confirmation"
+    IDS_SAMPLECONFIRM_HEADING 
+                            "Release selected samples for automatic analysis."
+    IDS_SAMPLECONFIRM_COL1  "Client Name"
+    IDS_SAMPLECONFIRM_COL2  "Filename"
+    IDS_DELIVERYCONFIRM_TITLE "Definition Delivery Confirmation"
+    IDS_DELIVERYCONFIRM_HEADING 
+                            "Deliver selected definitions to these clients."
+    IDS_DELIVERYCONFIRM_COL1 "Client Name"
+    IDS_DELIVERYCONFIRM_COL2 "Definition Sequence"
+    IDS_SERVER_ATTACH_ERROR_CAPTION "Error attaching to Avis"
+    IDS_ERROR_TITLE         "Avis Config"
+    IDS_ERROR_MULTI_CONFIG  "This server cannot be configured because it is currently being\r\nconfigured by another user or instance of the Console.  \r\nPlease try again later."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AVIS_SERVER_ERROR   "AvisServer error"
+    IDS_CONFIG_ERROR        "Error configuring Quarantine Server"
+    IDS_BAD_FOLDER_PATH     "The specified path is invalid.  Please specify a valid path to the  directory. "
+    IDS_UNKNOWN_ERROR       "Unknown Error"
+    IDS_LOCAL_NODE_NAME     "Avis [Local] "
+    IDS_NODE_NAME_FMT       "Avis [%s]"
+    IDS_ERROR               "Error:"
+    IDS_CONFIG_READ_ERROR   "Error reading configuration data from Avis server"
+    IDS_CONFIG_WRITE_ERROR  "Error saving configuration data to Avis."
+    IDS_STATUS_NOTLOGGED_IN "Not attached to Avis"
+    IDS_ERROR_FATAL         "Fatal Error: "
+    IDS_ERROR_PARSINGURL_FATAL "Fatal Error Parsing URL"
+    IDS_ERROR_PARSINGURL    "Error Parsing URL"
+    IDS_ERROR_UNABLE_TO_PARSEURL "Unable to parse URL: \r\n"
+    IDS_ERROR_MISING_PORT   """Missing port number. Should be in the form: ':NN'\r\n"
+    IDS_ERROR_MISSING_HTTP_SCHEME 
+                            "'http://' missing from beginning of address.\r\n"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_MBCSTOWIDE    "Conversion error: MultiByteToWideChar.  "
+    IDS_ERROR_WIDETOMBCS    "Conversion error: WideCharToMultiByte.  "
+    IDS_ERROR_HTTPSTRING_NOT_FOUND 
+                            "'http://' is not recognizable at the beginning of the address.\r\n"
+    IDS_ERROR_HTTPSTRING_CORRECTED 
+                            "'http://' string was corrected at the beginning of the address.\r\n"
+    IDS_ERROR_PLEASE_REENTER 
+                            "\r\nErrors were detected, please re-enter the address\r\n"
+    IDS_ERROR_SAVE_ANYWAY   "\r\nErrors were detected. Do you want to save it anyway?\r\n"
+    IDS_ERROR_SYSTEM_ERROR  "System errors:  "
+    IDS_WHATS_THIS_MENUITEM "What's This?"
+    IDS_TOPIC_AVIS_POLICY_PAGE "Avis_Policy_Properties.htm"
+    IDS_TOPIC_SUBMISSION_PRIORITY "Submission Priority"
+    IDS_TOPIC_MAX_PENDING_SAMPLES "Max Pending Samples"
+    IDS_TOPIC_QUEUE_CHECK_INTERVAL "Queue Check Interval"
+    IDS_TOPIC_STRIP_USER_DATA "Strip User Data"
+    IDS_TOPIC_AUTO_DELIVERY "Auto Delivery of Definitions"
+    IDS_TOPIC_DEF_LIB_PATH  "Definition Library Path"
+    IDS_TOPIC_BROWSE_FOR_DEFLIB "Browse for Definition Library Directory"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TOPIC_AVIS_WEB_COMM_PAGE "Web_Communication_Properties.htm"
+    IDS_TOPIC_GATEWAY_ADDRESS "Gateway Address"
+    IDS_TOPIC_PROXY_FIREWALL "Firewall Address"
+    IDS_TOPIC_STATUS_INTERVAL "Status Interval"
+    IDS_TOPIC_GATEWAY_PORT  "Gateway Port"
+    IDS_TOPIC_FIREWALL_PORT "Firewall Port"
+    IDS_TOPIC_CUSTOMER_PAGE "Customer_Info_Properties.htm"
+    IDS_TOPIC_COMPANY_NAME  "Company Name "
+    IDS_TOPIC_CONTACT_NAME  "Contact Name"
+    IDS_TOPIC_CONTACT_PHONE "Contact Phone"
+    IDS_TOPIC_CONTACT_EMAIL "Contact Email"
+    IDS_TOPIC_CUST_ACCT     "Customer Account"
+    IDS_TOPIC_OVERVIEW_SAMPLE_PLATFORM 
+                            "Overview of Platform Attributes Property Page"
+    IDS_TOPIC_OVERVIEW_SAMPLE_ATTRIBUTES "Sample_Attribute_Properties.htm"
+    IDS_TOPIC_SAMPLE_ACTIONS "Sample_Actions_Properties.htm"
+    IDS_TOPIC_SAMPLE_SUBMISSION_PRIORITY "Submission priority"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TOPIC_ANALYSIS_STATE "Analysis State"
+    IDS_TOPIC_GATEWAY_COOKIE "Gateway Coolie"
+    IDS_TOPIC_ISSUE_NUMBER  "Customer Issue Number"
+    IDS_TOPIC_VIRUS_NAME    "Virus Name"
+    IDS_TOPIC_SAMPLE_AUTOMATIC_DELIVERY "Definitions Automatic Delivery"
+    IDS_TOPIC_DEF_SEQ_NEEDED "Definition Sequence Number"
+    IDS_TOPIC_SUBMIT_CONFIRM_LISTBOX "Confirm_Submission.htm"
+    IDS_TOPIC_DELIVER_CONFIRM_LISTBOX "Confirm_Delivery.htm"
+    IDS_TOPIC_PLATFORM_ATTRIBS_LISTBOX "Sample Platform Attributes Listbox"
+    IDS_TOPIC_SAMPLE_ATTRIBS_LISTBOX "Sample Attributes Listbox"
+    IDS_TOPIC_OVERVIEW_SUBMIT_CONFIRM_DIALOG 
+                            "Overview Confirmation: Submit Selected Files To AVIS"
+    IDS_TOPIC_OVERVIEW_DELIVER_CONFIRM_DIALOG 
+                            "Overview Confirmation: Deliver Selected  Definitions From AVIS"
+    IDS_TOPIC_OK_BUTTON     "Closes this dialog box and saves any changes you have made."
+    IDS_TOPIC_CANCEL_BUTTON "Closes this dialog box without saving any changes you have made."
+    IDS_TOPIC_HELP_BUTTON   "Click this to display an overview of this dialog box.\r\n\r\nFor help on an item, click '?' at the top of the dialog box, and then click the item."
+    IDS_STATUS_QUARANTINED  "Quarantined"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_SUBMIT_TO_AVIS2      "Queue selected items for submission to the Symantec AntiVirus  Immune System"
+    ID_DELIVER_DEFS_FROM_AVIS2 
+                            "Queue selected items for automatic delivery of new definitions from the Symantec AntiVirus Immune System"
+    ID_DELIVER_DEFS_FROM_AVIS1 
+                            "Queue selected items for automatic delivery of new definitions from Symantec Security Response"
+    ID_SUBMIT_TO_AVIS1      "Queue selected items for submission to the Symantec AntiVirus  Immune System"
+    IDH_SUBMIT_CONFIRM_LISTBOX " "
+    IDH_DELIVER_CONFIRM_LISTBOX " "
+    ID_SUBMIT_TO_AVIS       "Queue selected items for submission to the Symantec AntiVirus  Immune System"
+    ID_DELIVER_DEFS_FROM_AVIS 
+                            "Queue selected items for automatic delivery of new definitions from the Symantec AntiVirus Immune System"
+    IDS_BROWSEDIRS_STRING   "Select a drive and path to the location to store the definitions library."
+    IDH_PLATFORM_ATTRIBS_LISTBOX "Sample Platform Attributes "
+    IDH_SAMPLE_ATTRIBS_LISTBOX "Sample Sample Attributes "
+    IDH_OVERVIEW_SUBMIT_FILES_DIALOG 
+                            "Overview: Submit Files Confirmation Dialog"
+    IDH_OVERVIEW_PLATFORM_ATTRIB_LIST "Platform Attributes Page"
+    IDH_OVERVIEW_SAMPLE_ATTRIB_LIST "Sample Attributes Page"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WHATS_THIS_MENUITEM  "What's This?"
+    IDC_SUBMISSION_PRIORITY " "
+    IDS_EVENT_LIST_COL_1    "Event Name"
+    IDS_EVENT_LIST_COL2     "Timeout (mins)"
+    IDS_ZERO_TIME           "0"
+    IDS_SEND_TEST_EVENT_MSG "A test alert will be sent to the AMS server, the next scheduled time Quarantine Server is configured to look for events."
+    IDS_HEADING_ATTENTION   "Attention: "
+    IDS_HEADING_ERROR       "Error: "
+    IDS_HEADING_LAST_ALERT  "Last Alert:  "
+    IDS_HEADING_EVENT_NAME  "Event Name:  "
+    IDS_NO_AMS_SERVER_CONFIGURED "There is no AMS server assigned."
+END
+
+STRINGTABLE 
+BEGIN
+    IDH_OVERVIEW_DELIVER_DEFS_DIALOG 
+                            "Overview: Deliver Definitions Confirmation Dialog"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUS_SUBMITTED    "Submitted"
+    IDS_STATUS_UNKNOWN      "Unknown"
+    IDS_STATUS_HELD         "Held"
+    IDS_STATUS_RELEASED     "Released"
+    IDS_STATUS_UNNEEDED     "Unneeded"
+    IDS_STATUS_NEEDED       "Needed"
+    IDS_STATUS_AVAILABLE    "Available"
+    IDS_STATUS_DISTRIBUTED  "Distributed"
+    IDS_STATUS_INSTALLED    "Installed"
+    IDS_TOPIC_DEFINITION_CHECK_INTERVAL "Definition Check Interval"
+    IDS_STATUS_UNKNOWN2     "unknown"
+    IDS_STATUS_NOT_AVAILABLE "not available"
+    IDS_BAD_FOLDER_TITLE    "Def Library Path must be a path in the form of C:\\Temp"
+    IDS_SAMPLECONFIRM_HEADING2 
+                            "Queue selected samples for automatic analysis.\r\nGrayed out items do not meet the submission criteria."
+    IDS_DELIVERYCONFIRM_HEADING2 
+                            "Queue selected definitions for automatic delivery.\r\nGrayed out items do not meet the delivery criteria."
+    IDS_SAMPLECONFIRM_HEADING3 
+                            "These items do not meet the submission criteria."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AMS_CONFIG_CAPTION  "Central Quarantine Events"
+    IDS_QSEVENT_PRODUCT_NAME "Central Quarantine"
+    IDS_ERROR_CUSTOMER_FIELD "Customer information is required."
+    IDS_CUSTOMER_FIELD_CO_NAME "Company Name field is empty."
+    IDS_CUSTOMER_FIELD_ACCT_NUM "Account Number field is empty."
+    IDS_CUSTOMER_FIELD_CONTACT "Contact Name field is empty."
+    IDS_CUSTOMER_FIELD_PHONE "Contact telephone field is empty."
+    IDS_NONE                "None"
+    IDS_BLANK               " "
+    IDS_STATUS_RISK         "Risk"
+    IDS_STATUS_HACKTOOL     "Hacktool"
+    IDS_STATUS_SPYWARE      "Spyware"
+    IDS_STATUS_TRACKWARE    "Trackware"
+    IDS_STATUS_DIALER       "Dialer"
+    IDS_STATUS_REMOTE       "Remote"
+    IDS_STATUS_ADWARE       "Adware"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUS_PRANK        "Prank"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DISPLAY_ITEMINFO_USERNAME "Platform-User"
+    IDS_DISPLAY_ITEMINFO_MACHINENAME "Platform-Computer"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DISPLAY_ITEMINFO_DOMAINNAME "Platform-Domain"
+    IDS_DISPLAY_ITEMINFO_MACHINE_ADDRESS "Platform-Address"
+    IDS_DISPLAY_ITEMINFO_PROCESSOR "Platform-Processor"
+    IDS_DISPLAY_ITEMINFO_DISTRIBUTOR "Platform-Distributor"
+    IDS_DISPLAY_ITEMINFO_HOST "Platform-Host"
+    IDS_DISPLAY_ITEMINFO_SYSTEM "Platform-System"
+    IDS_DISPLAY_ITEMINFO_LANGUAGE "Platform-Language"
+    IDS_DISPLAY_ITEMINFO_OWNER "Platform-Owner"
+    IDS_DISPLAY_ITEMINFO_SCANNER "Platform-Scanner"
+    IDS_DISPLAY_ITEMINFO_CORRELATOR "Platform-Correlator"
+    IDS_DISPLAY_ITEMINFO_FILE_CREATED_TIME "Date-Created"
+    IDS_DISPLAY_ITEMINFO_FILE_MODIFIED_TIME "Date-Modified"
+    IDS_DISPLAY_ITEMINFO_FILE_ACCESSED_TIME "Date-Accessed"
+    IDS_DISPLAY_ITEMINFO_QUARANTINE_QDATE "Date-QuarantineDate"
+    IDS_DISPLAY_ITEMINFO_SUBMIT_QDATE "Date-Submitted"
+    IDS_DISPLAY_ITEMINFO_VIRUSID "Scan-Virus-Identifier"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DISPLAY_ITEMINFO_DEF_SEQUENCE "Scan-Signature-Sequence"
+    IDS_DISPLAY_ITEMINFO_DEF_VERSION "Scan-Signature-Version"
+    IDS_DISPLAY_ITEMINFO_VIRUSNAME "Scan-Virus-Name"
+    IDS_DISPLAY_ITEMINFO_SCAN_RESULT "Scan-Result"
+    IDS_DISPLAY_ITEMINFO_CHECKSUM "Sample-Checksum"
+    IDS_DISPLAY_ITEMINFO_INFO_FILE_EXT "Sample-Extension"
+    IDS_DISPLAY_ITEMINFO_FILENAME "Sample-File"
+    IDS_DISPLAY_ITEMINFO_FILESIZE "Sample-Size"
+    IDS_DISPLAY_ITEMINFO_SAMPLE_TYPE "Sample-Type"
+    IDS_DISPLAY_ITEMINFO_SAMPLE_REASON "Sample-Reason"
+    IDS_DISPLAY_ITEMINFO_DISK_GEOMETRY "Sample-Geometry"
+    IDS_DISPLAY_ITEMINFO_STATUS "Sample-Status"
+    IDS_DISPLAY_ITEMINFO_SUBMISSION_ROUTE "Sample-Submission-Route"
+    IDS_DISPLAY_ITEMINFO_GUID "Sample-GUID"
+    IDS_DISPLAY_ITEMCHECKSUM_METHOD "Checksum-Method"
+    IDS_DISPLAY_ITEMINFO_UUID "Sample-UUID"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DISPLAY_ITEMINFO_FILEID "Sample-FileID"
+    IDS_DISPLAY_ITEMINFO_CHANGES "Sample-Changes"
+    IDS_DISPLAY_SAMPLE_ACTIONS_SUBMISSION_PRIORITY "Sample-Priority"
+    IDS_DISPLAY_SAMPLE_ACTIONS_AUTO_DELIVERY_DEFS "Sample-Signatures-Priority"
+    IDS_DISPLAY_SAMPLE_ACTIONS_ANALYSIS_STATE "Analysis-State"
+    IDS_DISPLAY_SAMPLE_ACTIONS_GATEWAY_COOKIE "Analysis-Cookie"
+    IDS_DISPLAY_SAMPLE_ACTIONS_ANALYSIS_ISSUE "Analysis-Issue"
+    IDS_DISPLAY_SAMPLE_ACTIONS_VIRUS_NAME "Analysis-Virus_Name"
+    IDS_DISPLAY_SAMPLE_ACTIONS_DEF_SEQ_NEEDED "Signatures-Sequence"
+    IDS_REGISTRY_WRITE_ERROR_FMT 
+                            "COM Error writing to remote registry. Data not saved.\r\n%s"
+    IDS_REGISTRY_WRITE_ERROR2_FMT 
+                            "COM Error writing value name [%s] to remote registry. Data not saved..\r\n%s"
+    IDS_REGISTRY_READ_ERROR2_FMT 
+                            "COM Error reading value name [%s] from remote registry.\r\n%s"
+    IDS_REGISTRY_READ_ERROR_FMT 
+                            "COM Error reading from remote registry.\r\n%s"
+    IDS_REGISTRY_READ_ERROR3_FMT 
+                            "COM Error reading value name [%s] from remote registry."
+    IDS_REGISTRY_WRITE_ERROR3_FMT 
+                            "COM Error writing value name [%s] to remote registry. Data not saved."
+    IDS_SAMPLE_SUBMIT_ERROR "One or more of the selected quarantine items did not meet the criteria for a new submission,\r\nand are disabled in the list for submission to the Analysis Center."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SAMPLE_SUBMIT_ERROR_CAPTION "Samples were not queued for submission."
+    IDS_SAMPLE_DELIVERY_ERROR 
+                            "One or more of the selected quarantine items did not meet the delivery criteria,\r\nand are disabled in the list for distribution to the user."
+    IDS_SAMPLE_DELIVERY_ERROR_CAPTION 
+                            "Definitions were not queued for automatic delivery."
+    IDS_ITEMS_SUBMITTED_FMT "%d samples were queued for submission to the Analysis Center\r\n"
+    IDS_ITEMS_SUBMITTED_TITLE "Selected Samples Released"
+    IDS_ITEMS_DELIVERED_FMT "%d items were queued for distribution to the user"
+    IDS_ITEMS_DELIVERED_TITLE "Selected items queued for distribution"
+    IDS_ERROR_SMTP_ADDRESS  "Customer Email Address"
+    IDS_ERROR_SMTP_ADDRESS_FMT "Please enter a valid SMTP address."
+    IDS_ERROR_IP_VALIDATE_GATEWAY_ADDR 
+                            "Unable to validate Gateway address: %s\r\nDo you want to save it anyway?"
+    IDS_ERROR_CAPTION_IP_VALIDIDATE "Save Address Anyway?"
+    IDS_ERROR_IP_VALIDATE_FIREWALL_ADDR 
+                            "Unable to validate Firewall address: %s\r\nDo you want to save it anyway?"
+    IDS_BADFMT_DEF_CHECK_INTERVAL 
+                            "The Definition Check Interval must be between %d and %d minutes."
+    IDS_BADFMT_INITIAL_SUBMIT_PRIORITY 
+                            "Initial Submission Priority must be between %d and %d."
+    IDS_BADFMT_MAX_PENDING_SAMPLES 
+                            "Maximum Pending Samples must be between %d and %d."
+    IDS_BADFMT_QUEUE_CHECK_INTERVAL 
+                            "The Queue Check Interval must be between %d and %d minutes."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_BADFMT_GATEWAY_PORT "The Gateway HTTP Port number must be between %d and %d."
+    IDS_BADFMT_FIREWALL_PORT 
+                            "The Firewall Proxy Port number must be between %d and %d."
+    IDS_BADFMT_STATUS_INTERVAL 
+                            "The Status Query Interval must be between %d and %d minutes."
+    IDS_ERROR_READING_FROM_QSERVER 
+                            "Error retrieving attributes from Quarantine Server.\r\nAVIS Sample Attributes will not be available for this item..\r\n"
+    IDS_TITLE_ERROR_READING_FROM_QSERVER 
+                            "Error retrieving AVIS Sample Attributes from Quarantine Server"
+    IDS_COM_ERROR_READING_FROM_QSERVER 
+                            "COM error retrieving attributes from Quarantine Server.\r\nAVIS Sample Attributes will not be available for this item.\r\n"
+    IDS_ERROR_READING_FROM_QSERVER2 
+                            "Error retrieving attributes from Quarantine Server.\r\nSamples and Definitions cannot be submitted or delivered..\r\n "
+    IDS_COM_ERROR_READING_FROM_QSERVER2 
+                            "COM error retrieving attributes from Quarantine Server.\r\nSamples and Definitions cannot be submitted or delivered. .\r\n"
+    IDS_ITEM_SUBMITTED_FMT2 "%d sample was queued for submission to the Analysis Center\r\n"
+    IDS_ITEM_DELIVERED_FMT2 "%d item was queued for distribution to the user"
+    IDS_SAVE_CHANGES_CAPTION "Save all changes?"
+    IDS_SAVE_CHANGES_MSG    "Do you want to save all the changes you have made?"
+    IDS_SAMPLE_SUBMIT_ERROR2 
+                            "The selected quarantine item did not meet the criteria for a new submission,\r\nand is disabled in the list for submission to the Analysis Center."
+    IDS_SAMPLE_DELIVERY_ERROR2 
+                            "The selected quarantine item did not meet the delivery criteria,\r\nand is disabled in the list for distribution to the user."
+    IDS_ATTRIBUTE_DATE_DISPLAY_FMT "%s %s GMT"
+    IDS_BADFMT_SUBMISSION_PRIORITY 
+                            "Submission Priority must be between %d and %d"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DELIVERYCONFIRM_HEADING3 
+                            "These items do not meet the delivery criteria."
+    IDS_TOPIC_ACTION_SUBMIT_BUTTON 
+                            "Submit highlighted samples to the Analysis Center."
+    IDS_TOPIC_ACTION_DELIVER_BUTTON 
+                            "Deliver highlighted definitions to the user."
+    IDS_MANUAL_SUBMIT_CRITERIA 
+                            "\r\nFor a sample to be eligible for manual submission, it must meet the following criteria.\r\n1. the sample is not already eligible for automatic submission (X-Sample-Priority ==  0)\r\n\r\nTo see all current attributes for a given sample, please look on the\r\nSample Attributes property page for that sample."
+    IDS_MANUAL_DELIVERY_CRITERIA 
+                            "\r\nFor a sample to be eligible for manual delivery, it must meet the following criteria.\r\n1. the sample is not already eligible for automatic delivery (X-Signatures-Priority == 0)\r\n\r\nTo see all current attributes for a given sample, please look on the\r\nSample Attributes property page for that sample."
+    IDS_MANUAL_SUBMIT_ERROR "This item did not meet the criteria for manual submission"
+    IDS_MANUAL_DELIVERY_ERROR 
+                            "This item did not meet the criteria for manual delivery"
+    IDS_UNABLE_TO_READ_ATTRIBUTE_FMT "Error reading %s attribute.\r\n."
+    IDS_ATTRIBUTE_INVALID_DATE 
+                            "The %s attribute does not meet the date criteria.\r\n"
+    IDS_TOPIC_SAMPLE_ACTIONS_ICON "File name and icon"
+    IDS_STATUS_ATTENTION    "Attention"
+    IDS_STATUS_ERROR        "Error"
+    IDS_MANUAL_SUBMIT_ALREADY_QUEUED "Sample already queued for Submission"
+    IDS_MANUAL_SUBMIT_ALREADY_SUBMITTED "Sample has already been Submitted"
+    IDS_MANUAL_SUBMIT_ALREADY_FINISHED "Sample is already Finished"
+    IDS_UNABLE_TO_READ_ATTRIBUTE_CAPTION "Unable to read attribute value"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_ERROR_CONFIG_SAMPLE_ACTIONS 
+                            "Configuration error setting Sample Actions"
+    IDS_SAMPLE_SUBMIT_ERROR_CAPTION2 "Sample was not queued for submission."
+    IDS_SAMPLE_DELIVERY_ERROR_CAPTION2 
+                            "The definition was not queued for automatic delivery."
+    IDS_CUST_INFO_BLANK_EMAIL 
+                            "The Email address on the Customer Info Property page is blank. \nThis must be filled in before Samples can be submitted to Symantec Security Response."
+    IDS_CUST_INFO_BLANK_EMAIL2 
+                            "The Email address on the Customer Info Property page is blank. This must be filled in before Initial Submission Priority can be set for automatic submission."
+    IDS_BADFMT_SSL_PORT     "The SSL Port number must be between %d and %d."
+    IDS_BADFMT_RETRY_LIMIT  "The Retry Limit must be between %d and %d."
+    IDS_BADFMT_TRANSACTION_TIMEOUT 
+                            "The Transaction Timeout must be between %d and %d."
+    IDS_BADFMT_RETRY_INTERVAL "The Retry Interval must be between %d and %d."
+    IDS_BADFMT_DEFS_NEEDED_INTERVAL 
+                            "The Definions Interval must be between %d and %d minutes."
+    IDS_NO_ERROR_STRING     "No Current Errors"
+    IDS_BADFMT_DEFS_BLESSED_INTERVAL 
+                            "The Certified Definions Interval must be between %d and %d minutes."
+    IDS_BADFMT_DEFS_UNPACK_TIMEOUT 
+                            "The Unpack Timeout must be between %d and %d minutes."
+    IDS_BADFMT_DEFS_HEURISTIC_LEVEL 
+                            "The Heuristic Level must be between %d and %d."
+    IDS_BLESSED_TEXT        "[certified]"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_MANUAL_DELIVER_ALREADY_QUEUED 
+                            "Already queued for automatic delivery of new definitions"
+    IDS_MANUAL_DELIVER_NO_SIG_SEQ "Sample does not require new definitions"
+    IDS_MANUAL_DELIVER_ALREADY_FINISHED "Sample has already been disinfected"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_UNBLESSED_TEXT      "[non-certified]"
+    IDS_FMT_ACTIVE_DEFS_SEQ_NUM "%d"
+    IDS_NA_ACTIVE_DEFS_SEQ_NUM "Not available"
+    IDS_BADFMT_DEFS_DELIVERY_TIMEOUT 
+                            "The Delivery Timeout must be between %d and %d minutes."
+    IDS_BADFMT_DEFS_DELIVERY_INTERVAL 
+                            "The Delivery Interval must be between %d and %d minutes."
+    IDS_BADFMT_DEFS_DELIVERY_PRIORITY 
+                            "The Delivery Priority must be between %d and %d minutes."
+    IDS_SELECT_BLESSED_TARGET_TITLE "Certified Definition Targets"
+    IDS_SELECT_BLESSED_TARGET_COL1 "Server names"
+    IDS_SELECT_BLESSED_TARGET_HEADING 
+                            "Select targets to receive new Certified definitions"
+    IDS_DELETE_WARNING_TARGET_LIST "Confirm Deletion"
+    IDS_DELETE_WARNING_TARGET_LIST_TEXT 
+                            "Are you sure you want to delete the selected items?"
+    IDS_SELECT_UNBLESSED_TARGET_TITLE "Definition Targets"
+    IDS_SELECT_UNBLESSED_TARGET_HEADING 
+                            "Select targets to receive new definitions"
+    IDS_SELECT_UNBLESSED_TARGET_COL1 "Server names"
+    IDS_SELECT_NAV_SERVERS_TITLE "Available Symantec AntiVirus Servers"
+    IDS_SELECT_NAV_SERVERS_COL1 "Server names"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_STATUS_DISTRIBUTE   "Distribute"
+    IDS_STATUS_NOTINSTALLED "Not installed"
+    IDS_STATUS_RESTART      "Restart"
+    IDS_STATUS_LEGACY       "Legacy"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SELECT_NAV_SERVERS_HEADING 
+                            "Select Symantec AntiVirus Servers to receive definitions"
+    IDS_NA_NAV_SERVER_LIST  "Not available"
+    IDS_BADFMT_ALERTING_INTERVAL 
+                            "The Alerting Interval number must be between %d and %d"
+    IDS_BADFMT_ENABLE_AMS   "In order to enable alerting, the AMS Server name must be entered."
+    IDS_ADD_NAV_SERVERS_ERROR_TITLE "List Symantec AntiVirus Servers"
+    IDS_ADD_NAV_SERVERS_ERROR_TEXT 
+                            "Unable to locate any Symantec AntiVirus Servers to choose from."
+    IDS_SAMPLE_NOT_SUBMITTED "not submitted"
+    IDS_SAMPLE_WAS_NOT_SUBMITTED "Sample has not been submitted"
+    IDS_SAMPLE_WAS_SUBMITTED "Sample has been submitted"
+    IDS_ITEM_RESUBMITTED_FMT 
+                            "%d sample was queued for Re-submission to the Analysis Center\r\n"
+    IDS_ITEM_RESUBMITTED_TITLE "Resubmit Sample"
+    IDS_ITEM_RESUBMIT_FAILED "Unable to Re-submit sample."
+    IDS_BUTTON_RESUBMIT     "&Queue sample for Re-submission"
+    IDS_SAMPLE_WAS_RESUBMITTED "Sample has been Re-submitted"
+    IDS_ERROR_BLANK_GATEWAY_ADDR 
+                            "Sorry, you must enter a  name for the Gateway."
+    IDS_DEFINITIONS_HAVE_BEEN_RECIEVED "New definitions have been received"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_BUTTON_REMOVE_SUBMISSION "&Remove sample from queue"
+    IDS_SAMPLE_WAITING_FOR_SUBMISSION "Sample waiting for submission"
+    IDS_SAMPLE_HELD_FOR_MANUAL_SUBMISSION "Sample held for manual submission"
+    IDS_TEXT_REMOVE_SAMPLE_FROM_QUEUE "Remove sample from queue"
+    IDS_TEXT_REMOVE_SAMPLE_FROM_QUEUE2 
+                            "1 sample removed from submission queue"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "AvisConsole.tlb"
+#define VR_FILEDESCRIPTION "Avis Console"
+#define VR_INTERNALNAME "AVISCONSOLE"
+#define VR_ORIGINALFILENAME "AVISCONSOLE.DLL"
+#include <winver.h>
+#include "qsvers.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

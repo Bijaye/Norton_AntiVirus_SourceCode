@@ -1,0 +1,46 @@
+:: $Header:   S:/navinoc/VCS/update.btv   1.0   06 Feb 1997 20:58:08   RFULLER  $
+::
+:: Update Batch file for the NAV inoc english files.
+::------------------------------------------------------------------------
+: $Log:   S:/navinoc/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 20:58:08   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:53:08   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 13:22:12   BARRY
+:  Initial revision.
+:  
+:     Rev 1.11   11 Dec 1995 23:22:18   DALLEE
+:  Updated for PROJVERS.
+:  
+:     Rev 1.10   04 Dec 1995 19:14:36   GWESTER
+:  Added support for TARGET.
+:  
+:     Rev 1.9   25 Apr 1994 14:27:58   MFALLEN
+:  Removed BANKERS
+:  
+:     Rev 1.8   24 Mar 1994 05:34:44   KEITH
+:  
+:  
+:     Rev 1.7   24 Mar 1994 00:36:04   KEITH
+:  Bankers Trust - Change entire build so LIB.%PLATFORM and BIN.%PLATFORM
+:  are split into NAV and BANKERS subdirectories.
+:  
+:     Rev 1.6   17 Feb 1994 16:08:10   DALLEE
+:  BANKERS DLL's to s:\source\bin.win\bankers
+:  
+:     Rev 1.5   14 Feb 1994 19:01:28   DALLEE
+:  Update TARGET areas.
+::------------------------------------------------------------------------
+
+::Update Batch file for the Norton AntiVirus for Windows
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*

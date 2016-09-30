@@ -1,0 +1,78 @@
+#######################################################################
+# 
+# Target file: AVISMonitor.lst
+# 
+# Target directory: D:\avis
+# 
+# Target machine: Gateways and the executive machine in the analysis center
+# 
+# Target application: AVISMonitor.exe
+# 
+# Please refer to the 'AnalysisCenterOperations.doc' file for more
+# information on how to configure the Monitor program. The document
+# file mentioned here can be found in the 'avis200.xxx\src\docs'
+# subdirectory of the AVIS source tree.
+# 
+#######################################################################
+Module Name : AVIS Analysis Center Signature Communications
+Module File Path : d:\avis\avisacsignaturecomm.exe
+Module Arguments : 
+Module Auto Restart : Yes
+Module Auto Stop Time : 0
+Module Restart Time : 5
+
+Module Name : avisacsamplecomm
+Module File Path : d:\avis\avisacsamplecomm.exe
+Module Arguments : 
+Module Auto Restart : Yes
+Module Auto Stop Time : 0
+Module Restart Time : 5
+
+Module Name : DataFlow
+Module File Path : d:\avis\AVISDF.EXE
+Module Arguments : 
+Module Auto Restart : No
+Module Auto Stop Time : 0
+Module Restart Time : 0
+
+Module Name : LogViewer
+Module File Path : d:\avis\logviewer.exe
+Module Arguments : 
+Module Auto Restart : No
+Module Auto Stop Time : 0
+Module Restart Time : 0
+
+Module Name : scanblessed
+Module File Path : d:\avis\scanblessed.exe
+Module Arguments : -run
+Module Auto Restart : No
+Module Auto Stop Time : 0
+Module Restart Time : 0
+
+Module Name : ScanExplicit
+Module File Path : d:\avis\scanexplicit.exe
+Module Arguments : -run /min
+Module Auto Restart : No
+Module Auto Stop Time : 0
+Module Restart Time : 0
+
+Module Name : ScanLatest
+Module File Path : d:\avis\scanlatest.exe
+Module Arguments : -run
+Module Auto Restart : No
+Module Auto Stop Time : 0
+Module Restart Time : 0
+
+Module Name : DatabaseBackup
+Module File Path : d:\perl\bin\perl d:\avis\avisdbexport.pl
+Module Arguments : 
+Module Auto Restart : Yes
+Module Auto Stop Time : 0
+Module Restart Time : 15
+
+Module Name : SampleBackup
+Module File Path : d:\perl\bin\perl d:\avis\avisacsampleexport.pl
+Module Arguments : 
+Module Auto Restart : Yes
+Module Auto Stop Time : 0
+Module Restart Time : 1

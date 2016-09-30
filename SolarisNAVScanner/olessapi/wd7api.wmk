@@ -1,0 +1,19 @@
+!define BLANK ""
+.cpp : $(%include)
+.h : $(%include)
+
+.cpp.obj :
+  if not exist $[&.cpp copy $[@ . > nul
+ *wpp386 $^&.cpp -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+wd7api.lib : wd7api.obj wd7encdc.obj wd7rmtxt.obj .AUTODEPEND
+            
+!ifneq BLANK "wd7api.obj wd7encdc.obj wd7rmtxt.obj"
+ @for %i in (wd7api.obj wd7encdc.obj wd7rmtxt.obj) do @%append wd7api.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append wd7api.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 wd7api.lib @ wd7api.lb1
+
+

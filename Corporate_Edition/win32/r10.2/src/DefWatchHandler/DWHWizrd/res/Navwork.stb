@@ -1,0 +1,773 @@
+// Copyright 1995 - 2003 Symantec Corporation. All rights reserved.
+//***************************************************************************
+//
+// $Header:   N:/NAVWORK/VCS/navwork.stv   1.24   29 Jul 1998 15:59:00   JBRENNA  $
+//
+// Description:
+//
+// See Also:
+//
+//***************************************************************************
+// $Log:   N:/NAVWORK/VCS/navwork.stv  $
+// 
+//    Rev 1.24   29 Jul 1998 15:59:00   JBRENNA
+// Fix a 'the the' typo in exclusions error string.
+// 
+//    Rev 1.23   09 Jul 1998 18:06:24   DBuches
+// Removed How To strings.
+// 
+//    Rev 1.22   01 Jul 1998 18:03:52   dshanno
+// Added "or quarantine" to final advice panel in Rep Wiz
+// 
+//    Rev 1.21   24 Jun 1998 12:53:44   DBuches
+// Added shortened quarantined message.
+// 
+//    Rev 1.20   23 Jun 1998 14:27:28   PVENKAT
+// Fixed # 117968. Changed IDS_SYSTNTEG_CHECKING: Removed system files.
+// 
+// 
+//    Rev 1.19   08 Jun 1998 15:57:56   DBuches
+// Changed references to Win95 to Win98.
+//
+//    Rev 1.18   08 Jun 1998 12:11:44   DBuches
+// Added main caption string.
+//
+//    Rev 1.17   07 Jun 1998 15:05:08   tcashin
+// Added more strings for the repair wizard.
+//
+//    Rev 1.16   01 Jun 1998 16:55:22   tcashin
+// Fixed a typo.
+//
+//    Rev 1.15   01 Jun 1998 16:02:22   tcashin
+// Added a string for quarantined zip files.
+//
+//    Rev 1.14   18 May 1998 22:21:28   tcashin
+// Added new strings for memory scanned/not scanned in new summary dialog.
+//
+//    Rev 1.13   12 May 1998 13:53:18   tcashin
+// Added new strings for quarantined and deleted items in
+// the summary dialogs.
+//
+//    Rev 1.12   11 May 1998 09:57:00   DBuches
+// Added strings.
+//
+//    Rev 1.11   27 Apr 1998 16:40:26   jbrenna
+// Removed 'known' from 'known viruses'.
+//
+//    Rev 1.10   03 Apr 1998 12:14:58   tcashin
+// Added strings for the new version of quarantine.
+//
+//    Rev 1.9   09 Mar 1998 23:49:12   DALLEE
+// Removed old Repair Wizard UI elements.
+// Replaced with stuff for new Repair Wizard.
+//
+//    Rev 1.8   11 Aug 1997 01:08:06   KSACKIN
+// Added two new error string ID's for when our Zip Scanning engine crashes.
+//
+//    Rev 1.7   29 Jul 1997 17:04:30   BGERHAR
+// Fix typo from 'currectly' to 'currently'
+//
+//    Rev 1.6   25 Jul 1997 18:27:56   DBUCHES
+// Added strings.
+//
+//    Rev 1.5   05 Jun 1997 08:38:28   TIVANOV
+// fix an misspell word
+//
+//    Rev 1.4   19 May 1997 15:44:32   TIVANOV
+// move the string to the navxutil proj
+//
+//    Rev 1.3   12 May 1997 15:10:14   TIVANOV
+// fix a spell error for IDS_BUTTON_MOVEALL
+//
+//    Rev 1.2   09 May 1997 13:31:30   TIVANOV
+// file name for the quarantine text file
+//
+//    Rev 1.1   02 May 1997 11:40:32   TIVANOV
+// new quarantine entries
+//
+//    Rev 1.0   06 Feb 1997 21:03:36   RFULLER
+// Initial revision
+//
+//    Rev 1.17   07 Jan 1997 14:53:06   JBRENNA
+// Remove unused IDS_DRIVE_C.
+//
+//    Rev 1.16   01 Nov 1996 17:07:02   JBRENNA
+// Instruct the user to reinstall NAV when we cannot find the virus definitions.
+//
+//    Rev 1.15   30 Oct 1996 18:21:28   JBRENNA
+// Somehow the IDS_SYSINTEG_VIRUS_IN_MASTERBOOT string got a return between
+// "the" and last "virus." words.
+//
+//    Rev 1.14   04 Oct 1996 16:35:10   MKEATIN
+// Changed "hard drive # %s" strings to "hard drive #%s".
+//
+//    Rev 1.13   30 Aug 1996 16:08:24   DALLEE
+// Removed #ifdef NAVSCANW from internet download string table.
+//
+//    Rev 1.12   07 Aug 1996 15:50:00   JBRENNA
+// LuigiPlus Port:
+//   JBRENNA: STS 58214 - Change IDS_ASK_REPAIR_BOOT and
+//     IDS_ASK_REPAIR_MASTER_BOOT to wording that indicates they are a
+//     single infection class for the Repair All button.
+//
+//
+//    Rev 1.11   30 Jul 1996 17:06:24   RPULINT
+// Fixed defect 62187: Changed NAV Scanner text to NAV NT for NAVWNT
+//
+//    Rev 1.10   28 Jul 1996 14:48:30   TIVANOV
+// fix the message for the maximum number of exclustion entries
+//
+//    Rev 1.9   26 Jul 1996 08:49:28   PVENKAT
+// Removed IDS_BOOTRECORD.
+//
+//    Rev 1.8   25 Jul 1996 17:27:16   PVENKAT
+// Added new strings for 'Memory' & 'Boot record'
+//
+//    Rev 1.7   28 Jun 1996 13:29:44   GWESTER
+// Ported in fixes from Luigi Plus.
+//
+//    Rev 1.6   20 Jun 1996 19:22:08   GWESTER
+// Ported in PileDriver fix 48198.
+//
+//    Rev 1.5   19 Jun 1996 14:23:44   PVENKAT
+// Removed 'Use Rescue disk' in BOOT record infection msgs.
+//
+//
+//    Rev 1.4   24 May 1996 12:06:56   GWESTER
+// Added confirmation flag on Do All dialog if user clicks Stop.
+//
+//    Rev 1.3   21 May 1996 03:16:34   jmillar
+// change name of application to NT ifdef NAVWNT
+// change messages based on same flag
+//
+//    Rev 1.2   15 May 1996 14:00:12   GWESTER
+// Modified wording on a messagebox for NT.
+//
+//    Rev 1.1   09 May 1996 17:58:58   GWESTER
+// Ported in Repair Wizard from Luigi Plus.
+//
+//    Rev 1.0   30 Jan 1996 16:06:14   BARRY
+// Initial revision.
+//
+//    Rev 1.0   30 Jan 1996 15:00:02   BARRY
+// Initial revision.
+//
+//    Rev 1.135   29 Jan 1996 15:16:02   GWESTER
+// In download mode, added strings for Save As... failure.
+//
+//    Rev 1.134   25 Jan 1996 19:01:10   GWESTER
+// Added new text for downloads.
+//
+//    Rev 1.133   24 Jan 1996 15:00:32   GWESTER
+// Added strings for download mode.
+//
+//    Rev 1.132   21 Jan 1996 13:44:26   GWESTER
+// Fixed grammar on download.
+//
+//    Rev 1.131   21 Jan 1996 12:53:40   GWESTER
+// Added strings for Netscape download dialogs.
+//
+//    Rev 1.130   18 Jan 1996 15:12:44   YVANG
+// Added a string for IDS_NAV_PERCENT_W95.
+//
+//    Rev 1.129   14 Jan 1996 16:41:48   DALLEE
+// Changed #ifdef NAVWNT to NAVSCANW.
+//
+//    Rev 1.128   11 Dec 1995 21:36:54   KARENG
+// Missed ifdef when saying 'Symantec AntiVirus Scanner' -- now only say it for Gargoyle
+//
+//    Rev 1.127.1.0   11 Dec 1995 16:29:56   DBUETTN
+// Branch base for version LUG1
+//
+//    Rev 1.127   06 Dec 1995 22:16:56   BARRY
+// For Gargoyle, say 'Symantec AntiVirus Scanner'
+//
+//    Rev 1.126   04 Dec 1995 20:16:38   BARRY
+// Removed reference saying only program files get infected so it's OK to delete.
+//
+//    Rev 1.125   20 Nov 1995 08:06:24   MKEATIN
+// Updated IDS_BOOTNOTREPAIRED message
+//
+//    Rev 1.124   17 Nov 1995 15:46:36   JWORDEN
+// Change sysinteg message to refer to "first hard drive" instead of
+// "local hard drive"
+//
+//    Rev 1.123   01 Nov 1995 12:22:34   JWORDEN
+// Fix MBR infected message
+//
+//    Rev 1.122   25 Oct 1995 12:48:12   JWORDEN
+// New strings for master boot record repair
+//
+//    Rev 1.121   24 Oct 1995 20:00:46   MKEATIN
+// Updated the following message strings to be more
+// intructive to the user:
+//
+//   IDS_SYSINTEG_VIRUSINMASTERBOOT
+//   IDS_SYSINTEG_VIRUSINBOOT
+//   IDS_SYSINTEG_VIRUSINSYSFILE
+//
+//    Rev 1.120   24 Oct 1995 19:43:58   JWORDEN
+// Add new MBR strings
+// Modify existing MBR strings to read "hard drive #..."
+//
+//    Rev 1.119   08 Jul 1995 12:35:18   BARRY
+// Modified text of a HowTo link. (Gary)
+//
+//    Rev 1.118   07 Jul 1995 17:13:42   BARRY
+// Added HowTo... links. (Gary)
+//
+//    Rev 1.117   06 Jul 1995 14:15:10   DALLEE
+// Added "Boot repair in progress..." for Repair All boot.
+//
+//    Rev 1.116   21 Jun 1995 10:47:52   KEITH
+// Change the text at the top of the scan dialog from "Scanning files
+// for viruses" to "Scanning for viruses" when we are doing a /MEM scan.
+//
+//    Rev 1.115   09 Jun 1995 16:52:08   GWESTER
+// Grammatical changes.
+//
+//    Rev 1.114   08 Jun 1995 11:14:46   GWESTER
+// Added string for IDH_NAVW_PROC_WORK_WITH_COMPRESSED_FILES .
+//
+//    Rev 1.113   07 Jun 1995 09:04:44   KEITH
+// Removed specific reference to help text per request from docs.
+//
+//***************************************************************************
+
+
+#include "nunavstb.h"
+
+STRINGTABLE
+BEGIN
+   IDS_DEF_PRINTFILE,        "virinfo.txt"
+   IDS_DEF_RESULTSPRINTFILE,    "results.txt"
+   IDS_DOSERROR,                "DOS Error"
+   IDS_ERR_WRILOG,              "Unable to write to the activity log file %s. Check to see if the disk is full or write-protected."
+
+   IDS_YESNO_DELETEALLFILES,    "Are you sure that you want to delete all files?"
+   IDS_YESNO_DELETEALLINOCFAILED,"Are you sure that you want to delete all files that could not be inoculated?"
+   IDS_YESNO_QUARANTINEALLFILES,    "Are you sure that you want to quarantine all files?"
+
+   IDS_CREATESYSINTEG,    "The boot records and system files are not inoculated. For maximum protection you should inoculate these files."
+
+   IDS_FILESTATUS_INFECTED,        "Infected"
+   IDS_FILESTATUS_ERROR,           "Internal error"
+   IDS_FILESTATUS_ERRORDELETED,    "Error deleted"
+   IDS_FILESTATUS_ERRORNOTDELETED, "Error not deleted"
+   IDS_FILESTATUS_INOCULATED,      "Inoculated"
+   IDS_FILESTATUS_REINOCULATED,    "Reinoculated"
+   IDS_FILESTATUS_NOTINOCULATED,   "Not inoculated"
+   IDS_FILESTATUS_INOCULATIONFAILED,"Inoc. failed"
+   IDS_FILESTATUS_INOCULATEREPAIRED,"Inoc. repaired"
+   IDS_FILESTATUS_INOCULATEREPAIRFAILED, "Inoc. not repaired"
+   IDS_FILESTATUS_INOCULATECHANGED,"Inoc. changed"
+   IDS_FILESTATUS_REPAIRED,        "Repaired"
+   IDS_FILESTATUS_NOTREPAIRED,     "Not repaired"
+   IDS_FILESTATUS_DELETED,         "Deleted"
+   IDS_FILESTATUS_NOTDELETED,      "Not deleted"
+   IDS_FILESTATUS_EXCLUDED,        "Excluded"
+   IDS_FILESTATUS_EXCLUDEFAILED,   "Not excluded"
+   IDS_FILESTATUS_BOOTINFECTED,    "Boot infected"
+   IDS_FILESTATUS_BOOTREPAIRED,    "Boot repaired"
+   IDS_FILESTATUS_BOOTNOTREPAIRED, "Boot not repaired"
+   IDS_FILESTATUS_MASTERBOOTINFECTED,    "Boot infected"
+   IDS_FILESTATUS_MASTERBOOTREPAIRED,    "Boot repaired"
+   IDS_FILESTATUS_MASTERBOOTNOTREPAIRED, "Boot not repaired"
+   IDS_FILESTATUS_QUARANTINE_INFECTED,   "Quarantined"
+   IDS_FILESTATUS_QUARANTINE_INFECTED_FAILED, "Not quarantined"
+
+   IDS_LISTBOXFULL,     "Not enough memory to display all the processed files.\nTake action on files shown then scan again."
+   IDS_FILEEXCLUDED,    "The exclusion has been added.\nThe file %s will no longer be checked for viruses."
+   IDS_FILEEXCLUDED_INOC,"The exclusion has been added.\nThe file %s will no longer be checked for inoculation."
+   IDS_FILENOTEXCLUDED, "The exclusion for file %s could not be added, the exclusions list maximum entries has been reached."
+   IDS_PHYS_DRIVE,      "Hard drive #%d"
+END
+
+// ****************************************************************** //
+// All the strings which are displayed by the ask question dialog box //
+// ****************************************************************** //
+
+STRINGTABLE
+BEGIN
+   IDS_ASK_REPAIR_INOCHANGE,    "Do you want to repair this file only or all files with inoculation changes?"
+   IDS_ASK_REPAIR_INFECT,       "Do you want to repair this file only or all infected files?"
+   IDS_ASK_REPAIR_BOOT,         "Do you want to repair this single boot infection only or all boot infections?"
+   IDS_ASK_REPAIR_MASTER_BOOT,  "Do you want to repair this single boot infection only or all boot infections?"
+   IDS_ASK_DELETE_INOCHANGE,    "Do you want to delete this file only or all files with inoculation changes?"
+   IDS_ASK_DELETE_INFECT,       "Do you want to delete this file only or all infected files?"
+   IDS_ASK_MOVE_INFECT,    "Do you want to quarantine this file only or all infected files?"
+   IDS_ASK_DELETE_UNINOC,       "Do you want to delete this file only or all uninoculated files?"
+   IDS_ASK_DELETE_INOCERROR,    "Do you want to delete this file only or all files that could not be inoculated?"
+   IDS_ASK_DELETE_ERROR,        "Do you want to delete this file only or all files that caused an error?"
+   IDS_ASK_DELETE_NOREPAIRED,   "Do you want to delete this file only or all files that could not be repaired?"
+   IDS_ASK_INOC_UNINOC,         "Do you want to inoculate this file only or all uninoculated files?"
+   IDS_ASK_INOC_INOCHANGE,      "Do you want to reinoculate this file only or all files with inoculation changes?"
+   IDS_ASK_EXCLUDE_VIRSCHECK,   "Do you want to exclude this file from checks for viruses?"
+   IDS_ASK_EXCLUDE_INOC,        "Do you want to exclude this file from checks for inoculation?"
+   IDS_ASK_GIMMEABREAK,         ""
+   IDS_BUTTON_REPAIR,           "&Repair"
+   IDS_BUTTON_REPAIRALL,        "Repair &all"
+   IDS_BUTTON_DELETE,           "&Delete"
+   IDS_BUTTON_DELETEALL,        "Delete &all"
+   IDS_BUTTON_INOCULATE,        "&Inoculate"
+   IDS_BUTTON_INOCULATEALL,     "Inoculate &all"
+   IDS_BUTTON_EXCLUDE,          "&Exclude"
+   IDS_BUTTON_ERROR,            "Error"
+   IDS_BUTTON_CANCEL,           "Cancel"
+   IDS_BUTTON_CONTINUE,         "&Continue"
+   IDS_BUTTON_MOVE,         "&Quarantine"
+   IDS_BUTTON_MOVEALL,      "Quarantine &all"
+   IDS_TITLE_REPAIRFILE,        "Repair File"
+   IDS_TITLE_REPAIRBOOT,        "Repair Boot"
+   IDS_TITLE_REPAIRMASTERBOOT,  "Repair Master Boot"
+   IDS_TITLE_DELETEFILE,        "Delete File"
+   IDS_TITLE_MOVEFILE,      "Quarantine File"
+   IDS_TITLE_INOCULATEFILE,     "Inoculate File"
+   IDS_TITLE_EXCLUDEFILE,       "Exclude File"
+   IDS_TITLE_SYSINOC,           "System Inoculation"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_ERR_N30,            "Unable to find virus definitions files. Please reinstall Symantec AntiVirus."
+    IDS_DOS_ERROR,          "The disk operating system reported an error while Symantec AntiVirus was processing file\n\n%s. Restart your computer and try again. If problem persists please contact Symantec."
+    IDS_ERR_NOTIMER,    "No Window timers"
+    IDS_EXCLUDEERR,     "Unable to save exclusions list. Make sure the disk is not full, write-protected or the exclusions list maximum has been reached."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_BOOTREPAIRED,       "The boot record of drive %s was repaired; the virus %s was removed."
+    IDS_MASTERBOOTREPAIRED, "The master boot record of hard drive #%s was repaired; the virus %s was removed."
+#ifdef NAVSCANW
+    IDS_BOOTNOTREPAIRED,    "Unable to repair boot record of drive %s. It is still infected with the %s virus. If this is a floppy disk make sure it is not write protected."
+    IDS_MASTERBOOTNOTREPAIRED, "Unable to repair the master boot record of hard drive #%s. It is still infected with the %s virus."
+#else
+    IDS_BOOTNOTREPAIRED,    "Unable to repair boot record of drive %s. It is still infected with the %s virus. If this is a hard disk restart your computer from your rescue boot disk. If this is a floppy disk make sure it is not write protected."
+    IDS_MASTERBOOTNOTREPAIRED, "Unable to repair the master boot record of hard drive #%s. It is still infected with the %s virus. Restart your computer from your rescue boot disk."
+#endif
+    IDS_VIRUSINMEM,         "The %s%s virus was found in memory."
+
+    IDS_VIRUSINFILE,        "The file %s is infected with the %s virus."
+
+    IDS_VIRUSINFILE_EX,     "Click Repair to eliminate the virus.\n\nIf you cannot Repair the file, click Delete. \
+Then replace the file with an uninfected backup copy.\n\nClick Help for more information."
+
+#ifdef NAVSCANW
+    IDS_VIRUSINBOOT_EX,     "Click Repair to eliminate the virus."
+#else
+    IDS_VIRUSINBOOT_EX,     "Click Repair to eliminate the virus.\n\nIf you cannot Repair the boot record then restart your computer from your rescue boot disk."
+#endif
+    IDS_FILEERROR_EX,       "See 'Taking Corrective Action' in the SAV User's Guide for more information."
+    IDS_VIRUSINZIPFILE_EX,  "Symantec AntiVirus cannot repair or delete compressed files.\n\nClick Help for more information."
+
+    IDS_VIRUSINZIPFILE,     "The file %s in the compressed file %s is infected with the %s virus. Symantec AntiVirus cannot repair or delete compressed files."
+    IDS_VIRUSINBOOT,        "The boot record of drive %s is infected with the %s virus."
+#ifdef NAVWNT
+    IDS_NAV,                "Symantec AntiVirus NT"
+    IDS_NAV_PERCENT,        "Symantec AntiVirus NT %d%%"
+    IDS_NAV_PERCENT_W95,    "Symantec AntiVirus %d%%"
+#else
+    #ifdef NAVSCANW
+	IDS_NAV,                    "Symantec AntiVirus Scanner"
+	IDS_NAV_PERCENT,            "Symantec AntiVirus Scanner %d%%"
+	IDS_NAV_PERCENT_W95,    "Symantec AntiVirus Scanner %d%%"
+    #else
+	IDS_NAV,                    "Symantec AntiVirus"
+	IDS_NAV_PERCENT,            "Symantec AntiVirus %d%%"
+	IDS_NAV_PERCENT_W95,    "Symantec AntiVirus %d%%"
+    #endif
+#endif
+    IDS_NAV_INTERNET,               "Symantec AntiVirus Internet Scanner"
+    IDS_NAV_NETSCAPEVERSION     "Netscape Version"
+    IDS_NAV_PERCENT_INTERNET,       "Symantec AntiVirus Internet Scanner %d%%"
+    IDS_NAV_PERCENT_W95_INTERNET,    "Symantec AntiVirus Internet Scanner %d%%"
+
+    IDS_NOVIRUSESDETECTED,  "No viruses were detected in the scan."
+
+    IDS_FILENOTREPAIRED,    "Unable to repair the file %s.\n\nThe file is still infected. Delete the file and replace it with an uninfected copy of the file."
+
+    IDS_FILENOTREPAIRED_SHORT,"Unable to repair the file\n%s."
+
+    IDS_FILEREPAIRED,       "The infected file %s was repaired."
+    IDS_FILEDELETED,        "The infected file %s was deleted.\n\nReplace it with an uninfected copy of the file and scan again."
+    IDS_FILENOTDELETED,     "Unable to delete the file %s\nMake sure the file is not write-protected or currently in use. On a network, verify that you have proper access rights to delete the file."
+    IDS_FILEMOVED,          "The infected file %s was quarantined.\n\nReplace it with an uninfected copy of the file and scan again."
+    IDS_FILENOTMOVED,       "Unable to quarantine the file %s\nMake sure the file is not write-protected or currently in use. On a network, verify that you have proper access rights to quarantine the file."
+
+    IDS_FILEINOCCHANGED,    "The file %s has changed since inoculation. If the change was expected, reinoculate. If the change was not expected, repair."
+    IDS_FILEINOCCHANGED_SHORT,"The file %s has changed since inoculation."
+
+    IDS_FILEINOCULATED,     "The file %s was inoculated."
+    IDS_FILEISNOTINOCULATED,"The file %s is not inoculated."
+    IDS_FILEINOCREPAIRED,   "The file %s was repaired."
+
+    IDS_FILEINOCNOTREPAIRED,"Unable to repair the file %s with inoculation data.\n\nThe file is still infected. Delete the file and replace it with an uninfected copy of the file."
+    IDS_FILEINOCDELETED,    "The file %s was deleted."
+    IDS_FILEINOCNOTDELETED, "Unable to delete the file %s. Make sure the file is not write-protected or currently in use. On a network, verify that you have proper access rights to delete the file."
+    IDS_FILENOTINOCULATED,  "Unable to inoculate the file %s."
+    IDS_FILEREINOCULATED,   "The file %s was reinoculated."
+    IDS_FILEERROR,          "An internal error occured while processing the file %s. Call Symantec Corporation."
+    IDS_FILEERROR_SHORT,    "Internal error occured while processing the file %s."
+
+    IDS_FILESANDBOOTINFECTEDFOUND, "Infected items found"
+    IDS_BOOTINFECTEDFOUND,  "Infected boot records found"
+    IDS_INFECTEDFOUND,      "Infected files found"
+    IDS_NOINFECTEDFOUND,    "No viruses found"
+    IDS_ALLFILES,           "All files"
+    IDS_PROGFILESONLY,      "Program files only"
+    IDS_YES,                "Yes"
+    IDS_NO,                 "No"
+    IDS_ENABLED,            "Enabled"
+    IDS_DISABLED,           "Disabled"
+    IDS_ZIPS,               "Compressed files scanned"
+    IDS_NOZIPS,             "Compressed files not scanned"
+    IDS_PRINTVIRUS,         "Print virus information"
+    IDS_PRINTSUMARY,        "Print scan summary"
+    IDS_PRINTNOK,           "Unable to print the requested information."
+    IDS_FILENAME,           "Name:"
+    IDS_VIRUSNAME,          "Virus name:"
+    IDS_STATUS,             "Status:"
+    IDS_DRIVEACCESS,        "Unable to access drive %c:"
+    IDS_ZIPFOLLOWHELP,      "%s in the compressed file %s"
+    IDS_PRINTZIPFILE,       "%s in %s"
+    IDS_STARS, "**********************************************************************"
+    IDS_VIRUSINMASTERBOOT,  "The master boot record of hard drive #%s is infected with the %s virus."
+    IDS_MEMSCANNED,     "Scanned"
+    IDS_MEMNOTSCANNED,     "Not scanned"
+END
+
+// **************************************************** //
+// This stringtable contains string for the follow help //
+// in the scan results dialog box.                      //
+// **************************************************** //
+
+STRINGTABLE
+BEGIN
+    IDS_RAP_REPAIRED,       "This file was infected with a virus. It was repaired."
+
+    IDS_RAP_NOTREPAIRED,    "This file is infected with a virus. It could not be repaired. Delete the file and replace it with an uninfected copy of the file."
+
+    IDS_RAP_NOTREPAIRED_SHORT,"This file could not be repaired."
+
+    IDS_RAP_DELETED,        "This file was infected with a virus. The file was deleted. Replace it with an uninfected copy of the file and scan again."
+    IDS_RAP_DELETED_SHORT,  "This file was deleted."
+
+    IDS_RAP_QUARANTINE,     "This file was infected with a virus. The file was quarantined. Replace it with an uninfected copy of the file and scan again."
+    IDS_RAP_QUARANTINE_SHORT, "The file was quarantined."
+    
+    IDS_RAP_NOTDELETED,     "This file is infected with a virus. It could not be deleted. Make sure the file is not write-protected or currently in use."
+    IDS_RAP_NOTDELETED_SHORT,"This file could not be deleted."
+
+    IDS_RAP_NOTQUARANTINE,      "This file is infected with a virus. It could not be quarantined. Make sure the file is not write-protected or currently in use."
+    IDS_RAP_NOTQUARANTINE_SHORT,"This file could not be quarantined."
+
+    IDS_RAP_INFECTED,       "This file is infected with a virus. You should try to repair it."
+    IDS_RAP_INFECTED_SHORT, "This file is infected with a virus."
+
+    IDS_RAP_ZIPINFECTED,    "This compressed file is infected. Symantec AntiVirus cannot repair or delete compressed files."
+    IDS_RAP_ZIPINFECTED_SHORT,"This compressed file is infected."
+
+    IDS_RAP_BOOTINFECTED,   "The boot record of this drive is infected with a virus. You should select Repair."
+    IDS_RAP_BOOTINFECTED_SHORT, "The boot record of this drive is infected."
+
+    IDS_RAP_BOOTREPAIRED,   "The boot record of this drive was repaired."
+
+#ifdef NAVSCANW
+    IDS_RAP_BOOTNOTREPAIRED,"The boot record of this drive could not be repaired."
+#else
+    IDS_RAP_BOOTNOTREPAIRED,"The boot record of this drive could not be repaired.  Restart your computer from your rescue boot disk."
+#endif
+    IDS_RAP_BOOTNOTREPAIRED_SHORT,"The boot record could not be repaired."
+
+    IDS_RAP_MASTERBOOTINFECTED,   "The master boot record of this drive is infected with a virus. You should select Repair."
+    IDS_RAP_MASTERBOOTINFECTED_SHORT,"The master boot record is infected."
+
+    IDS_RAP_MASTERBOOTREPAIRED,   "The master boot record of this drive was repaired."
+    IDS_RAP_MASTERBOOTREPAIRED_SHORT,"The master boot record was repaired."
+
+#ifdef NAVSCANW
+    IDS_RAP_MASTERBOOTNOTREPAIRED,"The master boot record of this drive could not be repaired."
+#else
+    IDS_RAP_MASTERBOOTNOTREPAIRED,"The master boot record of this drive could not be repaired. Restart your computer from your rescue boot disk."
+#endif
+    IDS_RAP_MASTERBOOTNOTREPAIRED_SHORT,"The master boot record could not be repaired."
+
+    IDS_RAP_ERROR,          "An internal error occured while trying to scan this file. Call Symantec Corporation."
+    IDS_RAP_ERRORDELETED,   "An internal error occured while trying to scan this file. The file was deleted. Call Symantec Corporation"
+    IDS_RAP_ERRORNOTDELETED,"An internal error occured while trying to scan this file. It could not be deleted. Call Symantec Corporation"
+    IDS_RAP_ERROR_SHORT,    "An internal error occured while scanning this file."
+
+    IDS_RAP_INOCULATED,     "This file was inoculated."
+    IDS_RAP_INOCULATEFAILED,"This file could not be inoculated. The disk is full or not a valid program."
+    IDS_RAP_REINOCULATED,   "This file was reinoculated."
+    IDS_RAP_NOTINOCULATED,  "This file was not inoculated."
+    IDS_RAP_INOCULATEDCHANGED, "This file has changed since inoculation. If the change was expected, reinoculate. If the change was not expected, repair."
+    IDS_RAP_INOCULATEDCHANGED_SHORT, "This file has changed since inoculation."
+
+    IDS_RAP_INOCDELETED,    "This file was deleted. Replace it with an uninfected copy of the file and scan again."
+
+    IDS_RAP_INOCDELETED_SHORT,"This file was deleted."
+
+    IDS_RAP_INOCNOTDELETED, "This file could not be deleted. Make sure the file is not write-protected or currently in use."
+    IDS_RAP_INOCNOTDELETED_SHORT, "This file could not be deleted."
+
+    IDS_RAP_INOCREPAIRED,   "This file was infected with a virus. It was repaired using inoculation information."
+    IDS_RAP_INOCREPAIRED_SHORT,"This file was repaired."
+
+    IDS_RAP_INOCREPAIRFAILED, "This file could not be repaired using the inoculation information. Delete the file and replace it with an uninfected copy of the file."
+    IDS_RAP_INOCREPAIRFAILED_SHORT, "This file could not be repaired."
+
+    IDS_RAP_EXCLUDED_INOCULATION, "This file is excluded from future inoculation checks."
+    IDS_RAP_EXCLUDED_VIRUSDETECT, "This file is excluded from future virus checks."
+
+    IDS_RAP_EXCLUDE_FAILED, "This file could not be added to the exclusions list. Check to see if the disk is full."
+    IDS_RAP_EXCLUDE_FAILED_SHORT, "This file could not be excluded."
+    IDS_RAP_QUARANTINE_ZIP,     "This compressed file was infected with a virus. The file was quarantined. Replace it with an uninfected copy of the file and scan again."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_DOALL_REPAIRINGBOOT,    "Boot record repair in progress..."
+    IDS_DOALL_REPAIRINGMASTERBOOT, "Master boot record repair in progress..."
+    IDS_DOALL_REPAIRINGFILES,   "File repair in progress..."
+    IDS_DOALL_REPAIRINGALL,     "Repair in progress..."
+    IDS_DOALL_DELETINGFILES,    "File delete in progress..."
+    IDS_DOALL_MOVINGFILES,      "File quarantine in progress..."
+    IDS_DOALL_INOCINGFILES,     "File inoculation in progress..."
+    IDS_DOALL_TITLE_REPAIR,     "Repair All"
+    IDS_DOALL_TITLE_DELETE,     "Delete All"
+    IDS_DOALL_TITLE_MOVE,   "Quarantine All"
+    IDS_DOALL_TITLE_INOC,       "Inoculate All"
+    IDS_DOALL_CONFIRM_STOP,     "All infected items have not yet been repaired. Are you sure you want to stop?"
+
+    IDS_SCANDLG_SCANINGFILES,   "Scanning files for viruses..."
+    IDS_SCANDLG_INOCULATING,    "Inoculating files..."
+    IDS_SCANDLG_SCANINGZIPS,    "Scanning file %s in %s"
+    IDS_SCANDLG_SCANING,        "Scanning for viruses..."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SYSINTEG_MBREPAIRED,    "The master boot record was repaired."
+    IDS_SYSINTEG_MBREPAIRFAILED,"Unable to repair the master boot record with inoculation data. Restart your computer from your rescue boot disk."
+    IDS_SYSINTEG_BOOTREPAIRED,  "The boot record was repaired."
+    IDS_SYSINTEG_BOOTREPAIRFAILED,"Unable to repair the boot record of drive C: with inoculation data. Restart your computer from your rescue boot disk."
+    IDS_SYSINTEG_SYSFILEREPAIRED, "The system files were repaired."
+#ifdef NAVSCANW
+    IDS_SYSINTEG_SYSFILEREPAIRFAILED, "Unable to repair the system files."
+#else
+    IDS_SYSINTEG_SYSFILEREPAIRFAILED, "Unable to repair the system files. Restart your computer from your rescue boot disk."
+#endif
+    IDS_SYSINTEG_CHECKING,      "Verifying boot records..."
+    IDS_SYSINTEG_INTEGNOTEXISTS,"The boot records and system files of drive %s have not been inoculated. For maximum protection inoculate them."
+    IDS_SYSINTEG_CREATING,      "Symantec AntiVirus has detected new files which need to be included in the inoculation database and is processing the information."
+    IDS_SYSINTEG_CREATEFAILED,  "Unable to inoculate boot records and system files of drive %s. Check to see if the drive is full."
+    IDS_SYSINTEG_CHANGED,       "The boot records and system files of drive %s have changed since inoculation. If the change was expected, reinoculate. If the change was not expected, repair."
+    IDS_MASTERBOOTRECORD,       "Master Boot Record"
+    IDS_BOOTRECORD,             "Boot Record"
+#ifdef NAVWNT
+    IDS_SYSINTEG_DOESNOTMATCH, "%s has changed since inoculation. If the change was expected, reinoculate. If the change was not expected, repair."
+    IDS_SYSINTEG_REINOCULATEFAILED, "Unable to reinoculate boot records and system files on drive %s. Restart your computer from your rescue disk."
+#else
+    IDS_SYSINTEG_DOESNOTMATCH, "%s has changed since inoculation. Choose Inoculate if you've just upgraded your operating system (for example, to Windows 98). If the change was not expected, choose Repair."
+    IDS_SYSINTEG_REINOCULATEFAILED, "Unable to reinoculate boot records and system files on drive %s. Restart your computer from your rescue boot disk."
+#endif
+    IDS_SYSINTEG_VIRUSINBOOT,   "The boot record on drive %s is infected with the %s virus. Unable to inoculate boot records and system files. Click Ok to continue scanning.  When scan is complete, select Repair to remove the virus."
+    IDS_SYSINTEG_VIRUSINMASTERBOOT, "The master boot record of hard drive #%s is infected with the %s virus. Unable to inoculate boot records and system files. Click Ok to continue scanning.  When scan is complete, select Repair to remove the virus."
+    IDS_SYSINTEG_VIRUSINSYSFILE,"The system file %s is infected with the %s virus. Unable to inoculate boot records and system files. Click Ok to continue scanning.  When scan is complete, select Repair to remove the virus."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_INPD,               "Common"
+    IDS_NOTINPD,            "Rare"
+    IDS_BYTES               "%u bytes"
+    IDS_NA_BYTES            "N/A"
+    IDS_1FILE               "%s files"
+    IDS_2FILE               "%s and %s files"
+    IDS_3FILE               "%s, %s, and %s files"
+    IDS_1BOOT               "%s boot records"
+    IDS_2BOOT               "%s and %s boot records"
+    IDS_3BOOT               "%s, %s, and %b boot"
+    IDS_FLOPPY              "Floppy"
+    IDS_HARDDISK            "Hard disk"
+    IDS_MASTER              "Master"
+    IDS_COM                 ".COM"
+    IDS_EXE                 ".EXE"
+    IDS_SYS                 ".SYS"
+END
+
+STRINGTABLE
+BEGIN
+   IDS_LOG_WINDOWSCANNER,       "Windows scanner"
+   IDS_LOG_MEMORYISINFECTED,    "The %s%s virus was found in memory."
+   IDS_LOG_FILEISINFECTED,      "The file\r\n%s\r\nis infected with the %s virus."
+   IDS_LOG_FILEWASINFECTED,     "The file\r\n%s\r\nwas infected with the %s virus."
+   IDS_LOG_BOOTISINFECTED,      "The boot record of drive %s\r\nis infected with the %s virus."
+   IDS_LOG_BOOTWASINFECTED,     "The boot record of drive %s\r\nwas infected with the %s virus."
+   IDS_LOG_ZIPFILEISINFECTED,   "The file %s in the compressed file\r\n%s\r\nis infected with the %s virus."
+   IDS_LOG_FILEEXCLUDE,         "The file\r\n%s\r\nwas added to the exclusions list."
+   IDS_LOG_FILEINOC_CHANGE,     "The file\r\n%s\r\nhas changed since inoculation."
+   IDS_LOG_FILEINOC_NEW,        "The file\r\n%s\r\nwas detected as not inoculated."
+   IDS_LOG_VIRLISTCHANGED,      "The virus list has changed."
+   IDS_LOG_UNINOCULATED,        "The file\r\n%s\r\nwas uninoculated."
+   IDS_LOG_UNINOCULATEFAILED,   "Unable to uninoculate the file\r\n%s"
+   IDS_LOG_SCANEND,             "Virus scanning completed.\r\nItems scanned:  %s"
+   IDS_LOG_SCANEND_NONE,        "Virus scanning completed.\r\nNo items scanned."
+   IDS_LOG_SCANINTERRUPTED,     "Virus scanning interrupted while scanning:  %s"
+   IDS_LOG_SCANINTERRUPTED_NONE,"Virus scanning interrupted while scanning.\r\nNo items scanned."
+
+   IDS_LOG_INTEG_CREATEFAILED,  "Unable to inoculate boot records and system files on drive %s."
+   IDS_LOG_INTEG_MBCHANGED,     "The master boot record of drive %s has changed since inoculation."
+   IDS_LOG_INTEG_BOOTCHANGED,   "The boot record of drive %s has changed since inoculation."
+   IDS_LOG_INTEG_SYSFILECHANGED,"The file\r\n%s\r\nhas changed since inoculation."
+   IDS_LOG_INTEG_NOTEXIST,      "Unable to open inoculation file."
+   IDS_LOG_INTEG_REINOCULATED,  "The boot records and system files of drive %s were reinoculated."
+
+   IDS_LOGACTION_INTEG_MBREPAIRED,    "The master boot record was repaired."
+   IDS_LOGACTION_INTEG_MBREPAIRFAILED,"Unable to repair master boot record."
+   IDS_LOGACTION_INTEG_BOOTREPAIRED, "The boot record was repaired."
+   IDS_LOGACTION_INTEG_BOOTREPAIRFAILED,"Unable to repair the boot record."
+   IDS_LOGACTION_INTEG_SYSFILEREPAIRED, "The file was repaired."
+   IDS_LOGACTION_INTEG_SYSFILEREPAIRFAILED, "Unable to repair the system file."
+
+   IDS_LOGACTION_NOACTION,       "No action was taken."
+   IDS_LOGACTION_BOOTISINFECTED, "The boot record is infected."
+   IDS_LOGACTION_FILEREPAIRED,   "The file was repaired."
+   IDS_LOGACTION_REPAIRFAILED,   "Unable to repair this file."
+   IDS_LOGACTION_DELETED,        "The file was deleted."
+   IDS_LOGACTION_DELETEFAILED,   "Unable to delete this file."
+   IDS_LOGACTION_BOOTREPAIRED,   "The boot record was repaired."
+   IDS_LOGACTION_BOOTNOTREPAIRED,"Unable to repair the boot record."
+   IDS_LOGACTION_EXCLUDE_VIRUS,  "This file was excluded from future virus checks."
+   IDS_LOGACTION_EXCLUDE_INOC,   "This file was excluded from future inoculation checks."
+   IDS_LOGACTION_REINOCULATED,   "This file was reinoculated."
+   IDS_LOGACTION_REINOCULATEFAILED, "Unable to reinoculate this file."
+   IDS_LOGACTION_INOCULATED,     "This file was inoculated."
+   IDS_LOGACTION_INOCULATEFAILED,"Unable to inoculate this file."
+   IDS_LOGACTION_INOCULATEREPAIRED, "This file was repaired using inoculation information."
+   IDS_LOGACTION_INOCULATEREPAIRFAILED, "This file could not be repaired using the inoculation information."
+   IDS_LOGACTION_NOTINOCULATED, "This file has never been inoculated."
+   IDS_LOGACTION_HALTCPU,         "The computer was shut down."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_SAVE_FILTER,            "All Files (*.*)|*.*|"
+    IDS_SAVETITLE_CLEAN,        "Save Downloaded File"
+    IDS_SAVETITLE_INFECTED,     "Save Virus-Infected File"
+#ifdef NAVWNT
+    IDS_SAVE_CLEAN,             "Symantec AntiVirus NT has determined that this file is free from viruses."
+    IDS_VIRUSINDOWNLOADFILE,    "Symantec AntiVirus NT found the %s virus in the file %s."
+    IDS_VIRUSINDOWNLOADZIP,     "Symantec AntiVirus NT found the %s virus in the file %s in the compressed file %s. Symantec AntiVirus NT cannot repair infected compressed files."
+#else
+    IDS_SAVE_CLEAN,             "Symantec AntiVirus has determined that this file is free from viruses."
+    IDS_VIRUSINDOWNLOADFILE,    "Symantec AntiVirus found the %s virus in the file %s."
+    IDS_VIRUSINDOWNLOADZIP,     "Symantec AntiVirus found the %s virus in the file %s in the compressed file %s. Symantec AntiVirus cannot repair infected compressed files."
+#endif
+    IDS_DOWNLOADNOTREPAIRED,    "Unable to repair the file %s. It is still infected. Try to download the file from a different site."
+    IDS_DOWNLOADREPAIRED,           "The infected file %s was repaired."
+    IDS_DOWNLOADDELETED,            "The download %s was successfully aborted. Try to download the file from a different site."
+    IDS_DOWNLOADNOTDELETED,         "Could not abort infected download %s."
+    IDS_DOWNLOADMOVED,          "The download %s was successfully quarantined. Try to download the file from a different site."
+    IDS_DOWNLOADNOTMOVED,       "Could not quarantine infected download %s."
+    IDS_SAVE_INFECTED_LINE1,    "WARNING: Symantec AntiVirus found a virus in this file. If you did not attempt to repair the file, save it to a temporary directory, and run "
+#ifdef NAVWNT
+    IDS_SAVE_INFECTED_LINE2,    "Symantec AntiVirus NT to remove the virus. If the virus cannot be removed, you should not execute or distribute this file."
+#else
+    IDS_SAVE_INFECTED_LINE2,    "Symantec AntiVirus to remove the virus. If the virus cannot be removed, you should not execute or distribute this file."
+#endif
+    IDS_SAVE_INFECTEDZIP_LINE1, "WARNING: Symantec AntiVirus found a virus in this compressed file. To remove the virus: Uncompress the file in a temporary folder,"
+#ifdef NAVWNT
+    IDS_SAVE_INFECTEDZIP_LINE2, " then use Symantec AntiVirus NT to scan the files and remove the virus. After the virus is removed, delete the compressed file."
+#else
+    IDS_SAVE_INFECTEDZIP_LINE2, " then use Symantec AntiVirus to scan the files and remove the virus. After the virus is removed, delete the compressed file."
+#endif
+    IDS_VIRUSINDOWNLOAD_INFO,   "Click Info... to find out more about the %s virus."
+    IDS_DOWNLOAD_OUTOFSPACE,    "Not enough disk space to save file %s."
+    IDS_DOWNLOAD_CANNOTCREATE,  "Cannot save file %s."
+    IDS_ADVOTEXT_LINE1,         "Do you borrow floppy disks, receive files through email, or connect to a network? Symantec offers award-winning antivirus products that protect you from all sources of"
+    IDS_ADVOTEXT_LINE2,         " virus infection. For more information or to place an order, call (800)806-3477. You can also visit us on the Internet at http://www.symantec.com."
+END
+
+// Strings for the Repair Wizard:
+STRINGTABLE
+BEGIN
+    IDS_PROPSHT_CAPTION     "Symantec AntiVirus Repair Wizard"
+    IDS_RW_NAME             "Name"
+    IDS_RW_VIRUS_NAME       "Virus name"
+    IDS_RW_CLOSE            "&Close"
+
+    IDS_CANCELREPWIZ_CAPTION    "Symantec AntiVirus"
+    IDS_CANCELREPWIZ_BODY       "Your computer is still infected by viruses.\n\nAre you sure you want to Cancel?"
+    IDS_CLOSEREPWIZ_BODY        "Your computer is still infected by viruses.\n\nAre you sure you want to Close?"
+    IDS_SUMM_SCANNED            "%s items scanned."
+    IDS_SUMM_INFECTED           "%s infected items found."
+    IDS_SUMM_CLEANED            "%s infected items repaired."
+    IDS_SUMM_QUARANTINED        "%s infected items quarantined."
+    IDS_SUMM_DELETED            "%s infected items deleted."
+
+    IDS_REPWIZ_BYPASSREGKEY     "NoRepairWizard"
+    IDS_REPWIZ_DEFAULTREGKEY    "RepairWizardDefault"
+    IDS_WIZWHYNOT_ZIPSENTENCE   "%s%s\n\n%s\n\n%s"
+    IDS_WIZWHYNOT_ZIPLINE1      " is still infected."
+    IDS_WIZWHYNOT_ZIPLINE2      "As a data safety precaution, Symantec AntiVirus does not delete infected compressed files."
+    IDS_WIZWHYNOT_MBRSENTENCE   "%s%s%s\n\n%s"
+    IDS_WIZWHYNOT_MBRLINE1      "The master boot record of "
+    IDS_WIZWHYNOT_MBRLINE2      " is still infected."
+    IDS_WIZWHYNOT_BOOTSENTENCE  "%s%s%s\n\n%s"
+    IDS_WIZWHYNOT_BOOTLINE1     "The boot record of drive "
+    IDS_WIZWHYNOT_BOOTLINE2     " is still infected."
+    IDS_WIZWHYNOT_FILESENTENCE  "%s%s\n\n\n%s%s\n%s\n"
+    IDS_WIZWHYNOT_FILELINE1     " is still infected."
+    IDS_WIZWHYNOT_FILELINE2     "This item may still be infected for one of the following reasons:\n\n1.  It is currently in use.\nClose all other applications then scan the item again.\n\n2.  You chose not to delete or quarantine it.\nClick OK to return to the Repair Wizard. "
+    IDS_WIZWHYNOT_FILELINE3_95  "Then click Back and select Delete infected items.\n\n3.  It is on a write-protected disk.\nWrite enable the diskette then scan the item again.\n\n4.  It is infected by a special virus (such as Byway or Dir II) that cannot be repaired while running Windows."
+    IDS_WIZWHYNOT_FILELINE3_NT  "Then click Back and select Delete infected items.\n\n3.  It is on a write-protected disk.\nWrite enable the diskette then scan the item again.\n\n4.  It is infected by a special virus (such as Byway or Dir II) that cannot be repaired while running Windows."
+    IDS_WIZWHYNOT_FILELINE4     "Restart your computer with your rescue boot disk to remove the virus."
+    IDS_WIZWHYNOT_CONSULT       "Please refer to the User's Guide for details."
+    IDS_WIZWHYNOT_CAPTION       "Advice"
+
+    IDS_FINISH_TEXT_CONGRATS    "Congratulations!  You have eliminated the viruses"
+    IDS_FINISH_TEXT_ATTENTION   "Attention! Symantec AntiVirus has successfully eliminated the direct virus threat on your computer. Infected files have been placed in Quarantine."
+
+END
+
+
+STRINGTABLE
+BEGIN
+#ifdef NAVWNT
+    IDS_MAINWND_CAPTION         "Symantec AntiVirus NT v5.0"
+#else
+    IDS_MAINWND_CAPTION         "Symantec AntiVirus v5.0"
+#endif
+END
+
+
+// Standard error strings:
+STRINGTABLE
+BEGIN
+    IDS_STD_ERROR_MESSAGE_CAPTION    "Symantec AntiVirus"
+    IDS_ERROR_LOADING_NAV_ZIP        "Error loading the Zip Scanning Engine."
+END
+
+// From NavServer
+//
+STRINGTABLE
+BEGIN
+    IDS_MEMORY                  "Memory"
+END
+
+
+STRINGTABLE
+BEGIN
+    IDS_ILLEGALNETWORKSCAN      "The file:\n%s\n resides on a network drive.\n\nIf you wish to scan this item, you must enable scanning of network drives."
+END
+
+
+STRINGTABLE
+BEGIN
+    IDS_SCANDLG_SCANING_COMPRESSED_FILE "Scanning %s in compressed file %s."
+END
+
+           

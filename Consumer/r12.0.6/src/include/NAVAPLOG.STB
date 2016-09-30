@@ -1,0 +1,223 @@
+// Copyright 1994 Symantec Corporation                                  
+//***************************************************************************
+// 
+// $Header:   N:/NAVXUTIL/VCS/navaplog.stv   1.4   27 Apr 1998 16:44:44   jbrenna  $ 
+// 
+// Description: 
+//      NAVAPLOG.STB - String table file for Norton AntiVirus Auto-Protect
+//      Agent containing the strings that go in the activity log for each
+//      event that gets logged.  Use GENIDS utility to create the 
+//      global NAVAPLOG.H string table include file.
+//
+// NOTE:
+//      READ THE COMMENTS IN NAVAPLOG.H ***BEFORE*** RUNNING GENIDS!!!!!
+//
+//      TABLE BASE MUST BE SET TO 40 TO NOT RUN INTO OTHER STRINGS.
+//
+//      MAKE SURE NAVAPLOG.TXT IS IN SYNC FOR DOS STRINGS!!!!!
+// 
+//***************************************************************************
+// $Log:   N:/NAVXUTIL/VCS/navaplog.stv  $ 
+// 
+//    Rev 1.4   27 Apr 1998 16:44:44   jbrenna
+// Removed 'known' from 'known virus'.
+// 
+//    Rev 1.3   18 Mar 1998 17:42:44   DALLEE
+// Put back unknown and inoc strings. These might be
+// in use by the alert service and required when receiving
+// messages from old versions of NAV.
+// We should really remove these fairly bogus interdependencies.
+// 
+//    Rev 1.2   18 Mar 1998 16:36:10   DALLEE
+// Removed auto-protect unknown and inoculation log message strings.
+// 
+//    Rev 1.1   24 Apr 1997 17:00:10   JBRENNA
+// Tesla port: TSmith r1.1:
+// Entered additional VIR_ACT_... strings.
+// 
+//    Rev 1.0   06 Feb 1997 21:05:44   RFULLER
+// Initial revision
+// 
+//    Rev 1.1   05 Nov 1996 12:29:26   MKEATIN
+// Changed the IDS_VIR_ACT_INOCULATE_LIST_ADD message to match the equivalent
+// message in NAVW and NAVBOOT.
+// 
+//    Rev 1.0   30 Jan 1996 16:06:22   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 15:00:08   BARRY
+// Initial revision.
+// 
+//    Rev 1.2   05 Jan 1995 15:22:56   MARKL
+// Made unknown virus text more passive (i.e. "may contain," 
+// "may have contained" instead of "is infected," "was infected").
+// 
+//    Rev 1.1   28 Dec 1994 14:11:44   MARKL
+// Added warning to make sure that NAVAPLOG.TXT is kept in sync for DOS
+// strings.
+// 
+//    Rev 1.0   27 Dec 1994 16:18:54   MARKL
+// Moved the activity log processing code that the Auto-Protect Agent 
+// did for the VxD to NAVXUTIL.  The Agent STILL references these routines.
+// 
+// 
+//    Rev 1.2   22 Dec 1994 14:47:00   MARKL
+// Cleaned up inculation define to make more consistant.
+// 
+//    Rev 1.1   22 Dec 1994 13:28:18   MARKL
+// Fixed some string id values.
+// 
+//    Rev 1.0   20 Dec 1994 18:30:40   MARKL
+// Initial revision.
+//***************************************************************************
+
+
+
+#define TABLE_BASE      40
+
+
+
+//***************************************************************************
+// General Activity Log Strings
+//***************************************************************************
+STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    IDS_ALOG_APP_NAME,                  "Windows Auto-Protect"
+    IDS_VXD_MSG_LOADED,                 "The Norton AntiVirus Auto-Protect was loaded."
+    IDS_VXD_MSG_UNLOADED,               "The Norton AntiVirus Auto-Protect was unloaded."
+    IDS_VXD_MSG_ENABLED,                "The Norton AntiVirus Auto-Protect was enabled."
+    IDS_VXD_MSG_DISABLED,               "The Norton AntiVirus Auto-Protect was disabled."
+END
+
+
+
+//***************************************************************************
+// Virus Found Strings
+//***************************************************************************
+STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    IDS_VIR_MSG_IS_INFECTED,            "The file\r\n%s\r\nis infected with the %s virus."
+    IDS_VIR_MSG_WAS_INFECTED,           "The file\r\n%s\r\nwas infected with the %s virus."
+
+    IDS_VIR_MSG_IS_UNKNOWN,             "The file\r\n%s\r\nmay contain an unknown virus."
+    IDS_VIR_MSG_WAS_UNKNOWN,            "The file\r\n%s\r\nmay have contained an unknown virus."
+
+    IDS_VIR_MSG_INOC_CHANGED,           "The file\r\n%s\r\nhas changed since inoculation."
+    IDS_VIR_MSG_ATTRIB_CHANGED,         "The file\r\n%s\r\ntried to change the read-only attribute of\r\n%s."
+    IDS_VIR_MSG_WRITEPROG,              "The file\r\n%s\r\ntried to write to\r\n%s."
+    IDS_VIR_MSG_WRITE_BOOT,             "The file\r\n%s\r\ntried to write to the boot record of drive %s."
+    IDS_VIR_MSG_WRITE_MBR,              "The file\r\n%s\r\ntried to write to the master boot record of drive %s."
+
+    IDS_VIR_MSG_BOOT_IS_INFECTED,       "The boot record of drive %s is infected with the %s virus."
+    IDS_VIR_MSG_BOOT_WAS_INFECTED,      "The boot record of drive %s was infected with the %s virus."
+    IDS_VIR_MSG_MBR_IS_INFECTED,        "The master boot record of drive %s is infected with the %s virus."
+    IDS_VIR_MSG_MBR_WAS_INFECTED,       "The master boot record of drive %s was infected with the %s virus."
+    IDS_VIR_MSG_BOOT_INOC_CHANGE,       "The boot record of drive %s has changed since inoculation."
+    IDS_VIR_MSG_MBR_INOC_CHANGE,        "The master boot record of drive %s has changed since inoculation."
+
+    IDS_VIR_MSG_FILE_NOT_INOC,          "The file\r\n%s\r\nwas detected as not inoculated."
+
+    IDS_VIR_MSG_VIRUS_IN_MEMORY,        "The %s virus was found in memory."
+
+    IDS_VIR_MSG_LOW_FORMAT,             "The file\r\n%s\r\ntried to low-level format drive %s."
+END
+
+
+
+//***************************************************************************
+// Virus Action Strings.  This is the string to use to describe what 
+// happened as a result of discovering a possible virus.
+//***************************************************************************
+STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    IDS_VIR_ACT_NONE,                   "No action was taken."
+    IDS_VIR_ACT_COMPUTER_SHUTDOWN,      "The computer was shut down."
+
+    IDS_VIR_ACT_DELETED,                "The file was deleted."
+    IDS_VIR_ACT_NOT_DELETED,            "Unable to delete this file."
+
+    IDS_VIR_ACT_REPAIRED,               "The file was repaired."
+    IDS_VIR_ACT_NOT_REPAIRED,           "Unable to repair this file."
+
+    IDS_VIR_ACT_QUARANTINED,            "The file was quarantined."
+    IDS_VIR_ACT_NOT_QUARANTINED,        "Unable to quarantine this file."
+
+    IDS_VIR_ACT_ACCESS_DENIED,          "Access to the file was denied."
+    
+    IDS_VIR_ACT_KNOWN_EXCL,             "The file was excluded from future virus checks."
+    IDS_VIR_ACT_KNOWN_NOT_EXCL,         "Unable to exclude from future virus checks."
+    IDS_VIR_ACT_UNKNOWN_EXCL,           "The file was excluded from future unknown virus checks."
+    IDS_VIR_ACT_UNKNOWN_NOT_EXCL,       "Unable to exclude from future unknown virus checks."
+    
+    IDS_VIR_ACT_INOCULATE_LIST_ADD,     "This file was inoculated."
+    IDS_VIR_ACT_REINOCULATED,           "The file was reinoculated."
+    IDS_VIR_ACT_NOT_INOCULATED,         "Unable to inoculate this file."
+    IDS_VIR_ACT_INOC_EXCLUDE,           "The file was excluded from future inoculation checks."
+    IDS_VIR_ACT_INOC_NOT_EXCL,          "Unable to exclude file from future inoculation checks."
+    
+    IDS_VIR_ACT_ATTRIB_ALLOWED,         "The attribute change was allowed."
+    IDS_VIR_ACT_ATTRIB_NOT_ALLOWED,     "The attribute change was not allowed."
+    IDS_VIR_ACT_ATTRIB_EXCL,            "The file was excluded from future attribute checks."
+    IDS_VIR_ACT_NOT_ATTRIB_EXCL,        "Unable to exclude form future attribute checks."
+    
+    IDS_VIR_ACT_ACTION_ALLOWED,         "The action was allowed."
+    IDS_VIR_ACT_ACTION_NOT_ALLOWED,     "The action was not allowed."
+    
+    IDS_VIR_ACT_WRITEPROG_EXCL,         "The file was excluded from future attempts to write to the program files."
+    IDS_VIR_ACT_WRITEPROG_NOT_EXCL,     "Unable to exclude from future attempts to write to the program files."
+    
+    IDS_VIR_ACT_WRITEBOOT_EXCL,         "The file was excluded from future attempts to write to the boot record."
+    IDS_VIR_ACT_WRITEBOOT_NOT_EXCL,     "Unable to exclude file from future attempts to write to the boot record."
+    
+    IDS_VIR_ACT_WRITEMBR_EXCL,          "The file was excluded from future attempts to write to the master boot record."
+    IDS_VIR_ACT_WRITEMBR_NOT_EXCL,      "Unable to exclude file from future attempts to write to the master boot record."
+    
+    IDS_VIR_ACT_BOOTREC_REPAIRED,       "The boot record was repaired."
+    IDS_VIR_ACT_BOOTREC_NOT_REPAIRED,   "Unable to repair boot record."
+
+    IDS_VIR_ACT_MBR_REPAIRED,           "The master boot record was repaired."
+    IDS_VIR_ACT_MBR_NOT_REPAIRED,       "Unable to repair the master boot record."
+
+    IDS_VIR_ACT_LOW_FMT_EXCL,           "The file was excluded from future low-level format checks."
+    IDS_VIR_ACT_LOW_FMT_NOT_EXCL,       "Unable to exclude from future low-level format checks."
+
+    IDS_VIR_ACT_SHUTDOWN_FAIL,          "Unable to shut down the computer."
+
+    IDS_VIR_ACT_MOVE,                   "The file was moved to a secured location."
+    IDS_VIR_ACT_MOVE_FAIL,              "Unable to move the file to a secured location."
+
+    IDS_VIR_ACT_RENAME,                 "The file was renamed."
+    IDS_VIR_ACT_RENAME_FAIL,            "Unable to rename the file."
+
+    IDS_VIR_ACT_UNDEFINED,              "An undefined virus action occurred."
+
+    IDS_VIR_ACT_BR_KNOWN_EXCL,          "The boot record was excluded from future virus checks."
+    IDS_VIR_ACT_BR_KNOWN_NOT_EXCL,      "Unable to exclude the boot record from future virus checks."
+
+    IDS_VIR_ACT_MBR_KNOWN_EXCL,         "The master boot record was excluded from future virus checks."
+    IDS_VIR_ACT_MBR_KNOWN_NOT_EXCL,     "Unable to exclude the master boot record from future virus checks."
+END
+
+//
+// Virus infection strings. Use these strings to build
+// an appropriate description of a virus infection.
+//
+STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    //
+    // Strings used in alerts to the file/boot record user
+    // logged on either at the local system or remotely.
+    //
+    IDS_USER_MSG_KNOWN_FILE_INFECTOR    "The %s virus has been detected in %s.\n\n%s"
+    IDS_USER_MSG_KNOWN_MBR_INFECTOR     "The %s virus has been detected in the master boot record of drive %s.\n\n%s"
+    IDS_USER_MSG_KNOWN_BR_INFECTOR      "The %s virus has been detected in the boot record of drive %s.\n\n%s"
+
+    //
+    // Strings used in alerts to an administrator or other
+    // third party not necessarily involved in the actual
+    // virus detection/handling event.
+    //
+    IDS_ADMIN_MSG_KNOWN_FILE_INFECTOR   "Norton AntiVirus has detected the %s virus in:\n\nFile Name:\t%s\nSystem Name:\t%s\nUser Name:\t%s\n\n%s"
+    IDS_ADMIN_MSG_KNOWN_MBR_INFECTOR    "Norton AntiVirus has detected the %s virus in\nthe Master Boot Record of:\n\nDrive:\t%s\nSystem Name:\t%s\nUser Name:\t%s\n\n%s"
+    IDS_ADMIN_MSG_KNOWN_BR_INFECTOR     "Norton AntiVirus has detected the %s virus in\n the in the boot record of:\n\nDrive:\t%s\nSystem Name:\t%s\nUser Name:\t%s\n\n%s"
+END

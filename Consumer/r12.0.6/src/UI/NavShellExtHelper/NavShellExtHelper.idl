@@ -1,0 +1,73 @@
+// NavShellExtHelper.idl : IDL source for NavShellExtHelper
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NavShellExtHelper.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+[
+	object,
+	uuid(83D93BC4-11EF-4D35-A8D2-140DB3356531),
+	helpstring("IIEContextMenuHelper Interface"),
+	pointer_default(unique)
+]
+interface IIEContextMenuHelper : IUnknown{
+};
+[
+	object,
+	uuid(CE13AEF5-BA74-44F3-92D8-3AA7307B3633),
+	helpstring("IIEToolBandHelper Interface"),
+	pointer_default(unique)
+]
+interface IIEToolBandHelper : IUnknown{
+	[helpstring("method onActivityLog")] HRESULT onActivityLog(void);
+	[helpstring("method onVirusDef")] HRESULT onVirusDef(void);
+	[helpstring("method navigate2NMAINPanel")] HRESULT navigate2NMAINPanel(BSTR bstrPanelName);
+	[helpstring("method onQuarantine")] HRESULT onQuarantine(void);
+};
+[
+	object,
+	uuid(4FBB8305-9116-4764-8709-BD1AF676383F),
+	oleautomation,
+	nonextensible,
+	helpstring("INavHelper Interface"),
+	pointer_default(unique)
+]
+interface INavHelper : IUnknown{
+
+	[id(1), helpstring("method RunNavW")] HRESULT RunNavW(VARIANTARG,VARIANTARG);
+};
+[
+	uuid(0BD5CEA9-55C0-4FA7-A7BA-8E90B6CC01D5),
+	version(1.0),
+	helpstring("NavShellExtHelper 1.0 Type Library")
+]
+library NavShellExtHelperLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(A66EB3C3-6411-4226-9550-636E6A4BDCD9),
+		helpstring("IEContextMenuHelper Class")
+	]
+	coclass IEContextMenuHelper
+	{
+		[default] interface IIEContextMenuHelper;
+	};
+	[
+		uuid(C37A78EB-342A-4934-98B4-1F88B67F5375),
+		helpstring("IEToolBandHelper Class")
+	]
+	coclass IEToolBandHelper
+	{
+		[default] interface IIEToolBandHelper;
+	};
+	[
+		uuid(AF24674E-2204-438D-8092-E3424E2399D8),
+		helpstring("NavHelper Class")
+	]
+	coclass NavHelper
+	{
+		[default] interface INavHelper;
+	};
+};

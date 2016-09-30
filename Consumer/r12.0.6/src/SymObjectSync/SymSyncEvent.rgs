@@ -1,0 +1,26 @@
+HKCR
+{
+	SymObjectSync.SymSyncEvent.1 = s 'SymSyncEvent Class'
+	{
+		CLSID = s '{20504A63-FF87-458C-B2FD-F7A8C041220A}'
+	}
+	SymObjectSync.SymSyncEvent = s 'SymSyncEvent Class'
+	{
+		CLSID = s '{20504A63-FF87-458C-B2FD-F7A8C041220A}'
+		CurVer = s 'SymObjectSync.SymSyncEvent.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {20504A63-FF87-458C-B2FD-F7A8C041220A} = s 'SymSyncEvent Class'
+		{
+			ProgID = s 'SymObjectSync.SymSyncEvent.1'
+			VersionIndependentProgID = s 'SymObjectSync.SymSyncEvent'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{85EE816D-2AFC-4F17-9CCF-6F29839117E8}'
+		}
+	}
+}

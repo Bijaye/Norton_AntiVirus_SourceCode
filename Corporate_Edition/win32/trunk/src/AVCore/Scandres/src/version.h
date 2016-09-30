@@ -1,0 +1,35 @@
+// PROPRIETARY/CONFIDENTIAL. Use of this product is subject to license terms.
+// Copyright (c) 2005 Symantec Corporation. All rights reserved.
+/////////////////////////////////////////////////////////////////////////////
+// $Header:   S:/SCANDRES/VCS/version.h_v   1.0   29 Jun 1998 17:44:44   jtaylor  $
+/////////////////////////////////////////////////////////////////////////////
+//
+// version.h - used to include the version resource information.
+//
+/////////////////////////////////////////////////////////////////////////////
+// $Log:   S:/SCANDRES/VCS/version.h_v  $
+// 
+//    Rev 1.0   29 Jun 1998 17:44:44   jtaylor
+// Initial revision.
+// 
+/////////////////////////////////////////////////////////////////////////////
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+/////////////////////////////////////////////////////////////////////////////
+// Stuff needed to use the global version info block defined in nav.ver
+// and navver.h
+
+#define VR_FILEDESCRIPTION      "Symantec AntiVirus Scan and Deliver\0"
+#define VR_INTERNALNAME         "SCANDRES\0"
+#define VR_ORIGINALFILENAME     "SCANDRES.DLL"
+
+#include "vlib.ver"
+
+#endif    // !_MAC
+
+

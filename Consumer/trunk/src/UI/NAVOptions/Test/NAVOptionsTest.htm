@@ -1,0 +1,99 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+<title>Norton Antivirus Options Test</title>
+<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso8859-1">
+<object id="NAVOptions" classid="clsid:085ABFE2-D753-445C-8A2A-D4BD46CE0811"/>
+</object>
+<script language="JavaScript">
+	NAVOptions.Initialize('{FD26F288-761B-4E23-860D-D6C31151F24A}');
+	NAVOptions.Load();
+</script>
+<script language="JavaScript">
+	function PrintRow(varValue)
+	{
+		document.write('<tr><td>' + varValue + '</td><td>' + eval('NAVOptions.' + varValue) + '</td></tr>');
+	}
+	function PrintRows()
+	{
+	}
+</script>
+<script language="JavaScript" for="NAVOptions" event="OptionsChanged">
+	alert('Options file Changed!');
+</script>
+</head>
+<body>
+<script language="JavaScript">
+  document.write('File Version: 0x0' + NAVOptions.Version.toString(16) + '<br>');
+</script>
+<table border=1>
+  <tr>
+    <td>
+	  Option
+	</td>
+	<td align='right'>
+	  Value
+	</td>
+  </tr>
+  <tr>
+    <td>
+	  TSR:ScanFiles
+	</td>
+	<td align='right'>
+	  <script language="JavaScript">document.write(NAVOptions.TSR.ScanFiles);</script>
+	</td>
+  </tr>
+  <tr>
+    <td>
+	  TSR:ScanMem
+	</td>
+	<td align='right'>
+	  <script language="JavaScript">document.write(NAVOptions.TSR.ScanMem);</script>
+	</td>
+  </tr>
+  <tr>
+    <td>
+	  TSR:RepairCompressed
+	</td>
+	<td align='right'>
+	  <script language="JavaScript">document.write(NAVOptions.TSR.RepairCompressed);</script>
+	</td>
+  </tr>
+  <tr>
+    <td>
+	  SCANNER:ScanFiles
+	</td>
+	<td align='right'>
+	  <script language="JavaScript">document.write(NAVOptions.SCANNER.ScanFiles);</script>
+	</td>
+  </tr>
+  <tr>
+    <td>
+	  SCANNER:ScanMem
+	</td>
+	<td align='right'>
+	  <script language="JavaScript">document.write(NAVOptions.SCANNER.ScanMem);</script>
+	</td>
+  </tr>
+  <tr>
+    <td>
+	  TEST:String
+	</td>
+	<td>
+	  <script language="JavaScript">document.write(NAVOptions.TEST.String);</script>
+	</td>
+  </tr>
+  <script language="JavaScript">PrintRow('TEST.String')</script>
+</table>
+<hr>
+<input type="Button" value="Save" OnClick=NAVOptions.Save();>
+</body>
+</html>

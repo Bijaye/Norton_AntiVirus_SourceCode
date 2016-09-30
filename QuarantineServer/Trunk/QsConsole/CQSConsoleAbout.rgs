@@ -1,0 +1,24 @@
+HKCR
+{
+	Qscon.QSConsoleAbout.1 = s 'QSConsole About Class'
+	{  
+		CLSID = s '{26140C86-B554-11D2-8F45-3078302C2030}'
+	}
+	Qscon.QSConsoleAbout = s 'QSConsole About Class'
+	{
+		CLSID = s '{26140C86-B554-11D2-8F45-3078302C2030}'
+		CurVer = s 'Qscon.QSConsoleAbout.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {26140C86-B554-11D2-8F45-3078302C2030} = s 'QSConsole About Class'
+		{
+			ProgID = s 'Qscon.QSConsoleAbout.1'
+			VersionIndependentProgID = s 'Qscon.QSConsoleAbout'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'both'
+			}
+		}
+	}
+}

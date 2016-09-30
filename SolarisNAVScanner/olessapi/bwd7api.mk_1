@@ -1,0 +1,28 @@
+!define BLANK ""
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7api.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7api.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 wd7api.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7encdc.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7encdc.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 wd7encdc.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7rmtxt.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7rmtxt.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 wd7rmtxt.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7api.lib : $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7api.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7encdc.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7rmtxt.obj .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ %create wd7api.lb1
+!ifneq BLANK "wd7api.obj wd7encdc.obj wd7rmtxt.obj"
+ @for %i in (wd7api.obj wd7encdc.obj wd7rmtxt.obj) do @%append wd7api.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append wd7api.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 wd7api.lib @wd7api.lb1
+

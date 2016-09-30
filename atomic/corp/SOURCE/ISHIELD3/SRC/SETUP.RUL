@@ -1,0 +1,131 @@
+ /*=======================================================================*/
+ /*                 Stirling Technologies, Inc.  (c) 1990-1995            */
+ /*                        Schaumburg, Illinois 60173                     */
+ /*                           All Rights Reserved.                        */
+ /*                             InstallShield (R)                         */
+ /*=======================================================================*/
+
+ //-------------------------------------------------------------------------
+ //
+ //
+ //   File    : setup.rul
+ //
+ //   Purpose : This file contains the code for a template script dialog
+ //             function.
+ //
+ //-------------------------------------------------------------------------
+
+declare
+
+#include "sddialog.h"
+#include "setup.h"
+
+        prototype Template( STRING );
+
+        number nTemplate;
+        string szDLL;
+program
+Start:
+        nTemplate = 0;
+        szDLL = SUPPORTDIR ^ "_ISUSER.DLL";
+        UseDLL( szDLL );
+
+        Enable( DIALOGCACHE );
+        Template( "Dialog Template" );
+
+        UnUseDLL( szDLL );
+
+        exit;
+
+
+/*------------------------------------------------------------------------*/
+/*                                                                        */
+/*   Function: Template                                                   */
+/*                                                                        */
+/*   Descrip:  This dialog will show a dialog template which can be       */
+/*             used for creating any user-defined dialog with the         */
+/*             Windows 95 look and feel.                                  */
+/*   Misc:                                                                */
+/*                                                                        */
+/*------------------------------------------------------------------------*/
+function Template( szTitle )
+
+STRING  szDlg, szTemp;
+NUMBER  bDone, nId, nMessage, nTemp;
+INT     hwndDlg;
+
+begin
+        szDlg = "DLG_TEMPLATE";
+
+        // record data produced by this dialog
+        if (MODE=SILENTMODE) then
+           SdMakeName( szAppKey, szDlg, szTitle, nTemplate );
+           SilentReadData( szAppKey, "Result", DATA_NUMBER, szTemp, nId );
+           return nId;
+        endif;
+
+        // ensure general initialization is complete
+        if (!bSdInit) then
+           SdInit();
+        endif;
+
+        if (EzDefineDialog( szDlg, "", "",
+                            DLG_TEMPLATE ) = DLG_ERR) then
+           return -1;
+        endif;
+
+        // Loop in dialog until the user selects a standard button
+        bDone = FALSE;
+
+        while (!bDone)
+
+           nId = WaitOnDialog( szDlg );
+
+           switch(nId)
+           case DLG_INIT:
+                hwndDlg = CmdGetHwndDlg( szDlg );
+                SdGeneralInit( szDlg, hwndDlg, STYLE_NORMAL, szSdProduct );
+
+                if (szTitle != "") then
+                   SetWindowText(hwndDlg, szTitle);
+                endif;
+
+           case OK:
+                nId    = NEXT;
+                bDone  = TRUE;
+
+           case BACK:
+                nId    = BACK;
+                bDone  = TRUE;
+
+           case DLG_ERR:
+                SdError( -1, "SdWelcome" );
+                nId    = -1;
+                bDone  = TRUE;
+
+           case DLG_CLOSE:
+                SdCloseDlg( hwndDlg, nId, bDone );
+
+           default:
+                // check standard handling
+                 if (SdIsStdButton( nId ) && SdDoStdButton( nId )) then
+                    bDone = TRUE;
+                endif;
+           endswitch;
+
+        endwhile;
+
+        EndDialog( szDlg );
+        ReleaseDialog( szDlg );
+
+        SdUnInit( );
+
+        // record data produced by this dialog
+        SdMakeName( szAppKey, szDlg, szTitle, nTemplate );
+        SilentWriteData( szAppKey, "Result", DATA_NUMBER, "", nId );
+
+        return nId;
+
+end;
+
+#include "sddialog.rul"

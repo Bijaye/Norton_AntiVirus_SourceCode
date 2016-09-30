@@ -1,0 +1,247 @@
+::------------------------------------------------------------------------
+::
+:: $Header:   S:/NAVEX/VCS/build.btv   1.17   22 Jul 1997 15:11:02   mdunn  $
+::
+:: Description:
+::   Build file for NAVEX.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVEX/VCS/build.btv  $
+:  
+:     Rev 1.17   22 Jul 1997 15:11:02   mdunn
+:  Commented out the call to mk navexl, since the file it compiles is
+:  breaking.  Just temporarily - so we can get Gryphon NEC building all the
+:  way.
+:  
+:     Rev 1.16   22 Jul 1997 13:13:52   mdunn
+:  Added a call to mk navexlgn for the NTK platform to make Gryphon NEC's
+:  NAVEX.LIB.
+:  
+:     Rev 1.15   08 May 1997 14:31:00   CNACHEN
+:  Added support for NAVEX15.  Set "NAVEX15" environment variable to something
+:  before using BUILD.BTM/UPDATE.BTM.
+:  
+:  
+:     Rev 1.14   01 May 1997 14:46:50   DCHI
+:  Build now uses checked in and frozen versions of symkrnl for vxd and ntk.
+:  
+:     Rev 1.13   23 Jan 1997 15:07:02   AOONWAL
+:  Removed date command for all platform
+:  
+:     Rev 1.12   20 Jan 1997 11:47:14   AOONWAL
+:  Modifie the DATE command so that it could read the date stamp from date.txt
+:  in NEWVIR:NOBUILDS
+:  
+:     Rev 1.11   03 Dec 1996 11:34:48   CNACHEN
+:  Now copies NAVEX.H to branch H of NEWVIR.
+:  
+:     Rev 1.10   30 Apr 1996 09:42:40   RJACKSO
+:  Removed DATE command for the NTK platform.
+:
+:     Rev 1.9   18 Apr 1996 12:29:16   JMILLAR
+:  make navexl gets -a parameter
+:
+:     Rev 1.8   17 Apr 1996 08:31:02   JMILLAR
+:  add navexl build for platform NTK (NT kernel)
+:  fix saving of error files so we don't lose any for multiple makes
+:
+:     Rev 1.7   05 Feb 1996 12:04:40   RJACKSO
+:  Added DATE to NAVEX to make sure that NAVEX NLM gets the right date for the
+:  defs.
+:
+:     Rev 1.6   01 Dec 1995 00:15:02   DKEEFER
+:  fixed the build btm
+:
+:     Rev 1.5   20 Nov 1995 18:14:38   MLELE
+:  NLM always builds with debug info. Save *.nlm as *.dbg and remove debug
+:  information from the nlm
+:
+:     Rev 1.4   20 Nov 1995 14:08:58   DCHI
+:  Added mk navexlnk.
+:
+:     Rev 1.3   24 Oct 1995 18:33:12   JREARDON
+:  Made it less verbose
+:
+:     Rev 1.2   24 Oct 1995 18:32:36   JREARDON
+:  Made it more Robust
+:
+:     Rev 1.1   24 Oct 1995 17:56:02   JREARDON
+:  Added lines to update branch include areas with NAVEX.H
+:
+:     Rev 1.0   13 Oct 1995 13:08:42   DCHI
+:  Initial revision.
+::
+::------------------------------------------------------------------------
+@echo off
+
+if "%NAVEX15" NE "" goto :Do15
+
+@echo Updating ALL Virlib Global include areas with NAVEX.H
+
+rem Copy NAVEX.H to the trunk include directory.
+copy s:\navex\SRC\NAVEX.H %PROJPRE%INCLUDE\SRC\*.*
+
+:: iff "%PLATFORM" NE ".NTK" then
+:: DATE <s:\source\nobuilds\src\date.txt
+:: endiff
+
+rem Copy NAVEX.H to each branch include directory.
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G H) gosub CopyToBranch
+
+gosub BuildNAVEX
+
+
+::
+::  nlm always builds w/ debug info.
+::  sve it as *.dbg and strip debug info from *.nlm
+::
+iff %PLATFORM% == .NLM then
+    if exist *.nlm copy *.nlm *.dbg
+    for %nlmfile in (*.nlm) gosub stripnlm
+endiff
+
+goto done
+
+
+
+::
+::  Strip debug information from the NLM.
+::
+
+:stripnlm
+
+wstrip %nlmfile
+nukedbug %nlmfile
+
+return
+
+
+
+:CopyToBranch
+
+if isdir %PROJPRE%INCLUDE\SRCQAK%d%  copy s:\navex\SRC\NAVEX.H %PROJPRE%INCLUDE\SRCQAK%d%\*.*
+
+return
+
+
+
+:BuildNAVEX
+
+iff "%PLATFORM" EQ ".NTK" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrnl.ntk symkrnl.lib > symkrnl.cpy
+endiff
+
+iff "%PLATFORM" EQ ".VXD" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrnl.vxd symkrnl.lib > symkrnl.cpy
+endiff
+
+iff "%PLATFORM" EQ ".DOS" then
+call mk navexlnk
+if exist make.err copy build.err+make.err build.err
+endiff
+
+iff "%PLATFORM" EQ ".NTK" then
+    :: ********** NOTE *************
+    :: 7/22/97 Mike Dunn.  I've commented out the following mk call because
+    :: the file it compiles, navexntl.cpp, breaks due to mismatching types
+    :: in navex.h.  I really need to get Gryphon NEC building, and this is
+    :: the last thing stopping us.  If someone fixes the breakage, or if this
+    :: breaks anyone else by all means, uncomment these lines.
+    :: ********* END NOTE **********
+    :: call mk navexl %&
+    :: if exist make.err copy build.err+make.err build.err
+
+
+    :: Addition for Gryphon NEC - builds the NTK static LIB w/old avapi.h
+    :: See navexntl.cpp for an explanation.
+    call mk navexlgn %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+call mk navex %&
+if exist make.err copy build.err+make.err build.err
+
+if exist symkrnl.cpy del symkrnl.cpy symkrnl.lib
+
+return
+
+
+:done
+goto :done15
+
+
+:Do15
+
+@echo Updating ALL Virlib Global include areas with NAVEX.H
+
+rem Copy NAVEX15.H to the trunk include directory.
+copy s:\navex\SRC\NAVEX15.H %PROJPRE%INCLUDE\SRC\*.*
+
+:: iff "%PLATFORM" NE ".NTK" then
+:: DATE <s:\source\nobuilds\src\date.txt
+:: endiff
+
+rem Copy NAVEX15.H to each branch include directory.
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G H) gosub CopyToBranch15
+
+gosub BuildNAVEX15
+
+
+::
+::  nlm always builds w/ debug info.
+::  sve it as *.dbg and strip debug info from *.nlm
+::
+iff %PLATFORM% == .NLM then
+    if exist *.nlm copy *.nlm *.dbg
+    for %nlmfile in (*.nlm) gosub stripnlm15
+endiff
+
+goto done15
+
+
+
+::
+::  Strip debug information from the NLM.
+::
+
+:stripnlm15
+
+wstrip %nlmfile
+nukedbug %nlmfile
+
+return
+
+
+
+:CopyToBranch15
+
+if isdir %PROJPRE%INCLUDE\SRCQAK%d%  copy s:\navex\SRC\NAVEX15.H %PROJPRE%INCLUDE\SRCQAK%d%\*.*
+
+return
+
+
+
+:BuildNAVEX15
+
+iff "%PLATFORM" EQ ".NTK" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrnl.ntk symkrnl.lib > symkrnl.cpy
+endiff
+
+iff "%PLATFORM" EQ ".VXD" then
+if exist symkrnl.cpy del symkrnl.cpy
+if not exist symkrnl.lib copy %proj%\src\symkrnl.vxd symkrnl.lib > symkrnl.cpy
+endiff
+
+call mk navex15 %&
+if exist make.err copy build.err+make.err build.err
+
+if exist symkrnl.cpy del symkrnl.cpy symkrnl.lib
+
+return
+
+
+:done15
+

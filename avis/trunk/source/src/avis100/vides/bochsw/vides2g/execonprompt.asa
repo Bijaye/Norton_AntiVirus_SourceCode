@@ -1,0 +1,137 @@
+/*
+  11/20/97 this VIDES2 module simulates command line input at the DOS prompt
+*/
+
+/*
+        The Prompt state transitions are:
+        
+        function Get Drive -> enter state 1 (from any state)
+        1 -> 2 Get Current Dir
+        2 -> 3 Write on stdout
+        3 -> 4 Output char '>'
+        4 Kdb input, Ready to Exec a file, back to state 0
+        
+        *** NB: These transitions assume a $p$g prompt
+*/
+
+uses inputsim;
+uses extraction;
+uses bootmultipart;
+global allgoatsdone: integer;
+
+external rule ExecOnPrompt(promptstate, seg: integer);
+var
+command: string;
+begin
+if
+        strToInt(report_tag) = 1
+        and strToU(imm) = 0x21
+        and strToInt(rettick) = strToInt(calltick)
+        -->
+                begin
+                if
+                        rh(eax) = 0x19      /* Get Drive */
+                        -->
+                                begin
+                                /*println('Seen GetDrive, entering state 1');*/
+                                trigger off for_next ExecOnPrompt(1, strToInt(cs))
+                                end;
+
+                        promptstate = 1
+                        and rh(eax) = 0x47      /* Get Cur Dir */
+                        and strToInt(cs) = seg
+                        -->
+                                begin
+                                /*println('Seen Get Cur Dir, entering state 2');*/
+                                trigger off for_next ExecOnPrompt(promptstate+1, seg)
+                                end;
+
+                        promptstate = 2
+                        and rh(eax) = 0x40      /* Write */
+                        and rl(ebx) = 1         /* on stdout */
+                        and strToInt(cs) = seg
+                        -->
+                                begin
+                                /*println('Seen Write to stdout, entering state 4 directly!');*/
+                                /*trigger off for_next ExecOnPrompt(promptstate+1, seg)*/
+                                trigger off for_next ExecOnPrompt(promptstate+2, seg)
+                                end;
+                        
+                        promptstate = 3
+                        and rh(eax) = 0x02      /* Output char */
+                        and rl(edx) = 0x3E      /* '>' */
+                        and strToInt(cs) = seg
+                        -->
+                                begin
+                                /*println('Seen ">" output, entering state 4');*/
+                                trigger off for_next ExecOnPrompt(promptstate+1, seg)
+                                end;
+
+                        promptstate = 4
+                        and rh(eax) = 0x0A      /* Kbd input */
+                        and strToInt(cs) = seg
+                        -->
+                                begin
+                                if
+                                    allgoatsdone = 0 /* Still executing the goats */
+                                    -->
+                                        begin
+                                        /*println('Seen keyboard input, extracting and getting next goat');*/
+                                        trigger off for_current ResetInt28Counter;
+                                        trigger off for_current PerformExtractionNow;
+                                        command := getnextgoat;
+                                        if
+                                            command != ''
+                                            -->
+                                                begin
+                                                println('Sending command line: ',command);
+                                                sendln(command);
+                                                trigger off for_next ExecOnPrompt(0,0)
+                                                end;
+                                            true
+                                            -->
+                                                begin
+                                                trigger off for_next ExecOnPrompt(0,0); /* Just for file extraction testing */
+                                                println('No goats left, stopping input simulation');
+                                                trigger off for_current StopInputSim;
+
+                                                allgoatsdone := 1; /* give control to boot replication */
+                                                trigger off for_current BootTriage;
+                                                trigger off for_next ExecOnPrompt(0,0)
+                                                end
+                                        fi
+                                        end;
+
+                                    true /* no goat left, control to boot replication if it wants it */
+                                    -->
+                                        begin
+                                        trigger off for_current BootTriage;
+                                        trigger off for_next ExecOnPrompt(0,0)
+                                        end
+                                    fi
+
+                                end;
+
+                        true
+                        -->     /* Do something clever here */
+                                trigger off for_next ExecOnPrompt(promptstate, seg)
+                fi
+                end;
+
+        true
+        -->
+                trigger off for_next ExecOnPrompt(promptstate, seg)
+fi
+end;
+
+init_action;
+begin
+        allgoatsdone := 0;
+        /* These are used to detect the prompt */
+        start_watch_func(0x21,0x19,1); /* watch GetDrive */
+        start_watch_func(0x21,0x47,1); /* GetCurDir */
+        start_watch_func(0x21,0x40,1); /* Write */
+        start_watch_func(0x21,0x02,1); /* Display Output */
+        start_watch_func(0x21,0x0A,1); /* Buffered Kbd Input */
+        skip
+end.

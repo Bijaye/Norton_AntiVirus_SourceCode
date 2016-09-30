@@ -1,0 +1,51 @@
+:
+: $Header:   S:/NOBUILDS/VCS/build.btv   1.19   23 Mar 1998 16:53:24   MKEATIN  $
+:
+:-------------------------------------------------------------------------
+: $Log:   S:/NOBUILDS/VCS/build.btv  $
+:  
+:     Rev 1.19   23 Mar 1998 16:53:24   MKEATIN
+:  Reverted back to revision 1.4 - we now get our libs and dlls at
+:  "r:\avcomp\..."
+:  
+:     Rev 1.4   09 Jan 1996 11:19:18   RJACKSO
+:  Added lines to copy NAVEX stuff on the trunk.
+:
+:     Rev 1.3   14 Dec 1995 18:15:12   JREARDON
+:  Added copy for NUKEDBUG.EXE
+:
+:     Rev 1.2   24 Oct 1995 18:14:16   JREARDON
+:  Changed to copy NAVEX.H from s:\navex\src
+:
+:     Rev 1.1   24 Oct 1995 16:25:46   DALLEE
+:  Added NAVEX.H to the NAVEX files copied down to the branches.
+:  The official month-end NAVEX.H should now be checked in to NOBUILDS at
+:  the same time as the import libs.
+:
+:     Rev 1.0   16 Oct 1995 17:31:38   DALLEE
+:  Initial revision.
+:-------------------------------------------------------------------------
+
+rem Copy NukeDbug.EXE to S:\TOOLS
+
+if not isdir S:\TOOLS mkdir s:\tools
+copy %PROJ%\SRC%PROJVERS%\NukeDbug.EXE S:\TOOLS
+if isdir %PROJPRE%LIB.WIN  copy %PROJ%\SRC\navex16.lib %PROJPRE%LIB.WIN\*.*
+if isdir %PROJPRE%LIB.W32  copy %PROJ%\SRC\navex32.lib %PROJPRE%LIB.W32\*.*
+if isdir %PROJPRE%INCLUDE\SRC  copy s:\navex\SRC\navex.h %PROJPRE%INCLUDE\SRC\*.*
+
+
+rem Copy official monthly NAVEX implibs and .h to each branch lib directory.
+
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G) gosub CopyToBranch
+
+quit
+
+:CopyToBranch
+
+if isdir %PROJPRE%LIBQAK%d%.WIN  copy %PROJ%\SRC\navex16.lib %PROJPRE%LIBQAK%d%.WIN\*.*
+if isdir %PROJPRE%LIBQAK%d%.W32  copy %PROJ%\SRC\navex32.lib %PROJPRE%LIBQAK%d%.W32\*.*
+if isdir %PROJPRE%INCLUDE\SRCQAK%d%  copy s:\navex\SRC\navex.h %PROJPRE%INCLUDE\SRCQAK%d%\*.*
+
+return
+

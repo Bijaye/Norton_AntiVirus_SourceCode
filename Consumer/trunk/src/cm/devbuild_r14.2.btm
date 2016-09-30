@@ -1,0 +1,1797 @@
+:if "%1"=="" goto USAGE
+
+:start
+echo.
+echo %0
+echo Revision # 2
+set P4PORT=perforce.symantec.com:1666
+
+set BUILDFORGE=%2
+set TESTMODE=no
+set CMCERTIFIED=no
+
+set EMAIL=nruva@symantec.com
+set BUILDER=Nick Ruva
+set BUILDER_SHORT=nruva
+
+set POSTINGSERVER=\\ussm-cpd\ussm-cpd
+set ARCHIVESERVER=\\ussm-cpd\ussm-cpd
+
+set BUILDSITE=Santa Monica
+set GENERIC=cm-rack-1-04-generic-client
+set PRODVERSION=r14.2
+set PRODCLIENT=navconsumer_%PRODVERSION%_cm_client
+set DEVBUILDCLIENT=navconsumer_%PRODVERSION%_cm_client
+set RELEASECLIENT=
+set CLIENTPATH=\depot\Norton_Antivirus\Consumer\trunk\src\cm\clientspecs
+set PRODNAME=NAV Consumer %PRODVERSION% Devbuild
+set CODENAME=NAVCON_14.2
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Set the build kill variables
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+set KILLBUILD=\\ussm-cpd\ussm-cpd\Build_Environments\archives\Build_Flags\NavConsumer\killbuild
+set KILLFILE=navcon_%PRODVERSION%_kill_devbuild.txt
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check for kill file before we begin, if found delete it
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+iff exist "%KILLBUILD%\%KILLFILE%" then
+    echo Old kill file found, deleteing.
+    echo.
+    del %KILLBUILD%\%KILLFILE%
+endiff
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Build Start
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo.
+iff "%TESTMODE" eq "yes" then
+  echo testmode=yes
+  set MAILLISTFILE=maillist_navcon_test.txt
+  echo MAILLISTFILE=maillist_navcon_test.txt
+else
+  echo testmode=no
+  set MAILLISTFILE=maillist_navcon_devbuild.txt
+  echo MAILLISTFILE=maillist_navcon_devbuild.txt
+endiff
+echo.
+
+
+
+set INIT_DIR=\depot\Norton_Antivirus\Consumer\trunk\src\cm
+
+iff %CMCERTIFIED=no then
+  set BUILDFLAGDIR=\Build_Flags\NavConsumer\devbuild
+  set LASTSUCCESSNUMFILE=%PRODVERSION%_devbuild_last_success_bldnum.txt
+  set BUILDBASEDIR=\bld_area\navcon_%PRODVERSION%\nav
+  set CHECKBINFILE=%BUILDBASEDIR%\src\BIN\BIN.IRU\Navw32.exe
+  set POSTINGSCRIPT=post_devbuild_%PRODVERSION%.btm  
+elseiff %CMCERTIFIED=yes then
+  set BUILDFLAGDIR=\Build_Flags\NavConsumer\cmbuild
+  set LASTSUCCESSNUMFILE=%PRODVERSION%_cmbuild_last_success_bldnum.txt
+  set BUILDBASEDIR=\bld_area\navcon_%PRODVERSION%\nav
+  set CHECKBINFILE=%BUILDBASEDIR%\src\BIN\BIN.IRU\Navw32.exe
+  set POSTINGSCRIPT=Post_NavConsumer_%PRODVERSION%.btm
+endiff
+
+set CM_DIR=%BUILDBASEDIR\src\cm
+set SCRIPTSDIR=%BUILDBASEDIR\src\cm
+set LOGNAME=%SCRIPTSDIR%\cmbuildlog.txt
+set POSTLOGNAME=%SCRIPTSDIR%\postinglog.txt
+
+iff "%TESTMODE" eq "yes" then
+  set LABELBASE=navconsumer_dev_%PRODVERSION%_dummylabel
+  echo set LABELBASE=navconsumer_dev_%PRODVERSION%_dummylabel
+else 
+  set LABELBASE=navconsumer_dev_%PRODVERSION%
+  echo set LABELBASE=navconsumer_dev_%PRODVERSION%
+endiff
+
+rem we DO label devbuilds.
+rem we don't archive devbuilds.
+
+set LAYOUTZIPFILE=
+set ZIPFILE_BE=navconsumer_%PRODVERSION%
+set ZIPFILE_FINAL=navconsumer_%PRODVERSION%_final
+set ZIPFILE_LOC=navconsumer_%PRODVERSION%_loc
+set ZIPFILE_NU=navconsumer_%PRODVERSION%_nu
+set ARCHIVEFLAGBASE=navconsumer_%PRODVERSION%_archive_okay
+set BLDHISTINFOTEXT=bldhistinfo_navcon_%PRODVERSION%.txt
+set WINZIPCMD=c:\progra~1\winzip
+set FOUND_ERRS=founderrs_navconsumer_%PRODVERSION%.txt
+set TOOLSDIR=r:
+set BUILD_DRIVE=c:
+: FREESPACEREQUIRED is in Mb
+set FREESPACEREQUIRED=12000
+set EXIT_CODE=0
+
+rem Automation Level: * W2.12 *
+
+iff "%BUILDFORGE" EQ "yes" then
+  set DELAYTIME=0
+  echo DELAYTIME set to 0.
+  set TERMINATIONCMD=exit
+  echo TERMINATIONCMD set to exit.
+else
+  set DELAYTIME=1
+  echo DELAYTIME set to %DELAYTIME.
+  set TERMINATIONCMD=quit
+  echo TERMINATIONCMD set to quit.
+endiff
+
+rem ------------------------------------------------------------------------
+rem Build logs and error logs go to %SCRIPTSDIR.
+rem    (Which is in the B.E. )
+rem Mail notification text files go to %INIT_DIR.
+rem BLDHIST stuff goes into %INIT_DIR (because %CM_DIR does not exist yet)
+rem Client spec and label temp files go to %INIT_DIR.
+rem %FOUND_ERRS% is in the %INIT_DIR.
+rem ------------------------------------------------------------------------
+
+rem iff "%1" EQ "" then
+rem   echo.
+rem   echo You must provide the build number parameter.
+rem   echo.
+rem   echo See usage.
+rem   echo.
+rem   goto usage
+rem endiff
+
+iff "%P4USER" = "" then
+  echo.
+  echo I can't find the Perforce user.
+  echo.
+  %TERMINATIONCMD 
+endiff
+
+iff "%P4PASSWD" = "" then
+  echo.
+  echo I can't find the Perforce password.
+  echo.
+  %TERMINATIONCMD 
+endiff
+
+echo.
+echo Checking to see if \\ussm-cpd\ussm-cpd\archives is mapped...
+echo.
+delay %DELAYTIME
+iff not isdir "j:\Build_Flags" then
+    echo Can't find \\ussm-cpd\ussm-cpd\archives connection.  Attempting to map...
+    echo.
+    net use j: /d /y
+    net use j: \\\\ussm-cpd\ussm-cpd\archives
+    iff %? ne 0 then 
+      echo *** ERROR ***      Unable to attach to \\ussm-cpd\archives.
+      set ERRORMSG=OTHERERROR Unable to attach to \\ussm-cpd\archives.
+      %TERMINATIONCMD
+    endiff
+else
+    echo \\ussm-cpd\archives is mapped to j:.
+    delay %DELAYTIME
+endiff
+
+echo.
+echo Getting last successful build number.
+echo.
+delay %DELAYTIME
+iff not isdir "j:%BUILDFLAGDIR" then
+    echo Can't find the %BUILDFLAGDIR directory.
+    echo.
+    %TERMINATIONCMD
+endiff
+
+iff not exist "j:%BUILDFLAGDIR\%LASTSUCCESSNUMFILE" then
+    echo Can't find the %BUILDFLAGDIR\%LASTSUCCESSNUMFILE file.
+    echo.
+    %TERMINATIONCMD
+endiff
+
+set BLDNUMFILEHANDLE=%@FILEOPEN[j:%BUILDFLAGDIR\%LASTSUCCESSNUMFILE,read]
+set LAST_BUILD_NUM=%@FILEREAD[%BLDNUMFILEHANDLE]
+echo LAST_BUILD_NUM = %LAST_BUILD_NUM
+echo.
+delay %DELAYTIME
+
+rem Closing file...
+set BLDCLOSEHANDLE=%@FILECLOSE[%BLDNUMFILEHANDLE]
+set BLDNUM=%@EVAL[%LAST_BUILD_NUM+1]
+
+echo ***************************************************
+echo %PRODNAME Build # %BLDNUM
+echo ***************************************************
+echo.
+delay %DELAYTIME
+
+
+REM Create a title for the 4NT window that will reflect the project name and build number
+
+iff "%TESTMODE" eq "yes" then
+  title %PRODNAME Build %BLDNUM   * testmode=yes *
+else 
+  title %PRODNAME Build %BLDNUM
+endiff
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo ******************
+  echo TESTMODE = yes
+  echo ******************
+else 
+  echo TESTMODE = no
+endiff
+
+rem --------------------
+rem CLEAN UP
+rem --------------------
+
+if exist %BUILD_DRIVE%\%LOGNAME del /z %BUILD_DRIVE%\%LOGNAME
+if exist %BUILD_DRIVE%\%POSTLOGNAME del /z %BUILD_DRIVE%\%POSTLOGNAME
+if exist %INIT_DIR%\%BLDHISTINFOTEXT del /z %INIT_DIR%\%BLDHISTINFOTEXT
+if exist %INIT_DIR%\%FOUND_ERRS% del /z %INIT_DIR%\%FOUND_ERRS%
+if exist %INIT_DIR%\*.sql del /z %INIT_DIR%\*.sql
+echo.
+
+rem
+rem Preserve the original path.
+rem
+gosub env_save
+
+:goto dobuild
+
+
+:start_build_now
+
+echo.
+echo Checking for maillist file...
+echo.
+delay %DELAYTIME
+
+iff not exist %INIT_DIR\%MAILLISTFILE then
+  echo File %MAILLISTFILE does not exist! Sync out the cm directory and start again.
+  set EXIT_CODE=1
+  %TERMINATIONCMD %EXIT_CODE
+endiff
+delay %DELAYTIME
+
+echo.
+echo Generating text for build start email...
+echo.
+delay %DELAYTIME
+
+TEXT > %INIT_DIR\startmessage.txt
+Team,
+
+Message from automated build script - this script is supported by the CM staff.
+
+!PRODNAME! CM Build #!buildnumber! is starting now.
+
+
+   -!BUILDER_SHORT!
+___________________________________________________________________
+  This script is supported by !BUILDER!, Configuration Management
+
+ENDTEXT
+
+
+call python r:\cm\sr.py %INIT_DIR\startmessage.txt "!buildnumber!" "%BLDNUM"
+call python r:\cm\sr.py %INIT_DIR\startmessage.txt "!PRODNAME!" "%PRODNAME"
+call python r:\cm\sr.py %INIT_DIR\startmessage.txt "!BUILDER!" "%BUILDER"
+call python r:\cm\sr.py %INIT_DIR\startmessage.txt "!BUILDER_SHORT!" "%BUILDER_SHORT"
+
+echo.
+echo Sending out build start email...
+echo.
+delay %DELAYTIME
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo TESTMODE:  Send email to %MAILLISTFILE
+  echo.
+endiff
+
+echo call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM is starting" %INIT_DIR\startmessage.txt /q /s
+call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM is starting" %INIT_DIR\startmessage.txt /q /s
+
+delay %DELAYTIME
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping database entry.
+  echo.
+  delay %DELAYTIME
+  goto /i prelim
+endiff
+
+
+echo.
+echo ********************************************************
+echo Setting database variables...
+echo ********************************************************
+echo.
+
+echo.
+
+call unset_bld_environment
+
+set bld_info_file=%INIT_DIR\%BLDHISTINFOTEXT
+set bld_insert=%CODENAME
+
+: Start putting stuff in bld_info_file
+
+echo bld_label_count=1                                    > %bld_info_file%
+echo bld_label_1="%LABELBASE.%BLDNUM"                    >> %bld_info_file%
+echo bld_client_1="%DEVBUILDCLIENT"                      >> %bld_info_file%
+echo bld_build_number=%BLDNUM                            >> %bld_info_file%
+echo bld_zipfile="%ZIPFILE_BE%_%BLDNUM.zip"              >> %bld_info_file%
+echo bld_code_name="%CODENAME"                           >> %bld_info_file%
+echo bld_product="%PRODNAME"                             >> %bld_info_file%
+echo bld_os="NT"                                         >> %bld_info_file%
+echo bld_platform="X86"                                  >> %bld_info_file%
+echo bld_version="%PRODVERSION"                          >> %bld_info_file%
+echo bld_site="%BUILDSITE"                               >> %bld_info_file%
+echo bld_builder="%BUILDER"                              >> %bld_info_file%
+
+: Starting build!
+: Set the bld_start_time variable.
+
+
+echo.
+echo ********************************************************
+echo Setting start time for database...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+call gettime start
+delay %DELAYTIME
+echo.
+echo Build started:     %bld_start_time%
+delay %DELAYTIME
+
+:prelim
+echo.
+echo ********************************************************
+echo Checking to see if ussm-cpd is already mapped...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+iff not isdir "h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild" then
+    echo \\ussm-cpd was not found.
+    echo.
+    set ERRORMSG=OTHERERROR ussm-cpd connection not found.
+    goto /i errmsg
+else
+    echo ussm-cpd is mapped to h:.
+    delay %DELAYTIME
+endiff
+
+echo.
+echo *****************************************************************
+echo Checking to see if \\ussm-cpd\archives is already mapped...
+echo *****************************************************************
+echo.
+delay %DELAYTIME
+
+iff not isdir "j:\archive_flags" then
+    echo Can't find ussm-cpd\archives connection.  Attempting to map...
+    echo.
+    net use j: /d /y
+    net use j: \\ussm-cpd\archives
+    iff %? ne 0 then 
+      echo *** ERROR ***      Unable to attach to ussm-cpd\archives.
+      set ERRORMSG=OTHERERROR Unable to attach to ussm-cpd\archives..
+      goto /i errmsg
+    endiff
+else
+    echo archives are already mapped to j:.
+    delay %DELAYTIME
+endiff
+
+echo.
+echo ********************************************************
+echo Checking to see if ussm-dev1\tools is already mapped...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+iff not isdir "r:\cm" then
+    echo \\ussm-dev1\tools was not found.
+    echo.
+    set ERRORMSG=OTHERERROR ussm-dev1/tools connection not found.
+    goto /i errmsg
+else
+    echo ussm-dev1\tools is mapped to r:.
+    delay %DELAYTIME
+endiff
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo TESTMODE:  Skipping previous archive test...
+  echo.
+  delay %DELAYTIME
+  goto /i toolslist
+endiff
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping previous archive test...
+  echo.
+  delay %DELAYTIME
+  goto /i toolslist
+endiff
+
+echo.
+echo *************************************************************************
+echo Checking to see if previous archive file was created and validated...
+echo *************************************************************************
+echo.
+delay %DELAYTIME
+
+echo Checking for previous flag j:\Archive_Flags\%ARCHIVEFLAGBASE%_%@EVAL[%BLDNUM-1].txt...
+echo.
+delay %DELAYTIME
+iff not exist "j:\Archive_Flags\%ARCHIVEFLAGBASE%_%@EVAL[%BLDNUM-1].txt" then
+      echo Archive flag for previous build not found.
+      echo.
+      delay %DELAYTIME
+      echo The previous build archive (CM build # %@EVAL[%BLDNUM-1]) was not successfully created. Aborting build.
+      set ERRORMSG=CMERROR The previous build archive (CM build # %@EVAL[%BLDNUM-1]) was not successfully created. Aborting build.
+      goto /i errmsg
+endiff
+echo Archive flag found.
+delay %DELAYTIME
+
+:toolslist
+echo.
+echo ***********************************************
+echo tools info...
+echo ***********************************************
+echo.
+echo The following tools are required:
+echo ---------------------------------------------------------------------------
+echo.
+echo.
+delay %DELAYTIME
+
+:goto dobuild
+:goto checkprodbuild
+:goto nextemail
+:goto makebezip
+
+echo.
+echo **********************************************
+echo Create generic cm Windows client spec...
+echo **********************************************
+echo.
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+
+echo.
+echo set P4CLIENT=%GENERIC
+
+set P4CLIENT=%GENERIC
+
+@echo Client:  %GENERIC% > temp.cli
+@echo Description:  Generic CM Spec for Windows >> temp.cli
+@echo Root:  c:\depot >> temp.cli
+@echo Options:  allwrite clobber nocompress crlf unlocked modtime >> temp.cli
+@echo View: >> temp.cli
+@echo        //depot/... //%GENERIC%/... >> temp.cli
+@echo. >> temp.cli
+
+@call p4 client -i < temp.cli
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Failed to create generic client.  Perforce may be down.
+  delay %DELAYTIME  
+  goto /i errmsg
+endiff
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping header update...
+  echo.
+  delay %DELAYTIME
+  goto /i syncbuildclient
+endiff
+
+echo.
+echo %_CWD
+echo.
+delay %DELAYTIME
+
+echo.
+echo ********************************************************************
+echo Update the header file.
+echo ********************************************************************
+echo.
+delay %DELAYTIME
+
+echo call %INIT_DIR\update_nav_headers %BLDNUM
+call %INIT_DIR\update_nav_headers %BLDNUM
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Header update failed.
+  delay %DELAYTIME
+  goto /i errmsg
+endiff
+
+:syncbuildclient
+echo.
+echo ********************************************************************
+echo Sync the building client text file.
+echo ********************************************************************
+echo.
+delay %DELAYTIME
+
+echo call p4 sync -f %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+delay %DELAYTIME
+call p4 sync -f %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Failed to sync build product client text.
+  delay %DELAYTIME
+  goto /i errmsg
+endiff
+
+:nextmakeprodclient
+echo.
+echo ********************************************************************
+echo Creating the build product client spec:
+echo CLIENT = %DEVBUILDCLIENT
+echo by using the text file as input...
+echo ********************************************************************
+echo.
+
+echo set P4CLIENT=%DEVBUILDCLIENT
+@set P4CLIENT=%DEVBUILDCLIENT
+delay %DELAYTIME
+echo call p4 client -i < %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+delay %DELAYTIME
+call p4 client -i < %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Failed to create product client spec.
+  delay %DELAYTIME  
+  goto /i errmsg
+endiff
+delay %DELAYTIME
+
+
+rem iff "%CMCERTIFIED" eq "no" then
+rem   echo.
+rem   echo DEVBUILD:  Skipping delete step.
+rem   echo.
+rem   delay %DELAYTIME
+rem   goto /i checkdiskspace
+rem endiff
+
+:nextdelete
+echo.
+echo **********************************************
+echo If previous build exists, delete it...
+echo **********************************************
+echo.
+delay %DELAYTIME
+
+set SPACEBEFOREDELETE=
+set SPACEAFTERDELETE=
+set SPACEFREEDUP=
+set SPACEAFTERBUILD=
+
+set SPACEBEFOREDELETE=%@diskfree[%BUILD_DRIVE%,m]
+echo Space free before delete:     %SPACEBEFOREDELETE
+echo.
+delay %DELAYTIME
+
+md /s %BUILD_DRIVE%%BUILDBASEDIR
+echo dummy > %BUILD_DRIVE%%BUILDBASEDIR\dummy.txt
+
+del %BUILD_DRIVE%%BUILDBASEDIR /sxzy >& %INIT_DIR\deletedfiles.txt
+
+:checkdiskspace
+echo.
+echo **********************************************
+echo Check for %FREESPACEREQUIRED Mb of free space...
+echo **********************************************
+echo.
+delay %DELAYTIME
+
+set SPACEAFTERDELETE=%@diskfree[%BUILD_DRIVE%,m]
+set SPACEFREEDUP=%@EVAL[%SPACEAFTERDELETE%-%SPACEBEFOREDELETE%]
+echo Space free after delete:     %SPACEAFTERDELETE
+echo Space freed up by delete:    %SPACEFREEDUP
+echo Space required:              %FREESPACEREQUIRED
+echo.
+delay %DELAYTIME
+
+
+iff not %@diskfree[%BUILD_DRIVE%,m] gt %FREESPACEREQUIRED then
+    echo Space free:     %@diskfree[%BUILD_DRIVE%,m]
+    echo Space required: %FREESPACEREQUIRED%
+    echo.
+    echo Not enough free disk space.  Contact CM to resolve this problem.
+    echo.
+    set ERRORMSG=CMERROR Insufficient space %@diskfree[%BUILD_DRIVE%,m] Mb, need %FREESPACEREQUIRED Mb. Please contact CM.
+    goto /i errmsg
+else
+    echo There is enough free space:  %@diskfree[%BUILD_DRIVE%,m] Mb
+    delay %DELAYTIME
+endiff
+
+echo.
+echo %_CWD
+echo.
+delay %DELAYTIME
+
+echo.
+echo ***************************************************************
+echo CD to base directory before using client template command
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+if not isdir %BUILD_DRIVE%%BUILDBASEDIR md /s %BUILD_DRIVE%%BUILDBASEDIR
+echo cd %BUILD_DRIVE%%BUILDBASEDIR
+cd %BUILD_DRIVE%%BUILDBASEDIR
+delay %DELAYTIME
+
+echo.
+echo ***************************************************************
+echo Creating new devbuild build client from main product client.
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+echo set p4client=%DEVBUILDCLIENT
+set p4client=%DEVBUILDCLIENT
+p4 client -o -t %DEVBUILDCLIENT >tmpclient
+p4 client -i < tmpclient
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+delay %DELAYTIME
+
+echo.
+echo ***************************************************************
+echo Checking to see if DEV label exists...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+:: This is a test for the existence of a syncing label.
+
+p4 sync -n @dev_navconsumer_dev_%PRODVERSION%.%BLDNUM >& nul
+set x=%?
+iff %x == 0 then
+    echo.^echo Dev label dev_navconsumer_dev_%PRODVERSION%.%BLDNUM exists...  will sync to the label.^echo.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::Recreate the clientspec from the file in the label
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo.
+echo **********************************************
+echo Create generic cm Windows client spec...
+echo **********************************************
+echo.
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+
+echo.
+echo set P4CLIENT=%GENERIC
+
+set P4CLIENT=%GENERIC
+
+@echo Client:  %GENERIC% > temp.cli
+@echo Description:  Generic CM Spec for Windows >> temp.cli
+@echo Root:  c:\depot >> temp.cli
+@echo Options:  allwrite clobber nocompress crlf unlocked modtime >> temp.cli
+@echo View: >> temp.cli
+@echo        //depot/... //%GENERIC%/... >> temp.cli
+@echo. >> temp.cli
+
+@call p4 client -i < temp.cli
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Failed to create generic client.  Perforce may be down.
+  delay %DELAYTIME  
+  goto /i errmsg
+endiff
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping header update...
+  echo.
+  delay %DELAYTIME
+  goto /i syncbuildclient
+endiff
+
+echo.
+echo %_CWD
+echo.
+delay %DELAYTIME
+
+:syncbuildclient
+echo.
+echo ********************************************************************
+echo Sync the building client text file.
+echo ********************************************************************
+echo.
+delay %DELAYTIME
+
+echo call p4 sync -f @navconsumer_dev_%PRODVERSION%.%BLDNUM %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+delay %DELAYTIME
+call p4 sync -f %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Failed to sync build product client text.
+  delay %DELAYTIME
+  goto /i errmsg
+endiff
+
+:nextmakeDEVBUILDCLIENT
+echo.
+echo ********************************************************************
+echo Creating the build product client spec:
+echo CLIENT = %DEVBUILDCLIENT
+echo by using the text file as input...
+echo ********************************************************************
+echo.
+
+echo set P4CLIENT=%DEVBUILDCLIENT
+@set P4CLIENT=%DEVBUILDCLIENT
+delay %DELAYTIME
+echo call p4 client -i < %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+delay %DELAYTIME
+call p4 client -i < %CLIENTPATH\%DEVBUILDCLIENT.clientspec
+iff "%_?" ne "0" then 
+  set ERRORMSG=CMERROR Failed to create product client spec.
+  delay %DELAYTIME  
+  goto /i errmsg
+endiff
+delay %DELAYTIME
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::sync client to label, not head
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::    
+
+    set cmd=p4 sync -f @dev_navconsumer_dev_%PRODVERSION%.%BLDNUM
+    set DEV_LABEL_EXISTS=yes
+else
+    echo.^echo Dev label dev_navconsumer_dev_%PRODVERSION%.%BLDNUM does not exist.  Will sync to the tip.^echo.
+    set cmd=p4 sync -f
+    set DEV_LABEL_EXISTS=no
+endiff
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check for kill file
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+iff exist "%KILLBUILD%\%KILLFILE%" then
+    echo Old kill file found, deleteing.
+    echo.
+    set ERRORMSG=BUILDKILLED The build termination file has been found, the build will now stop.
+    delay %DELAYTIME%
+    goto /i errmsg
+endiff
+
+
+:dosync
+echo.
+echo ***************************************************************
+echo Syncing...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+echo set P4CLIENT=%DEVBUILDCLIENT
+set P4CLIENT=%DEVBUILDCLIENT
+delay %DELAYTIME
+
+echo %cmd | tee %INIT_DIR%\p4SyncUsed.txt
+delay %DELAYTIME
+%cmd > %INIT_DIR\sync.txt
+iff "%?" ne "0" then 
+  echo p4 sync failed.  Please contact CM.
+  set ERRORMSG=CMERROR p4 sync failed.  Please contact CM.
+  goto /i errmsg
+endiff
+echo.
+echo Done.
+echo.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check for kill file
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+iff exist "%KILLBUILD%\%KILLFILE%" then
+    echo Old kill file found, deleteing.
+    echo.
+    set ERRORMSG=BUILDKILLED The build termination file has been found, the build will now stop.
+    delay %DELAYTIME%
+    goto /i errmsg
+endiff
+
+:makelabel
+echo.
+echo ***************************************************************
+echo Creating Perforce label %LABELBASE.%BLDNUM...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+p4 label -o %LABELBASE.%BLDNUM > temp.lab
+p4 label -i < temp.lab
+del temp.lab
+echo.
+delay %DELAYTIME
+
+echo.
+echo ***************************************************************
+echo Syncing label %LABELBASE.%BLDNUM...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+echo p4 labelsync -l %LABELBASE.%BLDNUM
+echo.
+delay %DELAYTIME
+p4 labelsync -l %LABELBASE.%BLDNUM > %INIT_DIR\labelsync.txt
+echo.
+delay %DELAYTIME
+echo Done.
+echo.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check for kill file
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+iff exist "%KILLBUILD%\%KILLFILE%" then
+    echo Old kill file found, deleteing.
+    echo.
+    set ERRORMSG=BUILDKILLED The build termination file has been found, the build will now stop.
+    delay %DELAYTIME%
+    goto /i errmsg
+endiff
+
+:dobuild
+echo.
+echo ***************************************************************
+echo Calling the product build script...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+:echo.
+:echo Make changes to the source code to induce an error here if desired...
+:echo.
+:pause
+
+echo cd %SCRIPTSDIR
+cd %SCRIPTSDIR
+echo.
+delay %DELAYTIME
+echo.
+echo %_CWD
+echo.
+delay %DELAYTIME
+
+echo.
+echo Normally, we build with /RETAIL /OEM /SUITE /RENTAL switches.
+echo.
+echo Per Hannah, we will build with /RETAIL, /RENTAL, and /SUITE switches.
+echo.
+
+:set cmd=call build.btm /RETAIL /OEM /SUITE /RENTAL
+set cmd=call build.btm /RETAIL /SUITE /RENTAL
+
+iff "%PHASE%" != "" then
+  set cmd=call build.btm /RETAIL /SUITE /RENTAL /phase %PHASE%
+endiff
+
+rem
+rem YES use a "tee" to capture a CM log.
+rem 
+
+echo %cmd
+echo.
+delay %DELAYTIME
+%cmd | tee %LOGNAME
+iff not %? eq 0 then
+  echo.
+  echo Build script ended with a non-zero return code.
+  echo.
+  set ERRORMSG=Build script ended with a non-zero return code.
+  goto /i errmsg
+endiff
+
+echo.
+echo Build log can be found in %SCRIPTSDIR%
+echo.
+delay %DELAYTIME
+dir %SCRIPTSDIR%\
+echo.
+
+rem      Set LOGNAME to whatever the corrent log that's being looked at.
+rem      Use LOGNAME later for attaching logs to emails.
+rem      Use LOGNAME later for adding log to the database entry.
+
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check for kill file
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+iff exist "%KILLBUILD%\%KILLFILE%" then
+    echo Old kill file found, deleteing.
+    echo.
+    set ERRORMSG=BUILDKILLED The build termination file has been found, the build will now stop.
+    delay %DELAYTIME%
+    goto /i errmsg
+endiff
+
+
+:checkprodbuild
+echo.
+echo ***************************************************************
+echo Checking product build log...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+iff not exist %LOGNAME then
+  echo.
+  echo %LOGNAME not found.
+  echo.
+  set ERRORMSG=CMERROR No product build log file was found. Check CM build script.
+  goto /i errmsg
+endiff
+
+gosub lookatlogs
+echo.
+
+if %@filesize[%INIT_DIR\%FOUND_ERRS%] gt 0 goto producterrors
+
+echo No errors detected in build log.
+echo.
+
+
+goto lookforoutput
+
+:producterrors
+echo ********************************************
+echo There are errors in the build log.
+echo ********************************************
+echo.
+delay %DELAYTIME
+echo.
+
+set ERRORMSG=There are errors in the build log.
+
+goto /i errmsg
+
+:lookforoutput
+
+echo.
+echo Sanity check for a sample output binary...
+echo.
+if exist %CHECKBINFILE goto zeroerrs
+delay %DELAYTIME
+
+echo **************************************************
+echo ERROR:  The file does not exist:
+echo         %CHECKBINFILE
+echo         Check for errors on the screen.
+echo **************************************************
+echo.
+delay %DELAYTIME
+
+:wehaveerrors
+set ERRORMSG=No sanity check output file %CHECKBINFILE.
+delay %DELAYTIME
+goto /i errmsg
+
+:zeroerrs
+echo.
+echo Found sanity check file %CHECKBINFILE.
+echo.
+echo ********************************
+echo Build okay.  No errors.
+echo ********************************
+delay %DELAYTIME
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check for kill file
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+iff exist "%KILLBUILD%\%KILLFILE%" then
+    echo Old kill file found, deleteing.
+    echo.
+    set ERRORMSG=BUILDKILLED The build termination file has been found, the build will now stop.
+    delay %DELAYTIME%
+    goto /i errmsg
+endiff
+
+
+:buildfinishup
+:postit
+
+echo.
+echo ********************************************************
+echo Checking again to verify %POSTINGSERVER is still mapped...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+iff not isdir "h:\Unreleased_Builds\NAV" then
+    echo \\ussm-cpd connection has been lost.
+    echo.
+    set ERRORMSG=OTHERERROR h:\ connection has been lost.  Contact CM.
+    goto /i errmsg
+else
+    echo %POSTINGSERVER is mapped to h:.
+    delay %DELAYTIME
+endiff
+
+echo.
+echo **************************************************************
+echo Creating layouts and posting to the server...
+echo **************************************************************
+echo.
+delay %DELAYTIME
+
+echo cd %SCRIPTSDIR
+cd %SCRIPTSDIR
+echo.
+delay %DELAYTIME
+echo.
+echo %_CWD
+echo.
+delay %DELAYTIME
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: call the posting script
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo.
+echo Calling posting script...
+echo.
+delay %DELAYTIME
+echo.
+echo call %SCRIPTSDIR\%POSTINGSCRIPT %BLDNUM
+echo.
+delay %DELAYTIME
+call %SCRIPTSDIR\%POSTINGSCRIPT %BLDNUM | tee %POSTLOGNAME
+iff not %? eq 0 then
+  rem change back to the build drive because the posting script leaves you on h:.
+  %BUILD_DRIVE%
+  cd %SCRIPTSDIR%
+  echo.
+  echo %POSTINGSCRIPT posting script ended with a non-zero return code.
+  echo.
+  echo See %POSTLOGNAME.
+  echo.
+  set ERRORMSG=CMERROR %POSTINGSCRIPT posting script ended with a non-zero return code. Contact CM.
+  goto /i errmsg
+endiff
+rem change back to the build drive because the posting script leaves you on h:.
+%BUILD_DRIVE%
+cd %SCRIPTSDIR%
+echo.
+echo Posting script completed successfully.
+echo.
+delay %DELAYTIME
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: call the symbol posting script
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo.
+echo Posting symbols to symbol server...
+echo.
+call PostSymbols.btm %BLDNUM
+
+:postlog
+if not exist c:%LOGNAME goto nextemail
+echo.
+echo *****************************************************
+echo Post log to server...
+echo *****************************************************
+echo.
+
+echo Posting log file...
+delay %DELAYTIME
+echo.
+echo Creating directory...
+echo.
+delay %DELAYTIME
+if not isdir h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild\%BLDNUM\logs md /s h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild\%BLDNUM\logs
+echo.
+echo Copying log...
+delay %DELAYTIME
+copy c:%LOGNAME h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild\%BLDNUM\logs\navconsumer_%_HOUR%%_MINUTE%.log
+
+:nextemail
+echo.
+echo *****************************************************
+echo Generating text for build complete email...
+echo *****************************************************
+echo.
+delay %DELAYTIME
+
+TEXT > %INIT_DIR\endposted.txt
+Team,
+
+The devbuild of !prod_name!  #!buildnumber! completed with no errors.
+
+It is posted at the following location on ussm-cpd:
+
+\Unreleased_Builds\NAV\!prodversion!-devbuild\!buildnumber!
+
+Please use your Symcorp account to access this area.
+
+
+   -!BUILDER_SHORT!
+___________________________________________________________________
+     !BUILDER!, Configuration Management
+
+ENDTEXT
+
+@call python r:\cm\sr.py %INIT_DIR\endposted.txt "!buildnumber!" "%BLDNUM"
+@call python r:\cm\sr.py %INIT_DIR\endposted.txt "!prod_name!" "%PRODNAME"
+@call python r:\cm\sr.py %INIT_DIR\endposted.txt "!BUILDER!" "%BUILDER%"
+@call python r:\cm\sr.py %INIT_DIR\endposted.txt "!BUILDER_SHORT!" "%BUILDER_SHORT%"
+@call python r:\cm\sr.py %INIT_DIR\endposted.txt "!prodversion!" "%PRODVERSION%"
+
+echo.
+echo *****************************************************
+echo Sending out build posted email...
+echo *****************************************************
+echo.
+delay %DELAYTIME
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo TESTMODE:  Send email to %MAILLISTFILE
+  echo.
+endiff
+
+
+echo call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM is complete" %INIT_DIR\endposted.txt /q /s
+call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM is complete" %INIT_DIR\endposted.txt /q /s
+
+echo **************************************
+echo Update successful CM build number flag
+echo **************************************
+echo.
+echo Update successful CM build number %BLDNUM in j:%BUILDFLAGDIR\%LASTSUCCESSNUMFILE
+delay %DELAYTIME
+echo %BLDNUM > j:%BUILDFLAGDIR\%LASTSUCCESSNUMFILE
+iff %_? ne 0 then 
+  echo *** ERROR ***      Failed to update build number flag.
+  set ERRORMSG=OTHERERROR Failed to update build number flag.
+  goto /i errmsg
+endiff
+echo Done.
+
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping metrics, zips, database entry.
+  echo.
+  delay %DELAYTIME
+  goto /i spacecalc
+endiff
+
+
+
+goto bld_success
+
+%TERMINATIONCMD
+
+
+:ERRMSG
+
+: CD back to the INIT_DIR
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+echo.
+
+rem
+rem Restore the original path.
+rem
+gosub env_restore
+ 
+iff "%ERRORMSG" = "" then
+  echo.
+  echo ERRORMSG was not previously set.  Setting to unknown error in build.
+  set ERRORMSG=CMERROR ERRORMSG was not previously set. Unknown error in build. Check CM build script.
+  
+endiff
+
+echo.
+echo.
+echo Error in build.
+echo.
+echo MSG = %ERRORMSG
+echo.
+echo.
+delay %DELAYTIME
+
+echo.
+echo ***********************************************
+echo Sending out build failure email... 
+echo ***********************************************
+echo.
+delay %DELAYTIME
+
+
+echo.
+echo *****************************************************
+echo Generating text for build failed email...
+echo *****************************************************
+echo.
+
+TEXT > %INIT_DIR\failmessage.txt
+Team,
+
+The devbuild build of !prod_name!  #!buildnumber! 
+has encountered an error:
+
+!BUILD_ERROR_MESSAGE!
+
+The log file can be found on ussm-cpd at:
+  \Unreleased_Builds\NAV\!prodversion!-devbuild\!buildnumber!\logs
+
+If this is a problem that the development team can help with, please take a look at it
+and give me a call or send me an email if you have further information on it.
+
+If this is a CMERROR or OTHERERROR message, we will investigate it for the next build.
+
+Please use your Symcorp account to access this area.
+
+
+Thanks...
+
+
+   -!BUILDER_SHORT!
+___________________________________________________________________
+     !BUILDER!, Configuration Management
+
+
+     
+     
+ENDTEXT
+
+echo.
+echo *****************************************************
+echo Using Python to modify the text...
+echo *****************************************************
+echo.
+delay %DELAYTIME
+
+@call python r:\cm\sr.py %INIT_DIR\failmessage.txt "!buildnumber!" "%BLDNUM"
+@call python r:\cm\sr.py %INIT_DIR\failmessage.txt "!prod_name!" "%PRODNAME"
+@call python r:\cm\sr.py %INIT_DIR\failmessage.txt "!BUILD_ERROR_MESSAGE!" "%ERRORMSG"
+@call python r:\cm\sr.py %INIT_DIR\failmessage.txt "!BUILDER!" "%BUILDER%"
+@call python r:\cm\sr.py %INIT_DIR\failmessage.txt "!BUILDER_SHORT!" "%BUILDER_SHORT%"
+@call python r:\cm\sr.py %INIT_DIR\failmessage.txt "!prodversion!" "%PRODVERSION%"
+
+:postlog
+
+if not exist c:%LOGNAME goto addlog
+echo.
+echo *****************************************************
+echo Post log to server...
+echo *****************************************************
+echo.
+echo Posting log file...
+delay %DELAYTIME
+echo.
+echo Creating directory...
+echo.
+
+if not isdir h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild\%BLDNUM\logs md /s h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild\%BLDNUM\logs
+echo.
+echo Copying log...
+delay %DELAYTIME
+copy c:%LOGNAME h:\Unreleased_Builds\NAV\%PRODVERSION%-devbuild\%BLDNUM\logs\navconsumer_%_HOUR%%_MINUTE%.log
+
+:addlog
+echo.
+echo **************************************************************
+echo Appending log to email, if there are error strings in it.
+echo **************************************************************
+echo.
+delay %DELAYTIME
+
+iff %@filesize[%INIT_DIR\%FOUND_ERRS%] gt 0 then
+  echo There are error strings in the log file.
+  echo.
+  echo Adding error strings to end of email message text...
+  echo.
+  delay %DELAYTIME
+  cat %INIT_DIR\%FOUND_ERRS% >> %INIT_DIR\failmessage.txt
+endiff
+
+rem remove any evidence of digisign password from the fail email...
+rem put this inside the above iff stmt after the cat statement
+rem if there is a digisign password.
+rem @call python r:\cm\sr.py %INIT_DIR\failmessage.txt "%2" "XXXXXXXX"
+
+echo.
+echo *****************************************************
+echo Sending out build failed email...
+echo *****************************************************
+echo.
+delay %DELAYTIME
+
+call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM has Errors" %INIT_DIR\failmessage.txt /q /s
+delay %DELAYTIME
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping database entry.
+  echo.
+  delay %DELAYTIME
+  goto /i bldfailmsg
+endiff
+
+echo.
+echo ********************************************************
+echo Making database entry for bad build...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+echo.
+echo ********************************************************
+echo Setting finish time for bad build...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+
+call gettime finish
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo TESTMODE:  Skipping database entry...
+  echo.
+  delay %DELAYTIME
+  goto /i bldfailmsg
+endiff
+
+echo.
+echo ********************************************************
+echo Adding database record for bad build...
+echo ********************************************************
+delay %DELAYTIME
+
+
+: Execute this code on a bad build
+
+: If error strings were found, grab the strings for posting into the database.
+
+iff %@filesize[%INIT_DIR\%FOUND_ERRS%] gt 0 then
+  echo %INIT_DIR\%FOUND_ERRS% exists.
+  echo copying error strings to .\email_log.txt
+  copy %INIT_DIR\%FOUND_ERRS% .\email_log.txt
+  delay %DELAYTIME  
+  echo.
+endiff  
+
+
+
+echo bld_pass_fail="fail"                            >> %bld_info_file%
+
+: Comments field in the database:
+
+echo bld_comments="Build failed: %ERRORMSG%"         >> %bld_info_file%
+
+
+echo bld_milestone="N"                               >> %bld_info_file%
+echo bld_environment=environment.txt                 >> %bld_info_file%
+set > environment.txt
+
+: Errors field in the database:
+
+:  If there were error strings found by grep in the log file:
+:    then put the whole logfile into the database.
+
+:  else:
+
+:  If there weren't errors found by grep in the log file:
+:    just put the error string (such as CMERROR: Perforce down error) 
+:    into the database
+
+iff %@filesize[%INIT_DIR\%FOUND_ERRS%] gt 0 then
+  echo %INIT_DIR\%FOUND_ERRS% file contains error strings.
+  echo setting bld_errors to pointer to .\email_log.txt
+  echo.
+  echo bld_errors=email_log.txt        >> %bld_info_file%
+else
+  echo %INIT_DIR\%FOUND_ERRS% file does not contain error strings.
+  echo setting bld_errors to ERRORMSG text.
+  echo.
+  echo bld_errors="%ERRORMSG%"         >> %bld_info_file%
+endiff  
+
+:: once you are done:
+:: call the driver script with create_insert as a parameter.  This tells it to create the sql insert file and names
+:: it based on the second parameter
+
+echo.
+echo Creating the failed build insertion record...
+echo.
+
+
+python %TOOLSDIR%\cm\bldhist_driver.py create_insert %bld_insert%.sql
+
+
+rem Check for error
+if errorlevel != 0 goto CREATE_INSERT_ERROR
+
+echo.
+echo Create_insert succeeded.
+echo.
+echo Adding the failed build record to the database...
+echo.
+delay %DELAYTIME
+
+echo python %TOOLSDIR%\cm\bldhist_driver.py perform_insert %bld_insert%.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+python %TOOLSDIR%\cm\bldhist_driver.py perform_insert %bld_insert%.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+
+rem Check for error
+if errorlevel != 0 goto PERFORM_INSERT_ERROR
+echo.
+echo Perform_insert succeeded.
+echo.
+delay %DELAYTIME
+:: It is a good idea to store the .sql file and your %bld_info_file% with your build archive to track 
+:: down things in the future
+
+:bldfailmsg
+echo.
+echo ***************************************************************
+echo.
+echo ERROR:  Build Failed.
+echo.
+echo   Reason:  %ERRORMSG
+echo.
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+
+set EXIT_CODE=1
+goto DONE
+
+:BLD_SUCCESS
+
+%BUILD_DRIVE
+
+iff "%CMCERTIFIED" eq "no" then
+  echo.
+  echo DEVBUILD:  Skipping label lock...
+  echo.
+  delay %DELAYTIME
+  goto /i restoreenv
+endiff
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo TESTMODE:  Skipping label lock.
+  echo.
+else 
+  echo.
+  echo ***************************************************************
+  echo Locking label %LABELBASE.%BLDNUM...
+  echo ***************************************************************
+  echo.
+  delay %DELAYTIME
+  echo Label:	%LABELBASE.%BLDNUM > new.lab
+  echo Description:  Automatic CM Build of %LABELBASE.%BLDNUM >> new.lab
+  echo Options: locked >> new.lab
+  echo View:       //depot/...>> new.lab
+  call p4 label -i < new.lab
+  echo.
+  if exist temp.lab del temp.lab
+  if exist new.lab del new.lab
+endiff
+
+:restoreenv
+rem
+rem Restore the original path.
+rem
+echo.
+gosub env_restore
+
+echo Deleting old archive flag...
+echo.
+echo ***************************************************************
+echo Deleting old archive flag    (Build # - 3)...
+echo ***************************************************************
+echo.
+delay %DELAYTIME
+echo.
+
+if exist j:\Archive_Flags\%ARCHIVEFLAGBASE%_%@EVAL[%BLDNUM-3].txt del /z j:\Archive_Flags\%ARCHIVEFLAGBASE%_%@EVAL[%BLDNUM-3].txt
+delay %DELAYTIME
+
+echo.
+echo *****************************************************
+echo Generating text for build complete email...
+echo *****************************************************
+echo.
+delay %DELAYTIME
+
+TEXT > %INIT_DIR\endsuccess.txt
+Team,
+
+!prod_name! CM Build #!buildnumber! is fully complete and archived.
+Metrics have been posted as well at the following location(s):
+
+\\ussm-cpd:
+
+\Unreleased_Builds\NAV\!prodversion!-devbuild\!buildnumber!\metrics
+
+Please use your Symcorp account to access this area.
+
+
+Please let me know if there are any problems with the build.
+
+
+   -!BUILDER_SHORT!
+___________________________________________________________________
+     !BUILDER!, Configuration Management
+
+ENDTEXT
+
+
+@call python r:\cm\sr.py %INIT_DIR\endsuccess.txt "!buildnumber!" "%BLDNUM"
+@call python r:\cm\sr.py %INIT_DIR\endsuccess.txt "!prod_name!" "%PRODNAME"
+@call python r:\cm\sr.py %INIT_DIR\endsuccess.txt "!BUILDER!" "%BUILDER%"
+@call python r:\cm\sr.py %INIT_DIR\endsuccess.txt "!BUILDER_SHORT!" "%BUILDER_SHORT%"
+@call python r:\cm\sr.py %INIT_DIR\endsuccess.txt "!prodversion!" "%PRODVERSION%"
+
+echo.
+echo *****************************************************
+echo Sending out build complete email...
+echo *****************************************************
+echo.
+delay %DELAYTIME
+
+echo call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM is complete" %INIT_DIR\endsuccess.txt /q /s
+call python r:\cm\sendmail.py %INIT_DIR\%MAILLISTFILE "CM Build Notification: %PRODNAME Build %BLDNUM is complete" %INIT_DIR\endsuccess.txt /q /s
+
+echo.
+echo ********************************************************
+echo Making database entry for good build...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+echo.
+echo ********************************************************
+echo Setting finish time...
+echo ********************************************************
+echo.
+delay %DELAYTIME
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+
+call gettime finish
+
+iff "%TESTMODE" eq "yes" then
+  echo.
+  echo TESTMODE:  Skipping database entry...
+  echo.
+  delay %DELAYTIME
+  goto /i spacecalc
+endiff
+
+echo.
+echo ********************************************************
+echo Adding database record for good build...
+echo ********************************************************
+
+: Execute this code on a good build
+
+echo bld_pass_fail="pass"                            >> %bld_info_file%
+echo bld_comments="Build went smoothly, no problems" >> %bld_info_file%
+echo bld_milestone="N"                               >> %bld_info_file%
+echo bld_environment=environment.txt                 >> %bld_info_file%
+set > environment.txt
+
+:: once you are done:
+:: call the driver script with create_insert as a parameter.  This tells it to create the sql insert file and names
+:: it based on the second parameter
+
+echo.
+echo Creating the insertion record...
+echo.
+
+python %TOOLSDIR%\cm\bldhist_driver.py create_insert %bld_insert%.sql
+
+:: check for error
+if errorlevel != 0 goto CREATE_INSERT_ERROR
+
+echo.
+echo Adding the record to the database...
+echo.
+
+echo python %TOOLSDIR%\cm\bldhist_driver.py perform_insert %bld_insert%.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+python %TOOLSDIR%\cm\bldhist_driver.py perform_insert %bld_insert%.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+
+:: check for error
+if errorlevel != 0 goto PERFORM_INSERT_ERROR
+
+:: It is a good idea to store the .sql file and your %bld_info_file% with your build archive to track 
+:: down things in the future
+
+:spacecalc
+rem *******************************************************************
+rem   Space calculations
+rem *******************************************************************
+
+set SPACEAFTERBUILD=%@diskfree[%BUILD_DRIVE%,m]
+set SPACEUSEDCURR=%@EVAL[%SPACEAFTERDELETE%-%SPACEAFTERBUILD%]
+
+echo Space freed by delete of previous BE:     %SPACEFREEDUP
+echo Space used by current build # %BLDNUM:        %SPACEUSEDCURR
+
+goto done
+
+rem *******************************************************************
+rem     Subroutines
+rem *******************************************************************
+
+:lookatlogs
+echo.
+echo Looking...
+echo.
+delay %DELAYTIME
+
+iff exist %INIT_DIR\%FOUND_ERRS% then
+  echo Deleting previous %INIT_DIR\%FOUND_ERRS%...
+  del %INIT_DIR\%FOUND_ERRS%
+  echo.
+endiff  
+
+: echo out all strings that say error
+
+echo.
+echo *******************
+echo Project summary
+echo *******************
+echo.
+
+r:\cm\grep.exe -i "error(s)" %LOGNAME
+echo.
+
+: Now, grab all the actual error strings and put them in the %INIT_DIR\%FOUND_ERRS% file.
+
+echo Grabbing valid error strings...
+echo.
+
+rem "[^0] error(s)" doesn't work because there are some non-error strings like that.
+
+r:\cm\grep.exe -i "[1-9] error(s)" %LOGNAME > %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "10 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "20 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "30 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "40 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "50 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "60 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "70 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "80 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "90 error(s)" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe "Error:" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "fatal error" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "syntax error" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "*** ERROR(S) IN BUILD!! ***" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "Error:  The license data could not be loaded from the server" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+r:\cm\grep.exe -i "The wrapping process failed" %LOGNAME >> %INIT_DIR\%FOUND_ERRS%
+
+echo.
+
+iff %@filesize[%INIT_DIR\%FOUND_ERRS%] gt 0 then
+  echo "Errors were found..."
+  delay %DELAYTIME
+  cat %INIT_DIR\%FOUND_ERRS%
+  echo.
+endiff  
+
+return
+
+rem *********************************
+rem   env_save
+rem *********************************
+
+:-------------------------------------------------------------------------
+: Save Environment Variables
+:-------------------------------------------------------------------------
+:env_save
+echo Saving path, lib, and include variables...
+echo.
+delay %DELAYTIME
+set orig_path=%path%
+set orig_lib=%lib%
+set orig_include=%include%
+echo.
+echo Saved path, lib, include variables.
+echo.
+delay %DELAYTIME
+return
+
+
+rem *********************************
+rem   env_restore
+rem *********************************
+
+:-------------------------------------------------------------------------
+: Restore Environment Variables
+:-------------------------------------------------------------------------
+:env_restore
+echo Restoring path, lib, and include...
+echo.
+delay %DELAYTIME
+set path=%orig_path%
+set lib=%orig_lib%
+set include=%orig_include%
+echo.
+echo Restored path, lib, include.
+echo.
+delay %DELAYTIME
+return
+
+:CREATE_INSERT_ERROR
+echo.
+echo There was a database insert error.  Please notify the CM Database administrator.
+echo.
+%TERMINATIONCMD 
+
+:PERFORM_INSERT_ERROR
+echo.
+echo There was a database insert error.  Please notify the CM Database administrator.
+echo.
+%TERMINATIONCMD 
+
+:usage
+echo.
+echo %0 starts the automated %PRODNAME build
+echo.
+echo This script is to be run by CM personnel only.
+echo.
+echo Usage:
+echo.
+echo %0 build_num
+echo.
+echo build_num is required.
+echo.
+echo Example:
+echo            %0 15
+echo.
+echo            starts build # 15.
+echo.
+echo.
+%TERMINATIONCMD 
+
+:DONE
+
+echo.
+echo ************************************************************
+echo %PRODNAME # %BLDNUM is complete.
+echo ************************************************************
+echo.
+echo.
+echo Build started:     %bld_start_time%
+echo Build finished:    %bld_finish_time%
+
+%TERMINATIONCMD %EXIT_CODE

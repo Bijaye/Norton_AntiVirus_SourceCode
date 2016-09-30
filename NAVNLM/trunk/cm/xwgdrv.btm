@@ -1,0 +1,145 @@
+@echo off
+if %2 == "" GOTO HELP
+cdd %workdir%
+:: Are we running under NT?
+iff "%_dos%" == "NT" then
+    set __hold=/PERSISTENT:NO
+    if %3 == C .or. %3 == CORE GOTO CORENT
+    if %3 == A .or. %3 == AVCORE GOTO AVCORENT
+    if %3 == I .or. %3 == XWING GOTO XWINGNT
+    if %product == CORE GOTO CORENT
+    if %product == AVCORE GOTO AVCORENT
+    if %product == XWING GOTO XWINGNT
+else
+    if %3 == C .or. %3 == CORE GOTO CORE
+    if %3 == A .or. %3 == AVCORE GOTO AVCORE
+    if %3 == I .or. %3 == XWING GOTO XWING
+    if %product == CORE GOTO CORE
+    if %product == AVCORE GOTO AVCORE
+    if %product == XWING GOTO XWING
+endiff
+
+GOTO HELP
+
+
+:CORENT
+net use i: /d > nul
+net use l: /d > nul
+net use m: /d > nul
+net use n: /d > nul
+net use s: /d > nul
+net use t: /d > nul
+net use v: /d > nul
+net use s: \\USSM-DEV1\VOL3\BLD_AREA\CORE.%2\CORE\SOURCE %__hold% > nul
+net use n: \\USSM-DEV1\VOL3\BLD_AREA\CORE.%2\CORE\%LANG% %__hold% > nul
+net use m: \\USSM-DEV3\quake\core %__hold% > nul
+prompt [CORE.%2 XWING.%1] $p$g
+GOTO END
+
+
+:CORE
+echo y|map del i: > nul
+echo y|map del l: > nul
+echo y|map del m: > nul
+echo y|map del n: > nul
+echo y|map del s: > nul
+echo y|map del t: > nul
+echo y|map del v: > nul
+cls
+echo y|map root s:=USSM-DEV1\VOL3:BLD_AREA\CORE.%2\CORE\SOURCE
+echo y|map root n:=USSM-DEV1\VOL3:BLD_AREA\CORE.%2\CORE\%LANG%
+echo y|map root m:=USSM-DEV3\QUAKE:CORE
+prompt [CORE.%2 XWING.%1] $p$g
+GOTO END
+
+
+:AVCORENT
+net use i: /d > nul
+net use l: /d > nul
+net use m: /d > nul
+net use n: /d > nul
+net use s: /d > nul
+net use t: /d > nul
+net use v: /d > nul
+net use m: \\USSM-DEV1\VOL1\NAV\AVCORE %__hold% > nul
+net use s: \\USSM-DEV1\VOL3\BLD_AREA\XWING.%1\AVCORE\SOURCE %__hold%  > nul
+net use n: \\USSM-DEV1\VOL3\BLD_AREA\XWING.%1\AVCORE\%LANG% %__hold%  > nul
+net use l: \\USSM-DEV1\VOL3\BLD_AREA\CORE.%2\CORE %__hold% > nul
+prompt [AVCORE XWING.%1] $p$g
+GOTO END
+
+:AVCORE
+echo y|map del i: > nul
+echo y|map del l: > nul
+echo y|map del m: > nul
+echo y|map del n: > nul
+echo y|map del s: > nul
+echo y|map del t: > nul
+echo y|map del v: > nul
+cls
+echo y|map root m:=USSM-DEV1\VOL1:NAV\AVCORE
+echo y|map root s:=USSM-DEV1\VOL3:BLD_AREA\XWING.%1\AVCORE\SOURCE
+echo y|map root n:=USSM-DEV1\VOL3:BLD_AREA\XWING.%1\AVCORE\%LANG%
+echo y|map root l:=USSM-DEV1\VOL3:BLD_AREA\CORE.%2\CORE
+prompt [AVCORE XWING.%1] $p$g
+GOTO END
+
+:XWINGNT
+net use i: /d > nul
+net use l: /d > nul
+net use m: /d > nul
+net use n: /d > nul
+net use s: /d > nul
+net use t: /d > nul
+net use v: /d > nul
+net use m: \\USSM-DEV1\VOL1\NAV\XWING %__hold% > nul
+net use s: \\USSM-DEV1\VOL3\BLD_AREA\XWING.%1\XWING\SOURCE %__hold%  > nul
+net use n: \\USSM-DEV1\VOL3\BLD_AREA\XWING.%1\XWING\%LANG% %__hold%  > nul
+net use t: \\USSM-DEV1\VOL3\BLD_AREA\XWING.%1\AVCORE %__hold%  > nul
+net use l: \\USSM-DEV1\VOL3\BLD_AREA\CORE.%2\CORE %__hold% > nul
+prompt [XWING XWING.%1] $p$g
+GOTO END
+
+:XWING
+echo y|map del i: > nul
+echo y|map del l: > nul
+echo y|map del m: > nul
+echo y|map del n: > nul
+echo y|map del s: > nul
+echo y|map del t: > nul
+echo y|map del v: > nul
+cls
+echo y|map root m:=USSM-DEV1\VOL1:NAV\XWING
+echo y|map root s:=USSM-DEV1\VOL3:BLD_AREA\XWING.%1\XWING\SOURCE
+echo y|map root n:=USSM-DEV1\VOL3:BLD_AREA\XWING.%1\XWING\%LANG%
+echo y|map root t:=USSM-DEV1\VOL3:BLD_AREA\XWING.%1\AVCORE
+echo y|map root l:=USSM-DEV1\VOL3:BLD_AREA\CORE.%2\CORE
+prompt [XWING XWING.%1] $p$g
+GOTO END
+
+:HELP
+cls
+echo.
+echo.
+echo ilidrv can use two arguments or three "ilidrv <bldnum> <core_num> <prod_area>"
+echo If you have env'ed to an associated product area then
+echo the batch file will use the current product variable.
+echo Example:  ilidrv 05 01
+echo.
+echo If you are not env'ed, or if you want to access another
+echo product area, you can specify a particular product area
+echo at the end of the command line.
+echo Example: ilidrv 05 01 CORE or "C"
+echo Example: ilidrv 05 01 AVCORE or "A"
+echo.
+echo Note this only works for valid products associated with
+echo the current build.  For XWING, these products are
+echo CORE, AVCORE, and XWING.
+echo.
+quit
+
+:END
+iff "%_dos%" == "NT" then
+    cls
+    net use
+endiff

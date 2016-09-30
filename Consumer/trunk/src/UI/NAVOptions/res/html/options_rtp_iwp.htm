@@ -1,0 +1,129 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+        <title id="sys_ap_title">Norton Antivirus Real-Time Protection: Internet Worm Protection</title>
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script language="javascript" src="options.js"></script>
+    </head>
+    <BODY class="clsDetails" id="body_options_rtp_iwp" onhelp="parent.CurrentPage.Help();"
+        tabIndex="-1" bottomMargin="0" leftMargin="5" topMargin="5" scroll="no" onLoad="parent.CurrentPage = new WormProtectionPage();">
+        <IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+            SRC="options_errorid.htm"></IFRAME>
+        <script Language="JavaScript" src="options_rtp_iwp.js"></script>
+        <script Language="JavaScript" src="res://IWP\\niscmnht.dll/shared.js"></script>
+        <link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+
+        <div class="optionpage_header">
+			REAL-TIME PROTECTION:&nbsp;Internet Worm Protection
+	   </div>
+
+        <form name="options_rtp_iwp">
+            	<div class="optiongroup_header">
+            		How to stay protected from certain Internet worm attacks
+            	</div>
+            	<div class="optiongroup">
+	            	<div id="s_IWP_Enabled" class="rf_option">
+	            		<input type="checkbox"
+	            			id="IWP_Enabled"
+	            			name="IWP_Enabled"
+	            			onpropertychange="EnableIWP()" accesskey="T" />
+					<span id="n1"><u>T</u>urn on Internet Worm Protection</span>
+	            	</div>
+	            	<div id="s_IWP_Trust" class="rf_option">
+	            		<input type="checkbox"
+	            			id="IWP_Trust"
+	            			name="IWP_Trust"
+	            			accesskey="R" />
+					<span id="n2">T<u>r</u>ust local networks</span>
+	            	</div>
+	            	<br />
+	            	<div id="s_Configure_IWP_Exclusions"  class="rf_option">
+	            		<button id="Configure_IWP_Exclusions"
+	            			name="Configure_IWP_Exclusions"
+							onMouseOver="ButtonMouseOver(this); return false;"
+							onMouseOut="ButtonMouseOut(this); return false;"
+							onMouseDown="ButtonMouseDown(this); return false;"
+							onKeyDown="ButtonKeyDown(this);"
+							onKeyUp="ButtonKeyUp(this);"
+							onFocus="ButtonFocus(this); return false;"
+							onBlur="ButtonBlur(this); return false;"
+	            			class="navOpts_btmBttn_loc"
+	            			onclick="ConfigureExclusions(); this.focus();" accesskey="n">
+	                   	Co<u>n</u>figure...
+	                    </button>
+	            	</div>
+            	</div>
+            	<br />
+            	<br />
+            	<div class="optiongroup_header">
+				How to customize your settings
+            	</div>
+            	<br />
+            	<div class="optiongroup">
+	            	<div id="s_Configure_Application_Rules" class="rf_option">
+						<button id="Configure_Application_Rules"
+							name="Configure_Application_Rules"
+							onMouseOver="ButtonMouseOver(this); return false;"
+							onMouseOut="ButtonMouseOut(this); return false;"
+							onMouseDown="ButtonMouseDown(this); return false;"
+							onKeyDown="ButtonKeyDown(this);"
+							onKeyUp="ButtonKeyUp(this);"
+							onFocus="ButtonFocus(this); return false;"
+							onBlur="ButtonBlur(this); return false;"
+							class="navOpts_btmBttn_loc"
+							onclick="ConfigureApplication(); this.focus();"
+	                        accesskey="p">
+	                        <u>P</u>rogram Control
+	                    </button>
+	            	</div>
+	            	<br />
+					<div id="s_Configure_General_Rules"  class="rf_option">
+	            		<button id="Configure_General_Rules"
+	            			name="Configure_General_Rules"
+							onMouseOver="ButtonMouseOver(this); return false;"
+							onMouseOut="ButtonMouseOut(this); return false;"
+							onMouseDown="ButtonMouseDown(this); return false;"
+							onKeyDown="ButtonKeyDown(this);"
+							onKeyUp="ButtonKeyUp(this);"
+							onFocus="ButtonFocus(this); return false;"
+							onBlur="ButtonBlur(this); return false;"
+	            			class="navOpts_btmBttn_loc"
+	            			onclick="ConfigureGeneral(); this.focus();"
+	            			accesskey="g">
+	            			<u>G</u>eneral Rules
+	            		</button>
+	            	</div>
+	            	<br />
+					<div id="s_Configure_AutoBlock"  class="rf_option">
+	            		<button id="Configure_AutoBlock"
+	            			name="Configure_AutoBlock"
+							onMouseOver="ButtonMouseOver(this); return false;"
+							onMouseOut="ButtonMouseOut(this); return false;"
+							onMouseDown="ButtonMouseDown(this); return false;"
+							onKeyDown="ButtonKeyDown(this);"
+							onKeyUp="ButtonKeyUp(this);"
+							onFocus="ButtonFocus(this); return false;"
+							onBlur="ButtonBlur(this); return false;"
+	            			class="navOpts_btmBttn_loc"
+	            			onclick="ConfigureAutoBlock(); this.focus();"
+	            			accesskey="b">
+	            			Auto<u>B</u>lock
+	            		</button>
+	            	</div>
+	            	<br />
+	            	<span id="WormProtectionDisabled" class="warningMsg" style="display:none">
+	            		Internet Worm Protection has been upgraded to use your Symantec firewall program, which provides greater protection for your computer.
+	            	</span>
+			</div>
+		</form>
+    </body>
+</html>

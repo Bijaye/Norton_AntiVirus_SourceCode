@@ -1,0 +1,216 @@
+#!/bin/sh
+
+# If the USE_TCSSTL environment variable is present, use the TCSSTL library.
+if [ "$USE_TCSSTL" != "" ]
+then
+    STL_PATH="-I$(EXTRA_DEPTH)../Solaris/tcsstl"
+fi
+
+# Construct the targets.lst file for the current platform/hardware.
+maketargets
+
+# Determine which platform we are running on...
+case `uname` in
+    SunOS)
+        TARGET_PLATFORM=solaris
+        TARGET_DIR=./solaris
+        MAKER=/usr/local/bin/make
+        ;;
+    Linux)
+        TARGET_PLATFORM=linux
+        TARGET_DIR=./linux
+        MAKER=/usr/bin/make
+        ;;
+    AIX)
+        TARGET_PLATFORM=aix
+        TARGET_DIR=./aix
+        MAKER=make
+        ;;
+    FreeBSD)
+        TARGET_PLATFORM=freebsd
+        TARGET_DIR=./freebsd
+        MAKER=/usr/bin/make
+        ;;
+    *)
+        TARGET_PLATFORM=unknown
+        ;;
+esac
+
+# Determine which hardware we are running on...
+case `uname -m` in
+    i386|i486|i586|i686)
+        TARGET_CPU=intel
+        TARGET_ENDIAN=-DCPU_LITTLE_ENDIAN
+        ;;
+    sun4u)
+        TARGET_CPU=sparc
+        TARGET_ENDIAN=-DCPU_BIG_ENDIAN
+        ;;
+    *)
+        TARGET_CPU=powerpc
+        TARGET_ENDIAN=-DCPU_BIG_ENDIAN
+        ;;
+esac
+
+BT_PLAT=$TARGET_DIR/$TARGET_PLATFORM
+
+# If "PIC" is passed in, do the build using position-independent code
+# (for shared-objects).
+if [ "$1" != "" ]
+then
+    TARGET_PIC=pic
+    BUILD_PIC=-f$1
+    TARGET_PLATFORM_PIC=$TARGET_PLATFORM$TARGET_PIC
+else
+    TARGET_PLATFORM_PIC=$TARGET_PLATFORM
+fi
+
+if [ "$TARGET_PLATFORM" = "unknown" ] || [ "$TARGET_CPU" = "unknown" ]
+then
+    echo "ERROR: Unknown platform or CPU for this build!"
+else
+    TARGET_OUTPUT=$TARGET_PLATFORM$TARGET_CPU$TARGET_PIC
+    PLAT_MAKEFILE=$BT_PLAT.mak
+
+    if [ -z "$USE_MEMWATCH" ]
+    then
+        echo 'USE_MEMWATCH not defined.  Setting to "no".'
+	echo ""
+        USE_MEMWATCH=no
+        export USE_MEMWATCH
+    fi
+
+    #echo 'USE_MEMWATCH defined to ' $USE_MEMWATCH
+
+    case $USE_MEMWATCH in
+	Y|y|Yes|yes|YES|T|t|True|true|TRUE)
+            # USE_MEMWATCH can be any of "Y" "Yes" "YES"
+            # "T" "True" "TRUE" to enable MEMWATCH
+            MEMWATCHFLAG="-DMEMWATCH"
+            export MEMWATCHFLAG
+            ;;
+
+        # All other defs of USE_MEMWATCH turn things off.
+        *)
+            MEMWATCHFLAG="-DNOMEMWATCH"
+            export MEMWATCHFLAG
+            ;;
+    esac
+
+    if [ "$TARGET_PLATFORM" = "aix" ]
+    then
+        DEBUGFLAGS="-O2 -Q!"
+        export DEBUGFLAGS
+    else
+        DEBUGFLAGS="-O3"
+        export DEBUGFLAGS
+    fi
+
+    export TARGET_PLATFORM
+
+    if [ "$MSG_HEADER" = "" ]
+    then
+        MSG_HEADER=`echo 'Module_Name'  | awk '{print sprintf( "%-17s |Error|Sever|Info |Warn |NoRec|LD Wa|LD Er|Others",  $1 ) }'`
+	#MSG_HEADER='                |Error|Sever| Warn| Info|NoRec| LD W| LD E|Others'
+	echo "$MSG_HEADER"
+    fi
+
+    ### Start all project builds from the root of the Decomposer branch...
+    ### The following directory change takes us down one level from the CM directory.
+    cm_dir=`pwd`
+    cd ..
+    for target in `cat $cm_dir/targets.lst`
+    do
+        if [ "$target" = "." ]
+        then
+            targetdir=`pwd`
+            target=`basename $targetdir`
+        else
+            targetdir=$target
+        fi
+
+        save_dir=`pwd`
+        cd $targetdir
+        #REM echo Building project: $target
+        #REM echo ${MAKER} -f $PLAT_MAKEFILE PLATFORM=$TARGET_PLATFORM $*
+        #REM echo "$MSG_HEADER"
+        ${MAKER} -f $PLAT_MAKEFILE USE_STL_PATH=$STL_PATH ENDIAN=$TARGET_ENDIAN PLATFORM=$TARGET_PLATFORM PLATFORMPIC=$TARGET_PLATFORM_PIC USEPIC=$BUILD_PIC >make.err 2>&1
+
+        if [ "$TARGET_PLATFORM" = "linux" ]
+        then
+            MSG_INFO="0"
+            MSG_SEVERE="0"
+            MSG_UNREC="0"
+            MSG_LDW="0"
+            MSG_LDE=`grep "ld\: fatal" make.err | wc -l`
+            MSG_OTHER=`grep -v "ld\:" make.err | grep fatal | wc -l`
+            MSG_ERROR=`grep -v "warning\:" make.err | grep "\:[0-9]*\: " | wc -l`
+            MSG_WARN=`grep warning make.err | wc -l`
+        fi
+
+        if [ "$TARGET_PLATFORM" = "freebsd" ]
+        then
+            MSG_INFO="0"
+            MSG_SEVERE="0"
+            MSG_UNREC="0"
+            MSG_LDW="0"
+            MSG_LDE=`grep "ld\: fatal" make.err | wc -l`
+            MSG_OTHER=`grep -v "ld\:" make.err | grep fatal | wc -l`
+            MSG_ERROR=`grep -v "warning\:" make.err | grep "\:[0-9]*\: " | wc -l`
+            MSG_WARN=`grep warning make.err | wc -l`
+        fi
+
+        if [ "$TARGET_PLATFORM" = "solaris" ]
+        then
+            MSG_INFO="0"
+            MSG_SEVERE="0"
+            MSG_UNREC="0"
+            MSG_LDW="0"
+            MSG_LDE=`grep "ld\: fatal" make.err | wc -l`
+            MSG_OTHER=`grep -v "ld\:" make.err | grep fatal | wc -l`
+            MSG_ERROR=`grep -v "warning\:" make.err | grep "\:[0-9]*\: " | wc -l`
+            MSG_WARN=`grep warning make.err | wc -l`
+        fi
+
+        if [ "$TARGET_PLATFORM" = "aix" ]
+        then
+            MSG_INFO=`grep \(I\) make.err | wc -l`
+            MSG_WARN=`grep \(W\) make.err | wc -l`
+            MSG_ERROR=`grep \(E\) make.err | wc -l`
+            MSG_SEVERE=`grep \(S\) make.err | wc -l`
+            MSG_UNREC=`grep \(U\) make.err | wc -l`
+            MSG_LDW=`grep ^ld.*WARNING make.err | wc -l`
+            MSG_LDE=`grep ^ld.*ERROR make.err | wc -l`
+            MSG_OTHER=`grep "\ [Ee]rror[: ]" make.err | wc -l`
+        fi
+
+        echo $target $MSG_ERROR $MSG_SEVERE $MSG_INFO $MSG_WARN $MSG_UNREC $MSG_LDW $MSG_LDE $MSG_OTHER | awk '{ print sprintf( "%-17s | %3d | %3d | %3d | %3d | %3d | %3d | %3d | %3d", $1, $2, $3, $4, $5, $6, $7, $8, $9 ) }'
+
+        cd $save_dir
+    done
+
+    echo Stripping symbols...
+    echo
+
+    strip ./bin/$TARGET_PLATFORM/release/*
+
+    if [ ! -d ./Shared/lib/$TARGET_PLATFORM/release ] ; then
+        mkdir -p ./Shared/lib/$TARGET_PLATFORM/release
+    fi
+
+    if [ ! -d ./Shared/bin/$TARGET_PLATFORM/release ] ; then
+        mkdir -p ./Shared/bin/$TARGET_PLATFORM/release
+    fi
+
+    echo Moving files from $TARGET_PLATFORM to release directory...
+
+    rm -f ./Shared/lib/$TARGET_PLATFORM/release/* 
+    rm -f ./Shared/bin/$TARGET_PLATFORM/release/*    
+    cp ./lib/$TARGET_PLATFORM/release/lib* ./Shared/lib/$TARGET_PLATFORM/release/
+    cp ./bin/$TARGET_PLATFORM/release/* ./Shared/bin/$TARGET_PLATFORM/release/
+#   rm -f ./lib/$TARGET_PLATFORM/release/lib*
+#   rm -f ./bin/$TARGET_PLATFORM/release/*
+
+    cd $cm_dir
+fi
+

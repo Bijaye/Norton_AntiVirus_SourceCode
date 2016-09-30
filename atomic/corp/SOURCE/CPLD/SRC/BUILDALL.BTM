@@ -1,0 +1,62 @@
+::
+:: $Header:   S:/cpld/VCS/buildall.btv   1.0   06 Feb 1997 20:50:24   RFULLER  $
+::
+:: This file performs mkupdate's for all targets of the CPLD project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/cpld/VCS/buildall.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 20:50:24   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:57:04   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 10:10:06   BARRY
+:  Initial revision.
+:  
+:     Rev 1.2   11 Jul 1994 20:39:00   DALLEE
+:  Changed 'bproj' to 'proj'.
+:  
+:     Rev 1.1   11 Jul 1994 20:29:58   DALLEE
+:  Build for two platforms - DOS, DX
+:  
+:     Rev 1.0   27 Apr 1994 14:19:26   DALLEE
+:  Initial revision.
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+
+                                        :: Build each target for each platform.
+set __Plat=DOS
+for %__Targ in (NAV NAVNET) do gosub Build_It
+
+set __Plat=DX
+for %__Targ in (NAV NAVNET) do gosub Build_It
+
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+if "%__Targ" != "" unset __Targ
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call proj cpld %__Plat %__Targ
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

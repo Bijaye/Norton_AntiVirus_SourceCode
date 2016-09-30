@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+
+
+<META HTTP-EQUIV="Content-Type" content="text/html; charset=iso-8859-1">
+<META NAME="Copyright" Content="Copyright 2005 Symantec Corporation">
+	
+<!-- Symantec Client Security Web Based Installation -->
+<!-- Copyright 2005 Symantec Corporation -->
+
+<TITLE>Web Deployment Tool</TITLE>
+
+<SCRIPT>
+<!--
+function TestSupportingPlatform()
+{
+    var ThisPlatform = navigator.userAgent ;
+
+    var i = ThisPlatform.indexOf("Windows", 0);
+    var ver ;
+
+    var ThisBrowserName = navigator.appName ;
+    var iBrowser = ThisBrowserName.indexOf("Microsoft Internet Explorer",0);
+    if( iBrowser == -1)
+    {
+        // We only support Microsoft Internet Explorer
+        location.href="brnotsup.htm";
+    }
+    else
+    {
+        // Its I.E., Test I.E. version, we support only v4.0 or higher
+        var szThisBrowserVersion = navigator.appVersion ;
+        var iVersionStart = szThisBrowserVersion.indexOf("MSIE", 0 );
+        if ( iVersionStart == -1 )
+        {
+            location.href="brnotsup.htm";
+        }
+        else
+        {
+            var iVersionEnd = szThisBrowserVersion.indexOf(".", iVersionStart );
+            var szVersionSubString = szThisBrowserVersion.substring(iVersionStart+5, iVersionEnd) ;
+            var iValue = parseInt(szVersionSubString);
+            if ( iValue < 4 )
+            {
+                // IE version is less than 4.0 
+                location.href="brnotsup.htm";
+            }
+            else
+            {
+                if ( i == -1 )
+                {
+                    i = ThisPlatform.indexOf("Win", 0);			
+                    ver = ThisPlatform.substring(i+3, i+3+2);
+                }
+                else
+                {
+                    ver = ThisPlatform.substring(i+8, i+8+2);
+                }
+
+                if ( i == 0 )
+                {
+                    location.href="plnotsup.htm";
+                }
+                else if (ver =="NT")
+                {
+                    location.href="intro.htm";
+                } 
+                else 
+                {
+                    location.href="plnotsup.htm";
+                }
+            }
+        }
+    }
+}
+//-->
+</SCRIPT>
+</HEAD>
+
+<BODY bgcolor="#FFFFFF">
+<p>
+<SCRIPT>
+<!--
+TestSupportingPlatform()
+//-->
+</SCRIPT><B>This browser does not support JavaScript. Please use Microsoft Internet Explorer version 5.5 Service Pack 2 or higher. <br>
+Installing Symantec Client Security or Symantec AntiVirus Corporate Edition requires Microsoft Internet Explorer 5.5 Service Pack 2 or later.<br>
+        If you need assistance, contact your system administrator or help desk staff.
+    </B>
+</NOSCRIPT>
+
+</BODY>
+</HTML>

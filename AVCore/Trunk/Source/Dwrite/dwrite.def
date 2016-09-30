@@ -1,0 +1,27 @@
+; Copyright 1998 Symantec Corporation                                   #
+;########################################################################
+;                                                                       #
+; $Header:   S:/NAVAPIST.QA/VCS/stscan.dev   1.1   19 Aug 1998 15:57:52   mmendon  $ #
+;                                                                       #
+;########################################################################
+; $Log:   S:/NAVAPIST.QA/VCS/stscan.dev  $ #
+;  
+;     Rev 1.1   19 Aug 1998 15:57:52   mmendon
+;  Doubled stack size because of stack overflow problem
+;
+;     Rev 1.0   10 Aug 1998 12:25:02   NMILLER
+;  Initial revision.
+;
+;########################################################################
+
+NAME
+
+DESCRIPTION    'DWRITE32'
+EXETYPE        WINDOWS
+STUB           'WINSTUB.EXE'
+CODE           PRELOAD MOVEABLE DISCARDABLE
+DATA           PRELOAD MOVEABLE MULTIPLE
+HEAPSIZE       1024
+STACKSIZE      16384
+
+IMPORTS         _DebugOutput=KERNEL.328

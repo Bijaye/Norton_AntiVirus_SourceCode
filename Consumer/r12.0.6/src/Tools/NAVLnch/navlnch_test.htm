@@ -1,0 +1,130 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Scheduler data</title>
+</head>
+
+<object classid="clsid:51CD5322-C0EC-4513-BCEF-1C9B2EC88719" id="Launcher" width="0" height="0">
+</object>
+
+<body onload="onLoad()">
+
+//FD26F288-761B-4E23-860D-D6C31151F24A
+
+<object classid="clsid:085ABFE2-D753-445C-8A2A-D4BD46CE0811" id="Options" width="0" height="0">
+</object>
+
+<script language="JavaScript">
+
+function onLoad ()
+{
+	GetLUInstalled ();
+	GetRDInstalled ();
+}
+
+function GetLUInstalled ()
+{
+	var bInstalled = Launcher.IsLiveUpdateInstalled;
+	if ( bInstalled == 1 )
+	{
+		document.all.LiveUpdateInstalled.innerText = "Yes";
+	}
+	else
+	{
+		document.all.LiveUpdateInstalled.innerText = "No";
+	}
+	
+}
+
+function GetRDInstalled ()
+{
+	var bInstalled = Launcher.IsRescueDiskInstalled;
+	if ( bInstalled == 1 )
+	{
+		document.all.RescueDiskInstalled.innerText = "Yes";
+	}
+	else
+	{
+		document.all.RescueDiskInstalled.innerText = "No";
+	}
+}
+
+function LaunchQuarantine ()
+{
+	Launcher.LaunchQuarantine ();
+}
+
+function LaunchRescueDisk ()
+{
+	Launcher.LaunchRescueDisk ();
+}
+
+function LaunchLiveUpdate ()
+{
+	Launcher.LaunchLiveUpdate ();
+}
+
+function LaunchOptions ()
+{
+	//Launcher.LaunchOptions ();
+	Options.Show();
+}
+
+function LaunchEmailProxy ()
+{	
+	Launcher.LaunchEmailProxy ();
+}
+
+</script>
+
+<p align="center"><font face="Arial">NAV Launcher object</font></p>
+<p align="center"><font face="Arial">Test app</font></p>
+<div align="center">
+  <center>
+  <table border="0" width="517">
+    <tr>
+      <td width="145"><font face="Arial" size="2">LiveUpdate installed?</font></td>
+      <td ID=LiveUpdateInstalled style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"><font face="Arial" size="2">No</font></td>
+      <td onClick="GetLiveUpdateInstalled()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Refresh</u></font></td>
+    </tr>
+    <tr>
+      <td width="145"><font face="Arial" size="2">RescueDisk installed?</font></td>
+      <td ID=RescueDiskInstalled style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"><font face="Arial" size="2">No</font></td>
+      <td onClick="GetRescueDiskInstalled()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Refresh</u></font></td>
+    </tr>
+    <tr>
+      <td width="145"><font face="Arial" size="2">Quarantine</font></td>
+      <td style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"></td>
+      <td onClick="LaunchQuarantine()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Launch</u></font></td>
+    </tr>
+    <tr>
+      <td width="145"><font face="Arial" size="2">Rescue Disk</font></td>
+      <td style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"></td>
+      <td onClick="LaunchRescueDisk()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Launch</u></font></td>
+    </tr>
+    <tr>
+      <td width="145"><font face="Arial" size="2">LiveUpdate</font></td>
+      <td style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"></td>
+      <td onClick="LaunchLiveUpdate()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Launch</u></font></td>
+    </tr>
+    <tr>
+      <td width="145"><font face="Arial" size="2">Options</font></td>
+      <td style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"></td>
+      <td onClick="LaunchOptions()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Launch</u></font></td>
+    </tr>
+    <tr>
+      <td width="145"><font face="Arial" size="2">Email Proxy</font></td>
+      <td style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="18"></td>
+      <td onClick="LaunchEmailProxy()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Launch</u></font></td>
+    </tr>
+  </table>
+  </center>
+</div>
+
+</body>
+
+</html>

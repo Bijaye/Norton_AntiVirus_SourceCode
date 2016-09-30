@@ -1,0 +1,88 @@
+#ScsCommsTest configuration file
+
+#mode: c for client, s for server
+mode=c
+
+#authentication mode: default for (s) is a, for (c) is r
+# r for root (verify certs to a root cert in the store)
+# n for name auth (verify cert to the name in the host param)
+# a for anonymous (no auth)
+auth=r
+
+#port: (s) port to listen on, (c) port to connect to
+port=5100
+
+#server_life_time: (s) time, in seconds, that the server runs
+#set to 0 for infinity
+server_life_time=0
+
+#host: (c) ip or host name to connect to
+host=BUGSBUNNY
+#host=127.0.0.1
+
+#client_channel: (c) communications channel to send messages on:
+#                (s) ignored -- the server listens on all channels
+# ssl == VDTM over SSL (the default)
+# udp == VDTM over LanDesk NTS (the legacy UDP)
+# ipc == VDTM over inter-process communication, the host and port settings will be ignored
+client_channel=ssl
+
+#client_thread_number: (c) number of client threads to spawn
+client_thread_count=1
+
+#client_thread_life_time: (c) time, in seconds, that each client thread runs on one connection
+#set to 0 for infinity
+client_thread_life_time=0
+
+#client_thread_share: (c) each client thread should share the same message manager object -- 0 for don't share, 1 for share -- default is don't share
+#                            this is used to test concurrency scenarios
+client_thread_share=0
+
+#delay: (c) msec that each client should sleep between sending messages
+#       (s) msec that a message handling thread should pause to simulate real message handling processing time
+delay=1000
+
+#client_timeout: (c) if ssl is the channel, number of seconds that the client will wait before timing out the send
+#                    if udp is the channel, number of retries that the client will send before giving up on the send
+client_timeout=300
+
+#msg_size_max and msg_size_min: range for test message sizes to test comms layer reliability with large messages
+#default for msg_size_max is 2048 -- the effective max is 65790
+#default for msg_size_min is sizeof(VDTM_HEADER) which is currently 24
+msg_size_max=4096
+msg_size_min=0
+
+#print_roles: (s) print roles from client certificate to stdout -- 0 for off, non-zero for on -- default is off
+print_roles=0
+
+#use_default_certs_and_keys: true to use the hardcoded, internal certs and keys, false to specify explicit certs and keys below
+use_default_certs_and_keys=false
+
+#names of certificates and associated private keys
+cert_store=C:\PerforceStaging\Almagest\Norton_AntiVirus\Corporate_Edition\Win32\src\ScsComms\ScsCommsTest\example_cert_store\
+
+#server cert chain -- (s) presents this chain
+#if server_cert is blank, server will run without presenting a cert
+#server_pk required if server_cert is not blank
+
+#server_cert=certs\BUGSBUNNY.00112233445566778899AABBCCDDEEFF.0.server.cer
+#server_pk=private-keys\BUGSBUNNY.00112233445566778899AABBCCDDEEFF.0.server.pvk
+#server_cert=
+
+#user login cert chain -- (c) presents this chain
+#if user_cert is blank, client will run without presenting a cert
+#user_pk required if user_cert is not blank
+
+#user_cert=user-admin.cer
+#user_cert=user-readonly.cer
+user_cert =
+#user_pk=user.pvk
+#login_ca_cert=certs\BUGSBUNNY.00112233445566778899AABBCCDDEEFF.0.loginca.cer
+#not used yet: login_ca_pk=private-keys\BUGSBUNNY.00112233445566778899AABBCCDDEEFF.0.loginca.pvk
+
+#root certs used by (s) and (c)
+#if a server or user login cert chain is specified above, root_ca_cert_0 MUST be the corresponding root for that chain
+root_ca_cert_0=roots\00112233445566778899AABBCCDDEEFF.0.servergroupca.cer
+root_ca_cert_1=roots\FFFFEEEEDDDDCCCCBBBBAAAA99998888.0.servergroupca.cer
+#not used yet: root_ca_pk_0=private-keys\00112233445566778899AABBCCDDEEFF.0.servergroupca.pvk
+#not used yet: root_ca_pk_1=private-keys\FFFFEEEEDDDDCCCCBBBBAAAA99998888.0.servergroupca.pvk

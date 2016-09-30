@@ -1,0 +1,46 @@
+; SAVServerCA.def : Declares the module parameters for the DLL.
+
+LIBRARY      "SAVServerCA"
+
+EXPORTS
+    ; Explicit exports can go here
+	AddNTShare								@1
+	MSICreateSAVServerShares				@2
+	MSIRemoveSAVServerShares				@3
+	MSIUpdateRemoteStatus					@4
+	MSISTS_INITIAL_MESSAGE					@5
+	MSISTS_STARTED_MESSAGE					@6	
+	MSISTS_COPYING_FILES					@7
+	MSISTS_UPDATING_REGISTRY				@8
+	MSISTS_ADDING_SHARES					@9
+	MSISTS_STARTING_SERVICE					@10
+	MSISTS_UPDATING_AMS2					@11
+	MSISTS_FINISHED_MESSAGE					@12
+	MSI_ERROR_ROLLBACK						@13
+	ProcessSettingsINI						@14
+	MSIFixUNCPATH							@15
+	MSISTS_FINISHED_AMS2					@16
+	MSIUnInstallAMSServerLegacy				@17
+	UpdateLoginDirFile						@18
+	StreamAMSCustdll						@19
+	FixupAMSMigration						@20
+	DebugEntryPoint							@21
+	EncryptConsolePass						@22
+	MSIRemoveVDB_Dirs						@23
+	MSIBackupServerGroupsDir				@24
+	MSIRestoreServerGroupsDir				@25
+	MSICreateDomainGuid						@26
+	CheckForPrimaryServer					@27
+	SetAllowUDPProtocol						@28
+	SetIsServerSecure						@29
+	MSISTS_ERROR_OLDSSC						@30
+	SAVServerCleanup						@31
+	TempSaveSAVHomeDirectory				@32
+	MsiClearAddressCache					@33
+	CopyServerCerts							@34
+	ModifyVPLOGONBAT						@35
+	MSIRemoveAmsVerFiles					@36
+	MSIRemoveAmsVerFilesRB					@37
+	MSIRemoveAmsTempDir						@38
+	MSIDetectSCSInstallers					@39
+	

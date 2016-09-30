@@ -1,0 +1,39 @@
+@echo off
+
+setlocal
+
+  iff "%platform%" == ".IDA" then
+       echo Building %PROJ%, "NavLuCbk - Win32 DEBUG"
+       rem
+       rem Clean the project first
+       rem
+       if "%1" == "-a" msdev "%PROJ%\src\navlucbk-w.dsw" /MAKE "NavLuCbk - Win32 DEBUG" /clean > MAKE.ERR
+       rem
+       rem Now build it
+       rem
+       msdev "%PROJ%\navlucbk-w.dsw" /MAKE "NavLuCbk - Win32 DEBUG" >> MAKE.ERR
+       set ret=%?%
+       type MAKE.ERR
+       If not %ret% == 0 copy make.err %LANGPRE%\errors\trunk\errors\NavLuCbk.ida
+       del make.err
+       copy %proj%\src\debug\*.lib %projpre%lib.ida
+       copy %proj%\src\debug\*.dll %projpre%bin.ida
+  else
+       echo Building %PROJ%, "NavLuCbk - Win32 Release"
+       rem
+       rem Clean the project first
+       rem
+       if "%1" == "-a" msdev "%PROJ%\src\NavLuCbk-w.dsw" /MAKE "NavLuCbk - Win32 Release" /clean > MAKE.ERR
+       rem
+       rem Now build it
+       rem
+       msdev "%PROJ%\src\NavLuCbk-w.dsw" /MAKE "NavLuCbk - Win32 Release" >> MAKE.ERR
+       set ret=%?%
+       type MAKE.ERR
+       if not %ret% == 0 copy make.err %LANGPRE%\errors\trunk\errors\NavLuCbk.ira
+       del make.err       
+       copy %proj%\src\release\*.lib %projpre%lib.ira
+       copy %proj%\src\release\*.dll %projpre%bin.ira
+  endiff     
+  
+endlocal

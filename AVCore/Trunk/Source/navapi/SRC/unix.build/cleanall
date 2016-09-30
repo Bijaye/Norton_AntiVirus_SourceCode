@@ -1,0 +1,17 @@
+#!/bin/sh
+# Script to clean all NAVAPI subprojects and the bin directories.
+
+echo "*** Removing files from bin.debug ***"
+rm -f bin.debug/*
+
+echo "*** Removing files from bin.release ***"
+rm -f bin.release/*
+
+for dir in symkunix avenge navapi
+do
+    echo "*** Cleaning $dir ***"
+    cd $dir
+    make -f unix.mak clean 2>&1 >/dev/null
+    rm -f ${dir}.err
+    cd ..
+done

@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <meta id="charset_ScanProg" http-equiv="Content-Type" content="text/html; charset=iso8859-1" />
+        <meta http-equiv="MSThemeCompatible" content="Yes" />
+        <link rel="stylesheet" type="text/css" href="NavTasks.css" />
+        <title>Scan Now</title>
+        <script language="JavaScript" src="SymButton.js"></script>
+        <script language="javascript">
+		        function OnLoad()
+		        { 
+		  	        InitSymButton( OK );
+		  	        InitSymButton( Cancel );
+		        }
+        </script>
+    </head>
+    <body id="body_ScanNow" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0"
+        marginwidth="0" marginheight="0" tabindex="-1" scroll="no" onLoad="OnLoad()">
+        <!-------------------------------------- Header ------------------------------------------------>
+        <h1 id="title" style="margin-bottom:0px">Scan Now</h1>
+        <div id="separator" style="border-top:1px solid black; margin-left:3px; margin-right:3px;"
+            height="1px">
+        </div>
+        <a href="#" id="MoreInfo" class="headerLink">more info</a> 
+        <!-------------------------------------- Main Area ------------------------------------------------>
+        <div id="Description" style="margin-top: 20px; margin-left:25px; margin-bottom:20px;">
+            Scan your computer for viruses, spyware, and other security risks.
+        </div>
+        <div id = "div_1" style="margin-left:20px;">
+            <table style="margin-bottom:15px; border: 2px window-inset;" height="60px" width="90%"
+                id="Table1">
+                <!-- Order of radio buttons MUST match order of enum in CFullOrQuickScanDlg header class -->
+                <tr>
+                    <td id = "td_1" style="padding-left:10px;">
+                        <input id="Full" name="Action" type="radio" checked VALUE="Full" accesskey="F">
+                        <label for="Full"><u>F</u>ull System Scan</label>
+                    </td>
+                </tr>
+                <tr valign="top" id="Comprehensive">
+                    <td colspan="2" style="padding-left:15px;" id="Comprehensive_Scan">
+                        A comprehensive scan of your entire computer.
+                    </td>
+                </tr>
+            </table>
+            <table style="margin-bottom:20px; border: 2px window-inset;" height="80px" width="90%" id="Quick_Scan">
+                <tr>
+                    <td id = "td_2" style="padding-left:10px;">
+                        <input id="Quick" name="Action" type="radio" VALUE="Quick" accesskey="Q">
+                        <label for="Quick">Norton <u>Q</u>uickScan</label>
+                    </td>
+                </tr>
+                <tr valign="top" id="Fast">
+                    <td colspan="2" style="padding-left:15px;" id="Fast_Scan">
+                        A fast scan of the areas of your computer that are most likely to be affected.
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--------------------------------------- Button  Area ------------------------------------------------>
+        <div class="buttonArea" align="center" id="button_area">
+            <span class="symButton" id = "btn_1" style="width:96px; height:24px; margin-right:5px;">
+                <button id="OK" accesskey="O" type="SUBMIT" class="symButton" style="background-image:url('btn96x22set.jpg')"><u>
+                        O</u>K</button>
+            </span>
+            <span class="symButton" id = "btn_2" style="width:96px; height: 24px; margin-left:5px;">
+                <button id="Cancel" accesskey="C" type="SUBMIT" class="symButton" style="background-image:url('btn96x22set.jpg')"><u>
+                        C</u>ancel</button>
+            </span>
+        </div>
+    </body>
+</html>

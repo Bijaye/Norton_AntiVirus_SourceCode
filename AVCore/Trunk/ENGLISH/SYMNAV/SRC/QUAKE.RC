@@ -1,0 +1,40 @@
+/************************************************************************
+ *                                                                      *
+ * $Header:   N:\symnav\vcs\quake.rcv   1.3   15 Jun 1995 12:44:10   MARKL  $ *
+ *                                                                      *
+ * Description:                                                         *
+ *                                                                      *
+ ************************************************************************
+ * $Log:   N:\symnav\vcs\quake.rcv  $ *
+// 
+//    Rev 1.3   15 Jun 1995 12:44:10   MARKL
+// Removed duplicate version.
+// 
+//    Rev 1.2   14 Jun 1995 14:43:02   MARKL
+// Updated for VIRLIB
+// 
+//    Rev 1.1   21 Mar 1995 16:03:56   MFALLEN
+// Builds for 16-bit.
+// 
+//    Rev 1.0   02 Mar 1995 13:29:56   BRIANF
+// Initial revision.
+//
+ ************************************************************************/
+
+#include <windows.h>
+
+                                        // Include quake version stamp
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define VR_FILEDESCRIPTION      "Norton AntiVirus Symantec Technology"
+#define VR_INTERNALNAME         "S32NAV"
+#define VR_ORIGINALFILENAME     "S32NAV.DLL"
+#include "vlib.ver"
+
+rcinclude symkrnl.rc
+rcinclude symutil.rc
+rcinclude symgui.rc
+#ifdef SYM_WIN32
+rcinclude npt.rc
+#endif

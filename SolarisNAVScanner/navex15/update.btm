@@ -1,0 +1,51 @@
+::
+:: $Header:   S:/NAVEX15/VCS/update.btv   1.0   03 Jun 1997 18:02:22   DCHI  $
+::
+:: Update file for NAVEX15.  Required because of non-standard extensions.
+:: (NAVEX.DAT must go to S:\BIN.DOS)
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVEX15/VCS/update.btv  $
+:  
+:     Rev 1.0   03 Jun 1997 18:02:22   DCHI
+:  Initial revision.
+::
+::------------------------------------------------------------------------
+
+::
+:: make a backup copy of the NT drivers, and then strip the debug information
+::
+
+if exist navex15.sys copy *.sys *.syd
+if exist navex15.sys R:\NT40SDK.B2\mstools\bin\i386\rebase -b 0x10000 -x . navex15.sys
+
+copy *.* %PROJ%\LIB%PLATFORM%\*.*
+
+rem Copy NAVEX16a.LIB to each branch include directory.
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G) gosub CopyToBranch
+
+
+if exist *.dat copy *.dat %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.exp copy *.exp %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.nlm copy *.nlm %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dbg copy *.dbg %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.vxd copy *.vxd %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sys copy *.sys %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.syd copy *.syd %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+
+goto :end15
+
+:CopyToBranch
+
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex16a.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex32a.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex15.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+
+return
+
+:end15
+
+

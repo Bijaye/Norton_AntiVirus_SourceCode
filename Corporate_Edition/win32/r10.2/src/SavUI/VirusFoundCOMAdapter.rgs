@@ -1,0 +1,23 @@
+HKCR
+{
+	SavUI.VirusFoundCOMAdapter.1 = s 'VirusFoundCOMAdapter Class'
+	{
+		CLSID = s '{A1987DB8-9F0D-47D1-80C9-DFCE76260841}'
+	}
+	SavUI.VirusFoundCOMAdapter = s 'VirusFoundCOMAdapter Class'
+	{
+		CLSID = s '{A1987DB8-9F0D-47D1-80C9-DFCE76260841}'
+		CurVer = s 'SavUI.VirusFoundCOMAdapter.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A1987DB8-9F0D-47D1-80C9-DFCE76260841} = s 'VirusFoundCOMAdapter Class'
+		{
+			ProgID = s 'SavUI.VirusFoundCOMAdapter.1'
+			VersionIndependentProgID = s 'SavUI.VirusFoundCOMAdapter'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{C0155A1A-11F1-4178-BE82-32FA1BB6AA5D}'
+		}
+	}
+}

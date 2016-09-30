@@ -1,0 +1,18 @@
+;This script file supports and has been tested with
+;Trend OfficeScan Corporate 5.5 - Server
+Platform=WinNT
+
+;  Run Uninstall
+runprogram=HKEY_LOCAL_MACHINE, SOFTWARE\Microsoft\Windows\CurrentVersion\UnInstall\OfficeScan Management Console-Jasmine, UninstallString
+SendAffirmativeToWindowWithButtonClick=Confirm File Deletion,&Yes,60
+
+
+;SendAffirmativeToWindowWithButtonClick=OfficeScan Master Installer, &Yes, 60
+;
+;  User will have to enter PASSWORD manually for server
+;
+
+
+SendAffirmativeToWindowWithButtonClick=OfficeScan Master Uninstaller,OK, 120
+
+

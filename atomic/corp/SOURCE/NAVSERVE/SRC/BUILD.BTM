@@ -1,0 +1,44 @@
+:: Copyright 1994 Symantec, Peter Norton Product Group
+::************************************************************************
+::
+:: $Header:   S:/NAVSERVE/VCS/build.btv   1.1   18 Apr 1997 14:01:32   DSACKIN  $
+::
+:: Build file for LUIGI NAVSERVE project.
+::
+::************************************************************************
+:: $Log:   S:/NAVSERVE/VCS/build.btv  $
+:  
+:     Rev 1.1   18 Apr 1997 14:01:32   DSACKIN
+:  Ported from Tesla
+:  
+:     Rev 1.0   13 Mar 1997 15:14:00   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   08 Nov 1996 11:53:18   DKEEFER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:54:24   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 14:40:02   BARRY
+:  Initial revision.
+:  
+:     Rev 1.2   26 Apr 1994 21:04:20   DALLEE
+:  Complain if not updating all platforms.
+:  Update all platforms with BUILDALL.BTM
+::************************************************************************
+
+                                        :: Complain if updating only a single
+                                        :: target.
+                                        :: This is set TRUE in BUILDALL.BTM
+iff "%__UpdateAll" != "TRUE" then
+    echo.
+    echo *** Warning:  You are only updating part of the %PROJNAME% project.
+    echo To update the entire project, run %PROJ%\SRC\BUILDALL.BTM
+    echo.
+endiff
+
+
+call mk navserve %1
+
+if exist make.err copy make.err build.err

@@ -1,0 +1,53 @@
+// LSClient.idl : IDL source for LSClient.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (LSClient.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(8B0DE859-F975-11D2-A985-00A0244D507A),
+	
+		helpstring("ISSManager Interface"),
+		pointer_default(unique)
+	]
+	interface ISSManager : IUnknown
+	{
+		[helpstring("method SetProperty")] HRESULT SetProperty([in] const BSTR strServiceID, [in] const BSTR strSubscriptionID, [in] const BSTR strName, [in] const BSTR strValue);
+		[helpstring("method GetProperty")] HRESULT GetProperty([in] const BSTR strServiceID, [in] const BSTR strSubscriptionID, [in] const BSTR strName, [out] BSTR* pValue);
+		[helpstring("method IsWarningPeriod")] HRESULT IsWarningPeriod([in] const BSTR strServiceID);
+		[helpstring("method GetSubscriptionRemaining")] HRESULT GetSubscriptionRemaining([in] const BSTR strServiceID, [out] long* pDays);
+		[helpstring("method ExtendSubscription")] HRESULT ExtendSubscription([in] const BSTR strServiceID, [in] const BSTR strSubscriptionID);
+		[helpstring("method RemoveService")] HRESULT RemoveService([in] const BSTR strServiceID, [in] const BSTR strSubscriptionID);
+		[helpstring("method InitSubscriptions")] HRESULT InitSubscriptions([in] const BSTR strFileName);
+		[helpstring("method GetDLLPath")] HRESULT GetDLLPath([out] BSTR* pPath);
+		[helpstring("method GetDLLVersion")] HRESULT GetDLLVersion([out] BSTR* pVersion);
+		[helpstring("method IsVeniceClientExist")] HRESULT IsVeniceClientExist();
+		[helpstring("method IsVeniceClientActive")] HRESULT IsVeniceClientActive();
+		[helpstring("method Synchronize")] HRESULT Synchronize();
+		[helpstring("method SetUpdated")] HRESULT SetUpdated([in] const BSTR strServiceID, [in] const BSTR strSubscriptionID);
+		[helpstring("method GetVeniceID")] HRESULT GetVeniceID([out] BSTR* pValue);
+		[helpstring("method GetSubscriptionUrl")] HRESULT GetSubscriptionUrl([in] const BSTR strServiceID, [in] const BSTR strSubscriptionID, [out] BSTR* pValue);
+	};
+
+[
+	uuid(8B0DE84D-F975-11D2-A985-00A0244D507A),
+	version(1.0),
+	helpstring("LSClient 1.0 Type Library")
+]
+library LSCLIENTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(8B0DE85A-F975-11D2-A985-00A0244D507A),
+		helpstring("SSManager Class")
+	]
+	coclass SSManager
+	{
+		[default] interface ISSManager;
+	};
+};

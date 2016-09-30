@@ -1,0 +1,18 @@
+: Copyright 1998 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/NAVAPI.QA/VCS/build.btv   1.0   11 Aug 1998 09:06:38   mmendon  $                                                              :
+:                                                                       :
+: Description: Build file for NAVAPI.QA                                    :
+:                                                                       :
+:-----------------------------------------------------------------------:
+
+
+@echo off
+    call mk fileserv %&
+    if exist make.err copy build.err+make.err build.err
+    call mk logqa %&
+    if exist make.err copy build.err+make.err build.err
+    call mk apicall %&
+
+

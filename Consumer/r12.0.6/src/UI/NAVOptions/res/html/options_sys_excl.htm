@@ -1,0 +1,95 @@
+<html>
+    <head>
+        <title id="sys_excl_title">Norton Antivirus/Manual Scan/Exclusions Options</title>
+        <IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="NO" HEIGHT="0" WIDTH="0" style="display:none"
+            SRC="options_errorid.htm"></IFRAME>
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script language="JavaScript" src="options_othr_excl_main.js"></script>
+        <link rel="stylesheet" type="text/css" href="navstyle.css">
+            <meta id="charset_options_othr_threat_excl" http-equiv="Content-Type" content="text/html; charset=iso8859-1">
+    </head>
+    <body id="body_options_othr_threat_excl" bottomMargin="0" scroll="no" leftmargin="5" topmargin="5"
+        class="clsDetails" onHelp="parent.CurrentPage.Help();" onLoad="parent.CurrentPage = new ExclusionPage();"
+        TABINDEX="-1">
+        <span id="ExclusionError" style="display:none">Invalid exclusion!</span>
+        <span id="DuplicateExclusion" style="display:none">Duplicate exclusion!</span>
+        <span id="DefaultsWarning" style="display:none">Attention:
+        Restoring the exclusion list to its default settings will remove any items that you have added to the list.
+        Do you want to restore page defaults now?</span>        
+        <form name="options_othr_threat_excl" ID="Form1">
+            <table id="table1" width="425" border="0" height="372" bgcolor="#FFFFFF" cellspacing="0"
+                cellpadding="0">
+                <tr>
+                    <td id="table1_cell1" valign="top" height="237" width="386">
+                        <table id="table11" width="425" height="41" border="0" cellspacing="0" cellpadding="0"
+                            style="background-image: url('topbg.gif'); background-repeat: no-repeat;">
+                            <tr>
+                                <td id="table11_cell1" width="425" height="4" valign="top" align="right" colspan="2">&nbsp;</td>
+                            </tr>
+                            <tr valign="top" id="table11_tr">
+                                <td id="table11_cell2" align="left" height="12" valign="top" style="padding-bottom:1px"
+                                    width="300">
+                                    <label for="table1_exclusions_select" accesskey="x" id="table1_exclusions_select_label">
+                                        <span class="cutitleb" id="excl_ExclusionList">&nbsp;&nbsp;Manual Scan Exclusion List</span>
+                                    </label>
+                                </td>
+                                <td id="table11_cell3" align="right"><a href='' onClick="parent.CurrentPage.Help(); return false;"><span class="cuhelp" id="threat_exclusions_help">more info</span></a>&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                        </table>
+                        <br>
+                        <table id="table12" width="387" height="26" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="table12_cell1" width="387" style="padding-left:10px"><span class="culinkhead" id="excl_whatitemstoexclude"><b>What 
+                                            items to exclude</b></span></td>
+                            </tr>
+                        </table>
+                        <table id="table13" width="387">
+                            <tr>
+                                <td id="table13_cell0" width="5%">&nbsp;</td>
+                                <td id="table13_cell1" width="70%" valign="top">
+                                    <select id="table1_exclusions_select" size="10" name="Exclusions" class="normal" style="position: absolute; width: 100%;"
+                                        onClick="enable_fs_buttons();" onDblClick="add_update_fs_exclusion(false);" onChange="enable_fs_buttons();">
+                                    </select>
+                                </td>
+                                <td id="table13_cell2" width="25%" valign="center">
+                                    <p id="table13_para1">&nbsp;</p>
+                                    <table border="0" cellspacing="0" cellpadding="0" ID="Table2">
+                                        <tr>
+                                            <td>
+                                                <button class="goldnav1" name="Create" onClick="add_update_fs_exclusion(true);" id="idtxt_opts_sys_excl_Create">
+                                                    <label for="idtxt_opts_sys_excl_Create" accesskey="n" id="exclusion_new_label">
+                                                        <span class="indent10" id="exclusion_new"><u>N</u>ew...</span>
+                                                    </label>
+                                                </button><br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <IMG id="btnspace1" SRC="arrow_dots_blank.gif" width="3" height="3"><br>
+                                                <button class="goldnav1" name="Change" onClick="add_update_fs_exclusion(false);" id="idtxt_opts_sys_excl_Change"
+                                                    DISABLED>
+                                                    <label for="idtxt_opts_sys_excl_Change" accesskey="e" id="exclusion_edit_label">
+                                                        <span class="indent10" id="exclusion_edit"><u>E</u>dit...</span>
+                                                    </label>
+                                                </button><br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <IMG id="btnspace2" SRC="arrow_dots_blank.gif" width="3" height="3"><br>
+                                                <button class="goldnav1" name="Remove" onClick="remove_fs_exclusion()" id="idtxt_opts_sys_excl_Remove"
+                                                    DISABLED>
+                                                    <label for="idtxt_opts_sys_excl_Remove" accesskey="r" id="exclusion_remove_label">
+                                                        <span class="indent10" id="exclusion_remove"><u>R</u>emove</span>
+                                                    </label>
+                                                </button><br>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+        </form>
+        </td> </tr> </table>
+    </body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="Netware Projects"
+	ProjectGUID="{9C40E18E-E74F-4F51-993F-703132214DF0}"
+	RootNamespace="Netware Projects"
+	Keyword="MakeFileProj"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\Debug"
+			IntermediateDirectory=".\Debug"
+			ConfigurationType="10"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Debug/Netware Projects.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\Release"
+			IntermediateDirectory=".\Release"
+			ConfigurationType="10"
+			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="false"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\Release/Netware Projects.tlb"
+				HeaderFileName=""
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<File
+			RelativePath=".\build.btm"
+			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building NetWare projects..."
+					CommandLine="set TempClientRoot=$(ProjectDir)..\..\..\..&#x0D;&#x0A;if defined CLIENTROOT set TempClientRoot=%CLIENTROOT%&#x0D;&#x0A;set TempCodeWarriorDir=R:\cw83pdk5&#x0D;&#x0A;if defined BUILDTOOLCODEWARRIOR set TempCodeWarriorDir=%BUILDTOOLCODEWARRIOR%&#x0D;&#x0A;set TempNovellNDKDir=R:\NDK1004&#x0D;&#x0A;if defined BUILDTOOLNOVELLNDK set TempNovellNDKDir=%BUILDTOOLNOVELLNDK%&#x0D;&#x0A;4nt.exe /c &quot;$(ProjectDir)\build.btm&quot; debug &quot;%TempClientRoot%&quot; &quot;%TempCodeWarriorDir%&quot; &quot;%TempNovellNDKDir%&quot;&#x0D;&#x0A;"
+					Outputs="&quot;$(ProjectDir)NAV_Glue\debug\i2_ldvp.nlm&quot;;&quot;$(ProjectDir)QsFwd\debug\QsFwd.nlm&quot;;&quot;$(ProjectDir)rtvscan\debug\rtvscan.nlm&quot;;&quot;$(ProjectDir)VPReg\debug\VPReg.nlm&quot;;&quot;$(ProjectDir)VPRegEdt\debug\VPRegEdt.nlm&quot;;&quot;$(ProjectDir)VPStart\debug\VPStart.nlm&quot;"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building NetWare projects..."
+					CommandLine="set TempClientRoot=$(ProjectDir)..\..\..\..&#x0D;&#x0A;if defined CLIENTROOT set TempClientRoot=%CLIENTROOT%&#x0D;&#x0A;set TempCodeWarriorDir=R:\cw83pdk5&#x0D;&#x0A;if defined BUILDTOOLCODEWARRIOR set TempCodeWarriorDir=%BUILDTOOLCODEWARRIOR%&#x0D;&#x0A;set TempNovellNDKDir=R:\NDK1004&#x0D;&#x0A;if defined BUILDTOOLNOVELLNDK set TempNovellNDKDir=%BUILDTOOLNOVELLNDK%&#x0D;&#x0A;4nt.exe /c &quot;$(ProjectDir)\build.btm&quot; release &quot;%TempClientRoot%&quot; &quot;%TempCodeWarriorDir%&quot; &quot;%TempNovellNDKDir%&quot;&#x0D;&#x0A;"
+					Outputs="&quot;$(ProjectDir)NAV_Glue\release\i2_ldvp.nlm&quot;;&quot;$(ProjectDir)QsFwd\release\QsFwd.nlm&quot;;&quot;$(ProjectDir)rtvscan\release\rtvscan.nlm&quot;;&quot;$(ProjectDir)VPReg\release\VPReg.nlm&quot;;&quot;$(ProjectDir)VPRegEdt\release\VPRegEdt.nlm&quot;;&quot;$(ProjectDir)VPStart\release\VPStart.nlm&quot;"
+				/>
+			</FileConfiguration>
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,131 @@
+<html>
+	<head>
+		<title id="sys_excl_title">Norton Antivirus/Other/Threat/Exclusions Options</title>
+		<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	</head>
+	<BODY class="clsDetails" id="body_options_othr_threat_excl" onhelp="parent.CurrentPage.Help();"
+		tabIndex="-1" bottomMargin="0" leftMargin="5" topMargin="5" scroll="no" onload="parent.CurrentPage = new ExclusionPage();">
+		<IFRAME id="Errors" style="DISPLAY: none" src="options_errorid.htm" frameBorder="0" width="0"
+			scrolling="no" height="0"></IFRAME>
+		<script language="JavaScript" src="DisplayScriptError.js"></script>
+		<script language="JavaScript" src="options_othr_excl_main.js"></script>
+		<LINK href="navstyle.css" type="text/css" rel="stylesheet">
+			<span id="ExclusionError" style="DISPLAY: none">Invalid exclusion!</span>
+			<span id="DuplicateExclusion" style="DISPLAY: none">Duplicate exclusion!</span>
+			<span id="DefaultsWarning" style="DISPLAY: none">Attention: 
+Restoring the exclusion list to its default settings will remove any items that 
+you have added to the list. Do you want to restore page defaults now?</span>
+				<table id="table1" height="100%" cellSpacing="0" cellPadding="0" width="425" bgColor="#ffffff"
+					border="0">
+					<TBODY>
+						<tr>
+							<td id="table1_cell1" vAlign="top" width="386">
+                			<form style="MARGIN-BOTTOM: 0px" name="options_othr_threat_excl" ID="Form1">
+								<table id="table11" style="BACKGROUND-IMAGE: url(topbg.gif); BACKGROUND-REPEAT: no-repeat"
+									height="41" cellSpacing="0" cellPadding="0" width="425" border="0">
+									<tr>
+										<td id="table11_cell1" vAlign="top" align="right" width="425" colSpan="2" height="4">&nbsp;</td>
+									</tr>
+									<tr id="table11_tr" vAlign="top">
+										<td id="table11_cell2" vAlign="top" align="left" width="300" height="12"><label id="table1_exclusions_select_label" for="table1_exclusions_select"><span class="cutitleb" id="excl_ExclusionList">&nbsp;&nbsp;Security Risk Exclusion List</span>
+											</label></td>
+										<td id="table11_cell3" align="right"><a onclick="parent.CurrentPage.Help(); return false;" href=""><span class="cuhelp" id="threat_exclusions_help">more 
+        info</span></a>&nbsp;&nbsp;&nbsp;</td>
+									</tr>
+								</table>
+								<table id="table12" height="25" cellSpacing="0" cellPadding="0" width="387" border="0" id="items_excl">
+									<tr>
+										<td id="table12_cell1" width="387" style="padding-left:10px"><span class="culinkhead" id="excl_whatitemstoexclude"><b>What 
+													items to exclude</b></span></td>
+									</tr>
+								</table>
+								<table id="table13" cellSpacing="0" cellPadding="0" width="387" border="0">
+									<tr>
+										<td id="table13_cell0" width="5%" id="td_space">&nbsp;</td>
+										<td id="table13_cell1" vAlign="top" width="70%" id="td_excl_select"><select class="normal" id="table1_exclusions_select" ondblclick="add_update_fs_exclusion(false);"
+												onclick="enable_fs_buttons();" onchange="enable_fs_buttons();" size="6" name="Exclusions" STYLE="width:270px;height:120px;"></select>
+										</td>
+										<td id="table13_cell2" vAlign="middle" width="25%">
+											<table id = "td_1" style="PADDING-LEFT: 5px" cellSpacing="0" cellPadding="0" border="0">
+												<tr>
+													<td><button class="goldnav1" id="idtxt_opts_sys_excl_Create" onclick="add_update_fs_exclusion(true);"
+															name="Create" type="button"><label id="exclusion_new_label" accessKey="n" for="idtxt_opts_sys_excl_Create"><span class="indent10" id="exclusion_new"><u>N</u>ew...</span>
+															</label>
+														</button><br>
+													</td>
+												</tr>
+												<tr>
+													<td><IMG id="btnspace1" height="3" src="arrow_dots_blank.gif" width="3"><br>
+														<button class="goldnav1" id="idtxt_opts_sys_excl_Change" disabled onclick="add_update_fs_exclusion(false);"
+															name="Change" type="button">
+															<label id="exclusion_edit_label" accessKey="e" for="idtxt_opts_sys_excl_Change">
+																<span class="indent10" id="exclusion_edit"><u>E</u>dit...</span>
+															</label>
+														</button><br>
+													</td>
+												</tr>
+												<tr>
+													<td><IMG id="btnspace2" height="3" src="arrow_dots_blank.gif" width="3"><br>
+														<button class="goldnav1" id="idtxt_opts_sys_excl_Remove" disabled onclick="remove_fs_exclusion()"
+															name="Remove" type="button">
+															<label id="exclusion_remove_label" accessKey="r" for="idtxt_opts_sys_excl_Remove">
+																<span class="indent10" id="exclusion_remove"><u>R</u>emove</span>
+															</label>
+														</button>
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+			</form>
+			<form id = "form_1" style="MARGIN-TOP: 5px" name="options_othr_anomaly_excl">
+				<table id="tableBottomTitle" height="20" cellSpacing="0" cellPadding="0" width="387" border="0">
+					<tr>
+						<td id="tableBottom_cell1" width="387" style="padding-left:10px"><span class="culinkhead" id="excl_whatriskstoexclude"><b>What 
+									known security risks to exclude</b></span></td>
+					</tr>
+				</table>
+				<table cellSpacing="0" cellPadding="0" width="387" border="0" id="threatexcl_tbl1">
+					<tr>
+						<td width="5%" id="threatexcl_td1">&nbsp;</td>
+						<td vAlign="top" width="70%" id="threatexcl_td2"><select class="normal" id="table2_exclusions_select" ondblclick="OnDoubleClickAnomalyList();"
+								onclick="enable_anomaly_buttons();" onchange="enable_anomaly_buttons();" multiple size="6" name="AnomalyExclusions"
+								STYLE="width:270px;height:120px;"></select>
+						</td>
+						<td vAlign="middle" width="25%" id="td_anomaly">
+							<table id = "tbl_2" style="PADDING-LEFT: 5px" cellSpacing="0" cellPadding="0" border="0">
+								<tr>
+									<td><button class="goldnav1" id="idtxt_opts_sys_excl_Anomaly_Create" onclick="add_update_anomaly_exclusion();"
+											name="CreateA" type="button"><label id="exclusion_create_anomaly_label" accessKey="w" for="idtxt_opts_sys_excl_Anomaly_Create"><span class="indent10" id="exclusion_create_anomaly">Ne<u>w</u>...</span>
+											</label>
+										</button><br>
+									</td>
+								</tr>
+								<tr>
+									<td><IMG id="Img2" height="3" src="arrow_dots_blank.gif" width="3"><br>
+										<button class="goldnav1" id="idtxt_opts_sys_excl_Anomaly_Remove" disabled onclick="remove_anomaly_exclusion()"
+											name="Remove" type="button">
+											<label id="xclusion_remove_anomaly_label" accessKey="m" for="idtxt_opts_sys_excl_Anomaly_Remove">
+												<span class="indent10" id="exclusion_remove_anomaly">Re<u>m</u>ove</span>
+											</label>
+										</button>
+									</td>
+								</tr>
+								<tr>
+									<td><IMG id="Img3" height="3" src="arrow_dots_blank.gif" width="3"><br>
+										<button class="goldnav1" id="Anomaly_Details" disabled onclick="OnClickAnomalyDetails()"
+											name="Details" type="button">
+											<label id="xclusion_detail_anomaly_label" accessKey="d" for="Anomaly_Details">
+												<span class="indent10" id="exclusion_detail_anomaly">Risk <u>D</u>etails</span>
+											</label>
+										</button>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</form></TD></TR></TBODY></TABLE>
+	</BODY>
+</html>

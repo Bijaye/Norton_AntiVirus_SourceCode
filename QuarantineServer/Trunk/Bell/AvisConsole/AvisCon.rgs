@@ -1,0 +1,83 @@
+HKLM 
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove MMC
+			{
+				NoRemove Snapins
+				{
+					ForceRemove {6A0B6707-FE02-11D2-9798-00C04F688464} =
+						s 'Symantec AntiVirus Avis Console' 
+					{
+						val NameString = s 'Symantec AntiVirus Avis Console'
+						val About = s '{6A0B6708-FE02-11D2-9798-00C04F688464}'
+					}
+				}
+				NoRemove NodeTypes
+				{
+					NoRemove {1DAE69DE-B621-11d2-8F45-3078302C2030}
+					{
+						NoRemove Extensions
+						{
+							NoRemove ContextMenu
+							{
+								val {6A0B6707-FE02-11D2-9798-00C04F688464} =
+								s 'Symantec AntiVirus Avis Console'
+							}
+							NoRemove PropertySheet
+							{
+								val {6A0B6707-FE02-11D2-9798-00C04F688464} =
+								s 'Symantec AntiVirus Avis Console'
+							}
+							NoRemove ToolBar
+							{
+								val {6A0B6707-FE02-11D2-9798-00C04F688464} =
+								s 'Symantec AntiVirus Avis Console'
+							}
+						}
+					}
+
+					NoRemove {26140C87-B554-11D2-8F45-3078302C2030}
+					{
+						NoRemove Extensions
+						{
+							NoRemove PropertySheet
+							{
+								val {6A0B6707-FE02-11D2-9798-00C04F688464} =
+								s 'Symantec AntiVirus Avis Console'
+							}
+						}
+					}
+												
+				}
+			}
+		}
+	}
+}
+HKCR
+{
+	AvisConsole.AvisCon.1 = s 'AvisCon Class'
+	{
+		CLSID = s '{6A0B6707-FE02-11D2-9798-00C04F688464}'
+	}
+	AvisConsole.AvisCon = s 'AvisCon Class'
+	{
+		CLSID = s '{6A0B6707-FE02-11D2-9798-00C04F688464}'
+		CurVer = s 'AvisConsole.AvisCon.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {6A0B6707-FE02-11D2-9798-00C04F688464} = s 'AvisCon Class'
+		{
+			ProgID = s 'AvisConsole.AvisCon.1'
+			VersionIndependentProgID = s 'AvisConsole.AvisCon'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{6A0B66FA-FE02-11D2-9798-00C04F688464}'
+		}
+	}
+}

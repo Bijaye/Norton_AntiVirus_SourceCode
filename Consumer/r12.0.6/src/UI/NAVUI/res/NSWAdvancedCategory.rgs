@@ -1,0 +1,25 @@
+HKCR
+{
+	SWPlugin.NSWAdvancedCategory.1 = s 'NSWAdvancedCategory Class'
+	{
+		CLSID = s '{E15DBD6B-6190-4E5B-9699-CFDBC7765761}'
+	}
+	SWPlugin.NSWAdvancedCategory = s 'NSWAdvancedCategory Class'
+	{
+		CLSID = s '{E15DBD6B-6190-4E5B-9699-CFDBC7765761}'
+		CurVer = s 'SWPlugin.NSWAdvancedCategory.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E15DBD6B-6190-4E5B-9699-CFDBC7765761} = s 'NSWAdvancedCategory Class'
+		{
+			ProgID = s 'SWPlugin.NSWAdvancedCategory.1'
+			VersionIndependentProgID = s 'SWPlugin.NSWAdvancedCategory'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{88734681-FCB2-11d2-B9D2-00C04FAC114C}'
+		}
+	}
+}

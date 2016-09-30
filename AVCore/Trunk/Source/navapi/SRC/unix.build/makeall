@@ -1,0 +1,121 @@
+#!/bin/sh
+# Script to make all NAVAPI subprojects.
+# Be sure to clean the subprojects between debug and release builds.
+
+# Check usage.  Require a make target name for clarity.
+if [ x"$1" = x ]; then
+    echo "usage: makeall [ debug | release | clean ]"
+    exit 0
+fi
+
+# Check the system type and set PLATFORM accordingly
+SYSTEM=`uname -s`
+HARDWARE=`uname -m`
+
+case "$SYSTEM" in
+Linux)
+    case "$HARDWARE" in
+    i[0-9]86)
+        echo "*** Setting target platform to [linux-x86] ***"
+        PLATFORM=linux-x86
+        ;;
+    *)
+        echo "*** Navapi is not supported on this system ***"
+        exit 1
+        ;;
+    esac
+    ;;
+SunOS)
+    case "$HARDWARE" in
+    sun*)
+        echo "*** Setting target platform to [solaris-sun] ***"
+        PLATFORM=solaris-sun
+        ;;
+    *)
+        echo "*** Navapi is not supported on this system ***"
+        exit 1
+        ;;
+    esac
+    ;;
+FreeBSD)
+    case "$HARDWARE" in
+    i[0-9]86)
+        echo "*** Setting target platform to [bsd-x86] ***"
+        PLATFORM=bsd-x86
+        ;;
+    *)
+        echo "*** Navapi is not supported on this system ***"
+        exit 1
+        ;;
+    esac
+    ;;
+*)
+    echo "*** Navapi is not supported on this system ***"
+    exit 1
+    ;;
+esac
+
+
+
+# Make sure ASDEBUG is NOT set.  It is used internally by the makefiles.
+unset ASDEBUG
+
+# Convert the argument to lower case
+ARG1=`echo $1|sed -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/`
+
+# Make sure it's a valid target and set ASDEBUG accordingly
+case "$ARG1" in
+debug)
+    echo "*** Making a debug build ***"
+    ASDEBUG=1
+    ;;
+release)
+    echo "*** Making a release build ***"
+    ;;
+clean)
+    echo "*** Cleaning source directories ***"
+    ;;
+*)
+    echo "*** Invalid build target ***"
+    exit 1;
+    ;;
+esac
+
+export ASDEBUG
+export PLATFORM
+
+# Make sure the bin directories exist.
+if [ ! -d bin.debug ]; then
+    mkdir bin.debug
+fi
+if [ ! -d bin.release ]; then
+    mkdir bin.release
+fi
+
+echo "*** cleaning object files (*.o) ***"
+find . -name *.o | xargs rm
+
+# For each subproject directory, invoke the makefile.
+for dir in symkunix avenge navapi
+do
+    echo "*** Making $dir $ARG1 ***"
+    cd $dir
+    make -f unix.mak > make.err 2>&1
+    cd ..
+done
+
+# Summarize the errors
+echo "*** Summary ***"
+for dir in symkunix avenge navapi
+do
+    echo $dir
+    echo "    errors:   `grep -i rror ${dir}/make.err | wc -l`"
+    echo "    warnings: `grep -i arning ${dir}/make.err | wc -l`"
+done
+
+# Display the contents of the bin directories.
+echo "*** bin.release contents ***"
+ls -l bin.release
+echo "*** bin.debug contents ***"
+ls -l bin.debug
+echo

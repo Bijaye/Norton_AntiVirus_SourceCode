@@ -1,0 +1,260 @@
+// Copyright 1993-1996 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/NAVC/VCS/scanfnds.stv   1.2   20 Jun 1997 14:14:56   MKEATIN  $
+//
+// Description:
+//      This is the Strings file for the Problems Found scan results dialog.
+//
+// Contains:
+//
+// See Also:
+//************************************************************************
+// $Log:   N:/NAVC/VCS/scanfnds.stv  $
+// 
+//    Rev 1.2   20 Jun 1997 14:14:56   MKEATIN
+// Changed NAVC to NAVDX
+// 
+//    Rev 1.1   08 May 1997 15:10:32   TIVANOV
+// new char defines for the quarantine functionality
+// 
+//    Rev 1.0   06 Feb 1997 20:56:38   RFULLER
+// Initial revision
+// 
+//    Rev 1.1   17 Jan 1997 15:44:36   MKEATIN
+// Added SZ_TYPE_NAVC_HELP[]
+// 
+//    Rev 1.0   31 Dec 1996 15:21:56   MKEATIN
+// Initial revision.
+// 
+//    Rev 1.7   10 Dec 1996 13:37:02   JBELDEN
+// implemented changes recommeded by DOCs
+// 
+//    Rev 1.6   25 Nov 1996 15:08:10   JBELDEN
+// had to change infected results from lu to just u to prevent 
+// fault.
+// 
+//    Rev 1.5   25 Nov 1996 14:44:32   JBELDEN
+// changed formating for printf of files scannned from %ld to %lu
+// to try to add hopefully prevent wrap on large numbers of files.
+// 
+//    Rev 1.4   31 Oct 1996 17:09:54   JBELDEN
+// remove a lot of dialog box related code
+// 
+//
+//    Rev 1.3   15 Oct 1996 11:25:46   JBELDEN
+// added messages for infected files in compressed files.
+//
+//    Rev 1.2   11 Oct 1996 17:59:38   JBELDEN
+// changed format of stings for summary screen to work with
+// printf and fprintf instead of DOSPrint
+//
+//    Rev 1.1   08 Oct 1996 13:51:54   JBELDEN
+// Added strings for the summary screen. after the scan.
+//
+//    Rev 1.0   02 Oct 1996 14:07:00   JBELDEN
+// Initial revision.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+
+#include "ctsn.h"
+#include "navdprot.h"
+
+#include "options.h"
+#include "navutil.h"
+#include "syminteg.h"
+#include "nonav.h"
+#include "scand.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define SCAN_FOUND_LIST_WIDTH       (56)
+#define SCAN_FOUND_OF_WIDTH         (54)
+
+                                        // Changes made to
+                                        // SCAN_INFO_OF_SHORT_WIDTH must
+                                        // also be made to SZ_INFO_FILE_FORMAT
+#define SCAN_INFO_OF_SHORT_WIDTH    32
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    [];     // These externs are declared in
+extern ScrollBarRec sbOptScrollBar;     // OPTSTR.C
+extern ButtonsRec buPrevNext;           // Declared in NAVSTR.C
+extern char SZ_EMPTY            [];
+
+
+//************************************************************************
+// GLOBAL VARIABLES
+//************************************************************************
+
+char SZ_SCAN_FILENAME       [] = "RESULTS.TXT";
+
+char SZ_YES             [] = "Yes";
+char SZ_NO              [] = "No";
+char SZ_DASH            [] = "--";
+                                        //--------------------------------
+                                        // These lines need to fit in the
+                                        // variable of SZ_RESULT_ITEMS_SCANNED
+char SZ_FOUND_NONE      [] = "No Viruses Found";
+char SZ_FOUND_FILES     [] = "Infected Files Found";
+char SZ_FOUND_BOOT      [] = "Infected Boot Records Found";
+                                        // This is both boot and file viruses
+char SZ_FOUND_FILES_BOOT[] = "Infected Items Found";
+                                        // Display this line if viruses are
+                                        // found
+char SZ_TYPE_NAVC_HELP [] = "Type 'NAVDX /?' for help";
+                                        //--------------------------------
+
+
+char SZ_ALL_FILES       [] = "All Files";
+char SZ_PROGRAM_FILES   [] = "Program Files Only";
+char SZ_ENABLED         [] = "Enabled";
+char SZ_DISABLED        [] = "Disabled";
+char SZ_PHYSICAL_DRIVE  [] = "Hard Drive %d";
+char SZ_HARD_DRIVE_LC   [] = "hard drive %d";
+
+char SZ_INFECTED_FORMAT     [] =
+        "The file %-40p2 is infected with the %s1 virus.";
+
+
+char SZ_MEMORY_INFECTED_FORMAT[]="Memory is infected with the %s1 virus.";
+
+char SZ_INOC_NEW_FORMAT     [] = "The file %-40p2 is not inoculated.%P1";
+
+char SZ_INOC_CHANGE_FORMAT  [] =
+        "The file %-40p2 has changed since inoculation.%P1";
+
+                                        // Constant value for the path length
+                                        // here should be SCAN_INFO_OF_SHORT_WIDTH
+                                        // (32)
+char SZ_INFO_FILE_FORMAT    [] = "%-32p1";
+char SZ_INFO_FILE_ZIP_FORMAT[] = "%s1 in %s2";  // "DUMBDARK.COM in MOE.ZIP"
+
+                                        // Paths should be GROUP_SIZE_NUM - 5 bytes.
+char SZ_PROBLEMS_FOUND_ZIP_FORMAT[] = "%s1 in the compressed file %-54p2";
+char SZ_PROBLEMS_FOUND_FILE_FORMAT[] = "%-54p1";
+
+                                        // Formats for system inoculation
+                                        // changed messages.
+char SZ_SYSTEM_INOC_FILE_FORMAT [] =
+        "The file %s2 has changed since inoculation.%P1";
+
+char SZ_SYSTEM_INOC_BOOT_FORMAT [] =
+        "The boot record of drive C: has changed since inoculation.";
+
+char SZ_SYSTEM_INOC_MB_FORMAT   [] =
+        "The master boot record on your local hard drive has changed since inoculation.";
+
+
+//------------------------------------------------------------------------
+// Scan Problems Found Dialog Controls
+//------------------------------------------------------------------------
+
+char SZ_PROBLEMS_FOUND_TITLE[] = "Name           Virus                 Status";
+
+
+// **************************************************** //
+// These string are for the scan results dialog box.    //
+// **************************************************** //
+
+char IDS_RAP_REPAIRED               [] = "This file was infected with a virus. It was repaired.";
+char IDS_RAP_NOTREPAIRED            [] = "This file is infected with a virus. It could not be repaired.";
+char IDS_RAP_DELETED                [] = "This file was infected with a virus. The file was deleted at your request.";
+char IDS_RAP_NOTDELETED             [] = "This file is infected with a virus. It could not be deleted.";
+char IDS_RAP_INFECTED               [] = "This file is infected with a virus. You should try to repair it.";
+char IDS_RAP_ERROR                  [] = "An internal error occured while trying to scan this file.";
+char IDS_RAP_ERRORDELETED           [] = "An internal error occured while trying to scan this file. The file was deleted at your request.";
+char IDS_RAP_ERRORNOTDELETED        [] = "An internal error occured while trying to scan this file. It could not be deleted.";
+char IDS_RAP_INOCULATED             [] = "This file has been inoculated.";
+char IDS_RAP_INOCULATEFAILED        [] = "This file could not be added to the inoculation list.";
+char IDS_RAP_REINOCULATED           [] = "This file has been reinoculated.";
+char IDS_RAP_NOTINOCULATED          [] = "This file has not been inoculated.";
+char IDS_RAP_INOCULATEDCHANGED      [] = "This file has changed since inoculation.";
+char IDS_RAP_INOCDELETED            [] = "This file was deleted at your request.";
+char IDS_RAP_INOCNOTDELETED         [] = "This file could not be deleted.";
+char IDS_RAP_BOOTINFECTED           [] = "The boot record of this drive is infected with a virus.";
+char IDS_RAP_BOOTREPAIRED           [] = "The boot record of this drive was repaired.";
+char IDS_RAP_BOOTNOTREPAIRED        [] = "The boot record of this drive could not be repaired.";
+char IDS_RAP_MASTERBOOTINFECTED     [] = "The master boot record of this drive is infected with a virus.";
+char IDS_RAP_MASTERBOOTREPAIRED     [] = "The master boot record of this drive was repaired.";
+char IDS_RAP_MASTERBOOTNOTREPAIRED  [] = "The master boot record of this drive could not be repaired.";
+char IDS_RAP_INOCREPAIRED           [] = "This file was infected with a virus. It was repaired using inoculation information.";
+char IDS_RAP_INOCREPAIRFAILED       [] = "This file could not be repaired using the inoculation information.";
+char IDS_RAP_EXCLUDED_INOCULATION   [] = "This file is excluded from any inoculation checks.";
+char IDS_RAP_EXCLUDED_VIRUSDETECT   [] = "This file is excluded from virus detection checks.";
+char IDS_RAP_EXCLUDE_FAILED         [] = "This file could the added to the exclusions list.";
+char IDS_RAP_QUARANTINE             [] = "This file was infected with a virus. The file was quarantined. Replace it with an uninfected copy of the file and scan again.";
+char IDS_RAP_NOTQUARANTINE          [] = "This file is infected with a virus. It could not be quarantined. Make sure the file is not write-protected or currently in use.";
+
+char IDS_FILESTATUS_INFECTED                [] = "Infected";
+char IDS_FILESTATUS_ERROR                   [] = "Internal Error";
+char IDS_FILESTATUS_ERRORDELETED            [] = "Error Deleted";
+char IDS_FILESTATUS_ERRORNOTDELETED         [] = "Error Not Deleted";
+char IDS_FILESTATUS_INOCULATED              [] = "Inoculated";
+char IDS_FILESTATUS_REINOCULATED            [] = "Reinoculated";
+char IDS_FILESTATUS_NOTINOCULATED           [] = "Not Inoculated";
+char IDS_FILESTATUS_INOCULATIONFAILED       [] = "Inoc. Failed";
+char IDS_FILESTATUS_INOCULATEREPAIRED       [] = "Inoc. Repaired";
+char IDS_FILESTATUS_INOCULATEREPAIRFAILED   [] = "Inoc. Not Repaired";
+char IDS_FILESTATUS_INOCULATECHANGED        [] = "Inoc. Changed";
+char IDS_FILESTATUS_REPAIRED                [] = "Repaired";
+char IDS_FILESTATUS_NOTREPAIRED             [] = "Not Repaired";
+char IDS_FILESTATUS_DELETED                 [] = "Deleted";
+char IDS_FILESTATUS_NOTDELETED              [] = "Not Deleted";
+char IDS_FILESTATUS_EXCLUDED                [] = "Excluded";
+char IDS_FILESTATUS_EXCLUDEFAILED           [] = "Not Excluded";
+char IDS_FILESTATUS_BOOTINFECTED            [] = "Boot Infected";
+char IDS_FILESTATUS_BOOTREPAIRED            [] = "Boot Repaired";
+char IDS_FILESTATUS_BOOTNOTREPAIRED         [] = "Boot Not Repaired";
+char IDS_FILESTATUS_MASTERBOOTINFECTED      [] = "Boot Infected";
+char IDS_FILESTATUS_MASTERBOOTREPAIRED      [] = "Boot Repaired";
+char IDS_FILESTATUS_MASTERBOOTNOTREPAIRED   [] = "Boot Not Repaired";
+char IDS_FILESTATUS_QUARANTINE_INFECTED     [] = "Quarantined";
+char IDS_FILESTATUS_QUARANTINE_INFECTED_FAILED[] = "Not quarantined";
+
+
+
+// ************************************************************************
+// Stirngs used in the TTYSCAN project
+// ***********************************************************************
+
+char SZ_SCAN_RESULTS_TITLE[] = "Scan Results";
+
+
+char  SZ_RESULT_PRINT_FILE      [] = "Name:           %s";
+char  SZ_RESULT_PRINT_VIRUS     [] = "Virus Name:     %s";
+char  SZ_RESULT_PRINT_STATUS    [] = "Status:         %s";
+
+char  SZ_RESULT_SUMMARY_LINE []= "\n   Summary:            %-37s\n";
+char  SZ_RESULT_ITEMS_SCANNED[]= "   Items Scanned:      %-37s\n";
+char  SZ_RESULT_FILE_TYPE    []= "   File Type:          %s\n";
+char  SZ_RESULT_INOCULATION  []= "   Inoculation:        %s\n";
+char  SZ_RESULT_SCAN_TIME    []= "   Scan Time:          %s\n\n";
+char  SZ_RESULT_TITLE_LINE   []= "   Item                     Scanned   Infected    Cleaned  \n";
+char  SZ_RESULT_LINE         []= "   -----------------------  --------- ----------  ---------\n";
+char  SZ_RESULT_MEMORY       []= "   Memory:                  %-9s  %-9s  %-9s\n";
+char  SZ_RESULT_MASTER_BOOT  []= "   Master Boot Records:     %-9d  %-9d  %-9s\n";
+char  SZ_RESULT_BOOT         []= "   Boot Records:            %-9d  %-9d  %-9s\n";
+char  SZ_RESULT_FILES        []= "   Files:                   %-9lu  %-9u  %-9s\n\n";
+
+char *lpszScanResultsStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    };
+
+char SZ_ZIP_INFECTED_FORMAT [] =
+   {
+   "The file %s in the compressed file %s\nis infected with the %s virus.\n"
+   };
+
+
+char IDS_RAP_ZIPINFECTED[] = "Uncompress it first, then run Norton AntiVirus.\n";

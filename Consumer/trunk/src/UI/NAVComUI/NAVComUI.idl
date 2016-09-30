@@ -1,0 +1,118 @@
+// NAVComUI.idl : IDL source for NAVComUI.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVComUI.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+
+    [
+	    object,
+	    uuid(8A0D4A72-3A1A-47D6-BD12-73A6ABFF9DA0),
+	    dual,
+	    nonextensible,
+	    helpstring("IAxSysListView32 Interface"),
+	    pointer_default(unique)
+    ]
+    interface IAxSysListView32 : IDispatch{
+	    [propput, bindable, requestedit, id(DISPID_ENABLED)] HRESULT Enabled([in]VARIANT_BOOL vbool);
+	    [propget, bindable, requestedit, id(DISPID_ENABLED)] HRESULT Enabled([out,retval]VARIANT_BOOL* pbool);
+	    [propget, bindable, requestedit, id(DISPID_HWND)] HRESULT HWND([out, retval]LONG_PTR* pHWND);
+        [id(1), helpstring("method Initialize")] HRESULT Initialize([in] BOOL bEMailScan);
+        [propput, id(2), helpstring("property Filter")] HRESULT Filter([in] LONG newVal);
+        [propget, id(3), helpstring("property Anomaly")] HRESULT Anomaly([out, retval] VARIANT* pVal);
+        [propput, id(4), helpstring("property AnomalyList")] HRESULT AnomalyList([in] VARIANT* newVal);
+        [id(5), helpstring("method Refresh")] HRESULT Refresh(void);
+        [id(6), helpstring("method InitColumns")] HRESULT InitColumns([in] BOOL bManualRemvoal);
+    };
+
+[
+	    object,
+	    uuid(22CE3F3F-C4F7-4991-9ED1-1F58F2975F28),
+	    dual,
+	    nonextensible,
+	    helpstring("IAxSysListView32OAA Interface"),
+	    pointer_default(unique)
+    ]
+    interface IAxSysListView32OAA : IDispatch{
+	    [propget, bindable, requestedit, id(DISPID_HWND)] HRESULT HWND([out, retval]LONG_PTR* pHWND);
+        [propput, id(1), helpstring("property Anomaly")] HRESULT Anomaly([in] VARIANT* newVal);
+        [propget, id(2), helpstring("property AffectedType")] HRESULT AffectedType([out, retval] ULONG* pVal);
+        [propput, id(2), helpstring("property AffectedType")] HRESULT AffectedType([in] ULONG newVal);
+        [propget, id(3), helpstring("property ControlMode")] HRESULT ControlMode([out, retval] ULONG* pVal);
+        [propput, id(3), helpstring("property ControlMode")] HRESULT ControlMode([in] ULONG newVal);
+    };
+
+[
+	uuid(BE2DF74C-BDC0-4411-9641-4B811B82A3AF),
+	version(1.0),
+	helpstring("NAVComUI 1.0 Type Library")
+]
+library NAVCOMUILib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+    typedef
+	[
+		helpstring("NAVCOMUILib.IAxSysListView32 infection filter")
+	] enum IAxSysListView32_Filter
+	{ IAxSysListView32_Filter_Infected = 1
+	, IAxSysListView32_Filter_Repaired
+	} IAxSysListView32_Filter;
+
+    typedef
+	[
+		helpstring("NAVCOMUILib.IAxSysListView32OAA ControlMode flag")
+	] enum IAxSysListView32OAA_ControlMode
+	{ IAxSysListView32OAA_Mode_Top = 1
+	, IAxSysListView32OAA_Mode_Bottom
+	} IAxSysListView32OAA_ControlMode;
+
+	[
+		uuid(7E071476-08B9-4B46-9A38-9E110B9A3D90),
+		helpstring("_IAxSysListView32Events Interface")
+	]
+	dispinterface _IAxSysListView32Events
+	{
+		properties:
+		methods:
+        [id(1), helpstring("method ItemChanged")] HRESULT ItemChanged();
+        [id(2), helpstring("method ThreatTypeClick")] HRESULT ThreatTypeClick();
+        [id(3), helpstring("methed ThreatRiskClick")] HRESULT ThreatRiskClick();
+        [id(4), helpstring("methed ThreatNameClick")] HRESULT ThreatNameClick();
+        [id(5), helpstring("methed DisplayQuarantineNote")] HRESULT DisplayQuaratineNote();
+    };
+	[
+		uuid(0A398EE6-277C-480D-BD4F-3288EA3AB8E2),
+		helpstring("AxSysListView32 Class")
+	]
+	coclass AxSysListView32
+	{
+		[default] interface IAxSysListView32;
+		[default, source] dispinterface _IAxSysListView32Events;
+	};
+
+	[
+		uuid(21DD823D-9E9A-4FAF-8BD5-C417E7DB02CB),
+		helpstring("_IAxSysListView32OAAEvents Interface")
+	]
+	dispinterface _IAxSysListView32OAAEvents
+	{
+		properties:
+		methods:
+        [id(1), helpstring("method ItemChanged")] HRESULT ItemChanged();
+	};
+	[
+		uuid(FAF02D9B-963D-43D8-91A6-E71383503FDA),
+		helpstring("AxSysListView32OAA Class")
+	]
+	coclass AxSysListView32OAA
+	{
+		[default] interface IAxSysListView32OAA;
+		[default, source] dispinterface _IAxSysListView32OAAEvents;
+	};
+
+};

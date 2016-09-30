@@ -1,0 +1,148 @@
+#######################################################################
+# 
+# target file: AVISservlets.prf
+# 
+# target directory: D:\avis
+# 
+# target machine: gw01xxxxxxxx.gw01.dis.symantec.com
+# 
+# target application: AVISservlets.DLL
+# 
+# This profile contains configuration parameters for the
+# Immune System servlets located in the AVISservlets.DLL file on 
+# the "gateway 01" array.  These servlets run as subroutines of 
+# LotusGo, which is configured by the appropriate HTTPD.gw01xxxxxx.cnf 
+# file for this target machine.
+# 
+# This profile is identical on all machines in the gateway array 
+# that run LotusGo.
+# 
+#######################################################################
+
+#----------------------------------------------------------------------
+# The "redirectSignatures.x" parameters are used by the
+# redirectSignatureSet transaction on the customer entry point machine
+# to redirect getSignatureSet transactions to one of the definition
+# download machines in the gateway array.
+#----------------------------------------------------------------------
+
+redirectSignatures.1 = gw01def01.gw01.dis.symantec.com
+redirectSignatures.2 = gw01def02.gw01.dis.symantec.com
+redirectSignatures.3 = gw01def03.gw01.dis.symantec.com
+
+#----------------------------------------------------------------------
+# The "redirectSamples.x" parameters are used by the
+# redirectSuspectSample transaction on the customer entry point machine
+# to redirect postSuspectSample transactions to one of the sample
+# receiver machines in the gateway array.
+#----------------------------------------------------------------------
+
+redirectSamples.1 = gw01sample01.gw01.dis.symantec.com
+
+#----------------------------------------------------------------------
+# The "XAnalysisGateway" parameter is used by the postSuspectSample
+# transaction on sample receiver machines to direct getSampleStatus
+# transactions to the customer entry point machine.
+#----------------------------------------------------------------------
+
+XAnalysisGateway = gw01entry01.gw01.dis.symantec.com
+
+#----------------------------------------------------------------------
+# The "sampleDirectory" parameter is used by the postSuspectSample and
+# getSuspectSample servlets for storing the attributes and contents of
+# samples submitted by IcePack agents on customer Quarantine servers
+# until they are imported by the Immune System analysis center.  The
+# data storage machine in the gateway array shares a network directory
+# for this purpose.
+#----------------------------------------------------------------------
+
+sampleDirectory = \\gw01data01\samples
+
+#----------------------------------------------------------------------
+# The "signatureDirectory" parameter is used by the postSignatureSet and
+# getSignatureSet servlets for storing the definition packages exported
+# by the Immune System analysis center so that they can be downloaded by
+# IcePack agents on customer Quarantine servers.  The data storage
+# machine shares a network directory for this purpose.
+#----------------------------------------------------------------------
+
+signatureDirectory = \\gw01data01\signatures
+
+#----------------------------------------------------------------------
+# The "DBCP_Maximum_Connections" parameter limits the number of
+# connections to the DB2 service on the data storage machine that may be
+# allocated by the getSignatureSet servlet on definition download
+# machines.
+#----------------------------------------------------------------------
+
+DBCP_Maximum_Connections = 100
+
+#----------------------------------------------------------------------
+# The "maximumSubmissionXxxxxSize" parameters limit the maximum size of
+# submissions from IcePack agents on customer Quarantine servers.
+# 
+# The "maximumSubmissionSampleSize" parameter limits the maximum size of
+# the original file, before it is compressed.
+# 
+# The "maximumSubmissionContentSize" parameter limits the maximum size
+# of the transaction content, after the original file is compressed.
+#----------------------------------------------------------------------
+
+maximumSubmissionSampleSize = 10000000
+maximumSubmissionContentSize = 10000000
+
+#----------------------------------------------------------------------
+# The "tempExpand" parameter specifies a directory where servlets may
+# create temporary files.
+#----------------------------------------------------------------------
+
+tempExpand = d:\temp
+
+#----------------------------------------------------------------------
+# The "LogFile" parameter specifies the name of the directory
+# where log files are written.  The names of the files are composed by
+# inserting the current month and day and hour between the specified
+# filename and extension, in the format "filename.MM-DD-HH.extension".
+#----------------------------------------------------------------------
+
+LogFile = d:\log\AVISservlets.log
+
+#----------------------------------------------------------------------
+# The "Trace_Rollover_Hourly" parameter enables or disables (values "on"
+# or "off", respectively) inserting the current hour between the logfile
+# name and extension.
+#----------------------------------------------------------------------
+
+Trace_Rollover_Hourly  = on
+
+#----------------------------------------------------------------------
+# The "Trace_Include_xxxxx" parameters specify which types of records
+# will be written to the log file.
+#----------------------------------------------------------------------
+
+Trace_Include_Msg        = on
+Trace_Include_Stack      = on
+Trace_Include_Debug      = on
+Trace_Include_Info       = on
+Trace_Include_Warning    = on
+Trace_Include_Error      = on
+Trace_Include_Critical   = on
+Trace_Include_GoHeaders  = off
+Trace_Include_EnvHeaders = off
+
+#----------------------------------------------------------------------
+# The "Trace_Mode_xxxxx" parameters specify which fields will be
+# included in records written to the log file.
+#----------------------------------------------------------------------
+
+Trace_Mode_Linenumbers = on
+Trace_Mode_Datestamp   = on
+Trace_Mode_Timestamp   = on
+Trace_Mode_Finetime    = on
+Trace_Mode_ThreadId    = on
+Trace_Mode_Severity    = on
+Trace_Mode_Source      = on
+Trace_Mode_Code        = off
+Trace_Mode_Message     = on
+
+#######################################################################

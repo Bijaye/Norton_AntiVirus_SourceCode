@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<meta id="charset_select" http-equiv="Content-Type" content="text/html; charset=iso8859-1">
+		<link rel="stylesheet" type="text/css" href="cfgwizstyle.css">
+	</head>
+	<BODY id="body_select" text="#333333" leftMargin="0" topMargin="0" scroll="no" onload="OnLoad()" style="BACKGROUND-IMAGE: url(select.gif); BACKGROUND-REPEAT: no-repeat;">
+		<IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none" SRC="errors.htm"></IFRAME>
+		<script Language="JavaScript" src="DisplayScriptError.js"></script>
+		<table id="SelectBodyTable" width="422" height="50" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<TD id="table21_cell2" vAlign="top" align="right" colSpan="3" height="30">
+					<span id="txtHelpLink" style="DISPLAY:none; CURSOR:hand; COLOR:blue; TEXT-DECORATION:underline" onclick="OnHelp()">
+						What is a ?</span>&nbsp;&nbsp;&nbsp;&nbsp;
+				</TD>
+			</tr>
+			<TR>
+				<TD>
+					<table id="ButtonTable" border="0" cellpadding="0" cellspacing="0" width="100%" align="right">
+						<tr>
+							<td id="ButtonCell" align="right" width="116">
+							</td>
+							<td id="ButtonCell1" align="right" width="82">
+								<button id="BackButton" class="next" onclick="OnBackButton()" accesskey="b"><u>B</u>ack</button>
+							</td>
+							<td id="ButtonCell2" align="right" width="82">
+								<button id="NextButton" class="next" DISABLED onclick="OnNextButton()" accesskey="n"><u>
+										N</u>ext</button>
+							</td>
+							<td id="ButtonCell3" align="right" width="142">
+								<button id="SkipButton" class="skip" style="visibility: hidden" onclick="OnSkipButton()" accesskey="l">
+								Activate <U>L</U>ater</button>
+							</td>
+						</tr>
+					</table>
+				</TD>
+			</TR>
+		</table>
+		</TD> </TR> </table> 
+		<!-- Buttons Text -->
+		<span id="ASkipBtnText" style="DISPLAY: none">Activate <U>L</U>ater</span>
+		<span id="FinBtnText" style="DISPLAY: none"><U>F</U>inish</span>
+		<span id="NxtBtnText" style="DISPLAY: none"><U>N</U>ext</span>
+		<!-- Buttons HotKey values -->
+		<span id="ASkipHotKey" style="DISPLAY: none">L</span>
+		<span id="FinHotKey" style="DISPLAY: none">F</span>
+		<span id="NxtHotKey" style="DISPLAY: none">N</span>
+		<!-- Supernag strings -->
+		<span id="strActLaterGrace1" style="DISPLAY: none">You have chosen to skip activation. Successful activation should <br>take less than a minute.  You must activate your product <br>within</span>
+		<span id="strActLaterGrace2" style="DISPLAY: none">day(s) or it will stop working.<br><br> Would you like to activate now?</span>
+		<span id="strActLaterNoGrace" style="DISPLAY: none">You have chosen to skip activation.  Successful activation should<br>take less than a minute.  Your product will not work until you activate it.<br><br>Would you like to activate now?</span>
+		<script src="select.js" language="JavaScript"></script>
+	</BODY>
+</html>

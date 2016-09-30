@@ -1,0 +1,46 @@
+// Copyright 1992-1993 Symantec, Peter Norton Product Group
+//************************************************************************
+//                                                                
+// $Header:   N:/navxutil/VCS/navxutil.rcv   1.0   06 Feb 1997 21:05:48   RFULLER  $ 
+//                                                                
+// Description:                                                   
+//      This file contains the constants for the Program Files Control Panel 
+// Entry for the Norton AntiVirus for Windows.  
+//
+//      It also contains log file strings for the Auto-Protect Agent since
+// all components may have to update the activity file for the VxD in 
+// Win95.
+//                                                                
+//************************************************************************
+#ifndef WORKSHOP_INVOKED
+    #include <windows.h>
+#endif
+#include "stbexts.h"                    // String Table IDs
+#include "resexts.h"
+#include "navaplog.h"                   // Strings for VXD's activity log msgs.
+
+
+//***************************************************************************
+// Icons
+//***************************************************************************
+IDI_NAVW_APP  ICON    "navw.ico"
+
+
+
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define VR_FILEDESCRIPTION      "Norton AntiVirus Utilities"
+#define VR_INTERNALNAME         "N32XUTIL.DLL"
+#define VR_ORIGINALFILENAME     "N32XUTIL.DLL"
+#include "nav.ver"
+
+
+//***************************************************************************
+// Resources
+//***************************************************************************
+#include "navaplog.stb"
+#include "navxutil.dlg"
+#include "navxutil.stb"
+
+

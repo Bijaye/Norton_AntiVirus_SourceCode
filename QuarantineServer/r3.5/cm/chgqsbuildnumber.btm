@@ -1,0 +1,45 @@
+p4 -c cm_qserver_r3.5_client edit //depot/Norton_AntiVirus/Corporate_Edition/Build/r3.5/BldNum.btm
+
+python r:\cm\sr.py %BLDDIR%\Norton_AntiVirus\Corporate_Edition\Build\BldNum.btm "SET QServer32BuildNumber=\d\d\d" "SET QServer35BuildNumber=%BuildNumber%"
+iff %? != 1 then
+        python r:\cm\sr.py %BLDDIR%\Norton_AntiVirus\Corporate_Edition\Build\BldNum.btm "SET QServer32BuildNumber=\d\d\d" "SET QServer35BuildNumber=%BuildNumber%"
+        if errorlevel != 1 goto REPLACEERROR
+endiff
+
+echo Change:    new > temp.txt
+echo Description: >> temp.txt
+echo    Updating Quarantine Server build number for SAV to pickup(build number %BuildNumber%)  >> temp.txt
+echo Files: >> temp.txt
+echo    //depot/Norton_AntiVirus/Corporate_Edition/Build/r3.5/BldNum.btm  # edit >> temp.txt
+
+p4 -c cm_qserver_r3.5_client submit -i < temp.txt
+
+:dpne
+quit
+
+:REPLACEERROR
+set ErrorFileName=%BLDDIR%\SAVBuildnumberchangeError%_day.%_hour
+
+echo "            " > %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo unable to modify qserver 3.5 build number for SAV use. please check chgqsbuildnumber.btm >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+
+start notepad %ErrorFileName
+echo ..
+echo ..
+color bright yellow on black
+echo **********************************************************
+echo *
+echo *   unable to modify qserver 3.5 build number for SAV use.
+echo *
+echo **********************************************************
+color white on black
+echo ..
+echo ..
+

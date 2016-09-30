@@ -1,0 +1,1050 @@
+
+;****************************************************************************
+; Copyright 1996 Symantec, Peter Norton Product Group
+;****************************************************************************
+; WDVARSIG.WDF
+;
+; $Header:   S:/NAVEX/VCS/wdvarsig.wdv   1.15   15 May 1997 19:51:42   RELNITI  $
+;
+; This source file contains definitions for the variant Word viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/wdvarsig.wdv  $
+   
+      Rev 1.15   15 May 1997 19:51:42   RELNITI
+   ADD FullSetRepair to Variant Repair (but NJ's which is still UNTESTED)
+   
+      Rev 1.14   14 May 1997 12:40:36   RELNITI
+   ADD FullSetRepair to Colors Variant
+   
+      Rev 1.13   14 May 1997 11:44:54   RELNITI
+   CHANGE all occurances of _BANDUNGD => _BANDUNGA
+   
+      Rev 1.12   12 May 1997 21:38:16   RELNITI
+   ADD another Junk NamedCRC for #11921
+   
+      Rev 1.11   12 May 1997 20:30:36   RELNITI
+   MODIFY Concept Variant Signature: remove the AUTOOPEN-only restriction
+   
+      Rev 1.10   09 May 1997 19:24:42   RELNITI
+   ADD TrashCan for Junked WM macros, i.e. corrupted CAP, so
+    this can be picked up by FullSet detection
+   
+      Rev 1.9   08 May 1997 13:20:24   CFORMUL
+   Added FullsetRepair to MDMA variant
+   
+   
+      Rev 1.8   08 May 1997 12:37:24   JWILBER
+   Added FullSetRepair to Concept_Variant.
+ 
+      Rev 1.7   06 May 1997 19:25:40   RELNITI
+   ADD FullSetRepair to Rapi Variant detection #11739
+ 
+      Rev 1.6   05 May 1997 19:03:16   RELNITI
+   UNCOMMENTED Colors Remnant Detection due to #11714
+ 
+      Rev 1.5   29 Apr 1997 17:35:24   AOONWAL
+   Comented out Colors Remnant signature for mid-month build
+ 
+      Rev 1.4   29 Apr 1997 16:55:00   RELNITI
+   CHANGE the comment on FullSet detection since Chuck already moved it
+   to the end of the file.
+ 
+      Rev 1.3   29 Apr 1997 11:42:34   CRENERT
+   Moved FullSet() to the end of the file.
+ 
+      Rev 1.2   25 Apr 1997 17:06:12   AOONWAL
+   Modified during MAY97 update
+ 
+      Rev MAY97  23 Apr 1997 11:36:30   ECHIEN
+   Moved the Colors Remnant VID_COLORSBREMN block from wd7sigs.wdf to here
+ 
+      Rev MAY97  23 Apr 1997 00:04:26   JWILBER
+   Commented out Concept.Damaged.
+ 
+      Rev 1.1   18 Apr 1997 17:51:32   AOONWAL
+   Modified during DEV1 malfunction
+ 
+      Rev ABID   14 Apr 1997 17:25:44   AOONWAL
+   Modified WM.Twno.Variant signature
+ 
+      Rev ABID   14 Apr 1997 09:14:40   RELNITI
+   ADD FullSetRepair (WD7 WD8 XL97)
+
+      Rev 1.0   07 Apr 1997 16:45:28   CFORMUL
+   Initial revision.
+
+;
+;****************************************************************************
+
+
+#################################################################
+#
+# U n k n o w n   V i r u s   S i g n a t u r e s
+#
+#################################################################
+
+#################################################################
+# Unknown Macro Sigs
+#################################################################
+
+# The following is a Bandung Remnant due to a double infection
+# with NPADA AutoOpen  Putting it here will ensure that it is
+# only detected after any real Bandung
+[UnknownVirusSigStart]
+[Comment]       WM.Bandung.Rem  Same as Bandung.I without AutoOpen
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNGREM
+[Signature]     Not NameSig(NAME_ONLY_AUTOOPEN) and
+[Signature]     NamedCRCSig(CRC_AUTOEXEC_BANDUNGI) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSMACRO_BANDUNGA) and
+[Signature]     NamedCRCSig(CRC_TOOLSCUSTOMIZE_BANDUNGA)
+[Repair]        UseSignature
+[UnknownVirusSigEnd]
+
+#The following two sigs MUST come after all the other Concepts' sig
+# and also Nicedays'
+#Moving them to UnknownVirusSig guarantees that.
+#BTW, these two will be useless when we have engine-base remnant removal
+#For now, it will clean up some customer issues
+#
+;[UnknownVirusSigStart]
+;[Comment]       WM.ConceptDamaged   Damaged Concept jjw 25 Feb 97
+;[Type]          WD7
+;[QAStatus]      PASSED
+;[ID]            VID_CONDAM
+;[Signature]     (NamedCRCSig(CRC_AAAZAO_CONCEPTA) and
+;[Signature]      NamedCRCSig(CRC_AAAZFS_CONCEPTA)) or
+;[Signature]     (Not NameSig(NAME_ONLY_MACROS) and
+;[Signature]     NamedCRCSig(CRC_AUTOOPEN_CONCEPTA))
+;[Repair]        UseSignature,
+;[Repair]        NamedCRCSig(CRC_PAYLOAD_CONCEPTA)
+;[UnknownVirusSigEnd]
+
+;[UnknownVirusSigStart]
+;[Comment]       WM.ConceptRem       Concept Remnant jjw 25 Feb 97
+;[Type]          WD7
+;[QAStatus]      PASSED
+;[ID]            VID_CONREM
+;[Signature]     NamedCRCSig(CRC_PAYLOAD_CONCEPTA)
+;[Repair]        UseSignature
+;[UnknownVirusSigEnd]
+
+
+# This is the home of the COLORS REMNANT
+# It detects a bunch of non-infectious remnant of Colors
+# ... will be USELESS when FULLSET is online
+[KnownVirusSigStart]
+[Comment]       WM.Colors Remnant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORSBREMN
+[Signature]     Not NameSig(NAME_ONLY_AUTOOPEN) and
+[Signature]     NamedCRCSig(CRC_FILENEW_COLORSB) and
+[Signature]     NamedCRCSig(CRC_MACROS_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVE_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILEEXIT_COLORSA) and
+[Signature]     NamedCRCSig(CRC_FILESAVEAS_COLORSA) and
+[Signature]     (NamedCRCSig(CRC_TOOLSMACRO_COLORSA) or
+[Signature]      NamedCRCSig(CRC_TOOLSMACRO_COLORSV))
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_AUTOEXEC_COLORSA),
+[Repair]        NamedCRCSig(CRC_AUTOCLOSE_COLORSA),
+[Repair]        NamedCRCSig(CRC_AUTOCLOSE_KOMPUA)
+[KnownVirusSigEnd]
+
+
+#
+# NPAD Variants
+#
+
+# Sigs on 'SetProfileString("Compatibility", "Npad328", JAkses$)',
+# then 'If Encrypt <> 0 Then MacroCopy'
+
+[MacroSigStart]
+[Comment]       NPAD is always in one macro - AutoOpen
+[ID]            NPAD_VARIANT
+[Signature]     SeekSet(284) NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(296, 0x67 0x46 0x80 0x05 0x6a) 0x0d
+[Signature]     "Compatibility" 0x12 0x6a HotByteSkip() 0x12 0x69
+[Signature]     ScanString(285, 0x52 0x1d 0x69) HotByteSkip()
+[Signature]     0x0d 0x6c 0x00 0x00 0x1e 0x64 0x6f 0x02 0x67 0xc2 0x80
+[MacroSigEnd]
+
+#
+# Nuclear Variants
+#
+
+# Trigger Detection
+
+[MacroSigStart]
+[Comment]       Sigs on If Second(Now()) > ?? Then EndOfDocument Insert
+[ID]            NUCLEAR_VARIANT0
+[Signature]     0x1d 0x67 0xff 0x80 0x05 0x67 0xf7 0x80 0x05 0x06 0x06 0x0f
+[Signature]     0x6c SeekCur(2) 0x1e ScanString(0x80, 0x67 0x11 0xc0)
+[Signature]     ScanString(0x60, 0x67 0x12 0x80)
+[Signature]     ScanString(0x60, 0x67 0x12 0x80)
+[MacroSigEnd]
+
+# System File Tweaking Detection
+
+[MacroSigStart]
+[Comment]       Sigs on the Opening of IO.SYS for Output
+[ID]            NUCLEAR_VARIANT1A
+[Signature]     0x67 0x03 0x81 0x6a ScanStringI(0xc0, "IO.SYS")
+[Signature]     ScanString(0x18, 0x3d 0x6a) ScanStringI(0x10, "IO.SYS")
+[Signature]     ScanString(0x0c, 0x23 0x3b 0x34) 0x71 0x6c SeekCur(1) 0x00
+[Signature]     ScanString(8, 0x4c 0x71 0x6c) SeekCur(1) 0x00
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Sigs on the Opening of MSDOS.SYS for Output
+[ID]            NUCLEAR_VARIANT1B
+[Signature]     0x67 0x03 0x81 0x6a
+[Signature]     ScanStringI(0xc0, "MSDOS.SYS") ScanString(0x18, 0x3d 0x6a)
+[Signature]     ScanStringI(0x10, "MSDOS.SYS") ScanString(4, 0x12 0x6c)
+[Signature]     ScanString(0x18, 0x4c 0x71 0x6c) SeekCur(1) 0x00
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Sigs on the Opening and Deletion of COMMAND.COM
+[ID]            NUCLEAR_VARIANT1C
+[Signature]     0x67 0x03 0x81 0x6a ScanStringI(0xc0, "COMMAND.COM")
+[Signature]     ScanString(0x18, 0x3d 0x6a) ScanStringI(0x10, "COMMAND.COM")
+[Signature]     ScanString(0x0c, 0x23 0x3b 0x34) 0x71 0x6c SeekCur(1) 0x00
+[Signature]     ScanString(8, 0x4c 0x71 0x6c) SeekCur(1) 0x00
+[Signature]     ScanString(8, 0x67 0xab 0x80) 0x6a
+[Signature]     ScanStringI(0x0c, "COMMAND.COM")
+[MacroSigEnd]
+
+#
+# MDMA Variants
+#
+
+[MacroSigStart]
+[Comment]       Finds Loop that Checks for Previous Infection, Kill("****")
+[ID]            MDMA_VARIANT
+[Signature]     0x0c 0x67 0xb7 0x80 0x05 0x6c NameSig(NAME_ONLY_AUTOCLOSE)
+[Signature]     0x00 0x00 0x06 ScanString(8, 0x69) HotByteSkip()
+[Signature]     0x0c 0x6c 0x00 0x00 ScanString(8, 0x1d, 0x69) HotByteSkip()
+[Signature]     0x0f 0x6c 0x00 0x00 0x1e ScanString(8, 0x23, 0x69)
+[Signature]     HotByteSkip() 0x0c 0x6c 0x01 0x00 0x24 0x69 HotByteSkip()
+[Signature]     ScanString(8, 0x1d, 0x67) 0xb8 0x80 0x05 0x69 HotByteSkip()
+[Signature]     0x12 0x6c 0x00 0x00 0x06 0x0c 0x6a ScanStringI(3, "AUTOCLOSE")
+[Signature]     0x1e ScanString(0x480, 0x67 0xab 0x80 0x67) 0x6e 0x81 0x05
+[Signature]     0x6a 0x04 0x2a 0x2a 0x2a 0x2a 0x06
+[MacroSigEnd]
+
+#################################################################
+# Unknown Virus Sigs
+#################################################################
+
+#
+# NPAD
+#
+
+[UnknownVirusSigStart]
+[Comment]       NPAD Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NPAD_VARIANT
+[Signature]     MacroSig(NPAD_VARIANT)
+#[Repair]        UseSignature
+[Repair]        NoRepair
+[UnknownVirusSigEnd]
+
+#
+# Nuclear
+#
+
+# A "Hit" with 0 sig and (1C sig and (1A or 1B) sigs)
+
+[UnknownVirusSigStart]
+[Comment]       Nuclear Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NUCLEAR_VARIANT
+[Signature]     MacroSig(NUCLEAR_VARIANT0) and
+[Signature]     (MacroSig(NUCLEAR_VARIANT1C) and
+[Signature]     (MacroSig(NUCLEAR_VARIANT1A) or MacroSig(NUCLEAR_VARIANT1B)))
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+#
+# MDMA
+#
+
+[UnknownVirusSigStart]
+[Comment]       MDMA Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_MDMA_VARIANT
+[Signature]     MacroSig(MDMA_VARIANT)
+#[Repair]        UseSignature
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+
+######################################################################
+#
+# for WM.Atom variant
+#  Little Endian version on AUTOOPEN macro for:
+#  FileName$() ....
+#  MacroCopy VAR, ""
+#  Call
+#  FUNCTION
+#
+######################################################################
+[MacroSigStart]
+[Comment]       ... FileName$() .... MacroCopy VAR, "" ... Call Atom
+[ID]            MAC_ATOM_FAM_AUTOOPEN_LTL_E
+[Signature]     SeekSet(0) 0x01 0x00 NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(500, 0x67 0x25 0x80)
+[Signature]     ScanString(200, 0x67 0xc2 0x80 0x69)
+[Signature]      HotByteSkip() ScanString(10, 0x07 0x6A)
+[Signature]     ScanSlide(500, 0x29)
+[Signature]     ScanSlide(100, 0x1c)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Atom variant
+#  Big Endian version on AUTOOPEN macro for:
+#  FileName$() ....
+#  MacroCopy VAR, ""
+#  Call
+#  FUNCTION
+#
+######################################################################
+[MacroSigStart]
+[Comment]       ... FileName$() .... MacroCopy VAR, "" ... Call Atom
+[ID]            MAC_ATOM_FAM_AUTOOPEN_BIG_E
+[Signature]     SeekSet(0) 0x00 0x01 NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(500, 0x67 0x80 0x25)
+[Signature]     ScanString(200, 0x67 0x80 0xc2 0x69)
+[Signature]      HotByteSkip() ScanString(10, 0x07 0x6A)
+[Signature]     ScanSlide(500, 0x29)
+[Signature]     ScanSlide(100, 0x1c)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Atom variant
+#  Little Endian version on FILESAVEAS macro for:
+#  MacroCopy "", WindowName$
+#  Dlg .Password
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_ATOM_FAM_FILESAVEAS_BIG_E
+[Signature]     SeekSet(0) 0x01 0x00 NameSig(NAME_ONLY_FILESAVEAS)
+[Signature]     ScanString(500, 0x67 0xc2 0x80 0x6a)
+[Signature]      HotByteSkip() ScanString(10, 0x67 0x3b 0x80)
+[Signature]     ScanString(500, 0x73 0x60 0x00)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Atom variant
+#  Big Endian version on FILESAVEAS macro for:
+#  MacroCopy "", WindowName$
+#  Dlg .Password
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_ATOM_FAM_FILESAVEAS_LTL_E
+[Signature]     SeekSet(0) 0x00 0x01 NameSig(NAME_ONLY_FILESAVEAS)
+[Signature]     ScanString(500, 0x67 0x80 0xc2 0x6a)
+[Signature]      HotByteSkip() ScanString(10, 0x67 0x80 0x3b)
+[Signature]     ScanString(500, 0x73 0x00 0x60)
+[MacroSigEnd]
+
+
+######################################################################
+#
+# WM.Atom variant detection:
+#   hit on MAC_ATOM_FAM_AUTOOPEN_LTL_E
+#       or MAC_ATOM_FAM_AUTOOPEN_BIG_E
+#       or MAC_ATOM_FAM_FILESAVEAS_LTL_E
+#       or MAC_ATOM_FAM_FILESAVEAS_BIG_E
+#
+######################################################################
+[UnknownVirusSigStart]
+[Comment]       WM.Atom variant detection
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_ATOM_VARIANT
+[Signature]     MacroSig(MAC_ATOM_FAM_AUTOOPEN_LTL_E) or
+[Signature]     MacroSig(MAC_ATOM_FAM_AUTOOPEN_BIG_E) or
+[Signature]     MacroSig(MAC_ATOM_FAM_FILESAVEAS_LTL_E) or
+[Signature]     MacroSig(MAC_ATOM_FAM_FILESAVEAS_BIG_E)
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+
+######################################################################
+#
+# for WM.Bandung variant
+# sig on AUTOOPEN macro frm offset #8 for:
+# "On Error Goto" which is commented out.
+#
+######################################################################
+[MacroSigStart]
+[Comment]       WM.Bandung: AUTOOPEN byte match from offset #8
+[ID]            MAC_BANDUNG_FAM_AUTOOPEN
+[Signature]     SeekSet(8) NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanStringI(500, "On Error Goto")
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Bandung variant
+# sig on AUTOOPEN macro for:
+#  MacroCopy ... , "Global:Autoexec"
+#
+######################################################################
+[MacroSigStart]
+[Comment]       WM.Bandung: AUTOOPEN byte match from offset #8
+[ID]            MAC_BANDUNG_FAM_AUTOOPEN2
+[Signature]     0x67 0xc2 0x80 0x69 HotByteSkip() 0x12 0x6a 0x0f
+[Signature]	 ScanStringI(1, "Global:AutoExec")
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Bandung variant
+# sig on FILESAVE macro starting from offset #8
+# ...FileSave...
+# ...Dim ... As FileSaveAs
+# ...GetCurValues...
+# ...MacroCopy...
+#
+######################################################################
+[MacroSigStart]
+[Comment]       WM.Bandung: FILESAVE byte match from offset #8
+[ID]            MAC_BANDUNG_FAM_FILESAVE
+[Signature]     SeekSet(8) NameSig(NAME_ONLY_FILESAVE)
+[Signature]     ScanString(500, 0x67 0x53 0x00)
+[Signature]     ScanSlide(500, 0x2f) ScanString(100, 0x34 0x67 0x54 0x00)
+[Signature]     ScanSlide(500, 0x3e)
+[Signature]     ScanString(1000, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Bandung variant
+# sig on FILESAVEAS macro starting from offset #8:
+# ...On Error Goto...
+# ...Dim ... As FileSaveAs
+# ...GetCurValues...
+# ...MacroCopy...
+#
+######################################################################
+[MacroSigStart]
+[Comment]       WM.Bandung: FILESAVEAS byte match from offset #8
+[ID]            MAC_BANDUNG_FAM_FILESAVEAS
+[Signature]     SeekSet(8) NameSig(NAME_ONLY_FILESAVEAS)
+[Signature]     ScanString(100, 0x2c 0x2d 0x2a)
+[Signature]     ScanSlide(500, 0x2f) ScanString(100, 0x34 0x67 0x54 0x00)
+[Signature]     ScanSlide(500, 0x3e)
+[Signature]     ScanString(1000, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+
+######################################################################
+#
+# WM.Bandung variant detection:
+#  1. and hit on MAC_BANDUNG_FAM_AUTOOPEN
+#             or MAC_BANDUNG_FAM_FILESAVE
+#             or MAC_BANDUNG_FAM_FILESAVEAS
+#  2. also has AUTOEXEC, TOOLSMACRO and TOOLSCUSTOMIZE
+#
+######################################################################
+[UnknownVirusSigStart]
+[Comment]       WM.Bandung Variant: has all 6 macros & hit one of the MacroSigs
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_BANDUNG_VARIANT
+[Signature]     (MacroSig(MAC_BANDUNG_FAM_AUTOOPEN) and
+[Signature]	 MacroSig(MAC_BANDUNG_FAM_AUTOOPEN2)  or
+[Signature]      MacroSig(MAC_BANDUNG_FAM_FILESAVE)   or
+[Signature]      MacroSig(MAC_BANDUNG_FAM_FILESAVEAS)  ) and
+[Signature]     (NameSig(NAME_ONLY_AUTOEXEC)             and
+[Signature]      NameSig(NAME_ONLY_TOOLSMACRO)           and
+[Signature]      NameSig(NAME_ONLY_TOOLSCUSTOMIZE) )
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant, A has this AUTOOPEN, B&C has CONCEPT's
+#
+#  in AUTOOPEN
+#  IF ... external macro call THEN
+#  ... external macro call ... FileName$
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_AUTOOPEN
+[Signature]     0x1d NameSig(NAME_ONLY_AUTOOPEN) SeekCur(1) HotByteSkip()
+[Signature]      0x76 ScanSlide(50, 0x1e)
+[Signature]     ScanSlide(200, 0x76) HotByteSkip()
+[Signature]      ScanString(10, 0x05 0x67 0x25 0x80 0x05 0x06 0x06)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant
+#
+#  in AUTOCLOSE
+#  IF ... external macro call THEN
+#  ... external macro call ... FileName$
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_AUTOCLOSE
+[Signature]     0x1d NameSig(NAME_ONLY_AUTOCLOSE) SeekCur(1) HotByteSkip()
+[Signature]      0x76 ScanSlide(50, 0x1e)
+[Signature]     ScanSlide(200, 0x76) HotByteSkip()
+[Signature]      ScanString(10, 0x05 0x67 0x25 0x80 0x05 0x06 0x06)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant
+#
+#  in FILESAVEAS
+#  IF ... external macro call THEN
+#  ...DisableAutoMacros 0
+#  ...DIM ... AS FileSaveAs
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_FILESAVEAS
+[Signature]     0x1d NameSig(NAME_ONLY_FILESAVEAS) SeekCur(1) HotByteSkip()
+[Signature]      0x76 ScanSlide(50, 0x1e)
+[Signature]     ScanString(200, 0x67 0xd6 0x80 0x6c 0x00 0x00)
+[Signature]     ScanSlide(200, 0x2f) ScanString(50, 0x34 0x67 0x54 0x00)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant, not in C
+#
+#  in FILEEXIT
+#  IF ... external macro call THEN
+#  ... DisableAutoMacros 0
+#  ... external macro call ... FileName$
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_FILEEXIT
+[Signature]     0x1d NameSig(NAME_ONLY_FILEEXIT) SeekCur(1) HotByteSkip()
+[Signature]      0x76 ScanSlide(50, 0x1e)
+[Signature]     ScanString(200, 0x67 0xd6 0x80 0x6c 0x00 0x00)
+[Signature]     ScanSlide(200, 0x76) HotByteSkip()
+[Signature]      ScanString(10, 0x67 0x25 0x80)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant
+#
+#  in FILESAVE
+#  IF ... external macro call THEN
+#  ... DisableAutoMacros 0
+#  ... external macro call ... FileName$
+#  ... external macro call ... FileName$
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_FILESAVE
+[Signature]     0x1d NameSig(NAME_ONLY_FILESAVE) SeekCur(1) HotByteSkip()
+[Signature]      0x76 ScanSlide(50, 0x1e)
+[Signature]     ScanString(200, 0x67 0xd6 0x80 0x6c 0x00 0x00)
+[Signature]     ScanSlide(200, 0x76) HotByteSkip()
+[Signature]      ScanString(10, 0x67 0x25 0x80)
+[Signature]     ScanSlide(200, 0x76) HotByteSkip()
+[Signature]      ScanString(10, 0x67 0x25 0x80)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant
+#
+#  in FILENEW               ;not in Colors.C
+#  IF ... external macro call THEN
+#  ...DisableAutoMacros 0
+#  ...DIM ... AS FileNew
+#
+#
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_FILENEW
+[Signature]     0x1d NameSig(NAME_ONLY_FILENEW) SeekCur(1) HotByteSkip()
+[Signature]      0x76 ScanSlide(50, 0x1e)
+[Signature]     ScanString(200, 0x67 0xd6 0x80 0x6c 0x00 0x00)
+[Signature]     ScanSlide(200, 0x2f) ScanString(50, 0x34 0x67 0x4f 0x00)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant
+#
+#  in MACROS
+#
+#  ...
+#  MacroCopy
+#
+#
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_MACROS1
+[Signature]     0x67 0xc2 0x80 NameSig(NAME_ONLY_MACROS)
+[MacroSigEnd]
+
+######################################################################
+#
+# for WM.Colors variant
+#
+#  in MACROS
+#
+#  ...
+#  SetProfileString("colors",
+#
+#
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_COLORS_FAM_MACROS2
+[Signature]     0x67 0x46 0x80 0x05 0x6a 0x06 "colors" NameSig(NAME_ONLY_MACROS)
+[MacroSigEnd]
+
+
+######################################################################
+#
+# WM.Colors variant detection:
+#  hit on one of the MacroSig for AUTOOPEN, AUTOCLOSE, FILESAVEAS,
+#  FILEEXIT, FILESAVE, FILENEW.
+#  and has MacroCopy instruction in MACROS
+#  and has SetProfileString("colors" ... in MACROS
+#
+# notes: B&C has Concept's AUTOOPEN
+#        C does not have FILEEXIT & FILENEW
+#
+######################################################################
+[UnknownVirusSigStart]
+[Comment]       WM.Colors variant detection
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_COLORS_VARIANT
+[Signature]     (MacroSig(MAC_COLORS_FAM_AUTOOPEN)   or
+[Signature]      MacroSig(MAC_COLORS_FAM_AUTOCLOSE)  or
+[Signature]      MacroSig(MAC_COLORS_FAM_FILESAVEAS) or
+[Signature]      MacroSig(MAC_COLORS_FAM_FILEEXIT)   or
+[Signature]      MacroSig(MAC_COLORS_FAM_FILESAVE)   or
+[Signature]      MacroSig(MAC_COLORS_FAM_FILENEW)       ) and
+[Signature]     MacroSig(MAC_COLORS_FAM_MACROS1) and
+[Signature]     MacroSig(MAC_COLORS_FAM_MACROS2)
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+
+######################################################################
+#
+# for WM.Concept variant
+# Little Endian version
+# sig on any macro for:
+# ... ON ERROR GOTO ...
+# ....... Val(GetDocumentVar$ ....
+# .... MacroCopy .... ,"Global:... (x4)
+#
+######################################################################
+[MacroSigStart]
+[Comment]       ON ERROR GOTO, FileName$()... 4 MacroCopy to Global:
+[ID]            MAC_CONCEPT_FAM_AUTOOPEN_LTL_E
+[Signature]     SeekSet(0) 0x01 0x00
+#NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(200, 0x2c 0x2d 0x2a 0x69)
+[Signature]     ScanString(500, 0x67 0x06 0x80 0x05 0x67 0x4d 0x81)
+[Signature]     ScanString(1000, 0x67 0xc2 0x80) ScanStringI(50, "Global:")
+[Signature]     ScanString(100, 0x67 0xc2 0x80) ScanStringI(50, "Global:")
+[Signature]     ScanString(100, 0x67 0xc2 0x80) ScanStringI(50, "Global:")
+[Signature]     ScanString(100, 0x67 0xc2 0x80) ScanStringI(50, "Global:")
+[MacroSigEnd]
+
+
+######################################################################
+#
+# for WM.Concept variant
+# Big Endian version
+# sig on any macro for:
+# ... ON ERROR GOTO ...
+# ....... Val(GetDocumentVar$ ....
+# .... MacroCopy .... ,"Global:... (x4)
+#
+######################################################################
+[MacroSigStart]
+[Comment]       ON ERROR GOTO...Val(GetDocumentVar$...MacroCopy to Global:
+[ID]            MAC_CONCEPT_FAM_AUTOOPEN_BIG_E
+[Signature]     SeekSet(0) 0x00 0x01
+#NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(200, 0x2c 0x2d 0x2a 0x69)
+[Signature]     ScanString(500, 0x67 0x80 0x06 0x05 0x67 0x81 0x4d)
+[Signature]     ScanString(1000, 0x67 0x80 0xc2) ScanStringI(50, "Global:")
+[Signature]     ScanString(100, 0x67 0x80 0xc2) ScanStringI(50, "Global:")
+[Signature]     ScanString(100, 0x67 0x80 0xc2) ScanStringI(50, "Global:")
+[Signature]     ScanString(100, 0x67 0x80 0xc2) ScanStringI(50, "Global:")
+[MacroSigEnd]
+
+
+######################################################################
+#
+# WM.Concept variant detection:
+#  1. hit on MAC_CONCEPT_FAM_AUTOOPEN_LTL_E
+#         or MAC_CONCEPT_FAM_AUTOOPEN_BIG_E
+#  2. has no MACRO "macros" to distinguish from WM.Colors.B
+#
+######################################################################
+[UnknownVirusSigStart]
+[Comment]       WM.Concept variant detection
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_CONCEPT_VARIANT
+[Signature]     (MacroSig(MAC_CONCEPT_FAM_AUTOOPEN_LTL_E) or
+[Signature]      MacroSig(MAC_CONCEPT_FAM_AUTOOPEN_BIG_E)   ) and
+[Signature]     (Not NameSig(NAME_ONLY_MACROS) )
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+
+######################################################################
+#
+# Detection for unknown WM.Wazzu variant
+#
+######################################################################
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of Wazzu, macro AUTOOPEN
+[ID]            UNKNOWN_VARIANT_WAZZU1
+[Signature]     SeekSet(0x0A)
+[Signature]     NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(0x50, 0x67 0x56 0x00)
+[Signature]     ScanString(0x10, 0x2f)
+[Signature]     ScanString(0x10, 0x3e)
+[Signature]     ScanString(0x100, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x30, 0x67 0x54 0x00)
+[Signature]     ScanString(0x20, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of Wazzu, macro AUTOOPEN
+[ID]            UNKNOWN_VARIANT_WAZZU2
+[Signature]     SeekSet(0x50)
+[Signature]     NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(0x100, 0x67 0xAF 0x80)
+[Signature]     0x05 0x67 0x09 0x80
+[Signature]     0x05 0x67 0x8e 0x81
+[Signature]     0x05 0x67 0xB8 0x80
+[Signature]     SeekSet(0)
+[Signature]     ScanString(0x800, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x30, 0x67 0x54 0x00)
+[Signature]     ScanString(0x20, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[UnKnownVirusSigStart]
+[Comment]       Wazzu Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WAZZU_VARIANT
+[Signature]     MacroSig(UNKNOWN_VARIANT_WAZZU1) or
+[Signature]     MacroSig(UNKNOWN_VARIANT_WAZZU2)
+#[Repair]        UseSignature
+[Repair]        FullSetRepair
+[UnKnownVirusSigEnd]
+
+######################################################################
+#
+# Detection for unknown WM.Outlaw variant
+#
+######################################################################
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of Outlaw
+[ID]            UNKNOWN_VARIANT_OUTLAW
+[Signature]     SeekSet(0x50)
+[Signature]     NameSig(NAME_LETTER_FOUR_DIGITS)
+[Signature]     ScanString(0x500, 0x67 0x02 0x80)
+[Signature]     ScanString(0x10, 0x67 0x0e 0x80)
+[Signature]     ScanString(0x30, 0x67 0x07 0x80)
+[Signature]     ScanString(0x30, 0x67 0xea 0x80)
+[Signature]     ScanString(0x800, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[UnKnownVirusSigStart]
+[Comment]       Outlaw Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_OUTLAW_VARIANT
+[Signature]     MacroSig(UNKNOWN_VARIANT_OUTLAW)
+[Repair]        FullSetRepair
+[UnKnownVirusSigEnd]
+
+######################################################################
+#
+# Detection for unknown WM.Rapi variant
+#
+######################################################################
+
+[UnKnownVirusSigStart]
+[Comment]       RAPI Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_RAPI_VARIANT
+[Signature]     (NameSig(NAME_ONLY_AUTOOPEN) or
+[Signature]      NameSig(NAME_ONLY_AUTOEXEC) or
+[Signature]      NameSig(NAME_ONLY_FILESAVE) or
+[Signature]      NameSig(NAME_ONLY_FILEOPEN) or
+[Signature]      NameSig(NAME_ONLY_FILESAVEAS)) and
+[Signature]     (CRC(0xdfd8c1d2) or
+[Signature]      CRC(0x7307cc13) or
+[Signature]      CRC(0x6347ce43) or
+[Signature]      CRC(0x672bdc09) or
+[Signature]      CRC(0x3ab11c9c) or
+[Signature]      CRC(0x73e48354) or
+[Signature]      CRC(0xff1765a2))
+[Repair]        FullSetRepair
+[UnKnownVirusSigEnd]
+
+######################################################################
+#
+# Detection for unknown WM.Twno variant
+#
+######################################################################
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of TWNO
+[ID]            VARIANT_TWNO_AUTOOPEN
+[Signature]     SeekSet(0)
+[Signature]     NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(0x150, 0x67 0x9e 0x80)
+[Signature]     ScanString(0x500, 0x67 0x2b 0x80)
+[Signature]     ScanString(0x500, 0x67 0xb7 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0x54 0x00)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of TWNO
+[ID]            VARIANT_TWNO_AUTOCLOSE
+[Signature]     SeekSet(0)
+[Signature]     NameSig(NAME_ONLY_AUTOCLOSE)
+[Signature]     ScanString(0x150, 0x67 0x9e 0x80)
+[Signature]     ScanString(0x500, 0x67 0x2b 0x80)
+[Signature]     ScanString(0x500, 0x67 0xb7 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0x54 0x00)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of TWNO
+[ID]            VARIANT_TWNO_AUTONEW
+[Signature]     SeekSet(0)
+[Signature]     NameSig(NAME_ONLY_AUTONEW)
+[Signature]     ScanString(0x150, 0x67 0x9e 0x80)
+[Signature]     ScanString(0x500, 0x67 0x2b 0x80)
+[Signature]     ScanString(0x500, 0x67 0xb7 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0x54 0x00)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       Unknown variant signature of TWNO
+[ID]            VARIANT_TWNO_AUTOEXEC
+[Signature]     SeekSet(0)
+[Signature]     NameSig(NAME_ONLY_AUTOEXEC)
+[Signature]     ScanString(0x150, 0x67 0x9e 0x80)
+[Signature]     ScanString(0x500, 0x67 0x2b 0x80)
+[Signature]     ScanString(0x500, 0x67 0xb7 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[Signature]     ScanString(0x300, 0x67 0x54 0x00)
+[Signature]     ScanString(0x300, 0x67 0xc2 0x80)
+[MacroSigEnd]
+
+[UnKnownVirusSigStart]
+[Comment]       TWNO Variant
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_TWNO_VARIANT
+[Signature]     MacroSig(VARIANT_TWNO_AUTOOPEN) or
+[Signature]     MacroSig(VARIANT_TWNO_AUTOCLOSE) or
+[Signature]     MacroSig(VARIANT_TWNO_AUTONEW) or
+[Signature]     MacroSig(VARIANT_TWNO_AUTOEXEC)
+[Repair]        FullSetRepair
+[UnKnownVirusSigEnd]
+
+######################################################################
+#
+# for Macro Viruses created by NJ-WMVCK generator
+# sig on AUTOEXEC macro:
+#  NoVir$=GetProfileString$(Section$, ProfileName$)
+#  If (NoVir$<>wininistr$) AND (update=1) Then
+#   DisableInput
+#   DisableAutoMacros 0
+#   On Error Resume Next
+#   ....
+#   MacroCopy WindowName$()
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_NJWMVCK_FAM_AUTOEXEC
+[Signature]     "NoVir$" NameSig(NAME_ONLY_AUTOEXEC)
+[Signature]      0x0c 0x67 0x45 0x80 0x05 0x69 0x08 "Section$"
+[Signature]      0x12 0x69 0x0c "ProfileName$" 0x06
+[Signature]     ScanSlide(100, 0x1d) 0x05 0x69 0x06 "NoVir$"
+[Signature]      0x0d 0x69 0x0a "wininistr$" 0x06 0x03 0x05
+[Signature]      0x69 0x06 "update" 0x0c 0x6c 0x01 0x00 0x06 0x1e
+[Signature]     ScanString(100, 0x67 0x9e 0x80)
+[Signature]     ScanString(100, 0x67 0xd6 0x80 0x6c 0x00 0x00)
+[Signature]     ScanString(100, 0x2c 0x2d 0x18 0x26)
+[Signature]     ScanString(200, 0x67 0xc2 0x80 0x67 0x3b 0x80)
+[MacroSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Macro Viruses created by NJ-WMVCK generator:
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NJ_WMVCK_VARIANT
+[Signature]     MacroSig(MAC_NJWMVCK_FAM_AUTOEXEC)
+[Repair]        NoRepair
+[UnknownVirusSigEnd]
+
+######################################################################
+#
+# for Macro Viruses created by NJ-WMDLK generator
+# sig on AUTOOPEN macro:
+#   ....
+#   On Error Resume Next
+#   MacroCopy FileName$(), ...
+#   MacroCopy FileName$(), ...
+#   MacroCopy FileName$(), ...
+#   MacroCopy FileName$(), ...
+#   ....
+#   On Error Resume Next
+#   FileSaveAs .Format = 1
+#   MacroCopy
+#   MacroCopy
+#   MacroCopy
+#   MacroCopy
+#   FileSaveAll 1,0
+#
+######################################################################
+[MacroSigStart]
+[Comment]
+[ID]            MAC_NJWMDLK_FAM_AUTOOPEN
+[Signature]     0x2c 0x2d 0x18 0x26 NameSig(NAME_ONLY_AUTOOPEN)
+[Signature]     ScanString(100, 0x67 0xc2 0x80 0x67 0x25 0x80)
+[Signature]     ScanString(100, 0x67 0xc2 0x80 0x67 0x25 0x80)
+[Signature]     ScanString(100, 0x67 0xc2 0x80 0x67 0x25 0x80)
+[Signature]     ScanString(100, 0x67 0xc2 0x80 0x67 0x25 0x80)
+[Signature]     ScanString(500, 0x2c 0x2d 0x18 0x26)
+[Signature]     ScanString(100, 0x67 0xc2 0x80)
+[Signature]     ScanString(100, 0x67 0xc2 0x80)
+[Signature]     ScanString(100, 0x67 0xc2 0x80)
+[Signature]     ScanString(100, 0x67 0xc2 0x80)
+[Signature]     ScanString(100, 0x67 0xa3 0x80)
+[Signature]      0x6c 0x01 0x00 0x12 0x6c 0x00 0x00
+[MacroSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Macro Viruses created by NJ-WMDLK generator:
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_NJ_WMDLK_VARIANT
+[Signature]     MacroSig(MAC_NJWMDLK_FAM_AUTOOPEN)
+[Repair]        NoRepair
+[UnknownVirusSigEnd]
+
+
+######################################################################
+# WORD MACRO VIRUS TRASHcan
+# The following NamedCRCSigs contain Junk CRCs to let FullSet pick them up
+# The macro may be one of the following:
+#  1. corrupted - non-infectious remnant
+#  2. partial-conversion from 95->97
+# Only add more trash when necessary!
+# Remember, every NamedCRCSig = 16 bytes increase in NAVEX.EXP
+######################################################################
+
+[NamedCRCSigStart]
+[Comment]           WM.Cap.Trash  non infectious but annoying
+[ID]                CRC_CAP_CAPTRASH
+[CRCWD7]            0xEF50C7FA
+[Signature]         NameSig(NAME_ONLY_CAP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]           WM.Concept.I: ÎPAYLOAD  junk from Concept.I + ScanProt
+[ID]                CRC_CEPAYLOAD_CONCEPTJUNK
+[CRCWD7]            0x0CC725B9
+[Signature]         NameSig(NAME_ONLY_CEPAYLOAD)
+[NamedCRCSigEnd]
+
+[UnknownVirusSigStart]
+[Comment]       Macro Trashcan ;won't hit on anything since MacroCount < 0
+[Type]          WD7
+[QAStatus]      PASSED
+[ID]            VID_WM_TRASH1
+[Signature]     MacroCount(<0) and
+[Signature]     NamedCRCSig(CRC_CAP_CAPTRASH) and
+[Signature]     NamedCRCSig(CRC_CEPAYLOAD_CONCEPTJUNK)
+#add new trash signature here
+[Repair]        NoRepair
+[UnknownVirusSigEnd]
+
+
+######################################################################
+# The following detects that ALL macros in a document are known
+# to be a part of a known virus.
+# This signature renders other remnant detection useless.
+######################################################################
+# This signature MUST BE THE LAST in Unknown Macro Sigs
+######################################################################
+
+[UnknownVirusSigStart]
+[Comment]       Macro Component Virus (works for Remnants, too)
+[Type]          WD7 WD8 XL97
+[QAStatus]      PASSED
+[ID]            VID_FULL_SET
+[Signature]     FullSet()
+[Repair]        FullSetRepair
+[UnknownVirusSigEnd]
+
+

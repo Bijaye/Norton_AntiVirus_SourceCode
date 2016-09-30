@@ -1,0 +1,16 @@
+#!/bin/sh
+
+echo Removing files from bin.debug
+rm bin.debug/* >/dev/null 2>&1
+
+echo Removing files from bin.release
+rm bin.release/* >/dev/null 2>&1
+
+for dir in navvdl
+do
+    echo Cleaning $dir
+    cd $dir
+    make -f unix.mak clean >/dev/null 2>&1
+    rm make.err >/dev/null 2>&1
+    cd ..
+done

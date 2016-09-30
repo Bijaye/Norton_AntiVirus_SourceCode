@@ -1,0 +1,173 @@
+#the aim of this command file is to infect one or more document
+#by loading the suspect sample as a global template
+
+#restauration of the files that need to be here, from their backup copy
+[RESTORE]virus
+[RESTORE]tmain
+[RESTORE]tJanaInt
+#[RESTORE]main
+#[RESTORE]JanaInt
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+#
+#for Word 6/7 viruses that do not change the template bit while infecting
+#
+   [MOPEN]tmain
+      [GOTO]tmain|END
+      [SENDTEXT]tmain|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [MSAVE]tmain
+   [MCLOSE]tmain
+   [MOPEN]tJanaInt
+      [GOTO]tJanaInt|END
+      [SENDTEXT]tJanaInt|[ENTER][ENTER]
+      [MSAVE]tJanaInt
+   [MCLOSE]tJanaInt
+#
+#standard documents
+#
+#   [MOPEN]main
+#      [GOTO]main|END
+#      [SENDTEXT]main|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+#      [MSAVE]main
+#   [MCLOSE]main
+#   [MOPEN]JanaInt
+#      [GOTO]JanaInt|END
+#      [SENDTEXT]JanaInt|[ENTER][ENTER]
+#      [MSAVE]JanaInt
+#   [MCLOSE]JanaInt
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+[RESTORE]virus
+[RESTORE]main1
+[RESTORE]JanaInt1
+[STARTAPP]
+   [MOPEN]main1
+      [GOTO]main1|END
+      [SENDTEXT]main1|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [SENDTEXT]main1|And I think we will bE![ENTER][ENTER]
+   [MCLOSE]main1
+   [MOPEN]JanaInt1
+      [GOTO]JanaInt1|END
+      [SENDTEXT]JanaInt1|[ENTER][ENTER]
+   [MCLOSE]JanaInt1
+ [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+#[RESTORE]virus
+#[RESTORE]Moving1
+#[RESTORE]Party1
+#[RESTORE]wallpaper
+#[STARTAPP]F:wallpaper
+#   [MOPEN]Moving1
+#      [GOTO]Moving1|END
+#      [SENDTEXT]Moving1|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+#      [SENDTEXT]Moving1|And I think we will bE![ENTER][ENTER]
+#   [MCLOSE]Moving1
+#   [MOPEN]Party1
+#      [GOTO]Party1|END
+#      [SENDTEXT]Party1|[ENTER][ENTER]
+#   [MCLOSE]Party1
+#   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+#[MCLOSEAPP]
+#[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+[RESTORE]virus
+[RESTORE]tParty
+[RESTORE]tMoving
+#[RESTORE]Party
+#[RESTORE]Moving
+[STARTAPP]
+#for Word 6/7 viruses that do not change the template bit while infecting
+   [MOPEN]tParty
+      [GOTO]tParty|END
+      [SENDTEXT]tParty|[ENTER][ENTER]
+      [MSAVEAS]tParty|tPartyb
+   [MCLOSE]tPartyb
+   [MOPEN]tMoving
+      [GOTO]tMoving|END
+      [SENDTEXT]tMoving|[ENTER][ENTER]
+      [MSAVEAS]tMoving|tMovingb
+   [MCLOSE]tMovingb
+#standard documents   
+#   [MOPEN]Party
+#      [GOTO]Party|END
+#      [SENDTEXT]Party|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+#      [SENDTEXT]Party|And I think we will bE![ENTER][ENTER]
+#      [MSAVEAS]Party|Partyb
+#   [MCLOSE]Partyb
+#   [MOPEN]Moving
+#      [GOTO]Moving|END
+#      [SENDTEXT]Moving|[ENTER][ENTER]
+#      [MSAVEAS]Moving|Movingb
+#   [MCLOSE]Movingb
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+[RESTORE]virus
+[STARTAPP]
+   [MNEWDOC]new1
+      [GOTO]new1|END
+      [SENDTEXT]new1|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [SENDTEXT]new1|And I think we will bE![ENTER][ENTER]
+      [MSAVEAS]new1|newgoat1
+   [MCLOSE]newgoat1
+   [MNEWDOC]new2
+      [GOTO]new2|END
+      [SENDTEXT]new2|[ENTER][ENTER]
+      [MSAVEAS]new2|newgoat2
+   [MCLOSE]newgoat2
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+#for johnny variants especially
+#other viruses probably don't distinguish between 
+#newly created files and previously created files 
+#when it comes to saving...
+[RESTORE]virus
+[STARTAPP]|
+   [MNEWDOC]new3
+      [GOTO]new3|END
+      [SENDTEXT]new3|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [SENDTEXT]new3|And I think we will bE![ENTER][ENTER]
+      [MSAVE]new3|newgoat3
+   [MCLOSE]newgoat3
+   [MNEWDOC]new4
+      [GOTO]new4|END
+      [SENDTEXT]new4|[ENTER][ENTER]
+      [MSAVE]new4|newgoat4
+   [MCLOSE]newgoat4
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+#for Johnny variants, which want files with a .DOC extension...
+[RESTORE]virus
+[RESTORE]wallpaper
+[RESTORE]umain
+[RESTORE]uJanaInt
+[STARTAPP]
+   [MOPEN]umain
+      [GOTO]umain|END
+      [SENDTEXT]umain|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [SENDTEXT]umain|And I think we will bE![ENTER][ENTER]
+      [MSAVE]umain
+   [MCLOSE]umain
+   [MOPEN]uJanaInt
+      [GOTO]uJanaInt|END
+      [SENDTEXT]uJanaInt|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [MSAVE]uJanaInt
+   [MCLOSE]uJanaInt
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+   [DELETEFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]

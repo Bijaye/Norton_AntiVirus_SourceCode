@@ -1,0 +1,622 @@
+//Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#include "ngui.h"
+#include "npsstb.h"
+#include "npsres.h"
+#include "cpl_res.h"
+#include "wndclass.h"
+#include "stdhelp.h"
+#include "nps_hlp.h"                    // Contains How To help IDs
+
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define VR_FILEDESCRIPTION      "Norton AntiVirus Program Scheduler"
+#define VR_PRODUCTNAME          "Norton AntiVirus"
+#define VR_INTERNALNAME         "NSCHED32"
+#define VR_ORIGINALFILENAME     "NSCHED32.EXE"
+#include "vlib.ver"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_NPS_EVENT DIALOG DISCARDABLE  25, 25, 365, 156
+STYLE DS_CONTEXTHELP | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Add or Modify Event"
+FONT 8, "Helv"
+BEGIN
+    CONTROL         "&Enable this event",IDC_NPS_ENABLEEVENT,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,10,7,82,12
+    CONTROL         "&Audible alarm",IDC_NPS_SOUND,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,105,7,80,12
+    LTEXT           "Ty&pe of event:",IDC_NPS_ACTIONTYPE_TEXT,10,27,85,9
+    COMBOBOX        IDC_NPS_ACTIONTYPE,10,37,195,50,CBS_DROPDOWNLIST |
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Descr&iption:",IDC_NPS_DESCRIPTION_TEXT,10,53,195,9
+    EDITTEXT        IDC_NPS_DESCRIPTION,10,62,195,12,WS_VISIBLE | WS_BORDER |
+                    WS_TABSTOP | ES_AUTOHSCROLL | WS_GROUP
+    LTEXT           "C&ommand line to run:",IDC_NPS_CMD_PROMPT,10,77,205,9,
+                    NOT WS_VISIBLE
+    LTEXT           "Messa&ge to display:",IDC_NPS_MSG_PROMPT,10,77,205,9,
+                    NOT WS_VISIBLE
+    LTEXT           "",IDC_NPS_ACTION_PROMPT,10,77,195,9,NOT WS_VISIBLE
+    EDITTEXT        IDC_NPS_ACTION_TEXT,10,86,195,12,ES_AUTOHSCROLL |
+                    NOT WS_VISIBLE
+    EDITTEXT        IDC_NPS_MSG_TEXT,10,87,195,12,ES_AUTOHSCROLL |
+                    NOT WS_VISIBLE | WS_GROUP
+    CONTROL         "",IDC_NPS_CMD_TEXT,QCLASS_TB_BUTTON,NOT WS_VISIBLE |
+                    WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL,10,87,195,12
+    LTEXT           "&Startup folder:",IDC_NPS_STARTUPDIR_PROMPT,10,101,
+                    87,9,NOT WS_VISIBLE
+    CONTROL         "",IDC_NPS_STARTUPDIR_TEXT,QCLASS_TB_BUTTON,NOT
+                    WS_VISIBLE | WS_BORDER | WS_TABSTOP | ES_AUTOHSCROLL,10,111,195,
+                    12
+    LTEXT           "&Run style:",IDC_NPS_RUNSTYLE_PROMPT,10,127,64,9,NOT
+                    WS_VISIBLE
+    COMBOBOX        IDC_NPS_RUNSTYLE,10,137,64,43,CBS_DROPDOWNLIST | NOT
+                    WS_VISIBLE | WS_GROUP | WS_TABSTOP
+    GROUPBOX        "Schedule",IDC_NPS_SCHEDULE_GROUP,215,7,80,
+                    123
+    LTEXT           "&Frequency:",IDC_NPS_FREQ_PROMPT,220,22,43,9
+    COMBOBOX        IDC_NPS_FREQ,220,32,70,70,CBS_DROPDOWNLIST | WS_VSCROLL |
+                    WS_TABSTOP
+    LTEXT           "&Date:",IDC_NPS_DATE_PROMPT,220,53,50,8
+    EDITTEXT        IDC_NPS_DATE,220,62,70,12
+    LTEXT           "&Day of week:",IDC_NPS_DAY_PROMPT,220,52,50,8
+    CONTROL         "",IDC_NPS_DAY,QCLASS_SPN_BUTTON,WS_BORDER | WS_GROUP |
+                    WS_TABSTOP,220,62,70,12
+    LTEXT           "&Month:",IDC_NPS_MONTH_PROMPT,220,101,50,8
+    CONTROL         "",IDC_NPS_MONTH,QCLASS_SPN_BUTTON,WS_BORDER | WS_GROUP |
+                    WS_TABSTOP,220,111,70,12
+    LTEXT           "&Day of month:",IDC_NPS_DAYOFMONTH_PROMPT,220,101,50,8
+    CONTROL         "",IDC_NPS_DAYOFMONTH,QCLASS_SPN_BUTTON,WS_BORDER |
+                    WS_GROUP | WS_TABSTOP,220,112,70,12
+    LTEXT           "Min&utes:",IDC_NPS_MINUTES_PROMPT,220,52,50,8
+    CONTROL         "",IDC_NPS_MINUTES,QCLASS_SPN_BUTTON,WS_BORDER | WS_GROUP |
+                    WS_TABSTOP,220,62,70,12
+    LTEXT           "&Time:",IDC_NPS_TIME_PROMPT,220,77,60,8
+    EDITTEXT        IDC_NPS_TIME,220,86,70,12
+    PUSHBUTTON      "OK",IDOK,305,10,49,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,305,30,49,14
+    PUSHBUTTON      "&Help",IDC_NPS_HELP,305,50,49,14
+END
+
+IDD_NPS_NOTIFY DIALOG DISCARDABLE  25, 25, 172, 103
+STYLE DS_CONTEXTHELP | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Norton Program Scheduler"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "",IDC_NPS_NOTIFY_DESCR_TEXT,40,5,126,9,SS_NOPREFIX
+    LTEXT           "",IDC_NPS_NOTIFY_TEXT,40,20,126,59,SS_NOPREFIX
+    ICON            IDI_NPS_ICON,-1,5,5,18,20,WS_GROUP
+    DEFPUSHBUTTON   "OK",IDOK,61,86,49,14,WS_GROUP
+END
+
+IDD_NPS_EXPIRED DIALOG DISCARDABLE  0, 0, 222, 264
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Norton Program Scheduler"
+FONT 8, "Helv"
+BEGIN
+    CONTROL         "", IDC_WARNING_ICON,"STATIC",WS_GROUP|SS_ICON,7,7,21,20
+    LTEXT           "The start time for a scheduled event has passed.  The event did not run because your computer was turned off or Norton Program Scheduler was not running.",
+                    IDC_STATIC,39,7,176,40
+    LTEXT           "Event description:",IDC_STATIC,39,54,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_DESCR_TEXT,49,67,166,20
+    LTEXT           "Scheduled time:",IDC_STATIC,39,94,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_SCHEDTIME,49,107,166,8
+    LTEXT           "Command/Message:",IDC_STATIC,39,123,176,8
+    LTEXT           "Static",IDC_NPS_EXPIRED_TEXT,49,136,166,30
+    LTEXT           "How would you like to resolve this event?",IDC_STATIC,7,
+                    176,208,8
+    CONTROL         "&Run the event now",IDC_RUN_EVENT_NOW,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,17,191,198,10
+    CONTROL         "&Delete the event without running it",IDC_DELETE_EVENT,
+                    "Button",BS_AUTORADIOBUTTON,17,206,198,10
+    CONTROL         "&Leave the event as-is",IDC_LEAVE_AS_IS,"Button",
+                    BS_AUTORADIOBUTTON,17,221,198,10
+    DEFPUSHBUTTON   "OK",IDOK,56,243,50,14,WS_GROUP
+    PUSHBUTTON      "&Help",IDC_NPS_HELP,116,243,50,14
+END
+
+
+NPSWCLASS DIALOG DISCARDABLE  20, 20, 311, 191
+STYLE DS_CONTEXTHELP | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Norton Program Scheduler"
+MENU IDM_NPS_MENU
+CLASS "npsWClass"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_NPS_BUTTONBAR,QCLASS_NG_BUTTONBAR,WS_GROUP |
+                    WS_TABSTOP | 0x340,0,0,310,30
+    CONTROL         "",IDC_NPS_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL |
+                    LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER |
+                    WS_TABSTOP,7,35,295,136
+    CONTROL         "",IDC_NPS_STATUS,QCLASS_STATUS,0x0,1,177,309,13
+END
+
+IDD_OPTIONS_CONFIRMATION DIALOG DISCARDABLE  0, 0, 221, 177
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "These settings determine when you are prompted to confirm an action.",
+                    -1,7,7,200,16,NOT WS_GROUP
+    CONTROL         "E&xit Norton program scheduler.",IDC_CONFIRM_EXIT,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,18,34,
+                    200,10
+    LTEXT           """Norton program scheduler will not run if you exit. You should minimize it. Do you want to exit anyway?""",
+                    -1,29,45,170,23
+    CONTROL         "&Delete scheduled event.",IDC_CONFIRM_DELETE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,72,200,10
+    LTEXT           """Are you sure you want to delete the scheduled event?""",
+                    -1,29,82,157,19
+    CONTROL         "&Save a scheduled event.",IDC_CONFIRM_SAVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,106,200,10
+    LTEXT           """Are you sure you want to save the scheduled event?""",
+                    -1,29,116,147,19
+    CONTROL         "&Edit a scheduled event.",IDC_CONFIRM_EDIT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,18,138,200,10
+    LTEXT           """Are you sure you want to save changes to the scheduled event?""",
+                    -1,29,148,161,19
+    LTEXT           "Sched:Confirmation",IDC_WHOAMI,21,36,30,8,NOT
+                    WS_VISIBLE | WS_DISABLED | NOT WS_GROUP
+END
+
+IDD_OPTIONS_LOOK DIALOG DISCARDABLE  0, 0, 221, 177
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "These settings control the appearance of the scheduler main window.",
+                    -1,7,7,203,16,NOT WS_GROUP
+    CONTROL         "Display &status bar",IDC_LOOK_SHOWSTATUSBAR,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,18,32,83,10
+    CONTROL         "Display t&oolbar",IDC_LOOK_SHOWTOOLBAR,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,18,45,79,10
+    GROUPBOX        "Toolbar style",IDC_LOOK_TBSTYLE_GRPBOX,4,61,213,106
+    CONTROL         "&Text only",IDC_LOOK_TEXTONLY,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,20,77,80,10
+    CONTROL         "&Picture only",IDC_LOOK_PICONLY,"Button",
+                    BS_AUTORADIOBUTTON,20,90,80,10
+    CONTROL         "Text &and picture",IDC_LOOK_TEXTPIC,"Button",
+                    BS_AUTORADIOBUTTON,20,102,80,10
+    LTEXT           "Sa&mple toolbar:",IDC_LOOK_SAMPLETB_TEXT,11,119,67,8
+    CONTROL         "",IDC_LOOK_SAMPLETB,QCLASS_NG_BUTTONBAR,WS_GROUP |
+                    WS_TABSTOP | 0x344,11,130,200,30
+    LTEXT           "Sched:Look",IDC_WHOAMI,5,169,59,8,NOT WS_VISIBLE |
+                    WS_DISABLED | NOT WS_GROUP
+END
+
+IDD_OPTIONS_DEFAULTS DIALOG DISCARDABLE  0, 0, 221, 177
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "These settings determine scheduler behavior.",
+                    -1,7,7,200,9,NOT WS_GROUP
+    CONTROL         "&Load with Windows",IDC_DEF_LOAD,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,17,32,200,10
+    LTEXT           "( Check this option to automatically load Norton program scheduler when Windows loads. )",
+                    -1,29,43,158,23
+    CONTROL         "&Hide when iconized.",IDC_DEF_HIDE,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,17,73,200,10
+    LTEXT           "( Check this option to hide Norton program scheduler when it is minimized. )",
+                    -1,29,85,149,27
+
+#ifdef SYM_WIN32
+    CONTROL         "&Automatically run missed events.",
+                    IDC_DEF_DATETIME,"Button",BS_AUTOCHECKBOX | WS_GROUP |
+                    WS_TABSTOP,17,116,200,10
+    LTEXT           "( Check this option to have Scheduler run events that did not start at their scheduled times because your computer was turned off. )",
+                    -1,29,128,187,48
+#else
+    CONTROL         "&Show current date and time in titlebar.",
+                    IDC_DEF_DATETIME,"Button",BS_AUTOCHECKBOX | WS_GROUP |
+                    WS_TABSTOP,17,116,200,10
+    LTEXT           "( Check this option to show the current date and time in the Norton program scheduler's title bar. )",
+                    -1,29,128,187,48
+#endif
+
+    LTEXT           "Sched:Defaults",IDC_WHOAMI,21,33,30,8,NOT WS_VISIBLE |
+                    WS_DISABLED | NOT WS_GROUP
+END
+
+
+IDD_OPTIONS_GLOBAL DIALOG DISCARDABLE  0, 0, 237, 206
+STYLE DS_CONTEXTHELP | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",5,"Static",SS_BLACKRECT | WS_GROUP,5,5,221,177
+    PUSHBUTTON      "OK",IDOK,71,186,49,14
+    PUSHBUTTON      "Cancel",IDCANCEL,127,186,49,14
+    PUSHBUTTON      "&Help",IDC_GLOBAL_HELP,183,186,49,14
+END
+
+IDD_ASKCONFIRMATION DIALOG DISCARDABLE  0, 0, 238, 92
+STYLE DS_CONTEXTHELP | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Norton Program Scheduler"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "E&xit",IDOK,182,5,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,182,23,50,14
+    PUSHBUTTON      "&Help",IDC_NPS_HELP,182,41,50,14
+    LTEXT           "",IDC_CONFIRM_MESSAGE,48,7,122,48
+    CONTROL         "",IDC_CONFIRM_CHECKBOX,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,13,77,219,10
+    ICON            IDI_NPS_ICON,-1,11,5,18,20
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+IDI_NPS_ICON            ICON    DISCARDABLE     "nps.ico"
+IDI_NPS_ICONCLK         ICON    DISCARDABLE     "npsclock.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_NPS_BBAR_CLOSE              BITMAP  MOVEABLE PURE   "close.bmp"
+IDB_NPS_BBAR_ADD                BITMAP  MOVEABLE PURE   "add.bmp"
+IDB_NPS_BBAR_EDIT               BITMAP  MOVEABLE PURE   "edit.bmp"
+IDB_NPS_BBAR_COPY               BITMAP  MOVEABLE PURE   "copy.bmp"
+IDB_NPS_BBAR_REMOVE             BITMAP  MOVEABLE PURE   "delete.bmp"
+IDB_NPS_BBAR_CONFIG             BITMAP  MOVEABLE PURE   "options.bmp"
+IDB_NPS_BBAR_HELP               BITMAP  MOVEABLE PURE   "help.bmp"
+IDB_NPS_BBAR_CLOSE_MASK         BITMAP  MOVEABLE PURE   "closem.bmp"
+IDB_NPS_BBAR_ADD_MASK           BITMAP  MOVEABLE PURE   "addm.bmp"
+IDB_NPS_BBAR_EDIT_MASK          BITMAP  MOVEABLE PURE   "editm.bmp"
+IDB_NPS_BBAR_COPY_MASK          BITMAP  MOVEABLE PURE   "copym.bmp"
+IDB_NPS_BBAR_REMOVE_MASK        BITMAP  MOVEABLE PURE   "deletem.bmp"
+IDB_NPS_BBAR_CONFIG_MASK        BITMAP  MOVEABLE PURE   "optionsm.bmp"
+IDB_NPS_BBAR_HELP_MASK          BITMAP  MOVEABLE PURE   "helpm.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_NPS_MENU MENU DISCARDABLE
+BEGIN
+    POPUP "&Event"
+    BEGIN
+        MENUITEM "&Add...",                     IDM_NPS_EVENTADD
+        MENUITEM "Edi&t...",                    IDM_NPS_EVENTEDIT
+        MENUITEM "&Copy...",                    IDM_NPS_EVENTCOPY
+        MENUITEM "&Delete",                     IDM_NPS_EVENTREMOVE
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_NPS_EVENTCLOSE
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Options...",                 IDM_NPS_OPTSLOAD
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Contents",                   IDM_NPS_CONTENTS
+        MENUITEM "&About Norton Program Scheduler", IDM_NPS_HELPABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDA_NPS_ACCELERATOR_TABLE ACCELERATORS MOVEABLE PURE
+BEGIN
+    "A",            IDM_NPS_EVENTADD,       VIRTKEY, ALT, NOINVERT
+    "I",            IDM_NPS_EVENTEDIT,      VIRTKEY, ALT, NOINVERT
+    "C",            IDM_NPS_EVENTCOPY,      VIRTKEY, ALT, NOINVERT
+    "D",            IDM_NPS_EVENTREMOVE,    VIRTKEY, ALT, NOINVERT
+    "L",            IDM_NPS_CONTENTS,       VIRTKEY, ALT, NOINVERT
+    "X",            IDM_NPS_EVENTCLOSE,     VIRTKEY, ALT, NOINVERT
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""ngui.h""\r\n"
+    "#include ""npsstb.h""\r\n"
+    "#include ""npsres.h""\r\n"
+    "#include ""cpl_res.h""\r\n"
+    "#include ""wndclass.h""\r\n"
+    "#include ""stdhelp.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_FILE_NOT_FOUND  "Could not execute event '%0':\n'%1'\n--Invalid file specified."
+    IDS_NPS_PATH_NOT_FOUND  "Could not execute event '%0':\n'%1'\n--Path does not exist or executable was invalid."
+    IDS_NPS_WRONG_VERSION   "Could not execute event '%0':\n'%1'\n--Invalid version of Windows."
+    IDS_NPS_BAD_EXE         "Could not execute event '%0':\n'%1'\n--Specified file is an invalid executable."
+    IDS_NPS_BAD_OTHER       "Could not execute event '%0':\n'%1'"
+    IDS_NPS_MAX_EVENTS      "Maximum number of scheduled events has been reached."
+    IDS_NPS_NO_TIMERS       "Norton program scheduler cannot be started at this time.  Please close an application (e.g., clock) and try again."
+    IDS_NPS_NO_WILDCARDS    "Wildcard characters ('?' and '*') are not allowed in the command specification."
+    IDS_NPS_INVAL_FILE      "You have an invalid SCHEDULE.DAT file.  Your events cannot be loaded."
+    IDS_NPS_INVAL_ENTRY     "You have an invalid entry in your SCHEDULE.DAT file.  The entry cannot be loaded and will be skipped."
+    IDS_NPS_PROMPT_INVAL_FILE
+                            "The command you have specified in the 'Command Line to Run' field cannot be located.  Do you want to alter the command line?"
+    IDS_NPS_BAD_DATETIME    "The date and/or time you entered was invalid."
+    IDS_NPS_SHELL_ERROR     "Error happened when updating Windows 95 startup group."
+    IDS_NPS_NOWINNT,        "Norton AntiVirus for Windows 95 was specifically designed for the Microsoft Windows 95 Platform.  Please contact Symantec Customer Service for information on antivirus products for other operating systems."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_FREQ_ONETIME    "One time"
+    IDS_NPS_FREQ_HR         "Hourly"
+    IDS_NPS_FREQ_DAILY      "Daily"
+    IDS_NPS_FREQ_WEEKDAY    "Week days"
+    IDS_NPS_FREQ_WEEKLY     "Weekly"
+    IDS_NPS_FREQ_MONTHLY    "Monthly"
+    IDS_NPS_FREQ_YEARLY     "Yearly"
+    IDS_NPS_SUN             "Sunday"
+    IDS_NPS_MON             "Monday"
+    IDS_NPS_TUE             "Tuesday"
+    IDS_NPS_WED             "Wednesday"
+    IDS_NPS_THU             "Thursday"
+    IDS_NPS_FRI             "Friday"
+    IDS_NPS_SAT             "Saturday"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_JAN             "January"
+    IDS_NPS_FEB             "February"
+    IDS_NPS_MAR             "March"
+    IDS_NPS_APR             "April"
+    IDS_NPS_MAY             "May"
+    IDS_NPS_JUN             "June"
+    IDS_NPS_JUL             "July"
+    IDS_NPS_AUG             "August"
+    IDS_NPS_SEP             "September"
+    IDS_NPS_OCT             "October"
+    IDS_NPS_NOV             "November"
+    IDS_NPS_DEC             "December"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_AM              "AM"
+    IDS_NPS_PM              "PM"
+    IDS_NPS_ST              "st"
+    IDS_NPS_ND              "nd"
+    IDS_NPS_RD              "rd"
+    IDS_NPS_TH              "th"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_EVENTMESSAGE    "Display message"
+    IDS_NPS_EVENTPROGRAM    "Run program"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_TITLE           "Norton Program Scheduler"
+    IDS_NPS_HOURLY          "At %d minutes past each hour"
+    IDS_NPS_DAILY           "At %s"
+    IDS_NPS_WEEKLY          "Every %s at %s"
+    IDS_NPS_MONTHLY         "On the %d%s at %s"
+    IDS_NPS_YEARLY          "On %s %d%s at %s"
+    IDS_NPS_ONETIME         "%s at %s"
+    IDS_NPS_DISABLED        "Disabled"
+    IDS_NPS_CAPTION         "%s -- %s %s"
+    IDS_NPS_CAPTION_ICONIZED "%s\n%s"
+    IDS_NPS_EVENT_ADD       "Add event"
+    IDS_NPS_EVENT_COPY      "Copy event"
+    IDS_NPS_EVENT_EDIT      "Edit event"
+    IDS_NPS_NORTON_INI      "SCHEDULE.INI"
+    IDS_NPS_INI_HIDE        "Hide"
+    IDS_NPS_INI_BUTTONSTYLE "ButtonStyle"
+    IDS_NPS_TITLE_ABOUT     "Norton Program Scheduler for Windows 95"
+END
+
+                                        // 07/12/95 Barry:
+                                        // Since hotkeys don't work for
+                                        // us in the tray, don't put
+                                        // hotkeys in the tray :)
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_TRAY_MENU_RESTORE   "Restore"
+    IDS_TRAY_MENU_CLOSE     "&Close Norton Program Scheduler"
+    IDS_NPS_INI_CONFIRMEXIT "ConfirmExit"
+    IDS_NPS_INI_CONFIRMDELETE "ConfirmDelete"
+    IDS_NPS_INI_CONFIRMSAVE "ConfirmSave"
+    IDS_NPS_INI_CONFIRMEDIT "ConfirmEdit"
+    IDS_NPS_INI_BUTTONSHOW  "ButtonShow"
+    IDS_NPS_INI_TITLETIME   "AutorunMissedEvents"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_INI_STATUS      "StatusBar"
+    IDS_NPS_INI_SECTION_NAMED "NAMEDEVENTS"
+    IDS_NPS_INI_KEYWORD_NAME "NAME"
+    IDS_NPS_INI_KEYWORD_PROMPT "Prompt"
+    IDS_NPS_INI_KEYWORD_CMDLINE "CommandLine"
+    IDS_NPS_INI_KEYWORD_STARTUP "StartupDir"
+    IDS_NPS_INI_KEYWORD_RUNSTYL "RunStyle"
+    IDS_NPS_INI_DEF_DESC        "DefaultDesc"
+    IDS_NPS_INI_DEF_ACTION_TEXT "DefaultActionText"
+    IDS_NPS_INI_ALLOW_BLANK_ACTION_TXT "AllowBlankActionText"
+    IDS_NPS_INI_BLANK_ACTION_TXT_MSG   "BlankActionTextMessage"
+    IDS_NPS_BIN_FILE        "Schedule.Dat"
+    IDS_NPS_BIN_BAK_FILE    "Schedule.Bak"
+    IDS_NPS_HEADER_FILE     "NPSFILE"
+    IDS_NPS_HEADER_ENTRY    "NPSENTRY"
+    IDS_NPS_SCHED_TIME      "%s at %s"
+    IDS_NPS_COPYRIGHT       "Copyright (C) 1990-1998 Symantec Corporation"
+    IDS_NPS_VERSION         "Version 5.0"
+    IDS_NPS_BBAR_CLOSE      "E&xit"
+    IDS_NPS_BBAR_ADD        "&Add"
+    IDS_NPS_BBAR_EDIT       "Ed&it"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_BBAR_COPY       "&Copy"
+    IDS_NPS_BBAR_REMOVE     "&Delete"
+    IDS_NPS_BBAR_CONFIG     "&Tool Bar"
+    IDS_NPS_BBAR_HELP       "He&lp"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPSOPTS_TITLE_LOOK  "Appearance Settings"
+    IDS_NPSOPTS_LABEL_LOOK  "Appearance"
+    IDS_NPSOPTS_TITLE_CONFIRM "Confirmation Settings"
+    IDS_NPSOPTS_LABEL_CONFIRM "Confirmation"
+    IDS_NPSOPTS_TITLE_DEFAULTS "General Settings"
+    IDS_NPSOPTS_LABEL_DEFAULTS "General"
+    IDS_NPSOPTS_CATEGORY    "Category"
+    IDS_TRAY_TOOLTIP        "Norton Program Scheduler"
+    IDC_CONFIRM_OK_BUTTON   "OK"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_ERR_STRING_CANT_LOAD "Unable to load text from message table."
+    IDS_ERR_WND_CANT_REGISTER "Unable to register window."
+    IDS_ERR_DIALOG_CANT_CREATE "Unable to create dialog box %0."
+    IDS_ERR_WIN_CANT_GET_DIR "Unable to locate Windows folder."
+    IDS_ERR_FILE_NOT_FOUND  "The file %0 could not be found.  The file name or path is invalid."
+    IDS_ERR_FILE_IO         "The %0 file could not be accessed properly."
+    IDS_ERR_MEM_CANT_ALLOC  "Not enough memory for desired operation."
+    IDS_ERR_MEM_CANT_LOCK   "Unable to lock memory handle."
+    IDS_ERR_CREATING_RELOAD_EVENT "Unable to create data file reload notification event."
+    IDS_ERR_DISPLAYING_EVENT "An error ocurred while displaying events."
+    IDS_NPS_FILTER_TYPE_PROGRAMS "Programs|"
+    IDS_NPS_FILTER_TYPE_ALL "All (*.*)|*.*|"
+    IDS_NPS_FILEBROWSE_TITLE "File to Launch"
+    IDS_NPS_DIRBROWSE_TITLE "Startup Folder"
+    IDS_NPS_RUNTEXT_NORMAL  "Normal"
+    IDS_NPS_RUNTEXT_MINIMIZED "Minimized"
+    IDS_NPS_RUNTEXT_MAXIMIZED "Maximized"
+    IDS_NPS_HELPFILE        "NSCHED32.HLP"
+    IDS_INFODESK        "INFODESK.HLP"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_FOLLOWHELP_ADD      "Add an application or event to execute."
+    IDS_FOLLOWHELP_EDIT     "Edit the selected launch event."
+    IDS_FOLLOWHELP_COPY     "Create a copy of the selected launch event."
+    IDS_FOLLOWHELP_DELETE   "Delete the selected launch event."
+    IDS_FOLLOWHELP_EXIT     "Exit Norton program scheduler."
+    IDS_FOLLOWHELP_OPTIONS  "Customize Norton program scheduler options."
+    IDS_FOLLOWHELP_INFODESK "Show info desk information."
+    IDS_FOLLOWHELP_VERSION  "Displays information about Norton program scheduler."
+    IDS_FOLLOWHELP_DEFAULT  "Norton program scheduler."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_CONFIRM_EXIT    "Do not request confirmation when exiting."
+    IDS_NPS_CONFIRM_MESSAGE_EXIT
+                            "Norton program scheduler will not run if you exit. You should minimize it. Do you want to exit anyway?"
+
+    IDS_NPS_CONFIRM_DELETE  "Do not request confirmation when deleting scheduled events."
+    IDS_NPS_CONFIRM_MESSAGE_DELETE
+                            "Are you sure you want to delete the scheduled event?"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_CONFIRM_SAVE    "Do not request confirmation when saving scheduled events."
+    IDS_NPS_CONFIRM_MESSAGE_SAVE
+                            "Are you sure you want to save the scheduled event?"
+    IDS_NPS_CONFIRM_EDIT    "Do not request confirmation when editing scheduled events."
+    IDS_NPS_CONFIRM_MESSAGE_EDIT
+                            "Are you sure you want to save changes to the scheduled event?"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_CONFIRM_ADD_CAPTION     "Save Event"
+    IDS_NPS_CONFIRM_EDIT_CAPTION    "Edit Event"
+    IDS_NPS_CONFIRM_DEL_CAPTION     "Delete Event"
+    IDS_NPS_CONFIRM_EXIT_CAPTION    "Exit Norton Program Scheduler"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NPS_EVENTS_COLUMN_TITLE "Events"
+    IDS_NPS_FREQUENCY_COLUMN_TITLE "Frequency"
+    IDS_NPS_SCHEDULED_COLUMN_TITLE "Scheduled"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_RELOAD_DATA_EVENT_NAME      "NPS Data Reload Event"
+END
+
+// --------------------------------------------------------------------------
+//  How To... string table.
+// --------------------------------------------------------------------------
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDH_NAVW_HOWTO_SCHEDULE_SCANS,  "Schedule virus scans"
+END
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED

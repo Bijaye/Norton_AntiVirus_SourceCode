@@ -1,0 +1,156 @@
+#the aim of this command file is to infect one or more global templates
+#by using an infected document
+
+#restauration of the files that need to be here, from their backup copy
+#for viruses that infect on fileopen/autoopen
+[RESTORE]virus
+[RESTORE]main
+[RESTORE]JanaInt
+[RESTORE]normal1
+[ADDGOAT]normal1
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]virus
+   [MOPEN]main
+     [MSAVE]main
+   [MCLOSE]main
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+#for viruses that infect on filenew/autonew
+[RESTORE]virus
+[RESTORE]normal2
+[ADDGOAT]normal2
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+   [MOPEN]virus
+   [MNEWDOC]new1
+     [SENDTEXT]new1|[ENTER]
+     [MSAVEAS]new1|newgoat1
+     [SENDTEXT]newgoat1|[ENTER]
+   [MCLOSE]newgoat1
+   [PICKUPFILES]{STARTUPDIR}|NEW|OLE2
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+#viruses that infect on fileclose/autoclose
+[RESTORE]virus
+[RESTORE]normal3
+[ADDGOAT]normal3
+[STARTAPP]
+   [MOPEN]virus
+   [MCLOSE]virus
+[MCLOSEAPP]
+
+#viruses that infect on filesave/filesaveas
+[RESTORE]virus
+[RESTORE]normal4
+[ADDGOAT]normal4
+[STARTAPP]
+   [MOPEN]virus
+       [SENDTEXT]virus|[ENTER]It is time for us to ask the question,
+       [SENDTEXT]virus| to be or not to be by the next century.[ENTER]
+     [MSAVE]virus
+       [SENDTEXT]virus|And I think we will bE![ENTER][ENTER]
+     [MSAVEAS]virus|vircopy
+   [MCLOSE]vircopy
+[MCLOSEAPP]
+
+
+#restauration of the files that need to be here, from their backup copy
+[RESTORE]normalvirus
+[RESTORE]tmain
+#[RESTORE]JanaInt
+[GETLIST]{STARTUPDIR}
+[STARTAPP]
+#
+#for Word 6/7 viruses that do not change the template bit while infecting
+#
+   [MOPEN]tmain
+      [SENDTEXT]tmain|[ENTER][ENTER]
+      [MSAVE]tmain
+   [MCLOSE]tmain
+#
+#standard documents
+#
+#   [MOPEN]JanaInt
+#      [GOTO]JanaInt|END
+#      [SENDTEXT]JanaInt|[ENTER][ENTER]
+#      [MSAVE]JanaInt
+#   [MCLOSE]JanaInt
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+[RESTORE]normalvirus
+[RESTORE]main1
+[STARTAPP]
+   [MOPEN]main1
+      [SENDTEXT]main1|[ENTER][ENTER]
+   [MCLOSE]main1
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+[RESTORE]normalvirus
+[RESTORE]tParty
+#[RESTORE]Party
+[STARTAPP]
+#for Word 6/7 viruses that do not change the template bit while infecting
+   [MOPEN]tParty
+      [SENDTEXT]tParty|[ENTER][ENTER]
+      [MSAVEAS]tParty|tPartyb
+   [MCLOSE]tPartyb
+#standard documents   
+#   [MOPEN]Party
+#      [GOTO]Party|END
+#      [SENDTEXT]Party|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+#      [SENDTEXT]Party|And I think we will bE![ENTER][ENTER]
+#      [MSAVEAS]Party|Partyb
+#   [MCLOSE]Partyb
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+[RESTORE]normalvirus
+[STARTAPP]
+   [MNEWDOC]new2
+      [SENDTEXT]new2|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [SENDTEXT]new2|And I think we will bE![ENTER][ENTER]
+      [MSAVEAS]new2|newgoat2
+   [MCLOSE]newgoat2
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+#for johnny variants especially
+#other viruses probably don't distinguish between 
+#newly created files and previously created files 
+#when it comes to saving...
+[RESTORE]normalvirus
+[STARTAPP]
+   [MNEWDOC]new3
+      [SENDTEXT]new3|[ENTER][ENTER]
+      [MSAVE]new3|newgoat3
+   [MCLOSE]newgoat3
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]
+[DELETEFILES]{STARTUPDIR}\*.*|NEW
+
+
+#for Johnny variants, which want files with a .DOC extension...
+[RESTORE]virus
+[RESTORE]umain
+[STARTAPP]
+   [MOPEN]umain
+      [SENDTEXT]umain|[ENTER]It is time for us to ask the question, to be or not to be by the next century.[ENTER]
+      [SENDTEXT]umain|And I think we will bE![ENTER][ENTER]
+      [MSAVE]umain
+   [MCLOSE]umain
+   [PICKUPFILES]{STARTUPDIR}\*.*|NEW
+   [DELETEFILES]{STARTUPDIR}\*.*|NEW
+[MCLOSEAPP]

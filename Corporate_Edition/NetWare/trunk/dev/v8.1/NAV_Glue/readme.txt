@@ -1,0 +1,1 @@
+This area is intended for NW NLM based on new NDK and Metrowerks CodeWarrior.

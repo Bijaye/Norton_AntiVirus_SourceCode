@@ -1,0 +1,90 @@
+HKCR
+{
+	Qscon.QSConsole.1 = s 'QSConsole Class'
+	{
+		CLSID = s '{26140C85-B554-11D2-8F45-3078302C2030}'
+	}
+	Qscon.QSConsole = s 'QSConsole Class'
+	{
+		CLSID = s '{26140C85-B554-11D2-8F45-3078302C2030}'
+		CurVer = s 'Qscon.QSConsole.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {26140C85-B554-11D2-8F45-3078302C2030} = s 'QSConsole Class'
+		{
+			ProgID = s 'Qscon.QSConsole.1'
+			VersionIndependentProgID = s 'Qscon.QSConsole'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{26140C78-B554-11D2-8F45-3078302C2030}'
+		}
+	}
+}
+
+HKLM 
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove MMC
+			{
+				NoRemove Snapins
+				{
+					ForceRemove {26140C85-B554-11D2-8F45-3078302C2030} =
+						s 'QSConsole' 
+					{
+						val NameString = s 'Norton AntiVirus Quarantine'
+						val About = s '{26140C86-B554-11D2-8F45-3078302C2030}'
+						NodeTypes
+						{
+							{26140C87-B554-11D2-8F45-3078302C2030}
+							{1DAE69DE-B621-11d2-8F45-3078302C2030}
+						}
+						StandAlone
+					}
+				}
+				NoRemove NodeTypes
+				{
+					ForceRemove {26140C87-B554-11D2-8F45-3078302C2030}
+					{
+					}
+					ForceRemove {1DAE69DE-B621-11d2-8F45-3078302C2030}
+					{
+					}
+
+
+    				NoRemove {0A624A66-269C-11d3-80F4-00C04F68D969}
+					{
+						NoRemove Extensions
+						{
+							NoRemove Namespace
+							{
+								val {26140C85-B554-11D2-8F45-3078302C2030} = s 'Norton AntiVirus Quarantine'
+							}
+						}
+					}
+					
+					NoRemove {476E6449-AAFF-11D0-B944-00C04FD8D5B0}
+					{
+						NoRemove 'Dynamic Extensions'
+						{
+							val {26140C85-B554-11D2-8F45-3078302C2030} = s 'Norton AntiVirus Quarantine'
+						}
+
+						NoRemove Extensions
+						{
+							NoRemove Namespace
+							{
+								val {26140C85-B554-11D2-8F45-3078302C2030} = s 'Norton AntiVirus Quarantine'
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

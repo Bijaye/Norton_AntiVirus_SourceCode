@@ -1,0 +1,1000 @@
+@echo off
+on break cancel
+setlocal
+echo Command line - %0 %&
+
+:: ******************************************************************
+:: * VENDOR's
+:: ******************************************************************
+set VENDOR_ID_LCHOME=130
+set VENDOR_ID_SASROOT=131
+set VENDOR_ID_SASROOT_TEST=132
+
+:: ******************************************************************
+:: * PATH DEFINATION
+:: ******************************************************************
+set CM_DIR=%@full[%@path[%_batchname]]
+set ROOT_DIR=%@full[%CM_DIR%..\..]
+set SDK_DIR=%@full[%ROOT_DIR%\SDKs]
+set CLICFG_DIR=%@full[%ROOT_DIR%\SDKs\Licensing\CLT\CliCfgTemplates]
+
+:: ******************************************************************
+:: * DEFAULTS THAT CAN BE OVERRIDDEN PER WRAP
+:: ******************************************************************
+:: *    All of the variables below can be overridden by
+:: *    setting a variable of like name (without the _DEFAULT)
+:: *
+:: *    E.G. SKUCMD_DEFAULT could be overridden by setting
+:: *         SKUCMD to something before the gosub call to WrapFile
+:: *         in each phase is made.  After WrapFile all non default
+:: *         variables are reset to nothing so each wrap does not need
+:: *         to worry about resetting any values.  If SKUCMD is not
+:: *         set then the value in SKUCMD_DEFAULT will be used for the wrap.
+:: ******************************************************************
+set INPUT_FILE_DEFAULT=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\Unwrapped\NAV\AVSTE.dll]
+set OUTPUT_DIR_DEFAULT=%@full[%ROOT_DIR%\src\bin.ira\branding\Symantec\NAV\US]
+set OUTPUT_FILE_NAME_DEFAULT=AVSTE.dll
+set XLOK_BINARY_VERSION_DEFAULT=2.0.509.24
+set SKUCMD_DEFAULT=/D 2
+set VENDOR_DEFAULT=%VENDOR_ID_LCHOME%
+set ROVER_DIR_DEFAULT=%@full[%ROOT_DIR%\Nobuilds\Rover]
+set GREPCMD=r:\cm\grep.exe
+:: These last three should be left blank in nearly all cases
+set SKU_DEFAULT=
+set CLI_CFG_TEMPLATE_DEFAULT=
+set OUTPUT_FILE_DEFAULT=
+set ANTITAMPER_ONLY_DEFAULT=
+
+:: ******************************************************************
+:: * XLOK SKU References.
+:: ******************************************************************
+:: 2005 SKU's
+set NAV2005_SOS=192
+
+:: 2006 SKU's NAV Test SKU's
+REM set NAV2006_ACTIVATION=3350
+REM set NAV2006_ACTIVATION_CTO=3632
+REM set NAV2006_ENHTRIAL_15DAY=3670
+REM set NAV2006_ENHTRIAL_30DAY=3670
+REM set NAV2006_OEM_LIMITED_30DAY=3376
+REM set NAV2006_OEM_LIMITED_60DAY=3376
+REM set NAV2006_OEM_LIMITED_90DAY=3376
+REM set NAV2006_OEM_LIMITED_180DAY=3376
+REM set NAV2006_OEM_PREPAID=3377
+
+:: 2006 SKU's NAV Production SKU's
+set NAV2006_ACTIVATION=74
+set NAV2006_ACTIVATION_NOAS=124
+set NAV2006_ACTIVATION_CTO=121
+set NAV2006_BETA=65
+set NAV2006_ENHTRIAL_15DAY=84
+set NAV2006_ENHTRIAL_30DAY=85
+set NAV2006_OEM_LIMITED_30DAY=87
+set NAV2006_OEM_LIMITED_60DAY=88
+set NAV2006_OEM_LIMITED_90DAY=89
+set NAV2006_OEM_LIMITED_180DAY=90
+set NAV2006_OEM_PREPAID=86
+set NAV2006_SOS=234
+set NAV2006_SOS_STAGING=203
+set NAV2006_ACTIVATION_9X=109
+
+:: ******************************************************************
+:: * SKU ABSTRACTIONS
+:: ******************************************************************
+set ACTIVATION_WRAP=%NAV2006_ACTIVATION%
+set ACTIVATION_NOAS_WRAP=%NAV2006_ACTIVATION_NOAS%
+set ACTIVATION_CTO_WRAP=%NAV2006_ACTIVATION_CTO%
+set BETA_WRAP=%NAV2006_BETA%
+set ENHTRIAL_15DAY_WRAP=%NAV2006_ENHTRIAL_15DAY%
+set ENHTRIAL_30DAY_WRAP=%NAV2006_ENHTRIAL_30DAY%
+set OEM_LIMITED_30DAY_WRAP=%NAV2006_OEM_LIMITED_30DAY%
+set OEM_LIMITED_60DAY_WRAP=%NAV2006_OEM_LIMITED_60DAY%
+set OEM_LIMITED_90DAY_WRAP=%NAV2006_OEM_LIMITED_90DAY%
+set OEM_LIMITED_180DAY_WRAP=%NAV2006_OEM_LIMITED_180DAY%
+set OEM_PREPAID_WRAP=%NAV2006_OEM_PREPAID%
+set SOS_WRAP=%NAV2006_SOS%
+set SOS_WRAP_STAGING=%NAV2006_SOS_STAGING%
+set ACTIVATION_9X_WRAP=%NAV2006_ACTIVATION_9X%
+
+:: ******************************************************************
+:: * CLICFG TEMPLATE PATHS
+:: ******************************************************************
+set CLICFG_TEMPLATE_ACTIVATION=%CLICFG_DIR%\CliCfg_Template_Activation.ini
+set CLICFG_TEMPLATE_ACTIVATION_NOAS=%CLICFG_DIR%\CliCfg_Template_Activation.ini
+set CLICFG_TEMPLATE_ACTIVATION_CTO=%CLICFG_DIR%\CliCfg_Template_Activation_CTO.ini
+set CLICFG_TEMPLATE_BETA=%CLICFG_DIR%\CliCfg_Template_Beta.ini
+set CLICFG_TEMPLATE_ENHTRIAL=%CLICFG_DIR%\CliCfg_Template_EnhTrial.ini
+set CLICFG_TEMPLATE_OEM_LIMITED=%CLICFG_DIR%\CliCfg_Template_OEM_Limited.ini
+set CLICFG_TEMPLATE_OEM_PREPAID=%CLICFG_DIR%\CliCfg_Template_OEM_Prepaid.ini
+set CLICFG_TEMPLATE_SOS=%CLICFG_DIR%\CliCfg_Template_SOS.ini
+set CLICFG_TEMPLATE_SOS_XCHECK=%CLICFG_DIR%\CliCfg_Template_SOS_XCHECK.ini
+set CLICFG_TEMPLATE_ANTITAMPER=%CLICFG_DIR%\CliCfg_Template_AntiTamper.ini
+
+:: ******************************************************************
+:: * MISC DEFAULTS YOU SHOULD NOT NEED TO CHANGE
+:: ******************************************************************
+set USER_CMD=/U CM-SM
+set PASSWORD_CMD=/P WrapMaster2004
+set DBG_BTM=
+set PHASE=1
+set XINSTALL_LOG=xinstall.log
+set WRAP_FILE_LOG=WrapFile.log
+set TEMP_CLI_CFG_INI=temp_CliCfg.ini
+set ROVER_LOG_FILE=Rover.log
+set MAX_WRAP_ATTEMPTS=9
+
+:: Initialize all of our overrideable vars
+gosub ResetOverrides
+
+:: Initialize our log files
+gosub :IntializeLogFiles
+
+:: Parse command-line parameters.
+gosub :ParseCommandLine
+goto PHASE%PHASE
+
+:PHASE1
+:: goto :PHASE1_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (ACTIVATION)
+    :: ******************************************************************************************
+
+    set              SKU=%ACTIVATION_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\RETAIL\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ACTIVATION%
+
+    gosub WrapFile
+:PHASE1_END
+
+:PHASE2
+:: goto :PHASE2_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (CTO)
+    :: ******************************************************************************************
+
+    set              SKU=%ACTIVATION_CTO_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\CTO\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ACTIVATION_CTO%
+
+    gosub WrapFile
+:PHASE2_END
+
+:PHASE3
+:: goto :PHASE3_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (BETA)
+    :: ******************************************************************************************
+
+    set              SKU=%BETA_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\BETA\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_BETA%
+
+    gosub WrapFile
+:PHASE3_END
+
+:PHASE4
+:: goto :PHASE4_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (ENHTRIAL_15DAY)
+    :: ******************************************************************************************
+
+    set              SKU=%ENHTRIAL_15DAY_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\TRYBUY\TB15\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ENHTRIAL%
+
+    gosub WrapFile
+:PHASE4_END
+
+:PHASE4_30
+:: goto :PHASE4_30_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (ENHTRIAL_30DAY)
+    :: ******************************************************************************************
+
+    set              SKU=%ENHTRIAL_30DAY_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\TRYBUY\TB30\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ENHTRIAL%
+
+    gosub WrapFile
+:PHASE4_30_END
+
+:PHASE5_30
+:: goto :PHASE5_30_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (OEM_LIMITED_30DAY)
+    :: ******************************************************************************************
+
+    set              SKU=%OEM_LIMITED_30DAY_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\LIMITEDOEM\30D\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_OEM_LIMITED%
+
+    gosub WrapFile
+:PHASE5_30_END
+
+:PHASE5_60
+:: goto :PHASE5_60_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (OEM_LIMITED_60DAY)
+    :: ******************************************************************************************
+
+    set              SKU=%OEM_LIMITED_60DAY_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\LIMITEDOEM\60D\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_OEM_LIMITED%
+
+    gosub WrapFile
+:PHASE5_60_END
+
+:PHASE5_90
+:: goto :PHASE5_90_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (OEM_LIMITED_90DAY)
+    :: ******************************************************************************************
+
+    set              SKU=%OEM_LIMITED_90DAY_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\LIMITEDOEM\90D\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_OEM_LIMITED%
+
+    gosub WrapFile
+:PHASE5_90_END
+
+:PHASE5_180
+:: goto :PHASE5_180_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (OEM_LIMITED_180DAY)
+    :: ******************************************************************************************
+
+    set              SKU=%OEM_LIMITED_180DAY_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\LIMITEDOEM\180D\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_OEM_LIMITED%
+
+    gosub WrapFile
+:PHASE5_180_END
+
+:PHASE6
+:: goto :PHASE6_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (OEM_PREPAID)
+    :: ******************************************************************************************
+
+    set              SKU=%OEM_PREPAID_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\PPOEM\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_OEM_PREPAID%
+
+    gosub WrapFile
+:PHASE6_END
+
+:PHASE7
+:: goto :PHASE7_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (XL_LIVESUBSCRIBE - 9X)
+    :: ******************************************************************************************
+
+    set               SKU=%ACTIVATION_9X_WRAP%
+    set       OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\RETAIL\LIVESUB\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ACTIVATION%
+
+    set	INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\Unwrapped\NAV\LS\AVSTE.dll]
+
+    gosub WrapFile
+:PHASE7_END
+
+:PHASE8
+:: goto :PHASE8_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (NOAS)
+    :: ******************************************************************************************
+
+    set              SKU=%ACTIVATION_NOAS_WRAP%
+    set      OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\RETAIL\NOAS\%OUTPUT_FILE_NAME_DEFAULT%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ACTIVATION_NOAS%
+
+    set INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\Unwrapped\NAV_NOAS\AVSTE.dll]
+
+    gosub WrapFile
+:PHASE8_END
+
+:Phase10
+:: goto :Phase10_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (SOS)
+    :: ******************************************************************************************
+
+    set                 SKU=%SOS_WRAP%
+    set         OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\SOS\%OUTPUT_FILE_NAME_DEFAULT%
+    set    CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_SOS%
+
+    set			 INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\Unwrapped\NAV\XL1.8\AVSTE.dll]
+    set              VENDOR=%VENDOR_ID_SASROOT%
+    set XLOK_BINARY_VERSION=1.4.406.9
+
+    gosub WrapFile
+:PHASE10_END
+
+:Phase10.1
+:: goto :Phase10.1_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (SOS - STAGING)
+    :: ******************************************************************************************
+
+    set                 SKU=%SOS_WRAP_STAGING%
+    set         OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\SOS\STAGING\%OUTPUT_FILE_NAME_DEFAULT%
+    set    CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_SOS%
+
+    set			 INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\SuiteOwner\Unwrapped\NAV\XL1.8\AVSTE.dll]
+    set              VENDOR=%VENDOR_ID_SASROOT%
+    set XLOK_BINARY_VERSION=1.4.406.9
+
+    gosub WrapFile
+:PHASE10.1_END
+
+:PHASE11
+goto :PHASE11_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (SOS - XCheck)
+    :: ******************************************************************************************
+
+    set                 SKU=%SOS_WRAP%
+    set         OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\SOS\CLTDist_XL18.dll
+    set    CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_SOS_XCHECK%
+
+    set			 INPUT_FILE=%@full[%ROOT_DIR%\SDKs\Licensing\CLT\Bin.ira\CLTDist_XL18.dll]
+    set              VENDOR=%VENDOR_ID_SASROOT%
+    set XLOK_BINARY_VERSION=1.4.406.9
+
+    gosub WrapFile
+:PHASE11_END
+
+:PHASE11.1
+goto :PHASE11.1_END
+    :: ******************************************************************************************
+    @set a=*** XInstall Wrap - NAV (SOS - XCheck - STAGING)
+    :: ******************************************************************************************
+
+    set                 SKU=%SOS_WRAP_STAGING%
+    set         OUTPUT_FILE=%OUTPUT_DIR_DEFAULT%\SOS\STAGING\CLTDist_XL18.dll
+    set    CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_SOS_XCHECK%
+
+    set			 INPUT_FILE=%@full[%ROOT_DIR%\SDKs\Licensing\CLT\Bin.ira\CLTDist_XL18.dll]
+    set              VENDOR=%VENDOR_ID_SASROOT%
+    set XLOK_BINARY_VERSION=1.4.406.9
+
+    gosub WrapFile
+:PHASE11.1_END
+
+:PHASE12
+:: goto :PHASE12_END
+    :: ******************************************************************************************
+    @set a=*** XInstall AntiTamper Wrap - NavOPTRF
+    :: ******************************************************************************************
+
+    set ANTITAMPER_ONLY=1
+    set OUTPUT_FILE_NAME=NAVOPTRF.dll
+    set INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\NavOPTRF.dll]
+    set OUTPUT_DIR=%@full[%ROOT_DIR%\src\bin.ira\AntiTamper]
+    set      OUTPUT_FILE=%OUTPUT_DIR%\%OUTPUT_FILE_NAME%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ANTITAMPER%
+
+    gosub WrapFile
+:PHASE12_END
+
+:PHASE13
+:: goto :PHASE13_END
+    :: ******************************************************************************************
+    @set a=*** XInstall AntiTamper Wrap - NavLUCbk
+    :: ******************************************************************************************
+
+    set ANTITAMPER_ONLY=1
+    set OUTPUT_FILE_NAME=NavLUCbk.dll
+    set INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\NavLUCbk.dll]
+    set OUTPUT_DIR=%@full[%ROOT_DIR%\src\bin.ira\AntiTamper]
+    set      OUTPUT_FILE=%OUTPUT_DIR%\%OUTPUT_FILE_NAME%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ANTITAMPER%
+
+    gosub WrapFile
+:PHASE13_END
+
+:PHASE14
+:: goto :PHASE14_END
+    :: ******************************************************************************************
+    @set a=*** XInstall AntiTamper Wrap - AVCompBR
+    :: ******************************************************************************************
+
+    set ANTITAMPER_ONLY=1
+    set OUTPUT_FILE_NAME=AVCompBR.dll
+    set INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\AVCompBR.dll]
+    set OUTPUT_DIR=%@full[%ROOT_DIR%\src\bin.ira\AntiTamper]
+    set      OUTPUT_FILE=%OUTPUT_DIR%\%OUTPUT_FILE_NAME%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ANTITAMPER%
+
+    gosub WrapFile
+:PHASE14_END
+
+:PHASE15
+:: goto :PHASE15_END
+    :: ******************************************************************************************
+    @set a=*** XInstall AntiTamper Wrap - NavOPTRF_NOAS
+    :: ******************************************************************************************
+
+    set ANTITAMPER_ONLY=1
+    set OUTPUT_FILE_NAME=NAVOPTRF_NOAS.dll
+    set INPUT_FILE=%@full[%ROOT_DIR%\src\bin.ira\NavOPTRF_NOAS.dll]
+    set OUTPUT_DIR=%@full[%ROOT_DIR%\src\bin.ira\AntiTamper]
+    set      OUTPUT_FILE=%OUTPUT_DIR%\%OUTPUT_FILE_NAME%
+    set CLI_CFG_TEMPLATE=%CLICFG_TEMPLATE_ANTITAMPER%
+
+    gosub WrapFile
+:PHASE15_END
+
+:: ******************************************************************
+:: *===============================================================**
+:: *= DO NOT EDIT BELOW THIS POINT UNLESS YOU ARE ON THE CLT TEAM =**
+:: *===============================================================**
+:: ******************************************************************
+:: *= XInstall Version 1.02
+
+
+:: ******************************************************************
+:: * FINISHED WITH NO ERRORS
+:: ******************************************************************
+:PHASECompletion
+    set BUILD_STATUS=PASS
+
+    @echo ____________________________________________________________
+    @echo.
+    @echo   Success = Success = Success = Success = Success = Success
+    @echo   Success = Success  (XINSTALL) Success = Success = Success
+    @echo   Success = Success = Success = Success = Success = Success
+    @echo ____________________________________________________________
+    @echo.
+
+    @set a=*** XInstall time %@timer[1] (%_DATE - %_TIME) ***
+    @gosub logthis
+
+    popd *
+    endlocal
+
+quit 0
+
+:: ******************************************************************
+:: ******************************************************************
+:: ************* SUBROUTINES FROM HERE DOWN ***************
+:: ******************************************************************
+:: ******************************************************************
+
+rem ==================================================================
+:ParseCommandLine
+rem ==================================================================
+    do param = 1 to 127
+        shift 1
+        iff "%0"=="" then
+            shift -%param%
+            goto continue
+        endiff
+
+        set this_param=%@upper[%0]
+
+        iff "%@upper[%0]"=="/PHASE" then
+            shift 1
+            set PHASE=%0
+        elseiff "%@upper[%0]"=="/DBG_BTM" then
+            set DBG_BTM=/DBG_BTM
+        elseiff "%@upper[%0]"=="/NORETRIES" then
+            echo MAX_WRAP_ATTEMPTS forced to 1 with /NORETRIES command.
+            set MAX_WRAP_ATTEMPTS=1
+        else
+            echo.
+            echo ******************************************
+            echo * Error: %0 is an invalid parameter
+            echo ******************************************
+            echo.
+            echo Valid parameters are:
+            echo.
+            echo /PHASE #           :: PHASE to jump to
+            echo /DBG_BTM           :: Turn Echo on
+            quit 1
+        endiff
+    enddo
+    shift -127
+
+    :continue
+    if "%DBG_BTM" NE "" echo on
+return
+
+rem ==================================================================
+:logThis
+rem ==================================================================
+    @echo %a
+    @echo %a >> %XINSTALL_LOG
+return
+
+rem ==================================================================
+:logblank
+rem ==================================================================
+    @echo.
+    @echo. >> %XINSTALL_LOG
+return
+
+rem ==================================================================
+:logBreak
+rem ==================================================================
+    @echo ********************************************************************
+    @echo ******************************************************************** >> %XINSTALL_LOG
+return
+
+rem ==================================================================
+:logHeader
+rem ==================================================================
+    @gosub logblank
+    @gosub logBreak
+    @gosub logthis
+    @gosub logBreak
+    @gosub logblank
+
+return
+
+rem ==================================================================
+:IntializeLogFiles
+rem ==================================================================
+
+    gosub logblank
+
+    :: If the last character in ROOT_DIR is not a '\', then append one.
+    iff %@SUBSTR[%ROOT_DIR%,%@EVAL[%@LEN[%ROOT_DIR%]-1],1] NE \ then
+        set ROOT_DIR=%ROOT_DIR%\
+    endiff
+
+    :: Clear this file out.
+    @del /Q %XINSTALL_LOG
+
+    timer on /1
+    set a= **** XInstall started %_date - %_time ****
+    gosub logthis
+
+    :: Make sure that we were able to create the log file
+    iff NOT EXIST %XINSTALL_LOG% then
+        echo.
+        echo ****************************************************
+        echo * ERROR: Cannot create log file [%XINSTALL_LOG%]
+        echo ****************************************************
+        quit 1
+    endiff
+
+    :: Make sure that we have a MAX_WRAP_ATTEMPTS set
+    iff "%MAX_WRAP_ATTEMPTS" == "" then
+        set MAX_WRAP_ATTEMPTS=3
+        echo MAX_WRAP_ATTEMPTS not set...Defaulting to %MAX_WRAP_ATTEMPTS
+    endiff
+
+    :: Make sure that we have a STOP_ON_ERRS var, if not default to TRUE
+    iff "%STOP_ON_ERRS" == "" then
+        set STOP_ON_ERRS=TRUE
+    endiff
+
+    :: Setup a default CM_BLD_TOOLS_DIR if there is none
+    iff "%CM_BLD_TOOLS_DIR" == "" then
+        set CM_BLD_TOOLS_DIR=r:\CM\
+        echo CM_BLD_TOOLS_DIR is not defined...Defaulting to %CM_BLD_TOOLS_DIR
+    endiff
+
+    :: We are hard codeing the GREP path because we are delivering grep in our release Bin.ira area now.
+    SET GREPCMD=%CLICFG_DIR%\..\Bin.ira\Grep.exe
+
+    :: Check to see if we have access to grep
+    iff NOT EXIST %GREPCMD% then
+        echo.
+        echo ***************************************************************************
+        echo * ERROR: Cannot find Grep.exe GREPCMD=[%GREPCMD%]
+        echo *      Make sure that CLICFG_DIR is set properly to the licensing area
+        echo ***************************************************************************
+        quit 1
+    endiff
+
+    :: Setup our Error String that we use to remove error msg's from Rover when we dont
+    :: want to exit on errors but want to append the information to the build.
+    iff "%ERROR_REPLACEMENT_STR%" == "" then
+        set ERROR_REPLACEMENT_STR=(E_R_R_O_R)
+    endiff
+
+    :: remark this goto and put desired system information below
+    ::goto DumpServerInfoEnd
+
+    :: Dumpout server information for debugging
+    echo ****************************************************************
+    echo * Server Settings
+    echo ****************************************************************
+    rem ping LCHome2Main.symantec.com
+    rem echo -------------------------
+    rem ping 206.204.54.182
+    rem echo -------------------------
+    ipconfig
+    echo ****************************************************************
+    echo ****************************************************************
+:DumpServerInfoEnd
+
+    gosub logblank
+
+return
+
+rem ==================================================================
+:errexit
+rem ==================================================================
+    set BUILD_STATUS=FAIL
+    @set a=*** XInstall time %@timer[1] (%_DATE - %_TIME) ***
+    @gosub logthis
+
+    @echo **********************************************************************  | tee /a %XINSTALL_LOG
+    @echo ******************** ERROR(S) IN XINSTALL ****************************  | tee /a %XINSTALL_LOG
+    @echo **********************************************************************  | tee /a %XINSTALL_LOG
+    @echo (Refer to %XINSTALL_LOG for more info on errors.)
+
+    endlocal
+quit 1
+
+rem ==================================================================
+:ResetOverrides
+rem ==================================================================
+
+    :: ******************************************************************
+    :: * OVERRIDES
+    :: *    Use the follow overrides in the wrap Phase to
+    :: *        override the variable of like name (with _DEFAULT appended).
+    :: *    EG Setting SKUCMD=Something will override the default value
+    :: *         of SKUCMD_DEFAULT.
+    :: *    NOTE: Overrides get reset after each wrap
+    :: ******************************************************************
+    set VENDOR=
+    set SKU=
+    set SKUCMD=
+    set ROVER_DIR=
+    set OUTPUT_DIR=
+    set INPUT_FILE=
+    set OUTPUT_FILE_NAME=
+    set XLOK_BINARY_VERSION=
+    set CLI_CFG_TEMPLATE=
+    set ANTITAMPER_ONLY=
+
+    :: These overrides have no defaults but can be used in each phase
+    set SERVER=
+    set USESSL=
+
+return
+
+rem ==================================================================
+:SetupOverrides
+rem ==================================================================
+    :: Use override commands if there are any
+
+    iff "%VENDOR%"=="" then
+        set VENDOR=%VENDOR_DEFAULT%
+    endiff
+
+    iff "%SKU%"=="" then
+        set SKU=%SKU_DEFAULT%
+    endiff
+
+    iff "%SKUCMD%"=="" then
+        set SKUCMD=%SKUCMD_DEFAULT%
+    endiff
+
+    iff "%ROVER_DIR%"=="" then
+        set ROVER_DIR=%ROVER_DIR_DEFAULT%
+    endiff
+
+    iff "%OUTPUT_DIR%"=="" then
+        set OUTPUT_DIR=%OUTPUT_DIR_DEFAULT%
+    endiff
+
+    iff "%INPUT_FILE%"=="" then
+        set INPUT_FILE=%INPUT_FILE_DEFAULT%
+    endiff
+
+    iff "%OUTPUT_FILE%"=="" then
+        set OUTPUT_FILE=%OUTPUT_FILE_DEFAULT%
+    endiff
+
+    iff "%ANTITAMPER_ONLY%"=="" then
+        set ANTITAMPER_ONLY=%ANTITAMPER_ONLY_DEFAULT%
+    endiff
+
+    iff "%XLOK_BINARY_VERSION%"=="" then
+        set XLOK_BINARY_VERSION=%XLOK_BINARY_VERSION_DEFAULT%
+    endiff
+
+    iff "%CLI_CFG_TEMPLATE%"=="" then
+        set CLI_CFG_TEMPLATE=%CLI_CFG_TEMPLATE_DEFAULT%
+    endiff
+
+return
+
+rem ==================================================================
+:RemoveErrorsFromFile
+rem ==================================================================
+
+    rem echo call python %CM_BLD_TOOLS_DIR%SR2.py -f%_FILE_TO_SNR% -s"error" -r"%ERROR_REPLACEMENT_STR%" -i
+    call python %CM_BLD_TOOLS_DIR%SR2.py -f%_FILE_TO_SNR% -s"error" -r"%ERROR_REPLACEMENT_STR%" -i > :NUL
+
+return
+
+
+rem ==================================================================
+:WrapFile
+rem ==================================================================
+    pushd
+
+    gosub logHeader
+
+    ::  Use defaults for variables not set
+    gosub SetupOverrides
+
+    :: setup local var's
+    set _TMP_XLOK_BIN_PATH=%ROVER_DIR%\Binaries\Bin\xLok\%XLOK_BINARY_VERSION%\
+    set ROVER_OUTPUT="_RoverOutput"
+
+    :: Reset Error file
+    echo. > %WRAP_FILE_LOG
+
+    :: Copy Template TEMP_CLI_CFG_INI.ini file to our generic one to make
+    :: sure that we can overwrite our file and copy the template.  We will
+    :: reset this below
+    copy /Z /V /Q /E  %CLI_CFG_TEMPLATE %TEMP_CLI_CFG_INI
+
+    :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: Verify all of our settings
+    :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    :: Verify that we have a SKU Number
+    iff "%ANTITAMPER_ONLY" == "" then
+        iff "%SKU%" NE "" then
+            @echo ... SKU                   = %SKU%
+        else
+            @echo ERROR - No SKU Number specified. | tee /A %WRAP_FILE_LOG
+        endiff
+    endiff
+
+    :: Verify that we have a Vendor
+    iff "%VENDOR%" NE "" then
+        @echo ... Vender                = %VENDOR%
+    else
+        @echo ERROR - No Vendor specified. | tee /A %WRAP_FILE_LOG
+    endiff
+
+    @echo ... SKU Commands          = %SKUCMD%
+
+    :: Make sure that we were able to copy the TEMP_CLI_CFG_INI template to the working file
+    iff EXIST %TEMP_CLI_CFG_INI% then
+        @echo ... Generated temp clicfg = %TEMP_CLI_CFG_INI%
+    else
+        @echo ERROR - Generated TEMP_CLI_CFG_INI.ini File could not be created [%TEMP_CLI_CFG_INI%] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: Make sure that the CLI_CFG_TEMPLATE Template file exist
+    iff EXIST %CLI_CFG_TEMPLATE% then
+        @echo ... XLOK Template File    = %CLI_CFG_TEMPLATE%
+    else
+        @echo ERROR - XLOK Template File not found [%CLI_CFG_TEMPLATE%] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: Make sure that the Rover Binaries exist
+    iff isdir %_TMP_XLOK_BIN_PATH% then
+        @echo ... XLOK Binaries         = %_TMP_XLOK_BIN_PATH%
+    else
+        @echo ERROR - XLOK Binaries not found [%_TMP_XLOK_BIN_PATH%] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: Make sure that the input file exist
+    iff EXIST %INPUT_FILE% then
+        @echo ... Input File            = %INPUT_FILE%
+    else
+        @echo ERROR - Input File not found [%INPUT_FILE%] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: Strip off the output file name and see if the directory exist
+    set __tDir=%@path[%OUTPUT_FILE%]
+    iff "%__tDir%"=="" .OR. isdir %__tDir% then
+        @echo ... Output File           = %OUTPUT_FILE%
+    else
+            @echo ERROR - Output Directory not found [%__tDir%] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: Strip off the log file name and see if the directory exist
+    set __tDir=%@path[%ROVER_LOG_FILE%]
+    iff  "%__tDir%"=="" .OR. isdir %__tDir% then
+        @echo ... Log File              = %ROVER_LOG_FILE%
+
+        :: Remove any existing rover.log file because rovercli will not destroy the previous one on err.
+        @del /Q /F /E %ROVER_LOG_FILE%
+    else
+        @echo ERROR - Log Directory not found [%__tDir%] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: Make sure that we can find Rover
+    iff NOT EXIST %ROVER_DIR%\rovercli.exe then
+        @echo ERROR - RoverCLI.exe could not be found at [%ROVER_DIR%\rovercli.exe] | tee /A %WRAP_FILE_LOG
+    endiff
+
+    :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: Create the temp CliCFG file
+    :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    :: Add Xlok Binary path and version to generic file
+    echo XLOKPATH=%_TMP_XLOK_BIN_PATH > %TEMP_CLI_CFG_INI%
+    echo XLOKVERSION=%XLOK_BINARY_VERSION >> %TEMP_CLI_CFG_INI%
+
+    :: Add Input, Output and Log lines to generic file
+    echo INPUTFILE=%INPUT_FILE >> %TEMP_CLI_CFG_INI%
+    echo OUTPUTFILE=%OUTPUT_FILE >> %TEMP_CLI_CFG_INI%
+    echo LOGFILE=%ROVER_LOG_FILE% >> %TEMP_CLI_CFG_INI%
+
+    :: If its set dump add A server entry to over ride what is in the clicfg file template
+    iff "%SERVER" != "" then
+        set a=OVERRIDING the SERVER command in %TEMP_CLI_CFG_INI with SERVER=%SERVER
+        gosub logthis
+        echo SERVER=%SERVER >> %TEMP_CLI_CFG_INI
+
+        :: Reset SERVER so that other phases wont pick this one up
+        set SERVER=
+    endiff
+
+    :: If its set dump add A USESSL entry to over ride what is in the clicfg file template
+    iff "%USESSL" != "" then
+        set a=OVERRIDING the USESSL command in %TEMP_CLI_CFG_INI with USESSL=%USESSL
+        gosub logthis
+        echo USESSL=%USESSL >> %TEMP_CLI_CFG_INI
+
+        :: Reset SERVER so that other phases wont pick this one up
+        set USESSL=
+    endiff
+
+    :: set a comment in our temp clicfg ini file so we can see where the file starts easier.
+    echo ; Template file is from here down >> %TEMP_CLI_CFG_INI
+
+    :: Append the clicfg template file to the end of our new values because
+    :: rovercli takes the first on when there are duplicates.
+    type %CLI_CFG_TEMPLATE >> %TEMP_CLI_CFG_INI
+
+    gosub logblank
+
+    echo ------------------------------------------------------------
+    echo CliCfg.ini contents
+    echo ------------------------------------------------------------
+    type %TEMP_CLI_CFG_INI
+    echo ------------------------------------------------------------
+
+    gosub logblank
+
+    :: Look for errors
+    %GREPCMD% -i "Error" %WRAP_FILE_LOG > NUL:
+    set ret1=%?
+
+    :: Check to see if we found "Error" in the log file. If so don't bother trying to run rovercli.exe
+    if %ret1 == 0 goto errexit
+
+    :: reset our current wrap attempts so that we can
+    set WRAP_ATTEMPTS=0
+
+:RetryWrap
+
+    echo.
+    echo NOTE: Rover output is being diverted to allow retrying errs so you will not see any activity until it completes.
+    echo.
+
+    :: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    :: $$$  CALL ROVER
+    :: $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+    :: Run rovercli, log and create a btm with the command line which is useful for debugging
+    echo %ROVER_DIR%\rovercli.exe %USER_CMD% %PASSWORD_CMD% /V %VENDOR% /I %TEMP_CLI_CFG_INI% /S %SKU% %SKUCMD% | tee LastExecuted.btm | tee /A %WRAP_FILE_LOG
+    rem %ROVER_DIR%\rovercli.exe %USER_CMD% %PASSWORD_CMD% /V %VENDOR% /I %TEMP_CLI_CFG_INI% /S %SKU% %SKUCMD% | tee /A %WRAP_FILE_LOG
+    %ROVER_DIR%\rovercli.exe %USER_CMD% %PASSWORD_CMD% /V %VENDOR% /I %TEMP_CLI_CFG_INI% /S %SKU% %SKUCMD% > %ROVER_OUTPUT
+    set ret2=%?
+
+    :: Look for errors in the rover output that we piped off..they are returning success some times but displaying an error
+    %GREPCMD% -i "Error" %ROVER_OUTPUT > NUL:
+    set ret99=%?
+
+    iff %ret99 == 0 then
+        :: See if rover returned an error)
+        iff %ret2 == 0 then
+            rem @set a=*** Rover returned success but problems were found in the piped off text...Forcing err condition.
+            rem gosub logthis
+            set ret2=1
+        endiff
+    endiff
+
+    :: If we dont want to stop on errors, replace all the error
+    :: strings with some thing that we wont detect as an error later on. Default is (E R R O R)
+    iff "%STOP_ON_ERRS" != "TRUE" then
+        set _FILE_TO_SNR=%ROVER_OUTPUT%
+        gosub RemoveErrorsFromFile
+
+        set _FILE_TO_SNR=%ROVER_LOG_FILE%
+        gosub RemoveErrorsFromFile
+    endiff
+
+    set ret1=%?
+
+    gosub logblank
+    set a=STATEINFO  rovercli=[%ret2%], GrepInRoverCliOutText[%ret99%], WRAP_ATTEMPTS=[%WRAP_ATTEMPTS], MAX_WRAP_ATTEMPTS=[%MAX_WRAP_ATTEMPTS]
+    gosub logthis
+    gosub logblank
+
+    :: Increment our wrap count
+    set WRAP_ATTEMPTS=%@INC[%WRAP_ATTEMPTS]
+
+    :: Check for errors and retry up to MAX_WRAP_ATTEMPTS
+    iff "%ret2" != "0" .AND. "%WRAP_ATTEMPTS" != "%MAX_WRAP_ATTEMPTS" then
+
+        :: Log an message so we know we had to retry (DO NOT PUT THE WORK ERROR IN THE MSG)
+        @set a=*** We had an anomaly with Rover wrap attempt [%WRAP_ATTEMPTS%]...Rewrapping  ***
+        gosub logHeader
+
+        :: If we dont want to stop on errors, replace all the error
+        :: strings with some thing that we wont detect as an error later on. Default is (E R R O R)
+        set _FILE_TO_SNR=%ROVER_OUTPUT%
+        gosub RemoveErrorsFromFile
+        set _FILE_TO_SNR=%ROVER_LOG_FILE%
+        gosub RemoveErrorsFromFile
+
+        :: Dump the modified Rover output and Rover log file to the screen
+        echo.
+        echo ----  Rover Output ----
+        type %ROVER_OUTPUT
+        echo --- end Rover Output
+        echo.
+        echo ----  Rover Log contents  ----
+        if EXIST %ROVER_LOG_FILE% type %ROVER_LOG_FILE%
+        echo --- end Rover Log contents
+        echo.
+
+        goto RetryWrap
+    endiff
+
+    :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+    :: END of Retry Code --- Display status and look for errors
+    :: ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    :: Check for errors and retry up to MAX_WRAP_ATTEMPTS
+    iff "%WRAP_ATTEMPTS" == "%MAX_WRAP_ATTEMPTS" .AND. %MAX_WRAP_ATTEMPTS != 1 then
+        :: Log an message so we know how many attempts we tried
+        @set a=*** NOTE: %WRAP_ATTEMPTS% attempts were made to wrap this file ***
+        gosub logHeader
+    endiff
+
+    :: Display our Rover output and log
+    echo.
+    echo ----  Rover Output ----
+    type %ROVER_OUTPUT
+    echo --- end Rover Output
+    echo.
+    echo ----  Rover Log contents  ----
+    if EXIST %ROVER_LOG_FILE% type %ROVER_LOG_FILE%
+    echo --- end Rover Log contents
+    echo.
+
+    :: Append this wraps log to our main xinstall log
+    type %WRAP_FILE_LOG >> %XINSTALL_LOG
+
+    :: Look for errors if we want to
+    iff "%STOP_ON_ERRS" == "TRUE" then
+        :: Look for errors in our log file from rovercli.exe...
+        %GREPCMD% -i "Error" %WRAP_FILE_LOG > NUL:
+        set ret3=%?
+    else
+        echo Not looking for Rover err's because STOP_ON_ERRS is not set to TRUE
+        echo STATE INFO - ret2[%ret2], ret3[%ret3]
+        set ret2=0
+        set ret3=1
+    endiff
+
+    popd
+
+    :: Check to see if we had an error running Rovercli
+    if %ret2 != 0 goto errexit
+
+    :: Check to see if we found "Error" in the log file
+    if %ret3 == 0 goto errexit
+
+    :: Reset all variables that can use defaults
+    gosub ResetOverrides
+
+return

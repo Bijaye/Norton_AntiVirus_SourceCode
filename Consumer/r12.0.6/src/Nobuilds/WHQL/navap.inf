@@ -1,0 +1,34 @@
+; NAVAP INF File
+;
+;
+;
+; Copyright (c) 2001, Symantec Corporation
+;
+[Version]
+signature = "$Windows NT$"
+Class = "Antivirus"
+ClassGuid = {B1D1A169-C54F-4379-81DB-BEE7D88D7454}
+Provider = %Symc%
+DriverVer = 12/08/2001, 8.0.0.0
+CatalogFile = NAVAP.cat
+
+[SourceDiskNames]
+1 = %Disk1%
+
+[SourceDiskFiles]
+NAVAP.sys = 1
+
+[DestinationDirs]
+DefaultDestDir = 01, temp.^^^
+
+[SymcInstall]
+CopyFiles = @NAVAP.sys
+
+[DefaultInstall]
+
+[DefaultUninstall]
+
+[Strings]
+Symc = "Symantec Corporation"
+Disk1 = "NAVAP Source Media"
+

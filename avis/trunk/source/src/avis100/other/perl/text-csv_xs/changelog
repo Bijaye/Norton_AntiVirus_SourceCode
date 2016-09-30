@@ -1,0 +1,35 @@
+1998-08-21  Jochen Wiedmann  <joe@ispsoft.de> (0.15)
+
+	* CSV_XS.pm: Moved print() and getline() to XS.
+
+1998-08-13  Jochen Wiedmann  <joe@ispsoft.de> (0.14)
+
+	* CSV_XS.xs: Forgot to escape sepchar; patched by Paul Walmsley,
+	  <shag@nicar.org>.
+
+1998-07-20  Jochen Wiedmann  <joe@ispsoft.de> (0.13)
+
+	* CSV_XS.xs (Encode): Strings qre quoted only if required. 
+	* CSV_XS.xs: Added support for $csv->{types}.
+
+1998-06-11  Jochen Wiedmann  <joe@ispsoft.de> (0.12)
+
+	* CSV_XS.xs (Encode): Integers and Reals are no longer quoted.
+
+	* Added $csv->{types}.
+
+1998-05-12  Jochen Wiedmann  <joe@ispsoft.de> (0.11)
+
+	* Added $csv->{eol}
+
+	* Added $csv->{quote_char} = undef
+
+1998-05-05  Jochen Wiedmann  <joe@ispsoft.de> (0.10)
+
+	* Moved encoding and decoding to XS; added binary mode; added
+	  print() and getline() methods.
+
+1998-06-05  Alan Citterman  <alan@mfgrtl.com>
+
+	* Initial version
+

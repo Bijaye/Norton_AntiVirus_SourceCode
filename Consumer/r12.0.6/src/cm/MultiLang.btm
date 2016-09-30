@@ -1,0 +1,226 @@
+@echo off
+:BatchFileStart
+rem Clear out evidence of a previous run.
+   set BMODE=
+   set DEVBLD=
+   set cm_dir=%@full[%@path[%_batchname]]
+   set src_dir=%@full[..]
+   set msdev_path=%@full[..\SDK\msvc6sp5\COMMON\MSDev98\Bin\]
+   set vc98bin_path=%@full[..\SDK\msvc6sp5\VC98\Bin\]
+   set PATH=%PATH%;%vc98bin_path%
+   set bldlog=%cm_dir%build.err
+   set make_err=%cm_dir%make.err
+   set PHASE=0
+   set CCBUILD=NOTSET
+
+timer on /1
+
+:continue
+    if "%DBG_BTM" NE "" echo on
+    
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+
+rem /////////////////////////////////////////////////////////////
+rem set up the log file and start timer
+rem 
+	SET bldlog=%root%NAV_BLD.log
+	>%bldlog
+	timer on /2
+	set a= **** NAV 10.0.10 master build started %_date - %_time ****
+	gosub logthis
+	gosub logblank
+	set a=Building Logging Enabled -- %bldlog
+	gosub logthis
+	gosub logblank
+
+
+rem /////////////////////////////////////////////////////////////
+rem Set up some local variables and settings
+rem
+	on break cancel
+	setlocal
+
+	
+rem set so we can skip rebuilding the binary and go straight to the 
+rem digital signing or building the MSI
+goto phase%phase
+
+rem /////////////////////////////////////////////////////////////
+rem phase0:
+rem env's to torito, re-maps all drives to local source locations
+rem
+:phase0 
+    gosub logblank
+    SET a=***Starting Build steps at Phase 0***
+    gosub logthis
+	
+    iff x%DEVBLD NE x then
+    	subst l: /d
+    	net use l: /delete
+    	net use l: \\ussm-dev4\coreor2\coreor.16\coreor
+	subst r: /d
+    	net use r: /delete
+    	net use r: \\ussm-dev1\tools
+
+    else
+    	subst l: /d
+    	net use l: /delete
+    	subst l: C:\bld_area\core_builds\coreor.16\coreor
+    endiff    
+   
+    rem Change the file attribute of Help files from Read-Only, so we can build the help projects.
+    rem we dont build help any more! dont do this....
+    rem attrib -r /s %root%..\Help\*.*
+
+    rem Extracting Norton Rescue
+    pkzip25 -ext -dir -over %root%..\Nobuilds\Norton_Rescue\Latest\Norton_Rescue.exe %root%..\Nobuilds
+
+
+rem /////////////////////////////////////////////////////////////
+rem phase1: calls msdev to build master workspace for release
+rem also creates release .MSI install
+rem
+:phase1
+	set a=(%_DATE - %_TIME): Starting release build of master workspace.
+	gosub logthis
+	
+	rem we use the | tee feature of 4NT to generate a log file that we search for errors.  this is only 
+	rem used on 4NT.  On 4DOS we just do a start /WAIT and check the return code.
+	iff "%_CMDPROC"=="4NT" then
+		iff "%BMODE%" NE "IDA" then
+			rem Build the master workspace
+			
+			%root%..\Nobuilds\msvc7\COMMON7\IDE\devenv.com "%root..\Util\NAVToolBox\NAVToolBox.vcproj" /build "Release Static" | tee %root%\master.log
+			%root%..\Nobuilds\msvc7\COMMON7\IDE\devenv.com "%root..\Install\CDStart\CDStart.vcproj" /build Release | tee %root%\master.log
+			iff %? != 0 then	  
+		  		goto errexit
+			endiff
+	
+::			find /I /C "68 succeeded, 0 failed, 0 skipped" %root%\master.log
+			%root%\grep.exe "succeeded, [^0].* failed" %root%\master.log
+			iff %? != 1 then
+				goto errexit
+			endiff
+			
+		endiff
+		
+	elseiff "%_CMDPROC"=="4DOS" then
+		iff "%BMODE%" NE "IDA" then
+			rem Build the master workspace
+			START /WAIT %root%..\Nobuilds\msvc7\COMMON7\IDE\devenv.com "%root..\Norton AntiVirus.sln" /build Release | tee %root%\master.log
+			iff %? != 0 then	  
+		  		goto errexit
+			endiff
+			
+::			find /I /C "68 succeeded, 0 failed, 0 skipped" %root%\master.log
+			%root%\grep.exe "succeeded, [^0].* failed" %root%\master.log
+			iff %? != 1 then
+				goto errexit
+			endiff
+			
+		endiff
+		
+	endiff
+
+
+rem /////////////////////////////////////////////////////////////
+rem output a summary at the end of the build, search the log
+rem for any errors, log the final build time, local env vars
+rem and quit.
+rem
+	gosub logblank
+	gosub logblank
+	echo ************************************************************
+	echo ********************* summary ****************************** >> %bldlog
+	echo ************************************************************
+	  
+    SET a=*** NAV 10.0.10 master build time %@timer[2] (%_DATE - %_TIME) ***
+    gosub logthis
+	SET a=Release Build successful.
+	gosub logthis	
+    endlocal
+    rem quit 0
+    goto MULTILANG
+
+
+rem /////////////////////////////////////////////////////////////
+rem exit routine for case of broken build...
+rem output ERROR!! and E-mail errors to appropriate people.
+rem
+:errexit
+    SET a=*** NAV 10.0.10 master build time %@timer[2] (%_DATE - %_TIME) ***
+    gosub logthis
+
+    echo **********************************************************************
+    echo ********************************************************************** >> %bldlog
+    echo ******************** ERROR(S) IN BUILD!! *****************************
+    echo ******************** ERROR(S) IN BUILD!! ***************************** >> %bldlog
+    echo **********************************************************************
+    echo ********************************************************************** >> %bldlog
+    echo (Refer to %bldlog for more info on errors.)
+
+    endlocal
+    quit 1
+
+
+rem /////////////////////////////////////////////////////////////
+rem logging subroutines
+rem 
+:logthis		rem log string stored in a
+    echo %a
+    echo %a >> %bldlog
+    return
+:logblank		rem log a blank line 
+    echo .. 
+    echo .. >> %bldlog
+    return
+
+
+rem /////////////////////////////////////////////////////////////
+rem If Version number of 4NT/DOS is not compatible...
+rem
+:errVer
+	iff "%_CMDPROC"=="4DOS" then
+	    echo Error:  Need 4DOS 5.x or greater.  Current version is %_4VER
+	elseiff "%_CMDPROC"=="4NT" then
+	    echo Error:  Need 4NT version 3.x or greater.  Current version is %_4VER
+	elseiff "%_CMDPROC"=="TCMD32" then
+	    echo Error:  Need TakeCommand 2.x or greater.  Current version is %_4VER
+	else
+	    echo Error:  Need 4DOS 5.x or greater, 4NT version 3.x or greater, or TakeCommand 2.x or greater.
+	endiff
+    quit 1
+
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+md %root%..\Final
+
+:MULTILANG
+copy %root%..\bin.ira\CDStart.exe %root%..\Final\MultiLang_Leno\HPBPCHPM_LITE\CDStart.exe
+md %root%..\Final\MultiLang_Leno\HPBPCHPM_LITE\VirusDef
+
+echo.
+echo *********************************************************
+echo ******************** FINISHED ***************************
+echo *********************************************************
+quit

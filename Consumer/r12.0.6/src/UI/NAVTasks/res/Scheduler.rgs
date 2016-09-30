@@ -1,0 +1,26 @@
+HKCR
+{
+	NAVTasks.Scheduler.1 = s 'Scheduler Class'
+	{
+		CLSID = s '{CA51130B-37FC-48F9-8B0B-BED3404E45F9}'
+	}
+	NAVTasks.Scheduler = s 'Scheduler Class'
+	{
+		CLSID = s '{CA51130B-37FC-48F9-8B0B-BED3404E45F9}'
+		CurVer = s 'NAVTasks.Scheduler.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CA51130B-37FC-48F9-8B0B-BED3404E45F9} = s 'Scheduler Class'
+		{
+			ProgID = s 'NAVTasks.Scheduler.1'
+			VersionIndependentProgID = s 'NAVTasks.Scheduler'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{7C1B9D8B-2B5F-41B2-95F7-DE2C5BD594EC}'
+		}
+	}
+}

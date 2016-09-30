@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<SymProtect-Manifest xmlns="urn:SymProtect-Manifest">
+    <configuration>
+        <client-info>
+            <name>NAV Directories</name>
+            <version>14.0</version>
+        </client-info>
+    </configuration>
+    <protected-resources>
+        <protected-paths>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\NAV%</path>
+            <path>%SHGetFolderPath:CSIDL_COMMON_APPDATA%\Symantec\Norton AntiVirus\Tasks</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\AVENGEDEFS%</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\Norton AntiVirus\Quarantine\QuarantinePath%</path>
+            <path subtree="false">%ShGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SymcData</path>
+            <path subtree="false">%ShGetFolderPath:CSIDL_COMMON_APPDATA%\Symantec\Norton AntiVirus</path>
+            <xpath>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\NAV%\Savrt</xpath>
+            <xpath>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\Norton AntiVirus\Quarantine\IncomingPath%</xpath>
+        </protected-paths>
+    <protected-files>
+      <filename>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\Symantec Shared Directory%\SymSetup\{C6F5B6CF-609C-428E-876F-CA83176C021B}.exe</filename>
+    </protected-files>
+    <protected-registry-keys>
+      <regkey>HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\CCPD\SuiteOwners\{4E415600-2005-0000-0000-000000000000}</regkey>
+    </protected-registry-keys>
+    </protected-resources>
+</SymProtect-Manifest>

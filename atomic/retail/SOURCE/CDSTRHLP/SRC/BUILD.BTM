@@ -1,0 +1,40 @@
+: Copyright 1997 Symantec Corporation                              :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/CDSTRHLP/VCS/build.btv   1.1   16 Nov 1998 14:53:44   eanders  $
+:                                                                       :
+: Description:                                                          :
+:                                                                       :
+:-----------------------------------------------------------------------:
+:  
+: $Log:   S:/CDSTRHLP/VCS/build.btv  $
+:  
+:     Rev 1.1   16 Nov 1998 14:53:44   eanders
+:  build.btm -> S:\CDSTRHLP\VCS\build.btv
+:  added oem make files
+:  
+:     Rev 1.0   19 Jul 1997 16:47:58   GWESTER
+:  Initial revision.
+:  
+:-----------------------------------------------------------------------:
+
+@echo off
+
+    call mk autoros %1
+    if exist make.err copy build.err+make.err build.err
+
+    call mk autorosd %1
+    if exist make.err copy build.err+make.err build.err
+
+    call mk autotesl %1
+    if exist make.err copy build.err+make.err build.err
+
+    call mk autooem %1
+    if exist make.err copy build.err+make.err build.err
+ 
+    call mk autodoem %1
+    if exist make.err copy build.err+make.err build.err
+ 
+    call mk autotoem %1
+    if exist make.err copy build.err+make.err build.err
+

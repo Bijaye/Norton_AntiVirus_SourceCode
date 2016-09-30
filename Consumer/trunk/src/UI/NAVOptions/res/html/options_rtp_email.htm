@@ -1,0 +1,118 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+        <title>Norton Antivirus Real-Time Protection: Email Protection</title>
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script Language="JavaScript" src="options_rtp_email.js"></script>
+    </head>
+    <BODY class="clsDetails" id="body_options_rtp_email" tabIndex="-1" bottomMargin="0" leftMargin="5" topMargin="5" scroll="auto"
+    		onhelp="parent.CurrentPage.Help();" onLoad="parent.CurrentPage = new EMailPage();">
+        <IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+            SRC="options_errorid.htm"></IFRAME>
+        <link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+
+        <div class="optionpage_header">
+			REAL-TIME PROTECTION:&nbsp;Email Protection
+	   </div>
+
+        <form name="options_rtp_email">
+            	<div class="optiongroup_header">
+            		What to scan
+            	</div>
+            	<div class="optiongroup">
+	            	<div id="ProxyEnabledIncoming" class="rf_option">
+	            		<input 	type="checkbox"
+	            			id="ProxyEnabledIncoming"
+	            			name="ProxyEnabledIncoming"
+	            			onclick="OnEnableClick()" accesskey="I" />
+					<span>Scan <u>i</u>ncoming email messages</span>
+	            	</div>
+	            	<div id="ProxyEnabledOutgoing" class="rf_option">
+	            		<input 	type="checkbox"
+	            			id="ProxyEnabledOutgoing"
+	            			name="ProxyEnabledOutgoing"
+	            			onclick="OnEnableClick()" accesskey="n" />
+					<span>Sca<u>n</u> outgoing email messages</span>
+	            	</div>
+			</div>
+			<br />
+			<div class="optiongroup_header">
+				How to increase protection
+	          </div>
+			<div class="optiongroup">
+				<div id="ProxyEnabledHeuristics" class="rf_option">
+					<input 	type="checkbox"
+						id="ProxyEnabledHeuristics"
+						name="ProxyEnabledHeuristics"
+						onclick="OnOEHEnableClick()" accesskey="M" />
+					<span>Scan outgoing <u>m</u>essages for suspected worms</span>
+				</div>
+				<div style="padding-left:10px;margin-top:4px;">
+					<span id="s_ResponseTag">How to respond when an outbound threat is found</span><br />
+					<span id="s_RbOEHResponseAuto" class="rf_option">
+						<input type="radio" id="RbOEHResponseAuto" name="RbOEHResponse" accesskey="u" />
+					<span id="oeh1">A<u>u</u>tomatically remove (recommended)</span></span><br />
+					<span id="s_RbOEHResponseAsk" class="rf_option">
+						<input type="radio" id="RbOEHResponseAsk" name="RbOEHResponse" accesskey="s" />
+					<span id="oeh2">A<u>s</u>k me what to do</span></span>
+				</div>
+			</div>
+			<br />
+			<div class="optiongroup_header">
+				What to do when scanning email messages
+			</div>
+			<div class="optiongroup">
+	            	<div id="EmailTimeouts" class="rf_option">
+	            		<input 	type="checkbox"
+	            			id="EmailTimeouts"
+	            			name="EmailTimeouts" accesskey="A" />
+					<span>Protect <u>a</u>gainst timeouts</span>
+	            	</div>
+				<div id="EmailDisplayTray" class="rf_option">
+	            		<input 	type="checkbox"
+	            			id="EmailDisplayTray"
+	            			name="EmailDisplayTray" accesskey="T" />
+					<span>Display <u>t</u>ray icon</span>
+	            	</div>
+	            	<div id="EmailShowProgressOut" class="rf_option">
+	            		<input 	type="checkbox"
+	            			id="EmailShowProgressOut"
+	            			name="EmailShowProgressOut" accesskey="P" />
+					<span>Display <u>p</u>rogress indicator</span>
+	            	</div>
+			</div>
+			<br />
+			<div class="optiongroup_header">How to respond when a low security risk is found</div>
+			<div class="optiongroup">
+				<span id="txt_AutoRemove">(Medium-risk and high-risk items are automatically removed)</span><br />
+				<span id="s_RbAlertRemove" class="rf_option">
+					<input type="radio"
+						id="RbAlertRemove"
+						name="RbAlert" accesskey="E" />
+					<span id="n6">Automatically r<u>e</u>move low-risk items</span>
+				</span><br />
+				<span id="s_RbAlertIgnore" class="rf_option">
+					<input type="radio"
+						id="RbAlertIgnore"
+						name="RbAlert" accesskey="G" />
+					<span id="n7">Always i<u>g</u>nore low-risk items (recommended)</span>
+				</span><br />
+				<span id="s_RbAlertAsk" class="rf_option">
+					<input type="radio"
+						id="RbAlertAsk"
+						name="RbAlert" accesskey="W" />
+					<span id="n8">Ask me <u>w</u>hat to do</span>
+				</span>
+			</div>
+		</form>
+    </body>
+</html>

@@ -1,0 +1,212 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title>X-SAMPLE ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1>X-Sample Attributes</H1>
+The proprietary X-Sample attributes are included in all messages that contain samples. They describe the sample:<BR>
+
+<a href="#cookie"><B>X-Sample-Category</b></a>: category of sample<BR>
+<a href="#cookie"><B>X-Sample-Changes</b></a>: attribute change indicator in Quarantine<BR>
+<a href="#cookie"><B>X-Sample-Checksum</b></a>: MD5 checksum of captured data<BR>
+<a href="#cookie"><B>X-Sample-Checkup</b></a>: checkup database entry for file samples<BR>
+<a href="#cookie"><B>X-Sample-Extension</b></a>: extension for file samples<BR>
+<a href="#cookie"><B>X-Sample-File</b></a>: drive and directory and name for file samples<BR>
+<a href="#cookie"><B>X-Sample-Geometry</b></a>: cylinder and head and sector numbers and size<BR>
+<a href="#cookie"><B>X-Sample-Priority</b></a>: queuing priority<BR>
+<a href="#cookie"><B>X-Sample-Reason</b></a>: reason for capturing the sample<BR>
+<a href="#cookie"><B>X-Sample-Sector</b></a>: disk address numbers of sector samples<BR>
+<a href="#cookie"><B>X-Sample-Service</b></a>: name of requested service<BR>
+<a href="#cookie"><B>X-Sample-Size</b></a>: sizeof captured data<BR>
+<a href="#cookie"><B>X-Sample-Status</b></a>: status of sample in Quarantine<BR>
+<a href="#cookie"><B>X-Sample-Strip</b></a>: method used to remove user data<BR>
+<a href="#cookie"><B>X-Sample-Switches</b></a>: undocumented processing switches<BR>
+<a href="#cookie"><B>X-Sample-Type</b></a>: type of sample<BR>
+
+<P><a name="Category"></a>
+<B>X-Sample-Category</b><BR>
+This attribute specifies the category of the sample. The values are described in the topic titled "Sample Categories" in the "Data" chapter of this document.</P>
+
+<P><a name="Changes"></a>
+<B>X-Sample-Changes</b><BR>
+This attribute is included in all 
+messages that contain samples. This attribute indicates that one or more other attributes have changed while the sample is stored in the sample queue of a Quarantine service. The value is an integer that is incremented after new attributes are added, or the values of existing attributes are changed. The value itself is not significant; the fact that it has changed indicates that the values of other attributes must be re-examined for significant changes.</P>
+<P>For example, after a sample is captured and a quarantine agent has added its initial attributes, the sample may include this attribute:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Changes: 1</P>
+<P>For another example, after a sample is forwarded to a quarantine server and it has added more attributes, the sample may include this attribute:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Changes: 2</P>
+
+<P><a name="Checksum"></a>
+<B>X-Sample-Checksum</b><BR>
+This attribute specifies the MD5 checksum of the data that was captured, before any compression or scrambling or encoding. The value is a 128-bit binary number, encoded as a 32-digit hexadecimal string composed of characters in the range "0..9A..F". </P>
+<P>For example, the MD5 checksum for a sample might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Checksum: 8B37247C71443D40A2D7FCF16867803A</P>
+<P>This attribute is used to detect duplicates, and to validate unscrambling and decompression.</P>
+
+<P><a name="Checkup"></a>
+<B>X-Sample-Checkup</b><BR>
+This attribute is included in messages that contain samples, when available. It contains the checkup database entry for the file from the machine that captured the sample. This information, stored before the sample was infected, is useful in analyzing the virus and testing the repair instructions. The value is a binary string, encoded as a hexadecimal string composed of characters in the range "0..9A..F".</P>
+<P>For example, a typical checkup database entry might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Checkup: 0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF012345678</P>
+<P>If there is no entry in the checkup database for a file when a sample of it is captured, this attribute is omitted.</P>
+
+<P><a name="Extension"></a>
+<B>X-Sample-Extension</b><BR>
+This attribute specifies the extension of the file that was captured, for file samples. The value is the extension only, without the drive or directory or name or "." character. </P>
+<P>For example, the extension of a file sample might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Extension: doc</P>
+<P>This attribute is redundant, since the extension of a file sample is included in the X-Sample-File attribute. This redundancy is necessary because the X-Sample-File attribute may be removed from a sample before submission, along with other sensitive user data.</P>
+
+<P><a name="File"></a>
+<B>X-Sample-File</b><BR>
+This attribute specifies the file that was captured, for file samples. The value is the drive and directory and name of the file captured. </P>
+<P>For example, the drive and directory and name of a file sample might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-File: C:\Memos\December.doc</P>
+
+<P><a name="Geometry"></a>
+<B>X-Sample-Geometry</b><BR>
+This attribute specifies the geometry of a disk or a diskette. The number of cylinders and heads and sectors are specified as three decimal numbers, separated by slash characters, and the number of bytes per sector is specified as a decimal number.</P>
+<P>For example, the geometry of a diskette might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Geometry: 80/2/18 chs 512 bytes</P>
+<P>For another example, the geometry of a disk drive might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Geometry: 800/8/32 chs 512 bytes</P>
+
+<P><a name="Priority"></a>
+<B>X-Sample-Priority</b><BR>
+This attribute specifies the queuing priority of the sample. The value is an unsigned integer in the range 0..1000. This value represents the importance of the sample, relative to other samples in the same queue, and determines the order in which samples are processed at queuing points. Larger values indicate higher priority, and smaller values indicate lower priority. </P>
+<P>For example, the priority of a very unimportant sample might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Priority: 1</P>
+<P>For another example, the priority of a rather more important sample might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Priority: 999</P>
+
+<P><a name="Reason"></a> <B>X-Sample-Reason</B><BR>
+  This attribute specifies the reason for capturing the sample. The value is text 
+  token that indicates why the sample was captured. The values are:</P>
+<table>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>badrepair</b></td>
+    <td>when repair for a known virus failed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>manual</b></td>
+    <td>when the sample was captured manually by a user</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>norepair</b></td>
+    <td>when repair for a known virus was unavailable</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>suspicious</b></td>
+    <td>when the sample contains code similar to a known virus</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>variant</b></td>
+    <td>when the sample has a new variant of a known virus</td>
+  </tr>
+</table>
+<P>For example, a sample may be captured because it is infected with a new virus that is similar to a known virus:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Reason: variant</P>
+<P>For another example, a sample may be captured because repair for a known virus was unsuccessful:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Reason: badrepair</P>
+
+<P><a name="Sector"></a>
+<B>X-Sample-Sector</b><BR>
+This attribute specifies the disk addresses that were captured, for sector samples. The value is a list of one or more sector addresses. Sector addresses are encoded as three decimal numbers, separated by slash characters, specifying cylinder number and head number and sector number. The sectors captured may be specified individually or as a range. A range of sectors is encoded as a starting sector address and an ending sector address, separated by a hyphen character. </P>
+<P>For example, the addresses of a sample of an entire diskette might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Sector: 0/0/0-79/1/17</P>
+<P>For another example, the addresses of a sample of the first track and the last sector on a disk drive might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Sector: 0/0/0-0/0/31 799/7/31</P>
+
+<P><a name="Service"></a>
+<B>X-Sample-Service</b><BR>
+This attribute requests a special class of analysis service. The only supported value is:</P>
+<table>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>quickcheck</b></td>
+    <td>for samples likely to be uninfected</td>
+  </tr>
+</TABLE>
+<P>This value specifies that the sample is not entitled to the full analysis service that samples receive by default. Such samples may not be fully analyzed, and the results returned may not be definitive. An X-Analysis-Service attribute will be included with final status if the results are not definitive.</P>
+<P>For example, a sample captured manually by a consumer might include this header: </P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Service: quickcheck </P>
+
+<P><a name="Size"></a>
+<B>X-Sample-Size</b><BR>
+This attribute specifies the size of the data that was captured, before any compression or scrambling or encoding. The value is a decimal number of bytes.</P>
+<P>For example, the size of a file sample of a rather large document might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Size: 12345678</P>
+
+<P><a name="Status"></a> <B>X-Sample-Status</b><BR>
+  This attribute specifies the status of a sample while in the sample queue of 
+  a Quarantine service. The value is text token that indicates the current status 
+  of the sample:</P>
+<table>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>held</b></td>
+    <td>when the sample is withheld from submission</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>released</b></td>
+    <td>when the sample has been released for submission</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>submitted</b></td>
+    <td>when the sample has been submitted for analysis</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>unneeded</b></td>
+    <td>when new signatures are not needed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>needed</b></td>
+    <td>when new signatures are needed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>available</b></td>
+    <td>when new signatures are available</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>distributed</b></td>
+    <td>when new signatures have been distributed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>installed</b></td>
+    <td>when new signatures have been installed</td>
+  </tr>
+</table>
+<P>For example, a sample that has not yet been submitted for analysis may have this status:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Status: held</P>
+<P>For another example, a sample that has been analyzed and found to be infected with a new virus may have this status:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Status: available</P>
+
+<P><a name="Strip"></a>
+<B>X-Sample-Strip</b><BR>
+This attribute specifies the method used to remove user data from the sample. The value is the name of the stripping method. User data may be removed from a sample when it is captured or at any time thereafter. In any case, when user data is removed from a sample, the values of attributes such as X-Sample-Checksum and X-Sample-Size reflect the content of the stripped sample submitted for analysis, not the original user file.</P>
+<P>For example, if user data has been stripped from a sample by over-writing it with binary zeroes, the message might include this attribute:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Strip: overwrite-zeroes</P>
+<P>This attribute is omitted if user data has not been removed from the sample.</P>
+
+<P><a name="Switches"></a>
+<B>X-Sample-Switches</b><BR>
+This attribute specifies undocumented switches that affect the processing of a sample within the analysis center. The value is one or more tokens separated by blanks. </P>
+
+<P><a name="Type"></a>
+<B>X-Sample-Type</b><BR>
+This attribute specifies the type of sample that was captured. The values are:</P>
+<table>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>sector</b></td>
+    <td>for sector samples</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>file</b></td>
+    <td>for file samples</td>
+  </tr>
+</table>
+<P>For example, the type of a sector sample of an entire diskette might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Type: sector</P>
+
+
+</BODY>
+</HTML>

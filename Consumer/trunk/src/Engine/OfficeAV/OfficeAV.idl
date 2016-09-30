@@ -1,0 +1,71 @@
+////////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// OfficeAV.idl : IDL source for OfficeAV.dll
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (OfficeAV.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// TODO: marshalling issue for this interface
+cpp_quote("#if 0")
+typedef BYTE    MSOAVINFO;
+cpp_quote("#endif")
+cpp_quote("typedef struct _msoavinfo")
+cpp_quote("{")
+cpp_quote("     int cbSize;                      // Size of this struct")
+cpp_quote("     struct {")
+cpp_quote("            ULONG fPath:1;            // When true use pwzFullPath else use lpStg")
+cpp_quote("            ULONG fReadOnlyRequest:1; // File is to be opened read-only")
+cpp_quote("            ULONG fInstalled:1;       // The file at pwzFullPath is an installed file")
+cpp_quote("            ULONG fHttpDownload:1;    // The file at pwzFullPath is a temporary file downloaded from HTTP/FTP")
+cpp_quote("            } f;")
+cpp_quote("     HWND hWnd;                       // Parent window of the Office 2000 application")
+cpp_quote("     union {")
+cpp_quote("            WCHAR *pwzFullPath;       // Full path of the file about to be opened")
+cpp_quote("            LPSTORAGE lpStg;          // OLE Storage of the file about to be opened")
+cpp_quote("           } u;")
+cpp_quote("     WCHAR *pwzHostName;              // Host application's name")
+cpp_quote("     WCHAR *pwzOrigURL;               // URL of downloaded file's original location")
+cpp_quote("} MSOAVINFO;")
+
+    [
+        object,
+        uuid(56FFCC30-D398-11d0-B2AE-00A0C908FA49),
+    
+        helpstring("IOfficeAntiVirus Interface"),
+        pointer_default(unique)
+    ]
+    interface IOfficeAntiVirus : IUnknown
+    {
+        HRESULT Scan([in] MSOAVINFO* psoavinfo);
+    };
+
+[
+    uuid(DE1F7EE0-1851-11D3-939E-0004AC1ABE1F),
+    version(1.0),
+    helpstring("Symantec AntiVirus OfficeAntiVirus 1.0 Type Library")
+]
+library OfficeAntiVirusLib
+{
+    importlib("stdole32.tlb");
+    importlib("stdole2.tlb");
+
+    [
+        uuid(DE1F7EEF-1851-11D3-939E-0004AC1ABE1F),
+        helpstring("Symantec AntiVirus OfficeAntiVirus Class")
+    ]
+    coclass OfficeAntiVirus
+    {
+        [default] interface IOfficeAntiVirus;
+    };
+};

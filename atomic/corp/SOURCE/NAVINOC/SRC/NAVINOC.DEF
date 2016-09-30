@@ -1,0 +1,23 @@
+LIBRARY         NAVINOC
+DESCRIPTION     'Inoculation DLL.  Copyright 1990-1995 Symantec Corporation.'
+EXETYPE         WINDOWS
+CODE            PRELOAD MOVEABLE DISCARDABLE
+DATA            PRELOAD MOVEABLE SINGLE
+HEAPSIZE        4096
+EXPORTS         WEP                  @1      RESIDENTNAME PRIVATE
+                InocInit
+                InocEnd
+                InocOpen
+                InocClose
+                InocFile
+                RememberInocFloppy
+                InocDelFile
+                IsInoculated
+                InocUninoc
+                InocRepairFile
+                BuildInocDBName
+                InoculateEnd
+                InoculateInit
+                SmartInocOpen
+                SmartInocClose
+                SmartInocGetStatus

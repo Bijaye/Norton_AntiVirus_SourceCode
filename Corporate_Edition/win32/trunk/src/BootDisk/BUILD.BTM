@@ -1,0 +1,137 @@
+: Copyright 1995 - 2003 Symantec Corporation. All rights reserved.
+:************************************************************************
+:
+: $Header:   M:/SOURCE/bootdisk/VCS/BUILD.BTv   1.13   11 Feb 1999 10:54:46   hkim  $
+:
+: Description:  This batch file builds the emergency disk for Roswell
+:
+:************************************************************************
+: $Log:   M:/SOURCE/bootdisk/VCS/BUILD.BTv  $
+:  
+:     Rev 1.13   11 Feb 1999 10:54:46   hkim
+:  Virscan6.ini is now being pulled from Atomic\source\testdefs.
+:
+:     Rev 1.12   15 Jul 1998 15:57:32   mdunn
+:  Duh, TESTDEFS is on S:
+:
+:     Rev 1.11   15 Jul 1998 15:54:52   mdunn
+:  Updated to get new VIRWILD files from the ATOMIC/TESTDEFS project.
+:
+:     Rev 1.10   21 Aug 1997 21:15:40   TCASHIN
+:  Can't use except(). Delete the *.err files from the floppy.
+:
+:     Rev 1.9   21 Aug 1997 21:11:24   TCASHIN
+:  Don't copy *.err files to the floppy. And make sure that the
+:  date and time of io.sys is correct.
+:
+:     Rev 1.8   18 Aug 1997 15:59:50   KSACKIN
+:  Now we are pulling all nobuild type files from source instead of Lib.bin, as
+:  we no longer need the lib.bin with our new setupbld'er.  Also, some of the
+:  files such as navopts.dat don't get morrored to the lib.bin directory.
+:
+:     Rev 1.7   14 Aug 1997 15:32:02   TCASHIN
+:  Added NAVDX.OVL to the emergency disk.
+:
+:     Rev 1.6   29 Jun 1997 17:48:12   KSACKIN
+:  Changed the file copy of the navex15.exp from the wild set build that we have
+:  to the actual navex15.exp because of a problem with the wild build.
+:
+:     Rev 1.5   23 Jun 1997 21:09:56   KSACKIN
+:  Changed all navopts.dat files and CORE:NavDefs files to pull from a lib.bin
+:  directory instead of a src directory.
+:
+:     Rev 1.4   20 Jun 1997 17:30:56   MKEATIN
+:  Changed NAVC to NAVDX.  Also, we now get navex15.exp from
+:  l:\source\navdefs\src\emrgnavx.exp.
+:
+:     Rev 1.3   13 Jun 1997 14:49:12   MKEATIN
+:  Changed 'virsan?.dat' to 'virscan?.dat'.
+:
+:     Rev 1.2   13 Jun 1997 14:07:26   MKEATIN
+:  Fixed a bug in geting virwild?.dat files
+:
+:     Rev 1.1   06 Jun 1997 17:32:54   MKEATIN
+:  Get the virscan?.dat files from CORE/NAVDEFS now.
+:
+:     Rev 1.0   06 Jun 1997 15:20:14   MKEATIN
+:  Initial revision.
+:************************************************************************
+
+:========================================================================
+:
+:  Remove the READ-ONLY attribute on all files in this directory
+:
+:========================================================================
+attrib /q /e /s -r "..\Norton_AntiVirus\Iliad\bootdisk\*.*"
+rem attrib /q /e /s -r *.*
+
+:========================================================================
+:
+:  Get navc.exe and it's configuration files.
+:
+:========================================================================
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\rescue\pc\navdx.exe
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\rescue\pc\navdx.ovl
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\rescue\pc\navopts.dat
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\rescue\pc\navstart.dat
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\rescue\pc\exclude.dat
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\rescue\pc\excludel.dat
+
+:========================================================================
+:
+:  Get the definition files.
+:
+:========================================================================
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\bin\intelansi\win32\release\virwild-nomacro1.dat virscan1.dat
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\bin\intelansi\win32\release\virwild-nomacro2.dat virscan2.dat
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\bin\intelansi\win32\release\virwild-nomacro3.dat virscan3.dat
+copy ..\..\..\Norton_AntiVirus\Iliad\Nobuilds\bin\intelansi\win32\release\virwild-nomacro4.dat virscan4.dat
+
+:========================================================================
+:
+:  Format the floppy and copy the system files so io.sys and msdos.sys
+:  are put in the correct locations.
+:
+:========================================================================
+format a: /V:Emergency /S /F:1.44
+
+:========================================================================
+:
+:  Changed the attributes on the system files so we can copy over them.
+:  Also, del drvspace.bin because we need the diskspace.
+:
+:========================================================================
+attrib -r -s -h  a:\*.*
+del a:\drvspace.bin
+
+:========================================================================
+:
+:  Copy our files onto the floppy and reset the attributes on the system
+:  files.
+:
+:========================================================================
+copy *.* a:
+fd a:io.sys /d08-24-96 /t11:11:10
+attrib +r +s +h  a:\*.sys
+attrib +r  a:\command.com
+del a:*.btm
+del a:*.err
+
+:========================================================================
+:
+:  Create the Norton Emergency Disk (NED) image 
+:
+:========================================================================
+echo.
+echo Please wait while Norton Emergency Disk (NED) is saving the
+echo "Norton AntiVirus Emergency Boot Disk" image.
+echo.
+
+..\..\..\Release\EDisk\ned.exe /SILENT /STORE "Norton AntiVirus Emergency Boot Disk"
+
+
+:========================================================================
+:
+:  All done!
+:
+:========================================================================

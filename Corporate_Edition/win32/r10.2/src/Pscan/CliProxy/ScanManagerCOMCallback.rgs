@@ -1,0 +1,26 @@
+HKCR
+{
+	Cliproxy.ScanManagerCOMCallback.1 = s 'ScanManagerCOMCallback Class'
+	{
+		CLSID = s '{17DE501A-6AD7-488C-9045-29FACC2262EF}'
+	}
+	Cliproxy.ScanManagerCOMCallback = s 'ScanManagerCOMCallback Class'
+	{
+		CLSID = s '{17DE501A-6AD7-488C-9045-29FACC2262EF}'
+		CurVer = s 'Cliproxy.ScanManagerCOMCallback.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {17DE501A-6AD7-488C-9045-29FACC2262EF} = s 'ScanManagerCOMCallback Class'
+		{
+			ProgID = s 'Cliproxy.ScanManagerCOMCallback.1'
+			VersionIndependentProgID = s 'Cliproxy.ScanManagerCOMCallback'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{E8996CAF-8E36-4818-948E-5C627388056F}'
+		}
+	}
+}

@@ -1,0 +1,78 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
+<html>
+	<head>
+		<title>Symantec</title>
+		<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link name="cssDefault" rel="StyleSheet" type="text/css" href="alert.css">
+		<iframe id="resErr" frameborder="0" scrolling="no" height="0" width="0" style="display:none" src="navErrors.htm"></iframe>
+		<script src="res://DefAlert.dll/DisplayScriptError.js" language="javascript"></script>
+		<script src="res://DefAlert.dll/SymAlertStatic.js" language="javascript"></script>
+		<script src="res://DefAlert.dll/Alert.js" language="javascript"></script>
+	</head>
+	<body id="body-alert" OnLoad="DefsOutOfDateOnLoad()" scroll="no">
+		<!-- title section-->
+		<div id="title-section">Definition Alert</div>
+		<!-- separator-->
+		<div id="separator-top" class="separator"></div>
+		<!-- headline table -->
+		<div id="headline-section">
+			<table id="headline-table">
+				<tr id="tr1">
+					<td id="td1"><img id="imgIcon" src="!.gif" width="60" height="104" border="0" alt="Warning"></td>
+					<td id="td2"><img id="imgSpacer" src="spacer.gif" width="20" height="1"></td>
+					<td id="td3" class="aHeadline">
+						<table id="headline-text-table">
+							<tr id="tr2">
+								<td id="td4" class="aHeadline">
+									<span id="spanHeadline">Your last protection update occurred on #.</span>
+								</td>
+							</tr>
+							<tr id="tr3">
+								<td id="td5"><div id="headline-separator"></div></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!-- details table -->
+		<div id="details-section">
+					Run LiveUpdate now to get the latest protection updates.</font><span id="table5_space1">&nbsp;</span>
+					<img id="imgArrow" src="arrow.gif" width="4" height="7" border="0" alt="">
+					<a tabindex="3" href="#alert_help" id="alert-help" class="aHelp" onClick="return OnHelpClick(IDH_NAV_ALERT_EXPIRED_VIRUSDEFS)">Help</a>
+		</div>
+		<!-- selection -->
+		<div id="selection-section">
+			<input id="btnLU" tabindex="2" type="radio" name="decision" value="LU" checked OnClick="DisableNotifyOption()">
+			<label id="lblLU" for="btnLU" class="aOption" accesskey="r"><u>R</u>un LiveUpdate</label><br>
+			<input id="btnNotify" type="radio" name="decision" value="Notify" OnClick="EnableNotifyOption()">
+			<label id="lblNotify" for="btnNotify" class="aOption" accesskey="n"><u>N</u>otify me again in</label><span id="txt_space1">&nbsp;</span>
+				<select id="select_days" name="days" size="1" class="aSelect" disabled accesskey="d">
+					<option id="days1" value="1">1</option>
+					<option id="days7" value="7">7</option>
+					<option id="days14" value="14">14</option>
+				</select>
+				<span id="txt_space2">&nbsp;<u>d</u>ay(s)</span><br><br>				
+				<span id="optEnableALU" style="display:none">
+					<input id="btnEnableALU" type="checkbox" name="btnEnableALU" accesskey="e" checked></input>
+					<label id="lblEnableALU" for="btnEnableALU" class="aOption" accesskey="e" nowrap><u>E</u>nable automatic LiveUpdate</label>
+				</span>
+		</div>
+		<!-- separator-->
+		<div id="separator-bottom" class="separator"></div>
+		<!-- OK button-->
+		<div id="button-section">
+			<button tabindex="1" class="aButton" id="btnOK" onclick="DefsOutOfDateOnClickOK()" name="button"
+				accesskey="o" type="button"><u>O</u>K</button>
+		</div>
+	</body>
+</html>

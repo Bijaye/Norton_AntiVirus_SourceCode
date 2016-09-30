@@ -1,0 +1,49 @@
+HKCR
+{
+	Navbho.CNavExtBho.1 = s 'CNavExtBho Class'
+	{
+		CLSID = s '{BDF3E430-B101-42AD-A544-FADC6B084872}'
+	}
+	Navbho.CNavExtBho = s 'CNavExtBho Class'
+	{
+		CLSID = s '{BDF3E430-B101-42AD-A544-FADC6B084872}'
+		CurVer = s 'Navbho.CNavExtBho.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BDF3E430-B101-42AD-A544-FADC6B084872} = s 'CNavExtBho Class'
+		{
+			ProgID = s 'Navbho.CNavExtBho.1'
+			VersionIndependentProgID = s 'Navbho.CNavExtBho'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{7C4A248B-0FD7-4ED9-8365-B93ECACB9CCE}'
+		}
+	}
+}
+
+HKLM
+{ 
+	NoRemove SOFTWARE 
+	{ 
+		NoRemove Microsoft 
+		{ 
+			NoRemove Windows 
+			{ 
+				NoRemove CurrentVersion 
+				{ 
+					NoRemove Explorer 
+					{ 
+						NoRemove 'Browser Helper Objects' 
+						{
+							{BDF3E430-B101-42AD-A544-FADC6B084872} = s 'NAV Helper'
+						} 
+					} 
+				} 
+			} 
+		} 
+	} 
+}

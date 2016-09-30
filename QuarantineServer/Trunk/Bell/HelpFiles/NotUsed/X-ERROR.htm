@@ -1,0 +1,97 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title> X-ERROR ATTRIBUTE</Title>
+</HEAD>
+<BODY>
+<H1> X-Error Attribute</H1>
+The proprietary X-Error attribute is included in response messages when requests cannot be processed correctly. They describe the reason that the request could not be processed, and may optionally include parameters that further qualify the error:
+<P><B>X-Error</b>: <a href="#ErrorCodes">error code</a> and optional parameters</P>
+<P>For example, a server that is unable to process a signature download request for a set of signatures named "AV30BA" because they are no longer available might include this header in its response:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Error: superceded </P>
+<P>For another example, a server that is unable to process a sample submission request because the value of the "Content-Length" header does not match the size of the message content might include this header in its response:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Error: overrun 10138 10139 </P>
+
+
+<H1><a name="ErrorCodes"></a>Error Codes</H1>
+<TABLE cols=2>
+<TR>
+    <TD VALIGN="TOP"> <b>abandoned</b></TD>
+<TD VALIGN="TOP">
+A signature sequence number specified as an argument has been abandoned, either because unit-testing of the corresponding definition set has failed, or because a lock on the source library or build system acquired by the back-office gateway has been broken.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>content</b></TD>
+<TD VALIGN="TOP">
+The checksum of the content of the request message did not match the value of the X-Content-Checksum attribute. The actual checksum and expected checksum are parameters, represented as hexadecimal numbers. This may be due to a transmission error within the transport network.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>crumbled</b></TD>
+<TD VALIGN="TOP">
+The cookie specified as an argument in the request has not been assigned by the gateway. This is probably due to a programming error in the client.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>declined</b></TD>
+<TD VALIGN="TOP">
+The sample submitted for analysis has been declined by the gateway. This may be due to invalid service subscriber identification or over-use of the service. However, no information about the reason for declining the sample is returned to the client. Instead, the client should instruct the user to contact technical support for assistance.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>internal</b></TD>
+<TD VALIGN="TOP">
+An internal error occurred while processing a sample.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>lost</b></TD>
+<TD VALIGN="TOP">
+The sample was not completely received due to a network failure.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>malformed</b></TD>
+<TD VALIGN="TOP">
+An essential attribute in a request message was malformed. The attribute name and erroneous value are included as parameters. This is usually due to a programming error in the client or the server.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>missing</b></TD>
+<TD VALIGN="TOP">
+An essential attribute in a request message was missing. The attribute name is included as a parameter. This is usually due to a programming error in the client or the server.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>overrun</b></TD>
+<TD VALIGN="TOP">
+The length of the content of the request message is greater than the Content- Length header. The actual length and expected length are parameters, represented as decimal numbers. This may be due to a transmission error in the transport network, but is more likely due to a programming error in the client, perhaps in sending binary data containing newline characters through a subroutine library as text data.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>sample</b></TD>
+<TD VALIGN="TOP">
+The checksum of the sample did not match the value of the X-Sample-Checksum attribute. The actual checksum and expected checksum are parameters, represented as hexadecimal numbers. This may be due to a programming error in the client or server, perhaps in calculating a checksum or in compressing a sample file.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>superceded</b></TD>
+<TD VALIGN="TOP">
+The signatures named as an argument in the request have been superceded by newer blessed signatures and are no longer available from the server. The client should download the current blessed signatures instead of the superceded signatures.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>type</b></TD>
+<TD VALIGN="TOP">
+The sample type specified by the X-Sample-Type attribute is not supported. The unsupported value is a parameter.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>underrun</b></TD>
+<TD VALIGN="TOP">
+The length of the content of the request message is less than the Content-Length header. The actual length and expected length are parameters, represented as decimal numbers. This may be due to a transmission error in the transport network, but is more likely due to a programming error in the client or server, perhaps in calculating the length of compressed content.</TD>
+</TR>
+<TR>
+    <TD VALIGN="TOP"> <b>unavailable</b></TD>
+<TD VALIGN="TOP">
+The signature set specified as an argument is not yet available on the server. The client should wait for a pre-configured interval and then re-request the signature set.</TD>
+</TR>
+</TABLE>
+
+
+
+
+
+
+
+</BODY>
+</HTML>

@@ -1,0 +1,23 @@
+HKCR
+{
+	NavShellExtHelper.IEContextMenuHelper.1 = s 'IEContextMenuHelper Class'
+	{
+		CLSID = s '{A66EB3C3-6411-4226-9550-636E6A4BDCD9}'
+	}
+	NavShellExtHelper.IEContextMenuHelper = s 'IEContextMenuHelper Class'
+	{
+		CLSID = s '{A66EB3C3-6411-4226-9550-636E6A4BDCD9}'
+		CurVer = s 'NavShellExtHelper.IEContextMenuHelper.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A66EB3C3-6411-4226-9550-636E6A4BDCD9} = s 'IEContextMenuHelper Class'
+		{
+			ProgID = s 'NavShellExtHelper.IEContextMenuHelper.1'
+			VersionIndependentProgID = s 'NavShellExtHelper.IEContextMenuHelper'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{0BD5CEA9-55C0-4FA7-A7BA-8E90B6CC01D5}'
+		}
+	}
+}

@@ -1,0 +1,236 @@
+@echo off
+echo.
+echo --------------------
+echo Starting ANSEL build
+echo --------------------
+echo.
+echo.
+
+pushd
+
+: ---------------------------------------------------------------------------
+: Save environment
+: ---------------------------------------------------------------------------
+set O_PATH=%PATH
+set O_INCLUDE=%INCLUDE
+set O_LIB=%LIB
+set O_PROGS=%PROGS
+set O_DEBUG=%DEBUG
+
+set O_CM_DIR=%CM_DIR
+set O_BLD_LOG=%BLD_LOG
+
+set O_SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH=%SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+
+set O_NOVELLNDK=%NOVELLNDK
+SET O_MWCINCLUDES=%MWCINCLUDES
+SET O_MWLibraries=%MWLibraries
+SET O_MWLibraryFiles=%MWLibraryFiles
+: ---------------------------------------------------------------------------
+: Set environment
+: ---------------------------------------------------------------------------
+set PATH=R:\Watcom11\binnt;R:\Watcom11\binw;C:\Progra~1\Metrow~1\CodeWarrior\Tools\Comman~1;%PATH%
+set LIB=
+set PROGS=R:
+set DEBUG=
+
+set CM_DIR=%_CWD
+set BLD_LOG=%_CWD\build.err
+
+set SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH=%@FULL[\AVClients\netware_client\src]
+
+set NOVELLNDK=C:\Novell\NDK\nwsdk
+SET MWCINCLUDES=C:\PROGRA~1\Metrow~1\CodeWarrior\Novell~1\Metrow~1\Librar~1\MSLC__~1\Include;C:\PROGRA~1\Metrow~1\CodeWarrior\Novell~1\Metrow~1\Headers;C:\PROGRA~1\Metrow~1\CodeWarrior\Win32-~1\Headers\Win32S~1
+SET MWLibraries=c:\PROGRA~1\Metrow~1\CodeWarrior\Novell~1\Metrow~1\Librar~1\Runtime\;c:\Novell\NDK\nwsdk\imports
+set MWLibraryFiles = mwcrtl.lib;mwcpp.lib;clib.imp;threads.imp;nlmlib.imp;tli.imp;nit.imp;requestr.imp;QsFwd.exp;ws2nlm.imp
+
+: Clear the build log
+> %BLD_LOG
+
+: ---------------------------------------------------------------------------
+: Start Core Technology builds
+: ---------------------------------------------------------------------------
+echo.
+echo Building Core Technology projects
+echo.
+echo. >> %BLD_LOG
+echo Building Core Technology projects >> %BLD_LOG
+echo. >> %BLD_LOG
+
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+attrib -R *.lk1 /sq
+
+
+
+:
+: Build navap
+: --------------
+
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+:don't need this   attrib -R *.lk1 /sq
+
+cd navap
+set wkdir=%_CWD
+set projname=navap
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+echo.
+echo. >> %BLD_LOG
+
+:
+: Build scanmgr
+: --------------
+
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+:don't need this   attrib -R *.lk1 /sq
+
+cd scanmgr
+set wkdir=%_CWD
+set projname=scanmgr
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+echo.
+echo. >> %BLD_LOG
+
+:
+: Build navscnr
+: --------------
+
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+:don't need this   attrib -R *.lk1 /sq
+
+cd navscnr
+set wkdir=%_CWD
+set projname=navscnr
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+echo.
+echo. >> %BLD_LOG
+
+:
+: Build savsvr
+: --------------
+
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+:don't need this   attrib -R *.lk1 /sq
+
+cd savsrv
+set wkdir=%_CWD
+set projname=savsrv
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake -f %projname.mak >> %BLD_LOG
+
+set ret=%?
+if %ret != 0 goto errexit
+cd %SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+echo.
+echo. >> %BLD_LOG
+
+: ---------------------------------------------------------------------------
+: Finished. Cleanup and leave.
+: ---------------------------------------------------------------------------
+goto cleanup
+
+
+: ---------------------------------------------------------------------------
+: Handle errors
+: ---------------------------------------------------------------------------
+
+:errexit
+echo.
+echo ****************************
+echo Build error in %projname.mak
+echo (%wkdir)
+echo ****************************
+echo.
+
+echo. >> %BLD_LOG
+echo **************************** >> %BLD_LOG
+echo Build error in %projname.mak >> %BLD_LOG
+echo (%wkdir)                     >> %BLD_LOG
+echo **************************** >> %BLD_LOG
+echo. >> %BLD_LOG
+
+
+: ---------------------------------------------------------------------------
+: Cleanup and restore environment vars
+: ---------------------------------------------------------------------------
+
+:cleanup
+
+set PATH=%O_PATH
+set INCLUDE=%O_INCLUDE
+set LIB=%O_LIB
+set PROGS=%O_PROGS
+set DEBUG=%O_DEBUG
+
+set CM_DIR=%O_CM_DIR
+set BLD_LOG=%O_BLD_LOG
+
+set SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH=%O_SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH
+
+set NOVELLNDK=%O_NOVELLNDK
+SET MWCINCLUDES=%O_MWCINCLUDES
+SET MWLibraries=%O_MWLibraries
+SET MWLibraryFiles=%O_MWLibraryFiles
+set O_PATH=
+set O_INCLUDE=
+set O_LIB=
+set O_PROGS=
+set O_DEBUG=
+set O_CM_DIR=
+set O_BLD_LOG=
+
+set O_SYMANTEC_ANTIVIRUS_NAVNLM_SRC_PATH=
+
+set O_NovellNDK=
+SET O_MWCINCLUDES=
+SET O_MWLibraries=
+SET O_MWLibraryFiles=
+
+set wkdir=
+set projname=
+
+popd
+quit %ret
+

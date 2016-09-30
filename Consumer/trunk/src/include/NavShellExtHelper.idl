@@ -1,0 +1,53 @@
+// NavShellExtHelper.idl : IDL source for NavShellExtHelper
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NavShellExtHelper.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+[
+	object,
+	uuid(83D93BC4-11EF-4D35-A8D2-140DB3356531),
+	helpstring("IIEContextMenuHelper Interface"),
+	pointer_default(unique)
+]
+interface IIEContextMenuHelper : IUnknown{
+};
+[
+	object,
+	uuid(4FBB8305-9116-4764-8709-BD1AF676383F),
+	oleautomation,
+	nonextensible,
+	helpstring("INavHelper Interface"),
+	pointer_default(unique)
+]
+interface INavHelper : IUnknown{
+
+	[id(1), helpstring("method RunNavW")] HRESULT RunNavW(VARIANTARG,VARIANTARG);
+};
+[
+	uuid(0BD5CEA9-55C0-4FA7-A7BA-8E90B6CC01D5),
+	version(1.0),
+	helpstring("NavShellExtHelper 1.0 Type Library")
+]
+library NavShellExtHelperLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(A66EB3C3-6411-4226-9550-636E6A4BDCD9),
+		helpstring("IEContextMenuHelper Class")
+	]
+	coclass IEContextMenuHelper
+	{
+		[default] interface IIEContextMenuHelper;
+	};
+	[
+		uuid(AF24674E-2204-438D-8092-E3424E2399D8),
+		helpstring("NavHelper Class")
+	]
+	coclass NavHelper
+	{
+		[default] interface INavHelper;
+	};
+};

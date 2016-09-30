@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title> X-SIGNATURES ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1> X-Signatures Attributes</H1>
+The proprietary X-Signatures attributes are included in all messages that contain or refer to virus signature definition files. They identify sets of signatures produced by the back office:<BR><BR>
+
+<a href="#Checksum"><B>X-Signatures-Checksum</B></a>: MD5 checksum of definition package<BR>
+<a href="#Priority"><B>X-Signatures-Priority</B></a>: queuing priority<BR>
+<a href="#Sequence"><B>X-Signatures-Sequence</B></a>: sequence number of signature set<BR>
+<a href="#Size"><B>X-Signatures-Size</B></a>: size in bytes of definition package<BR>
+<a href="#Version"><B>X-Signatures-Version</B></a>: daily version number of signature set<BR>
+
+<P><a name="Checksum"></a>
+<B>X-Signatures-Checksum</b><BR>
+This attribute specifies the name of a full set ofMD5 checksum of the package containing the virus signature definition files. The value is a 128-bit binary number, encoded as a 32-digit hexadecimal string composed of characters in the range "0..9A..F". </P>
+<P>For example, the name of an all-products definitionMD5 checksum for a package might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Signatures-Checksum: 8B37247C71443D40A2D7FCF16867803A</P>
+
+<P><a name="Priority"></a>
+<B>X-Signatures-Priority</b><BR>
+This attribute specifies the queuing priority of the signatures. The value is an unsigned integer in the range 0..1000, with larger values indicating higher priority and smaller values indicating lower priority. </P>
+<P>For example, the priority of unimportant signatures might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Signatures-Priority: 0</P>
+<P>For another example, the priority of more important signatures might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Signatures-Priority: 1</P>
+
+<P><a name="Sequence"></a>
+<B>X-Signatures-Sequence</b><BR>
+This attribute specifies the sequence number of virus signature definition files. </P>
+<P>For example, the sequence number of a set might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Signatures-Sequence: 00000678</P>
+
+<P><a name="Size"></a>
+<B>X-Sample-Size</b><BR>
+This attribute specifies the size of the package containing the virus signature definition files. The value is a decimal number of bytes.</P>
+<P>For example, the size of a package might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Sample-Size: 4788140</P>
+
+<P><a name="Version"></a>
+<B>X-Signatures-Version</b><BR>
+This attribute specifies the daily version number of virus signature definition files. </P>
+<P>For example, the daily version number of a signature set might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Signatures-Version: 1999.02.06.001</P>
+
+
+</BODY>
+</HTML>

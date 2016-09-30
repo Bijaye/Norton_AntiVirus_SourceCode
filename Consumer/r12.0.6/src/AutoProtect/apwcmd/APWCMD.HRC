@@ -1,0 +1,55 @@
+// Copyright 1997 Symantec Corporation
+//************************************************************************
+//
+// $Header:   N:/APWCMD/VCS/ApwCmd.hrv   1.1   29 May 1997 19:37:56   JBRENNA  $
+//
+// Description:
+//      ApwCmd.hrc -- This provides the common resources. This file must
+//      be #included by all resource files in this project.
+//
+//      Note: APWCMD_INTERNALNAME should be defined to either "Apw95Cmd"
+//      or "ApwNtCmd". This should be done via RC command line switches. 
+//      By providing a different VR_INTERNALNAME, we can easly track which
+//      file actually got installed on the system.
+//
+#ifdef THIS_IS_GARBAGE
+//************************************************************************
+// $Log:   N:/APWCMD/VCS/ApwCmd.hrv  $
+   
+      Rev 1.1   29 May 1997 19:37:56   JBRENNA
+   No change.
+   
+      Rev 1.0   29 May 1997 19:37:18   JBRENNA
+   Initial revision.
+// 
+//    Rev 1.2   28 May 1997 15:40:20   JBRENNA
+// Change all '#include <...>" to '#include "..."'. This enables R:\MK\MkDeps
+// to function better.
+// 
+//    Rev 1.1   28 May 1997 15:22:56   JBRENNA
+// Add IDS_APP_CAPTION, and the IDS_ERR_AP_CANT_EXEC_NAVW* strings.
+// 
+//    Rev 1.0   28 May 1997 12:28:12   JBRENNA
+// Initial revision.
+// 
+//************************************************************************
+#endif // THIS_IS_GARBAGE
+
+#ifndef _APWCMD_RC
+#define _APWCMD_RC
+
+#include "ApwRes.h"                     // Resource IDs
+
+
+//************************************************************************
+// String Table 
+//************************************************************************
+
+STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    IDS_ERR_AP_CANT_EXEC_NAVW_MEM,      "Could not execute the configuration module. Not enough memory."
+    IDS_ERR_AP_CANT_EXEC_NAVW,          "Could not execute the configuration module."
+END
+
+
+#endif // _APWCMD_RC

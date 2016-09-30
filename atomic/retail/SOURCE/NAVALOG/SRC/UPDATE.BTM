@@ -1,0 +1,34 @@
+:: $Header:   S:/navalog/VCS/update.btv   1.0   06 Feb 1997 20:55:00   RFULLER  $
+::
+:: Update Batch file for the NAV log english files.
+::------------------------------------------------------------------------
+: $Log:   S:/navalog/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 20:55:00   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:52:16   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 10:14:30   BARRY
+:  Initial revision.
+:  
+:     Rev 1.3   11 Dec 1995 22:10:26   DALLEE
+:  Updated for PROJVERS.
+:  
+:     Rev 1.2   21 Nov 1995 22:02:38   YVANG
+:  Added target support.
+:  
+:     Rev 1.1   13 Dec 1994 13:46:32   MFALLEN
+::------------------------------------------------------------------------
+
+::Update Batch file for the Norton AntiVirus for Windows
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.exe copy *.exe %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+

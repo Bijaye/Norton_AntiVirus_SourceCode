@@ -1,0 +1,237 @@
+===========================
+nLNVP and NotesExt Overview
+===========================
+
+The notesext.dll is the Storage Extension DLL for Lotus Notes.
+Storage extenstions are described in detail in the file
+"\\Ussm-admin1\shared\Shared\Beluga\DOCS\Intel_Docs\Product LifeCycle Documents\Beluga Architecture\Storage Extension Implementation.doc".
+
+The nlnvp.dll is a Lotus Notes database hook driver.  
+This is a code module loaded by Notes that can intercept database I/O operations 
+at the Notes document (aka note) level.  Hook drivers are installed by
+adding a line to the notes.ini text configuration file.
+All Notes Win32 add-in DLLs must begin with the letter 'n'.
+
+
+===========
+nLNVP Files
+===========
+
+nlnvp.def
+---------
+
+The .def file exports two functions.
+
+One is for installing:
+NSE_Intstall()
+
+One is related to the hook driver role:
+InitializeNotesHook()
+
+
+main.c
+------
+
+DllMain - main entry point
+
+
+hook.c
+------
+
+This file contains the Notes hook driver entry points:
+
+InitializeNotesHook - hook driver entry point
+TerminateHook - hook driver entry point
+NoteOpenHook - Database I/O interceptor
+NoteUpdateHook - Database I/O interceptor
+DbStampNotesHook - Database I/O interceptor
+
+InitializeNotesHook() calls InitIPC(), and TerminateHook() calls DeInitIPC().
+When IPC is initialized, the global variable bMailContextRegistered is set to TRUE.
+
+Notes I/O calls are directed to NoteOpenHook() and NoteUpdateHook().
+Both call ProcessHookedNote() do to most of their work.
+
+In the open hook, the process call is made if read scanning is on. 
+
+If ProcessedHookedNote() makes a change to the Notes document, 
+the document is updated with the UPDATE_FORCE flag.
+
+In the update hook, the process call is made if write scanning is on.
+
+
+mailcontext.c (584 lines)
+-------------------------
+
+This file contains the real-time processing function that scans Notes documents
+due to user activity in the Notes client.  It also has helper functions for
+checking file extensions, checking scan timestamps, and debugging.
+
+ProcessHookedNote() is called due to a Notes read or write event on a Notes document.
+It does the following:
+- Return if no real time threads are running or if turned off (via registry)
+- Return if there are no file attachments
+- Return if the document is encrypted and cannot be decrypted.
+- For each file attachment
+  - if ExtensionRequiresScan
+    - set up a file info block, including subject, sender & recipient names
+	- extract the file attachment to a temp file on disk
+	- reset the file info block scanned event, signal there are files awaiting scan
+	- wait for the scanned event to be signaled, timeout after 30 seconds
+	- if infected, add a copy of the file info block (with infection info) to a list;
+	  if not infected, delete the temp file
+	- if timeout, mark the file info block invalid and delete the temp file
+- For each file info block on the infection list, call DoNotifications(), 
+  free the block, and delete the temp file.
+
+
+nlnvp.c (758 lines)
+-------------------
+
+This file contains functions for install as a Notes Hook DLL.
+
+NSE_Install() is called from the install process.
+It does the following:
+- Checks for existence of Notes.
+- Exits if on a Notes server.
+- Installs the DLL as a hook driver by updating notes.ini.
+
+
+notifications.c (1302 lines)
+----------------------------
+
+This file contains the notification functions.
+
+
+
+==============
+NotesExt Files
+==============
+
+notesext.def
+------------
+
+The .def file exports two functions.
+
+One is for installing:
+NSE_Intstall()
+
+One is related to the Storage Extension initialization:
+NSE_StorageInit()
+
+
+
+main.c
+------
+
+DllMain - main entry point
+
+
+DLLMain() creates an event object used for controlling the 
+final exit of the main thread.
+
+
+scancontext.c (2297 lines)
+--------------------------
+
+This file contains the Storage Extension functions.
+
+NSE_StorageInit() is called from the Storage Manager.
+It does the following:
+- Saves pointers to structured storage access functions (registry).
+- Calls InitIPC().
+- Calls NSE_ReloadRTSConfig() to load the scan settings.
+- The following functions are made available to the Storage Manager:
+	NSE_FindFirstNode (noop)
+	NSE_FindNextNode (noop)
+	NSE_CreateSNode (noop)
+	NSE_GetFullFindKey (noop)
+	NSE_FindClose (noop)
+	NSE_DeInit
+	NSE_BeginRTSWatch
+	NSE_StopRTSWatches
+	NSE_RefreshInstanceData (noop)
+	NSE_ReloadRTSConfig
+	NSE_ReInit
+	NSE_ProcessPacket (noop)
+	NSE_FormatMessage
+	NSE_ChangeUser (noop)
+
+InitIPC() initializes the IPC between the notes hook and the storage extension.
+It creates (or retrieves handles to):
+- The buffer pool mutex for all file info blocks.
+- The memory mapped file to share between all modules.
+- The storage extension file scanning semaphore.
+- An event for each file info block to signal the notes hook of scan completion.
+
+NSE_ReloadRTSConfig() does the following:
+- Checks for existence of Notes. 
+- Reads the real time scan settings from registry.
+- Copied scan settings into the shared memory.
+
+NSE_BeginRTSWatch() is called by the Storage Manager to begin real-time scanning.
+It does the following:
+- Increments the number of real-time scanning threads.  
+  Thus the Storage Manager must have created the thread currently executing
+  to be a dedicated Notes real-time scanning thread.
+- Go into a scanning loop
+  - Wait for a file to scan (hBufferPoolSema) or a quit event (hShutdown)
+  - Call GetWaitingFileInfo() to get a pointer to the next file info block 
+    from the queue representing a file needing to be scanned.
+  - Initialize the passed-in SNode structure from the file info block.
+    The SNode also includes an array of I/O functions:
+		NSE_Open (given pSNode, NSFNoteExtractFile; FIOOpen)
+		NSE_Close (_close)
+		NSE_Read (_read)
+		NSE_Write (_write, 0 bytes -> chop)
+		NSE_Lseek (_lseek)
+		NSE_Access (NSFNoteExtractFile; access)
+		NSE_GetState (noop)
+		NSE_SetState (noop)
+		NSE_GetExtendedData (noop)
+		NSE_SetExtendedData (noop)
+		NSE_GetFullKey (get file info pWalkInfo->path + key)
+	and an array of Real Time Node functions:
+		NSE_ReleaseSNode (noop)
+		NSE_RealTimeNodeHasVirus (see below)
+		NSE_RenameNode (noop)
+		NSE_RemoveNode (noop)
+  - Call ProcessRTSNode() on the SNode.  This is a callback into the Storage Manager.
+  - If the file info block still looks valid
+    - Set the file info state to scanned
+	- Signal the file info block's scanned event
+- Decrements the number of real-time scanning threads
+  
+NSE_StopRTSWatches() is called by the Storage Manager to end real-time scanning.
+It sets the shutdown event watched by all scan threads.
+
+NSE_RealTimeNodeHasVirus() is called by the Storage Manager 
+when a virus is detected in a scanned node.  
+It saves information from the passed-in EVENTBLOCK into the 
+file info block in shared memory so that the mail context can do the 
+configured notification later.  It uses the structured storage
+FormatMessage function to build notification strings from registry data.
+
+
+
+============
+Shared Files
+============
+
+
+fileinfo
+--------
+
+This file defines the memory data structure shared between the
+DLL and the Storage Manager (via a memory mapped file).
+
+The main data structure is a FILE_BUFFER, 
+which features a circular buffer of FILE_INFO blocks representing files to be scanned.  
+It also has a REG_INFO structure with scan settings.
+
+
+InitIPC
+-------
+
+This file inits the shared memory and structures between the two processes.
+

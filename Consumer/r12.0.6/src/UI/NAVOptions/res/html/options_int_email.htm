@@ -1,0 +1,114 @@
+<html>
+	<head>
+		<title id="email_title">Norton Antivirus/Internet/E-Mail Options</title>
+		<IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="NO" HEIGHT="0" WIDTH="0" style="display:none"
+			SRC="options_errorid.htm"></IFRAME>
+		<script Language="JavaScript" src="DisplayScriptError.js"></script>
+		<script language="JavaScript" src="options_int_email.js"></script>
+		<link rel="stylesheet" type="text/css" href="navstyle.css">
+			<META ID="charset_int_em" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1" />
+	</head>
+	<body id="body_int_em" bottomMargin="0" scroll="no" leftmargin="5" topmargin="5" class="clsDetails"
+		onHelp="parent.CurrentPage.Help();" onLoad="parent.CurrentPage = new EMailPage();"
+		TABINDEX="-1">
+		<form name="options_int_email">
+			<table id="t1" width="425" border="0" height="372" bgcolor="#FFFFFF" cellspacing="0" cellpadding="0">
+				<tr>
+					<td id="t1_td1" valign="top" height="232" width="298">
+						<table id="t2" width="425" height="41" border="0" cellspacing="0" cellpadding="0" style="background-image: url('topbg.gif'); background-repeat: no-repeat;">
+							<tr>
+								<td id="t2_td1" width="100%" height="4" valign="top" align="right" colspan="2">&nbsp;</td>
+							</tr>
+							<tr id="t2_tr1" valign="top">
+								<td id="t2_td2" align="left" height="12" valign="top" style="padding-bottom:1px" width="300">&nbsp;&nbsp;<span class="cutitleb" id="email_emailscanning">Email 
+              Scanning</span></td>
+								<td id="t2_td3" align="right"><a href='' onClick="parent.CurrentPage.Help(); return false;"><span class="cuhelp" id="bloodhound_help">more info</span></a>&nbsp;&nbsp;&nbsp;</td>
+							</tr>
+						</table>
+						<br>
+						<table id="t3" border="0" width="415">
+							<tr>
+								<td id="t3_td1" colspan="2" height="22" width="387" style="padding-left:10px"><span class="culinkhead" id="email_whattoscan"><b>What 
+											to scan</b></span></td>
+							</tr>
+							<tr>
+								<td id="t3_td2" width="5%"><input class="smallcheck" type="checkbox" id="ProxyEnabledIncoming" name="ProxyEnabledIncoming"
+										onclick="enable_controls()" onpropertychange="OnEnableIncomingChanged(this.checked)"></td>
+								<td id="t3_td2a"><label for="ProxyEnabledIncoming" accesskey="e" id="ProxyInAccessKey"><span class="indent10" id="email_scanincoming">Scan 
+              incoming <u>E</u>mail (recommended)</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td id="t3_td3" width="5%"><input class="smallcheck" type="checkbox" id="ProxyEnabledOutgoing" name="ProxyEnabledOutgoing"
+										onclick="enable_controls()" onpropertychange="OnEnableOutgoingChanged(this.checked)"></td>
+								<td id="t3_td3a"><label for="ProxyEnabledOutgoing" accesskey="o" id="ProxyOutAccessKey"><span class="indent10" id="email_scanoutgoing">Scan 
+              <u>o</u>utgoing Email (recommended)</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td colspan="2" id="separator1" align="center" width="423">
+									<img align="middle" border="0" height="1" src="dots.gif" width="303" id="email_img1">
+								</td>
+							</tr>
+							<tr>
+								<td id="t3_td5" colspan="2" height="22" style="padding-left:10px"><span class="culinkhead" id="email_howtorespond"><b>How 
+											to respond when a virus is found</b></span></td>
+							</tr>
+							<tr>
+								<td id="t3_td8" width="5%"><input class="smallcheck" type="radio" id="idrad_response_Quarantine" name="ResponseMode"></td>
+								<td id="t3_td8a"><label for="idrad_response_Quarantine" accesskey="R" id="QuarantineAccessKey">
+										<span id="email_quarantine">T<u>r</u>y to repair then quarantine if unsuccessful (recommended)</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td id="t3_td6" width="5%"><input class="smallcheck" type="radio" name="ResponseMode" id="idrad_response_autorepair"></td>
+								<td id="t3_td6a"><label for="idrad_response_autorepair" accesskey="p" id="AutoRepairAccessKey"><span class="indent10" id="email_autorepair">Re<u>p</u>air the infected file</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td id="t3_td7" width="5%"><input class="smallcheck" type="radio" name="ResponseMode" id="idrad_response_prompt"></td>
+								<td id="t3_td7a"><label for="idrad_response_prompt" accesskey="M" id="PromptAccessKey"><span class="indent10" id="email_askmewhattodo">Ask 
+                <u>m</u>e what to do</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td id="t3_td9" width="5%"><input class="smallcheck" type="radio" id="idrad_response_QuarantineSilent" name="ResponseMode"></td>
+								<td id="t3_td9a"><label for="idrad_response_QuarantineSilent" accesskey="Q" id="QuarSilentAccessKey">
+										<span id="email_quarantinesilent">Repair then silently <u>q</u>uarantine if unsuccessful</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td id="t3_td10" width="5%"><input class="smallcheck" type="radio" id="idrad_response_Delete" name="ResponseMode"></td>
+								<td id="t3_td10a"><label for="idrad_response_Delete" accesskey="S" id="DeleteAccessKey">
+										<span id="email_delete">Repair then <u>s</u>ilently delete if unsuccessful</span>
+									</label></td>
+							</tr>
+							<tr>
+								<td colspan="2" id="separator2" align="center" width="423">
+									<img align="middle" border="0" height="1" src="dots.gif" width="303" id="email_img2">
+								</td>
+							</tr>
+							<tr>
+								<td id="t3_td12" colspan="2" height="22" style="padding-left:10px"><span id="email_howtoincreaseprotection" class="culinkhead"><b>How 
+											to increase protection</b></span></td>
+							</tr>
+							<tr>
+								<td id="t3_td13" width="5%"><input class="smallcheck" type="checkbox" id="ProxyEnabledHeuristics" name="ProxyEnabledHeuristics"
+										onClick="enable_controls();"></td>
+								<td id="t3_td13a"><label for="ProxyEnabledHeuristics" accesskey="w" id="HeurAccessKey"><span class="indent10" id="email_heuristics">Turn <u>W</u>orm Blocking on (recommended)</span>
+									</label></td>
+							</tr>
+							<table id="t4" border="0" width="415">
+								<tr>
+									<td id="t4_td1" width="5%" style="padding-left:20px"><input class="smallcheck" type="checkbox" id="SilentHeuristics" name="SilentHeuristics"></td>
+									<td id="t4_td2"><label for="SilentHeuristics" accesskey="l" id="SilentHeurAccessKey"><span class="indent10" id="silent_heuristics">A<u>l</u>ert when scanning email attachments</span>
+										</label></td>
+								</tr>
+							</table>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</body>
+</html>

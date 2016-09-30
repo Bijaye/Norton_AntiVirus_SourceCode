@@ -1,0 +1,133 @@
+// Status.idl : IDL source for Status.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (Status.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+
+cpp_quote("#if !defined(_DJSMAR00_STATIC_H__C8D02EF4_FD04_4bd5_B6F7_261E6799ABC9__INCLUDED_)")
+cpp_quote("#define _DJSMAR00_STATIC_H__C8D02EF4_FD04_4bd5_B6F7_261E6799ABC9__INCLUDED_")
+#include "cltLicenseConstants.h"
+cpp_quote("#endif // !defined(_DJSMAR00_STATIC_H__C8D02EF4_FD04_4bd5_B6F7_261E6799ABC9__INCLUDED_)")
+
+	[
+		object,
+		uuid(F163C0BC-65A6-4895-9A96-400CB73AFBB0),
+		dual,
+		helpstring("Symantec.Norton.Antivirus.INAVStatus Interface"),
+		pointer_default(unique)
+	]
+	interface INAVStatus : IDispatch
+	{
+		[propget, id(2), helpstring("property APStatus")] HRESULT APStatus([out, retval] long *pVal);
+		[propget, id(3), helpstring("property VirusDefDate")] HRESULT VirusDefDate([out, retval] BSTR *pVal);
+		[propget, id(4), helpstring("property VirusDefAge")] HRESULT VirusDefAge([out, retval] long *pVal);
+		[propget, id(5), helpstring("property UseAP")] HRESULT UseAP([out, retval] BOOL *pVal);
+		[propput, id(5), helpstring("property UseAP")] HRESULT UseAP([in] BOOL newVal);
+		[propget, id(6), helpstring("property UseVirusDef")] HRESULT UseVirusDef([out, retval] BOOL *pVal);
+		[propput, id(6), helpstring("property UseVirusDef")] HRESULT UseVirusDef([in] BOOL newVal);
+		[id(7), helpstring("method GetStatus")] HRESULT GetStatus(BOOL bNotifyChanges);
+		[propget, id(9), helpstring("property ALUStatus")] HRESULT ALUStatus([out, retval] long *pVal);
+		[propget, id(10), helpstring("property UseALU")] HRESULT UseALU([out, retval] BOOL *pVal);
+		[propput, id(10), helpstring("property UseALU")] HRESULT UseALU([in] BOOL newVal);
+		[propget, id(11), helpstring("property UseQuar")] HRESULT UseQuar([out, retval] BOOL *pVal);
+		[propput, id(11), helpstring("property UseQuar")] HRESULT UseQuar([in] BOOL newVal);
+		[propget, id(12), helpstring("property QuarFileCount")] HRESULT QuarFileCount([out, retval] long *pVal);
+		[propget, id(13), helpstring("property VirusDefCount")] HRESULT VirusDefCount([out, retval] long *pVal);
+		[propget, id(14), helpstring("property UseVirusDefSubscription")] HRESULT UseVirusDefSubscription([out, retval] BOOL *pVal);
+		[propput, id(14), helpstring("property UseVirusDefSubscription")] HRESULT UseVirusDefSubscription([in] BOOL newVal);
+		[propget, id(15), helpstring("property VirusDefSubDaysLeft")] HRESULT VirusDefSubDaysLeft([out, retval] long *pVal);
+		[propget, id(16), helpstring("property VirusDefSubStatus")] HRESULT VirusDefSubStatus([out, retval] long *pVal);
+		[propget, id(17), helpstring("property VirusDefSubState")] HRESULT VirusDefSubState([out, retval] long *pVal);
+		[propget, id(18), helpstring("property UseRescueDisk")] HRESULT UseRescueDisk([out, retval] BOOL *pVal);
+		[propput, id(18), helpstring("property UseRescueDisk")] HRESULT UseRescueDisk([in] BOOL newVal);
+		[propget, id(19), helpstring("property RescueDiskStatus")] HRESULT RescueDiskStatus([out, retval] long *pVal);
+		[propget, id(21), helpstring("property RescueDiskLastRunYear")] HRESULT RescueDiskLastRunYear([out, retval] long *pVal);
+		[propget, id(22), helpstring("property RescueDiskLastRunMonth")] HRESULT RescueDiskLastRunMonth([out, retval] long *pVal);
+		[propget, id(23), helpstring("property RescueDiskLastRunDay")] HRESULT RescueDiskLastRunDay([out, retval] long *pVal);
+		[propget, id(24), helpstring("property UseScriptBlocking")] HRESULT UseScriptBlocking([out, retval] BOOL *pVal);
+		[propput, id(24), helpstring("property UseScriptBlocking")] HRESULT UseScriptBlocking([in] BOOL newVal);
+		[propget, id(25), helpstring("property UseEmail")] HRESULT UseEmail([out, retval] BOOL *pVal);
+		[propput, id(25), helpstring("property UseEmail")] HRESULT UseEmail([in] BOOL newVal);
+		[propget, id(26), helpstring("property ScriptBlockingStatus")] HRESULT ScriptBlockingStatus([out, retval] long *pVal);
+		[propget, id(27), helpstring("property EmailStatus")] HRESULT EmailStatus([out, retval] long *pVal);
+		[propget, id(28), helpstring("property VirusDefStatus")] HRESULT VirusDefStatus([out, retval] long *pVal);
+		[propget, id(29), helpstring("property UseFullSystemScan")] HRESULT UseFullSystemScan([out, retval] BOOL *pVal);
+		[propput, id(29), helpstring("property UseFullSystemScan")] HRESULT UseFullSystemScan([in] BOOL newVal);
+		[propget, id(30), helpstring("property FullSystemScanStatus")] HRESULT FullSystemScanStatus([out, retval] long *pVal);
+		[propget, id(31), helpstring("property FullSystemScanDate")] HRESULT FullSystemScanDate([out, retval] BSTR *pVal);
+		[propget, id(32), helpstring("property FullSystemScanAge")] HRESULT FullSystemScanAge([out, retval] long *pVal);
+		[propget, id(33), helpstring("property QuarStatus")] HRESULT QuarStatus([out, retval] long *pVal);
+		[propget, id(34), helpstring("property EmailPOP")] HRESULT EmailPOP([out, retval] BOOL *pVal);
+		[propget, id(35), helpstring("property EmailSMTP")] HRESULT EmailSMTP([out, retval] BOOL *pVal);
+		[propget, id(37), helpstring("property VirusDefSubDate")] HRESULT VirusDefSubDate([out, retval] BSTR *pVal);
+		[propget, id(38), helpstring("property ALUCanEnable")] HRESULT ALUCanEnable([out, retval] BOOL *pVal);
+		[propget, id(39), helpstring("property ScriptBlockingCanEnable")] HRESULT ScriptBlockingCanEnable([out, retval] BOOL *pVal);
+		[propget, id(40), helpstring("property APCanEnable")] HRESULT APCanEnable([out, retval] BOOL *pVal);
+		[propget, id(41), helpstring("property EmailCanEnable")] HRESULT EmailCanEnable([out, retval] BOOL *pVal);
+		[propget, id(42), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+		[propget, id(43), helpstring("property ProductLicenseType")] HRESULT ProductLicenseType([out, retval] DJSMAR_LicenseType *pVal);
+		[propget, id(44), helpstring("property ProductLicenseState")] HRESULT ProductLicenseState([out, retval] DJSMAR00_LicenseState *pVal);
+		[propget, id(45), helpstring("property ProductLicenseZone")] HRESULT ProductLicenseZone([out, retval] long *pVal);
+		[propget, id(46), helpstring("property UseLicensing")] HRESULT UseLicensing([out, retval] BOOL *pVal);
+		[propput, id(46), helpstring("property UseLicensing")] HRESULT UseLicensing([in] BOOL newVal);
+		[propget, id(47), helpstring("property LicensingStatus")] HRESULT LicensingStatus([out, retval] long *pVal);
+		[propget, id(48), helpstring("property ProductLicenseValid")] HRESULT ProductLicenseValid([out, retval] BOOL *pVal);
+        [propput, id(49), helpstring("property UseIWP")] HRESULT UseIWP([in] BOOL newVal);
+        [propget, id(50), helpstring("property IWPStatus")] HRESULT IWPStatus([out, retval] long *pVal);
+        [propget, id(51), helpstring("property APSpywareStatus")] HRESULT APSpywareStatus([out, retval] long *pVal);
+        [propget, id(52), helpstring("property SpywareCategory")] HRESULT SpywareCategory([out, retval] long *pVal);
+        [propput, id(53), helpstring("property UseSpyware")] HRESULT UseSpyware([in] BOOL newVal);
+		[propget, id(54), helpstring("property SpywareCanEnable")] HRESULT SpywareCanEnable([out, retval] BOOL *pVal);
+	};
+
+[
+	object,
+	uuid(A541F3D4-07A4-4B91-B437-E233D393C05B),
+	oleautomation,
+	helpstring("Symantec.Norton.Antivirus.IStatusEventBridge Interface"),
+	pointer_default(unique)
+]
+interface IStatusEventBridge : IUnknown
+{
+		[ helpstring("method StatusChangedEvent")] HRESULT StatusChangedEvent();
+};
+
+[
+	uuid(54CC4A82-E256-4AB1-BA85-F8FF36619969),
+	version(1.0),
+	helpstring("Status 1.0 Type Library")
+]
+
+library STATUSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(AE323423-5EE9-425B-A504-0DEDE5F31F45),
+		helpstring("Symantec.Norton.Antivirus._INAVStatusEvents Interface")
+	]
+	dispinterface _INAVStatusEvents
+	{
+		properties:
+		methods:
+		[id(1), helpstring("method StatusChangedEvent")] HRESULT StatusChangedEvent();
+	};
+
+
+	[
+		uuid(ED429095-AF99-41A1-BA88-D7E9459B3AF4),
+		helpstring("Symantec.Norton.Antivirus.NAVStatus Class")
+	]
+	coclass NAVStatus
+	{
+		[default] interface INAVStatus;
+		[default, source] dispinterface _INAVStatusEvents;
+	};
+
+	interface IStatusEventBridge;
+};

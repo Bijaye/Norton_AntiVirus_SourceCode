@@ -1,0 +1,477 @@
+**********************************************************************
+Norton AntiVirus for Windows NT (DEC Alpha Platform)        README.TXT
+Copyright (c) 1995-1999 Symantec Corporation                 July 1999
+**********************************************************************
+HOW TO USE THIS DOCUMENT
+**********************************************************************
+To view README.TXT on screen in Notepad or WordPad, maximize the
+Notepad or WordPad window.
+
+To print README.TXT in Notepad or WordPad, choose Print from the File
+menu.  If you use another word processor, select the entire document
+and format the text in 10-point Courier before printing to ensure
+proper spacing.
+
+To print README.TXT from the DOS prompt, type COPY README.TXT PRN:
+
+**********************************************************************
+NORTON ANTIVIRUS NOTES
+**********************************************************************
+This README.TXT file covers compatibility information, late-breaking
+news, and usage tips for Norton AntiVirus for Windows NT (DEC/Alpha).
+The following topics are discussed:
+
+ * Microsoft Office 2000 File Extensions
+ * New configuration options for network administrators
+      Randomizing Live Update and Virus Scan schedules
+      Registry Keys of Interest
+          * Skipping the Shutdown Scan
+          * Disabling the Scheduler Prompt during installation
+          * Skipping message box when attempting to scan 
+            unavailable drive.
+      Building the latest Virus definitions into an install set:
+ * Installing on systems equipped with Norton AntiVirus 4.0x
+ * Print versions of Norton AntiVirus Guides
+ * Uninstalling LiveUpdate
+ * Removing Norton AntiVirus from the Windows Start menu
+ * Novell NetWare: Installing from long filename (LFN) directories
+ * Options settings from earlier versions of Norton AntiVirus
+ * Access privileges required for installation
+ * Short File Name (SFN) alias generation during install
+ * Using the /INTERACTIVE switch with the AT command to schedule scans
+ * Creating a test text file that looks like a virus
+ * Using Netscape with Norton AntiVirus
+ * Changing LiveUpdate automatic schedules
+ * Preventing the Norton AntiVirus Startup Logo Screen from displaying
+ * Long Filenames and LiveUpdate
+ * Quarantining non-deletable files
+ * Internet access problems with LiveUpdate
+ * Additional information for system administrators
+ * Activity Log Access Denied option
+ * Online manuals: "Cannot find or run file" error message
+ * "Rename Error" occurs during installation
+
+**********************************************************************
+
+Microsoft Office 2000 File Extensions
+-------------------------------------
+Norton AntiVirus now recognizes the new Microsoft Office 2000 file
+extensions, and will readily scan these new file types. The following
+extensions were added to the initial and default Program Files
+extension list:
+
+	HTM*, HTT, VBS, JS and SHS
+
+New configuration options for network administrators
+----------------------------------------------------
+We have added administration features that expand the configuration
+options available.  Many configuration options can now be accessed
+more easily, and LiveUpdates and virus scans can now be randomly
+scheduled.
+
+This release also includes more robust Scan and Deliver and alerting
+functions.
+
+    Randomizing Live Update and Virus Scan schedules:
+       This feature is documented in the NPSCHED.INI file.
+
+    Registry Keys of Interest
+       CAUTION: The entries in this section assume that you have a
+       working knowledge of the Windows Registry Editor, RegEdit.
+       Improper use of RegEdit can result in system malfunction.
+
+       * Skipping the Shutdown Scan
+       ----------------------------
+       Some laptop computers with swappable floppy drives will hang
+       if the floppy drive is not present on shutdown if Scan on
+       Shutdown is in force.
+
+       A new registry key will override the configuration setting
+       and always skip the shutdown scan, even if re-enabled by the
+       user through the NAV options panels.
+
+       To create this key, use the Windows registry editor to find
+       HKEY_LOCAL_MACHINE\Software\Symantec
+             \Norton AntiVirus\Auto-Protect
+
+       Add a new String value under that key, naming it
+       SkipShutdownScan.  Assign it a value of "1".
+
+       To install NAV with this option pre-configured (for use in
+       network distributions to users):
+
+             1) Edit INSTOPTS.INI
+             2) In the [Skip Shutdown Scan] section, ensure that
+                SkipShutdownScan=1 is not commented out
+
+       * Disabling the Scheduler Prompt during installation
+       ----------------------------------------------------
+       After running LiveUpdate a dialog is presented that asks the
+       user to schedule a scan session in the future.  By manually
+       setting a registry key during or after installation the dialog
+       will be disabled.
+
+       Using the Windows Registry Editor (RegEdit), find
+
+       \\HKEY_LOCAL_MACHINE\Software\Symantec\Norton AntiVirus
+             \LiveUpdate\ShowScheduleAddDialog
+
+       Set the value associated with this key to "0" if you want the
+       dialog disabled (default value), or "1" to enable it.
+
+       To install NAV with this option pre-configured (for use in
+       network distributions to users):
+
+             1) Edit INSTOPTS.INI
+             2) In the [LUScheduleDlg] section, ensure that
+                DisableLUSchedule=[0 or 1] is not commented out
+
+       * Skipping message box when attempting to scan 
+         unavailable drive.
+       ----------------------------------------------
+       Prior to this release, if a scheduled or a command-line scan 
+       was set to scan a drive which is not available at the time 
+       of the scan, a message box would be displayed, halting 
+       further scans and requiring user interaction to continue.
+
+       While this is still the default operation of the product, 
+       you can disable the message box from appearing by setting 
+       the registry key:
+
+       HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus 
+            \IgnoreDriveLockedMessage       
+       
+       to a value of =DWORD:00000001.  This can also be 
+       accomplished by executing the SKPLKDRV.REG file from the 
+       Norton AntiVirus folder.  
+
+       When this registry key is set, there will be no error message 
+       displayed, and the Activity Log will be updated to reflect 
+       that the drive was skipped during the scanning process.
+
+    Building the latest Virus definitions into an install set:
+       We have changed the format of our install set.  Now, all
+       virus definition files are stored in expanded format in their
+       own folders.  This will allow administrators to copy in the
+       latest virus definitions prior to placing the install set on
+       a network server for rollout to users.
+
+       There are two different ways of inserting virus definitions into
+       the NAV 5.02.02 install sets.  Both involve an understanding of
+       the differences between the two types of virus definitions NAV
+       uses, and how those definition sets are updated through NAV's
+       LiveUpdate module.
+
+       NAV Definition Types
+       The two types of sets are called "hubs" and "microdefs."  A
+       "hub" can be considered the "master list" of all definitions.
+       Hubs are released once per month by SARC.  By design, Norton
+       AntiVirus must ship with and install using a hub definition set.
+
+       Microdefs can be considered a "differential" definition set,
+       covering only the byte-for-byte changes since the prior hub
+       was released.  This is for the most part what is rolled out
+       through LiveUpdate packages, and is the reason why they are
+       comparatively much smaller (only 100-200Kb on average versus
+       2Mb for a full hub).
+
+       Since, for the most part, file names and numbers of files are
+       the same between hub and microdef sets, it is impossible to tell
+       the difference between them by simply looking at a file listing.
+
+       We have added functionality in NAV 5.02.02 to allow
+       administrators to roll out NAV with not only hub sets but
+       updated microdef sets as well.  We are using new HubDef and
+       MicroDef folders to accomplish this.
+
+       Replacing Virus Definitions
+       There are two stages of replacement, depending on how far the
+       user or administrator wishes to go.  The first method involves
+       only updating the install set with the latest hub.  Because
+       hubs are updated on a monthly basis, this means that virus
+       definitions may be up to a month old.
+
+       The second stage builds on the first stage, adding the latest
+       microdef set.  This will update the install set with definitions
+       that are a few days to a few weeks old, depending on the date of
+       installation and the date of latest microdef release.
+
+       Important Note: All virus definition sets are "platform-
+       sensitive".  Windows 9x and Windows NT Intel platforms use a
+       shared set, and Windows NT Dec Alpha uses a different set.  You
+       must repeat the following steps for each of the two platform
+       types (Intel and DecAlpha).
+
+       Stage 1 - Hub Definitions Replacement
+       1. On a machine representing the platform whose install set
+          you wish to update (for example: Windows 9x), LiveUpdate
+          continually until you are told there are no new updates
+          to download.
+       2. Open an Explorer window, and browse to the
+          \Program Files\Common Files\Symantec Shared\VirusDefs folder.
+       3. Open a second Explorer window and create a temporary folder.
+       4. Copy the contents of both the VirusDefs\BinHub and
+          VirusDefs\TextHub folders into the temporary folder you
+          created.  This folder contains the "hub" set.  The date of
+          the hub corresponds to the date on the files.  Make a note
+          of these file dates, as you will need to refer back to them
+          if you proceed to Stage 2 below.
+       5. In the 5.02.02 install set, delete the contents of the HubDef
+          folder, leaving the folder empty.
+       6. Copy the hub set from step 4 into the HubDef folder of the
+          NAV 5.02.02 install set(s) that corresponds to the platform
+          on which you downloaded the definitions.  In the example in
+          step 1, these definitions would be used in the Windows 9x,
+          Windows NT Server and Windows NT workstation products for
+          Intel platforms.
+       7. If you are not going to proceed with Stage 2, delete the
+          MicroDef folder from the NAV 5.02.02 install set.
+
+       Stage 2 - Microdef Replacement
+       Note: Do not perform this stage until you have first completed
+       Stage 1 above.
+
+       This stage shows administrators how to add a new microdef set
+       in addition to a hub set that they have already replaced in
+       Stage 1 above.  Microdefs are stored in the MicroDef folder
+       in the install set.  Just as with hub definitions, microdefs
+       are platform sensitive.
+
+       1. On the machine used in step 1 of stage 1 above, look again at
+          the VirusDefs folder.  In it you will see folders that are
+          named with a series of numbers.  These numbers correspond
+          to the date of the latest microdef set downloaded, in the
+          format yyyymmdd.xxx, where xxx represents an ordinal number
+          (usually 001 but can be different).
+       2. Find the folder representing the latest date that is also
+          later than the date of your Hub definition set. Use the name
+          of the folder to determine the date, and not the conventional
+          folder datestamp, as they usually will not correspond.
+          If there is no folder that is newer than your hub set, then
+          the hub set is the latest definition set and there are not
+          currently any microdefs that are newer.  In this case, do
+          not proceed any further with this stage.
+       3. In the NAV 5.02.02 install set, delete the contents of the
+          MicroDef folder, leaving it empty.
+       4. Copy the contents of the folder from step 2 into the MicroDef
+          folder in the install set (again, pay attention to the
+          platform you're using).
+       5. You have now created a new install set, complete with both
+          the latest hub and the latest microdefs.  When installed,
+          the [Info] dialog should report the latest definition date.
+
+       Points of interest: Our installer automatically performs a date
+       check, comparing the definitions in the HubDef folder of the
+       install set with those in the MicroDef folder.  Unless the
+       MicroDef folder contains newer definitions then the HubDef
+       folder, MicroDef will be ignored.  This is done to prevent a
+       situation where a user would copy a new hub set into the HubDef
+       folder, but forget to delete or update the MicroDef folder.
+
+       We also test for the presence of the MicroDef folder.  If
+       MicroDef doesn't exist, only the hub set in HubDef will be
+       installed and there will be no errors reported.
+
+Installing on systems equipped with Norton AntiVirus 4.0x
+----------------------------------------------------------------------
+If you install Norton AntiVirus on a system which has Norton AntiVirus
+4.0x installed, you may get an "Unable to start NAVAP" message at the
+end of installation.  Norton AntiVirus 4.0 uses some drivers that Norton
+AntiVirus 5.0 will replace, and a reboot is necessary to complete
+installation.  NOTE:Norton AntiVirus AutoProtect will not be active until
+the system has been rebooted.
+
+Print versions of Norton AntiVirus Guides
+-----------------------------------------
+Print versions of the Norton AntiVirus User and Implementation Guides
+can be ordered through Symantec Customer Service.
+
+Uninstalling LiveUpdate
+-----------------------
+Because LiveUpdate is shared among Symantec products, it is not
+uninstalled automatically if you select Uninstall Norton AntiVirus.
+
+To uninstall LiveUpdate, choose Add/Remove Programs from the Windows
+Control Panel and select LiveUpdate.
+
+Removing Norton AntiVirus from the Windows Start menu
+-----------------------------------------------------
+If Uninstall does not remove the Norton AntiVirus program group from
+the Windows Start menu, you must remove it manually. To remove the
+program group, right-click the taskbar, select Properties, click the
+Start Menu Programs tab, click Remove, select Norton AntiVirus, and
+then click Remove.
+
+Novell NetWare: Installing from long filename (LFN) directories
+---------------------------------------------------------------
+Norton AntiVirus cannot be installed from long filename (LFN)
+directories under Novell NetWare.
+
+Options settings from earlier versions of Norton AntiVirus
+----------------------------------------------------------
+Options settings from versions 4.0 and earlier of Norton AntiVirus are
+not preserved when you install Norton AntiVirus 5.0.
+
+Access privileges required for installation
+-------------------------------------------
+As part of Norton AntiVirus installation, shared Symantec files, which
+are components of all Symantec products, are always installed to
+\Program Files\Symantec -- even if a custom location for the Norton
+AntiVirus program files is specified during install. If you do not
+have write (and create, if necessary) privileges to this location, the
+install will fail.
+
+Short File Name (SFN) alias generation during install
+-----------------------------------------------------
+If you are installing Norton AntiVirus to a custom location that is
+a Long File Name (LFN) folder, SFN alias generation must not be 
+disabled during the install. To re-enable SFN alias generation, run 
+REGEDT32 and change the following registry key entry:
+
+  HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+
+  NtfsDisable8dot3NameCreation should be set to 0 to enable SFN 
+  alias generation.
+
+You must restart your NT machine in order for changes in SFN alias
+generation to take effect. Set the value back to 1 after installation
+to disable SFN alias generation, if desired.
+
+Using the /INTERACTIVE switch with the AT command to schedule scans
+-------------------------------------------------------------------
+You must use the /INTERACTIVE switch to schedule scans with the AT
+command. If NAVWNT is launched from the NT Scheduling Service (AT)
+without the /INTERACTIVE switch, Norton AntiVirus remains in memory
+with no way of terminating. The following examples demonstrate
+correct usage to schedule automatic scans three times per week.
+
+For Windows NT 4.0:
+
+ at 17:30 /interactive /every:M,W,F "c:\Program Files\NAVNT\navwnt" /L
+
+See your Windows NT documentation for more information on using the AT
+command.
+
+Creating a test text file that looks like a virus
+--------------------------------------------------
+To create a harmless text file that will be detected as a virus,
+which you can then use to verify detection of viruses, logging and
+functioning of alerts, copy the following line in to a separate file,
+saving it as trigger.com. This file is NOT a virus, but will be
+detected as the "EICAR Test String.68" virus. Disable Auto-Protect
+temporarily before you save the file.
+
+X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
+
+Using Netscape with Norton AntiVirus
+------------------------------------
+If Norton AntiVirus is installed as a Netscape helper application, a
+a downloaded file will be lost if Netscape is closed before the 
+download is complete.
+
+Changing LiveUpdate automatic schedules
+---------------------------------------
+The first time that LiveUpdate completes a successful session, it 
+offers to schedule future sessions automatically. If you want to 
+modify or delete the scheduled sessions, access the Norton Program
+Scheduler from the Norton AntiVirus group on the Start menu or the
+Norton AntiVirus main window.
+
+Preventing the Norton AntiVirus Startup Logo Screen from displaying
+-------------------------------------------------------------------
+Some users prefer not to see the startup logo screens that display 
+when Norton AntiVirus components are loaded. They can be disabled
+adding the following Registry entries:
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus\Auto-Protect]
+"DisableSplashScreen"=dword:00000001
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Clinic]
+"DisableSplashScreen"=dword:00000001
+
+Long Filenames and LiveUpdate 
+-----------------------------
+Long Filenames (LFNs) must be enabled on Windows NT systems to
+install LiveUpdate.
+
+Quarantining non-deletable files
+--------------------------------
+Norton AntiVirus cannot quarantine non-deletable files (for example,
+files infected by the DirII virus). To manually add these types of 
+files to the Quarantine, open the Quarantine and choose Add Item.
+
+Internet access problems with LiveUpdate
+----------------------------------------
+LiveUpdate operation may be restricted because of firewalls or proxy
+servers.  Contact your network administrator if you have problems
+using LiveUpdate due to your network security policy.
+
+Additional information for system administrators 
+------------------------------------------------
+If you're a system administrator and would like information about
+Norton AntiVirus Administration Tools or other Corporate products,
+please visit our website at:
+
+    http://www.symantec.com/solutions/navcorp.html
+
+Activity Log Access Denied option
+---------------------------------
+The Activity Log includes a new option to report attempts to scan when
+access is denied.  For example, an administrator may try to scan a
+folder to which you have prevented others from accessing by setting
+access permissions.  Norton AntiVirus will report in the Activity Log
+that an attempt was made to scan your restricted-access folder. 
+
+Online manuals: "Cannot find or run file" error message
+-------------------------------------------------------
+You must install Adobe Acrobat Reader to view the Norton AntiVirus
+online manuals. 
+
+To install Adobe Acrobat Reader:
+
+  1 On the Windows Taskbar, click Start, point to Programs, 
+    point to Norton AntiVirus, and click Norton AntiVirus to open
+    the Norton AntiVirus main window.
+
+  2 From the Help menu, point to Product Support Online, and click 
+    Product Support.
+
+  3 In the Product Support help window that appears, click 
+    Install Adobe Acrobat Reader.
+
+Rename Error during Norton AntiVirus installation 
+-------------------------------------------------
+     
+If you experience a Comctl32.dll rename error when installing 
+Norton AntiVirus, an error dialog box on your screen shows 
+the following information:
+     
+    RENAME ERROR
+     
+    An error occurred renaming a file "Cannot create a file when 
+    that file already exists"(error #183).
+     
+    Current File Name: C:\WINNT\System32\Comctl32.dll 
+    New File Name: C:\WINNT\System32\comctl32.bak
+     
+To fix the Comctl32.dll rename error:
+     
+1) From Windows Explorer, access the following directory:
+     
+      \winnt\system32
+     
+2) Right-click the following file:
+     
+      comctl32.bak
+     
+   Select Rename
+     
+3) Type the following as the new name for the file:
+     
+      comctl32.old
+     
+4) Run the Norton AntiVirus install program (setup.exe) again.
+
+**********************************************************************
+                                END OF FILE
+**********************************************************************

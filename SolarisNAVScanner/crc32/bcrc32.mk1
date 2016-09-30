@@ -1,0 +1,20 @@
+!define BLANK ""
+.cpp : $(%include)
+.h : $(%include)
+
+.cpp.obj :
+  if not exist $[&.cpp copy $[@ . > nul
+ *wpp386 $^&.cpp -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+crc32.lib : crc32.obj .AUTODEPEND
+
+            
+!ifneq BLANK "crc32.obj"
+ @for %i in (crc32.obj) do @%append crc32.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append crc32.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 crc32.lib @crc32.lb1
+
+

@@ -1,0 +1,2818 @@
+;****************************************************************************
+; Copyright 1997 Symantec, Peter Norton Product Group
+;****************************************************************************
+; XL97SIGS.WDF
+;
+; $Header:   S:/NAVEX/VCS/xl97sigs.wdv   1.115   15 Jan 1999 12:47:42   relniti  $
+;
+; This source file contains definitions for the Excel 97 viruses.
+;
+;****************************************************************************
+; $Log:   S:/NAVEX/VCS/xl97sigs.wdv  $
+   
+      Rev 1.115   15 Jan 1999 12:47:42   relniti
+   #11031 0x6532,33 VID_SUGARB, VID_SUGARBPAYLOAD, X97M.Sugar.B and
+    W97M.Sugar.B.Payload
+   
+      Rev 1.114   12 Jan 1999 19:02:44   DKESSNE
+   added Laroux.FX and Laroux.FY 0x652d, 0x652e
+   
+      Rev 1.113   08 Jan 1999 17:19:12   relniti
+   RENAME 0x61fc XM.Laroux.FW => XM.Forecast
+   add 0x652b VID_LAROUXFW XM.Laroux.FW for #10750
+   
+      Rev 1.112   07 Jan 1999 17:14:50   relniti
+   add CRC only detection to XM.Laroux.FC for #10683
+   
+      Rev 1.111   07 Jan 1999 15:20:14   relniti
+   #10676: 0x652a X97M.Laroux.HN VID_LAROUXHN
+   rename Laroux.DW => Laroux.EI
+   
+      Rev 1.110   06 Jan 1999 16:53:44   relniti
+   #10559 VID_LAROUXHK 0x6529 X97M.Laroux.HK
+   
+      Rev 1.109   22 Dec 1998 09:09:32   AOONWAL
+   Added sig for X97M.Laroux.FG
+   
+      Rev 1.108   16 Dec 1998 22:33:50   relniti
+   add XM.Compat.Ax
+   
+      Rev 1.107   29 Nov 1998 21:01:48   relniti
+   VMacro XM November 98
+   
+      Rev 1.106   25 Nov 1998 21:28:54   relniti
+   ADD LAROUXDAM*!*^
+   
+      Rev 1.105   24 Nov 1998 15:50:30   relniti
+   #8124 0x650A XM.Laroux.FA
+   
+      Rev 1.104   23 Nov 1998 19:26:30   relniti
+   #8045: XM.Laroux.GG VID_LAROUXGG 0x6509
+   
+      Rev 1.103   16 Nov 1998 13:05:38   AOONWAL
+   Added XM.Laroux.EZ
+   
+      Rev 1.102   13 Nov 1998 21:06:28   Relniti
+   VMACRO Processing 111398 XM.VCX.A,B,C 64b0,b6,b7
+   
+      Rev 1.101   13 Nov 1998 17:02:40   Relniti
+   #7401: VID_LAROUXGA 0x6500 XM.Laroux.GA
+   
+      Rev 1.100   12 Nov 1998 18:57:32   Relniti
+   #7323: XM.Cauli.A 61ff VID_CAULI
+   
+      Rev 1.99   06 Nov 1998 13:11:40   ECHIEN
+   Added XM.laroux.Fw
+   
+      Rev 1.98   05 Nov 1998 15:30:10   Relniti
+   #6523: marking two of five XM.Soldier macrosig NotFullSet for FP problem
+   
+      Rev 1.97   28 Oct 1998 15:44:20   AOONWAL
+   Added CRC to VID_LAROUXDAM for CI#6176
+   
+      Rev 1.96   28 Oct 1998 14:43:32   DKESSNE
+   added XM.Laroux.FO
+   
+      Rev 1.95   23 Oct 1998 16:09:44   relniti
+   #6061: VID_LAROUXFM 61EB XM.Laroux.FM and its downconvert
+   
+      Rev 1.94   23 Oct 1998 13:50:22   AOONWAL
+   Added XM.Laroux.FL
+   
+      Rev 1.93   22 Oct 1998 15:50:00   AOONWAL
+   Added XM.Laroux.EO
+   
+      Rev 1.92   14 Oct 1998 20:46:04   relniti
+   #5534: XM.Soldier.A VID_SOLDIER 0x61E5
+   
+      Rev 1.91   06 Oct 1998 17:44:12   CFORMUL
+   Added XM.Laroux.FF
+   
+      Rev 1.90   06 Oct 1998 16:01:32   ECHIEN
+   Added Laroux.FD
+   
+      Rev 1.89   02 Oct 1998 14:26:08   relniti
+   ADD X97M.Laroux.CS for #5215. XM.Laroux.CS was VMacro based
+   
+      Rev 1.88   01 Oct 1998 16:04:46   relniti
+   ADD 0x61D6 VID_LAROUXFC XM.Laroux.FC for #5179
+   
+      Rev 1.87   24 Sep 1998 14:54:06   AOONWAL
+   Added CRC for Laroux.DX
+   
+      Rev 1.86   10 Sep 1998 19:02:14   relniti
+   ADD 61D1 VID_LAROUXEN XM.Laroux.EN for #4521
+   
+      Rev 1.85   09 Sep 1998 14:31:18   relniti
+   ADD/SPLIT O97M.Shiver(63f0) to .A(63f0), .B(63f1) , .C(63f2) as named in VMacro
+   
+      Rev 1.84   08 Sep 1998 17:02:28   relniti
+   MODIFY O97M.Shiver to repair properly (XL4 macro is moved to XL4SIGS.WDF)
+   
+      Rev 1.83   01 Sep 1998 15:46:50   relniti
+   VID_SHIVER 63F0 for O97M.Shiver.A
+   
+      Rev 1.82   01 Sep 1998 14:06:06   relniti
+   MODIFIED Laroux.DL to use CRC only
+   
+      Rev 1.81   19 Aug 1998 18:02:02   RELNITI
+   VMacro O97M.Teocatl.B 63CF
+   
+      Rev 1.80   11 Aug 1998 22:28:30   jwilber
+   Added sigs for:
+   XM.Laroux.DV, VID 619d, for CI 2584, and
+   XM.Laroux.DW, VID 619e, for CI 2585.
+ 
+      Rev 1.79   11 Aug 1998 17:14:54   jwilber
+   Added upconvert of XM.Laroux.DU, VID 619b, for CI 2578.
+ 
+      Rev 1.78   05 Aug 1998 14:35:18   jwilber
+   Added upconvert sig for XM.Laroux.DT, VID 6197, for CI 2545.
+ 
+      Rev 1.77   28 Jul 1998 12:55:20   RELNITI
+   ADD 6192 VID_TABEJC for XM.Tabej.C #2494
+ 
+      Rev 1.76   23 Jul 1998 16:59:44   jwilber
+   Added sig for upconvert of XM.Extras.F, VID 618e, for CI 2453.
+ 
+      Rev 1.75   23 Jul 1998 15:32:50   jwilber
+   Added upconvert of XM.Laroux.DS, VID 618c, for CI 2448.
+ 
+      Rev 1.74   16 Jul 1998 13:31:54   jwilber
+   Added upconvert of XM.Laroux.DR, VID 6186, for CI 2392.
+ 
+      Rev 1.73   14 Jul 1998 18:32:40   jwilber
+   Added sig for XM.Laroux.DQ, VID 6184, for CI 2367.
+ 
+      Rev 1.72   10 Jul 1998 14:51:24   jwilber
+   Added detection for XM.Extras.E, VID 6181, for CI 2322.
+ 
+      Rev 1.71   08 Jul 1998 17:28:38   RELNITI
+   ADD 6180 VID_TABEJB XM.Tabej.B for #2297
+ 
+      Rev 1.70   29 Jun 1998 13:38:10   RELNITI
+   ADD Laroux.DP
+ 
+      Rev 1.69   18 Jun 1998 15:49:46   JWILBER
+   Added sig for XM.Tabej.A, VID 617b, for CI 2167.
+ 
+      Rev 1.68   16 Jun 1998 19:08:28   JWILBER
+   Added XM.Laroux.DL, VID 6175, for CI 2147.
+ 
+      Rev 1.67   16 Jun 1998 17:30:40   JWILBER
+   Added XL97 sig for XM.Laroux.DK, VID 6174.
+ 
+      Rev 1.66   05 Jun 1998 12:38:56   AOONWAL
+   Modified XM.Lroux.E (dam) and renamed it to XM.Laroux (dam)
+ 
+      Rev 1.65   05 Jun 1998 11:12:02   RELNITI
+   ZOO Macro Work: Vesselin's Excel collection 6370-6377
+ 
+      Rev 1.64   05 Jun 1998 09:33:20   RELNITI
+   ZOO: Vesselin's Excel Collection 6345, 6338, 6333, 6331, 6356-636f
+ 
+      Rev 1.63   03 Jun 1998 11:29:02   RELNITI
+   MAY98 Zoo Macro Work: 6350-6355:
+    X97M.Import.A, Neg.A, Neg.B, Teocatl, Trash, Yohimbe.B
+ 
+      Rev 1.62   21 May 1998 22:31:44   JWILBER
+   Added sigs for XM.Extras.C, and non-replicating variants for CI 1985.
+ 
+      Rev 1.61   14 May 1998 15:26:50   DKESSNE
+   added Laroux.DE 0x6153 for CI 1948
+ 
+      Rev 1.60   13 May 1998 20:02:22   relniti
+   RENAME 615B: XM.Laroux.CX => XM.Laroux.DB
+          615C: XM.Laroux.CY => XM.Laroux.DC
+   ADD 615D: XM.Laroux.CX from what John added into Laroux.CF
+ 
+      Rev 1.59   12 May 1998 21:25:02   JWILBER
+   Added CRC for XM.Laroux.CY, VID 615c, for CI 1915.
+ 
+      Rev 1.58   12 May 1998 18:18:48   JWILBER
+   Added new xl97 CRC for XM.Laroux.CF, VID 6137, for CI 1927.
+ 
+      Rev 1.57   12 May 1998 15:38:54   JWILBER
+   Added XL97 sig for XM.Laroux.CX, VID 615b, for CI 1910.
+ 
+      Rev 1.56   06 May 1998 19:22:28   JWILBER
+   Added Laroux.CW, VID 6156, for CI 1900.
+ 
+      Rev 1.55   30 Apr 1998 18:50:28   AOONWAL
+   Added "WM.Laroux.CK"
+ 
+      Rev 1.54   23 Apr 1998 18:42:18   relniti
+   FIX Laroux.CF... should have used NAME_ONLY_FOXZ instead of LAROUX
+ 
+      Rev 1.53   20 Apr 1998 18:26:36   RELNITI
+   ADD 614B XM.Extras.B
+ 
+      Rev 1.52   17 Apr 1998 15:31:30   RELNITI
+   ADD LAROUXEDAM for #1775, see notes in virscan 6147
+ 
+      Rev 1.51   16 Apr 1998 21:30:00   RELNITI
+   CHANGE Laroux.A to CRC detection
+ 
+      Rev 1.50   15 Apr 1998 18:25:16   RELNITI
+   Converting XL95 detection for XL95/XL5 new engine: changes of #define
+   on some VID_LAROUX?? for modify or new detection
+ 
+      Rev 1.49   15 Apr 1998 10:51:00   RELNITI
+   MOVE all NameSig into XLNAMSIG.WDF
+ 
+      Rev 1.48   14 Apr 1998 08:45:36   RELNITI
+   ADD XM.Laroux.CV for #1750
+ 
+      Rev 1.47   06 Apr 1998 17:56:12   DKESSNE
+   added XM.SW.A 0x6141 for CI 1683
+ 
+      Rev 1.46   02 Apr 1998 07:51:08   AOONWAL
+   Changed VID_CECILIACO to VID_LAROUXCO
+ 
+      Rev 1.45   01 Apr 1998 18:06:06   DKESSNE
+   added XM.Laroux.CQ 0x6137 for CI 1659
+ 
+      Rev 1.44   01 Apr 1998 16:48:22   AOONWAL
+   Added "XM.Cecilia.CO"
+ 
+      Rev 1.43   01 Apr 1998 14:12:46   DKESSNE
+   added XM.Laroux.CP 0x6136 for CI 1658
+ 
+      Rev 1.42   31 Mar 1998 13:49:28   DKESSNE
+   added XM.Extras.A 0x6135 for CI 1638
+ 
+      Rev 1.41   25 Mar 1998 21:18:54   JWILBER
+   Whoops - pulled #if defs for CI 1608.  This isn't a .CPP file.
+ 
+      Rev 1.40   25 Mar 1998 19:07:10   JWILBER
+   Added def for XM.Laroux.AN, VID 6132, for CI 1608.
+ 
+      Rev 1.39   20 Mar 1998 15:44:54   DKESSNE
+   added laroux.bo 0x612f for CI 1572
+ 
+      Rev 1.38   19 Mar 1998 11:37:10   DKESSNE
+   No change.
+ 
+      Rev 1.37   19 Mar 1998 11:35:30   DKESSNE
+   added Laroux.CK 0x612e CI 1566
+ 
+      Rev 1.36   17 Mar 1998 18:17:56   DKESSNE
+   added Laroux.AZ 0x612c for CI 1553
+ 
+      Rev 1.35   16 Mar 1998 12:13:02   DKESSNE
+   added 97 upconvert for Laroux.BU for CI 1522
+ 
+      Rev 1.34   13 Mar 1998 22:56:14   RELNITI
+   CRCXL97 Conversion 031398
+ 
+      Rev 1.33   13 Mar 1998 15:42:36   JWILBER
+   Converted CRC for Laroux.BW to new CRC.
+ 
+      Rev 1.32   13 Mar 1998 10:30:04   RELNITI
+   MORE NEW CRCWD8 after 1st Montly build QA test
+ 
+      Rev 1.31   09 Mar 1998 12:36:10   RELNITI
+   ADD X97M.Laroux.CE for #1476
+   SORT Laroux's entries.
+ 
+      Rev 1.30   09 Mar 1998 10:05:50   RELNITI
+   ADD X97M.Laroux.G for #1471
+ 
+      Rev 1.29   06 Mar 1998 18:25:10   DKESSNE
+   added Laroux.CJ 0x611e  for CI 1475
+ 
+      Rev 1.28   06 Mar 1998 12:41:18   DKESSNE
+   edited XM.Laroux.AF 0x60e7 for CI 1470
+ 
+      Rev 1.27   05 Mar 1998 12:28:48   DKESSNE
+   added XM.Laroux.BY 0x611c (CI 1433)
+ 
+      Rev 1.26   05 Mar 1998 11:19:54   DKESSNE
+   added Laroux.BX 0x611b (CI 1449)
+ 
+      Rev 1.25   04 Mar 1998 15:44:04   JWILBER
+   Added XM.Laroux.BW, VID 0x6119, CI tbd.
+ 
+      Rev 1.24   03 Mar 1998 11:28:02   DKESSNE
+   added XM.Laroux.BV 0x6116 for CI 1426
+ 
+      Rev 1.23   12 Feb 1998 12:44:54   RELNITI
+   Laroux.BL => Laroux.AM
+   Laroux.BK => Laroux.BQ
+ 
+      Rev 1.22   11 Feb 1998 21:29:46   RELNITI
+   ADD Laroux.BP upconvert of #1268
+ 
+      Rev 1.21   05 Feb 1998 12:33:28   DKESSNE
+   added XM.Laroux.BK 0x6104 for CI 1210 (XL97 version)
+ 
+      Rev 1.20   28 Jan 1998 17:46:08   JWILBER
+   Reconciled w/ DEFWORK by adding Laroux.BJ upconvert, and Nocal.A.
+ 
+      Rev 1.19   19 Jan 1998 18:21:26   RELNITI
+   Jan98 Blitz: Joe Wells' collection: X97M.Tjoro
+ 
+      Rev 1.18   15 Jan 1998 14:52:52   JWILBER
+   Removed def for XM.Laroux.AG, VID 60ed, and moved to DEFWORK under
+   VID 60ee.  Name sig for NOCAL also removed.
+ 
+      Rev 1.17   15 Jan 1998 02:23:56   JWILBER
+   Added name sig for "NOCAL".
+ 
+      Rev 1.16   15 Jan 1998 01:49:22   JWILBER
+   Added sig for XM.Laroux.AG, VID 60ed, CI 1016.
+ 
+      Rev 1.15   10 Jan 1998 07:26:08   JWILBER
+   Added sig for XM.Laroux.AF, VID 60e7 for CI 970.
+ 
+      Rev 1.14   29 Dec 1997 17:55:02   JWILBER
+   Modified during Jan98 build.
+ 
+      Rev JAN98  19 Dec 1997 13:13:00   DKESSNE
+   added XM.Laroux.AE  VID0x60E0  Cust#802
+ 
+      Rev JAN98  19 Dec 1997 11:55:16   AOONWAL
+   Added Laroux.AU
+ 
+      Rev JAN98  17 Dec 1997 17:07:36   CFORMUL
+   Added Laroux.BA
+ 
+      Rev JAN98  16 Dec 1997 16:07:18   DKESSNE
+   added Laroux.AV 0x60c9 cust#792
+ 
+      Rev 1.13   11 Dec 1997 17:41:14   AOONWAL
+   Added 0x60c6 "XM.Laroux.J"
+ 
+      Rev 1.12   29 Aug 1997 14:14:32   ECHIEN
+   Added Laroux.F
+ 
+      Rev 1.11   15 Aug 1997 12:54:12   RELNITI
+   RENAMING PLDT => LAROUX.E
+ 
+      Rev 1.10   28 Jul 1997 12:58:00   AOONWAL
+   Modified during AUG97 update
+ 
+      Rev AUG97   23 Jul 1997 17:26:26   RELNITI
+   ADD XM.PLDT.A for #12684
+ 
+      Rev 1.9   14 Jul 1997 16:43:24   CFORMUL
+   Added NotFullSet to the two blank macros from RoboCop
+ 
+      Rev 1.8   27 May 1997 17:46:12   RELNITI
+   MIGRATING CRC
+ 
+      Rev 1.7   27 May 1997 11:23:28   AOONWAL
+   Modified during JUNE97 build
+ 
+      Rev JUNE97 22 May 1997 21:30:48   CFORMUL
+   Added Laroux.D
+ 
+      Rev 1.6   06 May 1997 12:06:02   CFORMUL
+   Added sig for LAroux.C
+ 
+      Rev 1.5   05 May 1997 15:56:44   CFORMUL
+   Added detection for the Excel 97 Dumb Laroux virus
+ 
+      Rev 1.4   30 Apr 1997 16:26:30   CFORMUL
+   Fixed the repair for robocop
+ 
+      Rev 1.3   10 Apr 1997 15:08:32   CFORMUL
+   Updated all CRC's to the new format
+ 
+      Rev 1.2   28 Mar 1997 13:40:44   CFORMUL
+   Added detection for Legend and Robocop
+ 
+      Rev 1.1   27 Mar 1997 16:43:50   CFORMUL
+   Changed Laroux sig from a CRC to an ALG
+ 
+      Rev 1.0   13 Feb 1997 13:25:44   DCHI
+   Initial revision.
+;
+;****************************************************************************
+
+
+##############################################################################
+#
+# Known Virus Sigs
+#
+##############################################################################
+
+[NamedCRCSigStart]
+[Comment]       X97M.CAULI.A: CAULIFLOWER
+[ID]            CRC_CAULIFLOWER_CAULI
+[CRCXL97]       0x0D4E531D
+[Signature]     NameSig(NAME_ONLY_CAULIFLOWER)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.CAULI.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_CAULI
+[Signature]     NamedCRCSig(CRC_CAULIFLOWER_CAULI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[MacroSigStart]
+[Comment]       XM.Compat.A
+[ID]            COMPATA_ALG97
+[Signature]     "xla" SeekCur(-12) "Off97com.xla"
+[Signature]     ScanStringI(100, "vba_xl.txt")
+[Signature]     ScanStringI(100, "vba_xl.xls")
+[Signature]     ScanString(1000, "Office 97 Compatibility")
+[MacroSigEnd]
+
+[knownVirusSigStart]
+[Comment]       XM.Compat.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_COMPATA
+[Signature]     MacroSig(COMPATA_ALG97)
+[Repair]        UseSignature
+[knownVirusSigEnd]
+
+
+############
+# XM.Delta
+############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MODULE1
+[ID]            CRC_MODULE1_DELTA
+[CRCXL97]       0x8429A73A
+;[CRCXL97]       0x4DE9823D
+;[CRCXL97]       0xD5772916
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Delta
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_DELTA
+[Signature]     NamedCRCSig(CRC_MODULE1_DELTA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.DELTA.D: MODULE1
+[ID]            CRC_MODULE1_DELTAD
+[CRCXL97]       0xC7422A00
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.DELTA.D
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_DELTAD
+[Signature]     NamedCRCSig(CRC_MODULE1_DELTAD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+############
+# XM.DMV
+############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for SHEET01
+[ID]            CRC_SHEET01_DMV
+[CRCXL97]       0xBCB42EFB
+;[CRCXL97]       0x9055F7D5
+;[CRCXL97]       0x81C63C3F
+[Signature]     NameSig(NAME_ONLY_SHEET01)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.DMV
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_XLDMV
+[Signature]     NamedCRCSig(CRC_SHEET01_DMV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.DMV.B: SHEET01
+[ID]            CRC_SHEET01_DMVB
+[CRCXL97]       0xBFD3A862
+[Signature]     NameSig(NAME_ONLY_SHEET01)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.DMV.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_XLDMVB
+[Signature]     NamedCRCSig(CRC_SHEET01_DMVB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#########
+# XM.Extras: poly module name: 25 random characters
+#########
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Extras.A
+[ID]            CRC_EXTRASA
+[CRCXL97]       0x7a421fd3
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Extras.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_EXTRASA
+[Signature]     NamedCRCSig(CRC_EXTRASA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.EXTRAS.B
+[ID]            CRC_EXTRASB
+[CRCXL97]       0x9D1048C1
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.EXTRAS.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_EXTRASB
+[Signature]     NamedCRCSig(CRC_EXTRASB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.EXTRAS.D: Random Name 25 characters long.
+[ID]            CRC_25CHARNAME_EXTRASD
+[CRCXL97]       0x72b4550b
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.EXTRAS.D
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_EXTRASD
+[Signature]     NamedCRCSig(CRC_25CHARNAME_EXTRASD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.EXTRAS.E: Random Name 25 characters long.
+[ID]            CRC_25CHARNAME_EXTRASE
+[CRCXL97]       0xb321cebc
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.EXTRAS.E
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_EXTRASE
+[Signature]     NamedCRCSig(CRC_25CHARNAME_EXTRASE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.EXTRAS.F: Random Name 25 characters long.
+[ID]            CRC_25CHARNAME_EXTRASF
+[CRCXL97]       0xded0ffcd
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.EXTRAS.F
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_EXTRASF
+[Signature]     NamedCRCSig(CRC_25CHARNAME_EXTRASF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+; I know these are cheez variant detections - they'll be improved later.
+; They don't replicate!  This is just to make a customer happy! (CI 1985)
+; jjw
+
+[NamedCRCSigStart]
+[Comment]       XM.EXTRAS Variant: Random Name 25 characters long.
+[ID]            CRC_25CHARNAME_EXTRASVAR1
+[CRCXL97]       0x02754e59
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.EXTRAS Variant: Random Name 25 characters long.
+[ID]            CRC_25CHARNAME_EXTRASVAR2
+[CRCXL97]       0x81237b47
+[Signature]     NameSig(NAME_25_CHARACTERS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.EXTRAS VARIANT
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_EXTRAS_VAR
+[Signature]     NamedCRCSig(CRC_25CHARNAME_EXTRASVAR1) or
+[Signature]     NamedCRCSig(CRC_25CHARNAME_EXTRASVAR2)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       XM.Forecast
+[ID]            CRC_FORECASTMOD_FORECAST
+[CRCXL97]       0x34202519
+[Signature]     NameSig(NAME_ONLY_FORECASTMOD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Forecast
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_FORECAST
+[Signature]     NamedCRCSig(CRC_FORECASTMOD_FORECAST)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+##############
+# X97M.Import
+##############
+
+[NamedCRCSigStart]
+[Comment]       X97M.IMPORT.A: ARTILIFE
+[ID]            CRC_ARTILIFE_IMPORT
+[CRCXL97]       0x535CDD56
+[Signature]     NameSig(NAME_ONLY_ARTILIFE)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.IMPORT.A: REPLICATOR
+[ID]            CRC_REPLICATOR_IMPORT
+[CRCXL97]       0x58370F42
+[Signature]     NameSig(NAME_ONLY_REPLICATOR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.IMPORT.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_IMPORT
+[Signature]     NamedCRCSig(CRC_ARTILIFE_IMPORT) and
+[Signature]     NamedCRCSig(CRC_REPLICATOR_IMPORT)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+###############
+# XM.Junior
+###############
+
+[NamedCRCSigStart]
+[Comment]       X97M.JUNIOR.A: JUNIOR
+[ID]            CRC_JUNIOR_JUNIORA
+[CRCXL97]       0xA28F713F
+[Signature]     NameSig(NAME_ONLY_JUNIOR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.JUNIOR.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_JUNIORA
+[Signature]     NamedCRCSig(CRC_JUNIOR_JUNIORA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LEGEND
+[ID]            CRC_LEGEND_LEGEND
+[CRCXL97]            0xBF135BD6
+; [CRCXL97] 0xCD83A434
+;[CRCXL97]       0xBE70B006
+[Signature]     NameSig(NAME_ONLY_LEGEND)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Legend.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LEGEND
+[Signature]     NamedCRCSig(CRC_LEGEND_LEGEND)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+##############
+# X97M.NEG
+##############
+
+[NamedCRCSigStart]
+[Comment]       X97M.NEG.A: DOLLAR
+[ID]            CRC_DOLLAR_NEGA
+[CRCXL97]       0x42145757
+[Signature]     NameSig(NAME_ONLY_DOLLAR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.NEG.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_NEGA
+[Signature]     NamedCRCSig(CRC_DOLLAR_NEGA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.NEG.B: LORD
+[ID]            CRC_LORD_NEGB
+[CRCXL97]       0xDB016F6B
+[Signature]     NameSig(NAME_ONLY_LORD)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.NEG.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_NEGB
+[Signature]     NamedCRCSig(CRC_LORD_NEGB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+##############
+# X97M.Police
+##############
+[NamedCRCSigStart]
+[Comment]       X97M.POLICE: POLICE
+[ID]            CRC_POLICE_POLICE
+[CRCXL97]       0x5D60CBBA
+[Signature]     NameSig(NAME_ONLY_POLICE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.POLICE
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_POLICE
+[Signature]     NamedCRCSig(CRC_POLICE_POLICE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+##############
+# X97M.Riots
+##############
+[NamedCRCSigStart]
+[Comment]       X97M.RIOTS: RIOTS
+[ID]            CRC_RIOTS_RIOTS
+[CRCXL97]       0x0D82D1B8
+[Signature]     NameSig(NAME_ONLY_RIOTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.RIOTS
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_RIOTS
+[Signature]     NamedCRCSig(CRC_RIOTS_RIOTS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+##############
+# XM.Robocop
+##############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for COP
+[ID]            CRC_COP_ROBOCOP
+[CRCXL97]       0x4ACAC3D1
+; [CRCXL97] 0xFE9F92F1
+;[CRCXL97]       0x8F14E37C
+[Signature]     NameSig(NAME_ONLY_COP)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for ROBO
+[ID]            CRC_ROBO_ROBOCOP
+[CRCXL97]       0xB7FCEFD2
+; [CRCXL97] 0x76FA4DAB
+;[CRCXL97]       0x387D4BED
+[Signature]     NameSig(NAME_ONLY_ROBO)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MODULE1
+[ID]            CRC_MODULE1_ROBOCOP
+[CRCXL97]       0xFFFFFFFF
+;[CRCXL97] 0xFFFFFFFF
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NotFullSet]
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for MODULE2
+[ID]            CRC_MODULE2_ROBOCOP
+[CRCXL97]       0xFFFFFFFF
+; [CRCXL97] 0xFFFFFFFF
+[Signature]     NameSig(NAME_ONLY_MODULE2)
+[NotFullSet]
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       Sig
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_ROBOCOPA
+[Signature]     NamedCRCSig(CRC_COP_ROBOCOP) and
+[Signature]     NamedCRCSig(CRC_ROBO_ROBOCOP)
+[Repair]        UseSignature,
+[Repair]        NamedCRCSig(CRC_MODULE1_ROBOCOP),
+[Repair]        NamedCRCSig(CRC_MODULE2_ROBOCOP)
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       X97M.Shiver.A: MODULE1
+[ID]            CRC_MODULE1_SHIVERA
+[CRCXL97]       0x7F8AD850
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Shiver.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SHIVERA
+[Signature]     NamedCRCSig(CRC_MODULE1_SHIVERA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.Shiver.B: MODULE1
+[ID]            CRC_MODULE1_SHIVERB
+[CRCXL97]       0xB382EFBC
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Shiver.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SHIVERB
+[Signature]     NamedCRCSig(CRC_MODULE1_SHIVERB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.Shiver.C: MODULE1
+[ID]            CRC_MODULE1_SHIVERC
+[CRCXL97]       0xFAD8A6B1
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Shiver.C
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SHIVERC
+[Signature]     NamedCRCSig(CRC_MODULE1_SHIVERC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+#############
+# XM.Sofa
+#############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for
+[ID]            CRC_11SPACES_SOFA
+[CRCXL97]       0xFE573034
+;[CRCXL97]       0xBB3BFA60
+;[CRCXL97]       0x2D333F7B
+[Signature]     NameSig(NAME_ONLY_11SPACES)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Sofa
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SOFA
+[Signature]     NamedCRCSig(CRC_11SPACES_SOFA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[MacroSigStart]
+[Comment]       XM.Soldier:
+[ID]            SHEETCOPY_SOLDIER
+[Signature]     "Workbooks(" ScanSlide(10, '$') ScanStringI(10, ".Sheets")
+[Signature]     ScanStringI(10, ".Copy Before")
+[Signature]     ScanStringI(10, "Workbooks(") ScanSlide(10, '$')
+[NotFullSet]
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       XM.Soldier:
+[ID]            MODULEINSERT_SOLDIER
+[Signature]     "Workbooks(" ScanSlide(10, '$')
+[Signature]     ScanStringI(10, ".Modules") ScanStringI(10, ".InsertFile")
+[Signature]     ScanStringI(50, "soldier")
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       XM.Soldier:
+[ID]            KILLSOLDIER_SOLDIER
+[Signature]     "Kill" ScanStringI(10, "soldier.")
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       XM.Soldier:
+[ID]            OPENSOLDIER_SOLDIER
+[Signature]     "Open" ScanStringI(10, "soldier.")
+[MacroSigEnd]
+
+[MacroSigStart]
+[Comment]       XM.Soldier:
+[ID]            WORKBOOKSAVE_SOLDIER
+[Signature]     "Workbooks(" ScanStringI(10, ".save")
+[NotFullSet]
+[MacroSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Soldier
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SOLDIER
+[Signature]     MacroSig(SHEETCOPY_SOLDIER) and
+[Signature]     MacroSig(MODULEINSERT_SOLDIER) and
+[Signature]     MacroSig(KILLSOLDIER_SOLDIER) and
+[Signature]     MacroSig(OPENSOLDIER_SOLDIER) and
+[Signature]     MacroSig(WORKBOOKSAVE_SOLDIER)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+###############
+# XM.SUGAR
+###############
+
+[KnownVirusSigStart]
+[Comment]       X97M.Sugar.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SUGARB
+[Signature]     CRC(0xBE8CFE37) or
+[Signature]     CRC(0xD19DDA5B)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+###############
+# XM.SW
+###############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.SW.A
+[ID]            CRC_SWA
+[CRCXL97]       0xe0b786dd
+[Signature]     NameSig(NAME_ONLY_SW)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.SW.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_SWA
+[Signature]     NamedCRCSig(CRC_SWA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.TABEJ.A
+[ID]            CRC_TABEJ_TABEJA
+[CRCXL97]       0xb30be9f5              ; XL95 CRC exists in xl95sigs.wdf
+[Signature]     NameSig(NAME_ONLY_TABEJ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Tabej.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TABEJA
+[Signature]     NamedCRCSig(CRC_TABEJ_TABEJA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.TABEJ.B: TABEJ
+[ID]            CRC_TABEJ_TABEJB
+[CRCXL97]       0x430B724D
+[Signature]     NameSig(NAME_ONLY_TABEJ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Tabej.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TABEJB
+[Signature]     NamedCRCSig(CRC_TABEJ_TABEJB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.TABEJ.C: TABEJ
+[ID]            CRC_TABEJ_TABEJC
+[CRCXL97]       0xF126DE48
+[Signature]     NameSig(NAME_ONLY_TABEJ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Tabej.C
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TABEJC
+[Signature]     NamedCRCSig(CRC_TABEJ_TABEJC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+###############
+# XM.Teocatl
+###############
+
+[NamedCRCSigStart]
+[Comment]       X97M.TEOCATL: STRANGEDAYS
+[ID]            CRC_STRANGEDAYS_TEOCATL
+[CRCXL97]       0x306AFB23
+[Signature]     NameSig(NAME_ONLY_STRANGEDAYS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.TEOCATL: SYADEGNARTS
+[ID]            CRC_SYADEGNARTS_TEOCATL
+[CRCXL97]       0xBB24B4A6
+[Signature]     NameSig(NAME_ONLY_SYADEGNARTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.TEOCATL
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TEOCATL
+[Signature]     NamedCRCSig(CRC_STRANGEDAYS_TEOCATL) or
+[Signature]     NamedCRCSig(CRC_SYADEGNARTS_TEOCATL)
+[Repair]        UseSignature, NameSig(NAME_ONLY_SYADEGNARTS),
+[Repair]        NameSig(NAME_ONLY_STRANGEDAYS),
+[Repair]        NameSig(NAME_ONLY_DIESEARBEITSMAPPE)
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.TEOCATL.B: STRANGEDAYS
+[ID]            CRC_STRANGEDAYS_TEOCATLB
+[CRCXL97]       0x8F0EB51A
+[Signature]     NameSig(NAME_ONLY_STRANGEDAYS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.TEOCATL.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TEOCATLB
+[Signature]     NamedCRCSig(CRC_STRANGEDAYS_TEOCATLB) or
+[Signature]     NamedCRCSig(CRC_SYADEGNARTS_TEOCATL)
+[Repair]        UseSignature, NameSig(NAME_ONLY_SYADEGNARTS),
+[Repair]        NameSig(NAME_ONLY_STRANGEDAYS),
+[Repair]        NameSig(NAME_ONLY_DIESEARBEITSMAPPE)
+[KnownVirusSigEnd]
+
+#############
+# XM.Tjoro
+#############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Tjoro
+[ID]            CRC_NOMERCY_TJORO
+[CRCXL97]       0x2FB67970
+;[CRCXL97]       0xC47B51BB
+[Signature]     NameSig(NAME_ONLY_NOMERCY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Tjoro
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TJORO
+[Signature]     NamedCRCSig(CRC_NOMERCY_TJORO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+###############
+# XM.Trash
+###############
+
+[NamedCRCSigStart]
+[Comment]       X97M.TRASH: QUARANTINE
+[ID]            CRC_QUARANTINE_TRASH
+[CRCXL97]       0x89423A53
+[Signature]     NameSig(NAME_ONLY_QUARANTINE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.TRASH
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_TRASH
+[Signature]     NamedCRCSig(CRC_QUARANTINE_TRASH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+[NamedCRCSigStart]
+[Comment]       X97M.VCX.A: XLSCAN
+[ID]            CRC_XLSCAN_VCXA
+[CRCXL97]       0xCB2E5774
+[Signature]     NameSig(NAME_ONLY_XLSCAN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.VCX.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_VCXA
+[Signature]     NamedCRCSig(CRC_XLSCAN_VCXA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.VCX.B: XLSCAN
+[ID]            CRC_XLSCAN_VCXB
+[CRCXL97]       0x61E2B3FA
+[Signature]     NameSig(NAME_ONLY_XLSCAN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.VCX.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_VCXB
+[Signature]     NamedCRCSig(CRC_XLSCAN_VCXB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.VCX.C: MSOFFICE8
+[ID]            CRC_MSOFFICE8_VCXC
+[CRCXL97]       0x913CDEB9
+[Signature]     NameSig(NAME_ONLY_MSOFFICE8)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.VCX.C
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_VCXC
+[Signature]     NamedCRCSig(CRC_MSOFFICE8_VCXC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+##############
+# X97M.Yohimbe
+##############
+
+[NamedCRCSigStart]
+[Comment]       X97M.YOHIMBE.A: EXEC
+[ID]            CRC_EXEC_YOHIMBE
+[CRCXL97]       0xEFCCE9EB
+[Signature]     NameSig(NAME_ONLY_EXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.YOHIMBE.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_YOHIMBE
+[Signature]     NamedCRCSig(CRC_EXEC_YOHIMBE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.YOHIMBE.B: EXEC
+[ID]            CRC_EXEC_YOHIMBEB
+[CRCXL97]       0x731379C4
+[Signature]     NameSig(NAME_ONLY_EXEC)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.YOHIMBE.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_YOHIMBEB
+[Signature]     NamedCRCSig(CRC_EXEC_YOHIMBEB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+
+###############
+# XM.Laroux.A
+###############
+
+[NamedCRCSigStart]
+[Comment]       XM.laroux.A: Laroux
+[ID]            CRC_LAROUX_LAROUXA
+[CRCXL97]       0x3EF73170
+; [CRCXL97] 0x00363EEF
+;[CRCXL97]      0x50B29956
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+# This is for the Dumb Laroux 97 virus
+[NamedCRCSigStart]
+[Comment]       Named CRC for DUMB LAROUX
+[ID]            CRC_DUMBLAROUX_MODULE1
+[CRCXL97]       0x00E293BE
+[Signature]     NameSig(NAME_ONLY_MODULE1)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.A
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUX
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXA) or
+[Signature]     NamedCRCSig(CRC_DUMBLAROUX_MODULE1)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+
+###############
+# XM.Laroux.B
+###############
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX
+[ID]            CRC_LAROUX_LAROUXB
+[CRCXL97]       0x63E8ECCE
+; [CRCXL97] 0x9CADD8BE
+;[CRCXL97]       0xD6170E43
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.B
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXB
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.C: LAROUX
+[ID]            CRC_LAROUX_LAROUXC
+[CRCXL97]       0xB3F0A0BF
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.C
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXC
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# XM.Laroux.D
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX.D
+[ID]            CRC_LAROUX_LAROUXD
+[CRCXL97]       0x7B467472
+;[CRCXL97]       0x04DB8EEA
+;[CRCXL97]       0x8516823F
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.D
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXD
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.E's PLDT
+[ID]            CRC_PLDT_LAROUXE
+[CRCXL97]       0x068EFAB7
+; [CRCXL97] 0x04475AA6
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.E (a.k.a. PLDT) #12683
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXE
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.E(dam): PLDT
+[ID]            CRC_PLDT_LAROUXEDAM
+[CRCXL97]       0x5C045F4A
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NotFullSet]
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX (dam): LAROUX
+[ID]            CRC_LAROUX_LAROUXDAM
+[CRCXL97]       0x5C045F4A
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NotFullSet]
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.E(dam): PLDT
+[ID]            CRC_SIZE_522_LAROUXEDAM
+[CRCXL97]       0x5C045F4A
+[Signature]     Size(=522)
+[NotFullSet]
+[NamedCRCSigEnd]
+
+#It drops NEGS.XLS in XLSTART but doesn't infect further. CI#6176
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX(dam): FOXZ
+[ID]            CRC_FOXZ_LAROUXDAM
+[CRCXL97]       0x436F64FD
+[Signature]     NameSig(NAME_ONLY_FOXZ)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.E (dam): PLDT
+[ID]            CRC_PLDT_LAROUXDAM8186
+[CRCXL97]       0xE2A2BC46
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NotFullSet]
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.E(dam) Weirdly damaged Laroux.E, replicate once only
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDAM
+[Signature]     (NamedCRCSig(CRC_PLDT_LAROUXEDAM) and
+[Signature]      NamedCRCSig(CRC_SIZE_522_LAROUXEDAM)) or
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXDAM) or
+[Signature]     NamedCRCSig(CRC_FOXZ_LAROUXDAM) or
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXDAM8186)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+###############
+# XM.Laroux.F same CRC as .A
+###############
+
+[NamedCRCSigStart]
+[Comment]       Upconvert of XM.Laroux.G (#1471)
+[ID]            CRC_PLDT_LAROUXG
+[CRCXL97]       0x8038F558
+; [CRCXL97] 0x87B525E5
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Laroux.G
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXG
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXG)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.J's PLDT
+[ID]            CRC_PLDT_LAROUXJ
+[CRCXL97]       0xFC701612
+; [CRCXL97] 0x411EC247
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.J (a.k.a. PLDT) #740
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXJ
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXJ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.L: LAROUX
+[ID]            CRC_LAROUX_LAROUXL
+[CRCXL97]       0x9897B936
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.L
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXL
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+# XM.Laroux.Q
+[NamedCRCSigStart]
+[Comment]       Named CRC for LARUOX
+[ID]            CRC_LARUOX_LAROUXQ
+[CRCXL97]       0xC6CB54D6
+;[CRCXL97]       0xE2F7250D
+[Signature]     NameSig(NAME_ONLY_LARUOX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       Sig
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXQ
+[Signature]     NamedCRCSig(CRC_LARUOX_LAROUXQ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.U: LAROUX
+[ID]            CRC_LAROUX_LAROUXU
+[CRCXL97]       0xBE0C6552
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.U
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXU
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.X: LAROUX
+[ID]            CRC_LAROUX_LAROUXX
+[CRCXL97]       0xB4B5C7EA
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.X
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXX
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX.AA
+[ID]            CRC_LAROUX_LAROUXAA
+[CRCXL97]       0x654C43A3
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.AA
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAA
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX.AB
+[ID]            CRC_LAROUX_LAROUXAB
+[CRCXL97]       0x63171BF1
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.AB
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAB
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAB)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for LAROUX.AC
+[ID]            CRC_LAROUX_LAROUXAC
+[CRCXL97]       0xE196B103
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.AC
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAC
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AE
+[ID]            CRC_PLDT_LAROUXAE
+[CRCXL97]       0x36AC19DE
+; [CRCXL97] 0x702A8503
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AE
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAE
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AF
+[ID]            CRC_PLDT_LAROUXAF
+[CRCXL97]       0x8515F927
+; [CRCXL97] 0x0ABE8F9A
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AF
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAF
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.AG: LAROUX
+[ID]            CRC_LAROUX_LAROUXAG
+[CRCXL97]       0x60A1CBF2
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.AG
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAG
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAG)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.AH: LAROUX
+[ID]            CRC_LAROUX_LAROUXAH
+[CRCXL97]       0x62168788
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.AH
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAH
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAH)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AJ
+[ID]            CRC_PLDT_LAROUXAJ
+[CRCXL97]       0x984E8486
+; [CRCXL97] 0x0A4594EE
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AJ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAJ
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAJ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AK
+[ID]            CRC_VIRUS_EDY_LAROUXAK
+[CRCXL97]       0x0DEE5118
+; [CRCXL97] 0x0A4594EE
+[Signature]     NameSig(NAME_ONLY_VIRUS_EDY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AK
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAK
+[Signature]     NamedCRCSig(CRC_VIRUS_EDY_LAROUXAK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AL
+[ID]            CRC_LAROUX_LAROUXAL
+[CRCXL97]       0xC623D3ED
+; [CRCXL97] 0x0A4594EE
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AL
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAL
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AM
+[ID]            CRC_LAROUX_LAROUXAM
+[CRCXL97]       0xADD4D3F7
+; [CRCXL97] 0x0A4594EE
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AM
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAM
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAM)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AN
+[ID]            CRC_PLDT_LAROUXAN
+[CRCXL97]       0x71CE2BDF
+; [CRCXL97] 0x0A4594EE
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AN
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAN
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AP
+[ID]            CRC_PLDT_LAROUXAP
+[CRCXL97]       0xF5A20F04
+; [CRCXL97] 0x0A4594EE
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AP
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAP
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAP)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AQ
+[ID]            CRC_PLDT_LAROUXAQ
+[CRCXL97]       0x1B6703B6
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AQ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAQ
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAQ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.AT: LAROUX
+[ID]            CRC_LAROUX_LAROUXAT
+[CRCXL97]       0x69978D7E
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.AT
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAT
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXAT)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.AU
+[ID]            CRC_PROGRAM_LAROUXAU
+[CRCXL97]       0x1F7A3C11
+; [CRCXL97] 0xAB8ED2BC
+[Signature]     NameSig(NAME_ONLY_PROGRAM)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AU
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAU
+[Signature]     NamedCRCSig(CRC_PROGRAM_LAROUXAU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.AV: PLDT
+[ID]            CRC_PLDT_LAROUXAV
+[CRCXL97]       0xB4660E47
+; [CRCXL97] 0x217D1F5D
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AV
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAV
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXAV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.AZ: CECILIA
+[ID]            CRC_CECILIA_LAROUXAZ
+[CRCXL97]       0x343EB4FE
+; [CRCXL97] 0x217D1F5D
+[Signature]     NameSig(NAME_ONLY_CECILIA)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.AZ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXAZ
+[Signature]     NamedCRCSig(CRC_CECILIA_LAROUXAZ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.BA
+[ID]            CRC_TAYASHIN_LAROUXBA
+[CRCXL97]       0xA3C9A9D1
+;[CRCXL97]       0x2EB4A046
+[Signature]     NameSig(NAME_ONLY_TAYASHIN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BA
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBA
+[Signature]     NamedCRCSig(CRC_TAYASHIN_LAROUXBA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#BB match A/F
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.BJ
+[ID]            CRC_LAROUX_LAROUXBJ
+[CRCXL97]       0x7BD22E85
+;[CRCXL97]       0xE9E510EC
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BJ #1061 upconvert
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBJ
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXBJ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.BL: LAROUX
+[ID]            CRC_LAROUX_LAROUXBL
+[CRCXL97]       0x12E2662F
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.BL
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBL
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXBL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.BO: GAY
+[ID]            CRC_GAY_LAROUXBO
+[CRCXL97]       0x15C3F8C2
+[Signature]     NameSig(NAME_ONLY_GAY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BO
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBO
+[Signature]     NamedCRCSig(CRC_GAY_LAROUXBO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.BP: CAR
+[ID]            CRC_CAR_LAROUXBP
+[CRCXL97]       0xC4C33B7A
+; [CRCXL97] 0xB7E6BC15
+[Signature]     NameSig(NAME_ONLY_CAR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BP #1268 upconvert
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBP
+[Signature]     NamedCRCSig(CRC_CAR_LAROUXBP)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.BQ
+[ID]            CRC_LAROUX_LAROUXBQ
+[CRCXL97]       0x45C05AB9
+; [CRCXL97] 0x668630DA
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BQ #1210 upconvert
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBQ
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXBQ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#Laroux.BR is detected as .D
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.BS: LAROUX
+[ID]            CRC_LAROUX_LAROUXBS
+[CRCXL97]       0xE43C1E5A
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.BS
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBS
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXBS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.BU: LAROUX
+[ID]            CRC_LAROUX_LAROUXBU
+[CRCXL97]       0x1543add5
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BU
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBU
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXBU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.LAROUX.BV
+[ID]            CRC_NOCAL_LAROUXBV
+[CRCXL97]       0x4CA79716
+; [CRCXL97] 0x8D1D6F28
+[Signature]     NameSig(NAME_ONLY_NOCAL)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.BV
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBV
+[Signature]     NamedCRCSig(CRC_NOCAL_LAROUXBV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#Laroux.BW is detected as .A
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.BX: RWHITE
+[ID]            CRC_RWHITE_LAROUXBX
+[CRCXL97]       0x55726F4C
+; [CRCXL97] 0xCFAAC400
+[Signature]     NameSig(NAME_ONLY_RWHITE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.BX  (CI 1449 upconvert)
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBX
+[Signature]     NamedCRCSig(CRC_RWHITE_LAROUXBX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.BY: LAROUX
+[ID]            CRC_LAROUX_LAROUXBY
+[CRCXL97]       0x3F450E57
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.BY
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBY
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXBY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.BZ: PLDT
+[ID]            CRC_PLDT_LAROUXBZ
+[CRCXL97]       0xDC2C497A
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.BZ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXBZ
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXBZ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Upconvert of XM.Laroux.CA
+[ID]            CRC_LAROUX_LAROUXCA
+[CRCXL97]       0xDA3CB6C8
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Laroux.CA
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCA
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXCA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#X97M.Laroux.CB is detected as .AL
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.CC: LAROUX
+[ID]            CRC_LAROUX_LAROUXCC
+[CRCXL97]       0xCF5099A7
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.CC
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCC
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXCC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Upconvert of XM.Laroux.CD (#1476)
+[ID]            CRC_PLDT_LAROUXCD
+[CRCXL97]       0x98136A43
+; [CRCXL97] 0xB8D9D9F5
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Laroux.CD
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCD
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXCD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Upconvert of XM.Laroux.CF
+[ID]            CRC_FOXZ_LAROUXCF
+[CRCXL97]       0x0100023E
+[Signature]     NameSig(NAME_ONLY_FOXZ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Laroux.CF
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCF
+[Signature]     NamedCRCSig(CRC_FOXZ_LAROUXCF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.CI:  LARUOX
+[ID]            CRC_LARUOX_LAROUXCI
+[CRCXL97]       0xBB2FCFDE
+; [CRCXL97] 0x56C9A81D
+[Signature]     NameSig(NAME_ONLY_LARUOX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CI  (CI 1433)
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCI
+[Signature]     NamedCRCSig(CRC_LARUOX_LAROUXCI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.CJ
+[ID]            CRC_PLDT_LAROUXCJ
+[CRCXL97]       0x31C13D42
+; [CRCXL97] 0xA6F539C5
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CJ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCJ
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXCJ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.CK
+[ID]            CRC_PLDT_LAROUXCK
+[CRCXL97]       0xb00d7322
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CK
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCK
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXCK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.CL: PROGRAM
+[ID]            CRC_PROGRAM_LAROUXCL
+[CRCXL97]       0xACA5DE43
+[Signature]     NameSig(NAME_ONLY_PROGRAM)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.CL
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCL
+[Signature]     NamedCRCSig(CRC_PROGRAM_LAROUXCL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.CM: PLDT
+[ID]            CRC_PLDT_LAROUXCM
+[CRCXL97]       0xA2D0C3DB
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.CM
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCM
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXCM)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.CN
+[ID]            CRC_SGV_LAROUXCN
+[CRCXL97]       0x759A1C13
+[Signature]     NameSig(NAME_ONLY_SGV)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CN
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCN
+[Signature]     NamedCRCSig(CRC_SGV_LAROUXCN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.CO
+[ID]            CRC_CECILIA_LAROUXCO
+[CRCXL97]       0xA964E316
+[Signature]     NameSig(NAME_ONLY_CECILIA)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CO
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCO
+[Signature]     NamedCRCSig(CRC_CECILIA_LAROUXCO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.CP
+[ID]            CRC_LALALA_LAROUXCP
+[CRCXL97]       0x839FA935
+[Signature]     NameSig(NAME_ONLY_LALALA)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CP
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCP
+[Signature]     NamedCRCSig(CRC_LALALA_LAROUXCP)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.CQ: LAROUX
+[ID]            CRC_LAROUX_LAROUXCQ
+[CRCXL97]       0xF86F28AC
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.CQ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCQ
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXCQ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.CS: VIRUS
+[ID]            CRC_VIRUS_LAROUXCS
+[CRCXL97]       0xEE688182
+[Signature]     NameSig(NAME_ONLY_VIRUS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.CS
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCS
+[Signature]     NamedCRCSig(CRC_VIRUS_LAROUXCS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUXCU: LAROUX
+[ID]            CRC_LAROUX_LAROUXCU
+[CRCXL97]       0xA8A18FA9
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUXCU
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCU
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXCU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.CV: WENDY
+[ID]            CRC_WENDY_LAROUXCV
+[CRCXL97]       0xCAE52211
+[Signature]     NameSig(NAME_ONLY_WENDY)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.CV
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCV
+[Signature]     NamedCRCSig(CRC_WENDY_LAROUXCV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+#Laroux.CW is detected as .L
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.CX From CI 1927 - jjw - 12 May 98
+[ID]            CRC_FOXZ_LAROUXCX
+[CRCXL97]       0xdb42fa2e
+[Signature]     NameSig(NAME_ONLY_FOXZ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Laroux.CX
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCX
+[Signature]     NamedCRCSig(CRC_FOXZ_LAROUXCX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.CY: PLDT
+[ID]            CRC_PLDT_LAROUXCY
+[CRCXL97]       0x15D79886
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.CY
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXCY
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXCY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.DC: CAR
+[ID]            CRC_CAR_LAROUXDC
+[CRCXL97]       0x868e4327
+[Signature]     NameSig(NAME_ONLY_CAR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.DC
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDC
+[Signature]     NamedCRCSig(CRC_CAR_LAROUXDC)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.DE: LAROUX
+[ID]            CRC_LAROUX_LAROUXDE
+[CRCXL97]       0x3B16CD7F
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.DE
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDE
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXDE)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.DG: PLDT
+[ID]            CRC_PLDT_LAROUXDG
+[CRCXL97]       0x699C7CDA
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.DG
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDG
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXDG)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.Laroux.DE
+[ID]            CRC_PLDT_LAROUXDE2
+[CRCXL97]       0x11d59df6
+[Signature]     NameSig(NAME_ONLY_PLDT)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.DE
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDE2
+[Signature]     NamedCRCSig(CRC_PLDT_LAROUXDE2)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.LAROUX.DK
+[ID]            CRC_PBALL_LAROUXDK
+[CRCXL97]       0xb1dd04cd              ; XL95 CRC exists in xl95sigs.wdf
+[Signature]     NameSig(NAME_ONLY_PBALL)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.DK
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDK
+[Signature]     NamedCRCSig(CRC_PBALL_LAROUXDK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       Named CRC for XM.LAROUX.DL
+[ID]            CRC_LOCAS_LAROUXDL
+[CRCXL97]       0x8cf85506              ; XL95 CRC exists in xl95sigs.wdf
+[Signature]     NameSig(NAME_ONLY_LOCAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.DL modified to CRC only due to issue #4123
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDL
+[Signature]     CRC(0x8CF85506)
+#[Signature]     NamedCRCSig(CRC_LOCAS_LAROUXDL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.DP: ME
+[ID]            CRC_ME_LAROUXDP
+[CRCXL97]       0xD1F1128B
+[Signature]     NameSig(NAME_ONLY_ME)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.DP
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDP
+[Signature]     NamedCRCSig(CRC_ME_LAROUXDP)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DQ: ME
+[ID]            CRC_ME_LAROUXDQ
+[CRCXL97]       0xb5976f6c
+[Signature]     NameSig(NAME_ONLY_ME)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DQ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDQ
+[Signature]     NamedCRCSig(CRC_ME_LAROUXDQ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DR: Results
+[ID]            CRC_RESULTS_LAROUXDR
+[CRCXL97]       0xdf573fad
+[Signature]     NameSig(NAME_ONLY_RESULTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DR
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDR
+[Signature]     NamedCRCSig(CRC_RESULTS_LAROUXDR)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DS: Jude
+[ID]            CRC_JUDE_LAROUXDS
+[CRCXL97]       0x8ba1533a
+[Signature]     NameSig(NAME_ONLY_JUDE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DS
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDS
+[Signature]     NamedCRCSig(CRC_JUDE_LAROUXDS)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DT: Laroux
+[ID]            CRC_LAROUX_LAROUXDT
+[CRCXL97]       0x116dae41
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DT
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDT
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXDT)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DU: Laroux
+[ID]            CRC_LAROUX_LAROUXDU
+[CRCXL97]       0xe9b6d3e2
+[Signature]     NameSig(NAME_ONLY_LAROUX)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DU: Dan Test
+[ID]            CRC_DANTEST_LAROUXDU
+[CRCXL97]       0xe9b6d3e2
+[Signature]     NameSig(NAME_ONLY_DANTEST)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DU
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDU
+[Signature]     NamedCRCSig(CRC_LAROUX_LAROUXDU) or
+[Signature]     NamedCRCSig(CRC_DANTEST_LAROUXDU)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DV: Locas
+[ID]            CRC_LOCAS_LAROUXDV
+[CRCXL97]       0x6e356078
+[Signature]     NameSig(NAME_ONLY_LOCAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DV
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDV
+[Signature]     NamedCRCSig(CRC_LOCAS_LAROUXDV)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.DX: FOXZ
+[ID]            CRC_FOXZ_LAROUXDX
+[CRCXL97]       0x685d8f21
+[Signature]     NameSig(NAME_ONLY_FOXZ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.DX
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXDX
+[Signature]     NamedCRCSig(CRC_FOXZ_LAROUXDX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.EI: MONCI
+[ID]            CRC_MONCI_LAROUXEI
+[CRCXL97]       0x265a46a4
+[Signature]     NameSig(NAME_ONLY_MONCI)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.EI
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXEI
+[Signature]     NamedCRCSig(CRC_MONCI_LAROUXEI)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.EN: LOCAS
+[ID]            CRC_LOCAS_LAROUXEN
+[CRCXL97]       0x7301A1AD
+[Signature]     NameSig(NAME_ONLY_LOCAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.EN
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXEN
+[Signature]     NamedCRCSig(CRC_LOCAS_LAROUXEN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.EO: GUYAN
+[ID]            CRC_GUYAN_LAROUXEO
+[CRCXL97]       0x5c3df531
+[Signature]     NameSig(NAME_ONLY_GUYAN)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.EO
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXEO
+[Signature]     NamedCRCSig(CRC_GUYAN_LAROUXEO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.EZ: CAR
+[ID]            CRC_CAR_LAROUXEZ
+[CRCXL97]       0x44f4237b
+[Signature]     NameSig(NAME_ONLY_CAR)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.EZ
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXEZ
+[Signature]     NamedCRCSig(CRC_CAR_LAROUXEZ)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.FA: FOXZ
+[ID]            CRC_FOXZ_LAROUXFA
+[CRCXL97]       0xD0B54B5D
+[Signature]     NameSig(NAME_ONLY_FOXZ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.FA
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFA
+[Signature]     NamedCRCSig(CRC_FOXZ_LAROUXFA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FC: Results
+[ID]            CRC_RESULTS_LAROUXFC
+[CRCXL97]       0x993B9415
+[Signature]     NameSig(NAME_ONLY_RESULTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FC CRC only detection added for bad repair that...
+#causes blank RESULTS module sheet added to other documents.
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFC
+[Signature]     NamedCRCSig(CRC_RESULTS_LAROUXFC) or
+[Signature]     CRC(0x993b9415)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FD: SGV
+[ID]            CRC_SGV_LAROUXFD
+[CRCXL97]       0x9F01B78F
+[Signature]     NameSig(NAME_ONLY_SGV)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FD
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFD
+[Signature]     NamedCRCSig(CRC_SGV_LAROUXFD)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FF
+[ID]            CRC_LOCAS_LAROUXFF
+[CRCXL97]       0x8F2E696A
+[Signature]     NameSig(NAME_ONLY_LOCAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FF
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFF
+[Signature]     NamedCRCSig(CRC_LOCAS_LAROUXFF)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FL: Results
+[ID]            CRC_RESULTS_LAROUXFL
+[CRCXL97]       0xe1e90365
+[Signature]     NameSig(NAME_ONLY_RESULTS)
+[NamedCRCSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.LAROUX.FG: CURE
+[ID]            CRC_CURE_LAROUXFG
+[CRCXL97]       0x6821cdfd
+[Signature]     NameSig(NAME_ONLY_CURE)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.LAROUX.FG
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFG
+[Signature]     NamedCRCSig(CRC_CURE_LAROUXFG)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FL
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFL
+[Signature]     NamedCRCSig(CRC_RESULTS_LAROUXFL)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FM
+[ID]            CRC_LOCAS_LAROUXFM
+[CRCXL97]       0x002BAA27
+[Signature]     NameSig(NAME_ONLY_LOCAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FM
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFM
+[Signature]     NamedCRCSig(CRC_LOCAS_LAROUXFM)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FO
+[ID]            CRC_RESULTS_LAROUXFO
+[CRCXL97]       0x083AD75D
+[Signature]     NameSig(NAME_ONLY_RESULTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FO
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFO
+[Signature]     NamedCRCSig(CRC_RESULTS_LAROUXFO)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.LAROUX.FW
+[ID]            CRC_RESULTS_LAROUXFW
+[CRCXL97]       0xE173B375
+[Signature]     NameSig(NAME_ONLY_RESULTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.FW
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFW
+[Signature]     NamedCRCSig(CRC_RESULTS_LAROUXFW)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.FX: lawson
+[ID]            CRC_LAWSON_LAROUXFX
+[CRCXL97]       0xcaee1c22
+[Signature]     NameSig(NAME_ONLY_LAWSON)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.FX
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFX
+[Signature]     NamedCRCSig(CRC_LAWSON_LAROUXFX)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.FY: Results
+[ID]            CRC_RESULTS_LAROUXFY
+[CRCXL97]       0xddb6f6b9
+[Signature]     NameSig(NAME_ONLY_RESULTS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.FY
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXFY
+[Signature]     NamedCRCSig(CRC_RESULTS_LAROUXFY)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.GA: Locas
+[ID]            CRC_LOCAS_LAROUXGA
+[CRCXL97]       0x52286A3B
+[Signature]     NameSig(NAME_ONLY_LOCAS)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.LAROUX.GA
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXGA
+[Signature]     NamedCRCSig(CRC_LOCAS_LAROUXGA)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.GG: AY080671
+[ID]            CRC_AY080671_LAROUXGG
+[CRCXL97]       0x1AD3DDFE
+[Signature]     NameSig(NAME_ONLY_AY080671)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.GG
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXGG
+[Signature]     NamedCRCSig(CRC_AY080671_LAROUXGG)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       X97M.Laroux.HK: FOXZ
+[ID]            CRC_FOXZ_LAROUXHK
+[CRCXL97]       0x06579BF1
+[Signature]     NameSig(NAME_ONLY_FOXZ)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       X97M.Laroux.HK, downconv is detected as XM.Laroux.DX
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXHK
+[Signature]     NamedCRCSig(CRC_FOXZ_LAROUXHK)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+[NamedCRCSigStart]
+[Comment]       XM.Laroux.HN: MONCI
+[ID]            CRC_MONCI_LAROUXHN
+[CRCXL97]       0x76C4DBBF
+[Signature]     NameSig(NAME_ONLY_MONCI)
+[NamedCRCSigEnd]
+
+[KnownVirusSigStart]
+[Comment]       XM.Laroux.HN
+[Type]          XL97
+[QAStatus]      PASSED
+[ID]            VID_LAROUXHN
+[Signature]     NamedCRCSig(CRC_MONCI_LAROUXHN)
+[Repair]        UseSignature
+[KnownVirusSigEnd]
+
+

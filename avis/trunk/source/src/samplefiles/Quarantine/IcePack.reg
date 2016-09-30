@@ -1,0 +1,449 @@
+REGEDIT4
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 
+; target file: IcePack.reg
+; 
+; target directory: C:\Program Files\Symantec\Quarantine\Server
+; 
+; target machine: Central Quarantine server in customer network
+; 
+; target applications: IcePack.exe and scanExplicit.exe
+; 
+; This registry import file defines the configuration parameters of the
+; IcePack.exe program and the scanExplicit.exe programs, which run as
+; WinNT system services on the Central Quarantine server in a customer
+; network.
+; 
+; The IcePack.exe program is responsible for communications between the
+; Immune System gateway in the Internet and Central Quarantine in a
+; customer network.  It submits samples from Quarantine Service to the
+; Immune System for analysis, and downloads new definitions for
+; distribution to NAVCE clients and servers.
+; 
+; The scanExplicit.exe program is responsible for scanning samples in
+; Central Quarantine with the current NAV definitions downloaded from
+; the Immune System gateway.
+; 
+; The install program for the Central Quarantine product creates the
+; registry variables defined in this file, and initializes them to
+; default values.  Customers may alter some of these variables, using
+; the Quarantine Console application.  In addition, customers may
+; alter any of these variables, using the WinNT regedit.exe program.
+; 
+; This file may be used to restore the default values of all variables.
+; To do this, stop both the IcePack.exe and scanExplicit.exe programs.
+; Then import this file into the Windows Registry, using the WintNT
+; regedit.exe program.  Then start both the IcePack.exe and
+; scanExplicit.exe programs again.
+; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Quarantine\Server\Avis]
+
+;----------------------------------------------------------------------
+; The "configurationChangeInterval" parameter specifies how often, in
+; minutes, the IcePack.exe program examines the registry for changes to
+; parameters made by the Quarantine Console application.
+;----------------------------------------------------------------------
+
+"configurationChangeInterval"="1"
+
+;----------------------------------------------------------------------
+; The "configurationIgnoreRanges" parameter specifies whether or not
+; (values "1" or "0", respectively) the IcePack.exe program will ignore
+; the maximum and minimum values for registry variables with numeric
+; values.  The ranges are defined in the src\IcePack\RegistryDefaults.H
+; file.
+;----------------------------------------------------------------------
+
+"configurationIgnoreRanges"="0"
+
+;----------------------------------------------------------------------
+; The "customerXxxxx" parameters identify the customer, and specify
+; customer contact information.  The values of these parameters are
+; included with samples submitted to the Immune System for analysis.
+; This information may be used by Symantec staff to contact the customer
+; if they have questions
+;----------------------------------------------------------------------
+
+"customerContactEmail"=""
+"customerContactName"=""
+"customerContactTelephone"=""
+"customerIdentifier"=""
+"customerName"=""
+
+;----------------------------------------------------------------------
+; The "definitionBlessedXxxxx" parameters specify where the IcePack.exe
+; program will distribute blessed definitions when it downloads them
+; from the Immune System gateway.
+; 
+; The IcePack.exe program downloads each new blessed definition package
+; from the Immune System gateway when it is published by Symantec.  The
+; scanExplicit.exe program then re-scans all unfinished samples in
+; quarantine with the new definitions.  When new samples are received in
+; quarantine, they will also be scanned with the new definitions.
+; 
+; The "definitionBlessedBroadcast" parameter enables or disables (values
+; "1" or "0", respectively) automatic distribution of blessed
+; definitions to a pre-configured list of NAVCE clients and servers.  If
+; enabled, the new blessed definitions will be distributed to each
+; machine named in the "definitionBlessedTargets" parameter, provided
+; NAVCE is installed on the machine.
+;----------------------------------------------------------------------
+
+"definitionBlessedBroadcast"="0"
+"definitionBlessedTargets"=""
+
+;----------------------------------------------------------------------
+; The "definitionChangeTimeout" parameter specifies how long, in
+; minutes, the scanExplicit.exe program will wait for a scan of a sample
+; to complete, when new definitions have been downloaded, before
+; unloading the old definitions and loading the new definitions.
+;----------------------------------------------------------------------
+
+"definitionChangeTimeout"="2"
+
+;----------------------------------------------------------------------
+; The "definitionConcurrencyXxxxx" parameters specify the minimum and
+; maximum number of threads used for scanning samples.
+;----------------------------------------------------------------------
+
+"definitionConcurrencyMaximum="10"
+"definitionConcurrencyMinimum="2"
+
+;----------------------------------------------------------------------
+; The "definitionDeliveryInterval" parameter specifies how long, in
+; minutes, the IcePack.exe program will wait, when all definition
+; distribution targets are inaccessible, before trying again.
+;----------------------------------------------------------------------
+
+"definitionDeliveryInterval"="15"
+
+;----------------------------------------------------------------------
+; The "definitionDeliveryPriority" parameter specifies whether or not
+; definitions are automatically distributed to NAVCE clients that have
+; sent infected samples to quarantine.  A value of "0" disables
+; automatic distribution; a value between "1" and "1000" enables
+; automatic distribution, and specifies the relative priority, with
+; larger values indicating higher priority.
+;----------------------------------------------------------------------
+
+"definitionDeliveryPriority"="500"
+
+;----------------------------------------------------------------------
+; The "definitionDeliveryTimeout" parameter specifies how long the
+; IcePack.exe program will wait for a definition delivery to a NAVCE
+; client or server to complete.
+;----------------------------------------------------------------------
+
+"definitionDeliveryTimeout"="15"
+
+;----------------------------------------------------------------------
+; The "definitionHeuristicLevel" parameter specifies the heuristic
+; detection level used when scanning samples for unknown viruses.  A
+; value of "0" disables all heuristics; a value between "1" and "3"
+; enables heuristics, with increasingly aggressive detection (and
+; increasing likelihood of false positives).
+;----------------------------------------------------------------------
+
+"definitionHeuristicLevel"="3"
+
+;----------------------------------------------------------------------
+; The "definitionLibraryDirectory" parameter specifies the directory
+; where NAV definition packages will be stored and unpacked.
+;----------------------------------------------------------------------
+
+"definitionLibraryDirectory"="C:\\Program Files\\Symantec\\Quarantine\\Server\\signatures"
+
+;----------------------------------------------------------------------
+; The "definitionPrune" parameter enables or disables automatic deletion
+; of old definitions that have been superceded by newer blessed
+; definitions.  If enabled, old blessed and unblessed definitions will
+; be deleted when new blessed definitions are downloaded from the Immune
+; System gateway.
+;----------------------------------------------------------------------
+
+"definitionPrune"="1"
+
+;----------------------------------------------------------------------
+; The "definitionUnblessedXxxxx" parameters specify where the
+; IcePack.exe program will distribute unblessed definitions when it
+; downloads them from the Immune System gateway.
+; 
+; When the Immune System reports that a submitted sample is infected, it
+; indicates the minimum definition sequence number needed to disinfect
+; the sample.  If the sequence number of the current blessed definitions
+; is less than this, the IcePack.exe program downloads the latest
+; unblessed definitions from the Immune System gateway.  The
+; scanExplicit.exe program then re-scans all unfinished samples in
+; quarantine with the new definitions.  Subsequently, when new samples
+; are received in quarantine, they will also be scanned with the new
+; definitions.
+; 
+; The "definitionUnblessedPointcast" parameter enables or disables
+; (values "1" or "0", respectively) automatic distribution of unblessed
+; definitions to infected NAVCE clients.  If enabled, the new unblessed
+; definitions will be distributed to the NAVCE clients that submitted
+; samples that can be disinfected with the new definitions.
+; 
+; The "definitionUnblessedNarrowcast" parameter enables or disables
+; (values "1" or "0", respectively) automatic distribution of unblessed
+; definitions to the parent NAVCE servers of infected NAVCE clients.  If
+; enabled, the new unblessed definitions will be distributed to the
+; parent NAVCE servers of clients that submitted samples that can be
+; disinfected with the new definitions.
+; 
+; The "definitionUnblessedBroadcast" parameter enables or disables
+; (values "1" or "0", respectively) automatic distribution of unblessed
+; definitions to a pre-configured list of NAVCE clients and servers.  If
+; enabled, the new unblessed definitions will be distributed to each
+; machine named in the "definitionUnblessedTargets" parameter, provided
+; NAVCE is installed on the machine.
+;----------------------------------------------------------------------
+
+"definitionUnblessedBroadcast"="0"
+"definitionUnblessedNarrowcast"="0"
+"definitionUnblessedPointcast"="1"
+"definitionUnblessedTargets"=""
+
+;----------------------------------------------------------------------
+; The "definitionUnpackTimeout" parameter specifies how long, in
+; minutes, the IcePack.exe program will spend unpacking a NAVCE
+; definition package.
+;----------------------------------------------------------------------
+
+"definitionUnpackTimeout"="5"
+
+;----------------------------------------------------------------------
+; The "sampleCompressContent" parameter enables or disables (values "1"
+; or "0", respectively) compression of sample content when samples are
+; submitted to the Immune System for analysis.  Compression can
+; significantly reduce the size of the data transmitted through the
+; Internet.
+;----------------------------------------------------------------------
+
+"sampleCompressContent"="1"
+
+;----------------------------------------------------------------------
+; The "sampleMaximumPending" parameter specifies how many samples the
+; IcePack.exe program will submit for analysis simultaneously.  If the
+; number of samples in quarantine exceeds this parameter, the
+; IcePack.exe program will submit additional samples after the results
+; of its first submissions are received.
+;----------------------------------------------------------------------
+
+"sampleMaximumPending"="2"
+
+;----------------------------------------------------------------------
+; The "sampleQuarantineInterval" parameter specifies how often, in
+; minutes, the IcePack.exe program checks with the Quarantine Service
+; for new or changed samples.
+;----------------------------------------------------------------------
+
+"sampleQuarantineInterval"="1"
+
+;----------------------------------------------------------------------
+; The "sampleScrambleContent" parameter enables or disables (values "1"
+; or "0", respectively) scrambling of sample content when samples are
+; submitted to the Immune System for analysis.  Scrambling prevents
+; inadvertant re-detection of any virus infecting the sample by
+; intermediate nodes in the network.
+;----------------------------------------------------------------------
+
+"sampleScrambleContent"="1"
+
+;----------------------------------------------------------------------
+; The "sampleStripContent" parameter enables or disables (values "1" or
+; "0", respectively) stripping of user data when samples are submitted
+; to the Immune System for analysis.  Stripping removes user data from
+; Microsoft Word and Excel documents.
+;----------------------------------------------------------------------
+
+"sampleStripContent"="1"
+
+;----------------------------------------------------------------------
+; The "sampleSubmissionPriority" parameter specifies whether or not
+; samples are automatically submitted to the Immune System for analysis.
+; A value of "0" disables automatic submission; a value between "1" and
+; "1000" enables automatic submission, and specifies the relative
+; priority, with larger values indicating higher priority.
+;----------------------------------------------------------------------
+
+"sampleSubmissionPriority"="500"
+
+;----------------------------------------------------------------------
+; The "scanXxxx" parameters specify how the IcePack.exe program will
+; behave when scanning samples with the scanExplicit.exe program takes
+; too long.
+; 
+; The "scanCompletionTimeout" parameter specifies how long, in seconds,
+; the IcePack.exe program will wait for the scanExplicit.exe program to
+; complete the scan of a sample.
+; 
+; The "scanRetryInterval" parameter specifies how long, in seconds, the
+; IcePack.exe program will wait, after a scan of a sample has failed to
+; complete, before trying again.
+; 
+; The "scanRetryLimit" parameter specifies how many times, after a scan
+; of a sample has failed to complete, the IcePack.exe program will try
+; again.
+;----------------------------------------------------------------------
+
+"scanCompletionTimeout"="90"
+"scanRetryInterval"="10"
+"scanRetryLimit"="1"
+
+;----------------------------------------------------------------------
+; The "temporaryDirectory" specifies a directory where the IcePack.exe
+; and scanExplicit.exe programs may create temporary files.
+;----------------------------------------------------------------------
+
+"temporaryDirectory"="c:\\temp"
+
+;----------------------------------------------------------------------
+; The "traceXxxxx" parameters specify how the IcePack.exe and
+; scanExplicit.exe programs trace their internal operations.
+; 
+; The "traceEnable" parameter enables or disables (values "1" or "0",
+; respectively) tracing.  When enabled, the IcePack.exe and
+; scanExplicit.exe programs write their tracing information into
+; multiple files in a specified directory.
+; 
+; The "traceFilename" parameter specifies the name of the directory
+; where trace files are written.  The names of the files are composed by
+; inserting the current month and day and hour between the specified
+; filename and extension, in the format "filename.MM-DD-HH.extension".
+; 
+; The "traceSeverity" parameter enables increasingly detailed (values
+; "error" or "warning" or "info" or "debug" or "entryexit") tracing of
+; internal operations.
+;----------------------------------------------------------------------
+
+"traceEnable"="0"
+"traceFilename"="C:\\Program Files\\Symantec\\Quarantine\\Server\\avistrace.txt"
+"traceFilter"="-1"
+"traceSeverity"="debug"
+
+;----------------------------------------------------------------------
+; The "webBlessedInterval" parameter specifies how often, in minutes,
+; the IcePack.exe program checks the Immune System gateway for new
+; blessed definitions.
+;----------------------------------------------------------------------
+
+"webBlessedInterval"="720"
+
+;----------------------------------------------------------------------
+; The "webFirewallXxxxx" parameters specify how to connect to the
+; Internet through an application layer HTTP proxy firewall.  These
+; parameters are not used with a TCP layer Socks firewall or an IP layer
+; packet filter firewall.
+; 
+; The "webFirewallName" and "webFirewallPort" parameters specify the
+; name and port number of the proxy firewall, when required to access
+; the Internet.
+; 
+; The "webFirewallUser" and "webFirewallPassword" parameters specify an
+; account on the proxy firewall, when required by the firewall.
+;----------------------------------------------------------------------
+
+"webFirewallName"=""
+"webFirewallPassword"=""
+"webFirewallPort"="80"
+"webFirewallUser"=""
+
+;----------------------------------------------------------------------
+; The "webGatewayXxxxx" parameters specify how to connect to the Immune
+; System gateway.
+; 
+; The "webGatewayName" parameter specifies the name of the Immune System
+; gateway.  The IcePack.exe program connects to the specified gateway
+; when submitting samples and downloading definitions.  If the specified
+; name resolves to the addresses of multiple gateways, the IcePack.exe
+; program will choose an address at random each time it connects.
+; 
+; The "webGatewayPort" and "webGatewayPortSSL" parameters specify the
+; gateway port numbers to use for non-secure and secure transactions,
+; respectively.  
+;----------------------------------------------------------------------
+
+"webGatewayName"="gateways.dis.symantec.com"
+"webGatewayPort"="2847"
+"webGatewayPortSSL"="2848"
+
+;----------------------------------------------------------------------
+; The "webNeededInterval" parameter specifies how often, in minutes, the
+; IcePack.exe program waits before checking with the gateway again for
+; new unblessed definitions, if definitions needed to disinfect a
+; submitted sample were not available when final status for the
+; submission was recieved.
+;----------------------------------------------------------------------
+
+"webNeededInterval"="15"
+
+;----------------------------------------------------------------------
+; The "webRetryInterval" parameter specifies how long, in minutes, the
+; IcePack.exe program waits, after failing to connect to the Immune
+; System gateway, before trying again.
+;----------------------------------------------------------------------
+
+"webRetryInterval"="15"
+
+;----------------------------------------------------------------------
+; The "webRetryLimit" parameter specifes the maximum number of
+; connection attempts for the Microsoft WinINET communications library.
+; 
+; For further information on this parameter, refer to the Microsoft
+; documentation for the INTERNET_OPTION_CONNECT_RETRIES flag of the
+; CInternetSession::SetOption() method.
+;----------------------------------------------------------------------
+
+"webRetryLimit"="2"
+
+;----------------------------------------------------------------------
+; The "webSecureIgnoreHostname" parameter specifies whether or not
+; (values "1" or "0", respectively) the Microsoft WinINET communications
+; library will ignore hostname mismatches when secure transactions are
+; authenticated.  If hostnames are ignored for secure transactions, then
+; they will proceed even if the hostname in the certificate returned by
+; the server does not match the hostname in the transaction request.
+; 
+; For futher information on this parameter, refer to the Microsoft
+; documentation for the INTERNET_FLAG_IGNORE_CERT_CN_INVALID flag of the
+; CHttpConnection::OpenRequest() method.
+;----------------------------------------------------------------------
+
+"webSecureIgnoreHostname"="0"
+
+;----------------------------------------------------------------------
+; The "webSecureXxxxxx" parameters specify whether SSL or non-SSL
+; (values "1" or "0", respectively) protocol will be used for each type
+; of transaction.
+;----------------------------------------------------------------------
+
+"webSecureSampleSubmission"="1"
+"webSecureSignatureDownload"="1"
+"webSecureStatusQuery"="0"
+
+;----------------------------------------------------------------------
+; The "webStatusInterval" parameter specifies how often, in minutes, the
+; IcePack.exe program queries the Immune System gateway for status about
+; submitted samples.  Status queries for submitted samples continue at
+; this interval until final status is received.
+;----------------------------------------------------------------------
+
+"webStatusInterval"="60"
+
+;----------------------------------------------------------------------
+; The "webTimeoutInterval" parameter specifies maximum time, in minutes,
+; that the Microsoft WinINET library will wait for network operations to
+; complete.
+; 
+; For further information on this parameter, refer to the Microsoft
+; documentation for the INTERNET_OPTION_xxxxxx_TIMEOUT flags of the
+; CInternetSession::SetOption() method.
+;----------------------------------------------------------------------
+
+"webTimeoutInterval"="15"
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

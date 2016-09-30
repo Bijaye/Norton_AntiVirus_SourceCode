@@ -1,0 +1,103 @@
+HKCR
+{
+	VpshellEx.VpshellEx.1 = s 'VpshellEx Class'
+	{
+		CLSID = s '{BDA77241-42F6-11d0-85E2-00AA001FE28C}'
+	}
+	VpshellEx.VpshellEx = s 'VpshellEx Class'
+	{
+		CurVer = s 'VpshellEx.VpshellEx.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {BDA77241-42F6-11d0-85E2-00AA001FE28C} = s 'VpshellEx Class'
+		{
+			ProgID = s 'VpshellEx.VpshellEx.1'
+			VersionIndependentProgID = s 'VpshellEx.VpshellEx'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+	NoRemove *
+	{
+		NoRemove Shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove LDVPMenu = s '{BDA77241-42F6-11d0-85E2-00AA001FE28C}'
+			}
+			NoRemove PropertySheetHandlers
+			{
+			}
+
+
+		}
+	}
+	NoRemove Drive
+	{
+		NoRemove Shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove LDVPMenu = s '{BDA77241-42F6-11d0-85E2-00AA001FE28C}'
+			}
+			NoRemove PropertySheetHandlers
+			{
+			}
+		}
+	}
+	NoRemove Folder
+	{
+		NoRemove Shellex
+		{
+			NoRemove ContextMenuHandlers
+			{
+				ForceRemove LDVPMenu = s '{BDA77241-42F6-11d0-85E2-00AA001FE28C}'
+			}
+			NoRemove PropertySheetHandlers
+			{
+			}
+		}
+	}
+}
+HKLM
+{
+   NoRemove SOFTWARE
+   {
+		NoRemove Microsoft
+		{
+			NoRemove Windows
+			{
+				NoRemove CurrentVersion
+				{
+					NoRemove 'Controls Folder'
+					{
+						NoRemove Display
+						{
+							NoRemove shellex
+							{
+								NoRemove PropertySheetHandlers
+								{
+
+									ForceRemove 'LDVP Shell Extensions' = s '{BDA77241-42F6-11d0-85E2-00AA001FE28C}'
+									
+								}
+							}
+						}
+					}
+					NoRemove 'Shell Extensions'
+					{
+						NoRemove Approved
+						{
+						   ForceRemove val {BDA77241-42F6-11d0-85E2-00AA001FE28C} = s 'LDVP Shell Extensions'
+						}
+					}	
+				}
+			}
+		}
+	}
+}
+
+

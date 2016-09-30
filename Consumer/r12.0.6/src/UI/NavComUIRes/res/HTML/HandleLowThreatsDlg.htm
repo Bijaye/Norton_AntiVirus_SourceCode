@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <BASE href="res://navcomui.loc">
+        <meta id="charset_ExcludePrompt" http-equiv="Content-Type" content="text/html; charset=iso8859-1" />
+        <meta http-equiv="MSThemeCompatible" content="Yes" />
+        <link rel="stylesheet" type="text/css" href="NavScan.css" />
+            <title>Attention</title>
+            <script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+            <script language="javascript">
+		    function OnLoad()
+		    { 
+		  	    InitSymButton( btnContinue );
+		  	    InitSymButton( btnAbort    );
+		    }
+            </script>
+    </head>
+    <body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0"
+        marginwidth="0" marginheight="0" style="margin-top:45px;" tabindex="-1" scroll="no" onLoad="OnLoad()">
+        <!-------------------------------------- Header ------------------------------------------------>
+        <h1 id="title">Attention</h1>
+        <!-------------------------------------- Text Discription ------------------------------------------------>
+        <div id="description" class="ConditionalActionDescription">
+            <span id="ProductName">Norton AntiVirus</span> will no longer scan the selected low-impact security risks.
+            <br><br>
+            If you want to continue receiving notification of these risks, click Cancel, and then select a different action.
+            <br><br>
+            Click OK to continue and exclude these risks (recommended).
+        </div>
+        
+        <div class="DoNotAlertAgain">
+            <input id="Ignore" name="Action" type="checkbox">
+            <label for="Ignore">Don't show this again</label>
+        </div>
+        <!--------------------------------------- Button  Area ------------------------------------------------>
+        <div class="buttonArea" style="bottom:35px;">
+		<span class="symButton" id = "symButton_1" style="position:absolute; right:153px; margin-right:10px; margin-left:8px; width:96px; height:24px;">
+                <button id="btnContinue" accesskey="O" type="SUBMIT" class="symButton" tabindex="1" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">O</u>K</button>
+            </span>
+		<span class="symButton" id = "symButton_2" style="position:absolute; right:58px; margin-right:0px; margin-left:8px; width:96px; height:24px;">
+                <button id="btnAbort" accesskey="C" type="SUBMIT" class="symButton" tabindex="2" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">C</u>ancel</button>
+            </span>
+        </div>
+    </body>
+</html>

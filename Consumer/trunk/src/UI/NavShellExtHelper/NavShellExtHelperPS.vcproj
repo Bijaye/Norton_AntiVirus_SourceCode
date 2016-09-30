@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="NavShellExtHelperPS"
+	ProjectGUID="{8D99ED64-B212-4947-BCDA-0EF32E81C471}"
+	Keyword="AtlPSProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="..\..\BIN\BIN.IDU"
+			IntermediateDirectory=".\DebugPS"
+			ConfigurationType="2"
+			CharacterSet="1">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\IDL\IDL.x86;..\..\..\Nobuilds\PlatSDK\include;..\..\..\Nobuilds\msvc7\Vc7\include;..\..\..\Nobuilds\msvc7\Vc7\atlmfc\include"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0500;REGISTER_PROXY_DLL;_DEBUG"
+				IgnoreStandardIncludePath="TRUE"
+				RuntimeLibrary="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="kernel32.lib rpcndr.lib rpcns4.lib rpcrt4.lib oleaut32.lib uuid.lib"
+				OutputFile="$(OutDir)/NavShcPS.dll"
+				AdditionalLibraryDirectories="..\..\..\Nobuilds\PlatSDK\lib;..\..\..\Nobuilds\msvc7\Vc7\lib"
+				ModuleDefinitionFile="NavShellExtHelperPS.def"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				GenerateStublessProxies="TRUE"
+				GenerateTypeLibrary="FALSE"
+				TypeLibraryName=""
+				OutputDirectory="..\..\IDL\IDL.x86"
+				DLLDataFileName="$(InputName)_dlldata.c"
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				AdditionalIncludeDirectories="..\..\..\Nobuilds\msvc7\Vc7\atlmfc\include;..\..\Include;..\..\LIB\LIB.IDU"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="..\..\BIN\BIN.IRU"
+			IntermediateDirectory=".\ReleasePS"
+			ConfigurationType="2"
+			CharacterSet="1">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				AdditionalIncludeDirectories="..\..\IDL\IDL.x86;..\..\..\Nobuilds\PlatSDK\include;..\..\..\Nobuilds\msvc7\Vc7\include;..\..\..\Nobuilds\msvc7\Vc7\atlmfc\include"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0500;REGISTER_PROXY_DLL;NDEBUG"
+				IgnoreStandardIncludePath="TRUE"
+				RuntimeLibrary="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="kernel32.lib rpcndr.lib rpcns4.lib rpcrt4.lib oleaut32.lib uuid.lib"
+				OutputFile="$(OutDir)/NavShcPS.dll"
+				AdditionalLibraryDirectories="..\..\..\Nobuilds\PlatSDK\lib;..\..\..\Nobuilds\msvc7\Vc7\lib"
+				ModuleDefinitionFile="NavShellExtHelperPS.def"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="$(OutDir)/$(TargetName).map"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				IgnoreStandardIncludePath="FALSE"
+				GenerateStublessProxies="TRUE"
+				GenerateTypeLibrary="FALSE"
+				TypeLibraryName=""
+				OutputDirectory="..\..\IDL\IDL.x86"
+				DLLDataFileName="$(InputName)_dlldata.c"
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Checking for required files"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				AdditionalIncludeDirectories="..\..\..\Nobuilds\msvc7\Vc7\atlmfc\include;..\..\Include;..\..\LIB\LIB.IRX"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DebugAmd64|Win32"
+			OutputDirectory="..\..\BIN\BIN.IDX"
+			IntermediateDirectory="$(ConfigurationName)PS"
+			ConfigurationType="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\IDL\IDL.x64"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0500;REGISTER_PROXY_DLL;_DEBUG"
+				IgnoreStandardIncludePath="FALSE"
+				RuntimeLibrary="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:AMD64"
+				AdditionalDependencies="kernel32.lib rpcndr.lib rpcns4.lib rpcrt4.lib oleaut32.lib uuid.lib"
+				OutputFile="$(outdir)/NavShcPS.dll"
+				AdditionalLibraryDirectories="&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\nobuilds\PlatSDK03SP1RC2\LIB\amd64&quot;;&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\Nobuilds\SDK64AMD64\ATLMFC\LIB\amd64&quot;;&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\Nobuilds\SDK64AMD64\LIB\amd64&quot;;&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\nobuilds\PlatSDK03SP1RC2\lib\amd64\mfc&quot;"
+				IgnoreAllDefaultLibraries="FALSE"
+				ModuleDefinitionFile="NavShellExtHelperPS.def"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				GenerateStublessProxies="TRUE"
+				GenerateTypeLibrary="FALSE"
+				TypeLibraryName=""
+				OutputDirectory="..\..\IDL\IDL.x64"
+				DLLDataFileName="$(InputName)_dlldata.c"
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Checking for required files"
+				CommandLine="copy ..\..\Include\amd64\NavShellExtHelper.h NavShellExtHelper.h
+copy  ..\..\Include\amd64\NavShellExtHelper_i.c NavShellExtHelper_i.c
+copy  ..\..\Include\amd64\NavShellExtHelper_p.c NavShellExtHelper_p.c
+
+if exist dlldata.c goto :END
+echo Error: MIDL will not generate DLLDATA.C unless you have at least 1 interface in the main project.
+Exit 1
+:END
+"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				AdditionalIncludeDirectories="..\..\..\Nobuilds\msvc7\Vc7\atlmfc\include;..\..\Include;..\..\LIB\LIB.IDX"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseAmd64|Win32"
+			OutputDirectory="..\..\BIN\BIN.IRX"
+			IntermediateDirectory="$(ConfigurationName)PS"
+			ConfigurationType="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				AdditionalIncludeDirectories="..\..\IDL\IDL.x64"
+				PreprocessorDefinitions="WIN32;_WIN32_WINNT=0x0500;REGISTER_PROXY_DLL;NDEBUG"
+				RuntimeLibrary="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="kernel32.lib rpcndr.lib rpcns4.lib rpcrt4.lib oleaut32.lib uuid.lib"
+				OutputFile="$(OutDir)/NavShcPS.dll"
+				ModuleDefinitionFile="NavShellExtHelperPS.def"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				GenerateStublessProxies="TRUE"
+				GenerateTypeLibrary="FALSE"
+				TypeLibraryName=""
+				OutputDirectory="..\..\IDL\IDL.x64"
+				DLLDataFileName="$(InputName)_dlldata.c"
+				InterfaceIdentifierFileName="$(InputName)_i.c"
+				ProxyFileName="$(InputName)_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="Checking for required files"
+				CommandLine="copy ..\..\Include\amd64\NavShellExtHelper.h NavShellExtHelper.h
+copy  ..\..\Include\amd64\NavShellExtHelper_i.c NavShellExtHelper_i.c
+copy  ..\..\Include\amd64\NavShellExtHelper_p.c NavShellExtHelper_p.c
+
+if exist dlldata.c goto :END
+echo Error: MIDL will not generate DLLDATA.C unless you have at least 1 interface in the main project.
+Exit 1
+:END
+"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				AdditionalIncludeDirectories="..\..\..\Nobuilds\msvc7\Vc7\atlmfc\include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="">
+			<File
+				RelativePath="..\..\include\NavShellExtHelper.idl">
+			</File>
+			<File
+				RelativePath=".\NavShellExtHelperPS.c">
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\NavShellExtHelperps.def">
+		</File>
+		<File
+			RelativePath=".\NavShellExtHelperPS.rc">
+		</File>
+		<File
+			RelativePath=".\resourcePS.h">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

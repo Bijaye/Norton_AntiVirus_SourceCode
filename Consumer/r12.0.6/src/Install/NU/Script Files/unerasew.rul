@@ -1,0 +1,44 @@
+//////////////////////////////////////////////////////////////////////////
+//
+//  $Header:   S:/BORGINST/VCS/unerasew.ruv   1.7   30 Jun 1998 17:54:52   RJACKSO  $
+//
+//  Module:   UNERASEW.RUL
+//
+//  Purpose:  This file contains the functions for handling UNERASEW
+//
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+//
+// Function:  CreateUnerasewRegDBEntries
+//
+//  Purpose:  This function will create necessary keys and values for
+//            the sample program.
+//
+//    Input:  none
+//
+//  Returns:  0 always
+//
+// Comments:
+//////////////////////////////////////////////////////////////////////////
+
+function CreateUnerasewRegDBEntries( nEnableNP )
+STRING szShortTarget, szProgram, szKey;
+begin
+
+//Setup shortname for targetpath.
+szShortTarget = g_szTarget;
+StrRemoveLastSlash( szShortTarget );
+LongPathToShortPath( szShortTarget );
+
+szProgram = szShortTarget ^ "ADVCHK.EXE";
+
+szKey = "\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+RegDBSetKeyValueEx( szKey, "Advanced Tools Check", REGDB_STRING, szProgram, -1 );
+
+//The rest of the registry keys get installed from the AdvChk.exe program.  That program is launched in the
+//Install Service section of this install.
+end;
+
+
+

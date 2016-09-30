@@ -1,0 +1,100 @@
+<html>
+<head>
+<meta ID="charset_opt_videxclude" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1" />
+<title id="exclude_vid_title">Norton AntiVirus</title>
+
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+<script Language="JavaScript" src="DisplayScriptError.js"></script>
+<script language="JavaScript" src="options.js"></script>
+<script language="JavaScript" src="options_exclude_byvid_dlg.js"></script>
+<link rel="stylesheet" type="text/css" href="navstyle.css">
+</head>
+<body id="body_ed" leftmargin="0" topmargin="0" scroll="no" onHelp="Help();" onLoad="Initialize();" TABINDEX="-1">
+ <!-- end of JavaScript text -->
+<form name="options_exclude_byvid_dlg" onsubmit="return false">
+  <table id="t1_ed" width="400" height="180" border="0" bgcolor="#FFFFFF">
+    <tr id="t1_tr1_ed" style="background-image: url('topbg.gif'); background-repeat: no-repeat;"> 
+      <td id="t1_td1_ed" valign="top" width="100%" height="30"> 
+        <table id="t2_ed" width="100%" height="120" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td id="t2_td1_ed" height="4" colspan="2">&nbsp;</td>
+          </tr>
+          <tr id="t2_tr1_ed" valign="top"> 
+            <td id="t2_td2_ed" height="12" valign="top" style="padding-bottom:1px" width="75%"> 
+              &nbsp;<font color="#333333"><span class="cutitleb" id="exclude_spyware">Security Risk List</span></font> 
+            </td>
+            <td id="t2_td3_ed" align="right">
+			  <a href='' onClick="Help(); return false;">
+              <span class="cuhelp" id="exclude_byvid_dlg_help">more info</span></a><span id="table2_space1">&nbsp;&nbsp;&nbsp;</span><br>
+            </td>
+          </tr>
+          
+          <tr id="spyware_selection_tr" align="left">
+			  <td colspan="2" style="padding-top:10px; padding-left:10px;" id="videxcl_td1">
+			  <select id="category_select" name="category" style="width:140px; font-size:10px;" onChange="OnCategoryChange()">
+			  <option id="optAll" value="0">All</option>
+			  <option id="optSecurityRisk" value="4">Security Risk</option>
+			  <option id="optSpyware" value="6">Spyware</option>
+			  <option id="optAdware" value="10">Adware</option>
+			  <option id="optDialers" value="8">Dialers</option>
+			  <option id="optJoke" value="11">Joke Programs</option>
+			  <option id="optRemote" value="9">Remote Access</option>
+			  <option id="optHackTools" value="5">Hack Tools</option>
+			  </select>
+			  </td>
+          </tr>
+		  
+		  <tr>
+		  <td colspan="2" id="videxcl_td2">
+		  
+		  <table id="list_table"  border="0" cellspacing="0" cellpadding="0" style="padding-top:10px;">
+		    <tr id="spyware_list" align="left">
+		  	<td id = "td1" style="padding-left:10px;">
+			    <select multiple id="threat_list" size="2" name="Threats" class="normal" style="width:250px;height:280px;"
+                onDblClick="get_detailed_info();" onClick="enable_buttons();" onChange="enable_buttons();">
+                </select>
+			</td>
+			
+			<td id="td_buttons">
+                <table id="button_table" border="0" cellspacing="0" cellpadding="0" style="padding-left:5px; padding-bottom:3px;">
+                    <tr>
+                        <td>
+                            <button id="ADD" class="goldnav1" onClick="Save();"> 
+                            <label id="AddButtonLabel" for="ADD" accesskey="a">
+                                <u>A</u>dd
+                            </label>
+                            </button><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="Cancel" class="goldnav1" onClick="location.href = 'closeme.xyz';"> 
+                            <label id="CancelAccessKey" for="Cancel" accesskey="c">
+                                <u>C</u>ancel
+                            </label>
+                            </button><br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button id="Details" class="goldnav1" onClick="OnClickDetails()"> 
+                            <label id="DetailsAccessKey" for="Details" accesskey="d">
+                                Risk <u>D</u>etails
+                            </label>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+             </td>
+             </tr>
+          </table>
+          
+        </td>  
+        </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

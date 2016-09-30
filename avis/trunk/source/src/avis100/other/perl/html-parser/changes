@@ -1,0 +1,60 @@
+1998-07-08   Gisle Aas <aas@sn.no>
+
+   Release 2.20
+
+   Added HTML::TokeParser.  Check it out!
+
+
+
+1998-07-07   Gisle Aas <aas@sn.no>
+
+   Release 2.19
+
+   Don't end a text chunk with space when we try to avoid breaking up
+   words.
+
+
+
+1998-06-22   Gisle Aas <aas@sn.no>
+
+   Release 2.18
+
+   HTML::HeadParser->parse_file will now stop parsing when the
+   <body> starts as it should.
+
+   HTML::LinkExtor more easily subclassable by introducing the
+   $self->_found_link method.
+
+
+
+1998-04-28   Gisle Aas <aas@sn.no>
+
+   Release 2.17
+
+   Never split words (a sequence of non-space) between two invocations
+   of $self->text.  This is just a simplification of the code that tried
+   not to break entities.
+   
+   HTML::Parser->parse_file now use smaller chunks as already
+   suggested by the HTML::Parser documentation.
+
+
+
+1998-04-02   Gisle Aas <aas@sn.no>
+
+   Release 2.16
+   
+   The HTML::Parser could some times break hex entites (like &#xFFFF;)
+   in the middle.
+
+   Removed remaining forced dependencies on libwww-perl modules.  It
+   means that all tests should now pass, even if libwww-perl was not
+   installed previously.
+
+   More tests.
+
+
+
+1998-04-01   Gisle Aas <aas@sn.no>
+
+   Release 2.14, HTML::* modules unbundled from libwww-perl-5.22.

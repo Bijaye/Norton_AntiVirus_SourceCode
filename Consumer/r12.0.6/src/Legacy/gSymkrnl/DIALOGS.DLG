@@ -1,0 +1,126 @@
+DLGINCLUDE RCDATA DISCARDABLE
+BEGIN
+    "DIALOGS.H\0"
+END
+
+#ifdef SYM_WIN32
+
+LANGUAGE LANG_ENGLISH,SUBLANG_ENGLISH_US
+
+IDD_VERSION DIALOG 25, 25, 328, 108
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Version Mismatches"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "The modules listed below are out-of-date for this application. Please check your system for possible duplications and remove old copies of these files. You may continue at risk of program faults!", 
+                    -1, 5, 5, 264, 24
+    LTEXT           "Module Name", -1, 5, 37, 72, 8, NOT WS_GROUP
+    LTEXT           "Expected", -1, 181, 37, 52, 8, NOT WS_GROUP
+    LTEXT           "Found", -1, 232, 37, 40, 8, NOT WS_GROUP
+    LISTBOX         ID_LISTBOX, 5, 47, 272, 61, LBS_SORT | LBS_USETABSTOPS |
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    DEFPUSHBUTTON   "Exit", IDOK, 282, 6, 40, 14, WS_GROUP
+    PUSHBUTTON      "Continue", IDCANCEL, 282, 23, 40, 14
+END
+
+IDD_NO_VFAT_ALLOWED DIALOG DISCARDABLE  25, 25, 183, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "This program cannot run with 32-bit file access.",-1,7,7,121,16
+    LTEXT           "To run this program on this machine you must use the Control\240Panel to disable 32-bit file access.",-1,7,31,121,37
+    PUSHBUTTON      "OK",IDOK,138,6,40,14,WS_GROUP
+END
+
+IDD_UNSUPPORTED_WINDOWS_VER DIALOG 25, 25, 183, 51
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT 8, "Helv"
+BEGIN
+	LTEXT "This program is designed to run only under Windows version 3.10 and Windows for Workgroups version 3.11.", -1, 7, 7, 121, 34, WS_CHILD | WS_VISIBLE | WS_GROUP
+	CONTROL "OK", IDOK, "BUTTON", WS_GROUP, 138,6,40,14
+END
+
+
+#ifndef NO_JAPANESE_RESOURCES
+
+LANGUAGE LANG_JAPANESE,SUBLANG_NEUTRAL
+
+IDD_VERSION DIALOG 25, 25, 320, 108
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Version Mismatches"
+FONT DBCS_FONT_SIZE,DBCS_FONT
+BEGIN
+    LTEXT           "The modules listed below are out-of-date for this application. Please check your system for possible duplications and remove old copies of these files. You may continue at risk of program faults!", 
+                    -1, 5, 5, 264, 24
+    LTEXT           "Module Name", -1, 5, 37, 72, 8, NOT WS_GROUP
+    LTEXT           "Expected", -1, 171, 37, 52, 8, NOT WS_GROUP
+    LTEXT           "Found", -1, 229, 37, 40, 8, NOT WS_GROUP
+    LISTBOX         ID_LISTBOX, 5, 47, 264, 61, LBS_SORT | LBS_USETABSTOPS |
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    DEFPUSHBUTTON   "Exit", IDOK, 274, 6, 40, 14, WS_GROUP
+    PUSHBUTTON      "Continue", IDCANCEL, 274, 23, 40, 14
+END
+
+IDD_NO_VFAT_ALLOWED DIALOG DISCARDABLE  25, 25, 183, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT DBCS_FONT_SIZE,DBCS_FONT
+BEGIN
+    LTEXT           "This program cannot run with 32-bit file access.",-1,7,7,121,16
+    LTEXT           "To run this program on this machine you must use the Control\240Panel to disable 32-bit file access.",-1,7,31,121,37
+    PUSHBUTTON      "OK",IDOK,138,6,40,14,WS_GROUP
+END
+
+IDD_UNSUPPORTED_WINDOWS_VER DIALOG 25, 25, 183, 51
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT DBCS_FONT_SIZE,DBCS_FONT
+BEGIN
+	LTEXT "This program is designed to run only under Windows version 3.10 and Windows for Workgroups version 3.11.", -1, 7, 7, 121, 34, WS_CHILD | WS_VISIBLE | WS_GROUP
+	CONTROL "OK", IDOK, "BUTTON", WS_GROUP, 138,6,40,14
+END
+
+#endif  // NO_JAPANESE_RESOURCES
+
+#else   // #ifdef SYM_WIN32
+
+IDD_VERSION DIALOG 25, 25, 320, 108
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Version Mismatches"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "The modules listed below are out-of-date for this application. Please check your system for possible duplications and remove old copies of these files. You may continue at risk of program faults!", 
+                    -1, 5, 5, 264, 24
+    LTEXT           "Module Name", -1, 5, 37, 72, 8, NOT WS_GROUP
+    LTEXT           "Expected", -1, 171, 37, 52, 8, NOT WS_GROUP
+    LTEXT           "Found", -1, 229, 37, 40, 8, NOT WS_GROUP
+    LISTBOX         ID_LISTBOX, 5, 47, 264, 61, LBS_SORT | LBS_USETABSTOPS |
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    DEFPUSHBUTTON   "Exit", IDOK, 274, 6, 40, 14, WS_GROUP
+    PUSHBUTTON      "Continue", IDCANCEL, 274, 23, 40, 14
+END
+
+IDD_NO_VFAT_ALLOWED DIALOG DISCARDABLE  25, 25, 183, 75
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "This program cannot run with 32-bit file access.",-1,7,7,121,16
+    LTEXT           "To run this program on this machine you must use the Control\240Panel to disable 32-bit file access.",-1,7,31,121,37
+    PUSHBUTTON      "OK",IDOK,138,6,40,14,WS_GROUP
+END
+
+IDD_UNSUPPORTED_WINDOWS_VER DIALOG 25, 25, 183, 51
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT 8, "Helv"
+BEGIN
+	LTEXT "This program is designed to run only under Windows version 3.10 and Windows for Workgroups version 3.11.", -1, 7, 7, 121, 34, WS_CHILD | WS_VISIBLE | WS_GROUP
+	CONTROL "OK", IDOK, "BUTTON", WS_GROUP, 138,6,40,14
+END
+
+#endif  // #ifdef SYM_WIN32 - #else
+
+

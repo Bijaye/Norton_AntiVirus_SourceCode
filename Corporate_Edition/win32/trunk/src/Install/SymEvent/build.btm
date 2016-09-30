@@ -1,0 +1,165 @@
+@echo off
+rem Build SymEvent Installer Merge Module
+rem This will eventually be moved to the SymEvent clientspec and retrieved from it's
+rem Release area as a nobuild.
+rem By David Luxford, 2003 August 20
+rem
+rem Parameters:
+rem     [(Release | Debug)]
+rem
+rem Return values (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem     0 - Success
+rem     2 - Build failed while in process
+rem     3 - No 4DOS
+rem     4 - 4DOS too old
+rem     5 - CLIENTROOT variable not specified
+rem     6 - CLIENTROOT invalid
+rem
+rem Uses:
+rem     BUILDTOOLISSTANDALONE
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  "%_BATCHNAME" on %_DATE at %_TIME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+if "%BUILDTOOLISSTANDALONE%" = "" goto ErrorNoInstallshield
+
+rem ** Parse command line
+set buildRelease=0
+set buildDebug=0
+iff "%@upper[%1]" = "RELEASE" then
+    set buildRelease=1
+    set buildDebug=0
+elseiff "%@upper[%1]" = "DEBUG" then
+    set buildRelease=0
+    set buildDebug=1
+endiff
+rem ** Auto-select defaults for arguments that weren't specified
+iff %buildRelease% = 0 .AND. %buildDebug% = 0 then
+    iff %BuildReleaseTargets% = 1 then
+        set buildRelease=1
+    else
+        set buildDebug=1
+    endiff
+endiff
+
+:Initialize
+rem ** Initialize
+cdd "%@PATH[%_BATCHNAME]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+set ProjectRoot=%_CWD
+set InstallDataDir=%ProjectRoot%\Data
+set FinishedRoot=%ProjectRoot%\Finished
+set buildCommand=%BUILDTOOLISSTANDALONE%\IsSaBld.exe
+iff %buildRelease% = 1 then
+    set buildConfig=Release
+    set buildConfigCentral=bin.ira
+else
+    set buildConfig=Debug
+    set buildConfigCentral=bin.ida
+endiff
+
+echo ** Cleaning %FinishedRoot%...
+if exist "%FinishedRoot%" attrib -r -s -h /s /q "%FinishedRoot%\*.*" >& nul
+if exist "%FinishedRoot%" del /s /q /y /x /z "%FinishedRoot%\*.*" >& nul
+if not exist "%FinishedRoot%" mkdir /s "%FinishedRoot%"
+if not exist "%FinishedRoot%" goto BuildFailed
+
+echo ** Cleaning %InstallDataDir%...
+if exist "%InstallDataDir%" attrib -r -s -h /s /q "%InstallDataDir%\*.*" >& nul
+if exist "%InstallDataDir%" del /s /q /y /x /z "%InstallDataDir%\*.*" >& nul
+if not exist "%InstallDataDir%" mkdir /s "%InstallDataDir%"
+if not exist "%InstallDataDir%" goto BuildFailed
+
+echo ** Copying binaries...
+copy "%CLIENTROOT%\Release\Event_Stat\bin.ira\sevinst.exe"      "%InstallDataDir%"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Release\Event_Stat\bin.sra\sevinst64x86.exe" "%InstallDataDir%"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\%buildConfigCentral%\sevinstCA.dll"         "%InstallDataDir%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Building merge modules...
+attrib -r -s -h /e /q "%ProjectRoot%\SevInst.ism" >& nul
+if %errorlevel% != 0 goto BuildFailed
+"%buildCommand%" -p "%ProjectRoot%\SevInst.ism" -r Release -b "%ProjectRoot%\Release" -x
+if %errorlevel% != 0 goto BuildFailed
+
+REM Set Read-Only back for Perforce, but don't fail build if it fails.
+attrib +r /e /q "%ProjectRoot%\SevInst.ism" >& nul
+
+attrib -r -s -h /e /q "%ProjectRoot%\SevInst64x86.ism" >& nul
+if %errorlevel% != 0 goto BuildFailed
+"%buildCommand%" -p "%ProjectRoot%\SevInst64x86.ism" -r Release -b "%ProjectRoot%\Release64x86" -x
+if %errorlevel% != 0 goto BuildFailed
+
+REM Set Read-Only back for Perforce, but don't fail build if it fails.
+attrib +r /e /q "%ProjectRoot%\SevInst64x86.ism" >& nul
+
+echo ** Copying merge modules to the mergemodules build directory...
+copy "%ProjectRoot%\Release\Product Configuration\Release\DiskImages\DISK1\SevInst.msm"           "%ProjectRoot%\..\MModules\SevInst.msm"
+if %errorlevel% != 0 goto BuildFailed
+copy "%ProjectRoot%\Release64x86\Product Configuration\Release\DiskImages\DISK1\SevInst64x86.msm" "%ProjectRoot%\..\MModules\SevInst64x86.msm"
+if %errorlevel% != 0 goto BuildFailed
+echo ** Copying merge modules to Finished...
+copy "%ProjectRoot%\Release\Product Configuration\Release\DiskImages\DISK1\SevInst.msm"           "%FinishedRoot%"
+if %errorlevel% != 0 goto BuildFailed
+copy "%ProjectRoot%\Release64x86\Product Configuration\Release\DiskImages\DISK1\SevInst64x86.msm" "%FinishedRoot%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ===                                               ===
+echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+echo ===                                               ===
+set returnVal=0
+goto RealEnd
+
+
+:BuildFailed
+set returnVal=2
+echo ===                                               ===
+echo `!=*>` FAILED:  Code %returnVal%:  Error detected! `<*=!`
+echo `!=*>` INFO:  At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+echo ===                                               ===
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS not detected!  The 4DOS shell is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS too old!  Version 3.02B or later is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorNoClientRoot
+set returnVal=5
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable not set! `<*=!`
+goto RealEnd
+
+:ErrorBadClientRoot
+set returnVal=6
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable invalid! `<*=!`
+goto RealEnd
+
+:ErrorNoInstallshield
+set returnVal=7
+echo `!=*>` FAILED:  Code %returnVal%:  BUILDTOOLISSTANDALONE is not set - cannot locate InstallShield! `<*=!`
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  "%_BATCHNAME" on %_DATE at %_TIME
+quit %returnVal%

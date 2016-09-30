@@ -1,0 +1,790 @@
+@echo off
+rem Copy SavCorp finished binaries from the source project directories to the
+rem DATA subdirectory for the install.  This adds a step, but permits us to
+rem create dev install builds quickly and supports localization.
+rem By David Luxford, 2006 February 1st
+rem
+rem Command line:
+rem     [Release]           - use release build targets for source files (default)
+rem     [Debug]             - use debug build targets for source files instead of release
+rem     [NoClean]           - do not create or clean target directories
+rem     [ClientSpecRoot]    - Use instead of CLIENTSPEC root, intended for developers only
+rem
+rem Return values (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem     0 - Success
+rem     2 - Build failed while in process
+rem     3 - No 4DOS
+rem     4 - 4DOS too old
+rem     5 - ClientSpecRoot not specified and CLIENTROOT not set
+rem     6 - specified ClientSpecRoot not found
+rem     7 - BUILDTOOLINSTALLSHIELD not set
+rem
+rem Return values (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem     0 - Success
+rem     2 - Build failed while in process
+rem     3 - No 4DOS
+rem     4 - 4DOS too old
+rem     5 - CONFIG failed
+rem     6 - CLIENTROOT variable not specified
+rem     7 - CLIENTROOT invalid
+rem     8 - Invalid command line
+rem
+rem Uses:
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  "%_BATCHNAME" on %_DATE at %_TIME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+if not isdir "%BUILDTOOLISSTANDALONE%" goto ErrorBadInstallshield
+
+rem ** Parse command line
+set CleanTargets=1
+set OldClientRoot=
+set UserClientRoot=
+set useDebugSources=
+do param = 2 to 127
+    shift 1
+    iff "%0" = "" then
+        shift -%param%
+        goto InitParseDone
+    endiff
+    iff "%@upper[%0]" = "NOCLEAN" then
+        set CleanTargets=0
+    elseiff "%@upper[%0]" = "RELEASE" then
+        set useDebugSources=0
+    elseiff "%@upper[%0]" = "DEBUG" then
+        set useDebugSources=1
+    else
+        set UserClientRoot=%0
+    endiff
+enddo
+shift -127
+:InitParseDone
+iff DEFINED UserClientRoot then
+    iff isdir "%UserClientRoot%" then
+        set OldClientRoot=%CLIENTROOT%
+        set CLIENTROOT=%@FULL[%UserClientRoot%]
+    else
+        goto ErrorBadClientRoot
+    endiff
+endiff
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+iff not defined useDebugSources then
+    rem ** Figure out the default from config
+    iff %BuildReleaseTargets% = 1 then
+        set useDebugSources=0
+    else
+        set useDebugSources=1
+    endiff
+endiff
+
+:Initialize
+rem ** Initialize
+cdd "%@PATH[%_BATCHNAME]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+set InstallRoot=%_CWD
+set TargetDataDir=%InstallRoot%\Data
+set SourceSAV=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src
+set SourceNSC=%CLIENTROOT%\Norton_System_Center\src
+set SourceLDVP=%CLIENTROOT%\Core_Technology\LDVP_Shared\src
+set SourceRelease=%CLIENTROOT%\Release
+set SourceSAVnobuilds=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds
+set SourceLDVPNobuilds=%CLIENTROOT%\Core_Technology\LDVP_Shared\src\NoBuilds
+set SourceTools=%CLIENTROOT%\tools
+set SourceAVCoreNobuilds=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\avcore\nobuilds\src
+set SourceAMSNobuilds=%CLIENTROOT%\Release\AMS\bin
+set SourceTechPubsHelp=%CLIENTROOT%\Tech_Pubs\corporate\managed_security\Help
+set TargetMergeModules=%InstallRoot%\MModules
+iff %useDebugSources% == 0 then
+    set buildConfig=Release
+    set buildConfigCentralUnicode64=bin.sruk
+    set buildConfigCentralKernel=bin.iruk
+    set buildConfigCentral=bin.ira
+    set buildConfigCentralUnicode=bin.iru
+    set buildConfigCentral64=bin.sra
+    set buildConfigLicensed=ReleaseLic
+    set buildConfigGenMar=ReleaseMD Unlicensed with LiveSubscribe
+    set buildConfigCommonClientDLL=ccL608.dll
+    set buildConfigCommonClientDLLUnicode=ccL60U8.dll
+else
+    set buildConfig=Debug
+    set buildConfigCentralUnicode64=bin.sduk
+    set buildConfigCentralKernel=bin.iduk
+    set buildConfigCentral=bin.ida
+    set buildConfigCentralUnicode=bin.idu
+    set buildConfigCentral64=bin.sda
+    set buildConfigLicensed=DebugLic
+    set buildConfigGenMar=DebugMD Unlicensed With LiveSubscribe
+    set buildConfigCommonClientDLL=ccL60D8.dll
+    set buildConfigCommonClientDLLUnicode=ccL60UD8.dll
+endiff
+
+set SourceSAVbuilt=%SourceSAV%\%buildConfigCentral%
+set SourceSAVbuilt64=%SourceSAV%\%buildConfigCentral64%
+set SourceSAVbuiltUnicode=%SourceSAV%\%buildConfigCentralUnicode%
+set SourceNSCbuilt=%SourceNSC%\%buildConfigCentral%
+set SourceNSCbuiltUnicode=%SourceNSC%\%buildConfigCentralUnicode%
+set SourceLDVPbuilt=%SourceLDVP%\%buildConfigCentral%
+
+iff %CleanTargets% = 1 then
+    echo ** Creating DATA directories...
+    if exist "%TargetDataDir%\*.*" attrib -r -s -h /s /q /d "%TargetDataDir%\*.*" >& nul
+    if exist "%TargetDataDir%\*.*" del /s /q /y /x "%TargetDataDir%\*.*" >& nul
+    if not exist "%TargetDataDir%" md /s "%TargetDataDir%"
+    if not exist "%TargetDataDir%" goto BuildFailed
+    md /s "%TargetDataDir%\Exchange_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\LiveSubscribe_MM"
+    if %errorlevel% != 0 goto BuildFailed
+
+    md /s "%TargetDataDir%\LiveSubscribe_MM\Trialware"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\LiveSubscribe_MM\TrialwareSCS"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\LiveSubscribe_MM\Non-OEM-Trial"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\LiveSubscribe_MM\Annual"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\LiveSubscribe_MM\AnnualSCS"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Notes_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Pop3_Smtp_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Quar_Client_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\RTVScan_Lic_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\RTVScan_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAV_Help_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAV_Main_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAV_Remote_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAV_Secure_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAV_Server_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAVRT_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAVRT_MM\xp"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\SAVRT64x86_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Symantec_AntiVirus"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Symantec_AntiVirus_Win64"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Symantec_Client_Security"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\UI_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\COH_UI_MM"
+    if %errorlevel% != 0 goto BuildFailed
+    md /s "%TargetDataDir%\Webinst_MM"
+    if %errorlevel% != 0 goto BuildFailed
+endiff
+
+:CopyMergeModules
+rem echo ** Copying SCF merge modules...
+rem xcopy /s /e /h /k /i /r /y "%BinarySourceNISMM%"                                            "%TargetMergeModules%"
+rem if %errorlevel% != 0 goto BuildFailed
+echo ** Copying SymNetDrv merge modules...
+xcopy /s /e /h /k /i /r /y "%CLIENTROOT%\SDKs\Client_IDS\MSI\IDS.msm"                       "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /h /k /i /r /y "%CLIENTROOT%\Release\SymNetDrv\MSI\SymNetDrv.msm"               "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+echo ** Copying SymProtect merge module...
+copy /q "%CLIENTROOT%\Release\BehaviorBlocking\MergeModules\SP_msm.msm"                     "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+echo ** Copying SymSentry merge module...
+copy /q "%BinarySourceSymSentry%\SymSentry\SymSentry.msm"                                   "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+echo ** Copying COH merge module...
+copy /q "%CLIENTROOT%\Release\COH\COHModule.msm"					    "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+echo ** Copying SyKnAppS merge modules...
+copy /q "%BinarySourceSyKnAppS\MergeModules\SyKnAppsMSM.msm"		    		    "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%BinarySourceSyKnAppS\TestTools\MergeModules\TestSyKnAppS_msm.msm"    		    "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+echo ** Copying SPA merge modules...
+copy /q "%BinarySourceSPA%\MModules\Agent_Main_MM.msm"			    		    "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%BinarySourceSPA%\MModules\SPA_Main_MM.msm"			    		    "%TargetMergeModules%"
+if %errorlevel% != 0 goto BuildFailed
+
+:CopyFiles
+echo ** Copying Exchange_MM files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\exchange_helper.dll"                                                      "%TargetDataDir%\Exchange_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceLDVPbuilt%\ExchngUI.ocx"                                                            "%TargetDataDir%\Exchange_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\ExchngUIRes.dll"                                                         "%TargetDataDir%\Exchange_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vpmsece4.dll"                                                             "%TargetDataDir%\Exchange_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vpmsece4Res.dll"                                                          "%TargetDataDir%\Exchange_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+rem ** Copying LiveSubscribe files...
+rem * Binary
+copy /q "%InstallRoot%\OemCA\%buildConfig%\OemCA.dll"                                               "%TargetDataDir%\LiveSubscribe_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceRelease%\LiveSubscribe\LRSetup.exe"                                                 "%TargetDataDir%\LiveSubscribe_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * Trialware files
+copy /q "%CLIENTROOT%\DJSMAR00\SessionFiles\Trialware\savsess.txt"                                  "%TargetDataDir%\LiveSubscribe_MM\Trialware"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\DJSMAR00\SessionFiles\TrialwareSCS\savsess.txt"                               "%TargetDataDir%\LiveSubscribe_MM\TrialwareSCS"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\DJSMAR00\%buildConfigGenMar%\genmar.dll"                                      "%TargetDataDir%\LiveSubscribe_MM\Trialware"
+if %errorlevel% != 0 goto BuildFailed
+rem * Non-OEM-Trial files
+copy /q "%CLIENTROOT%\DJSMAR00\SessionFiles\Non-OEM-Trial\savsess.txt"                              "%TargetDataDir%\LiveSubscribe_MM\Non-OEM-Trial"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\DJSMAR00\%buildConfigGenMar%\genmar.dll"                                      "%TargetDataDir%\LiveSubscribe_MM\Non-OEM-Trial"
+if %errorlevel% != 0 goto BuildFailed
+rem * Annual files
+copy /q "%CLIENTROOT%\DJSMAR00\SessionFiles\Annual\savsess.txt"                                     "%TargetDataDir%\LiveSubscribe_MM\Annual"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\DJSMAR00\SessionFiles\AnnualSCS\savsess.txt"                                  "%TargetDataDir%\LiveSubscribe_MM\AnnualSCS"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\DJSMAR00\%buildConfigGenMar%\genmar.dll"                                      "%TargetDataDir%\LiveSubscribe_MM\Annual"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying MSFT_DEBUG_RT_DLL_MM files...
+copy /q "%CLIENTROOT%\Shareable_code\unlicensed\DebugNET\Release\BugslayerUtil.dll"	                "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\mfc71d.dll"                                                      "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\mfc71ud.dll"                                                     "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\msvcp71d.dll"                                                    "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\msvcr71d.dll"                                                    "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\mfc80d.dll"                                                      "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\mfc80ud.dll"                                                     "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\msvcp80d.dll"                                                    "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%InstallRoot%\MSFT_RT_DLL\msvcr80d.dll"                                                    "%TargetDataDir%\MSFT_DEBUG_RT_DLL_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Notes_MM files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\savNotesCA.dll"                                                           "%TargetDataDir%\Notes_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceLDVPbuilt%\LotNtsUI.ocx"                                                            "%TargetDataDir%\Notes_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LotNtsUIRes.dll"                                                         "%TargetDataDir%\Notes_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\nlnvp.dll"                                                                "%TargetDataDir%\Notes_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\notesext.dll"                                                             "%TargetDataDir%\Notes_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\notesextRes.dll"                                                          "%TargetDataDir%\Notes_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Pop3_Smtp_MM files...
+rem * File
+copy /q "%SourceSAVbuilt%\IMail.dll"                                                                "%TargetDataDir%\Pop3_Smtp_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\IMailUI.ocx"                                                             "%TargetDataDir%\Pop3_Smtp_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\IMailUIRes.dll"                                                          "%TargetDataDir%\Pop3_Smtp_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SAVCProd.dll"                                                             "%TargetDataDir%\Pop3_Smtp_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SavEmail.dll"                                                             "%TargetDataDir%\Pop3_Smtp_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Quar_Client_MM files...
+rem * File
+copy /q "%SourceRelease%\QServer\bin\intelAnsi\win32\release\QsInfo.dll"                            "%TargetDataDir%\Quar_Client_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\QServer\bin\intelAnsi\win32\release\qscomm32.dll"                          "%TargetDataDir%\Quar_Client_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\QServer\bin\intelAnsi\win32\release\qspak32.dll"                           "%TargetDataDir%\Quar_Client_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying RTVSCAN_LIC_MM files...
+rem * File
+copy /q "%SourceSAVbuilt%\els\rtvscan.exe"                                                          "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\PScanRes.dll"                                                             "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\SLICWrap.dll"                                                            "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\SLICWrapRes.dll"                                                         "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVP%\Common\OEM\OEMConfigWizard\%buildConfig%\OEMConfigWizard.exe"                 "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\OEMConfigWizardCore.dll"                                                  "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\symoem.dll"                                                               "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVnobuilds%\bin.ira\License_Trial.rtf"                                             "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVnobuilds%\bin.ira\License_wi.rtf"                                                "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\tech_pubs\Corporate\Managed_Security\Help\gs_clnt.pdf"                        "%TargetDataDir%\RTVSCAN_LIC_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying rtvscan_mm files...
+rem * File
+copy /q "%SourceSAVbuilt%\rtvscan.exe"                                                              "%TargetDataDir%\rtvscan_mm"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\PScanRes.dll"                                                             "%TargetDataDir%\rtvscan_mm"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying SAV_Help_MM files...
+rem * File
+copy /q "%SourceTechPubsHelp%\gs_clnt.pdf"                                                          "%TargetDataDir%\SAV_Help_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceTechPubsHelp%\gs_clnt.pdf"                                                          "%TargetDataDir%\SAV_Help_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceTechPubsHelp%\CS_HTML_Help\sav_csh\release\savhelp.chm"                             "%TargetDataDir%\SAV_Help_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceTechPubsHelp%\html_help\sav_help\release\savmain.chm"                               "%TargetDataDir%\SAV_Help_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying SAV_MAIN_MM files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\savMainCA.dll"                                                            "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\savLangPkCA.dll"                                                          "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceSAVbuilt%\ActaRes.dll"                                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\COUNTRY.DAT"                                               "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\cliproxy.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\cliscan.dll"                                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceNSC%\install\nobuilds\Ctl3d32.dll"                                                  "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\DWHWizrd.exe"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\DWHWizrdRes.dll"                                                          "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\defutils\BinWin32Vc7AnsiRelease\DefUtDCD.dll"                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\defutils\BinWin32Vc7AnsiRelease\DefUtDCS.dll"                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\DefWatch.exe"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\DefWatchRes.dll"                                                          "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVP%\nobuilds\bin.ira\Default.hst"                                                 "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\i2ldvp3.dll"                                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPReg.exe"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LuHstEdt.dll"                                                            "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\Luawrap.exe"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\navapi\binintelansiwin32release\NAVAPI32.DLL"                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\NavLU.dll"                                                                "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\NavLURes.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\NavNTutl.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\NavLogon.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\patchapp\bin.ira\PATCH32I.DLL"                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\PLATFORM.DAT"                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\dec3\bin\intelansi\release\Rec2.dll"                                       "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\Scancfg.dat"                                               "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\scandlvr.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\ScandRes.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\\components\scananddeliver\src\release\SDPCK32I.dll"                          "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\SDSND32I.DLL"                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\SDSOK32I.DLL"                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\SDSTP32I.DLL"                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\avcore\nobuilds\src\SMSTR32I.DLL"                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\savroam.exe"                                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SavRoamRes.dll"                                                           "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\transman.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vpdn_lu.exe"                                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\Vpdn_LURes.dll"                                                           "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vptray.exe"                                                               "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\VpTrayRes.dll"                                                            "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\ams\bin\pds\cba.dll"                                                       "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVnobuilds%\bin.ira\clninst.bat"                                                   "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVnobuilds%\bin.ira\Dec3.cfg"                                                      "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\DoScan.exe"                                                               "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\dwLdPntScan.dll"                                                          "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\ams\bin\pds\loc32vc0.dll"                                                  "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\ams\bin\pds\msgsys.dll"                                                    "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\autoprotect\bin.ira\Navap32_CC.dll"                                        "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\nlnhook.exe"                                                              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\nnewdefs.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\ams\bin\pds\nts.dll"                                                       "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\microdefs\binwin32ansirelease\patch25d.dll"                                "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\ams\bin\pds\pds.dll"                                                       "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\components\scananddeliver\src\release\SDSNAPSX.dll"                           "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SymProtectStorage.dll"                                                    "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SymProtectStorageRes.dll"                                                 "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\components\systemsnapshot\syssnap\SystemSnapshotRules.bin"                    "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\bin\bin.ira\ccL608.dll"                   "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\bin\bin.iru\ccl60u8.dll"                  "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * Following 3 files are also needed as support for COM Extracts - other DLLs can't load w/o correct CC DLL or resource DLL
+copy /q "%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\bin\%buildConfigCentral%\%buildConfigCommonClientDLL%"                            "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\bin\%buildConfigCentralUnicode%\%buildConfigCommonClientDLLUnicode%"              "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\PScanRes.dll"                                                             "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%BinarySourceSPA%\%buildConfigCentral%\AVMan.plg"                  			    "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\AvPluginImpl.dll"		                  			    "%TargetDataDir%\SAV_MAIN_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying SAV_SECURE_MM files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\SAVSecureCA.dll"                                                          "%TargetDataDir%\SAV_SECURE_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceSAVbuilt%\ScsComms.dll"                                                             "%TargetDataDir%\SAV_SECURE_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying SAV_SERVER_MM files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\SAVServerCA.dll"                                                          "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceSAV%\nobuilds\bin.ira\logon\Nbpshpop.exe"                                           "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\logon\osver.exe"                                              "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\psapi.dll"                                                    "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\logon\vplogon.bat"                                            "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\logon\vpscan16.bat"                                           "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\logon\vp_login.ini"                                           "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\ams\bin\pds\pds.exe"                                                       "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vp_log32.exe"                                                             "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vp_log32res.dll"                                                          "%TargetDataDir%\SAV_SERVER_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying SAVRT64x86_MM files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\RemoveService.dll"                                                        "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceRelease%\Autoprotect\options\corporate\exclusions\default\SRTLEXCL.DAT"             "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\options\corporate\exclusions\default\SRTSEXCL.DAT"             "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\%buildConfigCentral%\SavRT32.dll"                              "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrt.cat"                                             "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\options\corporate\savrt.dat"                                   "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrt.inf"                                             "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\%buildConfigCentralUnicode64%\Savrt64x86.sys"                  "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrtpel.cat"                                          "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrtpel.inf"                                          "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\%buildConfigCentralUnicode64%\Savrtpel64x86.sys"               "%TargetDataDir%\SAVRT64x86_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying SAVRT_MM files...
+rem * File
+copy /q "%SourceSAVbuilt%\RemoveService.dll"                                                        "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceRelease%\Autoprotect\options\corporate\exclusions\default\SRTLEXCL.DAT"             "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\options\corporate\exclusions\XP\SRTLEXCL.DAT"                  "%TargetDataDir%\SAVRT_MM\xp"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\options\corporate\exclusions\default\SRTSEXCL.DAT"             "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\options\corporate\exclusions\XP\SRTSEXCL.DAT"                  "%TargetDataDir%\SAVRT_MM\xp"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\bin.ira\SavRT32.dll"                                           "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\%buildConfigCentralKernel%\Savrtpel.sys"                       "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrt.cat"                                             "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\options\corporate\savrt.dat"                                   "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrt.inf"                                             "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\%buildConfigCentralKernel%\savrt.sys"                          "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrtpel.cat"                                          "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceRelease%\Autoprotect\include\savrtpel.inf"                                          "%TargetDataDir%\SAVRT_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying UI_MM files...
+rem * File
+copy /q "%SourceLDVPbuilt%\LDDateTm.ocx"                                                            "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPCtls.ocx"                                                            "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPDlgs.ocx"                                                            "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\LDVPTask.ocx"                                                             "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\ldvpview.ocx"                                                             "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vpc32.exe"                                                                "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPui.ocx"                                                              "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\scandlgs.dll"                                                             "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\SymProtectUI.ocx"                                                        "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\webshell.dll"                                                            "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\vpshell2.dll"                                                             "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\UI Test Harness.exe"                                                      "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SymCorpUI.dll"                                                            "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SavMainUI.dll"                                                            "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * Support file for COM Extract of SavMainUI and SymCorpUI - they can't load w/o CC DLL
+copy /q "%CLIENTROOT%\Norton_Internet_Security\src\CC_SDK\bin\%buildConfigCentralUnicode%\%buildConfigCommonClientDLLunicode%"              "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+rem * File - resource DLLs
+copy /q "%SourceLDVPbuilt%\LDDateTmres.dll"                                                         "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPCtlsres.dll"                                                         "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPDlgsres.dll"                                                         "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\LDVPTaskres.dll"                                                          "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\LDVPViewres.dll"                                                          "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\VPC32res.dll"                                                             "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\LDVPUIres.dll"                                                           "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\ScanDlgsres.dll"                                                          "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\SymProtectUIres.dll"                                                     "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceLDVPbuilt%\WebShellres.dll"                                                         "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\Vpshellres.dll"                                                           "%TargetDataDir%\UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying COH_UI_MM files...
+copy /q "%SourceSAVbuiltUnicode%\HPPProtectionProviderUI.dll"                                       "%TargetDataDir%\COH_UI_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Webinst_MM files...
+rem * File
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\WebInst.cab"  "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\brnotsup.htm" "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\default.htm"  "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\webinst\files.ini"                "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\intro.htm"    "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\logo.jpg"     "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\oscheck.htm"  "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\plnotsup.htm" "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\readme.htm"   "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\WebDeploy\start.htm"    "%TargetDataDir%\Webinst_MM"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Symantec_Antivirus files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\Sav9UninstallFixWin.exe"                                                  "%TargetDataDir%\Symantec_Antivirus"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SavCustom.dll"                                                            "%TargetDataDir%\Symantec_Antivirus"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceSAV%\nobuilds\bin.ira\symprotect\scs-sav.grd"                                       "%TargetDataDir%\Symantec_Antivirus"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\symprotect\scs-sav.sig"                                       "%TargetDataDir%\Symantec_Antivirus"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\symprotect\scs-sav.spm"                                       "%TargetDataDir%\Symantec_Antivirus"
+if %errorlevel% != 0 goto BuildFailed
+rem * Control
+copy /q "%SourceSAVnobuilds%\bin.ira\License_wi.rtf"                                                "%TargetDataDir%\Symantec_Antivirus"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Symantec_Antivirus_Win64 files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\Sav9UninstallFixWin.exe"                                                  "%TargetDataDir%\Symantec_Antivirus_Win64"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SavCustom.dll"                                                            "%TargetDataDir%\Symantec_Antivirus_Win64"
+if %errorlevel% != 0 goto BuildFailed
+rem * Control
+copy /q "%SourceSAVnobuilds%\bin.ira\License_wi.rtf"                                                "%TargetDataDir%\Symantec_Antivirus_Win64"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceSAV%\nobuilds\temp\NavLogon.dll"                                                    "%TargetDataDir%\Symantec_Antivirus_Win64"
+if %errorlevel% != 0 goto BuildFailed
+
+echo ** Copying Symantec_Client_Security files...
+rem * Binary
+copy /q "%SourceSAVbuilt%\Sav9UninstallFixWin.exe"                                                  "%TargetDataDir%\Symantec_Client_Security"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAVbuilt%\SavCustom.dll"                                                            "%TargetDataDir%\Symantec_Client_Security"
+if %errorlevel% != 0 goto BuildFailed
+rem * File
+copy /q "%SourceSAV%\nobuilds\bin.ira\symprotect\scs-scs.grd"                                       "%TargetDataDir%\Symantec_Client_Security"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\symprotect\scs-scs.sig"                                       "%TargetDataDir%\Symantec_Client_Security"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%SourceSAV%\nobuilds\bin.ira\symprotect\scs-scs.spm"                                       "%TargetDataDir%\Symantec_Client_Security"
+if %errorlevel% != 0 goto BuildFailed
+rem * Control
+copy /q "%SourceSAVnobuilds%\bin.ira\License_wi.rtf"                                                "%TargetDataDir%\Symantec_Client_Security"
+if %errorlevel% != 0 goto BuildFailed
+
+rem ** Remove RO attribute from all files
+attrib -r -s -h /s /q /d "%TargetDataDir%\*.*" >& nul
+
+
+:BuildComplete
+echo ===                                               ===
+echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+echo ===                                               ===
+set returnVal=0
+goto RealEnd
+
+:BuildFailed
+set returnVal=2
+echo ===                                               ===
+echo `!=*>` FAILED:  Code %returnVal%:  Error detected! `<*=!`
+echo `!=*>` INFO:  At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+echo ===                                               ===
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS not detected!  The 4DOS shell is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo `!=*>` FAILED:  Code %returnVal%:  4DOS too old!  Version 3.02B or later is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorConfig
+set returnVal=5
+echo `!=*>` FAILED:  Code %returnVal%:  CONFIG failed!  Unable to build. `<*=!`
+goto RealEnd
+
+:ErrorNoClientRoot
+set returnVal=6
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable not set! `<*=!`
+goto RealEnd
+
+:ErrorBadClientRoot
+set returnVal=7
+echo `!=*>` FAILED:  Code %returnVal%:  CLIENTROOT variable invalid! `<*=!`
+goto RealEnd
+
+:ErrorBadCommandLine
+set returnVal=8
+echo `!=*>` FAILED:  Code %returnVal%:  Invalid command line. `<*=!`
+goto RealEnd
+
+:ErrorBadInstallshield
+set returnVal=9
+echo `!=*>` FAILED:  Code %returnVal%:  InstallShield Standalone not found in specified directory. `<*=!`
+goto RealEnd
+
+:RealEnd
+if DEFINED UserClientRoot .AND. DEFINED OldClientRoot set ClientRoot=%OldClientRoot%
+set UserClientRoot=
+set OldClientRoot=
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  "%_BATCHNAME" on %_DATE at %_TIME
+quit %returnVal%

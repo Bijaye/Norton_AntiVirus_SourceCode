@@ -1,0 +1,260 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/actstr.stv   1.0   06 Feb 1997 20:50:30   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV Activity Log options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptActivityStrings,
+//      LPVOID *        lpOptActivityArgs,
+//
+//      CheckBoxRec     cbActivityKnownVirus
+//      CheckBoxRec     cbActivityUnknownVirus
+//      CheckBoxRec     cbActivityInocChange
+//      CheckBoxRec     cbActivityVirusLike
+//      CheckBoxRec     cbActivityStartEnd
+//      CheckBoxRec     cbActivityVirusList
+//      CheckBoxRec     cbActivityKeepEntries
+//      CheckBoxRec     cbActivityKeepKB
+//
+//      TERec           teActivityKeepEntries
+//      TERec           teActivityKeepKB
+//      TERec           teActivityLogFile
+//
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/actstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:30   RFULLER
+// Initial revision
+// 
+//    Rev 1.1   31 Jan 1996 21:30:16   MKEATIN
+// Added DX support - NULL pointer was being passed instead of a string pointer
+// 
+//    Rev 1.0   30 Jan 1996 16:21:06   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:54:58   BARRY
+// Initial revision.
+// 
+//    Rev 1.14   10 Feb 1995 13:50:44   DALLEE
+// Align 'Activity log filename' text edit with checkboxes.
+// 
+//    Rev 1.13   20 Jan 1995 18:52:42   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.12   29 Dec 1994 12:50:44   DALLEE
+// Include navopts.h for old MAX_PATH_SIZE define.
+// 
+//    Rev 1.11   28 Dec 1994 12:07:42   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.3   09 Dec 1994 19:32:20   DALLEE
+    // Paths for NAVOPTS.DAT strings to old 144 bytes.
+    //
+    //    Rev 1.2   06 Dec 1994 19:50:14   DALLEE
+    // Put back strings removed for Mini-NAV.
+    //
+    //    Rev 1.1   30 Nov 1994 17:13:08   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.10   28 Dec 1994 11:55:50   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:52   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.9   06 Jun 1994 09:24:32   DALLEE
+    // Added message for invalid path.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+#include "navopts.h"
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define ACTIVITY_KEEP_ENTRIES_LENGTH    ( 3)
+#define ACTIVITY_KEEP_KB_LENGTH         ( 3)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END    []; // These externs are declared in
+extern ButtonsRec buOkCancelHelp;       // OPTSTR.C
+extern ButtonsRec buEllipses;
+extern UINT TECheckLogFilename ( TERec * pTE );
+
+
+//************************************************************************
+// Activity Log CP Dialog Strings
+//************************************************************************
+
+char *lpszOptActivityStrings [] =       // Strings for activity log CP dialog
+{
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    " %38gLog following events",        // BEGIN GROUP
+    "   %C1",                           // cbActivityKnownVirus
+    "   %C2",                           // cbActivityUnknownVirus
+    "   %C3",                           // cbActivityInocChange
+    "   %C4",                           // cbActivityVirusLike
+    "   %C5",                           // cbActivityStartEnd
+    "   %C6",                           // cbActivityVirusList
+    DIALOG_GROUP_END,
+    DIALOG_EMPTY_LINE,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B9",                              // buOkCancelHelp
+    DIALOG_1COL,
+    DIALOG_LEFT,
+
+    "   %C7 %T8 kilobytes",
+    DIALOG_EMPTY_LINE,
+    "   Activity log ^filename:",
+    "   %T10%B11",                      // teActivityLogFile, buEllipses
+
+    DIALOG_END,
+    };
+
+
+//------------------------------------------------------------------------
+// Activity Log CP Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbActivityKnownVirus =
+    {
+    "^Known virus detections",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbActivityUnknownVirus =
+    {
+    "^Unknown virus detections",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbActivityInocChange =
+    {
+    "^Inoculation activities",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbActivityVirusLike =
+    {
+    "^Virus-like activities",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbActivityStartEnd =
+    {
+    "Completion of ^scans",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbActivityVirusList =
+    {
+    "Virus ^list changes",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbActivityKeepKB =
+    {
+    "Li^mit size of log file to",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value - not used
+    1,                                  // Pad
+    };
+
+static char szActivityKeepKB [ACTIVITY_KEEP_KB_LENGTH + 1];
+
+TERec teActivityKeepKB =
+    {
+    0, 0,                               // Row, col - internal use
+    ACTIVITY_KEEP_KB_LENGTH + 2,        // Screen width
+    szActivityKeepKB,                   // String to edit
+    ACTIVITY_KEEP_KB_LENGTH,            // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal use
+    TEDigitsOnlyFilter,                 // Character validate function
+    0,                                  // Flags
+    NULL,                               // Field validate function
+    };
+
+char SZ_LOG_FILE_FILTER[]       = "*.LOG";
+char SZ_LOG_FILE_TITLE[]        = "Select Activity Log File";
+static char szActivityLogFile [MAX_PATH_SIZE + 1];
+
+TERec teActivityLogFile =
+    {
+    0, 0,                               // Row, col - internal use
+    29 + 2,                             // Screen width
+    szActivityLogFile,                  // String to edit set when used
+    MAX_PATH_SIZE,                      // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal use
+    TEUpperPathCharsOnlyFilter,         // Character validate function
+    0,                                  // Flags
+    TECheckLogFilename,                 // Field validate function 
+    };
+
+LPVOID lpOptActivityArgs [] =           // Arguments to pass to control panel
+    {
+    &cbActivityKnownVirus,
+    &cbActivityUnknownVirus,
+    &cbActivityInocChange,
+    &cbActivityVirusLike,
+    &cbActivityStartEnd,
+    &cbActivityVirusList,
+    &cbActivityKeepKB,
+    &teActivityKeepKB,
+    &buOkCancelHelp,
+    &teActivityLogFile,
+    &buEllipses,
+    };
+
+/************************************************************************
+ * Bad log filename alert                                               *
+ ************************************************************************/
+
+BYTE *apszBadLogFilename[] =
+    {
+    DIALOG_EMPTY_LINE,
+    " %3aInvalid activity log filename!%1a ",
+    DIALOG_EMPTY_LINE,
+    " The activity log cannot be sent to a device driver. ",
+    DIALOG_EMPTY_LINE,
+    DIALOG_END
+    };
+
+BYTE *apszInvalidPathError [] =
+    {
+    DIALOG_EMPTY_LINE,
+    " The entered filename or path is invalid. ",
+    DIALOG_EMPTY_LINE,
+    DIALOG_END
+    };
+
+

@@ -1,0 +1,126 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>msvc_projects</TITLE>
+<META NAME="Template" CONTENT="E:\msoffice\Office\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080" BGCOLOR="#dff7f4">
+
+<FONT FACE="Courier New"><H1 ALIGN="CENTER">Using MSVC++ - generated projects for IBM Anti-Virus builds</H1>
+</FONT><P ALIGN="CENTER"><BR>
+<A HREF="mailto:gesman@mensk.com">Gleb Esman</A> <BR>
+Last Revised on 02-Apr-97 4:36:31 PM</P>
+<P>CMVC builds are based on environment variables at any given time. MSVC++ 4.x, 5.0 doesn't always allow you to specify environment variables in places, where normal human would want them to be. Following document describes how to use MSVC++ environment and still be compatible with CMVC build process. Following is a description of sequence of actions and "tweaks" to make things work. I giving the example of how I setted up TCPIPNET project. TCPIPNET is a part of NTSHIELD. You just have to substitute names to the ones that right for your project. </P>
+<P><HR></P>
+<PRE>
+1. Create project workspace, include all files, make sure compiler,
+   linker and all other settings are whatever you want them to be.
+
+2. Go to: Build-Settings-General-Intermediate files
+
+3. Make sure that on the left side of dialog *both* Debug and Release are selected.
+
+4. Type: ///OBJD///\ntshield\tcpipnet
+
+5. In Build-Settings-General-Output files  type: 
+
+       ///OUTD///\nt
+
+   Note: 1. Normal human programmer would love to put $(OBJD) and $(OUTD) over
+&#9;    there, but Microsoft thinks differently. ///xxxx/// will be converted to
+&#9;    $(xxxx) by the TWEAKMAK.EXE utility, that I wrote. This will be done
+&#9;    automatically.
+&#9; 2. Use: ///OUTD///\.  - ("\." appended) if you don't have actual
+&#9;    directory to append. (MSVC++ don't like path to ends with '///').
+
+6. Go to: Build-Settings-C/C++-General
+   On a left pane select only "debug" build. That will allow you to edit
+   "Project options" edit field. Goto "Project Options" edit field.
+   Erase from there one-by-one compiler settings, starting with:
+   /Fp /Fo and /Fd
+   Each of these will look like: /Fp"///OBJD///\ntshield\virscan/virscan.pch"
+   You have to erase it, because every time you changing compiler settings
+   directly MSVC++ by mistake adds the second copy of these /F...  settings.
+   MSVC++ would cleanly recreate them every time anyway, so don't worry.
+   Just don't erase anything extra.
+   (In fact same problem happening with the linker setting, if you'd decide to
+    edit it directly. For linker settings you'd have to erase:
+    /PDB  /DEF  /OUT  /IMPLIB  /MAP).
+
+7. Add: $(INCPATHS) right before final '/c'.
+
+8. Do the same (6, 7) for release build. Unfortunately it has to be
+   done separately, because you cannot edit project settings if both
+   debug and release builds are hilited on a left pane.
+
+9. Make sure that on the left side of dialog *both* Debug and Release are selected.
+   Go to: Build-&gt;Settings-&gt;C/C++-&gt;Preprocessor.
+   Add:  $(LANGTYPE)
+
+10. Go to: Build-&gt;Settings-&gt;Link-&gt;Object/Library modules:
+    Add:  $(LIBD)\dbcsvcnt.lib
+
+11. Copy %UTILD%\im_templ.cmd  to your project directory and rename it to,
+   say, M.CMD
+
+12. M.CMD will be used to build your project.
+
+13. Edit M.CMD as per description in it. Its very small and easy
+    change.
+
+14. Create a makefile: NTSHVCNT.MAK (use name, appropriate to
+    you project) with the following content:
+
+<B><FONT COLOR="#008000">#-----------------------------------------------------------------
+# Makefile begins.
+#-----------------------------------------------------------------
+
+depend:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd depend
+
+compile:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd compile
+
+help:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd help
+
+library:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd library
+
+exedll:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd exedll
+
+all:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd all
+
+clean:
+    cd $(SRCD)\ntshield\tcpipnet
+    $(SRCDRIVE)
+    m.cmd clean
+
+#-----------------------------------------------------------------
+# Makefile ends.
+#-----------------------------------------------------------------
+</B></FONT>
+15. That's it. You project should be ready for the IBMAV build process.
+    All above hassle is needed if you want MSVC++ environment to
+    generate and maintain you MDP and MAK files and all settings in it,
+    and be compatible with CMVC build process  vs. writing your own
+    makefile for every NT project.  If you need to change other settings
+    in your project later on - just load "Project Workspace", change
+    settings you want, then close it and check it into CMVC.</PRE>
+<P><HR></P></BODY>
+</HTML>

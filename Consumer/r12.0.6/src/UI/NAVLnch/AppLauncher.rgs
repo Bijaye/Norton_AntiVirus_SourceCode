@@ -1,0 +1,26 @@
+HKCR
+{
+	Symantec.Norton.AntiVirus.AppLauncher.1 = s 'Symantec.Norton.AntiVirus.AppLauncher Class'
+	{
+		CLSID = s '{51CD5322-C0EC-4513-BCEF-1C9B2EC88719}'
+	}
+	Symantec.Norton.AntiVirus.AppLauncher = s 'Symantec.Norton.AntiVirus.AppLauncher Class'
+	{
+		CLSID = s '{51CD5322-C0EC-4513-BCEF-1C9B2EC88719}'
+		CurVer = s 'Symantec.Norton.AntiVirus.AppLauncher.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {51CD5322-C0EC-4513-BCEF-1C9B2EC88719} = s 'Symantec.Norton.AntiVirus.AppLauncher Class'
+		{
+			ProgID = s 'Symantec.Norton.AntiVirus.AppLauncher.1'
+			VersionIndependentProgID = s 'Symantec.Norton.AntiVirus.AppLauncher'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{9275E229-718E-4A2D-8EE0-10C5AA524C22}'
+		}
+	}
+}

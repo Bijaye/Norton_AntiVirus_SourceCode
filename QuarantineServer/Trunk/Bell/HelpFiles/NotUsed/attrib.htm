@@ -1,0 +1,447 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1252">
+<META NAME="Generator" CONTENT="Microsoft Word 97">
+<TITLE>attrib</TITLE>
+<META NAME="Template" CONTENT="E:\PROGRAM FILES\MICROSOFT OFFICE\OFFICE\html.dot">
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+
+<B><U><FONT SIZE=2><P>1. ATTRIBUTES</P>
+</B></U><P>Request and response messages exchanged between clients and servers contain multiple header lines following the command line. Each header line describes a single attribute of the message or its content, encoded as a pair of text strings that specify the name of an attribute and its value, separated by a colon character and terminated by a newline character. All header lines share these characteristics:</P>
+<P>? Attribute names are not case-sensitive. By convention, names are composed of one or more English words separated by a hyphen character, and the first letter of each word is capitalized, such as "Date" or "Content-Length".</P>
+<P>? Attribute names that begin with "X-" identify proprietary attributes meaningful only to Immune System clients and servers. Attribute names that do not begin with "X-" identify standard attributes that may be interpreted by intermediate processes, such as firewalls and proxies.</P>
+<P>? Attribute values may be case-sensitive or case-insensitive. Their syntax depends upon the attribute name.</P>
+<P>? The order of header lines is not significant, and duplicate attribute names are not allowed. The order of header lines may be altered at any time during the processing of a message.</P>
+<P>? Attribute names have a maximum length of 31 characters, and attribute values have a maximum length of 255 characters.</P>
+<P>An empty line separates the header lines from the optional content of a message. That is, the last header line is terminated by two newline characters rather than one. </P>
+<P>The Immune System uses many of the standard header lines defined in the HTTP version 1.0 and 1.1 specifications. It also uses many more proprietary header lines defined in this specification. The attribute names of proprietary header lines always start with the characters "X-".</P>
+<B><U><P>1.1 ACCEPT ATTRIBUTE</P>
+</B></U><P>The standard Accept attribute is included in request messages when the response message is expected to have non-empty content, and specifies the type of data the client can accept in the response. The value of the attribute is a MIME type and subtype, separated by a "/" character, with wildcards indicated by "*" characters. The value must conform to Internet RFC 1521. The Immune System uses these values:</P>
+<P>application/octet-stream for anapplication/x-NAV-Einstein32 for a Windows 95/98/NT updater program</P>
+<P>application/x-NAV-FatAlbert for an Intel-platforms updater program</P>
+<P>application/x-avis-sampleapplication/x-AVIS-sample for a captured sample</P>
+<P>application/x-zip-compressedapplication/zip for a compressed directory of files</P>
+<P>For example, when a sample is expected in the response message, a request message might include this header:</P>
+<P>Accept: application/x-avis-sampleapplication/x-AVIS-sample</P>
+<P>The Accept attribute is omitted when the request message is expected to have empty content.</P>
+<B><U><P>1.2 ACCEPT-RANGES ATTRIBUTE</P>
+</B></U><P>The standard Accept-Ranges attribute with a value of "bytes" is included in the response messages for interrupted upload query requests. Together with the standard Content-Range attribute, it informs the client that an interrupted request may be resumed at the point within the request content where the interruption occurred.</P>
+<P>For example, responses to interrupted upload queries include this header:</P>
+<P>Accept-Ranges: bytes</P>
+<B><U><P>1.3 CONNECTION ATTRIBUTE</P>
+</B></U><P>The standard Connection attribute with a value of "close" is included in all request messages. This attribute and value indicate that the client does not support persistent connections, and requests the server to terminate the session after sending its response message.</P>
+<P>For example, all messages include this header:</P>
+<P>Connection: close</P>
+<B><U><P>1.4 CONTENT ATTRIBUTES</P>
+</B></U><P>The standard Content attributes are included in messages with non-empty content, as necessary. These attributes tell the receiver how long the message content is, and what its MIME data type and subtype are:</P>
+<P>Content-Length: bytecount</P>
+<P>Content-Range: startingoffset-endingoffset/totalsize</P>
+<P>Content-Type: type/subtype</P>
+<P>Content-Length: The value of this attribute is an integer count that specifies the number of bytes in the message body. The count includes only the content, not the header lines or the newline character separating them. The value must be accurate, since the receiver cannot find the end of the content by reading to "end-of-file". </P>
+<P>For example, a message containing 12,439 bytes of data might include this header:</P>
+<P>Content-Length: 12439</P>
+<P>Content-Range: The value of this attribute is the beginning and ending offset of the content included in the message, plus the total size of the content. This attribute is included only when the message does not include the entire content. Partial content is only sent in response to an explicit request for partial content, as when resuming an interrupted transaction. When a message includes the entire content, this attribute is omitted.</P>
+<P>For example, a message containing only the last 4,567 bytes of a content of size 12,439 might include this header:</P>
+<P>Content-Range: 7872-12439/12349 </P>
+<P>Content-Type: The value of this attribute is the name of a MIME type and subtype, separated by a "/" character. The value must conform to Internet RFC 1521. The Immune System uses these values:</P>
+<P>application/octet-stream for an updater program</P>
+<P>application/x-avis-sample for a sample</P>
+<P>application/x-avis-source for a virus source packetapplication/x-NAV-Einstein32 for a Windows 95/98/NT updater program</P>
+<P>application/x-NAV-FatAlbert for an Intel-platforms updater program</P>
+<P>application/x-AVIS-sample for a captured sample</P>
+<P>application/x-zip-compressedapplication/zip for a compressed directory of files</P>
+<P>For example, a message containing sample data might include this header:</P>
+<P>Content-Type: application/x-avis-sampleapplication/x-AVIS-sample</P>
+<P>The Content attributes are omitted if the message content is null.</P>
+<B><U><P>1.5 DATE ATTRIBUTE</P>
+</B></U><P>The standard Date attribute is included in all messages. It specifies the time and date when the message transmission begins, according to the sender's local clock, expressed as Greenwich Mean Time (GMT) in the format defined in RFC 1945 and RFC 822:</P>
+<P>Date: date and time of message</P>
+<P>For example, a message sent when this paragraph was written might include this header:</P>
+<P>Date: Mon, 15 Dec 1997 11:29:15 GMT</P>
+<P>When a message reception begins, the difference between the sender's and receiver's clocks is calculated by comparing the value of the Date attribute received with the local clock. The values of all X-Date attributes are adjusted before they are stored to compensate for the calculated clock skew, so that the timestamp values stored are relative to the local clock.</P>
+<B><U><P>1.6 FROM ATTRIBUTE</P>
+</B></U><P>The standard From attribute is included in request messages, if the sender has configured an email address for this purpose:</P>
+<P>From: requester's email address</P>
+<P>For example, a message sent by the author of this document might include this header:</P>
+<P>From: pring@watson.ibm.com</P>
+<P>The From attribute is omitted if the sender has not configured any email address.</P>
+<B><U><P>1.7 LOCATION ATTRIBUTE</P>
+</B></U><P>The standard Location attribute is included in response messages when requests are redirected. They instruct the client to send the same request again to another server.</P>
+<P>Location: another URL</P>
+<P>Redirection responses indicate that the server has not processed the request. The client must send the same request to the server named in the Location attribute for processing. Redirections may be temporary or permanent, as indicated by the completion code in the first line of the response:</P>
+<P>? 301: the redirection is permanent. The client must send the current request and all subsequent requests to server named in the Location attribute.</P>
+<P>? 302: the redirection is temporary. The client must send the current request to the server named in the Location attribute, but must send subsequent requests to the original server.</P>
+<P>For example, a sample submission response with a redirection completion code might include this header: </P>
+<P>Location: http://another.server.ibm.com/AVIS/postSuspectSample/</P>
+<B><U><P>1.8 PRAGMA ATTRIBUTE</P>
+</B></U><P>The standard Pragma attribute with the value "no-cache" is included in all request and response messages. They instruct any caching proxies between the client and server not to cache the message.</P>
+<P>For example, all messages include this header:</P>
+<P>Pragma: no-cache</P>
+<B><U><P>1.9 RANGE ATTRIBUTE</P>
+</B></U><P>The standard Range attribute is included only in requests to resume interrupted responses. The value of this attribute is the offset within the content where the response was interrupted. The server responds by sending the content of the interrupted response starting at this offset. For example, a request to resume at offset 7872 within the content of a response might include this header:</P>
+<P>Range: 7872- </P>
+<B><U><P>1.10 SERVER ATTRIBUTE</P>
+</B></U><P>The standard Server attribute is included in all response messages. It specifies the application name and version of the server sending the response.</P>
+<P>Server: application/version</P>
+<P>For example, a response from a gateway might include this header:</P>
+<P>Server: Domino-Go-Webserver/4.6.1</P>
+<B><U><P>1.11 USER-AGENT ATTRIBUTE</P>
+</B></U><P>The standard User-Agent attribute is included in all request messages. It specifies the application name and version of the client sending the request.</P>
+<P>User-Agent: application/version</P>
+<P>For example, a request to from a consumer workstation might include this header:</P>
+<P>User-Agent: SymantecAntiVirus95/4.03</P>
+<B><U><P>1.12 X-ANALYSIS ATTRIBUTES</P>
+</B></U><P>The proprietary X-Analysis attributes are included in messages from the analysis center to gateways, and from gateways to customers, as appropriate. They indicate the current status of a particular sample that has been submitted for analysis:</P>
+<B><P>X-Analysis-Cookie</B>: cookie</P>
+<B><P>X-Analysis-Issue</B>: issue tracking number</P>
+<B><P>X-Analysis-Service</B>: name of reporting service</P>
+<B><P>X-Analysis-State</B>: current state of sample</P>
+<B><P>X-Analysis-Virus-Identifier</B>: identifier of virus found in sample</P>
+<B><P>X-Analysis-Virus-Name</B>: name of virus found in sample</P>
+<B><P>X-Analysis-Cookie</B>: This attribute contains an arbitrary string assigned by a server when the sample is received. The value has no necessary syntax or meaning, and clients may not interpret the value in any way. Clients store the value returned by the server in a response, and use the value as an argument in subsequent requests for status sent to the same server.</P>
+<P>For example, a sample might be assigned this cookie value by a gateway:</P>
+<B><P>X-Analysis-Cookie</B>: 00000123</P>
+<B><P>X-Analysis-Issue</B>: This attribute contains an arbitrary string assigned by the analysis center for tracking the customer issue when a sample is imported. The value has no necessary syntax or meaning, and clients may not interpret the value in any way. Clients store the value assigned by the analysis center when it is included in a status report, and display the value for customer use when talking to technical support staff.</P>
+<P>For example, a sample might be assigned this customer issue tracking value by the analysis center:</P>
+<B><P>X-Analysis-Issue</B>: 00000042</P>
+<B><P>X-Analysis-Service</B>: This attribute indicates that the results in the status message are from a special class of analysis service. The only supported value is:</P>
+<P>quickcheck for samples that were not fully analyzed</P>
+<P>This value specifies that the sample was not fully analyzed and that the results are not definitive. </P>
+<P>For example, the final status message for a sample that is probably not infected with any virus, but has not been definitively found to be uninfected, might include this header:</P>
+<B><P>X-Analysis-Service</B>: quickcheck</P>
+<B><P>X-Analysis-State</B>: This attribute contains a text token that indicates the current state of the sample. The values are described in the topic titled "Sample States" in the "Data" chapter of this document.</P>
+<P>For example, a sample that has currently being transferred from a gateway to the analysis center may be in this state:</P>
+<P>X-Analysis-State: importing</P>
+<P>For another example, a sample that has successfully replicated and is ready for the code/data segregation stage may be in this state:</P>
+<B><P>X-Analysis-State</B>: replicated</P>
+<P>Note that state values are not intrinsically final or interim. It is the inclusion of an X-Date-Finished attribute in a status report, not the value of the X-Analysis-State attribute included with it, which indicates that status is final.</P>
+<B><P>X-Analysis-Virus-Identifier</B>: This attribute contains the numerical identifier of a virus found in the sample.</P>
+<P>For example, this is the identifier of an especially odd virus:</P>
+<B><P>X-Analysis-Virus-Identifier</B>: 32767</P>
+<B><P>X-Analysis-Virus-Name</B>: This attribute contains a text string with the name of a virus found in the sample.</P>
+<P>For example, this is an especially odd virus:</P>
+<B><P>X-Analysis-Virus-Name</B>: Morton.42</P>
+<B><U><P>1.13 X-CHECKSUM-METHOD ATTRIBUTE</P>
+</B></U><P>The proprietary X-Checksum-Method attribute is included in messages with non-empty content. This attribute tells the receiver what method was used to calculate checksums of the content. The value is the name of the checksum method. The only checksum method used in the Immune System is the Message Digest version 5 (MD5) algorithm, as specified by RFC 1321.</P>
+<P>For example, when a message contains a sample, the message will include this attribute:</P>
+<B><P>X-Checksum-Method: md5</P>
+</B><P>This attribute is omitted if the content of the message is null.</P>
+<B><U><P>1.14 X-CONTENT ATTRIBUTES</P>
+</B></U><P>The proprietary X-Content attributes are included in messages with non-empty content, as appropriate. These attributes tell the receiver what methods were used to compress, scramble, and encode the message content, if any:</P>
+<B><P>X-Content-Checksum</B>: MD5 checksum of content</P>
+<B><P>X-Content-Compression</B>: method used to compress content</P>
+<B><P>X-Content-Encoding</B>: method used to encode content</P>
+<B><P>X-Content-Scrambling</B>: method used to scramble content</P>
+<P>These attributes are omitted in messages with null content.</P>
+<B><P>X-Content-Checksum</B>: This attribute specifies the MD5 checksum of the content, after any compression or scrambling or encoding. The value is a 128-bit binary number, represented as a 32-digit hexadecimal string composed of characters in the range "0..9A..F".</P>
+<P>For example, the checksum of the content of a message might be:</P>
+<B><P>X-Content-Checksum</B>: 663E6092463AA20EF6A14E8B137AEF30</P>
+<P>This attribute is used to verify that the content has been transferred correctly.</P>
+<B><P>X-Content-Compression</B>: This attribute specifies the method used to compress the content, if any. The value is the name of the compression method. The Immune System uses compression methods defined by the Info-ZIP group. The values are:</P>
+<P>deflate for captured samples</P>
+<P>zip for directories of sample analysis files</P>
+<P>zip for directories of signature definition files</P>
+<P>For example, sample submission requests may include this attribute:</P>
+<P>X-Content-Compression: deflate</P>
+<P>This attribute is omitted if the content of the message is not compressed.</P>
+<B><P>X-Content-Encoding</B>: This attribute specifies the method used to encode the content, if any. The value is the name of the encoding method. The only method used in the Immune System is the Base64 algorithm, as specified by the Multipurpose Internet Mail Extensions (MIME). </P>
+<P>For example, if the content of a message is encoded according to Base64, the message will contain this attribute:</P>
+<B><P>X-Content-Encoding</B>: base64 </P>
+<P>This attribute is omitted if the content of the message is not encoded.</P>
+<B><P>X-Content-Scrambling</B>: This attribute specifies the method used to scramble the content, if any. Note that content is scrambled only to prevent accidental execution of potentially infected samples. Scrambling does not provide any security. The value is the name of the scrambling method. The only method used by the Immune System is XOR with a constant bit-mask. </P>
+<P>For example, if the content of a message is scrambled, the message will include this attribute:</P>
+<B><P>X-Content-Scrambling</B>: xor-vampish</P>
+<P>This attribute is omitted if the content of the message is not scrambled.</P>
+<B><U><P>1.15 X-CUSTOMER ATTRIBUTES</P>
+</B></U><P>The proprietary X-Customer attributes are included in all messages from customers to gateways. They identify the customer making the request, and are used for authorization and tracking:</P>
+<B><P>X-Customer-Contact-Email</B>: individual contact informationemail address</P>
+<B><P>X-Customer-Contact-Name</B>: individual contact name</P>
+<B><P>X-Customer-Contact-Telephone</B>: individual contact telephone number</P>
+<B><P>X-Customer-Credentials</B>: customer authentication information</P>
+<B><P>X-Customer-Identifier</B>: customer service class and identifier </P>
+<B><P>X-Customer-Name</B>: registered name of customer</P>
+<B><P>X-Customer-Identifier</B>: customer identifier for product or subscription </P>
+<B><P>X-Customer-Contact-Email</B>: This attribute gives individual contact information. The value is a text string of at most 255 characters giving names, telephone numbers, and email addresses thatthe telephone number of an individual the technical support staff can use to contact the individual who submitted a sample. contact, if necessary.</P>
+<P>For example, the contact information for the author is:</P>
+<B><P>X-Customer-Contact</B>: Edward Pring, 1-914-784-6285,X-Customer-Contact-Email: pring@watson.ibm.com</P>
+<B><P>X-Customer-Contact-Name</B>: This attribute gives individual contact information. The value is a text string of at most 255 characters giving the full name of an individual the technical support staff can contact, if necessary.</P>
+<P>For example, the contact information for the author is:</P>
+<B><P>X-Customer-Contact-Name</B>: Edward Pring</P>
+<B><P>X-Customer-Contact-Telephone</B>: This attribute gives individual contact information. The value is a text string of at most 255 characters giving the email address of an individual the technical support staff can contact, if necessary. </P>
+<P>For example, the contact information for the author is:</P>
+<B><P>X-Customer-Contact-Telephone</B>: 1-914-784-6285</P>
+<B><P>X-Customer-Credentials</B>: This attribute transports customer credentials from a customer client to a gateway. The value of this attribute is a binary string of at most 127 bytes encoded as a hexadecimal string of at most 254 characters in the range "0..9A..F". </P>
+<P>[Or if necessary: The value is a binary string of at most 189 bytes, encoded as a base64 string of at most 252 characters in the range "A..Za..z0..9+/=". The encoding algorithm used is as specified in Internet RFC 1521 "Multipurpose Internet Mail Extensions, Part One", except that the base64 string is not broken into multiple lines.] </P>
+<P>The value is obtained by a client when a product is installed or at some later time before a sample is submitted. The value may be obtained from a product installation program or some network service such as Symantec's "Venice" project. The value may be encrypted, and must be treated as an opaque string by components that do not have access to the encryption key.</P>
+<P>The value is used by a gateway when a sample is received. If the value is encrypted, it is decrypted using a secret shared with the installation program or network service that produced it. The decrypted value is used to authenticate the customer's identity, determine whether the customer is entitled to submit samples, limit the number of samples the customer can submit, and prioritize samples that are accepted for analysis.</P>
+<P>For example, the customer credentials for the author are:</P>
+<B><P>X-Customer-Credentials</B>: 0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF.</P>
+<B><P>X-Customer-Name</B>: This attribute gives the registered name of the customer. The value is a text string of at most 255 characters giving the name of the person and organization that purchased the product or subscribed to the service. </P>
+<P>For example, the customer name for the author is:</P>
+<B><P>X-Customer-Name</B>:Steve White, anti-virus research, IBM T.J.Watson Laboratory, anti-virus immune system project</P>
+<B><P>X-Customer-Identifier</B>: This attribute specifies the customer's service class and identification number. The value is a text string of at most 63 characters.</P>
+<P>token indicating the service class and a text string that specifies the identification number. The value is assigned when a customer installs a product or subscribes to a network service. A client may obtain the value from an installation program or some network service such as Symantec's "Venice" project. The attribute may be included by the client when a sample is submitted, or added to a sample by the gateway after the customer's credentials have been decrypted.subscribes to a service plan.</P>
+<P>The service class is indicated by one of these text tokens:</P>
+<P>gold for the gold service plan</P>
+<P>platinum for the platinum service plan</P>
+<P>The identification number is a string of at most 20 characters.</P>
+<P>For example, the customer identifier for the author is:might be:</P>
+<B><P>X-Customer-Identifier</B>: 123456-ABCDEFgold 0123456789ABCDEFGHIJ</P>
+<B><U><P>1.16 X-DATE ATTRIBUTES</P>
+</B></U><P>The proprietary X-Date attributes are included in all messages, as appropriate. They record the date and time of significant events in the processing of samples or signatures. They include, but are not limited to:</P>
+<B><P>X-Date-Accessed</B>: when file was last accessed</P>
+<B><P>X-Date-Analyzed</B>: when sample was analyzed</P>
+<B><P>X-Date-Blessed</B>: when signatures were blessed</P>
+<B><P>X-Date-Captured</B>: when sample was captured</P>
+<B><P>X-Date-Created</B>: when file was created</P>
+<B><P>X-Date-Distributed</B>: when signatures were scheduled for delivery</P>
+<B><P>X-Date-Finished</B>: when sample analysis was finished</P>
+<B><P>X-Date-Forwarded</B>: when sample was forwarded to Quarantine</P>
+<B><P>X-Date-Installed</B>: when signatures have been installed</P>
+<B><P>X-Date-Modified</B>: when file was modified</P>
+<B><P>X-Date-Produced</B>: when signatures were produced in the back office</P>
+<B><P>X-Date-Published</B>: when signatures were producedpublished on the Internet</P>
+<B><P>X-Date-Submitted</B>: when sample was submitted for analysis</P>
+<P>The value specifies the time and date of an event according to the sender's system clock, expressed as Greenwich Mean Time (GMT) in the format defined in RFC 1945 and RFC 822. </P>
+<P>For example, the value of this attribute for this document is:</P>
+<B><P>X-Date-Created</B>: Tue, 27 Jan 1998 14:32:45 GMT</P>
+<P>When a message reception begins, the difference between the sender's and receiver's clocks is calculated by comparing the value of the Date attribute received with the local clock. The values of all X-Date attributes are adjusted before they are stored to compensate for the calculated clock skew, so that the timestamp values stored are relative to the local clock.</P>
+<B><P>X-Date-Accessed</B>: This attribute is included when a message contains a sample or a signature set. The value is the date and time that the file in the message content was last accessed. </P>
+<B><P>X-Date-Analyzed</B>: This attribute is included with status about a sample. The value is the date and time when the sample was analyzed.</P>
+<B><P>X-Date-Blessed</B>: This attribute is included when the message refers to a signature set that has been blessed. The value is the date and time when the signatures were published on the Internet. When this attribute is included in a message, the signatures have been fully tested and supercede all previous signatures.</P>
+<B><P>X-Date-Captured</B>: This attribute is included when a message contains a sample. The value is the date and time when the sample was originally captured.</P>
+<B><P>X-Date-Created</B>: This attribute is included when a message contains a sample or a signature set. The value is the date and time that the file in the message content was created. </P>
+<B><P>X-Date-Distributed</B>: This attribute is included when the message refers a to signature set that has been scheduled for delivery to an infected workstation. The value is the date and time that the delivery was scheduled.</P>
+<B><P>X-Date-Finished</B>: This attribute is included with status about a sample. The value is the date and time when analysis of the sample was finished. When this attribute is included in a message, the status attributes in the message are final.</P>
+<B><P>X-Date-Forwarded</B>: This attribute is included when a message refers to a sample that has been forwarded to Quarantine. The value is the date and time when the sample was quarantined.</P>
+<B><P>X-Date-Installed</B>: This attribute is included when the message refers a to signature set that has been installed on an infected workstation. The value is the date and time that the signatures were installed.</P>
+<B><P>X-Date-Modified</B>: This attribute is included when a message contains a sample or a signature set. The value is the date and time that the file in the message content was last modified. </P>
+<B><P>X-Date-Produced</B>: This attribute is included when the message contains a signature set. The value is the date and time when the signatures were produced in the back office.</P>
+<B><P>X-Date-Published</B>: This attribute is included when the message contains a signature set. The value is the date and time when the signatures were published on the Internet.</P>
+<B><P>X-Date-Submitted</B>: This attribute is included when a message refers to a sample that has been submitted for analysis. The value is the date and time when the sample was sent to an Internet gateway.</P>
+<B><U><P>1.17 X-ERROR ATTRIBUTE</P>
+</B></U><P>The proprietary X-Error attribute is included in response messages when requests cannot be processed correctly. They describe the reason that the request could not be processed, and may optionally include parameters that further qualify the error:</P>
+<B><P>X-Error</B>: error code and optional parameters</P>
+<P>The values are described in the topic titled "Error Codes" in the "Data" chapter of this document.</P>
+<P>For example, a server that is unable to process a signature download request for a set of signatures named "AV30BA" because they are no longer available might include this header in its response:</P>
+<B><P>X-Error</B>: superceded </P>
+<P>For another example, a server that is unable to process a sample submission request because the value of the "Content-Length" header does not match the size of the message content might include this header in its response:</P>
+<B><P>X-Error</B>: overrun 10138 10139 </P>
+<B><U><P>1.18 X-PLATFORM ATTRIBUTES</P>
+</B></U><P>The proprietary X-Platform attributes are included in all messages that contain samples. They describe the hardware and software of the machine that captured the sample:</P>
+<B><P>X-Platform-Address</B>: list of IP and IPX addresses</P>
+<B><P>X-Platform-Correlator</B>: unique correlator</P>
+<B><P>X-Platform-Distributor</B>: network name of distribution server</P>
+<B><P>X-Platform-Domain</B>: name of administrative domain</P>
+<B><P>X-Platform-GUID</B>: unique identifier for managed client machines</P>
+<B><P>X-Platform-Host</B>: network name of machine</P>
+<B><P>X-Platform-Language</B>: national language of operating system</P>
+<B><P>X-Platform-Owner</B>: registered owner and organization</P>
+<B><P>X-Platform-Processor</B>: processor vendormake and model and clockrate</P>
+<B><P>X-Platform-Scanner</B>: anti-virus vendor and version and sequence numberproduct and version</P>
+<B><P>X-Platform-System</B>: operating systemvendor and version</P>
+<B><P>X-Platform-User</B>: network name of logged-in user</P>
+<B><P>X-Platform-Address</B>: This attribute specifies the IP and IPX addresses of the machine that captured the sample. The value is a list of numeric IP addresses and IPX addresses, separated by blanks. </P>
+<P>For example, the address of the author's workstation are:</P>
+<B><P>X-Platform-Address</B>: 9.2.18.13 </P>
+<P>When a machine has multiple IP addresses and/or multiple NetBIOS addresses, all addresses are included in the value. This is particularly common for servers.</P>
+<B><P>X-Platform-Correlator</B>: This attribute specifies a value that correlates all samples submitted from a particular platform. The value is a text string of at most 32 bytes.</P>
+<P>The value is arbitrary and obscure, and must unique for each possible platform. The value is used to correlate samples submitted from the same platform for the purpose of limiting the number of samples a particular platform can submit. The value is not used to identify the platform or individual or customer. The value must be difficult to forge.</P>
+<P>For example, the correlator assigned to the author's workstation is:</P>
+<B><P>X-Platform-Correlator</B>: 0123456789ABCDEF0123456789ABCDEF</P>
+<B><P>X-Platform-Distributor</B>: This attribute specifies the network name of the distribution server from which the machine obtains signature updates. The value is a string specifying the network name of the machine hosting the Distribution service.</P>
+<P>For example, the distribution service for the author's workstation is:</P>
+<B><P>X-Platform-Distributor</B>: AVFILES</P>
+<P>This attribute is omitted if no administration domain is available.</P>
+<B><P>X-Platform-Domain</B>: This attribute specifies the administrative domain of the machine that captured the sample. The value is a string specifying the LanDesk administration domain to which the machine that captured the sample belongs. </P>
+<P>For example, the administration domain of the author's workstation is:</P>
+<B><P>X-Platform-Domain</B>: AVBUILD</P>
+<P>This attribute is omitted if no administration domain is available.</P>
+<B><P>X-Platform-GUID</B>: This attribute specifies a unique identifier for a client machine assigned by a network management application. The value is a text representation of a "globally unique identifier (GUID)" stripped of all punctuation characters.</P>
+<P>For example, a network management application might assign this identifier to a client machine:</P>
+<B><P>X-Platform-GUID</B>: 0123456789ABCDEF0123456789ABCDEF</P>
+<P>This attribute is omitted if the machine is not a managed client.</P>
+<B><P>X-Platform-Host</B>: This attribute specifies the network identity of the machine that captured the sample. The value is a fully-qualified TCP/IP name or a NetBIOS name. </P>
+<P>For example, the TCP/IP name of the author's workstation is:</P>
+<B><P>X-Platform-Host</B>: rafael.watson.ibm.com</P>
+<P>This attribute is omitted if no TCP/IP or NetBIOS host name is available.</P>
+<B><P>X-Platform-Language</B>: This attribute specifies the national language of the machine that captured the sample. The value is a text string identifying the national language and locale. </P>
+<P>For example, the national language and locale of the author's workstation is:</P>
+<B><P>X-Platform-Language</B>: English (United States)</P>
+<B><P>X-Platform-Owner</B>: This attribute specifies the owner of the machine that captured the sample. The value is a string naming the owner and organization. </P>
+<P>For example, the registered owner of the author's workstation, as recorded in its registry at SOFTWARE\Microsoft\WindowsNT\CurrentVersion, is:</P>
+<B><P>X-Platform-Owner</B>: Edward Pring IBM Research </P>
+<B><P>X-Platform-Processor</B>: This attribute describes the processor in the machine that captured the sample. The value is a string naming the vendormake and model and clock-rate of the processor. </P>
+<P>For example, the processor in the author's workstation, as recorded in its registry at HARDWARE\DESCRIPTION\System\CentralProcessor\0, is:</P>
+<B><P>X-Platform-Processor</B>: GenuineIntel 165 MHz x86 Family 5 Model 2 Stepping 12</P>
+<B><P>X-Platform-Scanner</B>: This attribute describes the anti-virus protection in the machine that captured the sample. The value is a string naming the vendor and version and signature sequence number of the anti-virus product.product and version. </P>
+<P>For example, the anti-virus protection installed on a workstation might be:</P>
+<B><P>X-Platform-Scanner</B>: Symantec AntiVirus for Windows version 5.0</P>
+<B><P>X-Platform-System</B>: This attribute describes the operating system in the machine that captured the sample. The value is a string naming thevendor and version of the operating system and version. </P>
+<P>For example, the operating system installed on the author's workstation, as recorded in its registry at SOFTWARE\Microsoft\WindowsNT\CurrentVersion\, is:</P>
+<B><P>X-Platform-System</B>: Windows NT 4.0 build 1381 Service Pack 3</P>
+<B><P>X-Platform-User</B>: This attribute specifies the network identity of the user logged onto the machine that captured the sample. The value is a string specifying the user's Windows or NetBIOS login name. </P>
+<P>For example, the author's NetBIOS login name is:</P>
+<B><P>X-Platform-User</B>: PRING</P>
+<P>This attribute is omitted if no Windows or NetBIOS login name is available.</P>
+<B><U><P>1.19 X-SAMPLE ATTRIBUTES</P>
+</B></U><P>The proprietary X-Sample attributes are included in all messages that contain samples. They describe the sample:</P>
+<B><P>X-Sample-Category</B>: category of sample</P>
+<B><P>X-Sample-Changes</B>: attribute change indicator in Quarantine</P>
+<B><P>X-Sample-Checksum</B>: MD5 checksum of captured data</P>
+<B><P>X-Sample-Checkup</B>: checkup database entry for file samples</P>
+<B><P>X-Sample-Extension</B>: extension for file samples</P>
+<B><P>X-Sample-File</B>: drive and directory and name for file samples</P>
+<B><P>X-Sample-Geometry</B>: cylinder and head and sector numbers and size</P>
+<B><P>X-Sample-Priority</B>: queuing priority</P>
+<B><P>X-Sample-Reason</B>: reason for capturing the sample</P>
+<B><P>X-Sample-Sector</B>: disk address numbers of sector samples</P>
+<B><P>X-Sample-Service</B>: name of requested service</P>
+<B><P>X-Sample-Size</B>: sizeof captured data</P>
+<B><P>X-Sample-Checksum</B>: MD5 checksumin bytes of captured data</P>
+<B><P>X-Sample-Status</B>: status of sample in Quarantine </P>
+<B><P>X-Sample-Strip</B>: method used to remove user data</P>
+<B><P>X-Sample-Switches</B>: undocumented processing switches</P>
+<B><P>X-Sample-Type</B>: type of sample</P>
+<B><P>X-Sample-Category</B>: This attribute specifies the category of the sample. The values are described in the topic titled "Sample Categories" in the "Data" chapter of this document.</P>
+<B><P>X-Sample-Changes</B>: This attribute is included in all messages that contain samples. This attribute indicates that one or more other attributes have changed while the sample is stored in the sample queue of a Quarantine service. The value is an integer that is incremented after new attributes are added, or the values of existing attributes are changed. The value itself is not significant; the fact that it has changed indicates that the values of other attributes must be re-examined for significant changes.</P>
+<P>For example, after a sample is captured and a quarantine agent has added its initial attributes, the sample may include this attribute:</P>
+<B><P>X-Sample-Changes</B>: 1</P>
+<P>For another example, after a sample is forwarded to a quarantine server and it has added more attributes, the sample may include this attribute:</P>
+<B><P>X-Sample-Changes</B>: 2</P>
+<B><P>X-Sample-Checksum</B>: This attribute specifies the MD5 checksum of the data that was captured, before any compression or scrambling or encoding. The value is a 128-bit binary number, encoded as a 32-digit hexadecimal string composed of characters in the range "0..9A..F". </P>
+<P>For example, the MD5 checksum for a sample might resemble:</P>
+<B><P>X-Sample-Checksum</B>: 8B37247C71443D40A2D7FCF16867803A</P>
+<P>This attribute is used to detect duplicates, and to validate unscrambling and decompression.</P>
+<B><P>X-Sample-Checkup</B>: This attribute is included in messages that contain samples, when available. It contains the checkup database entry for the file from the machine that captured the sample. This information, stored before the sample was infected, is useful in analyzing the virus and testing the repair instructions. The value is a binary string, encoded as a hexadecimal string composed of characters in the range "0..9A..F".</P>
+<P>For example, a typical checkup database entry might be:</P>
+<B><P>X-Sample-Checkup</B>: 0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF012345678</P>
+<P>If there is no entry in the checkup database for a file when a sample of it is captured, this attribute is omitted.</P>
+<B><P>X-Sample-Extension</B>: This attribute specifies the extension of the file that was captured, for file samples. The value is the extension only, without the drive or directory or name or "." character. </P>
+<P>For example, the extension of a file sample might be:</P>
+<B><P>X-Sample-Extension</B>: doc</P>
+<P>This attribute is redundant, since the extension of a file sample is included in the X-Sample-File attribute. This redundancy is necessary because the X-Sample-File attribute may be removed from a sample before submission, along with other sensitive user data.</P>
+<B><P>X-Sample-File</B>: This attribute specifies the file that was captured, for file samples. The value is the drive and directory and name of the file captured. </P>
+<P>For example, the drive and directory and name of a file sample might be:</P>
+<B><P>X-Sample-File</B>: C:\Memos\December.doc</P>
+<B><P>X-Sample-Geometry</B>: This attribute specifies the geometry of a disk or a diskette. The number of cylinders and heads and sectors are specified as three decimal numbers, separated by slash characters, and the number of bytes per sector is specified as a decimal number.</P>
+<P>For example, the geometry of a diskette might be:</P>
+<B><P>X-Sample-Geometry</B>: 80/2/18 chs 512 bytes</P>
+<P>For another example, the geometry of a disk drive might be:</P>
+<B><P>X-Sample-Geometry</B>: 800/8/32 chs 512 bytes</P>
+<B><P>X-Sample-Priority</B>: This attribute specifies the queuing priority of the sample. The value is an unsigned integer in the range 0..1000. This value represents the importance of the sample, relative to other samples in the same queue, and determines the order in which samples are processed at queuing points. Larger values indicate higher priority, and smaller values indicate lower priority. </P>
+<P>For example, the priority of a very unimportant sample might be:</P>
+<B><P>X-Sample-Priority</B>: 1</P>
+<P>For another example, the priority of a rather more important sample might be:</P>
+<B><P>X-Sample-Priority</B>: 999</P>
+<P>X-Sample-Reason: This attribute specifies the reason for capturing the sample. The value is text token that indicates why the sample was captured. The values are:</P>
+<P>badrepair when repair for a known virus failed</P>
+<P>manual when the sample was captured manually by a user</P>
+<P>norepair when repair for a known virus was unavailable</P>
+<P>suspicious when the sample contains code similar to a known virus</P>
+<P>variant when the sample has a new variant of a known virus</P>
+<P>For example, a sample may be captured because it is infected with a new virus that is similar to a known virus:</P>
+<B><P>X-Sample-Reason</B>: variant</P>
+<P>For another example, a sample may be captured because repair for a known virus was unsuccessful:</P>
+<B><P>X-Sample-Reason</B>: badrepair</P>
+<B><P>X-Sample-Sector</B>: This attribute specifies the disk addresses that were captured, for sector samples. The value is a list of one or more sector addresses. Sector addresses are encoded as three decimal numbers, separated by slash characters, specifying cylinder number and head number and sector number. The sectors captured may be specified individually or as a range. A range of sectors is encoded as a starting sector address and an ending sector address, separated by a hyphen character. </P>
+<P>For example, the addresses of a sample of an entire diskette might be:</P>
+<B><P>X-Sample-Sector</B>: 0/0/0-79/1/17</P>
+<P>For another example, the addresses of a sample of the first track and the last sector on a disk drive might be:</P>
+<B><P>X-Sample-Sector</B>: 0/0/0-0/0/31 799/7/31</P>
+<B><P>X-Sample-Service</B>: This attribute requests a special class of analysis service. The only supported value is:</P>
+<P>quickcheck for samples likely to be uninfected</P>
+<P>This value specifies that the sample is not entitled to the full analysis service that samples receive by default. Such samples may not be fully analyzed, and the results returned may not be definitive. An X-Analysis-Service attribute will be included with final status if the results are not definitive.</P>
+<P>For example, a sample captured manually by a consumer might include this header: </P>
+<B><P>X-Sample-Service</B>: quickcheck </P>
+<B><P>X-Sample-Size</B>: This attribute specifies the size of the data that was captured, before any compression or scrambling or encoding. The value is a decimal number of bytes.</P>
+<P>For example, the size of a file sample of a rather large document might be:</P>
+<B><P>X-Sample-Size</B>: 12345678</P>
+<B><P>X-Sample-Status</B>: This attribute specifies the status of a sample while in the sample queue of a Quarantine service. The value is text token that indicates the current status of the sample:</P>
+<P>held when the sample is withheld from submission</P>
+<P>released when the sample has been released for submission</P>
+<P>submitted when the sample has been submitted for analysis </P>
+<P>unneeded when new signatures are not needed</P>
+<P>needed when new signatures are needed </P>
+<P>available when new signatures are available </P>
+<P>distributed when new signatures have been distributed</P>
+<P>installed when new signatures have been installed</P>
+<P>For example, a sample that has not yet been submitted for analysis may have this status:</P>
+<B><P>X-Sample-Status</B>: held</P>
+<P>For another example, a sample that has been analyzed and found to be infected with a new virus may have this status:</P>
+<B><P>X-Sample-Status</B>: available</P>
+<B><P>X-Sample-Strip</B>: This attribute specifies the method used to remove user data from the sample. The value is the name of the stripping method. User data may be removed from a sample when it is captured or at any time thereafter. In any case, when user data is removed from a sample, the values of attributes such as X-Sample-Checksum and X-Sample-Size reflect the content of the stripped sample submitted for analysis, not the original user file.</P>
+<P>For example, if user data has been stripped from a sample by over-writing it with binary zeroes, the message might include this attribute:</P>
+<B><P>X-Sample-Strip</B>: overwrite-zeroes</P>
+<P>This attribute is omitted if user data has not been removed from the sample.</P>
+<B><P>X-Sample-Switches</B>: This attribute specifies undocumented switches that affect the processing of a sample within the analysis center. The value is one or more tokens separated by blanks. </P>
+<B><P>X-Sample-Type</B>: This attribute specifies the type of sample that was captured. The values are:</P>
+<P>sector for sector samples</P>
+<P>file for file samples</P>
+<P>For example, the type of a sector sample of an entire diskette might be:</P>
+<B><P>X-Sample-Type</B>: sector</P>
+<B><U><P>1.20 X-SCAN ATTRIBUTES</P>
+</B></U><P>The proprietary X-Scan attributes are included in all messages that contain samples. They describe the results of scanning the sample for known viruses with the latest signatures available:</P>
+<B><P>X-Scan-Result</B>: result of scanning sample</P>
+<B><P>X-Scan-Signatures-Name</B>: name of signatures sample was scanned with</P>
+<B><P>X-Scan-Signatures-Sequence</B>: sequence number of signatures scanned with</P>
+<B><P>X-Scan-Signatures-Version</B>: daily version number of signatures</P>
+<B><P>X-Scan-Virus-Identifier</B>: the identifier of the virus found</P>
+<B><P>X-Scan-Virus-Name</B>: the name of the virus found</P>
+<B><P>X-Scan-Result</B>: This attribute specifies the result of scanning the sample. The values are:</P>
+<P>clean when no known viruses were found in the sample</P>
+<P>detected when the sample may contain a virus</P>
+<P>variant when the sample may contain a variant of a virus</P>
+<P>verified when the sample definitely contains a virusbadrepair a repair engine failed</P>
+<P>badscan a scan engine failed</P>
+<P>heuristic the sample may contain a new virus</P>
+<P>nodetect the sample does not contain any known viruses</P>
+<P>repaired whennorepair the virus infecting a sample can not besafely removed</P>
+<P>overrun a repair engine wrote outside a sample buffer</P>
+<P>repaired the virus infecting a sample can be removed</P>
+<P>underrun a repair engine wrote outside a sample buffer</P>
+<P>unrepairable the virus infecting a sample can not be removed</P>
+<P>unsubmittable the sample is probably a "trojan horse"</P>
+<P>For example, if a sample may be infected with a variant of anew virus, but the virus cannot be verified, the result may be:</P>
+<B><P>X-Scan-Result</B>: variantheuristic</P>
+<B><P>X-Scan-Signatures-Name</B>: This attribute specifies the name of the signatures used to scan the sample. </P>
+<P>For example, the name of a full set of virus signature definition files for Windows 95/98/NT products might resemble:</P>
+<B><P>X-Scan-Signatures-Name</B>: 00000678.all.zip</P>
+<B><P>X-Scan-Signatures-Sequence</B>: This attribute specifies the sequence number of the signatures used to scan the sample. </P>
+<P>For example, the sequence number of virus signature definition files might resemble:</P>
+<B><P>X-Scan-Signatures-Sequence</B>: 00000678</P>
+<B><P>X-Scan-Signatures-Version</B>: This attribute specifies the daily version number of virus signature definition files used to scan the file. </P>
+<P>For example, the daily version number of a signature set might resemble:</P>
+<B><P>X-Scan-Signatures-Version</B>: 1999.02.06.001</P>
+<B><P>X-Scan-Virus-Identifier</B>: This attribute contains the identifier of a virus found in the sample.</P>
+<P>For example, this is the identifier of an especially odd virus:</P>
+<B><P>X-Scan-Virus-Identifier</B>: 32767</P>
+<B><P>X-Scan-Virus-Name</B>: This attribute specifies the name of the virus found in the sample.</P>
+<P>For example, this is an especially odd virus:</P>
+<B><P>X-Scan-Virus-Name</B>: Morton.42</P>
+<B><U><P>1.21 X-SIGNATURES ATTRIBUTES</P>
+</B></U><P>The proprietary X-Signatures attributes are included in all messages that contain or refer to virus signature definition files. They identify sets of signatures produced by the back office:</P>
+<B><P>X-Signatures-Name</B>: name of signature setX-Signatures-Checksum: MD5 checksum of definition package</P>
+<B><P>X-Signatures-Priority</B>: queuing priority</P>
+<B><P>X-Signatures-Sequence</B>: sequence number of signature set</P>
+<B><P>X-Signatures-Size</B>: size in bytes of definition package</P>
+<B><P>X-Signatures-Version</B>: daily version number of signature set</P>
+<B><P>X-Sample-Checksum</B>: This attribute specifies the name of a full set ofMD5 checksum of the package containing the virus signature definition files. The value is a 128-bit binary number, encoded as a 32-digit hexadecimal string composed of characters in the range "0..9A..F". </P>
+<P>For example, the name of an all-products definitionMD5 checksum for a package might resemble:</P>
+<B><P>X-Signatures-Name</B>: 00000678.all.zipX-Signatures-Checksum: 8B37247C71443D40A2D7FCF16867803A</P>
+<B><P>X-Signatures-Priority</B>: This attribute specifies the queuing priority of the signatures. The value is an unsigned integer in the range 0..1000, with larger values indicating higher priority and smaller values indicating lower priority. </P>
+<P>For example, the priority of unimportant signatures might be:</P>
+<B><P>X-Signatures-Priority</B>: 0</P>
+<P>For another example, the priority of more important signatures might be:</P>
+<B><P>X-Signatures-Priority</B>: 1</P>
+<B><P>X-Signatures-Sequence</B>: This attribute specifies the sequence number of virus signature definition files. </P>
+<P>For example, the sequence number of a set might resemble:</P>
+<B><P>X-Signatures-Sequence</B>: 00000678</P>
+<B><P>X-Sample-Size</B>: This attribute specifies the size of the package containing the virus signature definition files. The value is a decimal number of bytes.</P>
+<P>For example, the size of a package might be:</P>
+<B><P>X-Sample-Size</B>: 4788140</P>
+<B><P>X-Signatures-Version</B>: This attribute specifies the daily version number of virus signature definition files. </P>
+<P>For example, the daily version number of a signature set might resemble:</P>
+<B><P>X-Signatures-Version</B>: 1999.02.06.001</P></FONT></BODY>
+</HTML>

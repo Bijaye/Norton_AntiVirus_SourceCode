@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title> X-SCAN ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1> X-Scan Attributes</H1>
+The proprietary X-Scan attributes are included in all messages that contain samples. They describe the results of scanning the sample for known viruses with the latest signatures available:<BR><BR>
+
+<a href="#Result"><B>X-Scan-Result</b></a>: result of scanning sample<BR>
+<a href="#Name"><B>X-Scan-Signatures-Name</b></a>: name of signatures sample was scanned with<BR>
+<a href="#Sequence"><B>X-Scan-Signatures-Sequence</b></a>: sequence number of signatures scanned with<BR>
+<a href="#Version"><B>X-Scan-Signatures-Version</b></a>: daily version number of signatures<BR>
+<a href="#Identifier"><B>X-Scan-Virus-Identifier</b></a>: the identifier of the virus found<BR>
+<a href="#Name"><B>X-Scan-Virus-Name</b></a>: the name of the virus found<BR>
+<P><a name="Result"></a> <B>X-Scan-Result</b><BR>
+  This attribute specifies the result of scanning the sample. The values are:</P>
+<table>
+  <tr  valign=top>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>badrepair</b></td>
+    <td>a repair engine failed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>badscan</b></td>
+    <td>a scan engine failed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>completed</b></td>
+    <td>the virus was scanned but the result is not available</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>heuristic</b></td>
+    <td>the sample may contain a new virus</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>nodetect</b></td>
+    <td>the sample does not contain any known viruses</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>norepair</b></td>
+    <td>the virus infecting a sample cannot be safely removed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>overrun</b></td>
+    <td>a repair engine wrote outside a sample buffer</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>repaired</b></td>
+    <td>the virus infecting a sample can be removed</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>underrun</b></td>
+    <td>a repair engine wrote outside a sample buffer</td>
+  </tr>
+  <tr>
+    <td valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>unrepairable</b></td>
+    <td>the virus infecting a sample can not be removed</td>
+  </tr>
+  <tr>
+    <td  valign=top>&nbsp;&nbsp;&nbsp;&nbsp;<b>unsubmittable</b></td>
+    <td>the sample is probably a "trojan horse"</td>
+  </tr>
+</table>
+
+<P>For example, if a sample may be infected with a variant of a new virus, but the virus cannot be verified, the result may be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Scan-Result: heuristic</P>
+
+<P><a name="Name"></a>
+<B>X-Scan-Signatures-Name</b><BR>
+This attribute specifies the name of the signatures used to scan the sample. </P>
+<P>For example, the name of a full set of virus signature definition files for Windows 95/98/NT products might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Scan-Signatures-Name: 00000678.all.zip</P>
+
+<P><a name="Sequence"></a>
+<B>X-Scan-Signatures-Sequence</b><BR>
+This attribute specifies the sequence number of the signatures used to scan the sample. </P>
+<P>For example, the sequence number of virus signature definition files might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Scan-Signatures-Sequence: 00000678</P>
+
+<P><a name="Version"></a>
+<B>X-Scan-Signatures-Version</b><BR>
+This attribute specifies the daily version number of virus signature definition files used to scan the file. </P>
+<P>For example, the daily version number of a signature set might resemble:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Scan-Signatures-Version: 1999.02.06.001</P>
+
+<P><a name="Identifier"></a>
+<B>X-Scan-Virus-Identifier</b><BR>
+This attribute contains the identifier of a virus found in the sample.</P>
+<P>For example, this is the identifier of an especially odd virus:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Scan-Virus-Identifier: 32767</P>
+
+<P><a name="Name"></a>
+<B>X-Scan-Virus-Name</b><BR>
+This attribute specifies the name of the virus found in the sample.</P>
+<P>For example, this is an especially odd virus:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Scan-Virus-Name: Morton.42</P>
+
+</BODY>
+</HTML>

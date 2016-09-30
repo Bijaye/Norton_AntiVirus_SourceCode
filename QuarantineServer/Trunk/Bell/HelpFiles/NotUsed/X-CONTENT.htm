@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title> X-CONTENT ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1>X-Content Attribute</H1>
+The proprietary X-Content attributes are included in messages with non-empty content, as appropriate. These attributes tell the receiver what methods were used to compress, scramble, and encode the message content, if any:<BR><BR>
+<a href="#Checksum"><B>X-Content-Checksum</b></a>: MD5 checksum of content<BR>
+<a href="#Compression"><B>X-Content-Compression</b></a>: method used to compress content<BR>
+<a href="#Encoding"><B>X-Content-Encoding</b></a>: method used to encode content<BR>
+<a href="#Scrambling"><B>X-Content-Scrambling</b></a>: method used to scramble content<BR>
+<P>These attributes are omitted in messages with null content.</P>
+
+<P><a name="Checksum"></a>
+<B>X-Content-Checksum</b><BR>
+This attribute specifies the MD5 checksum of the content, after any compression or scrambling or encoding. The value is a 128-bit binary number, represented as a 32-digit hexadecimal string composed of characters in the range "0..9A..F".</P>
+<P>For example, the checksum of the content of a message might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Content-Checksum: 663E6092463AA20EF6A14E8B137AEF30</P>
+<P>This attribute is used to verify that the content has been transferred correctly.</P>
+
+<P><a name="Compression"></a>
+<B>X-Content-Compression</b><BR>
+This attribute specifies the method used to compress the content, if any. The value is the name of the compression method. The Immune System uses compression methods defined by the Info-ZIP group. The values are:</P>
+<table>
+  <tr>
+    <td  valign=top width="76">&nbsp;&nbsp;&nbsp;&nbsp; <b>deflate</b></td>
+    <td width="225">for captured samples</td>
+  </tr>
+  <tr>
+    <td valign=top width="76">&nbsp;&nbsp;&nbsp;&nbsp; <b>zip</b></td>
+    <td width="225">for directories of sample analysis files</td>
+  </tr>
+  <tr>
+    <td valign=top width="76">&nbsp;&nbsp;&nbsp;&nbsp; <b>zip</b></td>
+    <td width="225">for directories of signature definition files</td>
+  </tr>
+</table>
+<P>For example, sample submission requests may include this attribute:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Content-Compression: deflate</P>
+<P>This attribute is omitted if the content of the message is not compressed.</P>
+
+<P><a name="Encoding"></a>
+<B>X-Content-Encoding</b><BR>
+This attribute specifies the method used to encode the content, if any. The value is the name of the encoding method. The only method used in the Immune System is the Base64 algorithm, as specified by the Multipurpose Internet Mail Extensions (MIME). </P>
+<P>For example, if the content of a message is encoded according to Base64, the message will contain this attribute:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Content-Encoding: base64 </P>
+<P>This attribute is omitted if the content of the message is not encoded.</P>
+
+<P><a name="Scrambling"></a>
+<B>X-Content-Scrambling</b><BR>
+This attribute specifies the method used to scramble the content, if any. Note that content is scrambled only to prevent accidental execution of potentially infected samples. Scrambling does not provide any security. The value is the name of the scrambling method. The only method used by the Immune System is XOR with a constant bit-mask. </P>
+<P>For example, if the content of a message is scrambled, the message will include this attribute:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Content-Scrambling: xor-vampish</P>
+<P>This attribute is omitted if the content of the message is not scrambled.</P>
+
+</BODY>
+</HTML>

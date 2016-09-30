@@ -1,0 +1,151 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+	<head>
+		<title>Activation Panel</title>
+		<meta id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link rel="stylesheet" type="text/css" href="cfgwizstyle.css">
+			<script src="ActivationPanel.js" language="JavaScript"></script>
+			<script src="Buttons.js" language="JavaScript"></script>
+	</head>
+	<body class="frame" id="body_actinfo" OnLoad="OnLoad()" onunload="OnUnLoad()" text="#333333" scroll="no" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" ms_positioning="GridLayout">
+		<div>
+			<OBJECT id="SymUIAx" height="430" width="760" classid="clsid:62FAA135-84EB-4225-B2D5-707DDB884B51" VIEWASTEXT>
+				<PARAM NAME="_Version" VALUE="65536">
+				<PARAM NAME="_ExtentX" VALUE="11906">
+				<PARAM NAME="_ExtentY" VALUE="8467">
+				<PARAM NAME="_StockProps" VALUE="0">
+			</OBJECT>
+		</div>	
+		<script language="javascript">
+	
+					function SymUIAx::SetButtonState( butt, state)
+					{
+						var button = null;
+						switch(butt)
+						{
+							case NEXT_BUTTON:
+								button = SelectFrame.NextButton;
+								break;
+							case BACK_BUTTON:
+								button = SelectFrame.BackButton;
+								break;
+							case SKIP_BUTTON:
+								button = SelectFrame.SkipButton;
+								break;
+							default:
+								return;
+								break;
+						}
+						
+						SetButtonHighContrast(button);
+						
+						switch( state )
+						{
+							case BUTTON_KILLED:
+								// Killed state from XLok Rental
+								window.parent.navigate("res://closeme.xyz");
+								break;
+								
+							case BUTTON_DISABLE:
+								ButtonDisable(button);
+								break;
+							case BUTTON_ENABLE:
+								ButtonEnable(button);
+								break;
+							case BUTTON_HIDE:
+								button.style.visibility = "hidden";
+								break;			
+							case BUTTON_SHOW:
+								button.style.visibility = "visible";
+								break;			
+							case BUTTON_SETFOCUS:
+								button.focus();
+								break;			
+							case BUTTON_CLICK:
+								switch(butt)
+								{
+									case NEXT_BUTTON:
+										SelectFrame.OnNextButton();
+										break;
+									case BACK_BUTTON:
+										SelectFrame.OnBackButton();
+										break;
+									case SKIP_BUTTON:
+										SelectFrame.OnSkipButton();
+										break;
+									default:
+										return;
+										break;
+								}
+								break;
+						}
+					}
+
+					function SymUIAx::SetButtonText( butt, text, hottie )
+					{
+						var button = null;
+						
+						switch(butt)
+						{
+							case NEXT_BUTTON:
+								defText = ActBtnNextText.innerHTML;
+								defHotKey = ActBtnNextHotKey.innerText;
+								button = SelectFrame.NextButton;
+								break;
+								
+							case BACK_BUTTON:
+								defText = ActBtnBackText.innerHTML;
+								defHotKey = ActBtnBackHotKey.innerText;
+								button = SelectFrame.BackButton;
+								break;
+								
+							case SKIP_BUTTON:
+								defText = ActBtnSkipText.innerHTML;
+								defHotKey = ActBtnSkipHotKey.innerText;
+								button = SelectFrame.SkipButton;
+								break;
+							default:
+								return;
+								break;
+						}
+						
+						if(text != null && text.length != 0)
+						{
+							// If it's the finish button, move it to the right
+							if(text.toUpperCase() == ActBtnFinishText.innerHTML.toUpperCase())
+							{
+								button.style.position = 'absolute';
+								button.style.left = '615';
+							}
+							button.innerHTML = text;
+							button.accessKey = String.fromCharCode(hottie);
+						}
+						else
+						{
+							button.innerHTML = defText;
+							button.accessKey = defHotKey;
+						}
+					}
+		</script>
+		<!-- Button Text -->
+		<span id="ActBtnSkipText" style="display:none">Activate <U>L</U>ater</span>
+		<span id="ActBtnRentalSkipText" style="display:none"><U>C</U>ancel</span>
+		<span id="ActBtnBackText" style="display:none"><U>B</U>ack</span>
+		<span id="ActBtnNextText" style="display:none"><U>N</U>ext</span>
+		<span id="ActBtnFinishText" style="display:none"><U>F</U>inish</span>
+		<!-- Button hot keys -->
+		<span id="ActBtnSkipHotKey" style="display:none">l</span>
+		<span id="ActBtnRentalSkipHotKey" style="display:none">l</span>
+		<span id="ActBtnBackHotKey" style="display:none">b</span>
+		<span id="ActBtnNextHotKey" style="display:none">n</span>
+		<span id="ActBtnFinishHotKey" style="display:none">f</span>
+	</body>
+</html>

@@ -1,0 +1,153 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+#include "NAVVer.h"
+#include "filever.h"
+#include "verinc.rc"
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "#include ""NAVVer.h""\r\n"
+    "#include ""filever.h""\r\n"
+    "#include ""verinc.rc""\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "1 TYPELIB ""NavShellExtEx.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_NAVSHELLEXTEX       REGISTRY                "NavShellExtEx.rgs"
+IDR_IECONTEXTMENU       REGISTRY                "res\\IEContextMenu.rgs"
+IDR_IETOOLBAND          REGISTRY                "res\\IEToolBand.rgs"
+IDR_NAVEXTBHO           REGISTRY                "res\\CNavExtBho.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_IETOOLBAR           BITMAP                  "res\\IEToolBar.bmp"
+IDB_IECONTEXTMENU       BITMAP                  "res\\NAVShellExt.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDM_IETOOLBAR MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "View &Status",                IDC_STATUS
+        MENUITEM "View &Quarantine",            IDC_QUARINTIN
+        MENUITEM "View Activity &Log",          IDC_LOG
+        MENUITEM "View &Virus Encyclopedia",    IDC_VIRUSDEF
+        MENUITEM SEPARATOR
+        MENUITEM "Lau&nch Scan Menu",           IDC_LAUNCH
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+1                       ICON                    "res\\NAVShellExt.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_NOITEMS             "To start a scan, select a folder or file and click the %s icon."
+    IDS_NAV                 "%s"
+    IDS_SCAN                "Scan Now"
+    IDS_STATUS              "Status"
+    IDS_MENU_ITEM           "Scan &with %s"
+    IDS_TOOLTIP             "Scan selected items"
+    IDS_NAVIGATION          "Can not scan items before Explorer navigation is completed."
+    IDS_STATUSMSG           "Scan selected items for viruses with %s."
+    IDS_ACCESSDENIED        "You do not have permission to open the listed file(s). See the owner of the file or an administrator to obtain permission."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_Err_Internal        "Internal error."
+    IDS_Err_NoParentWindow  "No parent for tool band window"
+    IDS_Err_CreateToolBand  "Can't create tool band window"
+    IDS_Err_CreateToolBar   "Can't create tool bar window"
+    IDS_Err_ScanTaskItem    "Can't add a scan task item."
+    IDS_Err_ScanTaskFile    "Can't save a scan task file."
+    IDS_Err_ScanTaskRun     "Can't run a scan task file."
+    IDS_Err_SARC_URL        "Can't find Symantec Security Response URL."
+    IDS_Err_Cant_Save_Task  "%s could not create the scan task you requested because you are out of disk space."
+    IDS_Err_Cant_Launch_Nmain "Unable to launch %s."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_Err_VerifyTrustFailed 
+                            "Please reinstall %s. Some of the files are corrupted."
+    IDS_Err_InvalidPath     "Invalid path"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "NavShellExtEx.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

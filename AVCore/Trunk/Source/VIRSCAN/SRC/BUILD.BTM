@@ -1,0 +1,25 @@
+::
+:: $Header:   S:/VIRSCAN/VCS/build.btv   1.7   11 Feb 1997 14:01:54   DALLEE  $
+::
+:: Build file for the SCAN Dynamic Link Library of the
+:: Norton AntiVirus for Windows.
+::------------------------------------------------------------------------
+:: $Log:   S:/VIRSCAN/VCS/build.btv  $
+:  
+:     Rev 1.7   11 Feb 1997 14:01:54   DALLEE
+:  Removed build of VIRSCAN5.  This was a kluge used on Quake 2 only.
+:  Current DOS and DX projects appear to link to the regular 
+:  VIRSCANx library.
+:  
+:     Rev 1.6   10 Dec 1996 16:36:56   MZAREMB
+:  Added virscan5 build.
+:  
+:     Rev 1.5   28 Dec 1994 18:33:36   DALLEE
+:  Allow CV updates for DOS.
+:  Down with platform discrimination!
+::------------------------------------------------------------------------
+
+call mk virscan %&
+
+if exist make.err copy make.err build.err
+

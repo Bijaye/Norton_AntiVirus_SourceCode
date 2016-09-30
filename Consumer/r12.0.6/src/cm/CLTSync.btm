@@ -1,0 +1,174 @@
+@echo off
+echo.
+echo.
+echo **********************************************************************
+echo ***********************                  *****************************
+echo **********************  C L T    S Y N C  ****************************
+echo ***********************                  *****************************
+echo **********************************************************************
+echo.
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then
+ 	   set root=%root%\
+	endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Reset variables
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+set CLTBuild=NOTSET
+set REMOVEOLD=NOTSET
+set DEVBUILD=NOTSET
+set CLTPath=NOTSET
+set localSDKPath=NOTSET
+set root=NOTSET
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem look for parameters we recognize
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+    do param = 1 to 127
+        shift 1
+        iff "%0"=="" then
+             shift -%param%
+             goto continue
+        endiff
+
+        set this_param=%@upper[%0]
+
+        iff "%this_param"=="/CLTBUILD" then
+            shift 1
+            set CLTBUILD=%0
+        elseiff "%this_param"=="/REMOVEOLD" then
+            Set REMOVEOLD=1
+        elseiff "%this_param"=="/DEVBUILD" then
+            Set DEVBUILD=1
+        else
+            Echo Unknown parameter [%this_param%]
+            echo.
+            echo Use the following or no parameters for latest build
+            echo.
+            echo /CLTBUILD #
+            echo /DEVBUILD
+            echo /REMOVEOLD
+            quit 1
+        endiff
+    enddo
+    shift -127
+
+:continue
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem find the latest CLTBuild
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%CLTBuild%" == "NOTSET" then
+    dir /ad /on /b \\ussm-cpd\USSM-CPD\Unreleased_Builds\Symantec_Licensing\Client\Consumer_Licensing_Technologies\r6.3 >> .\CLTBuild.log
+    set CLTBuild=%@LINE[.\CLTBuild.log, %@LINES[.\CLTBuild.log]]
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem setup remote paths
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%DEVBUILD%" == "NOTSET" then
+    set CLTPath=\\ussm-cpd\USSM-CPD\Unreleased_Builds\Symantec_Licensing\Client\Consumer_Licensing_Technologies\r6.3\%CLTBuild%\SDK
+else
+    set CLTPath=D:\CLTReleases\r6.3\%CLTBuild%\SDK
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem setup local paths refrenced from the CM dir
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+set localSDKPath=..\..\SDKs
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Spit out run data
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+echo ------------------------------------------------------
+echo CLTBuild#  = %CLTBUILD%
+echo RemoveOld  = %REMOVEOLD%
+echo SourcePath = %CLTPath%
+echo DestPath   = %localSDKPath%
+echo Root       = %root%
+echo ------------------------------------------------------
+echo.
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Verify that the Common Client is really there.
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff isdir %CLTPath% then
+    @echo ****** Syncing CLT Release (%CLTBUILD%) From [%CLTPath%]
+    @echo.
+else
+    @echo ************************************************
+    @echo ***** Error Syncing CLT Build [%CLTBUILD%]
+    @echo ************************************************
+    @echo - Directory not found [%CLTPath%]
+    echo.
+    quit 0
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Delete previous CLT files if user wants
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+iff "%REMOVEOLD%" == "1" then
+    del /Z /S /Y /K /X %localSDKPath%\CCPD-LicensingTechnologies\cltPEPImpl\*.*
+    del /Z /S /Y /K /X %localSDKPath%\CCPD-LicensingTechnologies\Licensing\*.*
+    del /Z /S /Y /K /X %localSDKPath%\CCPD-LicensingTechnologies\Subscription\*.*
+    del /Z /S /Y /K /X %localSDKPath%\Install\ConfigWiz\*.*
+    del /Z /S /Y /K /X %localSDKPath%\ComponentPEP\*.*
+    del /Z /S /Y /K /X %localSDKPath%\Licensing\*.*
+    del /Z /S /Y /K /X %localSDKPath%\SymCAbout\*.*
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy CLT files
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+echo ==========================
+Echo == CLT
+xcopy /E /D /F /Y /C /I %CLTPath%\CLT                           %localSDKPath%\Licensing
+echo ==========================
+Echo == cltPEPImpl
+xcopy /E /D /F /Y /C /I %CLTPath%\Shareable_Code\cltPEPImpl     %localSDKPath%\CCPD-LicensingTechnologies\cltPEPImpl
+echo ==========================
+Echo == Licensing
+xcopy /E /D /F /Y /C /I %CLTPath%\Shareable_Code\Licensing      %localSDKPath%\CCPD-LicensingTechnologies\Licensing
+echo ==========================
+Echo == Subscription
+xcopy /E /D /F /Y /C /I %CLTPath%\Shareable_Code\Subscription   %localSDKPath%\CCPD-LicensingTechnologies\Subscription
+echo ==========================
+Echo == ConfigWiz
+xcopy /E /D /F /Y /C /I %CLTPath%\Shareable_Code\ConfigWiz      %localSDKPath%\Install\ConfigWiz
+echo ==========================
+Echo == ComponentPEP
+xcopy /E /D /F /Y /C /I %CLTPath%\Shareable_Code\ComponentPEP   %localSDKPath%\ComponentPEP
+echo ==========================
+Echo == SymCAbout
+xcopy /E /D /F /Y /C /I %CLTPath%\Shareable_Code\SymCAbout      %localSDKPath%\SymCAbout
+
+echo.
+rem D:\work\NAVBuildToVerifyCLT\Norton_AntiVirus\Consumer\SDKs\SymLCEng
+
+
+
+

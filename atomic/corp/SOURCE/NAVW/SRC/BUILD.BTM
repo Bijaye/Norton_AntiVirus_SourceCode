@@ -1,0 +1,41 @@
+::
+:: $Header:   S:/navw/VCS/build.btv   1.0   06 Feb 1997 21:01:22   RFULLER  $
+::
+:: Build file for NAVW project.  Forces update of all targets.
+::------------------------------------------------------------------------
+:: $Log:   S:/navw/VCS/build.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 21:01:22   RFULLER
+:  Initial revision
+:  
+:     Rev 1.5   23 Oct 1996 12:41:12   GWESTER
+:  Removed the Preview code.
+:  
+:     Rev 1.4   23 Oct 1996 12:30:48   GWESTER
+:  As a test, added code that will build both the regular and the Trial version
+:  of NAVW.
+:  
+:     Rev 1.3   21 Aug 1996 15:16:10   DALLEE
+:  Changed if conditional from makefile style to batch file style.
+:  Added 2nd copy build.err+make.err line.
+:  Removed BUILDALL stuff for multiple targets/platforms.
+:  
+:     Rev 1.2   16 Jul 1996 14:07:18   jmillar
+:  add n32scanw.mak to build if NAVWNT
+:  
+:     Rev 1.1   05 Jun 1996 23:08:30   DSACKIN
+:  Moved NAVCRC line from BUILD.BTM to NAVW.MAK.
+:
+:     Rev 1.0   30 Jan 1996 15:55:14   BARRY
+:  Initial revision.
+::------------------------------------------------------------------------
+
+call mk navw %&
+
+if exist make.err copy build.err+make.err build.err
+
+iff "%TARGET%" == "NAVWNT" then
+    call mk n32scanw %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+

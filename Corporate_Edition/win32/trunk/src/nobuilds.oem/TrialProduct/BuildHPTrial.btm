@@ -1,0 +1,84 @@
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  %_BATCHNAME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+
+:Initialize
+echo * Initializing...e
+cdd "%@PATH["%_BATCHNAME"]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+
+rem use nonOEM Trial 60 days
+set SAVLicenseFileDir=%CLIENTROOT%\DJSMAR00\SessionFiles\Trialware\60-Day
+set SCSLicenseFileDir=%CLIENTROOT%\DJSMAR00\SessionFiles\TrialwareSCS\60-Day
+
+set Language=Portuguese-Brazilian
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Czech
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=English
+rem build SAV64 for English only
+call BuildTrial.btm SAV32 SAV64
+if %errorlevel% != 0 goto BuildFailed
+rem Copy CDStart - auto-detect setup.exe for English only
+if not exist "%CDLayoutRoot%\CDSAVTrial\%Language%\setup.exe" xcopy /k /i /y /R "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\CDRestore\Release\setup.exe" "%CDLayoutRoot%\CDSAVTrial\%Language%\"
+
+set Language=French
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=German
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Italian
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Korean
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Japanese
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Polish
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Chinese-Simplified
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Spanish
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+set Language=Chinese-Traditional
+call BuildTrial.btm SAV32
+if %errorlevel% != 0 goto BuildFailed
+
+
+
+goto RealEnd
+
+
+
+:BuildFailed
+set returnVal=2
+echo ERROR:  build FAILED!
+echo At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  %_BATCHNAME
+quit %returnVal%

@@ -1,0 +1,54 @@
+::
+:: $Header:   S:/NAVSECUR/VCS/buildall.btv   1.1   29 Apr 1997 19:33:28   JBRENNA  $
+::
+:: This file performs mkupdate's for all platforms of the NAVSECUR project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVSECUR/VCS/buildall.btv  $
+:  
+:     Rev 1.1   29 Apr 1997 19:33:28   JBRENNA
+:  Replace WIN with WRA and WDA. Replace W32 with IRA and IDA.
+:  
+:     Rev 1.0   06 Feb 1997 20:59:46   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:54:08   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 14:39:46   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   26 Apr 1994 20:55:48   DALLEE
+:  Initial revision.
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+
+                                        :: Build each target for each platform.
+for %__Plat in (WRA WDA IRA IDA) do gosub Build_It
+
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call bproj navsecur %__Plat
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

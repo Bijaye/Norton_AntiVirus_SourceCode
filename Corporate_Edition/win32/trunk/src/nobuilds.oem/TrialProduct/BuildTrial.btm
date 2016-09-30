@@ -1,0 +1,389 @@
+ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  %_BATCHNAME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+set BuildSAVTrial=0
+set BuildSAV64Trial=0
+set BuildSCSTrial=0
+
+rem ** Parse command line
+do param = 2 to 10
+   shift 1
+   iff "%@upper[%0]" = "SAV32" then
+       set BuildSAVTrial=1
+   endiff
+   iff "%@upper[%0]" = "SCS" then
+       set BuildSCSTrial=1
+   endiff
+   iff "%@upper[%0]" = "SAV64" then
+       set BuildSAV64Trial=1
+   endiff
+   iff "%@upper[%0]" = "ALL" then
+       set BuildSAVTrial=1
+       set BuildSCSTrial=1
+       set BuildSAV64Trial=1
+   endiff
+enddo
+
+:Initialize
+echo * Initializing...e
+cdd "%@PATH["%_BATCHNAME"]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=0
+set CDLayoutRoot=%CLIENTROOT%\Finished\CDLayout
+rem * SavCorp publishing interface
+set FinishedSavCorpRoot=%BUILDSAVCORPINTERFACE%
+set FinishedSavCorpInstall=%FinishedSavCorpRoot%\Install
+set FinishedSavCorpInstallConsole=%FinishedSavCorpInstall%\Console
+set FinishedSavCorpInstallAMS=%FinishedSavCorpInstall%\AMS
+set FinishedSavCorpImageSection=%FinishedSavCorpRoot%\Image Section
+set FinishedSavCorpWin32=%FinishedSavCorpRoot%\Win32
+set FinishedSavCorpWin32Release=%FinishedSavCorpWin32%\Release
+set FinishedSavCorpOther=%FinishedSavCorpRoot%\Other
+set NoBuildsOEM=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds.oem\bin.ira
+set DoBuildCDLicensed=1
+
+iff %DoBuildCDLicensed% = 1 then
+    iff %DoBuildCDMode% = 1 then
+        set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\sav_readme.txt
+    else
+        set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\scs_readme.txt
+    endiff
+    set sourceDocAdmin=%CLIENTROOT%\CDDocs_MUP\savcadmn.pdf
+    set sourceDocSavClnt=%CLIENTROOT%\CDDocs_MUP\savcclnt.pdf
+    set sourceClientRolloutImageSection=%FinishedSavCorpImageSection%\unlicensed\ClientRollout
+    set sourceServerRolloutImageSection=%FinishedSavCorpImageSection%\licensed\ServerRollout
+    set sourceInstallSAV=%FinishedSavCorpInstall%\licensed\SAV
+    set sourceInstallSAVTrial=%FinishedSavCorpInstall%\licensed\SAVTrial\%Language%
+    set sourceInstallSAV64Trial=%FinishedSavCorpInstall%\licensed\SAV64Trial\%Language%
+    set sourceInstallSAV_x86=%FinishedSavCorpInstall%\licensed\SAV_x86
+    set sourceInstallSCS=%FinishedSavCorpInstall%\licensed\SCS
+    set sourceInstallSCSTrial=%FinishedSavCorpInstall%\licensed\SCSTrial\%Language%
+    set sourceInstallSSC=%FinishedSavCorpInstall%\licensed\Console
+else
+    iff %DoBuildCDMode% = 1 then
+        set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\usav_readme.txt
+    else
+        set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\uscs_readme.txt
+    endiff
+    set sourceDocAdmin=%CLIENTROOT%\CDDocs\savcadmn.pdf
+    set sourceDocSavClnt=%CLIENTROOT%\CDDocs\savcclnt.pdf
+    set sourceClientRolloutImageSection=%FinishedSavCorpImageSection%\unlicensed\ClientRollout
+    set sourceServerRolloutImageSection=%FinishedSavCorpImageSection%\unlicensed\ServerRollout
+    set sourceInstallSAV=%FinishedSavCorpInstall%\unlicensed\SAV
+    set sourceInstallSAV_x86=%FinishedSavCorpInstall%\unlicensed\SAV_x86
+    set sourceInstallSCS=%FinishedSavCorpInstall%\unlicensed\SCS
+    set sourceInstallSSC=%FinishedSavCorpInstall%\unlicensed\Console
+endiff
+
+echo ** OEM Trial Product
+
+
+
+rem ** OEM Trial Product
+rem ** -----------------
+iff %BuildSAVTrial% = 1 then
+	rem ** Do SAV32
+	rem ** -----------------
+	
+	set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\sav_trial_readme.txt
+	set SourcePFW=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SAV\SymantecAntiVirusCorporateEdition-Trial.pfw
+	set DestPFW=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SAV\SAV.pfw
+	set DestEXE=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SymantecAntiVirusCorporateEdition-Trial.exe
+
+	if not exist "%CDLayoutRoot%\CDSAVTrial" mkdir /s "%CDLayoutRoot%\CDSAVTrial"
+	if not exist "%CDLayoutRoot%\CDSAVTrial\%Language%" mkdir /s "%CDLayoutRoot%\CDSAVTrial\%Language%"
+        if not exist "%CDLayoutRoot%\CDSAVTrial\%Language%\SAV" mkdir /s "%CDLayoutRoot%\CDSAVTrial\%Language%\SAV"
+        set CDTrialDir=%CDLayoutRoot%\CDSAVTrial\%Language%\SAV
+
+	rem Move oem-samp.bat temporarily there
+	rem xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\oem-samp.bat" "%sourceInstallSAVTrial%\"
+	rem if %errorlevel% != 0 goto BuildFailed
+
+        rem Move sav-conf.ini temporarily there
+	rem xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\sav-conf.ini"		"%sourceInstallSAVTrial%\"
+	rem if %errorlevel% != 0 goto BuildFailed
+
+	rem move vendor.dat temporarily there
+	xcopy /k /i /y /R "%SAVLicenseFileDir%\vendor.dat"	"%sourceInstallSAVTrial%\"
+	if %errorlevel% != 0 goto BuildFailed
+
+	gosub GenerateExe
+
+	rem Copy self-extracting executable file to new CDTrial Folder
+	xcopy /k /i /y /R "%DestExe%" "%CDTrialDir%\"
+	if %errorlevel% != 0 goto BuildFailed
+	copy /Y "%sourceReadme%" "%CDTrialDir%\readme.txt"
+	if %errorlevel% != 0 goto BuildFailed
+
+	
+	rem Delete oem-samp.bat
+	rem del /Q /F "%sourceInstallSAVTrial%\oem-samp.bat"
+	rem if %errorlevel% != 0 goto BuildFailed
+ 	rem del /Q /F "%sourceInstallSAVTrial%\sav-conf.ini"
+ 	if %errorlevel% != 0 goto BuildFailed
+
+	
+	rem Copy CDStart - AutoRun files
+	rem if not exist "%CDLayoutRoot%\CDSAVTrial\setup.exe"	xcopy /k /i /y /R "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\CDOEM\Release\setup.exe" "%CDLayoutRoot%\CDSAVTrial"
+
+	rem if not exist "%CDLayoutRoot%\CDSAVTrial\demo.dbd" 	xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SAV\demo.dbd" "%CDLayoutRoot%\CDSAVTrial"
+	if not exist "%CDLayoutRoot%\CDSAVTrial\autorun.inf" 	xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SAV\autorun.inf" "%CDLayoutRoot%\CDSAVTrial"
+	rem Finish building SAVTrial
+	set BuildSAVTrial=0		
+
+endiff
+
+iff %BuildSAV64Trial% = 1 then
+	rem ** Do SAV64
+	rem ** -----------------
+
+	set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\sav_trial_readme.txt
+	set SourcePFW=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SAVWin64\SymantecAntiVirusCorporateEditionWin64-Trial.pfw
+	set DestPFW=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SAVWin64\SAVWin64.pfw
+	set DestEXE=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SymantecAntiVirusCorporateEditionWin64-Trial.exe
+
+	if not exist "%CDLayoutRoot%\CDSAVTrial" mkdir /s "%CDLayoutRoot%\CDSAVTrial"
+	if not exist "%CDLayoutRoot%\CDSAVTrial\%Language%" mkdir /s "%CDLayoutRoot%\CDSAVTrial\%Language%"
+        if not exist "%CDLayoutRoot%\CDSAVTrial\%Language%\SAVWin64" mkdir /s "%CDLayoutRoot%\CDSAVTrial\%Language%\SAVWin64"
+	set CDTrialDir=%CDLayoutRoot%\CDSAVTrial\%Language%\SAVWin64
+
+	rem Move oem-samp.bat temporarily there
+	rem xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\oem-samp.bat" "%sourceInstallSAV64Trial%\"
+	rem if %errorlevel% != 0 goto BuildFailed
+
+        rem Move sav-conf.ini temporarily there
+	rem xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\sav-conf.ini"		"%sourceInstallSAV64Trial%\"
+	rem if %errorlevel% != 0 goto BuildFailed
+
+	rem move vendor.dat temporarily there
+	xcopy /k /i /y /R "%SAVLicenseFileDir%\vendor.dat"	"%sourceInstallSAV64Trial%\"
+	if %errorlevel% != 0 goto BuildFailed
+
+	gosub GenerateExe
+
+	rem Copy self-extracting executable file to new CDTrial Folder
+	xcopy /k /i /y /R "%DestExe%" "%CDTrialDir%"
+	if %errorlevel% != 0 goto BuildFailed
+	copy /Y "%sourceReadme%" "%CDTrialDir%\readme.txt"
+	if %errorlevel% != 0 goto BuildFailed
+
+	
+	rem Delete oem-samp.bat
+	rem del /Q /F "%sourceInstallSAV64Trial%\oem-samp.bat"
+	rem if %errorlevel% != 0 goto BuildFailed
+ 	rem del /Q /F "%sourceInstallSAV64Trial%\sav-conf.ini"
+ 	if %errorlevel% != 0 goto BuildFailed
+
+	
+	rem Copy CDStart - AutoRun files
+	rem if not exist "%CDLayoutRoot%\CDSAVTrial\setup.exe"	xcopy /k /i /y /R "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\CDOEM\Release\setup.exe" "%CDLayoutRoot%\CDSAVTrial"
+
+	rem if not exist "%CDLayoutRoot%\CDSAVTrial\demo.dbd" 	xcopy /k /i /y /R "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SAV\demo.dbd" "%CDLayoutRoot%\CDSAVTrial"
+	if not exist "%CDLayoutRoot%\CDSAVTrial\autorun.inf" 	xcopy /k /i /y /R "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SAV\autorun.inf"
+	rem Finish building SAV64Trial
+	set BuildSAV64Trial=
+
+endiff
+
+
+iff %BuildSCSTrial% = 1 then
+	rem ** Do SCS
+	rem ** -----------------
+	set sourceReadme=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\src\nobuilds\scs_trial_readme.txt
+	set SourcePFW=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SCS\SymantecClientSecurity-Trial.pfw
+	set DestPFW=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SCS\SCS.pfw
+	set DestEXE=%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SymantecClientSecurity-Trial.exe
+
+	if not exist "%CDLayoutRoot%\CDTrial" mkdir /s "%CDLayoutRoot%\CDTrial"
+	if not exist "%CDLayoutRoot%\CDTrial\%Language%" mkdir /s "%CDLayoutRoot%\CDTrial\%Language%"
+	if not exist "%CDLayoutRoot%\CDTrial\%Language%\32-bit" mkdir /s "%CDLayoutRoot%\CDTrial\%Language%\32-bit"
+	if not exist "%CDLayoutRoot%\CDTrial\%Language%\32-bit\SCS" mkdir /s "%CDLayoutRoot%\CDTrial\%Language%\32-bit\SCS"
+	set CDTrialDir=%CDLayoutRoot%\CDTrial\%Language%\32-bit\SCS
+
+	rem Move oem-samp.bat temporarily there
+	rem xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\oem-samp.bat" "%sourceInstallSCSTrial%\"
+	rem if %errorlevel% != 0 goto BuildFailed
+ 	rem xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\sav-conf.ini"		"%sourceInstallSCSTrial%\"
+ 	rem if %errorlevel% != 0 goto BuildFailed
+	
+	rem move vendor.dat temporarily there
+	xcopy /k /i /y /R "%SCSLicenseFileDir%\vendor.dat"	"%sourceInstallSCSTrial%\"
+	if %errorlevel% != 0 goto BuildFailed
+
+	rem ** Copy necessary files for SCS install
+	rem xcopy /k /i /y /R "%BINARYSOURCENISMM%\DCOM98.EXE"  									"%sourceInstallSCSTrial\"
+	rem if %errorlevel% != 0 goto BuildFailed
+	rem xcopy /k /i /y /R "%sourceALEs%"  											"%sourceInstallSCSTrial\"
+	rem if %errorlevel% != 0 goto BuildFailed
+	xcopy /k /i /y /R "%BINARYSOURCENIS%\instopts.dat"  											"%sourceInstallSCSTrial\"
+	if %errorlevel% != 0 goto BuildFailed
+	copy /Y "%BINARYSOURCENIS%\cpolicy.xml" 											%sourceInstallSCSTrial\"
+        if %errorlevel% != 0 goto BuildFailed
+
+	gosub GenerateExe
+
+	rem Copy self-extracting executable file to new CDTrial Folder
+	xcopy /k /i /y /R "%DestExe%" "%CDTrialDir%"
+	if %errorlevel% != 0 goto BuildFailed
+	copy /Y "%sourceReadme%" "%CDTrialDir%\readme.txt"
+	if %errorlevel% != 0 goto BuildFailed
+
+	
+	rem Delete oem-samp.bat
+	rem del /Q /F "%sourceInstallSCSTrial%\oem-samp.bat"
+	rem if %errorlevel% != 0 goto BuildFailed
+ 	rem del /Q /F "%sourceInstallSCSTrial%\sav-conf.ini"
+ 	if %errorlevel% != 0 goto BuildFailed
+
+	
+	rem Copy CDStart - AutoRun files
+	xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SCS-Trial\setup.exe"		                                "%CDLayoutRoot%\CDTrial"
+	xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SCS-Trial\demo.dbd"		                                "%CDLayoutRoot%\CDTrial"
+	xcopy /k /i /y /R "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\Norton_AntiVirus\Corporate_Edition\Win32\src\CDStart\SCS-Trial\autorun.inf"		                                "%CDLayoutRoot%\CDTrial"
+
+	rem Finish building SCSTrial
+	set BuildSCSTrial=0
+	
+endiff
+	
+rem ** ----------------- End OEM Trial Product
+
+rem ** ----------------- End OEM Trial Product
+goto RealEnd
+
+:GenerateExe
+     rem Replace all references of hardcoded CD directory to current directory.
+     iff exist "%DestPFW%" then 
+         attrib -r "%DestPFW%"
+	 echo "Deleting %DestPFW%"	
+         del /Q "%DestPFW%"
+     endiff
+     iff exist "%DestEXE%" then
+         attrib -r "%DestEXE%"
+         del /Q "%DestEXE%"	
+     endiff
+
+     iff %BuildSAVTrial% = 1 then 
+         for %MacroReplaceCurrLine in (@"%SourcePFW%") do gosub MacroReplacePFTWSAVLines
+     else
+         iff %BuildSAV64Trial% = 1 then 
+             for %MacroReplaceCurrLine in (@"%SourcePFW%") do gosub MacroReplacePFTWSAV64Lines
+         else 
+	     iff %BuildSCSTrial% = 1 then
+                 for %MacroReplaceCurrLine in (@"%SourcePFW%") do gosub MacroReplacePFTWSCSLines
+             endiff
+         endiff
+     endiff
+    
+     rem notepad "%DestPFW%"
+     rem pause
+     if %errorlevel% != 0 goto BuildFailed
+
+     rem now create the PFTW executable
+     attrib -r "%CLIENTROOT/Tools/PFTW/*.*"	
+     "%CLIENTROOT/Tools/PFTW/pftwwiz.exe" "%DestPFW%" -a -s
+     if %errorlevel% != 0 goto BuildFailed
+     attrib +r "%CLIENTROOT/Tools/PFTW/*.*"
+return
+
+:MacroReplacePFTWSAVLines
+rem * MacroReplacePFTWSAVLines - Subroutine used to replace Lines with hardcoded path names
+rem * Handle blank lines
+iff "%MacroReplaceCurrLine%" == "BasePath=D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAVTrial" then
+     set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAVTrial,%sourceInstallSAVTrial%,%MacroReplaceCurrLine%]
+     echo %newLineValue% >> "%DestPFW%"
+else
+     iff "%MacroReplaceCurrLine%" == "OutputSpec=D:\src\savcorp-r9.0-OEM\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SymantecAntivirusCorporateEdition-Trial.exe" then
+   		set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM,%CLIENTROOT%,%MacroReplaceCurrLine%]
+       		echo %newLineValue% >> "%DestPFW%"
+     else
+		iff "%MacroReplaceCurrLine%" == "Path=D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAVTrial\" then
+ 			set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAVTrial\,%sourceInstallSAVTrial%\,%MacroReplaceCurrLine%]
+       			echo %newLineValue% >> "%DestPFW%"	
+		else 
+			iff "%MacroReplaceCurrLine%" == "Language=English" then
+				set newLineValue=%@REPLACE[English,%Language%,%MacroReplaceCurrLine%]
+				echo %newLineValue% >> "%DestPFW%"
+   			else
+      				echo %MacroReplaceCurrLine% >> "%DestPFW%"
+			endiff
+   		endiff
+     endiff
+endiff
+return
+
+
+:MacroReplacePFTWSAV64Lines
+rem * MacroReplacePFTWSAV64Lines - Subroutine used to replace Lines with hardcoded path names
+rem * Handle blank lines
+iff "%MacroReplaceCurrLine%" == "BasePath=D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAV64Trial" then
+     set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAV64Trial,%sourceInstallSAV64Trial%,%MacroReplaceCurrLine%]
+     echo %newLineValue% >> "%DestPFW%"
+else
+     iff "%MacroReplaceCurrLine%" == "OutputSpec=D:\src\savcorp-r9.0-OEM\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SymantecAntivirusCorporateEditionWin64-Trial.exe" then
+   		set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM,%CLIENTROOT%,%MacroReplaceCurrLine%]
+       		echo %newLineValue% >> "%DestPFW%"
+     else
+		iff "%MacroReplaceCurrLine%" == "Path=D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAV64Trial\" then
+ 			set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SAV64Trial\,%sourceInstallSAV64Trial%\,%MacroReplaceCurrLine%]
+       			echo %newLineValue% >> "%DestPFW%"
+   		else
+      			echo %MacroReplaceCurrLine% >> "%DestPFW%"
+   		endiff
+     endiff
+endiff
+
+return
+
+:MacroReplacePFTWSCSLines
+rem pause
+rem * MacroReplacePFTWSCSLines - Subroutine used to replace Lines with hardcoded path names
+rem * Handle blank lines
+iff "%MacroReplaceCurrLine%" == "BasePath=D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SCSTrial" then
+    set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SCSTrial,%sourceInstallSCSTrial%,%MacroReplaceCurrLine%]
+       echo %newLineValue% >> "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SCS\SCS.pfw"
+else
+   	iff "%MacroReplaceCurrLine%" == "OutputSpec=D:\src\savcorp-r9.0-OEM\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SymantecClientSecurity-Trial.exe" then
+   		set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM,%CLIENTROOT%,%MacroReplaceCurrLine%]
+       		echo %newLineValue% >> "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SCS\SCS.pfw"	
+   	else
+		iff "%MacroReplaceCurrLine%" == "Path=D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SCSTrial\" then
+ 			set newLineValue=%@REPLACE[D:\src\savcorp-r9.0-OEM\FinishedSavCorp\Install\licensed\SCSTrial\,%sourceInstallSCSTrial%\,%MacroReplaceCurrLine%]
+       			echo %newLineValue% >> "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SCS\SCS.pfw"	
+   		else
+      			echo %MacroReplaceCurrLine% >> "%CLIENTROOT%\Symantec_Client_Security\projects\Grouper\dev\src\TrialProduct\SCS\SCS.pfw"
+   		endiff
+   	endiff
+endiff
+return
+
+
+:BuildFailed
+set returnVal=2
+echo ERROR:  build FAILED!
+echo At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo ERROR - 4DOS not detected!  The 4DOS shell is required to run this script.
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo ERROR - 4DOS too old!  Version 3.02B or later is required to run this script.
+goto RealEnd
+
+:ErrorNoTarget
+set returnVal=5
+echo ERROR - no target directory specified!
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  %_BATCHNAME
+quit %returnVal%
+

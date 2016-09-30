@@ -1,0 +1,16 @@
+Rem 64bitClient.btm
+
+cd ..\navlogon
+
+Set BMODE64=x86 Release
+
+echo Building NavLogon - %BMODE64%...
+..\..\..\..\..\tools\PLATSDKW2K3SP1.BETA\Bin\win64\x86\AMD64\nmake /nologo /f NavLogon64.mak CFG="NavLogon - %BMODE64%"
+
+Set BMODE64=x86 Debug
+
+echo Building NavLogon - %BMODE64%...
+..\..\..\..\..\tools\PLATSDKW2K3SP1.BETA\Bin\win64\x86\AMD64\nmake /nologo /f NavLogon64.mak CFG="NavLogon - %BMODE64%"
+
+cd ..\64bitbuild
+

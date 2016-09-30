@@ -1,0 +1,120 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+
+<head>
+<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso8859-1">
+<title>Scheduler data</title>
+</head>
+
+<object classid="clsid:CA51130B-37FC-48F9-8B0B-BED3404E45F9" id="Scheduler" width="0" height="0">
+</object>
+
+<script language="JavaScript">
+
+function onLoad ()
+{
+	GetInstalled ();
+	GetRunning ();
+	GetRunAtStartup ();
+}
+
+function GetInstalled ()
+{
+	var bInstalled = Scheduler.Installed;
+	if ( bInstalled == 1 )
+	{
+		document.all.SchedulerInstalled.innerText = "Yes";
+	}
+	else
+	{
+		document.all.SchedulerInstalled.innerText = "No";
+	}
+	
+}
+
+function GetRunning ()
+{	
+	var bRunning = Scheduler.Running;
+	if ( bRunning == 1 )
+	{
+		document.all.SchedulerRunning.innerText = "Yes";
+	}
+	else
+	{
+		document.all.SchedulerRunning.innerText = "No";
+	}
+	
+}
+
+function SetRunning ( bStart )
+{
+	Scheduler.Running = bStart;
+	GetRunning ();
+}
+
+function SetRunAtStartup ( bRunAtStartup )
+{
+	Scheduler.RunAtStartup = bRunAtStartup;
+	GetRunAtStartup ();
+}
+
+function GetRunAtStartup ()
+{
+	var bRunAtStartup = Scheduler.RunAtStartup;
+   if ( bRunAtStartup == 1 )
+	{
+		document.all.SchedulerRunAtStartup.innerText = "Yes";
+	}
+	else
+	{
+		document.all.SchedulerRunAtStartup.innerText = "No";
+	}
+
+}
+
+</script>
+
+<body onload="onLoad()">
+<p align="center"><font face="Arial">NAV Test app</font></p>
+<p align="center"><font face="Arial">Scheduler data</font></p>
+<div align="center">
+  <center>
+  <table border="0" width="463">
+    <tr>
+      <td width="84"><font face="Arial" size="2">Installed</font></td>
+      <td ID=SchedulerInstalled style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="25"><font face="Arial" size="2">No</font></td>
+      <td onClick="GetInstalled()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Refresh</u></font></td>
+      <td width="108"></td>
+      <td width="150"></td>
+    </tr>
+    <tr>
+      <td width="84"><font face="Arial" size="2">Running</font></td>
+      <td ID=SchedulerRunning style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="25"><font face="Arial" size="2">No</font></td>
+      <td onClick="GetRunning()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Refresh</u></font></td>
+      <td onClick="SetRunning(1)" style="cursor:hand" width="108"><font face="Arial" size="2" color="#0000FF"><u>Start</u></font></td>
+      <td onClick="SetRunning(0)" style="cursor:hand" width="150"><font face="Arial" size="2" color="#0000FF"><u>Stop</u></font></td>
+    </tr>
+    <tr>
+      <td width="84"><font face="Arial" size="2">Run at startup</font></td>
+      <td ID=SchedulerRunAtStartup style="font-style: normal; font-variant: normal; font-weight: normal; font-size: 10pt; font-family: Arial" width="25"><font face="Arial" size="2">No</font></td>
+      <td onClick="GetRunAtStartup()" style="cursor:hand" width="64"><font face="Arial" color="#0000FF" size="2"><u>Refresh</u></font></td>
+      <td onClick="SetRunAtStartup(1)" style="cursor:hand" width="108"><font face="Arial" size="2" color="#0000FF"><u>Run
+        at Startup</u></font></td>
+      <td onClick="SetRunAtStartup(0)" style="cursor:hand" width="150"><font face="Arial" size="2" color="#0000FF"><u>Don't
+        run at startup</u></font></td>
+    </tr>
+  </table>
+  </center>
+</div>
+
+</body>
+
+</html>

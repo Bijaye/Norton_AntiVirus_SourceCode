@@ -1,0 +1,63 @@
+// SavUI.idl : IDL source for SavUI
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (SavUI.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(11D8A19E-B7BA-46EE-BCB7-4A8A741CAC2F),
+    oleautomation,
+	nonextensible,
+	helpstring("IVirusFoundCOMAdapter Interface"),
+	pointer_default(unique)
+]
+interface IVirusFoundCOMAdapter : IUnknown{
+    [id(1), helpstring("method AddMessage")] HRESULT AddMessage([in] BSTR bstrLogLine, [in] BSTR bstrDescription);
+    [id(2), helpstring("method RegisterCallback")] HRESULT RegisterCallback([in] IUnknown* pUnk);
+    [id(3), helpstring("method CreateDlg")] HRESULT CreateDlg([in] ULONG_PTR dwSessionId, [in] BSTR bstrTitle);
+};
+
+[
+	object,
+	uuid(646C8A12-4A6B-425c-97F4-C22DDA93B744),
+    oleautomation,
+	nonextensible,
+	helpstring("IResultsViewCOMAdapter Interface"),
+	pointer_default(unique)
+]
+interface IResultsViewCOMAdapter : IUnknown{
+    [id(1), helpstring("method CreateDlg")] HRESULT CreateDlg([in] ULONG dwKey, [in] ULONG_PTR hRootKey, [in] BSTR bstrScanKeyName, [in] ULONG dwFlags, [in] ULONG dwDelayCount, [in] ULONG dwType, [in] ULONG dwStartTickCount);
+    [id(2), helpstring("method AddLogLine")] HRESULT AddLogLine([in] LONG lData, [in] BSTR bstrLogLine);
+    [id(3), helpstring("method RegisterCallback")] HRESULT RegisterCallback([in] IUnknown* pUnk);
+    [id(4), helpstring("method AddProgress")] HRESULT AddProgress([in] VARIANT vProgressBlock);
+};
+
+[
+	uuid(C0155A1A-11F1-4178-BE82-32FA1BB6AA5D),
+	version(1.0),
+	helpstring("SavUI 1.0 Type Library")
+]
+library SavUILib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(A1987DB8-9F0D-47D1-80C9-DFCE76260841),
+		helpstring("VirusFoundCOMAdapter Class")
+	]
+	coclass VirusFoundCOMAdapter
+	{
+		[default] interface IVirusFoundCOMAdapter;
+	};
+	[
+		uuid(84AC6BE7-8CF2-4e67-A80E-32ACD3D7C381),
+		helpstring("ResultsViewCOMAdapter Class")
+	]
+	coclass ResultsViewCOMAdapter
+	{
+		[default] interface IResultsViewCOMAdapter;
+	};
+};

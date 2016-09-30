@@ -1,0 +1,22 @@
+@echo off
+
+rem set the root for relative paths..
+set myroot=%@path[%_batchname%]%
+iff %@SUBSTR[%myroot%,%@EVAL[%@LEN[%myroot%]-1],1] NE \ then 
+  set myroot=%myroot%\
+endiff
+
+rem Sync'ing and checking out version.dat...
+START /WAIT p4 sync -f //depot/Norton_Antivirus/consumer/trunk/nobuilds/version.dat
+START /WAIT p4 edit //depot/Norton_Antivirus/consumer/trunk/nobuilds/version.dat
+
+rem Sync'ing and checking out build.h...
+START /WAIT p4 sync -f //depot/Norton_Antivirus/consumer/trunk/src/include/build.h
+START /WAIT p4 edit //depot/Norton_Antivirus/consumer/trunk/include/build.h
+
+rem Incrementing build numbers...
+START /WAIT %myroot%perl.exe %myroot%inc_ver.pl %myroot
+
+rem Checking files back in...
+p4 submit -i < %myroot%update.txt
+  

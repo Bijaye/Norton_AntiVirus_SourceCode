@@ -1,0 +1,23 @@
+HKCR
+{
+	NavShellExtHelper.IEToolBandHelper.1 = s 'IEToolBandHelper Class'
+	{
+		CLSID = s '{C37A78EB-342A-4934-98B4-1F88B67F5375}'
+	}
+	NavShellExtHelper.IEToolBandHelper = s 'IEToolBandHelper Class'
+	{
+		CLSID = s '{C37A78EB-342A-4934-98B4-1F88B67F5375}'
+		CurVer = s 'NavShellExtHelper.IEToolBandHelper.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {C37A78EB-342A-4934-98B4-1F88B67F5375} = s 'IEToolBandHelper Class'
+		{
+			ProgID = s 'NavShellExtHelper.IEToolBandHelper.1'
+			VersionIndependentProgID = s 'NavShellExtHelper.IEToolBandHelper'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{0BD5CEA9-55C0-4FA7-A7BA-8E90B6CC01D5}'
+		}
+	}
+}

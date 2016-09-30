@@ -1,0 +1,64 @@
+::
+:: $Header:   S:/NAVXUTIL/VCS/buildall.btv   1.1   29 Apr 1997 19:17:20   JBRENNA  $
+::
+:: This file performs mkupdate's for all platforms of the NAVXUTIL project.
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVXUTIL/VCS/buildall.btv  $
+:  
+:     Rev 1.1   29 Apr 1997 19:17:20   JBRENNA
+:  Translate W32 to IDA and IRA. Translate VXD to IRAV and IDAV.
+:  
+:     Rev 1.0   06 Feb 1997 21:05:20   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:56:36   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 14:51:38   BARRY
+:  Initial revision.
+:  
+:     Rev 1.1   29 Jun 1995 10:30:54   BARRY
+:  Fix build sisue with some platforms
+:  
+:     Rev 1.0   16 Dec 1994 10:56:04   MARKL
+:  Initial revision.
+:  
+:     Rev 1.1   12 Jul 1994 11:08:36   DALLEE
+:  Added DX platform.  Use 'proj' instead of 'bproj'.
+:  
+:     Rev 1.0   27 Apr 1994 12:56:28   DALLEE
+:  Initial revision.
+::------------------------------------------------------------------------
+
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+
+:: 6/29/95: WIN isn't working for now so I've removed it from the targets for now.
+                                        :: Build each target for each platform.
+for %__Plat in (DOS IRA IDA IDAV IRAV) do gosub Build_It
+
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+quit
+
+ 
+                                        :: This subroutine is called for each
+                                        :: target.  
+:Build_It
+
+call proj navxutil %__Plat
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

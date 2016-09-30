@@ -1,0 +1,26 @@
+HKCR
+{
+	Symantec.Norton.Antivirus.NAVOptionGroup.1 = s 'Symantec.Norton.Antivirus.NAVOptionGroup Class'
+	{
+		CLSID = s '{9B663083-7F14-4E27-9933-D55F162F1FCC}'
+	}
+	Symantec.Norton.Antivirus.NAVOptionGroup = s 'Symantec.Norton.Antivirus.NAVOptionGroup Class'
+	{
+		CLSID = s '{9B663083-7F14-4E27-9933-D55F162F1FCC}'
+		CurVer = s 'Symantec.Norton.Antivirus.NAVOptionGroup.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {9B663083-7F14-4E27-9933-D55F162F1FCC} = s 'Symantec.Norton.Antivirus.NAVOptionGroup Class'
+		{
+			ProgID = s 'Symantec.Norton.Antivirus.NAVOptionGroup.1'
+			VersionIndependentProgID = s 'Symantec.Norton.Antivirus.NAVOptionGroup'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{D323F395-AA30-4DF9-A379-2F3F4819AB00}'
+		}
+	}
+}

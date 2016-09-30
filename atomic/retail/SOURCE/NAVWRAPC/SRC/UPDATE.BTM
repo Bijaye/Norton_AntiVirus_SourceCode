@@ -1,0 +1,29 @@
+::
+:: $Header:   S:/NAVWRAPC/VCS/UPDATE.BTv   1.0   29 May 1998 14:34:58   DBuches  $
+::
+::      This batch file updates the project area based on the TARGET
+::      setting.  The TARGET is set up as part of PROJ and the project's
+::      personalized PROJHOOK.
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVWRAPC/VCS/UPDATE.BTv  $
+:  
+:     Rev 1.0   29 May 1998 14:34:58   DBuches
+:  Initial revision.
+:  
+:     Rev 1.0   30 Mar 1998 16:10:08   TSmith
+:  Initial revision.
+:  
+:     Rev 1.1   20 May 1997 22:24:12   KSACKIN
+:  Fixed update to put dll's into bin directory instead of lib.
+:
+:     Rev 1.0   20 May 1997 19:55:56   KSACKIN
+:  Initial revision.
+::------------------------------------------------------------------------
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.exe copy *.exe %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*

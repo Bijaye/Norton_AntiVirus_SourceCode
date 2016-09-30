@@ -1,0 +1,629 @@
+;***************************************************************************
+;* Norton AntiVirus Scanner for Windows NT (Gargoyle) Setup Script                    *
+;* FOR VERSION 4.0+ OF SYMANTEC INSTALL FOR WINDOWS                        *
+;***************************************************************************
+
+[InstallVersion]
+4.1
+
+[Process]
+Uninstall()                    ; Indicate uninstall processing
+Bitmaps(pix)                   ; Background bitmaps
+DisableHelp()                  ; Don't display help buttons
+Backup(CustDLLCopy)            ; Backup the custom dll in case we need it
+
+SetActiveCopy(NAVCopy, uninstal.inf)
+
+;////////////////////////////////////////
+;// I N I T I A L I Z E   M E M O R Y
+;////////////////////////////////////////
+CallProc(InitMemory)
+
+;//////////////////////////////
+;// Set Target Directories
+;//////////////////////////////
+
+ResetTarget(SourceToTarget4)    ; Set TARGET4 to selected directory
+CallProcEx(GetShort)            ; Set short form of target path in TARGET4
+ResetTarget(Target4ToTarget)    ; Save it in TARGET
+
+ResetTarget(SystemToTarget2)    ; Set NAV System folder
+
+switch99 = CallProcEx(FindSharedComponents) ; Get shared comp dir from reg
+#ifnot(switch99)                ; If shared comp folder not registered
+   GetSymantecDir()             ;   use Symantec dir.
+   ResetTarget(SharedToTarget3)
+#endif
+
+
+; Ensure that NAV is not running. On uninstall, we only care that NAV
+; is not running - shared files may be in use.
+switch99 = CallProcEx(CheckForNortonApps)
+#if(switch99)
+    MessageBox(NortonAppRunning)
+    Exit()
+#endif
+
+
+;/////////////////////////////////////////////////////////////////////
+;//  CHECK FOR ADMINISTRATOR PRIVILIGES
+;/////////////////////////////////////////////////////////////////////
+WizardPanel(NeedAdministratorDialog, siwnavnt.dll)
+
+switch99 = CallProcEx(IsRunningAsAdministrator)
+#ifnot(switch99)
+   WizardProcessPanel()            ; must be administrator to change the path in the Registry
+#endif
+
+;//////////////////////////////
+;// Only support full Uninstall  
+;//////////////////////////////
+WizardPanel(UninstallDlg, siwnavnt.dll)
+WizardProcessPanel()
+
+SelectOption(BaseFiles)
+FullUninstall()
+
+
+;//////////////////////////////
+;// Update registry
+;//////////////////////////////
+
+CallProcEx(DeleteNavwPathReg)
+CallProcEx(DeleteNavwHelpReg)
+CallProcEx(DeleteVirfileReg1)
+CallProcEx(DeleteVirfileReg2)
+CallProcEx(DeleteVirfileReg3)
+                                        ; Decrement usage counts.
+CallProcEx(UsageCounts)
+
+DeselectOption(shared)                  ; Shared files deleted in custom dll.
+CallProcEx(DeleteSharedKeysAndFiles)
+
+#if (switch90)                          ; Symevnt removed.
+    CallProcEx(DeleteSymevntKey)
+#endif
+#if (switch91)                          ; Infodesk removed.
+    CallProcEx(DeleteInfoDeskKey1)
+    CallProcEx(DeleteInfoDeskKey2)
+    CallProcEx(DeleteInfoDeskKey3)
+    Delete(ContentsDelete)
+#endif
+
+CallProcEx(DeletePipeNavKey)            ; always
+CallProcEx(DeletePipelineKey)           ; if empty
+CallProcEx(DeleteNavReg1)
+CallProcEx(DeleteNavReg2)
+CallProcEx(DeleteNavReg3)
+CallProcEx(DeleteNavReg4)
+CallProcEx(DeleteNavReg5)
+CallProcEx(DeleteNavReg6)
+CallProcEx(DeleteNavReg7)
+CallProcEx(DeleteNavReg8)
+CallProcEx(DeleteNavInstalledReg)
+CallProcEx(DeleteSymInstalledApps)
+
+
+;//////////////////////////////
+;// Delete the files          
+;//////////////////////////////
+
+ResetTarget(Target3ToTarget4)   ; We want the short form of shared directory
+CallProcEx(GetShort)            ;   in target3
+ResetTarget(Target4ToTarget3)
+
+DisableUtils()
+Uncopy()
+CallProcEx(DeleteNAVDataFiles)
+EnableUtils()
+
+;//////////////////////////////
+;// Delete the icons            
+;//////////////////////////////
+
+; Delete shared, target & system directories, if empty.
+ResetTarget(Target3ToTarget5)           ; Delete shared components directory
+CallProcEx(NavRemoveSharedDir)          ;  and remove reg entry.
+CallProcEx(DeleteSymantecKey)           ; if empty
+CallProcEx(DeleteSymantecUserKey)       ; if empty
+
+ResetTarget(Target2ToTarget5)           ; Delete system directory
+CallProcEx(NavRemoveProgDir)
+ResetTarget(TargetToTarget5)            ; Delete target directory
+CallProcEx(NavRemoveProgDir)
+
+; Removed NAV program group and startup entries.
+groups()
+
+SilentModifyTF(RemoveContents)
+
+;////////////////////////////////////
+;// PURGE NAV SCHEDULED SCANS
+;////////////////////////////////////
+CallProcEx(PurgeScheduledScans)
+
+;////////////////////////////////////
+;// P R E P A R E   F O R   E X I T
+;////////////////////////////////////
+WizardPanel(Finished, siwnavnt.dll)
+WizardProcessPanel()
+
+;//////////////////////////////
+;// Clean up                    
+;//////////////////////////////
+
+CallProc(ExitHookProc)   ; Causes the DLL reference count to decremented and
+                         ; frees any allocated memory.
+Delete(CustDLLDelete)
+Delete(Leftovers)
+
+;//////////////////////////////
+;// Prepare for exit            
+;//////////////////////////////
+
+switch99 = IsInstallShell()
+
+#if(switch99)
+   ExitRestart()
+#else
+   Exit()
+#endif
+
+end()
+
+;***************************************************************************
+;* External function calls                                                 *
+;***************************************************************************
+
+[InitMemory]
+dll = siwnavnt.dll
+function = InitMemory
+
+[FindSharedComponents]
+dll = siwnavnt.dll
+function = FindSharedComponents
+
+[CheckForNortonApps]
+dll = siwnavnt.dll
+function = CheckForNortonApps
+S32NAV8.DLL,    TARGET
+
+[GetShort]
+dll = siwnavnt.dll
+function = ConvertToShortName
+
+[NavRemoveProgDir]
+dll = siwnavnt.dll
+function = NavRemoveProgDir
+
+[ExitHookProc]
+dll = siwnavnt.dll
+function = ReleaseMemory
+
+; Registry key removal functions
+; Attached to BaseFiles
+
+[UsageCounts]
+dll = siwnavnt.dll
+function = DecrementUsageCounts
+
+[DeleteVirfileReg1]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_CLASSES_ROOT
+subkey = ".vir"
+
+[DeleteVirfileReg2]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_CLASSES_ROOT
+subkey = "virfile\DefaultIcon"
+
+[DeleteVirfileReg3]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_CLASSES_ROOT
+subkey = "virfile"
+
+[DeleteNavReg1]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0\Components"
+
+[DeleteNavReg2]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0"
+
+[DeleteNavReg3]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Install"
+
+[DeleteNavReg4]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Virus Defs\LastUpdate"
+
+[DeleteNavReg5]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Virus Defs"
+
+[DeleteNavReg6]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\LastScan"
+
+[DeleteNavReg7]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT\Clinic"
+
+[DeleteNavReg8]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\Norton AntiVirus NT"
+
+[DeleteNavInstalledReg]
+dll = siwnavnt.dll
+function = NavDeleteRegValue
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\InstalledApps"
+value = "NAVNT"
+
+[DeleteSymInstalledApps]
+dll = siwnavnt.dll
+function = NavDeleteEmptyRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec\InstalledApps"
+
+; Attached to NAVW32
+[DeleteNavwPathReg]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\App Paths\N32SCANW.EXE"
+
+[DeleteNavwHelpReg]
+dll = siwnavnt.dll
+function = NavDeleteRegValue
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Microsoft\Windows\Help"
+value = "Navwscn.hlp"
+
+; Attached to delete shared components
+
+[DeleteSharedKeysAndFiles]
+dll = siwnavnt.dll
+function = NavDeleteSharedKeysAndFiles
+
+[DeleteInfoDeskKey1]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_CURRENT_USER
+subkey = "Software\Symantec\Info Desk\Context Menu"
+
+[DeleteInfoDeskKey2]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_CURRENT_USER
+subkey = "Software\Symantec\Info Desk\Appearance"
+
+[DeleteInfoDeskKey3]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_CURRENT_USER
+subkey = "Software\Symantec\Info Desk"
+
+[DeletePipeNavKey]
+dll = siwnavnt.dll
+function = NavDeleteRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "Software\Symantec\Online Registration\Norton AntiVirus Scanner for Windows NT"
+
+[DeletePipelineKey]
+dll = siwnavnt.dll
+function = NavDeleteEmptyRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "Software\Symantec\Online Registration"
+
+[DeleteSymantecKey]
+dll = siwnavnt.dll
+function = NavDeleteEmptyRegKey
+hive = SIWHKEY_LOCAL_MACHINE
+subkey = "SOFTWARE\Symantec"
+
+[DeleteSymantecUserKey]
+dll = siwnavnt.dll
+function = NavDeleteEmptyRegKey
+hive = SIWHKEY_CURRENT_USER
+subkey = "Software\Symantec"
+
+[NavRemoveSharedDir]
+dll = siwnavnt.dll
+function = NavRemoveSharedDir
+
+[PurgeScheduledScans]
+dll = siwnavnt.dll
+function = RemoveScheduledScans
+
+;***************************************************************************
+;* Config/Autoexec/Ini Mods                                                           *
+;***************************************************************************
+
+[RemoveContents]
+FileSpec    = %s\symantec.cnt, TARGET3
+filetype    = text
+Create      = 0
+FindRems    = 0
+DelItems    = RemoveContentsItems
+
+[RemoveContentsItems]
+*NAVWSCN.CNT*
+
+;***************************************************************************
+;* Dialog Info                                                             *
+;***************************************************************************
+
+[NAVCopy:CopyDialog]
+caption = "Removing Norton AntiVirus Files..."
+posx = -10
+posy = -10
+
+;***************************************************************************
+;* Message Text                                                            *
+;***************************************************************************
+
+[NortonAppRunning]
+caption = "Norton AntiVirus for Windows NT Uninstall"
+"Norton AntiVirus Scanner is currently running."
+" "
+"Uninstall cannot remove Norton AntiVirus files if they"
+"are in use."
+" "
+"Please close the application and then restart Uninstall."
+
+[SymantecDir]
+caption = "Searching for Shared Directory"
+text1 = "Searching for Symantec shared"
+text2 = "program folder."
+appname = "symcfg.bin"
+apppath = C:\SYMANTEC
+
+[Errors]
+NoPrev  =  "Symantec Setup for Windows is already running!"
+
+[FileCopy]
+copycaption   =  "Removing Norton AntiVirus files"
+errorcaption  =  "Error Removing Files"
+insertcaption =  "Insert Diskette"
+Message       =   MessageText
+
+[Cancel]
+caption = "Norton AntiVirus Scanner - Exit Uninstall"
+text    = "Are you sure you want to exit?"
+
+[CancelShell]
+caption = "Norton AntiVirus Scanner - Exit Uninstall"
+"You have selected to cancel Uninstall."
+"In order to reset the Windows"
+"environment, Uninstall will also restart"
+"your computer.  Are you sure you want to exit?"
+
+[Bye]
+caption  =  "Norton AntiVirus Scanner - Uninstall Complete"
+"This concludes the removal of Norton AntiVirus Scanner."
+"Your computer is no longer protected from viruses."
+" "
+
+[ByeRestart]
+caption  =  "Norton AntiVirus Scanner - Uninstall Complete"
+"Norton AntiVirus Scanner has been removed.  Your computer
+"is no longer protected from viruses."
+" "
+"Setup must restart your computer to complete the"
+"uninstall process."
+
+
+;***************************************************************************
+;* Target Folder Settings                                                  *
+;***************************************************************************
+
+[SourceToTarget4]
+reset = TARGET4
+location = %s, SOURCE
+
+[Target4ToTarget]
+reset = TARGET
+location = %s, TARGET4
+
+[TargetToTarget3]
+reset = TARGET3
+location = %s, TARGET
+
+[Target2ToTarget4]
+reset = TARGET4
+location = %s, TARGET2
+
+[Target2ToTarget5]
+reset = TARGET5
+location = %s, TARGET2
+
+[TargetToTarget5]
+reset = TARGET5
+location = %s, TARGET
+
+[SystemToTarget2]
+reset = TARGET2
+location = "SYSTEM"
+relative = 1
+relativeto = TARGET
+
+[SharedToTarget3]
+reset = TARGET3
+location = %s, TARGET5
+
+[Target3ToTarget4]
+reset = TARGET4
+location = %s, TARGET3
+
+[Target4ToTarget3]
+reset = TARGET3
+location = %s, TARGET4
+
+; Remove Symantec shared folder.
+[Target3ToTarget5]
+reset = TARGET5
+location = %s, TARGET3
+
+; Remove NAV system folder.
+[Target2ToTarget5]
+reset = TARGET5
+location = %s, TARGET2
+
+; Remove NAV folder.
+[TargetToTarget5]
+reset = TARGET5
+location = %s, TARGET
+
+[SourceDrive]
+caption =  "Please locate the Norton AntiVirus Scanner Directory"
+defpath =  C:\NAVNT
+
+;***************************************************************************
+;* File backup                                                             *
+;***************************************************************************
+
+[CustDLLCopy]
+siwnavnt.dll, siwnavnt.dll, SOURCE, TEMPDIR
+s32nav8.dll,  s32nav8.dll,  SOURCE, TEMPDIR
+navntsch.dll, navntsch.dll, SOURCE, TEMPDIR
+
+;***************************************************************************
+;* Delete Files                                                            *
+;***************************************************************************
+
+[CustDLLDelete]
+siwnavnt.dll,   TEMPDIR
+s32nav8.dll,    TEMPDIR
+navntsch.dll,   TEMPDIR
+
+[Leftovers]
+win.siw,        WINDOWS
+system.siw,     WINDOWS
+
+; Special delete - actually a custom dll function to pick up
+; wildcard filespecs.
+[DeleteNAVDataFiles]
+dll = siwnavnt.dll
+function = NavDeleteFiles
+activity.log,   TARGET
+excludel.dat,   TARGET
+navwscn.fts,    TARGET2
+navwscn.gid,    TARGET2
+navwscn.gid,    TARGET3
+infodesk.gid,   TARGET3
+infodesk.fts,   TARGET3
+infodesk.ftg,   TARGET3
+pipedlg.dat,    TARGET
+modem.id,       TARGET
+$flecomp.tmp,   TARGET
+virscanm.dat,   TARGET
+virsp*.dat,     TARGET
+??nav??.zip,    TARGET
+navex*.*,       TARGET
+update.txt,     TARGET
+???9?.txt,      TARGET
+
+[ContentsDelete]
+symantec.cnt,   TARGET3
+
+;***************************************************************************
+;* Misc install functions                                                  *
+;***************************************************************************
+
+[Pix]
+color = %s\luigi.bmp, 1, -1
+color = %s\symlogo.rle, -1, 1
+
+;***************************************************************************
+;* Groups                                                                  *
+;***************************************************************************
+
+; TARGET sections differ from install script.
+;  TARGET  = NAV Program SFN
+;  TARGET2 = NAV System SFN
+;  TARGET3 = SYM Shared SFN
+
+[groups]
+"Norton AntiVirus", navnt.grp              ;1 group for all NAV products
+
+[Norton AntiVirus]
+"Norton AntiVirus Scanner", n32scanw.exe,     navwnt,    0, TARGET, n32scanw.exe,   TARGET, " "
+"Norton AntiVirus Uninstall",  setup.exe,    install,    0, TARGET, setup.exe,   TARGET, "/u"
+
+;***************************************************************************
+;* Copy                                                                    *
+;***************************************************************************
+
+[NAVCopy]
+;seltype.component, description,                        size,req,files,show
+CopyMain.BaseFiles, "Norton AntiVirus Base Files",         0,  Y, N, Y
+CopySub.shared,     " "
+CopySub.virdefs,    " "
+CopySub.navwnt,     "Windows scanner application"
+CopySub.install,    "Install/uninstall NAV"
+
+; Selective needs unchecked last entry.
+CopyMain.Selective, "Selective uninstall",                 0,  N, N, N
+
+
+;***************************************************************************
+; Wizard Panels
+;***************************************************************************
+
+[UninstallDlg]
+Caption="Norton AntiVirus Scanner for Windows NT Setup"
+Title="Uninstall Norton AntiVirus"
+DlgProc=WizardPanelProc
+ResourceId=132
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First
+
+[RemoveSharedDlg]
+Caption="Norton AntiVirus Scanner for Windows NT Setup"
+Title="Uninstall Norton AntiVirus"
+DlgProc=WizardPanelProc
+ResourceId=134
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First
+
+[Finished]
+Caption="Norton AntiVirus Scanner for Windows NT Setup"
+Title="Uninstall Complete"
+DlgProc=WizardPanelProc
+ResourceId=135
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First+Last+Finish
+
+[NeedAdministratorDialog]
+Caption="Norton AntiVirus for Windows NT Setup" ;af@msg
+Title="Need administrator priviliges"
+DlgProc=WizardPanelProc
+ResourceId=141
+Bitmap16=202
+PanelDataProc=_DefaultDataProc@0
+PanelFlags=First
+

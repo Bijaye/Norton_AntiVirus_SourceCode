@@ -1,0 +1,27 @@
+HKCR
+{
+	SavMainUI.SavAutoprotectNotes.1 = s 'SavAutoprotectNotes Class'
+	{
+		CLSID = s '{AB08D3A3-260C-4CAB-BC71-8784DF963C8F}'
+	}
+	SavMainUI.SavAutoprotectNotes = s 'SavAutoprotectNotes Class'
+	{
+		CLSID = s '{AB08D3A3-260C-4CAB-BC71-8784DF963C8F}'
+		CurVer = s 'SavMainUI.SavAutoprotectNotes.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AB08D3A3-260C-4CAB-BC71-8784DF963C8F} = s 'SavAutoprotectNotes Class'
+		{
+			ProgID = s 'SavMainUI.SavAutoprotectNotes.1'
+			VersionIndependentProgID = s 'SavMainUI.SavAutoprotectNotes'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{72DCBB81-94A9-4499-86E5-1188FAC09630}'
+		}
+	}
+}

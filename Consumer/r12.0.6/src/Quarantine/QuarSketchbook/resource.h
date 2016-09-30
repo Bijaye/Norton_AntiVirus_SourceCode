@@ -1,0 +1,120 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Visual C++ generated include file.
+// Used by Sketchbook.rc
+//
+#define IDM_ABOUTBOX                    0x0010
+#define IDD_ABOUTBOX                    100
+#define IDS_ABOUTBOX                    101
+#define IDD_SKETCHBOOK_DIALOG           102
+#define IDD_SETSETTINGS                 103
+#define IDD_SETFILTERDLG                104
+#define IDR_MAINFRAME                   128
+#define IDD_DETECT                      129
+#define IDD_ABORT                       130
+#define IDD_UNDO                        131
+#define IDD_SESSION                     133
+#define IDD_DETECTLIST                  134
+#define IDC_FILTER                      1000
+#define IDC_GETANOMALY                  1001
+#define IDC_SCAN                        1002
+#define IDC_DET_ANOMALY                 1003
+#define IDC_REMEDIATE                   1004
+#define IDC_LOADDEF                     1005
+#define IDC_DET_ANOMALY_LIST            1005
+#define IDC_SET_SETTINGS                1006
+#define IDC_UNDO                        1007
+#define IDC_LOADOBJECT                  1008
+#define IDC_RESETFILTER                 1009
+#define IDC_DETECT                      1010
+#define IDC_LIST_DETECTION              1011
+#define IDC_LIST3                       1012
+#define IDC_LIST_REMEDIATION            1012
+#define IDC_DEPTH                       1012
+#define IDC_LIST_ANOMALY                1013
+#define IDC_DEPTH_TEXT                  1013
+#define IDC_SAVEANOMALY                 1014
+#define IDC_FILTER_TEXT                 1015
+#define IDC_SAVEDETECTION               1015
+#define IDC_GENERIC                     1016
+#define IDC_SAVEANOMALY3                1016
+#define IDC_SAVEREMEDIATION             1016
+#define IDC_FILE                        1017
+#define IDC_LOADDEF2                    1017
+#define IDC_RELOAD                      1017
+#define IDC_REGISTRY                    1018
+#define IDC_REMOVEANOMALY               1018
+#define IDC_PROCESS                     1019
+#define IDC_REMOVEDETECT                1019
+#define IDC_SERVICE                     1020
+#define IDC_GETANOMALY4                 1020
+#define IDC_REMOVEREMEDIATE             1020
+#define IDC_BATCH                       1021
+#define IDC_FULLSCAN                    1021
+#define IDC_INI                         1022
+#define IDC_OUTFILTER                   1022
+#define IDC_RESETOUTFILTER              1023
+#define IDC_STARTUP                     1024
+#define IDC_EMBEDDED                    1025
+#define IDC_CHECK11                     1026
+#define IDC_RECURSIVE                   1026
+#define IDC_JOKE                        1026
+#define IDC_COM                         1027
+#define IDC_VIRAL                       1028
+#define IDC_CLIENTCOM                   1029
+#define IDC_SPYWARE                     1030
+#define IDC_GENERICLOAD                 1031
+#define IDC_ABORT                       1032
+#define IDC_EDIT1                       1033
+#define IDC_RESULT                      1033
+#define IDC_FILESHORT                   1033
+#define IDC_FILELIST                    1033
+#define IDC_CHECK1                      1034
+#define IDC_SCANDLL                     1034
+#define IDC_LOCALIZE                    1034
+#define IDC_MALICIOUS                   1034
+#define IDC_SCANSTATUS                  1035
+#define IDC_BUTTON1                     1036
+#define IDC_LOCALIZE2                   1036
+#define IDC_CACHE                       1036
+#define IDC_VID                         1037
+#define IDC_SAVEUNDO                    1038
+#define IDC_TRACKWARE                   1039
+#define IDC_RESERVEMALICIOUS            1040
+#define IDC_DIALER                      1041
+#define IDC_HEURISTIC                   1042
+#define IDC_REMOTEACCESS                1043
+#define IDC_SECURITYRISK                1044
+#define IDC_ADWARE                      1045
+#define IDC_HACKTOOL                    1046
+#define IDC_UNDOSAVETO                  1050
+#define IDC_UNDOSAVEAS                  1051
+#define IDC_UNDOSAVE                    1052
+#define IDC_DOMAIN                      1053
+#define IDC_REPAIR                      1054
+#define IDC_NEWINSTANCE                 1054
+#define IDC_NEWDEFINITION               1055
+#define IDC_BROWSE                      1056
+#define IDC_ADDSTRING                   1057
+#define IDC_ADD                         1058
+#define IDC_BUTTON_QUAR_ITEM_CREATE_WFILE 1059
+#define IDC_BUTTON_REMEDIATE_ADD_DATA   1060
+#define IDC_BUTTON_QUAR_ITEM_CREATE_WO_FILE 1061
+#define IDC_EDIT_QUAR_ITEM_STATUS       1062
+#define IDC_BUTTON_VIRUS_FILE_CREATE    1063
+#define IDC_BUTTON_SND_GET_REMEDIATION_DATA 1064
+#define IDC_BUTTON_LOAD_QUAR_ITEM       1065
+#define IDC_BUTTON_SCAN_QUAR_ITEM       1066
+#define IDC_BUTTON_REPAIR_QUAR_ITEM     1067
+#define IDC_BUTTON_TAKE_SNAPSHOT        1068
+#define IDC_BUTTON_ADD_SNAPSHOT         1069
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        134
+#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         1070
+#define _APS_NEXT_SYMED_VALUE           105
+#endif
+#endif

@@ -1,0 +1,237 @@
+==== //depot/CORE/TRUNK/SOURCE/INCLUDE/SRC/FILE.H#2 - d:\workcore\INCLUDE\SRC\FILE.H ====
+@@ -237,7 +237,96 @@
+     #include <dos.h>
+ #endif
+ 
++//***********************************************************************
++// UNIX Implementation
++//
++// The Unix version of the library is used by the NAV scanning engine,
++// particularly PAM and NAVAPI.  Only the small subset of the library
++// that is actually needed for NAV is implemented for Unix.
++//***********************************************************************
++
++#if defined (SYM_UNIX)
++
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <unistd.h>
++
++// Values for FileOpen() uOpenMode flags (Windows names)
++// Warning: OF_SHARE flags are defined but not supported in Unix
++#define OF_READ               0x00000000
++#define OF_WRITE              0x00000001
++#define OF_READWRITE          0x00000002
++#define OF_SHARE_COMPAT       0x00000000
++#define OF_SHARE_EXCLUSIVE    0x00000010
++#define OF_SHARE_DENY_READ    0x00000020
++#define OF_SHARE_DENY_WRITE   0x00000020
++#define OF_SHARE_DENY_NONE    0x00000040
++
++// Values for FileOpen() uOpenMode flags (Symantec names)
++#define READ_ONLY_FILE        OF_READ
++#define WRITE_ONLY_FILE       OF_WRITE
++#define READ_WRITE_FILE       OF_READWRITE
++
++// Values for FileGetTime()/FileSetTime() uType
++#define TIME_LASTWRITE      0
++#define TIME_LASTACCESS     4
++#define TIME_CREATION       6
+ 
++// Bit flags for DOS file attribute values
++#define FA_NORMAL    0
++#define FA_READ_ONLY 1
++
++// Error return value for file handle functions
++#define HFILE_ERROR ((HFILE)-1)
++
++// Error return values for FileCopy()
++#define COPY_SUCCESSFUL            NOERR
++#define COPY_BREAK_PRESSED         NOERR+200
++#define COPY_MEMORY_ERROR          NOERR+201
++#define COPY_CRITICAL_ERROR        NOERR+202
++#define COPY_DISK_IS_FULL          NOERR+203
++#define COPY_READ_ERROR            NOERR+208
++
++// FILETIME data type
++// (number of 100-nanosecond intervals since Jan 1, 1601)
++typedef struct 
++    {
++    DWORD dwLowDateTime;
++    DWORD dwHighDateTime;
++    }
++    FILETIME, *LPFILETIME;
++typedef const FILETIME FAR *LPCFILETIME;
++
++// File functions.
++// Caution: Error return values differ by function.
++HFILE FileOpen(LPCTSTR lpName, UINT uOpenMode);
++HFILE FileClose(HFILE hFile);
++HFILE FileCreate(LPCTSTR lpFileName, UINT uAttr);
++HFILE FileCreateTemporary(LPTSTR lpFileName, UINT uAttr);
++UINT FileRead(HFILE hFile, LPVOID lpBuffer, UINT uBytes);
++UINT FileWrite(HFILE hFile, LPVOID lpBuffer, UINT uBytes);
++DWORD FileLength(HFILE hFile);
++DWORD FileSeek(HFILE hFile, LONG dwOffset, int nFlag);
++UINT FileGetAttr(LPCTSTR lpFileName, UINT* lpuAttr);
++UINT FileSetAttr(LPCTSTR lpFileName, UINT uAttr);
++UINT FileGetTime(HFILE hFile, UINT uType, LPFILETIME lpFileTime);
++UINT FileSetTime(HFILE hFile, UINT uType, LPFILETIME lpFileTime);
++BOOL FileExists(LPCTSTR lpFileName);
++UINT FileDelete(LPCTSTR lpFileName);
++UINT FileKill(LPCTSTR lpFileName);
++UINT FileWipe(LPCTSTR lpFileName, UINT uTimesToWipe);
++typedef BYTE (WINAPI *BREAKFUNC)(void);
++int FileCopy(LPCTSTR lpFromFile, LPCTSTR LPToFile, BREAKFUNC fnBreakCheck);
++UINT FileRename(LPCTSTR lpOldName, LPCTSTR lpNewName);
++BOOL FileTimeToDosTime(LPCFILETIME lpFileTime, LPWORD lpFatDate, LPWORD lpFatTime);
++BOOL DosTimeToFileTime(WORD wFatDate, WORD wFatTime, LPFILETIME lpFileTime);
++
++// Ignore the rest of file.h.
++
++#else  // !defined(SYM_UNIX)
++
++
+ /*----------------------------------------------------------------------*
+  * Basic specs for file and path functions.  These are DWORD
+  * representations of strings that are used to form drive and path
+@@ -1274,6 +1363,8 @@
+ PTSTR FileCreateNativeNTNameEx ( LPCTSTR lpszName );
+ VOID FileDestroyNativeNTName ( PTSTR pszName );
+ #endif
++
++#endif  // !defined(SYM_UNIX)
+ 
+ #ifdef __cplusplus
+ }
+==== //depot/CORE/TRUNK/SOURCE/INCLUDE/SRC/PLATFORM.H#6 - d:\workcore\INCLUDE\SRC\PLATFORM.H ====
+@@ -209,9 +209,67 @@
+ #ifndef INCL_PLATFORM
+ #define INCL_PLATFORM
+ 
++//***********************************************************************
++// UNIX Implementation
++//
++// The Unix version of the library is used by the NAV scanning engine,
++// particularly PAM and NAVAPI.  Only the small subset of the library
++// that is actually needed for NAV is implemented for Unix.
++//***********************************************************************
++
+ #if defined (SYM_UNIX)
+-#include avtypes.h      // basically blow off platform.h and use avtypes
+-#else                   // look at end of file for matching #endif
++
++// Use the NAV header file avtypes.h to define the basic data types,
++// constants, and string functions that are normally declared by this file.
++// avtypes.h is also used by the portions of NAV that are totally isolated
++// from this library (e.g. NAVEX).
++#include "avtypes.h"
++
++// Function declaration modifiers
++#define WINAPI
++#define SYM_EXPORT
++#define STATIC static
++#define LOCAL static
++
++// Types for Mem functions
++typedef void* HGLOBAL;
++
++// Flags for MemAllocPtr()
++#define GMEM_FIXED    0x0000
++#define GMEM_MOVEABLE 0x0002
++#define GMEM_ZEROINIT 0x0040
++#define GHND (GMEM_MOVEABLE | GMEM_ZEROINIT)
++
++// Memory functions
++LPVOID MemAllocPtr(UINT uFlags, DWORD dwSize);
++HGLOBAL MemFreePtr(LPVOID lpMem);
++
++// Assert macros
++#include <assert.h>
++#if defined(SYM_DEBUG)
++  #define SYM_ASSERT(f) ((f) ? (void)0 : assert(f))
++  #define SYM_VERIFY(f) SYM_ASSERT(f)
++#else
++  #define SYM_ASSERT(f) ((void)0)
++  #define SYM_VERIFY(f) ((void)(f))
++#endif
++#define SYM_VERIFY_STRING(s) ((void)0)
++#define SYM_VERIFY_BUFFER(p,s) ((void)0)
++
++// String function covers
++#define SPRINTF    	sprintf
++#define STRNCMP    	strncmp
++#define STRSPN    	strspn
++
++// Misc. stuff
++typedef WORD STATUS;
++#define EOS     '\0'
++#define NOERR   0
++#define ERR     ((STATUS)(-1))   // Warning: NOT a UINT!
++
++// Ignore the rest of platform.h.
++
++#else  // !defined(SYM_UNIX)
+ 
+ //***********************************************************************
+ // Set up platform define compatibilities.  Note that you should use
+@@ -2124,7 +2182,7 @@
+ #endif                                  // if defined (__cplusplus)
+ #endif  // ifdef SYM_WIN32
+ 
+-#endif // (SYM_UNIX)
++#endif // !defined(SYM_UNIX)
+ 
+ #endif                                  // ifndef INCL_PLATFORM_H - DON'T ADD CODE BELOW HERE
+ 
+==== //depot/CORE/TRUNK/SOURCE/INCLUDE/SRC/XAPI.H#2 - d:\workcore\INCLUDE\SRC\XAPI.H ====
+@@ -292,6 +292,39 @@
+ extern "C" {
+ #endif
+ 
++//***********************************************************************
++// UNIX Implementation
++//
++// The Unix version of the library is used by the NAV scanning engine,
++// particularly PAM and NAVAPI.  Only the small subset of the library
++// that is actually needed for NAV is implemented for Unix.
++//***********************************************************************
++
++#if defined (SYM_UNIX)
++
++UINT SYM_EXPORT WINAPI   ConvertDateToEncoded(UINT wMonth, UINT wDay, UINT wYear);
++UINT SYM_EXPORT WINAPI   ConvertTimeToEncoded(UINT wHours, UINT wMinutes, UINT wSeconds);
++void SYM_EXPORT WINAPI   ConvertEncodedTimeToNormal(UINT time, UINT FAR * hour, UINT FAR * minute, UINT FAR * seconds);
++void SYM_EXPORT WINAPI   ConvertEncodedDateToNormal(UINT date, UINT FAR * month, UINT FAR * day, UINT FAR * year);
++VOID SYM_EXPORT WINAPI   DateGetCurrentDateTime(UINT FAR * datePtr, UINT FAR * timePtr);
++LPTSTR SYM_EXPORT WINAPI _ConvertWordToString(UINT wNumber, LPTSTR lpString, UINT wRadix, TCHAR byThousandsChar);
++LPTSTR SYM_EXPORT WINAPI _ConvertLongToString(DWORD dwNumber, LPTSTR lpDest, UINT  wRadix, TCHAR byThousandsChar);
++LPTSTR SYM_EXPORT WINAPI StringAppendChar(LPTSTR lpString, WCHAR wChar);
++LPTSTR SYM_EXPORT WINAPI StringAppendNChars(LPTSTR lpString, WCHAR wChar, int nCount);
++WCHAR SYM_EXPORT WINAPI  StringGetLastChar(LPCTSTR lpszString);
++LPTSTR SYM_EXPORT WINAPI StringGetEnd(LPTSTR lpszString);
++UINT SYM_EXPORT WINAPI   NameReturnExtension(LPCTSTR lpszFileSpec, LPTSTR lpszExtension);
++UINT SYM_EXPORT WINAPI   NameReturnExtensionEx(LPCTSTR lpszFileSpec, LPTSTR lpszExtension, UINT cbExtBuffSize);
++LPTSTR SYM_EXPORT WINAPI NameStripExtension(LPTSTR lpName);
++VOID SYM_EXPORT WINAPI   NameAppendExtension(LPTSTR lpPathname, LPCTSTR lpszExtension);
++UINT SYM_EXPORT WINAPI   NameReturnFile (LPCTSTR lpszFileSpec, LPTSTR lpszFileName);
++LPTSTR SYM_EXPORT WINAPI NameStripFile(LPTSTR lpName);
++VOID SYM_EXPORT WINAPI   NameAppendFile(LPTSTR lpPathname, LPCTSTR lpFilename);
++
++// Ignore the rest of xapi.h
++
++#else  // !defined(SYM_UNIX)
++
+ //-----------------------------------------------------------------------
+ // NameWildcardMatch() match types
+ //-----------------------------------------------------------------------
+@@ -1645,6 +1678,8 @@
+ #ifdef SYM_WIN
+ HINSTANCE SYM_EXPORT WINAPI LibraryLoad (LPCSTR lpLibFileName);
+ #endif
++
++#endif  // !defined(SYM_UNIX)
+ 
+ #ifdef __cplusplus                    // end prototypes
+ }

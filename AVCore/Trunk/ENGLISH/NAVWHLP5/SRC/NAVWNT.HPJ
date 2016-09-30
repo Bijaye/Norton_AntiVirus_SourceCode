@@ -1,0 +1,80 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+COMPRESS=12 Hall Zeck
+ERRORLOG=NAVWNT.LOG
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+CONTENTS=NAVW_INFO_ABOUT_NAV
+TITLE=Norton AntiVirus for Windows NT and Windows 2000
+CNT=navwnt.cnt
+COPYRIGHT=Copyright © 1994-99 Symantec Corporation
+HLP=navwnt.hlp
+
+[FILES]
+Navchelp.rtf
+navdic.rtf
+navhbtn.rtf
+Navintro.rtf
+navopts.rtf
+Navtask.rtf
+nthbtn.rtf
+ntintro.rtf
+nttask.rtf
+Navtblsht.rtf
+
+[BUILDTAGS]
+NT
+NODECNT
+DEC
+NAV95
+VLA
+NTSRV
+INOCULATION
+OBSOLETE
+PASSWORD
+NODEC
+
+[MAP]
+#include <.\navwhlp5.h>
+
+[WINDOWS]
+; MAIN
+Glossary="Glossary",(614,307,399,215),0,(r16777215),(r16777215),f3
+Screens="Norton AntiVirus Help",(175,173,656,665),0,(r16777215),(r16777215),f3
+main="Norton AntiVirus Help",(409,51,563,614),27648,(r14745599),(r8454143)
+maintwo="Norton AntiVirus Help",(409,51,563,614),27648,(r14745599),(r8454143),f2
+task="Norton AntiVirus Help",(614,102,379,440),27648,(r14745599),(r8454143),f2
+term="Norton AntiVirus Dictionary",(583,246,440,471),27648,(r14745599),(r14745599),f2
+
+[CONFIG]
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-Glossary]
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-Screens]
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-maintwo]
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-task]
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[CONFIG-term]
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[EXCLUDE]
+DEC
+INOCULATION
+NAV95
+NODEC95
+NTSRV
+VLA
+
+[INCLUDE]
+NODEC
+NODECNT
+NT
+PASSWORD

@@ -1,0 +1,213 @@
+*Product SAV Server for NT
+*Platform NT
+*PFVersion 0
+*BaseMSI NavCE.msi
+*GUID {7D2B86CA-2D5D-469E-92ED-E56B62BD1D3C}
+*Feature Base SAV Server
+*FRequired
+*Component AP	
+	c:\Program Files\NAV	NAVAP.SYS
+		NAVAP32.DLL
+		NAVAPEL.SYS
+*CPlatform NT-V0
+*Component DefUtil	
+	c:\Program Files\NAV	Chan32i.dll
+		Patch32i.dll
+*Component Misc.	
+	c:\Program Files\NAV	clninst.bat
+		NAVRoam.exe
+		SymClnUp.exe
+*Component Nav Glue	
+	c:\Program Files\NAV	I2LDVP3.DLL
+*Component RTVscan	
+	c:\Program Files\NAV	RTVSCAN.EXE
+*Component NAVAPI	
+	c:\Program Files\NAV	NAVAPI32.DLL
+*Component Scanning	
+	c:\Program Files\NAV	CLIPROXY.DLL
+		CLISCAN.DLL
+*Component System File	
+	c:\winnt\system32	Ctl3d.dll
+		Ctl3d32.dll
+		Stdole.tlb
+*Component Tray Icon
+	c:\Program Files\NAV	VPTRAY.EXE
+*Component Uninstall
+	c:\Program Files\NAV	NAVCUST2.DLL
+*Component 
+	c:\Program Files\NAV	intelbbs.scr
+		invupd.dll
+		ldcminst.dll
+		ldvpreg.exe
+		loc32vc0.dll
+		navntutl.dll
+		pscan.sys
+		VD0E1010.VDB
+		vpdown.exe
+		vpremote.exe
+		vpremote.dat
+		vpsrvcli.inf
+		vpstart.exe
+*Feature Software Management Support Files
+*Component SAV Server Help
+
+*Feature Decomposers
+*SubFeature Base Decomposer
+*SubFeature Individual Decomposers
+*Feature Base Decomposer
+*FDefault
+*FRequired
+*Component Base Decomposers 
+	c:\Program Files\NavNT	DEC3.CFG
+		DECSDK.DLL
+		DEC2.DLL
+		DEC2ARJ.DLL
+		DEC2CAB.DLL
+		DEC2EXE.DLL
+		DEC2GZIP.DLL
+		DEC2ID.DLL
+		DEC2LHA.DLL
+		DEC2LZ.DLL
+		DEC2MIME.DLL
+		DEC2RAR.DLL
+		DEC2RTF.DLL
+		DEC2SS.DLL
+		DEC2TAR.DLL
+		DEC2UUE.DLL
+		DEC2ZIP.DLL
+*Feature Individual Decomposers
+*Component 
+	c:\Program Files\NavNT	DEC2AMG.DLL
+		DEC2ARC.DLL
+		DEC2GHO.DLL
+		DEC2HQX.DLL
+		DEC2HTTP.DLL
+		DEC2MSG.DLL
+		DEC2OLE1.DLL
+		DEC2TNEF.DLL
+		DEC2ZOO.DLL
+*Feature Full User Interface
+*Component 
+	c:\Program Files\NAV	VPC32.EXE
+*Component
+	c:\Program Files\Common Files\Symantec Shared\SSC	LDDateTm.ocx
+		LDVPCtls.ocx
+		LDVPDlgs.ocx
+		ldvptask.ldl
+		LDVPTask.ocx
+		ldvpui.ldl
+		ldvpui.ocx
+		ldvpview.ldl
+		LDVPView.ocx
+		scandlgs.dll
+		vpshell2.dll
+		webshell.dll
+*Feature Quarantine Forwarding
+*Component 
+	c:\Program Files\NAV	QSCOMM32.DLL
+		QSINFO.DLL
+		vpstop.exe
+*Feature Scan and Deliver
+*Component 
+	c:\Program Files\NAV	COUNTRY.DAT
+		FILTER.DAT
+		Platform.dat
+		SCANDRES.DLL
+		SDFLT32I.DLL
+		SDPCK32I.DLL
+		SDSND32I.DLL
+		SDSOK32I.DLL
+		SDSTP32I.DLL
+		SMSTR32I.DLL
+*Feature Defwatch
+*Component 
+	c:\Program Files\NAV	DEFWATCH.EXE
+		DWHWIZRD.EXE
+		NNEWDEFS.DLL
+*Feature Client SetUps
+*SubFeature Win32 Client Setup
+*SubFeature Win16 Client Setup
+*SubFeature Web Client Setup
+*SubFeature DOS Client Setup
+*SubFeature Client Setup Help Files
+*Feature Win32 Client Setup
+*Component 
+	c:\Program Files\NAV\clt-inst\WIN32	grc.dat
+		setup.exe
+*Component 
+	c:\Program Files\NAV\clt-inst\WIN32\Support	CBA.DLL
+		MSGSYS.DLL
+		NAVINS95.DLL
+		NAVINSNT.DLL
+		NAVKRNLN.VXD
+		NTS.DLL
+		PDS.DLL
+		S32NAVS.DLL
+		TRANSMAN.DLL
+*Feature Win16 Client Setup
+*Component 
+	c:\Program Files\NAV\clt-inst\WIN16	CLIENT16.INF
+		LDRTSC16.386
+		MSCOMSTF.DLL
+		MSDETSTF.DLL
+		MSINSSTF.DLL
+		MSSHLSTF.DLL
+		MSUILSTF.DLL
+		VPCCC16.INI
+		VPREMOVE.EXE
+*Component 
+	c:\Program Files\NAV\clt-inst\WIN16\FILES	DY_LOH.DLL
+		I2_LDVP.DLL
+		LDVPNET.EXE
+		NAVAPI16.DLL
+		VPCCC16.EXE
+		VPDNUI.EXE
+		VPDN_FTP.EXE
+*Feature Web Client Setup
+*Component 
+	c:\Program Files\NAV\clt-inst\WEBINST	NotARealFile.txt
+*Feature DOS Client Setup
+*Component 
+	c:\Program Files\NAV\clt-inst\DOS	ENUVSCAN.DAT
+		VSCAND.EXE
+*Feature Client Setup Help Files
+*Component Client Setup Help Files
+	c:\Program Files\NAV\langs\ENU\CLIENT16	ENUFTP.HLP
+		ENULIC.TXT
+		ENUNOTEC.HLP
+		ENUNXP16.HLP
+		ENURST16.DLL
+		VPC16ENU.HLP
+*Feature AMS Server
+*Component AMS-1
+	c:\Program Files\NAV\langs\ENU\AMS2NT	NotaRealFile2.txt
+*Feature Login Scripts
+*Component AMS-2
+	c:\Program Files\NAV\logon	nbpshpop.exe
+		osver.exe
+		tsrinit.com
+		vp_log16.exe
+		vp_log32.exe
+		vp_login.ini
+		vplogon.bat
+		vpscan16.bat
+		wincfg.ini
+		wkstacfg.exe
+		wkstacfg.ini
+*Feature Documentation
+*Component SAV Server Help
+
+*Feature Help
+*Component SAV Server Help
+	c:\Program Files\NAV	ENUCORE.HLP
+		ENUCTLS.HLP
+		ENUDLGS.HLP
+		ENUGLOSS.HLP
+		ENULOTUS.HLP
+		ENUOPT.CNT
+		ENUTASK.HLP
+		ENUVIEW.HLP
+		ENUVPC32.CNT
+		ENUVPUI.HLP
+		ENUXCHNG.HLP
+*ENDFILE

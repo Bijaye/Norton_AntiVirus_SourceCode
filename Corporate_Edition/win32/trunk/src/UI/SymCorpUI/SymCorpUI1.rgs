@@ -1,0 +1,27 @@
+HKCR
+{
+	SymCorpUI.SymCorpUI.1 = s 'SymCorpUI Class'
+	{
+		CLSID = s '{A4E7D4A6-C678-42AC-82F4-9F92C1DB69B8}'
+	}
+	SymCorpUI.SymCorpUI = s 'SymCorpUI Class'
+	{
+		CLSID = s '{A4E7D4A6-C678-42AC-82F4-9F92C1DB69B8}'
+		CurVer = s 'SymCorpUI.SymCorpUI.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {A4E7D4A6-C678-42AC-82F4-9F92C1DB69B8} = s 'SymCorpUI Class'
+		{
+			ProgID = s 'SymCorpUI.SymCorpUI.1'
+			VersionIndependentProgID = s 'SymCorpUI.SymCorpUI'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{5911395E-C9FE-416F-A746-0AE4189331BD}'
+		}
+	}
+}

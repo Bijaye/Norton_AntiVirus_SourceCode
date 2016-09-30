@@ -1,0 +1,12 @@
+;This script file supports and has been tested with
+;McAfee Antivirus for 98 Version 4.03
+Platform=Win95
+
+getuninstallprogramname=HKEY_LOCAL_MACHINE,software\microsoft\windows\currentversion\uninstall\mcafee virusscan,uninstallstring
+getuninstallprogramname=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+GetUninstallProgramPath=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+SetUnInstallProgramName=SETUP.EXE
+AddProgramParameters= /nodialog -f
+GetUninstallScriptPath=HKEY_LOCAL_MACHINE, SOFTWARE\McAfee\VirusScan\,szinstallDir
+SetUninstallScriptName=uninst.ins
+runrobot=60

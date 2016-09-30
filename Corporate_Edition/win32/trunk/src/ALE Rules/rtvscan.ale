@@ -1,0 +1,36 @@
+;Auto-Configuration File for Symantec Antivirus Corporate Edition
+;created for NAVCE, modified 05282002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec Antivirus Corporate Edition
+DisplayName=RTVSCAN0
+File:Name=rtvscan.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=RULE1,RULE2,RULE3
+
+[RULE:RULE1]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+Protocol=UDP
+RemotePorts=1025,1031,1036,1037,2967,38293
+RuleName=Symantec Antivirus Corporate Edition
+
+[RULE:RULE2]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+Protocol=UDP
+RuleName=Symantec Antivirus Corporate Edition
+
+[RULE:RULE3]
+Action=ALLOW
+Category=0
+Direction=EITHER
+LocalPorts=2967
+Protocol=UDP
+RuleName=Symantec Antivirus Corporate Edition
+
+
+

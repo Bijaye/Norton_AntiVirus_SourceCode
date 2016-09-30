@@ -1,0 +1,915 @@
+<HTML>
+<HEAD>
+<TITLE>IBM Immune System CMVC Procedures and Policies</TITLE>
+</HEAD>
+
+<body>
+<h1 align=center>IBM Immune System CMVC Procedures and Policies</h1>
+<p align=center><b>***** IBM Internal Use Only *****</b> 
+<p align=center>Created by <a href="mailto:rbking2@us.ibm.com">Robert B. King</a> 
+<p align=center>Maintained by <a href="mailto:stubbs@us.ibm.com">R. Glenn Stubbs</a> 
+<p align=center>Last Revised on November 4, 1998 
+
+<P>The purpose of this note is to specify the procedures that are to
+be used for manipulating IBM Immune System sources.  The contents of
+this note was derived from the note describing the IBM AntiVirus
+sources.  Note that sources here includes code, help, and
+documentation.  Portions of this document were adapted from the
+<EM>CMVC Commands Reference</EM> manual.  The master copy of this
+document is located in CMVC in the <B>projdoc</B> directory and is
+owned by the CMVC component <B>build</B>.
+
+<P>CMVC has client products for PCs: OS/2 client, 16-bit Windows
+client, and 32-bit Windows client.  Clients exist for other operating
+systems, such as AIX or Linux.
+
+<P>This document focuses on issuing commands on a command line and on
+using the latest Win32 GUI for Windows NT and Windows 95
+(Version 2, Release 3, Modification 24, dated July 15, 1997).
+If you are using the OS/2 GUI, the operations should be fairly similar.
+
+<P>For developers located in Hawthorne, the CMVC client code can be
+found in <B>\\avnetsrv\ftproot\tools\cmvc</B>.
+
+<P>For developers not located in Hawthorne, the CMVC client code can
+be obtained from the 
+<A HREF="http://wwwteamc.raleigh.ibm.com/cmvc/index.html">CMVC Service/Development
+home page</A> or from the <B>tools/cmvc</B> subdirectory on the 
+Hawthorne IBM AntiVirus development FTP server <B>avdevftp.watson.ibm.com</B>.
+
+<MENU>
+<LI><A HREF="#CMVC_Nomenclature">CMVC Nomenclature</A> </LI>
+<LI><A HREF="#Environment_Variables">Environment Variables</A> </LI>
+<LI><A HREF="#GUI_Settings">GUI Settings</A> </LI>
+<LI><A HREF="#Restrictions">Filename Restrictions</A> </LI>
+<LI><A HREF="#Keywords">Keywords in Files</A> </LI>
+<LI><A HREF="#Creating_Tracks">Creating Tracks</A> </LI>
+<LI>Manipulating Files
+<OL COMPACT>
+<LI><A HREF="#Manipulate_Files">Overview</A> </LI>
+<LI><A HREF="#Manipulate_Files_CMD">Command Line</A> </LI>
+<LI><A HREF="#Manipulate_Files_GUI">GUI Client</A> </LI>
+</OL>
+<LI><A HREF="#Done_Tracks">Marking Tracks as Done</A> </LI>
+<LI><A HREF="#Remote_Access">Remote Access to CMVC (IBM Global Network)</A> </LI>
+<LI><A HREF="#Change_Not_Mine">How to Change Code in a Component That
+You Do Not Own</A></LI>
+<LI><A HREF="#Additional_Docs">Where to Find Additional Documentation</A> </LI>
+<LI><A HREF="#Valid_Keywords">Appendix: Valid Keywords for Text Files</A> </LI>
+</MENU>
+
+<H2><A NAME="CMVC_Nomenclature">CMVC Nomenclature</H2>
+
+<P>Each file in CMVC is managed by a <EM>component</EM>. Components
+are used to associate a collection of files to a particular owner
+(e.g., the IBM AntiVirus Standalone Program to Bill Arnold) and are
+arranged in a hierarchical structure with a single top component
+called the root.  Access control and problem reporting utilize
+components (for instance, only certain users can be authorized to
+update files in a component, whereas others may only have read-only
+extraction privileges).
+
+<P>All files that make up a particular release of IBM AntiVirus will
+be grouped in a CMVC <EM>release</EM>.  Releases associate a
+collection of files for a particular version of the product.  To
+summarize, a <EM>file</EM> is associated with a release to relate the
+file to a development effort and with a component to control the
+ownership of and the access of the file.
+
+<P>Multiple releases may group the same file.  Any file that is
+contained in two or more releases is a <EM>shared</EM> file.  A shared
+file consists of two CMVC files sharing information.  If the
+developers of one product release need to use the information that is
+already contained in a product release for a different product then
+they can link the file that to their release.  A <EM>common</EM> file
+is a file that is shared between multiple releases where each release
+references the same current version of the file.  
+
+<P>Many projects utilize CMVC for both their source code control and
+problem management systems.  Since we are utilizing Lotus Notes for
+the problem management/tracking system, we will not be using those
+functional elements of CMVC, except where it is mandatory to utilize
+the tracks.  In order to associate a track with a particular bug or
+DCR (design change request), you must create within CMVC either a
+<EM>defect</EM> or a <EM>feature</EM> (respectively).  A
+<EM>track</EM> is used to monitor the resolution of one defect or
+feature in one release and moves through a variety of states.  When a
+track has been created and is ready for association with file changes,
+it will be in the <EM>fix</EM> state.  When a developer is finished
+making the necessary changes, then they change the state of the track
+to <EM>integrate</EM>.
+
+<P>We are using CMVC <EM>levels</EM> to snapshot a release at a
+certain point in time.  By creating a level prior to each build, we
+will be able to reproduce that build by just reextracting the level.
+The builder (Robert King/Kenneth Lockhart/Kenny Tran) takes all tracks
+that are in the integrate state and incorporates them into levels as
+<EM>level members</EM>. When the level is <EM>committed</EM>, all of
+the tracks within that level are committed.  When the level is marked
+as <EM>complete</EM>, the tracks are automatically marked as complete.
+
+<P>CMVC has extensive report generation capabilities due to its usage
+of an SQL database.  Reports can be generating from both the command
+line and the various GUIs.  Virtually any field that you can enter
+when performing an operation can be used in a simple query or
+complicated query.  Additionally, most of the GUIs convert their
+requests into command line options.  Hence, if you are trying to
+figure out how to do something (like generating the appropriate
+report), you can use the GUI first and then look at the appropriate
+line in the CMVC client log file.
+
+<H2><A NAME="Environment_Variables">Environment Variables</H2>
+
+<P>It is my understanding that setting these environment variables do
+not have any impact on the settings for each respective CMVC GUI.  In
+the command sequences below, I assume that the environment variables
+listed above are set (CMVC_FAMILY, CMVC_CASESENSE, and CMVC_RELEASE).
+
+<P>The following environment variables should be specified when using
+CMVC from the command line:
+<PRE>
+set CMVC_FAMILY=xxxxxx@yyyyyy@zzzzz
+set CMVC_CASESENSE=ignore
+set CMVC_RELEASE=avis100
+set CMVC_USER=yourUserId
+set CMVC_BECOME=yourCMVCid
+</PRE>
+
+<DL COMPACT SIZE=15>
+<DT><B>CMVC_FAMILY</B>
+<DD>This specifies what CMVC source code control system to use and how
+CMVC will connect to it.  When you are given access to CMVC, you will
+be told how to set this value.  <EM>xxxxxx</EM> is the CMVC family
+name, <EM>yyyyyy</EM> is the IP hostname of the CMVC server, and
+<EM>zzzzz</EM> is the socket number for the CMVC server software.
+
+<DT><B>CMVC_CASESENSE</B>
+<DD>This specifies that the CMVC command line client running on the PC
+should not perform any conversions of the filename case prior to checking
+them into CMVC -- the CMVC server is case sensitive.
+
+<DT><B>CMVC_RELEASE</B>
+<DD>For IBM Immune System 1.0, we will be using the <EM>avis100</EM> release
+within CMVC.
+
+<DT><B>CMVC_USER</B>
+<DD>When running OS/2, you need to specify your userid, e.g., set
+CMVC_USER to be your CMVC user id.  When running Windows NT or Windows
+95, the CMVC clients will utilize the user id that you used when
+logging into your workstation.
+
+<DT><B>CMVC_BECOME</B>
+<DD>This allows you to become another user.  For example, you have a
+CMVC user id "robh" and that you normally log into your NT machine
+using the "rob" user id.  In this case, you would set CMVC_BECOME to
+be "robh". 
+
+<DT><B>CMVC_COMPONENT</B>
+<DD>If you are only manipulating a single CMVC component, you can use 
+CMVC_COMPONENT to specify that component.
+</DL>
+
+<H2><A NAME="GUI_Settings">GUI Settings</H2>
+
+<P>If you plan to use the GUI, at a minimum, you should make sure that
+you set parameters that correspond to the above environment variables.
+
+<H3>Win32 Client Configuration</H3>
+
+<P>In the Win32 client for Windows 95 and Windows NT, set the
+following parameters (Windows -> Settings).
+
+<DL COMPACT SIZE=15>
+<DT>Environment Tab
+<DD>At a minimum, you need to set the "Family" and "Release" fields.
+If you needed to set the "CMVC_BECOME" above, then there is a
+comparable setting here called "Become user". 
+
+<DT>Setup Tab
+<DD>Make sure that the button for "case" is set for "Ignore".  Also,
+you can place the name of a program (such as Windiff) in the field
+that lists the "Compare command". 
+
+<DT>GUI Tab
+<DD>If you want your reports to be automatically refreshed after each
+operation, then select "Auto refresh".  I find this handy to make sure
+that the operation that I wanted to perform worked.
+</DL>
+
+<P>When you are done making the appropriate settings, at the "Environment
+Tab", press "Test Connection to Server".  At this time, a window
+should pop up and state that "The message catalog is available
+(Version 2.3.0.22, SID=1.285.2.161).".  If you get this message, this
+means that your client can communicate with the CMVC Server.  At this
+time, close the "Settings" dialog. 
+
+<P>When the GUI asks for parameters, those that are required are labelled
+in one color and those that are optional are in another. 
+
+<H2><A NAME="Restrictions">Filename Restrictions</H2>
+
+<P>Please do not use the character '$' (dollar sign) in filenames that
+are stored in CMVC.  When the CMVC extract process reaches a file with
+a '$' in its name, it believes that the characters following it are a
+variable.  Hence, the file extraction immediately fails.
+
+<P>Please do not use the word 'error' in your filenames.  We will have
+tools which look for the word error in build log files and would
+like to avoid finding erroneous 'error' messages.
+
+<P>Please do not use the character ' ' (space) in your filenames.
+
+<H2><A NAME="Keywords">Keywords in Files</H2>
+
+<P>We plan to take advantage of the CMVC functional
+element that allows developers to place selected keywords (delimited
+by %) in files which are automatically expanded into level name,
+release name, component name, and so forth.  Keyword expansion only
+occurs in files designated as text files.  Please do not designate any
+file as binary when created unless it is in fact a binary file.
+<B>Once a file is declared to be a text file, there is no way to
+convert it to a binary file without first deleting it from CMVC.</B>
+
+<H2><A NAME="Creating_Tracks">Creating Tracks</H2>
+
+<P>In order to create a track, you must first create either a defect
+or a feature.  If you are making a change in response to a bug or DCR
+in the Lotus Notes database, then you would either open a CMVC defect
+or feature (respectively).  In this case, please reference the Lotus
+Notes id in the remarks fields of the CMVC defect or feature.  If you
+are a developer just making day-to-day changes, they you will also
+need to create either a feature or a defect.  Please note that the
+remarks field for a feature or defect is only associated with that
+feature or defect -- you can also add remarks for individual file
+operations, such as file check-in and so on.
+
+<P>The same defect or feature number can be used to make a set of
+changes to multiple releases as long as you create tracks for each
+release to be changed.  For example, you might open a CMVC defect for
+Lotus Notes BUG <EM>FOOBAR_123</EM>.  This bug might need to be fixed
+in multiple CMVC releases (e.g., a release that we are maintaining as
+well as releases that represent future products), but the code changes
+for each release might not be identical.
+
+<P>The defect or feature number that is created below is an important
+number that you will refer to repeatedly until you have finished
+performing appropriate development activities.  
+
+<H3>Command Line</H3>
+
+<P>To create a track that is associated with a CMVC feature issue the following commands:
+<PRE>
+Feature -open -remarks "Any description that you want to enter" -component compname
+Feature -accept featureno
+Track -create -feature featureno -release relname
+</PRE>
+<DL COMPACT SIZE>
+<DT><B>compname</B> represents the CMVC component name (e.g., virscan, vvr, crc, etc.)
+<DT><B>featureno</B> is returned when the CMVC feature is created and should be
+used whenever track or feature number is needed.
+<DT><B>relname</B> represents the CMVC release name.  It does not need
+to be present if the environment variable CMVC_RELEASE contains the
+correct release name.  To create tracks for multiple releases, just
+specify multiple release names on the <TT>Track -create</TT> command
+(e.g., <TT>-release relname1 relname2 relname3</TT>).
+</DL>
+
+<P>To create a track that is associated with a CMVC defect issue the following commands:
+<PRE>
+Defect -open -remarks "Any description that you want to enter" -component compname
+Defect -accept defectno
+Track -create -defect defectno -release relname
+</PRE>
+<DL COMPACT SIZE>
+<DT><B>compname</B> represents the CMVC component name (e.g., virscan, vvr, crc, etc.)
+<DT><B>defectno</B> is returned when the CMVC defect is created and
+should be used whenever track or defect number is needed. 
+<DT><B>relname</B> represents the CMVC release name.  It does not need
+to be present if the environment variable CMVC_RELEASE contains the
+correct release name.  To create tracks for multiple releases, just
+specify multiple release names on the <TT>Track -create</TT> command
+(e.g., <TT>-release relname1 relname2 relname3</TT>).
+</DL>
+
+<H3>Win32 GUI Client</H3>
+
+<P>In the Win32 client for Windows 95 and Windows NT, you can create
+a track that is associated with a CMVC feature by accessing the following dialogs
+(please note that this is just one way of many to perform this task): 
+<DL COMPACT SIZE>
+<DT>Actions -> Features -> Open
+
+<DD>You only need to fill in the "Component" and "Remarks" fields --
+the other ones are optional.  A dialog will indicate the number that
+should be used to reference this feature and/or associated track.
+
+<DT>Objects -> Features -> Features
+
+<DD>This will open a window entitled "Feature Filter" which will let
+you generate reports on features based on a variety of fields.  In the
+"Features" field, enter the number returned by the previous action.
+Click on OK.  A window entitled "CMVC - Features" will open.
+Highlight the feature number that you created with left mouse button.
+
+<DT>Selected -> Accept
+
+<DD>This will open a window entitled "Accept Features" which will let
+you accept the feature.  The feature number should already be entered
+(if you highlighted it correctly in the previous step).  Click on OK.
+
+<DT>Selected -> Create Tracks
+
+<DD>This will open a window entitled "Create Tracks" which will let
+you create a track associated with this feature.  The feature number
+should already be entered (if you highlighted it correctly) and the
+release name will be specified if you customized it in GUI setup.  If
+you want to create tracks for multiple releases, you can specify more
+than one value, separating them by spaces.  Click on OK.
+</DL>
+
+<P>In the Win32 client for Windows 95 and Windows NT, you can create
+a track that is associated with a CMVC defect by accessing the 
+following dialogs (this is just one way of many to perform this task):
+<DL COMPACT SIZE>
+<DT>Actions -> Defects -> Open
+
+<DD>You only need to fill in the "Component" and "Remarks" fields --
+the other ones are optional.  A dialog will indicate the number that
+should be used to reference this defect and/or associated track.
+
+<DT>Objects -> Defects -> Defects
+
+<DD>This will open a window entitled "Defect Filter" which will let
+you generate reports on defects based on a variety of fields.  In the
+"Defects" field, enter the number returned by the previous action.
+Click on OK.  A window entitled "CMVC - Defects" will open.  Highlight
+the defect number that you created with left mouse button.
+
+<DT>Selected -> Accept
+
+<DD>This will open a window entitled "Accept Defects" which will let
+you accept the defect.  The defect number should already be entered
+(if you highlighted it correctly in the previous step).  Click on OK.
+
+<DT>Selected -> Create Tracks
+
+<DD>This will open a window entitled "Create Tracks" which will let
+you create a track associated with this defect.  The defect number
+should already be entered (if you highlighted it correctly) and the
+release name will be specified if you customized it in GUI setup.  If
+you want to create tracks for multiple releases, you can specify more
+than one value, separating them by spaces.  Click on OK.
+</DL>
+
+<H2><A NAME="Manipulate_Files">Manipulating Files</H2>
+
+<P>File path names within CMVC must be unique for a release.  You can
+perform various actions against files in CMVC, depending on the
+authority you have in the access lists for the components that manage
+the files.  Copies of files can be extracted, or files can be checked
+out for editing and subsequently checked in to save the changes.
+Files can be linked between multiple releases to make them common.
+Various properties of files can be modified, such as the path name,
+release, and component.  Files can be deleted and then recreated.
+Destroying files permanently removes the database record for the file
+from the CMVC environment.  Many actions that are performed on files
+can be undone -- each uncommitted change can be undone in backward
+sequential order.  Multiple sets of file changes can be checked in and
+included in one level (one build in our case).
+
+<P>Altering files within CMVC requires the creation of a track (<A
+HREF="#Creating_Tracks">as described above</A>).  To view existing
+files, to extract them, to check them out (and prevent others from
+modifying it by locking them), and to destroy files that have already
+been deleted do not required the creation of a track.  However, to
+create a new file in CMVC, to check-in a file into CMVC, and to rename
+an existing file in CMVC, you need to create a track.
+
+<P><B>When a file needs to be created in more than one release, it
+should first be created in one release and then be linked to the other
+releases.  Similarly, when an existing file needs to be copied to
+other releases, it should be linked to them first (rather than
+creating them in each subsequent release).</B> After linkage, the file
+will be common and each release references the same current version of
+the file.  Please note that current CMVC usage procedures dictate that
+we break most of the links so that the files continue to be a shared
+file, but no longer a common one.  A key advantage of shared files is
+a guarantee that the version number of the files will not be repeated
+in any release (e.g., you will not find files with the same name, but
+different contents, with the same version numbers in any two
+releases).
+
+<P>Checking out a common file from either release locks the current
+version of the file.  Since both releases are linked to the same
+current version, the file is locked in both releases.  To check-in a
+common file and maintain the common link, you must specify the release
+from which you checked out the file and any other releases in which it
+is common.  In this way any changes made to a common file can be
+reflected in more than one release through a single check-in action.
+<B>If you have made changes to a common file and do not want the
+changes to be reflected in the other releases that link to that file,
+then you can break the common link when you check-in the file (this is
+the typical way to break the link).</B> This file is still a shared
+file but no longer a common file.  If you want to make changes to an
+already locked common file, you have the option of breaking the common
+link when you check-out the file.  Breaking the common link at check-out
+can only occur if the common file is already locked in another
+release.
+
+<P>There are two options that let you manipulate where a file is
+stored on your local machine:
+
+<OL COMPACT>
+<LI>The <B>-top</B> option (or environment variable <B>CMVC_TOP</B>)
+specifies the leading portion of the path name that is a subset of the
+current working directory on the client machine.
+
+<LI>The <B>-relative</B> option allows creation, checking in, checking
+out, and extraction of the specified file relative to the directory
+location specified according to the complete path name of the file.
+Directories are created if necessary when extracting or checking out
+in order to copy the file by its full path name.
+</OL>
+
+<H3><A NAME="Manipulate_Files_CMD">Command Line</H3>
+
+<P>To get help on the syntax for using the "File" command, you can just
+type the command with no arguments.  Instead of specifying the syntax
+of the commands below, I will focus on useful examples.
+
+<H4>File Creation and Breaking Links to Common Files Examples</H4>
+
+<P>Single Release File Create: To create the file
+"src\dataflow\inc\dfmsg.h" within the directory structure "D:\avis100", Sophia
+would issue the following command (note that "fnum" should be a track
+number which was created by following the procedure above):
+<PRE>
+File -create src\dataflow\inc\dfmsg.h -component avis_dataflow -top D:\avis100 -feature fnum -remarks "dfmsg.h file used for xyzzy"
+</PRE>
+
+<P>Multiple Release File Create: To create the file
+"src\dataflow\inc\dfmsg.h" within the directory structure "D:\avis100" for
+releases "avis100", "avis101", and "avis110", the user should issue the
+following commands.  Please note that you must have created tracks in
+both releases for the same Feature (or Defect) number.
+<PRE>
+File -create src\dataflow\inc\dfmsg.h -component avis_dataflow -top d:\avis100 -release avis100 -feature fnum -remarks "dfmsg.h file used for xyzzy"
+File -link src\dataflow\inc\dfmsg.h -release avis100 -to avis101 -feature fnum
+File -link src\dataflow\inc\dfmsg.h -release avis100 -to avis110 -feature fnum
+</PRE>
+
+<P>Breaking Links: To break the common links for the files in
+release "avis101" and "avis110" so that you can modify the files
+"src\dataflow\inc\dfmsg.h" in one release without it affecting the other, issue
+the following sets of commands:
+<PRE>
+File -checkout src\dataflow\inc\dfmsg.h -relative D:\avis101 -release avis101
+File -checkin src\dataflow\inc\dfmsg.h -relative D:\avis101 -release avis101 -feature fnum -force
+
+File -checkout src\dataflow\inc\dfmsg.h -relative d:\avis110 -release avis110
+File -checkin src\dataflow\inc\dfmsg.h -relative d:\avis110 -release avis110 -feature fnum -force
+</PRE>
+
+<H4>File Information Examples</H4>
+
+<P>The command option <B>-view</B> can be used to obtain information about a
+file (example with Sophia's dfmsg.h):
+<PRE>
+File -view src\dataflow\inc\dfmsg.h
+</PRE>
+
+<P>More extensive information can be obtained by specifying the
+<B>-long</B> parameter:
+<PRE>
+File -view src\dataflow\inc\dfmsg.h -long
+</PRE>
+
+<H4>File Extract, Check-Out, Check-In, Unlock, and Undo Examples</H4>
+
+<P>To extract a readonly copy of the file and place it in
+"D:\avis100\src\dataflow\inc\dfmsg.h", issue the following command (which will
+create the necessary subdirectories if they do not exist):
+<PRE>
+File -extract src\dataflow\inc\dfmsg.h -relative D:\avis100
+</PRE>
+
+<P>To extract a readonly copy of the file <EM>without keyword expansion</EM> and place it in
+"D:\avis100\src\dataflow\inc\dfmsg.h", issue the following command (which will
+create the necessary subdirectories if they do not exist):
+<PRE>
+File -extract src\dataflow\inc\dfmsg.h -relative D:\avis100 -nokeys
+</PRE>
+
+<P>To check-out a copy of the file for development purposes (e.g., to
+lock it so that no one else can modify it), issue the following
+command:
+<PRE>
+File -checkout src\dataflow\inc\dfmsg.h -relative D:\avis100 
+</PRE>
+
+<P>To check-in the modified file and associate the changes with features
+123 and 456, issue the following command:
+<PRE>
+File -checkin src\dataflow\inc\dfmsg.h -relative D:\avis100 -feature 123 456 -remarks "added foobar support"
+</PRE>
+
+<P>To check-in the modified file that fixes the defect 135, issue the
+following command:
+<PRE>
+File -checkin src\dataflow\inc\dfmsg.h -defect 135 -remarks "fixed fooys bug"
+</PRE>
+
+<P>To check-in the modified <EM>common</EM> file that was checked out
+from "ver303" and fixes the defect 135 for releases "ver303",
+"ver304", and "ver310", issue the following command:
+<PRE>
+File -checkin src\dataflow\inc\dfmsg.h -defect 135 -release ver303 -remarks "fixed fooys bug" -common ver304 ver310
+</PRE>
+
+<P>To unlock a file that was checked out (e.g., you decided not to modify
+the file after all), issue the following command:
+<PRE>
+File -unlock src\dataflow\inc\dfmsg.h
+</PRE>
+
+<P>Since we are using tracks, you can undo the most recent
+<B>-checkin</B>, <B>-create</B>, <B>-delete</B>, <B>-recreate</B>,
+<B>-rename</B>, or <B>-link</B> repeatedly as long as the track is not
+committed.  To undo the most recent change, issue the following
+command:
+<PRE>
+File -undo src\dataflow\inc\dfmsg.h -defect 135
+</PRE>
+
+<H4>Other File Manipulation Examples</H4>
+
+<P>To rename the name of a file, issue the following command:
+<PRE>
+File -rename src\dataflow\inc\dfmsg.h -path src\dataflow\inc\fooy\dfmsg.h -defect 135
+</PRE>
+
+<P>To delete a file, issue the following command:
+<PRE>
+File -delete src\dataflow\inc\dfmsg.h -defect 135
+</PRE>
+
+<P>After track 135 has been committed, then you can destroy the file by
+issuing the command:
+<PRE>
+File -destroy src\dataflow\inc\dfmsg.h 
+</PRE>
+
+<P>To reassign a file to the component "newcomp", issue the following
+command:
+<PRE>
+File -modify src\dataflow\inc\dfmsg.h -component newcomp
+</PRE>
+
+<H3><A NAME="Manipulate_Files_GUI">Win32 GUI Client</H3>
+
+<P>In the Win32 client for Windows 95 and Windows NT, you can perform
+File operations
+from the Action menu or by opening up the File Window and selecting
+which files to manipulate (e.g., you can manipulate more than one at a
+time).  For the purpose of this description, I will assume that you
+are in the "CMVC Files" window:
+<DL COMPACT SIZE>
+<DT>Objects -> Files -> Files
+
+<DD>This will open a window entitled "File Filter" which will let you
+generate reports on defects based on a variety of fields.  In the
+"Components" and "Releases" field, enter the name of the component and
+"ver30" (respectively).  Click on OK.  This will then list all of the
+files that are in the specified component for the IBM AntiVirus 3.0
+release.
+</DL>
+
+<P>Once you have the "CMVC Files" window open, you can issue the
+following commands in any order.  In addition, if you highlight one or
+more files prior to issuing the command, then the "Path names" will be
+automatically filled in:
+<DL COMPACT SIZE>
+<DT>Selected -> Create
+
+<DD>This will open a window entitled "Create Files" which will enable you
+to create files.  The required fields are "File names", "Release",
+"Component", and "Defects/Features".  If you want to select which
+files to create, you can select the "Choices" box.  Click on OK when
+you are ready (and you do not want to create another file) or click on
+Apply if you want to issue the same command for different files
+repeatedly.
+
+<DT>Selected -> Link
+
+<DD>This will open a window entitled "Link Files" which will enable
+you to link a file from one release into another and make it a common
+file.  <B>This procedure should be used when you want to copy an existing
+file from one release to another.</B>  The required fields are "Path
+names", "Release", and "New release".  
+
+<DT>Selected -> Extract
+
+<DD>This will open a window entitled "Extract Files" which will enable you
+to extract read-only copies of files.  The required fields include
+"Path Names" and "Release". Do NOT expand keywords.
+
+<DT>Selected -> Check out
+
+<DD>This will open a window entitled "Check Out Files" which will
+enable you to check-out files for development purposes. The required
+fields include "Path Names" and "Release".  If the file is common,
+then you only need to check it out from one release.
+
+<DT>Selected -> Check in
+
+<DD>This will open a window entitled "Check In Files" which will
+enable you to check-in your modified file.  Please remember to enter
+the appropriate remarks.  For common files, you have two options:
+<OL COMPACT>
+<LI> To keep the common link, you need to specify all releases which
+are common to the file in the field "Common releases".  Please be
+aware that tracks need to be created for all releases, including the
+common ones.
+<LI> To break the link, do not enter any values in the field "Common
+releases".  Instead, mark the box "Break common link".
+</OL>
+</DL>
+
+<P>To break the common links for a file, you need to first checkout
+each file and then check it back in unchanged with the "Break common
+link" field checked.  When using the GUI, it is advantageous to do
+this with the GUI "Auto refresh" disabled so that you can highlight
+the desired files once for the check-out and reuse the list of files
+for the check-in operation.
+
+<P>Operations for unlocking files, undoing operations, deleting files,
+and destroying files are similar.
+<DL COMPACT SIZE>
+<DT>Selected -> Modify -> Pathname
+
+<DD>This will open a window entitled "Modify File Path Name" which will
+enable you to change the name of your file.
+
+<DT>Selected -> Modify -> Component
+
+<DD>This will open a window entitled "Modify Component" which will enable
+you to transfer the file to another component.
+
+<DT>Selected -> Show -> Differences
+
+<DD>This will open a window entitled "Show File Differences" which will
+enable you to compare two versions of a file using the file compare
+program specified in (Windows -> Settings).  You can either compare
+two different versions of the file in CMVC or compare a version from
+CMVC with one on your workstation.
+</DL>
+
+<H2><A NAME="Done_Tracks">Marking Tracks as Done</H2>
+
+<P>When you are finished making all the changes necessary, you need to
+change the state of the track from fix to integrate. Tracks that are
+in the integrate state will automatically be incorporated into the
+next IBM AntiVirus 3.0 build -- that is, unless there are any
+conflicting corequisite or prerequisite tracks.  To verify that your
+track will be included, you can use the track <B>-check</B> option.
+
+<H3>Command Line</H3>
+
+<P>To indicate to CMVC that you are done using a track that is associated
+with a CMVC feature, issue the following command:
+
+<PRE>
+Track -integrate -feature featureno
+</PRE>
+
+featureno is returned when the CMVC feature is created and should be
+used whenever track or feature number is needed.
+
+<P>To indicate to CMVC that you are done using a track that is associate
+with a CMVC defect, issue the following command:
+
+<PRE>
+Track -integrate -defect defectno
+</PRE>
+
+defectno is returned when the CMVC defect is created and should be
+used whenever track or defect number is needed.
+
+<H3>Win32 GUI Clients</H3>
+
+<P>For the Win32 client, you can move a track to the integrate state by using the
+following dialog (from the main window):
+
+<DL COMPACT SIZE>
+<DT>Actions -> Tracks -> Integrate
+
+<DD>You only need to fill in either the "Defect" or the "Feature"
+number.  Then press OK.
+</DL>
+
+<H2><A NAME="Remote_Access">Remote Access to CMVC (IBM Global Network)</H2>
+
+<P>For authentication purposes, the CMVC server must have a <EM>host
+record</EM> which contains a login id and hostname tuple for each CMVC
+user id from each workstation.  CMVC was initially configured so that
+your office workstation was authorized.
+
+<P>To utilize CMVC from home via IBM Global Network dialup, you will need to
+telnet into a machine using your login id and add a host record for
+that dialup session.  Then, when you are done using CMVC, you should
+delete the host record for security purposes and since you will most
+likely be assigned a different IP name/address the next time you
+login.
+
+<P>You must find a machine that you can telnet into when accessing
+CMVC remotely.  Using an AGORA machine used to be the easiest choice
+because they used to have CMVC installed -- unfortunately that is no
+longer the case.  You can obtain the required AIX <B>Host</B> command
+from the <B>aix</B> subdirectory of CMVC client tools directory
+described at the top of the document. Another possibility is to ask
+for an account on <B>hicl2</B> which is a locally administered AIX
+machine.  CMVC is already installed on <B>hicl2</B> and the
+<B>Host</B> command can be found in the <B>/usr/lpp/cmvc/bin</B>
+directory.  In the example below, I assume that the appropriate
+<B>CMVC_FAMILY</B> environment variable has been set as specified in
+the <A HREF="#Environment_Variables">Environment Variables</A> section
+of this document.
+
+<P>These instructions were tested on my home Windows 95 machine.  I
+use the IBM Global Network Dialer.
+
+<OL COMPACT>
+<LI>For the purposes of this example, the IBM Global Network Dialer
+indicates that my workstation TCP/IP address is 32.225.11.5 which
+means that my IP name is <B>lig32-225-11-5.us.lig-dial.ibm.com</B>.
+
+<LI>Telnet into your office workstation (or another machine which you
+have authorized for CMVC access from your user id).
+
+<LI>In that telnet window, issue the following command on AIX:
+
+<PRE>
+Host -create userid@lig32-225-11-5.us.lig-dial.ibm.com
+</PRE>
+
+<P>Or if it is a Windows NT machine (or OS/2 machine), issue the command:
+
+<PRE>
+HostCmd -create userid@lig32-225-11-5.us.lig-dial.ibm.com
+</PRE>
+
+The <EM>userid</EM> should be the login user id that you use when
+you log into your home workstation.  If it is different than your CMVC
+user id, then you will need to add the option <B>-login cmvcid</B>
+where <EM>cmvcid</EM> corresponds to your CMVC user id.
+
+<LI>Utilize the CMVC command line and/or GUI from your home workstation.
+
+<LI>When done, be sure to delete the host record that was created in
+step (3).  You can do this from your home workstation or by using
+the telnet session above and replacing <B>-create</B> with <B>-delete</B>.
+</OL>
+
+<H2><A NAME="Change_Not_Mine">How to Change Code in a Component That You
+Do Not Own</H2>
+
+<P>With permission from the owner of a component, you can modify files
+in components that you do not own.  I have given most developers the
+authority to reassign the ownership of defects and features for any
+software component.  I have altered the "developer" and "developer+"
+authorities to permit them to reassign ownership of defects and
+features to other CMVC users.
+
+<P>To check files into a component that you do not own, you should
+follow this basic procedure:
+
+<OL COMPACT>
+<LI>Create either a feature or a defect (as appropriate) against the
+desired component.
+
+<LI>Modify the feature or defect so that it is owned by you (instead of
+the component owner).
+
+<LI>Accept the feature or defect (as appropriate) -- you should have
+no problems doing this now because you own it.
+
+<LI>When you create the track, please be sure that you are listed as the
+owner of the track.
+
+<LI>Continue using CMVC as appropriate.  Refer to the feature (or defect)
+number when checking in files.
+
+<LI>When you are finished making the changes that are required, you should
+change the state of the track to integrate.  It will then be
+automatically incorporated into the product build.
+</OL>
+
+<H2><A NAME="Additional_Docs">Where to Find Additional Documentation</H2>
+
+<P>Postscript versions of the current CMVC documentation can be found
+on the LAN in <B>\\avnetsrv\ftproot\tools\cmvc\docs</B>.  There is a
+<EM>README.txt</EM> file which summarizes the contents of the
+directory.  All the documents located here can also be ordered using
+<B>PUBORDER</B>.
+
+<P>The two most useful documents have been converted to PDF.  They are
+<EM>IBM CMVC Concepts</EM> (printable as <B>cmvccpts.ps</B> or
+viewable as <B>cmvccpts.pdf</B>) and <EM>IBM CMVC Commands
+Reference</EM> (printable as <B>cmvccmds.ps</B> or viewable as
+<B>cmvccmds.pdf</B>).
+
+<P>Also see <A HREF="http://wwwteamc.raleigh.ibm.com/cmvc/index.html">CMVC Service/Development
+home page</A> for further information on CMVC.
+
+<H2><A NAME="Valid_Keywords">Appendix: Valid Keywords for Text Files</H2>
+
+<PRE>
+Subject: Examples of using all the SCCS keywords with CMVC
+
+This note consists of 2 sections:
+
+1) A snapshot of a real file stored in CMVC that shows all the SCCS
+   keywords handled by CMVC and which are documented in Chapter 9 of the
+   CMVC User's Reference manual.
+2) A snapshot of the same real file which was extracted and all the
+   keywords were expanded.
+
+Note: The first column introduces on purpose spaces between the letter
+      and the percent signs in order to avoid their expansion!
+      In Section 1 we deleted the actual example of the usage because
+      this document is extracted with keyword expansion and there is
+      no way to specify in a file that certain keywords should be
+      expanded and other keywords should not be expanded.
+
+*** Section 1: No keyword expansion ***
+
+Keyword Description                          Example of Expansion
+
+% W %   path name, component, CMVC release:
+
+% A %   shorthand for what commands:
+        combination of Z,Y,M,I,Z below:
+  % Z %   The 4-character string @(#) for what:
+  % Y %   SCCS module type flag:
+  % M %   SCCS module name:
+  % I %   Complete version number (SID):
+  % Z %   The 4-character string @(#) for what:
+
+% I %   Complete version number (SID):
+        combination of R,L,B,S below:
+  % R %   SCCS Release (not the CMVC one):
+  % L %   SCCS Level (not the CMVC one):
+  % B %   SCCS Branch:
+  % S %   SCCS Sequence:
+
+% D %   date of the extraction (YY/MM/DD):
+% H %   date of the extraction (MM/DD/YY):
+% T %   time of the extraction (HH:MM:SS):
+
+% E %   date of the newest delta (YY/MM/DD):
+% G %   date of the newest delta (MM/DD/YY):
+% U %   time of the newest delta (HH:MM:SS):
+
+% F %   the SCCS file name:
+% P %   the full path name of SCCS file:
+
+% C %   the current line number:
+
+
+*** Section 2: Keyword expansion ***
+
+Keyword Description                          Example of Expansion
+
+% W %   path name, component, CMVC release:     projdoc/how_to_use_cmvc.html, build, avis200, 217
+
+% A %   shorthand for what commands:            @(#) 96 1.3.12.1@(#)
+        combination of Z,Y,M,I,Z below:
+  % Z %   The 4-character string @(#) for what: @(#)
+  % Y %   SCCS module type flag:                
+  % M %   SCCS module name:                     96
+  % I %   Complete version number (SID):        1.3.12.1
+  % Z %   The 4-character string @(#) for what: @(#)
+
+% I %   Complete version number (SID):          1.3.12.1
+        combination of R,L,B,S below:
+  % R %   SCCS Release (not the CMVC one):      1
+  % L %   SCCS Level (not the CMVC one):        3
+  % B %   SCCS Branch:                          12
+  % S %   SCCS Sequence:                        1
+
+% D %   date of the extraction (YY/MM/DD):      00/08/15
+% H %   date of the extraction (MM/DD/YY):      8/15/00
+% T %   time of the extraction (HH:MM:SS):      17:12:01
+
+% E %   date of the newest delta (YY/MM/DD):    99/10/09
+% G %   date of the newest delta (MM/DD/YY):    10/9/99
+% U %   time of the newest delta (HH:MM:SS):    11:43:43
+
+% F %   the SCCS file name:                     /cmvc/home/avsource/vc/0/0/4/5/s.96
+% P %   the full path name of SCCS file:        /cmvc/home/avsource/vc/0/0/4/5/s.96
+
+% C %   the current line number:                911
+</PRE>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+        Shutting down/Bringing up/Tickling an Immune System gateway array
+                           IBM/Symantec confidential
+                 Ian Whalley, <inw@us.ibm.com>, +1-914-784-7808
+             Edward Pring, <pring@watson.ibm.com>, +1-914-784-6285
+                                   2000-05-04
+
+
+Introduction
+
+  As the reader will be aware, a major part of the functionality of the Immune
+  System is provided by so-called 'gateways'.  Gateways form the bridge between
+  the customer site, and the back office systems (in the form of the Analysis
+  Centre, and manual processing within SARC).  A component of the Immune System
+  software (known either as the Symantec Quarantine Agent for Windows [SQUAW] or
+  as IcePack) runs on the Quarantine Server machines within the client's
+  organisation -- it is this component which talks to the Immune System
+  gateways.
+
+  The gateways perform a large amount of the work that goes on within the whole
+  Immune System structure.  In order to build capacity into the system,
+  individual gateways are made up of multiple machines -- the resulting set of
+  machines is called a 'gateway array'.  The machines making up a gateway array
+  are, to a great extent, interdependent, and consequently care must be taken
+  when restarting machines within the array.
+
+
+General structure of a gateway array
+
+  [Whilst it is not the intention of this document to provide a complete
+   description of how a gateway works, it is necessary to provide basic
+   information to set the rest of the document in context.]
+
+  The archetypal gateway array consists of seven machines (and all instances of
+  the gateway array so far built also consist of seven machines, although they
+  may in the future consist of a greater or lesser number of machines).  These
+  machines are:
+
+      DNS name     Shortname       Orientation            Purpose
+    gwNNentry01      Entry      [customer-facing]   Customer entry-point
+    gwNNdef01         Def1      [customer-facing]   Definition downloader
+    gwNNdef02         Def2      [customer-facing]   Definition downloader
+    gwNNdef03         Def3      [customer-facing]   Definition downloader
+    gwNNsample01     Sample     [customer-facing]   Sample importer
+    gwNNinside01     Inside     [SARC-facing]       SARA entry-point
+    gwNNdata01        Data      [hidden]            Gateway array server
+
+  'Data' is the machine to which we must pay the greatest attention, at least
+  when it comes to the process for starting and shutting down a gateway array.
+  Whilst all the machines listed above are running Windows NT Server, and all
+  are members of a workgroup, the machine called 'Data' is the one upon which
+  all the others depend.
+
+  'Data' provides two vital services to the other machines in the array.  First,
+  it hosts some Windows-style drive shares which the other machines use; and
+  second, it hosts the DB/2 database server to which the other machines must
+  connect.
+
+  The other machines are all identical, from the point of view of this document.
+  They are all, fundamentally, web server machines.
+
+
+Terminology
+
+  Throughout the remainder of this document, the following terms are used
+
+    Web server machine      All machines _apart_from_ the 'Data' machine are
+                            web server machines -- this is, of course, because
+                            each one is running an instance of Lotus Go.
+    Isolate                 Of a 'web server machine' (qv), to completely stop
+                            Lotus Go.  This has the effect of prevent customers
+                            or SARC from contacting the machine in the normal
+                            way.
+
+
+Isolating a single web server machine
+
+  To isolate a single web server machine, perform the following sequence of
+  operations:
+
+    * Close Lotus Go by clicking the standard Windows 'Close' icon at the top
+      right of the Go GUI.
+    * Wait for the GUI to disappear (this may take up to 30 minutes, as Lotus
+      Go attempts to let all connections currently in progress complete)
+    * Close the AVIS Monitor window by clicking on the standard Windows
+      'Close' icon at the top right of the GUI.
+    * Open Task Manager, select the 'Processes' tab, click on the 'Image Name'
+      header until the list is sorted reverse-alphabetically.
+    * Look for an entry 'wHTTPg.EXE' in the 'Image Name' column.  If one is
+      found, select it and use the 'End Process' button to kill it. 
+
+  That web server machine will now refuse incoming Immune System connections.
+
+
+Shutting down a gateway array
+
+  If it is necessay to shut down a gateway array, the procedure to follow is:
+
+    * Isolate 'Entry'.  This will prevent new connections from being directed to
+      any of the sample importer or definition downloader machines.
+    * Shut down 'Entry'.
+    * Wait until there are no longer any sessions in progress on the sample
+      importer and definition downloader machines ('Sample', 'Def1', 'Def2',
+      and 'Def3').
+    * Isolate the sample importer and definition downloader machines.
+    * Shut down the sample importer and definition downloader machines.
+    * Isolate 'Inside'.
+    * Shut down 'Inside'.
+    [At this point, all the machines in the gateway array apart from 'Data'
+    should be off.]
+    * Shut down 'Data'.  There is no need to close anything running on it
+      before shutting it down.
+
+  Congratulations, the gateway array has been safely shut down.
+
+
+Starting a gateway array
+
+  When starting a gateway array, the procedure to follow is:
+
+    [At this point, all machines in the gateway array should be powered off.]
+    * Switch on 'Data'.  Allow the machine to boot, Windows NT to start up,
+      the default user to be logged on, DB/2 to start, and the machine to
+      settle down.  Check that DB/2 is running, and that the appropriate
+      drives are shared (see gateway setup document).
+    * Switch on 'Inside', and all of the sample and definition machines
+      ('Sample', 'Def1', 'Def2', and 'Def3').  Allow them to boot, the
+      default user to be logged on, Lotus Go to start, and the
+      machines to settle down.
+    * Finally, switch on 'Entry'.  Allow the default user to be logged on,
+      Lotus Go to start, and the machine to settle down.
+
+  Congratulations, the gateway array has been safely restarted.
+
+
+'Tickling' a gateway array
+
+  After a gateway array has been started, it operates entirely
+  automatically.  The administrator may verify that the gateway is
+  operating correctly by remotely exercising each of its network
+  transactions.  
+
+  Individual network transactions can be exercised by running the
+  tickleGate.pl program with appropriate arguments.  The program
+  displays a list of supported arguments when executed without
+  arguments.  If successful, the program displays a summary of the
+  transaction, and returns a zero completion code.  If unsuccessful,
+  the program displays a error message, and returns a non-zero
+  completion code indicating which network layer failed.
+
+  For convenience, the tickle_gw01.bat and tickle_gw02.bat programs
+  run the tickleGate.pl program once for each network transaction
+  (except sample import and signature export), with the appropriate
+  arguments for each gateway array.
+
+  These programs may be run on any workstation that has TCP/IP network
+  access to the gateway array.
+
+
+Shutting down individual machines in a gateway array
+
+  In most cases, it should not be necessary to shut down the whole array.  In
+  fact, in most cases, the administrator will only _want_ to shut down one
+  machine (presumably to perform essential maintenance).
+
+  All web server machines in the gateway array (that is to say, all machines
+  _except_ 'Data') can be shut down independently of any of the others.  In all
+  cases (except for 'Data'), simply isolate the machine.  When isolation is
+  complete, the machine is cut off from customers and from SARC, and can be
+  upgraded as necessary.
+
+  However, if it is necessary to modify the hardware or software on the 'Data'
+  machine, the administrator must shut down all the other machines in the array
+  before 'Data'.  Follow the instructions under 'Shutting down a gateway array'
+  to bring down all the other machines first, and then 'Data'.
+
+
+Performing a software or hardware upgrade on all machines in a gateway array
+
+  In this case, the administrator may use the following sequence of operations
+  to minimise overall gateway downtime.
+
+    * Follow instructions under 'Shutting down a gateway array'.
+    * Perform the upgrade on 'Data'.  Restart 'Data', and allow it to come up
+      and settle down.
+    * Perform the upgrade on 'Inside'.  Restart 'Inside', and allow it to come
+      up and settle down.
+    * Perform the upgrade on the sample importers and definition downloaders,
+      in any order.  Allow them all to to come up and settle down.
+    * Finally, perform the upgrade on 'Entry'.  Allow it to come up and settle
+      down.
+
+  Congratulations, the gateway array has been upgraded.
+
+
+Conclusion
+
+  As with any Internet server, it is necessary to think carefully before taking
+  any action with any machine in any gateway array.  The gateway array is
+  designed to function as a single unit, and ill-considered actions will (at the
+  very least) cause the gateway downtime to be longer than it needs to be.  On
+  the other hand, by making modifications in a well-ordered fashion will
+  minimise disruption and downtime.

@@ -1,0 +1,48 @@
+::
+:: $Header:   S:/navw/VCS/update.btv   1.0   06 Feb 1997 21:01:38   RFULLER  $
+::
+::      This batch file updates the project area based on the TARGET 
+::      setting.  The TARGET is set up as part of BPROJ and the project's
+::      personalized PROJHOOK.
+::------------------------------------------------------------------------
+:: $Log:   S:/navw/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 21:01:38   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:55:12   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 14:50:16   BARRY
+:  Initial revision.
+:  
+:     Rev 1.13   11 Dec 1995 23:53:12   DALLEE
+:  Updated for PROJVERS.
+:  
+:     Rev 1.12   28 Apr 1994 18:07:44   MFALLEN
+:  
+:     Rev 1.11   27 Apr 1994 15:14:20   MFALLEN
+:  DLL2EXE
+:  
+:     Rev 1.10   26 Apr 1994 21:11:18   DALLEE
+:  Update to projects target directories.
+:  
+:     Rev 1.9   25 Apr 1994 19:34:58   MFALLEN
+:  W32
+:  
+:     Rev 1.8   23 Mar 1994 21:26:30   DALLEE
+:  Update to global bin.xxx subdirs.
+:  
+:     Rev 1.7   10 Mar 1994 21:36:14   DALLEE
+:  Fixed or in iff condition.
+:  
+:     Rev 1.6   10 Mar 1994 17:48:14   DALLEE
+:  Changed BANKERS target to NAVWB and added NAVNETWB target.
+::------------------------------------------------------------------------
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.exe copy *.exe %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*

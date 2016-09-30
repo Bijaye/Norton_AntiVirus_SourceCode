@@ -1,0 +1,119 @@
+@echo ON
+
+if "%1"=="" goto USAGE
+
+set bld_num=%1
+set dest_rt=Unreleased_Builds\NAV\r12.0.6-devbuild\%bld_num%
+set dest_root=Unreleased_Builds\NAV\r12.0.6-devbuild\%bld_num\SDK
+set dest_root2=build_environments\NavConsumer_r12.0.6-devbuild\%1
+set esd_root=%dest_rt%\ESD
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+cdd %root%
+@call %root%layout
+@call %root%edisk_uncomp.btm
+
+
+set POST_PATH=h:
+
+rem //////////////////////////////////////////////////////////////
+rem look for parameters we recognize
+rem
+do param = 1 to 127
+  shift 1
+  iff "%0"=="" then
+     shift -%param%
+     goto continue
+  endiff
+  iff "%@upper[%0]"=="/OUT" then
+     shift 1
+     set dest_rt=%bld_num
+     set dest_root=%bld_num\SDK
+     set POST_PATH=%0
+  endiff
+enddo
+shift -127
+
+:continue
+
+cdd %POST_PATH%\
+md %dest_rt
+md %dest_rt\Metrics
+md %dest_root
+md %dest_root2
+md %esd_root%
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Post the ESDs first so dev can check the build
+:::::::::::::::::::::::::::::::::::::::::::::::::::
+
+xcopy /y /i C:\bld_area\navcon_devbuild_r12.0.6\Norton_AntiVirus\Consumer\src\Final\Licensed\NAV\SelfExtracts\* %POST_PATH%\%esd_root%\
+
+echo ********************************************
+echo Posting Layouts to folder on ussm-cpd
+echo ********************************************
+echo.
+xcopy /d/f/i/e %root%..\Final\*		%POST_PATH%\%dest_rt\
+
+echo ********************************************
+echo Posting files to edisk_uncomp folder on ussm-cpd
+echo ********************************************
+echo.
+xcopy /d/f/i/e %root%..\edisk_uncomp\*     %POST_PATH%\%dest_root\edisk_uncomp
+
+if x%DEVBLD% == x 
+	
+	rem we only want to create these zips if its a cm build (not on dragonfly)
+
+	
+	
+	echo.
+	echo ********************************************
+	echo Creating NavConsumer_r12.0.6_NU Final #%1  Zip  ...
+	echo ********************************************
+	echo.
+	cd d:
+	call wzzip -exrP j:\NavConsumer_r12.0.6_NU_%1-devbld.zip %root%..\install\NU\*.*
+	call wzzip -exrP j:\NavConsumer_r12.0.6_NU_%1-devbld.zip %root%..\install\NUInst\*.*
+	call wzzip -exrP j:\NavConsumer_r12.0.6_NU_%1-devbld.zip %root%..\install\Edisk\*.*
+	call wzzip -exrP j:\NavConsumer_r12.0.6_NU_%1-devbld.zip %root%..\install\Data\*.*
+	call wzzip -exrP j:\NavConsumer_r12.0.6_NU_%1-devbld.zip %root%..\nobuilds\AdvProt\*.*
+	call wzzip -exrP j:\NavConsumer_r12.0.6_NU_%1-devbld.zip %root%..\ui\aboutplg\*.*
+
+endiff
+
+echo Complete > %POST_PATH%\%dest_rt\complete.txt
+
+echo.
+echo.
+echo **********************************************
+echo NavConsumer r12.0.6 Build # %1 is complete.
+echo **********************************************
+echo.
+echo.
+echo.
+
+:done
+echo.
+echo Done.
+quit
+
+:-------------------------------------------------------------------------
+: Error, display usage information
+:-------------------------------------------------------------------------
+:USAGE
+cls
+echo.
+echo  Please enter a build number
+echo.
+goto done

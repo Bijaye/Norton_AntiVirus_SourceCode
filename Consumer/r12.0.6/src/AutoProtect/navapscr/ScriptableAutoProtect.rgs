@@ -1,0 +1,26 @@
+HKCR
+{
+	NAVAPSCR.ScriptableAutoProtect.1 = s 'ScriptableAutoProtect Class'
+	{
+		CLSID = s '{B665012A-380B-4C69-B7FC-05FC13A4EAF8}'
+	}
+	NAVAPSCR.ScriptableAutoProtect = s 'ScriptableAutoProtect Class'
+	{
+		CLSID = s '{B665012A-380B-4C69-B7FC-05FC13A4EAF8}'
+		CurVer = s 'NAVAPSCR.ScriptableAutoProtect.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {B665012A-380B-4C69-B7FC-05FC13A4EAF8} = s 'ScriptableAutoProtect Class'
+		{
+			ProgID = s 'NAVAPSCR.ScriptableAutoProtect.1'
+			VersionIndependentProgID = s 'NAVAPSCR.ScriptableAutoProtect'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{586C6565-AEDF-4837-A1B2-9E98EB4BD8AD}'
+		}
+	}
+}

@@ -1,0 +1,131 @@
+@echo on
+rem Symantec Client Security packages build script
+rem
+rem By David Luxford, 2003 April 5
+rem 
+rem Uses:
+rem     BUILDPACKAGERDIRECTORY
+rem     BUILDSAVCORPINTERFACE
+rem     BUILDVERBOSE
+rem     CLIENTROOT
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:  %_BATCHNAME
+rem * Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver LT 3.02 goto ErrorOld4DOS
+if "%CLIENTROOT%" = "" goto ErrorBadEnvironment
+if "%BUILDPACKAGERDIRECTORY%" = "" goto ErrorBadEnvironment
+
+echo * Initializing...
+set ProductModuleRoot=%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Product Modules
+set FinishedPackages=%ProductModuleRoot%\packages
+
+echo * Uninstall/reinstall packager (this also uninstalls all product modules)...
+attrib /s -r -s -h /e "%BUILDPACKAGERDIRECTORY%\*.*" >&nul
+del /s "%BUILDPACKAGERDIRECTORY%\Preppdt.exe"
+msiexec /x "%CLIENTROOT%\Release\Packager\Disk1\Symantec Packager.msi" /qn
+msiexec /i "%CLIENTROOT%\Release\Packager\Disk1\Symantec Packager.msi" /qn
+if %errorlevel% != 0 goto BuildFailed
+xcopy /s /e /k /q /h /i "%CLIENTROOT%\Release\Packager\Tools" "%BUILDPACKAGERDIRECTORY%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Registering PMIs...
+msiexec /i "%BuildSavCorpInterface%\Product Module\Symantec AntiVirus Client.pmi" /qn
+if %errorlevel% != 0 goto BuildFailed
+msiexec /i "%BINARYSOURCENIS%\Product Modules\SCF\Symantec Client Firewall.pmi" /qn
+if %errorlevel% != 0 goto BuildFailed
+
+echo * Clearing target...
+if exist "%FinishedPackages%" del /s /q /y /x /z "%FinishedPackages%\*.*"
+if not exist "%FinishedPackages%" md /s "%FinishedPackages%"
+
+echo * Clearing Packager config directories...
+if exist "%USERPROFILE%\Documents\Packager" del /s /y /q "%USERPROFILE%\Documents\Packager"
+if not exist "%USERPROFILE%\Documents\Packager" md /s "%USERPROFILE%\Documents\Packager"
+rem Current version of packager has a bug:  it will fail to generate a package unless a copy of the
+rem PKG and PCG exist in the All Users\Documents directory.
+rem NOTE:  On WinXP, Explorer displays the name of Documents as Shared Documents, but it
+rem        exists on disk as Documents
+if exist "%ALLUSERSPROFILE%\Documents\Packager" del /s /y /q "%ALLUSERSPROFILE%\Documents\Packager\*.*"
+if not exist "%ALLUSERSPROFILE%\Documents\Packager" md /s "%ALLUSERSPROFILE%\Documents\Packager"
+
+echo * Building Symantec AntiVirus Client packages...
+rem Cleanout any existing packages - Packager has been known to pickup the wrong ones
+del /s /y "%USERPROFILE%\Documents\Packager\*.*"
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Client.p?g"                 "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Thin Client.p?g"            "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Lightly Managed Client.p?g" "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Client Silent.p?g"          "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Client.pkg"                     "%FinishedPackages%\savceclt.exe"
+if not exist "%FinishedPackages%\savceclt.exe" goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Thin Client.pkg"                "%FinishedPackages%\savcecth.exe"
+if not exist "%FinishedPackages%\savcecth.exe" goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Lightly Managed Client.pkg"     "%FinishedPackages%\savceclm.exe"
+if not exist "%FinishedPackages%\savceclm.exe" goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec AntiVirus Client Silent.pkg"              "%FinishedPackages%\savcenrb.exe"
+if not exist "%FinishedPackages%\savcenrb.exe" goto BuildFailed
+
+echo * Building Symantec Client Firewall packages...
+rem Cleanout any existing packages - Packager has been known to pickup the wrong ones
+del /s /y "%USERPROFILE%\Documents\Packager\*.*"
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Firewall.p?g"                 "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Firewall.pkg"                     "%FinishedPackages%\scf.exe"
+if not exist "%FinishedPackages%\scf.exe" goto BuildFailed
+
+echo * Building combined Client/Firewall packages...
+rem Cleanout any existing packages - Packager has been known to pickup the wrong ones
+del /s /y "%USERPROFILE%\Documents\Packager\*.*"
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Security.pkg"                                 "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Security AntiVirus Client.pcg"                "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Security Firewall Client.pcg"                 "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Security.pkg"     "%FinishedPackages%\symintcl.exe"
+if not exist %FinishedPackages%\symintcl.exe" goto BuildFailed
+rem * Silent integrated package (for Packager deployment tool)
+copy "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Security Silent.pkg"          "%ALLUSERSPROFILE%\Documents\Packager"
+if %errorlevel% != 0 goto BuildFailed
+"%BUILDPACKAGERDIRECTORY%\packagebuilder.exe" "%CLIENTROOT%\Norton_AntiVirus\Corporate_Edition\Win32\Packages\Symantec Client Security Silent.pkg"              "%FinishedPackages%\symintcl-silent.exe"
+if not exist "%FinishedPackages%\symintcl-silent.exe" goto BuildFailed
+
+echo `* ==>` %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<==`
+set returnVal=0
+goto RealEnd
+
+
+:BuildFailed
+set returnVal=2
+echo ERROR:  build FAILED!
+echo At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo ERROR - 4DOS not detected!  The 4DOS shell is required to run this script.
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo ERROR - 4DOS too old!  Version 3.02B or later is required to run this script.
+goto RealEnd
+
+:ErrorBadEnvironment
+set returnVal=5
+echo ERROR - environment not initialized (CLIENTROOT or BUILDPACKAGERDIRECTORY not set)!
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:  %_BATCHNAME
+quit %returnVal%

@@ -1,0 +1,208 @@
+// qserver.idl : IDL source for qserver.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (qserver.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// 
+// Include for server structures.
+// 
+////////////////////////////////////////////////////////////////////////////////////////	
+// 
+// IQuarantineServerItem
+// 	
+	
+	[
+		object,
+		uuid(3DA647F1-ABFB-11D2-8E6D-281ED2000000),
+		helpstring("IQuarantineServerItem Interface"),
+		pointer_default(unique),
+		restricted
+	]
+	interface IQuarantineServerItem : IUnknown
+	{
+		[helpstring("method GetValue")] HRESULT GetValue( [in] BSTR bstrFieldName, 
+														  [out] VARIANT *v );	
+		[helpstring("method SetValue")] HRESULT SetValue( [in] BSTR bstrFieldName, 
+															    [in] VARIANT v );			
+		[helpstring("method GetAllValues")] HRESULT GetAllValues( [out] VARIANT *v );
+		[helpstring("method Commit")] HRESULT Commit();
+	};
+		  
+////////////////////////////////////////////////////////////////////////////////////////	
+// 
+// IEnumQuarantineServerItems
+// 	
+
+	[
+		object,
+		uuid(A3298930-8967-11d2-8E5F-2A0712000000),
+		helpstring("IEnumQuarantineServerItems Interface"),
+		pointer_default(unique),
+		restricted
+	]
+	interface IEnumQuarantineServerItems : IUnknown
+	{
+		[helpstring("method Next")] HRESULT Next( [ in ] ULONG celt, 
+												  [ out, size_is( celt ), length_is(*pceltFetched) ] 
+												  IQuarantineServerItem** aQserverItems, 
+												  [ out ] ULONG* pceltFetched );
+
+		[helpstring("method Skip")] HRESULT Skip( [in ] ULONG celt );
+		[helpstring("method Reset")] HRESULT Reset();
+		[helpstring("method Clone")] HRESULT Clone([ out ] IEnumQuarantineServerItems** ppenum );
+	};
+
+////////////////////////////////////////////////////////////////////////////////////////	
+// 
+// IEnumQserverItemsVariant
+// 	
+
+	[
+		object,
+		uuid(1F5FCDD6-B099-11D2-B65E-0020AFEED321),
+	
+		helpstring("IEnumQserverItemsVariant Interface"),
+		pointer_default(unique),
+		restricted
+	]
+	interface IEnumQserverItemsVariant : IUnknown
+	{
+		[helpstring("method Next")] HRESULT Next( [ in ] ULONG celt, 
+												  [ out, size_is( celt ), length_is(*pceltFetched) ] 
+												  VARIANT *aQserverItems, 
+												  [ out ] ULONG* pceltFetched );
+
+		[helpstring("method Skip")] HRESULT Skip( [in ] ULONG celt );
+		[helpstring("method Reset")] HRESULT Reset();
+		[helpstring("method Clone")] HRESULT Clone([ out ] IEnumQserverItemsVariant** ppenum );
+	};
+
+
+////////////////////////////////////////////////////////////////////////////////////////	
+// 
+// ICopyItemData
+// 	
+
+	[
+		object,
+		uuid(E04E15C8-BD46-11D2-B661-0020AFEED321),
+	
+		helpstring("ICopyItemData Interface"),
+		pointer_default(unique),
+		hidden,
+		restricted
+	]
+	interface ICopyItemData : IUnknown
+	{
+        [helpstring("method OpenFile")] HRESULT Open( [ in ]ULONG ulFileID );
+        [helpstring("method GetFileSize")] HRESULT GetSize( [ out ] ULONG* pulFileSize );
+        [helpstring("method Read")] HRESULT Read( [ in ] ULONG ulBufferSize,
+                                                  [ out ] ULONG* pulBytesRead,
+                                                  [ out, size_is( ulBufferSize ), length_is( *pulBytesRead ) ] BYTE* lpBuffer);
+        [helpstring("method Close")] HRESULT Close();
+	};
+
+
+////////////////////////////////////////////////////////////////////////////////////////	
+// 
+// IQserverConfig
+// 	
+
+	[
+		object,
+		uuid(F7BFE116-B480-11D2-B65E-0020AFEED321),
+	
+		helpstring("IQserverConfig Interface"),
+		pointer_default(unique),
+		restricted
+	]
+	interface IQserverConfig : IUnknown
+	{
+		[helpstring("method GetValue")] HRESULT GetValue( [in] BSTR bstrFieldName, 
+														  [out] VARIANT *v );	
+		[helpstring("method SetValue")] HRESULT SetValue( [in] BSTR bstrFieldName, 
+														  [in] VARIANT v );	
+		[helpstring("method Detach")] HRESULT Detach();
+														  		
+	};
+
+////////////////////////////////////////////////////////////////////////////////////////	
+// 
+// IQuarantineServer
+// 	
+
+	[
+		object,
+		uuid(C60B015F-894B-11D2-8E5F-2A0712000000),
+	
+		helpstring("IQuarantineServer Interface"),
+		pointer_default(unique)
+	]
+	interface IQuarantineServer : IUnknown
+	{
+		[helpstring("method EnumItems")] HRESULT EnumItems([ out ] IEnumQuarantineServerItems** pEnum);
+		[helpstring("method GetCopyInterface")] HRESULT GetCopyInterface([ out ] ICopyItemData** pCopy);
+		[helpstring("method RemoveItem")] HRESULT RemoveItem([in] ULONG ulFileID );
+		[helpstring("method RemoveAllItems")] HRESULT RemoveAllItems();
+		[helpstring("method EnumItemsVariant")] HRESULT EnumItemsVariant([in] VARIANT *va, [ out ] IEnumQserverItemsVariant** pEnum);
+		[helpstring("method GetQuarantineItem")] HRESULT GetQuarantineItem( [ in ] ULONG ulItem,
+																			[ out ] IQuarantineServerItem** pItem );
+		[helpstring("method Config")] HRESULT Config( [out] IQserverConfig ** pConfig );
+		[helpstring("method GetItemCount")] HRESULT GetItemCount( [out] ULONG* pulCount );
+	};
+
+[
+	uuid(C60B0153-894B-11D2-8E5F-2A0712000000),
+	version(1.0),
+	helpstring("qserver 1.0 Type Library")
+]
+library QSERVERLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(C60B0160-894B-11D2-8E5F-2A0712000000),
+		helpstring("QuarantineServer Class")
+	]
+	coclass QuarantineServer
+	{
+		[default] interface IQuarantineServer;
+	};
+	[
+		uuid(3DA647F2-ABFB-11D2-8E6D-281ED2000000),
+		helpstring("QuarantineServerItem Class")
+	]
+	coclass QuarantineServerItem
+	{
+		[default] interface IQuarantineServerItem;
+	};
+	[
+		uuid(1F5FCDD7-B099-11D2-B65E-0020AFEED321),
+		helpstring("EnumQserverItemsVariant Class")
+	]
+	coclass EnumQserverItemsVariant
+	{
+		[default] interface IEnumQserverItemsVariant;
+	};
+	[
+		uuid(F7BFE117-B480-11D2-B65E-0020AFEED321),
+		helpstring("QserverConfig Class")
+	]
+	coclass QserverConfig
+	{
+		[default] interface IQserverConfig;
+	};
+	[
+		uuid(E04E15C9-BD46-11D2-B661-0020AFEED321),
+		helpstring("CopyItemData Class")
+	]
+	coclass CopyItemData
+	{
+		[default] interface ICopyItemData;
+	};
+};

@@ -1,0 +1,1077 @@
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+md %root%..\Final
+set ALL=1
+set AVSTE_DLL =
+set NAVOPTRF_DLL =
+set AVRES_DLL =
+set BRANDING_INI =
+set HTML_HELP =
+set WIN_HELP =
+set QCONSOLE_HELP =
+set INSTALL_TXT=0
+set Localization=0
+set SCSS=0
+set NOSB=0
+set AUTORUN=0
+set CDSTART=0
+set IWP=1
+set EXTERNAL_FILES=
+set MULTI_PK=0
+set BASE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Instopts_Base.dat
+set LICENSE_INSTOPTS=
+set SKU_DAT=
+set CUSTOM_INSTOPTS=
+set TOOLS_FOLDER=%root%tools\
+set CTO=0
+
+rem -----------------------------
+rem check for known parameters
+rem -----------------------------
+do param = 1 to 127
+  shift 1
+  iff "%0"=="" then
+     shift -%param%
+     goto continue
+  endiff
+  iff "%@upper[%0]"=="/PREPAID" then
+  	 set PREPAID=/PREPAID
+  	 set ALL=0
+  endiff
+  iff "%@upper[%0]"=="/OEM" then
+  	 set OEMLAYOUT=/OEM
+  	 set ALL=0
+  endiff
+enddo
+shift -127
+
+:continue
+
+:WboxSysBuilder_PP
+iff %PREPAID% == /PREPAID .OR. %ALL% == 1 then
+	set NAME=WboxSysBuilder
+	set LAYOUT_DEST=%root%..\Final\Licensed\NAV\CD_STAGING\PREPDOEM\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=0
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Prepaid_WBoxSysBuilder_SKU.dat
+	set CTO=1
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Prepaid_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Prepaid_WBoxSysBuilder.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set PARENT=1
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set DRMINST_DLL=%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAV2004_ACTIVATION_ENGLISH\DRMINST.dll
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAVCTO2004_ACTIVATION_ENGLISH\AVSTE.DLL"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Licensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:HPCPC_LITE
+iff %PREPAID% == /PREPAID .OR. %ALL% == 1 then
+	set NAME=HPCPC_LITE
+	set LAYOUT_DEST=%root%..\Final\Licensed\NAV\CD_STAGING\PREPDOEM\
+	set MSI_NAME=NAV_RETAIL_NOSB
+	set CD_LAYOUT=0
+	set EMPTY_IE=0
+	set ACROBAT=0
+	set SCSS=0
+	set Localization=0
+	set NAVPRO=0
+	set NOSB=1
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=0
+	set AUTORUN=1
+	set CDSTART=0
+	set INSTALL_TXT=1
+	set CDSTART_HELP=
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Prepaid_HPCPC_SKU.dat
+	set CTO=1
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Prepaid_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Prepaid_HPCPC.dat
+	set CPDOEM=%root%..\..\SDKs\CPDOEM\Bin.ira\ALL\CPDOEM.dll
+	set NAVEGG=0
+	set PARENT=1
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set DRMINST_DLL=%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAV2004_ACTIVATION_ENGLISH\DRMINST.dll
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAVCTO2004_ACTIVATION_ENGLISH\AVSTE.DLL"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Licensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:HPBPCHPM_LITE
+iff %PREPAID% == /PREPAID .OR. %ALL% == 1 then
+	set NAME=HPBPCHPM_LITE
+	set LAYOUT_DEST=%root%..\Final\Licensed\NAV\CD_STAGING\PREPDOEM\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=0
+	set EMPTY_IE=0
+	set ACROBAT=0
+	set SCSS=0
+	set Localization=0
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=0
+	set AUTORUN=1
+	set CDSTART=0
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Prepaid_HPBPCHPM_SKU.dat
+	set CTO=1
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Prepaid_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Prepaid_HPBPCHPM.dat
+	set CPDOEM=%root%..\..\SDKs\CPDOEM\Bin.ira\ALL\CPDOEM.dll
+	set NAVEGG=0
+	set PARENT=1
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set DRMINST_DLL=%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAV2004_ACTIVATION_ENGLISH\DRMINST.dll
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAVCTO2004_ACTIVATION_ENGLISH\AVSTE.DLL"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Licensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:MPC_CD
+iff %PREPAID% == /PREPAID .OR. %ALL% == 1 then
+	set NAME=MPC_CD
+	set LAYOUT_DEST=%root%..\Final\Licensed\NAV\CD_STAGING\PREPDOEM\
+	set MSI_NAME=NAV_RETAIL
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=0
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Prepaid_MPC_SKU.dat
+	set CTO=1
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Prepaid_License.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Prepaid_MPC.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set PARENT=1
+	set SYMLT=%root%..\Install\Release\SYMLT_XLOK.MSI
+	set EXTERNAL_FILES=%root%..\Install\release\XLOK\
+	set DRMINST_DLL=%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAV2004_ACTIVATION_ENGLISH\DRMINST.dll
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\Activation\NAVCTO2004_ACTIVATION_ENGLISH\AVSTE.DLL"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Licensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Licensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	gosub CopyFiles
+endiff
+
+:SSDP
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONSSDP
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=0
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\SSDP_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\SSDP.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.DLL"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:WBoxSysBuilder
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONWBoxSysBuilder
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\WBoxSysBuilder\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\WBoxSysBuilder_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\WBoxSysBuilder.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:SMLP
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONSMLP
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\SMLP\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=0
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\SMLP_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\SMLP.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.DLL"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:MICROCENTER
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NAVVERSIONMicE
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\MicrElec\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\MicroCenter_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\MicroCenter.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:DELL
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONDELL
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\Dell\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Dell_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Dell.dat
+	set CPDOEM=%root%..\..\SDKs\CPDOEM\Bin.ira\ALL\CPDOEM.dll
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:EMACHINES
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONEMCHN
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\eMachine\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Emachines_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Emachines.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:GATEWAY
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONGTWY
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\Gateway\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set INSTALL_TXT=1
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Gateway_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Gateway.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:INTEL_LITE
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=INTEL_LITE
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\INTEL\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set INSTALL_TXT=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=1
+	set CDSTART=0
+	set CDSTART_HELP=
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=0
+	set EMPTY_IE=0
+	set ACROBAT=0
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\INTEL_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Intel.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+
+	rem make the WinRAR selfextracting file
+	set SELFEXTRATING_DEST=%root%..\Final\Unlicensed\NAV\OEM\INTEL\SelfExtracts\
+	gosub MakeWinRAR
+endiff
+
+:HPBPCHPM_LITE
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=HPBPCHPM_LITE
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\HPBPCHPM\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set INSTALL_TXT=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=1
+	set CDSTART=0
+	set CDSTART_HELP=
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=0
+	set EMPTY_IE=0
+	set ACROBAT=0
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\HPBPCHPM_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\HPBPCHPM.dat
+	set CPDOEM=%root%..\..\SDKs\CPDOEM\Bin.ira\ALL\CPDOEM.dll
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+
+	rem make the WinRAR selfextracting file
+	set SELFEXTRATING_DEST=%root%..\Final\Unlicensed\NAV\OEM\HPBPCHPM\SelfExtracts\
+	gosub MakeWinRAR
+endiff
+
+:NVHPCPC_LITE
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVHPCPC_LITE
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\HP_CPC\
+	set MSI_NAME=NAV_OEM_NOSB
+	set NAVPRO=0
+	set NOSB=1
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=1
+	set CDSTART=0
+	set INSTALL_TXT=1
+	set CDSTART_HELP=
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=0
+	set EMPTY_IE=0
+	set ACROBAT=0
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\HPCPC_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\HPCPC.dat
+	set CPDOEM=%root%..\..\SDKs\CPDOEM\Bin.ira\ALL\CPDOEM.dll
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+
+	rem make the WinRAR selfextracting file
+	set SELFEXTRATING_DEST=%root%..\Final\Unlicensed\NAV\OEM\HP_CPC\SelfExtracts\
+	gosub MakeWinRAR
+endiff
+
+:IBM
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NAVVERSIONIBM
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\IBM\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\IBM_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\IBM.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:MICRON
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NAVVERSIONMPC
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\MPC\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Micron_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Micron.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:SONY
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONSony
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\Sony\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Sony_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Sony.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+	
+	rem copy the SONY Specify readme.txt
+	copy /z %root%..\nobuilds\README_SONY.txt %LAYOUT_DEST%%LAYOUT_NAME%\readme.txt
+	copy /z %root%..\nobuilds\README_SONY.txt %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\NORTON\APP\readme.txt
+endiff
+
+:TOSHIBA
+iff %OEMLAYOUT% == /OEM .OR. %ALL% == 1 then
+	set NAME=NVVERSIONTSHB
+	set LAYOUT_DEST=%root%..\Final\Unlicensed\NAV\OEM\Toshiba\
+	set MSI_NAME=NAV_OEM
+	set NAVPRO=0
+	set NOSB=0
+	set IWP=1
+	set CD_LAYOUT=1
+	set EMPTY_IE=0
+	set ACROBAT=1
+	set SCSS=0
+	set Localization=0
+	set OEMTOOL=0
+	set OEM=1
+	set AUTORUN=0
+	set CDSTART=1
+	set INSTALL_TXT=1
+	set CDSTART_HELP=%root%..\Nobuilds\Help\WinHelp\CDstrhlp\Retail\CDSTART.HLP
+	set PARENT=1
+	set SYMLT=
+	set EXTERNAL_FILES=
+	set SKU_DAT=%root%..\Nobuilds\configfiles\SKU\OEM\Toshiba_SKU.dat
+	set CTO=0
+	set LICENSE_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\License\Unlicensed.dat
+	set CUSTOM_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\Custom\OEM\Toshiba.dat
+	set CPDOEM=0
+	set NAVEGG=0
+	set DRMINST_DLL=
+	set AVSTE_DLL="%root%..\BIN.IRA\branding\Symantec\NAV\Unlicensed\AntiTamper\AVSTE.dll"
+	set NAVOPTRF_DLL="%root%..\BIN.IRA\branding\SuiteChild\NAV\Unlicensed\AntiTamper\NAVOPTRF.DLL"
+	set AVRES_DLL="%root%..\BIN.IRA\branding\Symantec\NAVOEM\UnLicensed\AVRES.dll"
+	set BRANDING_INI="%root%..\BIN.IRA\branding\Symantec\Branding.ini"
+	set NAVSESS_TPL="%root%..\nobuilds\navsess.tpl"
+	set EULA_TXT="%root%..\Nobuilds\end_user.txt"
+	gosub CopyFiles
+endiff
+
+:SDKFiles
+xcopy /E /D /F /Y /C /I %root%..\Include %root%..\Final\SDK\Include
+xcopy /E /D /F /Y /C /I %root%..\..\SDKs\CommonClient\Include %root%..\Final\SDK\CommonClient\Include
+xcopy /E /D /F /Y /C /I %root%..\Install\MSI %root%..\Final\SDK\MSI
+xcopy /D /F /Y /C %root%..\Install\release\SCSSDist_NAV_2005.msi %root%..\Final\SDK\MSI\release\*.*
+xcopy /D /F /Y /C %root%..\Install\release\SCSSDist_NAV_TEST_VERSION_1.msi %root%..\Final\SDK\MSI\release\*.*
+xcopy /D /F /Y /C %root%..\Install\release\SCSSDist_NAV_TEST_VERSION_2.msi %root%..\Final\SDK\MSI\release\*.*
+xcopy /E /D /F /Y /C /I %root%..\BIN.IRA %root%..\Final\SDK\BIN\BIN.IRA
+xcopy /E /D /F /Y /C /I %root%..\BIN.IDA %root%..\Final\SDK\BIN\BIN.IDA
+xcopy /E /D /F /Y /C /I %root%..\BIN.DVX %root%..\Final\SDK\BIN\BIN.DVX
+xcopy /E /D /F /Y /C /I %root%..\BIN.DOS %root%..\Final\SDK\BIN\BIN.DOS
+xcopy /E /D /F /Y /C /I %root%..\LIB.IRA %root%..\Final\SDK\LIB\LIB.IRA
+xcopy /E /D /F /Y /C /I %root%..\LIB.IDA %root%..\Final\SDK\LIB\LIB.IDA
+xcopy /E /D /F /Y /C /I %root%..\LIB.DVX %root%..\Final\SDK\LIB\LIB.DVX
+xcopy /E /D /F /Y /C /I %root%..\LIB.DOS %root%..\Final\SDK\LIB\LIB.DOS
+xcopy /E /D /F /Y /C /I %root%..\..\SDKs %root%..\Final\SDK\SDKs
+
+:SYMOEM
+md %root%..\Final\SYMOEM
+copy %root%..\..\SDKs\InstallToolBox\BIN.IRA\OEMTool.exe %root%..\Final\SYMOEM\SYMOEM.exe
+
+:MULTILANG
+::copy %root%..\bin.ira\CDStart.exe %root%..\Final\MultiLang_Leno\HPBPCHPM_LITE\CDStart.exe
+::pkzip25 -ext -dir -over %root%..\Nobuilds\Defs\CRNTHUBB.zip %root%..\Final\MultiLang_Leno\HPBPCHPM_LITE\VirusDef
+
+echo.
+echo *********************************************************
+echo ******************** FINISHED ***************************
+echo *********************************************************
+quit
+
+
+
+
+
+:CopyFiles
+rem --------------------------------------------------------------------------------------------------
+rem GENERIC LAYOUT GENERATION SUBROUTINE
+rem		%NAME%=The name of the layout (name of the folder where it is created)
+rem		%LAYOUT_DEST%=The name of the parentdir where the layout will get created NAV\OEM, etc..
+rem		%MSI_NAME%=The name of the MSI to be copied into the layout
+rem		%CD_LAYOUT%=(1 or 0)When its a layout to be made into a CD we copy big files like IE, etc...
+rem		%ACROBAT%=(1 or 0)Determines whether or not we put the acrobat reader on the CD...
+rem		%NAVPRO%=(1 or 0)When its a NAVPRO layout we need to copy the AdvTools installer, etc..
+rem		%NOSB%=(1 or 0)Is this a layout wihtout SB or not? This only affect which pdf help we pick up
+rem		%OEMTOOL%=(1 or 0)Determines whether or not to copy OEMTool.exe to the layout
+rem		%SKU_DAT%=The name of the sku dat file to pick up
+rem		%CPDOEM%=The naame of the CPDOEM.dll to place in the layout
+rem --------------------------------------------------------------------------------------------------
+
+	set LAYOUT_NAME=%@REPLACE[VERSION,11,%NAME%]%
+	rem Make the folders needed for all layouts
+	md /s %LAYOUT_DEST%%LAYOUT_NAME%
+	md %LAYOUT_DEST%%LAYOUT_NAME%\NAV
+	md %LAYOUT_DEST%%LAYOUT_NAME%\VirusDef
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSI
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\LiveReg
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\LUpdate
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\Edisk
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SEVINST
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon\ccCommon
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist\MSRedist
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet\SymNet
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymLnch
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ClientIDS
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ClientIDS\ClientIDS
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymProtect
+
+	rem Create and copy instopst.dat to layout
+	gosub create_instopts
+	
+	rem Copy the files needed on all layouts
+	copy /S %root%..\Install\release\External %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External
+	copy /S %EXTERNAL_FILES% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External
+	copy %EULA_TXT% "%LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\Norton\APP\end_user.txt"
+	copy %NAVOPTRF_DLL% "%LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\Norton\NAVOPTRF.DLL"
+	copy %AVRES_DLL% "%LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\Norton\AVRES.DLL"
+	copy %NAVSESS_TPL% "%LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\Norton\APP\navsess.tpl"
+	copy %root%..\BIN.IRA\Omigrate.exe %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Omigrate.exe
+	copy %root%..\..\nobuilds\NisPatch\Iamapp.dll %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Iamapp.dll
+	copy %root%..\install\release\%MSI_NAME%.msi %LAYOUT_DEST%%LAYOUT_NAME%\NAV\NAV.msi
+	copy %BRANDING_INI% "%LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\Norton\branding.ini"
+	copy %root%..\..\SDKs\CommonClient\MergeModules\ccCommon.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon
+	xcopy %root%..\..\SDKs\CommonClient\MergeModules\ccCommon\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\ccCommon\ccCommon
+	copy %root%..\..\SDKs\SymNetDrv\MSI\SymNet.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet\SymNet.msi
+	xcopy %root%..\..\SDKs\SymNetDrv\MSI\SymNet\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymNet\SymNet
+	copy %root%..\..\SDKs\ClientIDS\MSI\ClientIDS.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\ClientIDS\ClientIDS.msi
+	xcopy %root%..\..\SDKs\ClientIDS\MSI\ClientIDS\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\ClientIDS\ClientIDS
+	copy %root%..\install\release\MSRedist.msi %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist
+	xcopy %root%..\install\release\MSRedist\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSRedist\MSRedist
+	xcopy %root%..\..\SDKs\SymProtect\MSI\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymProtect
+	copy %root%..\bin.ira\NAVsetup.exe %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\InstallToolBox\BIN.IRA\SymLnch.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\SymLnch
+	copy "%SKU_DAT%" %LAYOUT_DEST%%LAYOUT_NAME%\NAV\SKU.dat
+	copy "%CPDOEM%" %LAYOUT_DEST%%LAYOUT_NAME%\NAV
+	copy %root%..\nobuilds\version.dat %LAYOUT_DEST%%LAYOUT_NAME%\NAV\version.dat
+	copy %root%..\..\nobuilds\MSI\9x\instmsia.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSI
+	copy %root%..\..\nobuilds\MSI\NT\instmsiw.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSI
+	copy %root%..\..\Nobuilds\LiveUpdate\redist\Release\LUSETUP.EXE %LAYOUT_DEST%%LAYOUT_NAME%\Support\LUpdate
+	xcopy %root%..\..\Nobuilds\LiveSubscribe\redist\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\LiveReg
+	copy %root%..\..\SDKs\SymEvent\bin.ira\SEVINST.EXE %LAYOUT_DEST%%LAYOUT_NAME%\Support\SEVINST
+	
+	iff "%NAVPRO" == "1" then
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAVP\common\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAVP\standalone\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+	elseiff "%SCSS" == "1" then
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\common\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\scriptblocking\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\SCSS\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\Standard\LU_sub.chm  /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+	else
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\common\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\scriptblocking\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\Standard\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+		xcopy %root%..\..\Nobuilds\Help\HTML\NAV\standalone\*.* /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\CommonFi\SYMSHARE\Help\
+	endiff
+	
+	iff "%PARENT%" == "1" then
+		md  %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent
+		copy %root%..\install\release\Parent.msi %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent.msi
+		xcopy %root%..\install\release\Parent\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent
+		copy %AVSTE_DLL% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\Parent\NORTON\AVSTE.DLL
+	endiff 
+	
+	copy %SYMLT% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\SYMLT.msi
+			
+	iff "%NOSB%" == "0" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\ScrBlock
+		copy %root%..\Install\Release\ScrBlock.MSI %LAYOUT_DEST%%LAYOUT_NAME%\Support\ScrBlock
+		copy %root%..\Nobuilds\SBServALE\8CA855C8BD1BA66A68D8B7444C3FF5EA %LAYOUT_DEST%%LAYOUT_NAME%\Support\ScrBlock\NISSBALE
+	endiff
+	
+	iff "%IWP%" == "1" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP
+		copy %root%..\install\release\IWP.MSI %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP.MSI
+		xcopy %root%..\install\release\IWP\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\NAV\IWP
+		
+		md %LAYOUT_DEST%%LAYOUT_NAME%\IDSDefs
+		xcopy %root%..\..\SDKs\ClientIDS\IDSDefs\*.* /s /y %LAYOUT_DEST%%LAYOUT_NAME%\IDSDefs
+	endiff
+	
+	iff "%DRMINST_DLL%" NE "" then
+		copy %DRMINST_DLL% %LAYOUT_DEST%%LAYOUT_NAME%\Support\DRMINST.dll
+		copy %root%..\..\Nobuilds\XtreamLok\binaries\tfdtctt8.dll %LAYOUT_DEST%%LAYOUT_NAME%\Support\tfdtctt8.dll
+	endiff
+	
+	rem copy over prescan dependancies
+	copy %root%..\Install\release\MSRedist\System32\msvcr71.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\Install\release\MSRedist\System32\msvcp71.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\CommonClient\BIN\BIN.IRA\ccScan.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\CommonClient\BIN\BIN.IRA\ccL30.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\CommonClient\BIN\BIN.IRA\ccGSE.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\SDKs\ECOM\BinIntelAnsiWin32Release\ecmldr32.DLL %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\..\nobuilds\defutils\bin.ira\defutdcd.dll %LAYOUT_DEST%%LAYOUT_NAME%
+	copy %root%..\BIN.IRA\ProbeGSE.dll %LAYOUT_DEST%%LAYOUT_NAME%
+			
+	rem Unzip the latest virus definitions
+	pkzip25 -ext -dir -over %root%..\..\Nobuilds\Defs\CRNTHUBB.zip %LAYOUT_DEST%%LAYOUT_NAME%\VirusDef
+	
+	rem Copy over OEMTool.exe if its needed
+	rem iff "%OEMTOOL%" == "1" then
+	rem	copy %root%..\bin.ira\OEMTool.exe %LAYOUT_DEST%%LAYOUT_NAME%\NAV\SYMOEM.exe
+	rem endiff
+	
+	rem Copy NAVPRO specific & NAV standard specific files
+	iff "%NAVPRO%" == "1" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\AdvTools
+		xcopy "%root%..\Install\NU\Media\New Media\Disk Images\Disk1\*.*" /s /y %LAYOUT_DEST%%LAYOUT_NAME%\AdvTools /f
+		del /sxyzq %LAYOUT_DEST%%LAYOUT_NAME%\AdvTools\ph
+		del /y %LAYOUT_DEST%%LAYOUT_NAME%\AdvTools\_ISDel.exe
+		copy %root%..\..\nobuilds\Norton_Emergency_Disk\NAVPRO\*.* %LAYOUT_DEST%%LAYOUT_NAME%\Support\Edisk
+	else
+		copy %root%..\..\nobuilds\Norton_Emergency_Disk\*.* %LAYOUT_DEST%%LAYOUT_NAME%\Support\Edisk
+	endiff
+	
+	rem Copy readme.txt	
+	iff "%SCSS%" == "1" then
+		rem copy the SCSS Specify readme.txt
+		copy /z %root%..\nobuilds\README_SCSS.txt %LAYOUT_DEST%%LAYOUT_NAME%\readme.txt
+		copy /z %root%..\nobuilds\README_SCSS.txt %LAYOUT_DEST%%LAYOUT_NAME%\NAV\External\NORTON\APP\readme.txt
+	else
+		rem Pro and non-Pro are using the same readme.txt
+		copy %root%..\nobuilds\readme.txt %LAYOUT_DEST%%LAYOUT_NAME%\readme.txt
+	endiff
+	
+	rem EVERYBODY wants a Manual, u got it!
+	md %LAYOUT_DEST%%LAYOUT_NAME%\Manual
+
+	iff "%OEM%" == "1" then
+	    md %LAYOUT_DEST%%LAYOUT_NAME%\VirusDef\Latest
+	    iff "%NOSB%" == "1" then
+	        copy %root%..\..\nobuilds\pdf\NAVO2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NAVO2004.pdf
+	    else
+	        copy %root%..\..\nobuilds\pdf\NAVU2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NAVU2004.pdf
+	    endiff
+		elseiff "%Localization%" == "1" then
+	    copy %root%..\..\nobuilds\pdf\NAVU2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NAVU2004.pdf
+	elseiff "%NAVPRO%" == "1" then
+	    copy %root%..\..\nobuilds\pdf\NAP2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NAP2004.pdf
+	elseiff "%SCSS%" == "1" then
+	    copy %root%..\..\nobuilds\pdf\NAVS2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NAVS2004.pdf
+	elseiff "%MULTI_PK%" == "1" then
+	    copy %root%..\..\nobuilds\pdf\NAVPK2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NVPK2004.pdf
+	    set MULTI_PK=0
+	else
+	    copy %root%..\..\nobuilds\pdf\NAV2004.pdf %LAYOUT_DEST%%LAYOUT_NAME%\Manual\NAV2004.pdf
+	endiff
+	
+	iff "%EMPTY_IE%" == "1" then
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSIE
+	endiff
+	
+	iff "%AUTORUN%" == "1" then
+		copy %root%..\bin.ira\CDStart.exe %LAYOUT_DEST%%LAYOUT_NAME%\AutoRun.exe
+		copy %root%..\nobuilds\AUTORUN.inf %LAYOUT_DEST%%LAYOUT_NAME%\autorun.inf
+	endiff
+	
+	iff "%CDSTART%" == "1" then
+		copy %root%..\bin.ira\CDStart.exe %LAYOUT_DEST%%LAYOUT_NAME%\CDStart.exe
+		copy %root%..\nobuilds\CDSTART.inf %LAYOUT_DEST%%LAYOUT_NAME%\autorun.inf
+	endiff		
+
+	rem Copy over CD layout specific files.
+	iff "%CD_LAYOUT%" == "1" then
+		
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\Edisk
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSIE
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\Repair	
+		md %LAYOUT_DEST%%LAYOUT_NAME%\Support\pcA_Host
+
+		copy %CDSTART_HELP%	%LAYOUT_DEST%%LAYOUT_NAME%\CDStart.hlp
+		copy %root%..\nobuilds\IE\*.* %LAYOUT_DEST%%LAYOUT_NAME%\Support\MSIE
+		copy /S %root%..\nobuilds\NAVTools\*.* %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\Repair		
+
+		rem Delete the readme file that we don't want in there
+		iff "%NAVPRO%" == "1" then
+			del /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\Repair\Readme.txt
+			ren %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\Repair\Readme_pro.txt %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\Repair\Readme.txt
+		else
+			del /y %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\Repair\Readme_pro.txt
+		endiff
+		
+		rem we should give users adobe acrobat reader on CD only
+		iff "%ACROBAT%" == "1" then
+			md %LAYOUT_DEST%%LAYOUT_NAME%\Manual\Acrobat
+			copy %root%..\..\nobuilds\Acrobat\ar60enu.exe %LAYOUT_DEST%%LAYOUT_NAME%\Manual\Acrobat\ar60enu.exe
+		endiff
+		
+		rem copy the pcA host for tech support
+		copy "%root%..\nobuilds\pcA\NAV Support Host Only Serialized.MSI" "%LAYOUT_DEST%%LAYOUT_NAME%\Support\pcA_Host\PCA_HOST.MSI"
+				
+		iff "%NAVEGG%" == "1" then 
+			md %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\NAVEgg
+			copy %root%..\nobuilds\NAVEgg.exe %LAYOUT_DEST%%LAYOUT_NAME%\Support\NAVTools\NAVEGG\NAVEgg.exe
+		endiff
+		
+	endiff
+	
+	rem NOTE: all of this should get moved to AVRES.
+	
+	rem copy CDStart branding bitmap
+	rem iff "%LOGO%" == "1" then
+	rem	copy %LOGO_BMP% "%LAYOUT_DEST%%LAYOUT_NAME%\logo_vendor.bmp"
+	rem endiff
+	
+	rem copy install branding bitmap
+	rem iff "%INSTALL_LOGO%" == "1" then
+	rem 	copy %INSTALL_LOGO_BMP% "%LAYOUT_DEST%%LAYOUT_NAME%\Support\COBRAND.BMP"
+	rem endiff
+		
+	iff "%INSTALL_TXT%" == "1" then
+		copy %root%..\nobuilds\install.txt %LAYOUT_DEST%%LAYOUT_NAME%\install.txt
+	endiff
+
+return
+
+:create_instopts
+	echo creating instopts.dat
+	delay 2
+
+	rem Must use absolute path for dat files since 
+	rem NavOpt may not be able to handle relative path.
+	
+	set TEMP1_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp1instopts.dat
+	set TEMP2_INSTOPTS=%@FULL[..]\Nobuilds\configfiles\temp2instopts.dat
+	
+	rem Clear the temp instopts used to store previous dat files	
+	del /zqey %TEMP1_INSTOPTS%
+	del /zqey %TEMP2_INSTOPTS%
+	del /zqey %LAYOUT_DEST%%LAYOUT_NAME%\NAV\instopts.dat
+		
+	rem STEP 1 - Merge base dat with license dat		
+	%TOOLS_FOLDER%mergedatfiles.exe /dat1:%BASE_INSTOPTS% /dat2:%LICENSE_INSTOPTS% /final:%TEMP1_INSTOPTS%
+	
+	rem STEP 2 - Merge resulting temp dat from step 1 with custom dat
+	iff "%CUSTOM_INSTOPTS%" ne "" then
+		%TOOLS_FOLDER%mergedatfiles.exe /dat1:%TEMP1_INSTOPTS% /dat2:%CUSTOM_INSTOPTS% /final:%TEMP2_INSTOPTS%
+	else
+		copy %TEMP1_INSTOPTS% %TEMP2_INSTOPTS%
+	endiff	
+	
+	rem STEP 3 - Copy final instopts.dat to layout
+	copy %TEMP2_INSTOPTS% %LAYOUT_DEST%%LAYOUT_NAME%\NAV\instopts.dat
+return
+
+::
+:: MakeWinRAR subroutine -- makes the WinRAR self-extracting executable for the layout that we just created.
+::
+:MakeWinRAR
+
+md %SELFEXTRATING_DEST%
+%root%..\Nobuilds\WinRAR\winrar a -afrar -r -s -ep1 -m5 -sfx%root%..\Nobuilds\WinRAR\NAV.SFX -iicon%root%..\Nobuilds\WinRAR\Setup.ico %SELFEXTRATING_DEST%%LAYOUT_NAME% %LAYOUT_DEST%%LAYOUT_NAME%\*.*
+%root%..\Nobuilds\WinRAR\winrar c -z%root%..\Nobuilds\WinRAR\comment.txt %SELFEXTRATING_DEST%%LAYOUT_NAME%.exe
+
+return

@@ -1,0 +1,432 @@
+     *****************************************************************
+                 Norton AntiVirus for Windows NT techsup.TXT
+                               September 1996
+     *****************************************************************
+                   Copyright (c) 1996 Symantec Corporation
+
+
+Miscellaneous tech support notes
+
+-----------------------------------------------------------------------------
+
+If you are not administrator, pressing the scheduler button will do
+nothing.
+
+-----------------------------------------------------------------------------
+
+Note:
+  A copy of the section below can also be found in the file README.TXT in
+  the NAVAP area.  Please keep the information in both files synchronized.
+
+* NAVAP Internal registry keys.
+
+  All NAVAP internal registry keys are located under:
+
+  WinNT: \HKEY_LOCAL_MACHINE
+         |
+         +-\SOFTWARE
+         | |
+         | +-\Symantec
+           | |
+           | +-\Norton AntiVirus NT
+             | |
+             | +-\Auto-Protect
+               | |
+               | +-\InternalSettings
+                 | |
+                 | |
+                   |
+                   |
+
+  Win95: \HKEY_LOCAL_MACHINE
+         |
+         +-\SOFTWARE
+         | |
+         | +-\Symantec
+           | |
+           | +-\Norton AntiVirus
+             | |
+             | +-\Auto-Protect
+               | |
+               | +-\InternalSettings
+                 | |
+                 | |
+                   |
+                   |
+
+  These keys are examined only when the NAVAP driver loads.  External calls
+  to the driver (such as reloading the configuration) can not change their
+  status.
+
+  Win95:
+    When NAVAP.VXD is loaded statically, unloading the agent and loading
+    it again will not force the VxD to reload the internal registry keys.
+
+  If an internal key is not present in the registry when NAVAP loads, its
+  default value is used.
+
+  Win95:
+    Some of the registry keys documented here are not yet supported in any
+    shipping Windows 95 products.  Refer to the documentation supplied with
+    Luigi and LuigiPlus for information similar to the one below.
+
+  List of the internal registry keys:
+
+  -------------
+
+  Key:         ControlBreakHandler
+  Value:       DWORD
+  Default:     1
+  Platforms:   Win95
+  Description: When NAVAP loads, it installs a Control-Break / Control-C
+               hook, which protects the driver from being interrupted while
+               servicing events.  If this key contains 0 when NAVAP loads,
+               the hook will not be installed, and RM clients will be allowed
+               to interrupt the driver while it is servicing events.  Such
+               interruptions could leave the current VM or the whole system
+               in an unusable state.
+  Purpose:     Needed when tracking problems.
+
+  -------------
+
+  Key:         DeviceShutdownDelayTime
+  Value:       DWORD
+  Default:     2000
+  Platforms:   Win95
+  Description: During shutdown, NAVAP can be configured to scan removable
+               media devices for boot sector viruses.  This key contains the
+               number of milliseconds NAVAP will wait for after the last
+               device was scanned before proceeding with the shutdown.
+  Purpose:     Several users have reported that when restarting their
+               computers in MS-DOS mode, their floppy disk drives do not stop
+               spinning after the boot scan during shutdown.  This is because
+               NAVAP scans the devices right before Windows returns to RM,
+               and the PM timeout callback for stopping the motors never gets
+               executed.  This delay allows Windows to stay in PM a little
+               longer, so that all devices reset properly.
+
+  -------------
+
+  Key:         ExclusionsEnabled
+  Value:       DWORD
+  Default:     1
+  Platforms:   WinNT, Win95
+  Description: This key controls NAVAP's exclusions APIs.  If it contains 0,
+               the exclusions APIs will be disabled.
+  Purpose:     Needed when tracking problems.
+
+  -------------
+
+  Key:         ExecuteAgent
+  Value:       DWORD
+  Default:     1
+  Platforms:   Win95
+  Description: During the initialization of NAVAP (when it loads statically),
+               the driver registers for appy time to execute its agent.  When
+               it gets notified of the appy time, it calls the Shell VxD to
+               launch the agent.  If this key is set to 0, the code for
+               launching the agent will be skipped, and the agent will not be
+               executed.
+  Purpose:     A user on MSN has reported that NAVAP displays a message
+               during startup, saying that the agent could not be launched.
+               Since the execution of the agent is done in different steps
+               and the same message is displayed if either step failed, this
+               key together with RegisterAppyTimeForAgent should be used to
+               determine the location of the breakage.
+
+  -------------
+
+  Key:         FileCacheEntries
+  Value:       DWORD
+  Default:     0x1000
+  Platforms:   WinNT
+  Description: NAVAP caches the file IDs of the last few files that were
+               scanned and that were determined to be clean.  This key sets
+               the number of file ID entries in the cache.  Currently
+               (8-28-96), each cache entry is 16 bytes in size.  Setting
+               this key to 0 fully disables the caching.
+  Purpose:     Use this registry switch to track problems and to fine tune
+               NAVAP's performance and memory usage.
+
+  -------------
+
+  Key:         FileCacheFilterFlags
+  Value:       DWORD
+  Default:     0x14
+  Platforms:   WinNT
+  Description: NAVAP caches the file IDs of the last few files that were
+               scanned and that were determined to be clean.  Certain
+               devices are known to not reliably return this unique file ID,
+               and therefore confuse the cache.  This key can be used to
+               filter out such devices.  The value can be a combination of
+               the following flags (defined in the WinNT 3.51 DDK):
+
+               FILE_REMOVABLE_MEDIA         0x00000001
+               FILE_READ_ONLY_DEVICE        0x00000002
+               FILE_FLOPPY_DISKETTE         0x00000004
+               FILE_WRITE_ONCE_MEDIA        0x00000008
+               FILE_REMOTE_DEVICE           0x00000010
+               FILE_DEVICE_IS_MOUNTED       0x00000020
+               FILE_VIRTUAL_VOLUME          0x00000040
+
+               Its default value is currently a combination of the
+               FILE_REMOTE_DEVICE and FILE_FLOPPY_DISKETTE flags, which means
+               that no caching will be done on floppy diskette drives and
+               remote (network) drives.  Setting this key to 0 will enable
+               the caching on all devices.
+  Purpose:     Use this registry switch to selectively enable/disable the
+               file caching on certain media.
+
+  -------------
+
+  Key:         ForcedInt13DeviceList
+  Value:       binary data
+  Default:     zero length binary data
+  Platforms:   WinNT (limited support), Win95
+  Description: This key controls which devices are examined when NAVAP
+               creates the list of INT 13 devices.  If there is binary data
+               in this key, it is treated as an array of bytes.  Each member
+               of this array is an INT 13 device ID, which will be examined,
+               even if IOS/BIOS do not report it as valid and
+               IgnoreInt13DeviceCount is 0.  The maximum length of this array
+               is 256 bytes.  Anything after the 256th byte will be ignored.
+               Incorrectly built list of INT 13 devices may result in errors
+               when reporting device related events, or missing boot sector
+               viruses / virus like activities!
+  Purpose:     This key was introduced together with IgnoreInt13DeviceCount.
+               It should be used to force processing of certain INT 13
+               devices when setting IgnoreInt13DeviceCount to non-zero value
+               does not work.
+  Note:        Processing of devices specified by this key override the
+               functionality of IgnoreInt13DeviceCount, but can be overridden
+               by HostileInt13DeviceList.
+
+  -------------
+
+  Key:         HostileInt13DeviceList
+  Value:       binary data
+  Default:     zero length binary data
+  Platforms:   WinNT (limited support), Win95
+  Description: This key controls which devices are examined when NAVAP
+               creates the list of INT 13 devices.  If there is binary data
+               in this key, it is treated as an array of bytes.  Each member
+               of this array is an INT 13 device ID, which will be skipped
+               when creating the device list.  The maximum length of this
+               array is 256 bytes.  Anything after the 256th byte will be
+               ignored.  Incorrectly built list of INT 13 devices may result
+               in errors when reporting device related events, or missing
+               boot sector viruses / virus like activities!
+  Purpose:     This key was introduced together with IgnoreInt13DeviceCount.
+               It should be used to exclude processing of certain INT 13
+               devices when setting IgnoreInt13DeviceCount to 0 does not
+               work.
+  Note:        Processing of devices specified by this key override the
+               functionality of both IgnoreInt13DeviceCount and
+               ForcedInt13DeviceList.
+
+  -------------
+
+  Key:         IgnoreInt13DeviceCount
+  Value:       DWORD
+  Default:     0
+  Platforms:   WinNT (limited support), Win95
+  Description: During startup, NAVAP creates a list of INT 13 devices.  This
+               list is later used to detect boot/MBR virus-like activities
+               as well as to determine which devices to be scanned during
+               shutdown.  To create this list, NAVAP walks through INT 13
+               devices, gets their parameters and processes the data.  If
+               this key contains 0, NAVAP gets a list of valid INT 13 devices
+               from IOS/BIOS, and processes only these.  If this key contains
+               a non-zero value, all devices from 0 to 0FFh are processed.
+  Purpose:     In the first release of NAVAP, all devices from 0 to 0FFh were
+               being processed.  Incompatibilties with some controllers and
+               computers (specifically Compaq) have been found, and because
+               of this NAVAP had to be changed to limit the devices to only
+               what IOS/BIOS reports as valid.  This key is a backdoor for
+               restoring the old functionality in case IOS/BIOS do not report
+               correct counts.  Incorrectly built list of INT 13 devices may
+               result in errors when reporting device related events, or
+               missing boot sector viruses / virus like activities!
+  Note:        Processing of devices specified in ForcedInt13DeviceList and
+               HostileInt13DeviceList can partially or fully override the
+               functionality of this key.
+
+  -------------
+
+  Key:         RealModeAPCommunication
+  Value:       DWORD
+  Default:     1
+  Platforms:   Win95
+  Description: When NAVAP loads, it checks whether NAVTSR/NAVBOOT is present
+               and disables it if it is there.  This is done by issuing
+               several RM INT 2F calls to the APIs of NAVTSR/NAVBOOT.  If
+               this key contains 0, then the code for issuing the INT 2Fs
+               will be disabled.  Doing so may cause conflicts between the
+               PM AP and RM AP!
+  Purpose:     Needed when tracking problems during startup.
+
+  -------------
+
+  Key:         RealModeAPEmulation
+  Value:       DWORD
+  Default:     1
+  Platforms:   Win95
+  Description: When NAVAP loads, it installs emulation of the NAVTSR/NAVBOOT
+               INT 2F APIs.  This emulation is used by the DOS scanner to
+               disable NAVAP when it accesses files for scanning.  If this
+               key contains 0, then the emulation APIs will not be installed,
+               and RM clients will not be able to communicate with NAVAP.
+  Purpose:     Needed when tracking problems during startup.  It can also be
+               used to increase NAVAP's security by preventing any RM clients
+               from disabling the driver through the INT 2F APIs.
+
+  -------------
+
+  Key:         RegisterAppyTimeForAgent
+  Value:       DWORD
+  Default:     1
+  Platforms:   Win95
+  Description: During the initialization of NAVAP (when it loads statically),
+               the driver registers for appy time to execute its agent.  If
+               this key is set to 0, the code for registering the appy time
+               will be skipped, and the agent will not be executed.
+  Purpose:     (same as ExecuteAgent)
+
+  -------------
+
+  Key:         SendInfoPackets
+  Value:       DWORD
+  Default:     1
+  Platforms:   WinNT, Win95
+  Description: When NAVAP needs to notify its user mode counterpart of an
+               event or action, it builds an asynchronous information packet.
+               This packet is then sent to the DriverComm module, which queues
+               it for "pick-up".  A user mode thread of NAVAP's counterpart
+               constantly picks up queued packets, transfers them to user
+               mode, and processes them.
+  Purpose:     If a test case generates info packets faster than they can be
+               picked up by user mode, then sooner or later the system will
+               start running out of memory.  Use this registry key to disable
+               generation of info packets while running such tests.
+
+  -------------
+
+  Key:         ShowUIWhileScanningBoot
+  Value:       DWORD
+  Default:     1
+  Platforms:   Win95
+  Description: During shutdown, NAVAP can be configured to scan removable
+               media devices for boot sector viruses.  While scanning these
+               boot sectors, NAVAP switches to message mode and displays a
+               dialog showing the progress of the scan.  This key controls
+               the code for displaying this dialog.  If the key is set to 0,
+               the code will be skipped and the user will not see the
+               message.
+  Purpose:     Certain video boards or video drivers have problems switching
+               to message mode to display NAVAP's UI after the shutdown
+               screen of Windows 95 has been displayed.  This key somewhat
+               solves the problem.
+  Note:        If a virus is found during that scan, NAVAP will disregard the
+               value of this key, and it will still attempt to display its
+               notification.
+
+  -------------
+
+  Key:         SIDLength
+  Value:       DWORD
+  Default:     0x44
+  Platforms:   WinNT
+  Description: During NAVAP initialization, the driver preallocates memory
+               which is later used to store SIDs.  These SIDs are used to
+               identify events when sending information packets to user mode.
+               Due to the limited SID support provided by NTOSKRNL, the
+               maximum length of a SID had to be predetermined during the
+               development of the driver, and had to be hard-coded in the
+               executable.  Yet, to give NAVAP some slack, this hard-coded
+               variable was "exported" through this registry key, which
+               defines the maximum length of a SID.  This length is returned
+               by calling the RtlLengthRequiredSid() function, passing it the
+               number of subauthorities needed.  The maximum number of
+               subauthorities is defined in the WinNT SDK as
+               SID_MAX_SUB_AUTHORITIES, and it is currently 15.
+  Purpose:     The SID structure is private to WinNT, therefore its length
+               may change in new revisions of the OS.  Use this key to adjust
+               NAVAP in case support for larger SIDs becomes necessary.
+
+  -------------
+
+  Key:         TruncateProgramFileExtensions
+  Value:       DWORD
+  Default:     1
+  Platforms:   WinNT, Win95
+  Description: The code in NAVAP which is used to match a file's extension
+               with an extension from the list of program files can work two
+               ways.  The default way is to truncate each file's extension to
+               3 or less characters, and then match the resulting string with
+               the strings in the list.  The second way, which will be
+               activated if this registry key was set to 0, is to perform
+               exact match of the extension without any string modification.
+               For example, with the default value for this registry key,
+               "MyFile.COMFILE" would match the extension ".COM".  Setting
+               the value of the key to 0 will not anymore match the above
+               strings.
+  Purpose:     Use this registry key if it becomes necessary for NAVAP to
+               make a distinction of files with extensions longer than 3
+               characters.
+  Note:        The format of the list with extensions, as it is saved in
+               NAVOPTS.DAT, can be easily modified to support extensions with
+               more than 3 characters.  If this is done, and if the value of
+               that key is set to 0, all old extensions should be changed
+               from ".EXT" to ".EXT*" in order to preserve the current
+               functionality.
+
+  -------------
+
+  Key:         UsePAMEngine
+  Value:       DWORD
+  Default:     1
+  Platforms:   WinNT, Win95
+  Description: This key controls AVAPI's PAM engine.  If it contains 0, PAM
+               will be disabled.
+  Purpose:     Needed when tracking problems, or for increasing performance.
+
+-----------------------------------------------------------------------------
+
+Installing to high-ascii, LFN directories
+-----------------------------------------
+
+Don't install to a high-ascii LFN directory - you may encounter rare
+problems with installing entries in to the registry, and also
+problems running the uninstall. The uninstall seems to be a problem
+with the 16-bit windows subsystem under NT. The source of the install
+problem is unclear. The work-around for the uninstall problem is to
+copy setup.exe to another directory (non-high-ASCII non-LFN) and run
+it from there. Then should be able to run the uninstall correctly.
+
+NEC support
+-----------------------------------------
+
+NAV 2.0 runs on NEC machines, but is not fully tested. The only known
+limitation is that you will get an error scanning floppy drives. We
+recommend that the user turn floppy scanning off. Normal DOS boot
+viruses are no risk to the machine, and there are no native NEC boot
+viruses.
+
+WINT351.EXE
+-----------------------------------------
+
+This is a redistributable from Microsoft that installs WININET.DLL.
+We have seen this rarely GPF while running (as part of our install).
+Our install does not monitor its completion. If LiveUpdate doesn't
+function, they should rerun the install.
+
+LiveUpdate fails silently if the file path is missing
+-----------------------------------------
+
+In regards to Maverick and Virus Definitions Updates:  The reg key
+\HKLM\software\symantec\installed apps still had a value NAVDEFS
+whose data is a non-existant path.  Live Update will install the new
+files to this path.  When Live Update encounters any error, including
+path not found, it fails silently, not letting the user know in ANY
+way that the files were infact not updated.  This key should only
+exist if NAV is installed or during Live Update's run time.

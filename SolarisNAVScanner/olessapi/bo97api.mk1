@@ -1,0 +1,43 @@
+!define BLANK ""
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\o97api.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97api.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 o97api.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\o97lznt.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97lznt.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 o97lznt.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\o97mod.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97mod.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 o97mod.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\o97wdapi.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97wdapi.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 o97wdapi.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\o97xlapi.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97xlapi.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 o97xlapi.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7rmtxt.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7rmtxt.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 wd7rmtxt.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\o97api.lib : $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97api.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97lznt.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97mod.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97wdapi.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\o97xlapi.obj $(%os2base)\cyprus\navexeng\navex\olessapi\src\wd7rmtxt.obj .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ %create o97api.lb1
+!ifneq BLANK "o97api.obj o97lznt.obj o97mod.obj o97wdapi.obj o97xlapi.obj wd7rmtxt.obj"
+ @for %i in (o97api.obj o97lznt.obj o97mod.obj o97wdapi.obj o97xlapi.obj wd7rmtxt.obj) do @%append o97api.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append o97api.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 o97api.lib @o97api.lb1
+

@@ -1,0 +1,23 @@
+HKCR
+{
+	Qserver.QserverConfig.1 = s 'QserverConfig Class'
+	{
+		CLSID = s '{F7BFE117-B480-11D2-B65E-0020AFEED321}'
+	}
+	Qserver.QserverConfig = s 'QserverConfig Class'
+	{
+		CLSID = s '{F7BFE117-B480-11D2-B65E-0020AFEED321}'
+		CurVer = s 'Qserver.QserverConfig.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {F7BFE117-B480-11D2-B65E-0020AFEED321} = s 'QserverConfig Class'
+		{
+			ProgID = s 'Qserver.QserverConfig.1'
+			VersionIndependentProgID = s 'Qserver.QserverConfig'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{C60B0154-894B-11D2-8E5F-2A0712000000}'
+			'TypeLib' = s '{C60B0153-894B-11D2-8E5F-2A0712000000}'
+		}
+	}
+}

@@ -1,0 +1,51 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\InstalledApps]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT]
+"CurrentVersion"=hex:95,00,31
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Install]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0]
+"InstallDir"="%s" ~SIWSUBST, TARGET
+"Extensions"="%s" ~SIWSUBST, TARGET2
+"SharedComponents"="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage]
+"Location1"="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\s32stat.dll]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\infodesk.cnt]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\infodesk.dll]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\infodesk.hlp]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symgloss.hlp]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symantec.cnt]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_CLASSES_ROOT\.vir]
+@="virfile"
+
+[HKEY_CLASSES_ROOT\virfile]
+@="Virus Infected File"
+
+[HKEY_CLASSES_ROOT\virfile\DefaultIcon]
+@="%s\navwnt.exe,-103" ~SIWSUBST, TARGET
+

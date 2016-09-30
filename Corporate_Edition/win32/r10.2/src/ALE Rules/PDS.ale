@@ -1,0 +1,33 @@
+;Auto-Configuration File for Intel Ping Discovery Service
+;created for Intel Ping Discovery Svc, modified 07012002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Intel Ping Discovery Service
+DisplayName=PDS0
+File:Name=pds.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=UDP-IN,UDP-OUT
+
+[MATCH:SECTION002]
+ApplicationDescription=Intel Ping Discovery Service
+DisplayName=PDS1
+File:Name=pds.exe
+Rules=UDP-IN,UDP-OUT
+
+[RULE:UDP-IN]
+Action=ALLOW
+Category=0
+Direction=INBOUND
+LocalPorts=2967,26409,38293
+Protocol=UDP
+RuleName=Ping Discovery Service UDP Inbound Connection
+
+[RULE:UDP-OUT]
+Action=ALLOW
+Category=0
+Direction=OUTBOUND
+Protocol=UDP
+RuleName=Ping Discovery Service UDP Outbound Connection
+
+

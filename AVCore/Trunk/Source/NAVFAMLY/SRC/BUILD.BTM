@@ -1,0 +1,63 @@
+: Copyright 1993-1996 Symantec Corporation                              :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/NAVFAMLY/VCS/build.btv   1.23   29 Apr 1997 15:01:40   JBRENNA  $
+:                                                                       :
+: Description:                                                          :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/NAVFAMLY/VCS/build.btv  $
+:  
+:     Rev 1.23   29 Apr 1997 15:01:40   JBRENNA
+:  Ensure that this project does not build on the Trunk. Use AVAPI1 instead
+:  of this project.
+:  
+:     Rev 1.22   29 Apr 1997 14:14:08   MKEATIN
+:  Don't build NAVFAMLY on the trunk.  Build AVAPI1 instead.
+:  
+:     Rev 1.21   28 Apr 1997 17:28:44   JBRENNA
+:  Convert to new CORE_* platform spec.
+:  
+:     Rev 1.20   28 Apr 1997 14:30:58   MKEATIN
+:  Actually, for the W32 platform we only need to make avapilib.mak
+:  
+:     Rev 1.19   28 Apr 1997 14:25:50   MKEATIN
+:  Don't need to make avapidll (n32cores.dll) for W32.
+:  
+:     Rev 1.18   07 Mar 1997 15:22:28   RSTANEV
+:  Removed building of VNAVCORE and VXDWRAPS.
+:
+:     Rev 1.17   13 Feb 1997 12:03:46   MKEATIN
+:  Added NCX
+:
+:     Rev 1.16   13 Oct 1996 15:23:06   DALLEE
+:  Added "quit" so we don't fall through to the killcv stuff.
+:  Removed RestoreCV and instead used "endlocal" to restore environment
+:  since we were already calling "setlocal" to save it.
+:
+:     Rev 1.15   20 Sep 1996 11:37:10   GWESTER
+:  For DOS, DX, DVX, or DVS, disable debug info during mkupdate's.
+:
+:     Rev 1.14   09 Feb 1996 13:38:04   GDZIECI
+:  Fix in last change.
+:
+:     Rev 1.13   09 Feb 1996 13:34:26   GDZIECI
+:  Don't build AVAPIDLL for WIN16 platform.
+:
+:     Rev 1.12   16 Oct 1995 18:06:54   DALLEE
+:  Remove making of AVEX.  This is done in VIRLIB trunk NAVEX project now.
+:
+:     Rev 1.11   14 Aug 1995 13:32:44   RSTANEV
+:  Added making of AVEX.
+:
+:     Rev 1.10   03 Jan 1995 15:20:00   RSTANEV
+:  NAVCORE.VXD is now a static library.
+:
+:     Rev 1.9   19 Dec 1994 14:01:14   DALLEE
+:  mk navfamly and avapidll only for .WIN and .W32.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+echo NAVFAMLY is an obsolete project. Build AVAPI1 instead.
+

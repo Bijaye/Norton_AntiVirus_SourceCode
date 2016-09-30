@@ -1,0 +1,1260 @@
+'-------------------------------------------------------------------------------------------
+'  NAV32UP.EBS
+'  Norton AntiVirus Administrator for Windows 95
+'
+'  GWESTER 12/17/96 12:13am  Initial revision.
+'
+'
+'  Notes:
+'
+'  12/19/96 GWESTER Changed all system-wide Activity Log entries (that is, ones that
+'  will happen to ALL workstations, such as "Source directory or files not found"), so
+'  that they are written when ActivityLog="1" or "2". All other messages
+'  (those involving an individual workstation) are written only when ActivityLog="2".
+'  The message from the global errorhandler, since we don't know what caused it,
+'  is written when ActivityLog="1" or "2". (The function WriteToActivityLog() writes
+'  it's string if ActivityLog="1" or "2". If any string should only be written
+'  when ActivityLog="2" the best way is to wrap up the call to WriteToActivityLog() in
+'  a check for ActivityLog="2".)
+'
+'  01/07/97 PVENKAT Added changes for MARCONI
+'
+'  11/19/97 VGLOSTE Fixed problem where it thought NT 3.51 Workstation was NT 3.51
+'  server.  The regkey value has different case under NT 3.51.  Under 4.0 it is
+'  "WinNT", under 3.51 it is "Winnt".
+'-------------------------------------------------------------------------------------------
+
+
+'-------------------------------------------------------------------------------------------
+'  Global variables - Initialize them at the start of Main()
+'-------------------------------------------------------------------------------------------
+Private ActivityLog As String
+Private LogLocation As String
+Private AppendToLog As String
+Public ReadyToLogEvents%
+Public LogInitialized%
+
+
+'-------------------------------------------------------------------------------------------
+'  Procedure DispMsgDiag():
+'  Displays a splash panel. Used in several places, typically before launching the Install
+'  program.
+'-------------------------------------------------------------------------------------------
+Sub DispMsgDiag(Message0$, Iconmsg$, Verbose$)
+    msgclose
+    sleep 2000
+    '-----------------------------------------------------------------------------------
+    ' If we can't find the bitmap, don't display it.
+    '-----------------------------------------------------------------------------------
+    Begin Dialog Openingcredits ,,270,195,"Norton AntiVirus Administrator",,,1
+        Text 56,133,159,60,Message0$,.Text1,"Arial",8
+        PictureButton 4,4,263,117,iconmsg$,0,.PictureButton1
+    End Dialog
+    Dim Credits As Openingcredits
+    If Verbose$ <> "0" Then Msgclose
+    If (Iconmsg$<>"" And FileExists(Iconmsg$)) Then
+        r%=Dialog(Credits,1,4000)
+    Else
+        msgopen Message0$, 4, FALSE, FALSE
+        sleep 4000
+        msgclose
+    End If
+End Sub
+
+
+'-------------------------------------------------------------------------------------------
+'  Procedure CopyAllFiles():
+'  Copy all the files from the src dir to the target dir. If anything goes wrong, we'll
+'  catch the error, wait a random period of time, and try again. We'll try MaxCopyAttempts%
+'  number of times, and then write an error to the Activity Log.
+'  01-17-97 subroutine converted to function to return whether files were copied or not.
+'-------------------------------------------------------------------------------------------
+Function CopyAllFiles(SourceDir$, TargetDir$) As Boolean
+    CopyAttempt% = 0        ' This is the current copy attempt number.
+    MaxCopyAttempts% = 5    ' We'll try this many copy attempts every time this function is called
+
+    ' If we can't copy files, we will need a randomized wait period before we try
+    ' again. The wait will be between .2 and 2 seconds. This value will be the same for every
+    ' retry below:
+    Randomize   ' Generate a new random seed
+    RandomSleepPeriod = Random (200,1000)   ' Generate between .2 and 1.0 second
+
+    CopyFilesAttempt:
+        On Error GoTo CopyFilesError
+        Fname$ = Dir$(SourceDir$+"\*.*", ebNormal)
+        While Fname$ <> ""
+            ' If the file already exists, remove the target's read-only attribute before copying (#76062)
+            If FileExists( TargetDir$+"\"+Fname$ ) Then SetAttr TargetDir$+"\"+Fname$, ebNormal
+            FileCopy SourceDir$+"\"+Fname$, TargetDir$+"\"+Fname$, FALSE
+            SetAttr TargetDir$+"\"+Fname$, ebNormal + ebArchive
+            fname$ = dir$
+        Wend
+        ' Files have been copied successfully.
+        ' Set the errorhandler back to the generic one, and exit the function:
+        CopyAllFiles = TRUE
+        On Error GoTo Errorhandler
+        GoTo ExitCopyingFunction
+
+    CopyFilesError:
+        ' Couldn't copy files. Wait for a random period, then try again. We'll only try
+        ' MaxCopyAttempts% number of times.
+        Err = -1    ' First, clear the error condition
+        sleep RandomSleepPeriod
+        CopyAttempt% = CopyAttempt% + 1
+        If CopyAttempt% < MaxCopyAttempts% Then GoTo CopyFilesAttempt
+        ' We've already tried MaxCopyAttempts% number of times. Set the error handler
+        ' back to what it was, and leave the function.
+        WriteToActivityLog "ERROR: Could not copy files from "+SourceDir$+"."
+        CopyAllFiles = FALSE
+        On Error GoTo Errorhandler
+        GoTo ExitCopyingFunction
+
+    Errorhandler:
+    ExitCopyingFunction:
+End Function
+
+
+'-------------------------------------------------------------------------------------------
+'  Procedure WriteToActivityLog():
+'  Writes a string to the activity log. UserID, Time, and Date are automatically tacked
+'  on to the string. This function has local error handling, meaning that EVERY attempt
+'  to write to the log has local error handling. If the logging file is on the server,
+'  this procedure handles "file in use" errors by waiting for a moment, and then trying
+'  again.
+'-------------------------------------------------------------------------------------------
+Sub WriteToActivityLog ( LogString$ )
+    Const USERID_FORMAT = "!@@@@@@@@@@@@@@@" ' sets the field width for userid in the log
+    If ReadyToLogEvents% = 0    Then GoTo ExitLoggingFunction   ' Not ready yet
+    If ActivityLog$="0"         Then GoTo ExitLoggingFunction   ' Not logging at all
+
+    ' Make local copies of the global variables, so that we can look at them through Watches
+    lActivityLog$ = ActivityLog$
+    lLogLocation$ = LogLocation$
+    lAppendToLog$ = AppendToLog$
+    WriteAttempt% = 0       ' This is the current write attempt number.
+    MaxWriteAttempts% = 10  ' We'll try this many write attempts every time this function is called
+
+    ' If we can't write to the log, we will need a randomized wait period before we try
+    ' again. The wait will be between .2 and 2 seconds. This value will be the same for every
+    ' retry below:
+    Randomize   ' Generate a new random seed
+    RandomSleepPeriod = Random (200,2000)   ' Generate between .2 and 2 seconds
+
+    If LogInitialized% = 0 Then
+
+        '-----------------------------------------------------------------------------------
+        ' This is the first write to the log. Do we need to append to an existing one, or
+        ' overwrite it?
+        '-----------------------------------------------------------------------------------
+        InitializationAttempt:
+            On Error GoTo InitializationError
+            If AppendToLog$="1" Then
+                Open LogLocation$ For Append Lock Read Write As #5
+            Else
+                Open LogLocation$ For Output Lock Read Write As #5
+            End If
+            Print #5, Date$() + "  " + Time$() + "  " + Format$ (Net.User$, USERID_FORMAT) + "  " + LogString$
+            Close 5
+            ' We wrote to the log successfully. We can now mark that we've done it, so
+            ' that we won't try to initialize the log again:
+            LogInitialized% = 1
+            ' Set the errorhandler back to the generic one, and exit the function:
+            On Error GoTo Errorhandler
+            GoTo ExitLoggingFunction
+
+        InitializationError:
+            ' Couldn't open the file. Wait for a random period, then try again. We'll only try
+            ' MaxWriteAttempts% number of times.
+            Err = -1    ' First, clear the error condition
+            Close 5     ' Make sure that the file is closed (in case the error occurred while open)
+            sleep RandomSleepPeriod
+            WriteAttempt% = WriteAttempt% + 1
+            If WriteAttempt% < MaxWriteAttempts% Then GoTo InitializationAttempt
+            ' We've already tried MaxWriteAttempts% number of times. Set the error handler
+            ' back to what it was, and leave the function.
+            On Error GoTo Errorhandler
+            GoTo ExitLoggingFunction
+        '-----------------------------------------------------------------------------------
+
+    Else
+
+        '-----------------------------------------------------------------------------------
+        ' The first write to the log already happened in a previous call to this function,
+        ' so it's already initialized. We will only be appending.
+        '-----------------------------------------------------------------------------------
+        On Error GoTo LogWriteError
+
+        LogWriteAttempt:
+            Open LogLocation$ For Append Lock Read Write As #5
+            Print #5, Date$() + "  " + Time$() + "  " + Format$ (Net.User$, USERID_FORMAT)  + "  " + LogString$
+            Close 5
+            ' Set the errorhandler back to the generic one, and exit the function:
+            On Error GoTo Errorhandler
+            GoTo ExitLoggingFunction
+
+        LogWriteError:
+            ' Couldn't open the file. Wait for a random period, then try again. We'll only try
+            ' MaxWriteAttempts% number of times.
+            Err = -1    ' First, clear the error condition
+            Close 5     ' Make sure that the file is closed (in case the error occurred while open)
+            sleep RandomSleepPeriod
+            WriteAttempt% = WriteAttempt% + 1
+            If WriteAttempt% < MaxWriteAttempts% Then GoTo LogWriteAttempt
+            ' We've already tried MaxWriteAttempts% number of times. Set the error handler
+            ' back to what it was, and leave the function.
+            On Error GoTo Errorhandler
+            GoTo ExitLoggingFunction
+        '-----------------------------------------------------------------------------------
+
+    End If
+
+    Errorhandler:
+    ExitLoggingFunction:
+End Sub
+
+
+'-------------------------------------------------------------------------------------------
+'  Procedure QuickMessageBox():
+'  A quick function to replace all of the calls to MsgSetText() in the script. It closes
+'  an existing MessageBox and opens a new one OF THE CORRECT SIZE with the text
+'  in MsgString$. The MsgOpen has a timeout of five because I'm not clear about which dialog
+'  the calls to MsgSetText() are counting on being around. (QuickMessageBox is only a
+'  bandaide until somebody reviews the dialog flow in the script.)
+'  Also: A 1-second sleep prevents the message dialogs from flying by.
+'-------------------------------------------------------------------------------------------
+Sub QuickMessageBox ( MsgString$ )
+MsgClose
+MsgOpen MsgString$, 2, FALSE, FALSE
+Sleep 1000
+End Sub
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' Function IsNTWorkstation() As Boolean
+''
+'' Purpose:
+''    This function will return if the current machine
+''    that we are running on is NT workstation.
+''
+'' Parameters:
+''    none
+''
+'' Returns:
+''    TRUE  - The current machine is NT workstation
+''    FALSE - The current machine is NOT NT workstation
+''
+'' Notes:
+''    Do NOT call this function if we are on Win95.
+''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' 08/19/97 - DSACKIN - Function Created.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Function IsNTWorkstation() As Boolean
+
+                                        '' Initialize our Function return value
+    IsNTWorkstation = FALSE
+
+                                        '' Get the REG key that we need to
+                                        '' examine
+    RegOpenKey HKEY_LOCAL_MACHINE, "System\CurrentControlSet\Control\ProductOptions"
+    ProductType$ = RegReadValue$( HKEY_LOCAL_MACHINE, "System\CurrentControlSet\Control\ProductOptions", "Producttype")
+    RegCloseKey HKEY_LOCAL_MACHINE
+
+                                        '' The reg key is actually a string
+                                        '' used to identify what type of
+                                        '' product we are running.
+    If ProductType$ = "WinNT" Or ProductType$ = "Winnt" Then
+
+                                        '' yes.. It must have been NT
+                                        '' workstation
+        IsNTWorkstation = TRUE
+    End If
+
+End Function
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' Sub Main()
+''
+'' Purpose:
+''    This is the official entry point into NAV32UP.EXE
+''
+'' Parameters:
+''    none
+''
+'' Returns:
+''    none
+''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' 08/19/97 - DSACKIN - Header Created.
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub Main()
+
+    On Error GoTo errorhandler
+
+    '---------------------------------------------------------------------------------------
+    '  Initialize global variables:
+    '---------------------------------------------------------------------------------------
+    ReadyToLogEvents% = 0
+    LogInitialized% = 0
+    ActivityLog$ = "0"
+    LogLocation$ = ""
+    AppendToLog$ = "0"
+
+    Verbose$ = "0"                          'Set prior to checking OS version
+
+    Iconmsg$=Basic.HomeDir$+"\navadmin.bmp"
+
+    SilentReboot95 = 0
+    RebootWaitTime95$ = "30"
+    ForceReboot95 = 0
+    SilentRebootNT = 0
+    RebootWaitTimeNT$ = "30"
+    ForceRebootNT = 0
+    RebootParameters$ = ""
+
+    '---------------------------------------------------------------------------------------
+
+                                        '' Initialize Local Variables
+    OnWin95 = FALSE
+    OnWorkStation = FALSE
+
+
+
+                                        '' Check to see if this is an allowed
+                                        '' OS to be running on.
+    If Basic.OperatingSystem$<>"Windows 95" And Basic.OperatingSystem$ <> "Windows NT" Then
+
+                                        '' Wrong OS detected
+        Exit Sub
+
+    End If
+
+                                        '' Now figure out which of NT/95 we are.
+    If Basic.OperatingSystem$="Windows 95" Then
+
+                                        '' Set our flag to say we are on Win95
+        OnWin95 = TRUE
+
+    End If
+
+    '----------------------------------------------------------------------------------
+    ' MARCONI Developers:
+    ' Only one of the next two pieces of code should be uncommented. To enable the script for
+    ' Windows NT, uncomment the first piece and comment out the second.
+    '----------------------------------------------------------------------------------
+
+                                        '' To make the script run on 95 and NT,
+                                        '' uncomment these two lines
+    If Basic.OperatingSystem$="Windows NT" Then
+
+                                        '' Check to see if we are running as
+                                        '' Workstation or Server
+        OnWorkStation = IsNTWorkstation()
+
+    End If
+
+    Dim bIALAlreadyRun As Boolean
+
+    '----------------------------------------------------------------------------------
+    ' Read the NNS file location in from the command line; if the file
+    ' is not found the user is prompted for the file location.
+    '----------------------------------------------------------------------------------
+    ' Successful is set based on command line value for MARCONI
+    Successful=0        'Used to store the outcome of installation 1=installation successful,
+                        '2=update successful 0=failed or aborted 3=no update required
+    NNSLocation$=command$
+
+    bIALAlreadyRun = FALSE
+    Posn = InStr (NNSLocation$, "<NAV INSTALLED>")
+    If  Posn <> 0 Then
+        NNSLocation$ = RTrim (Left$ (NNSLocation$, Posn - 1))  ' Skip any space at right
+        Successful = 1
+        bIALAlreadyRun = TRUE
+        LogInitialized% = 1     ' Same session NAV32UP.EBS invoked by IAL.
+    End If
+
+    If NNSLocation$="" Then NNSLocation$=Basic.HomeDir$+"\_DEFLT32.NNS"
+
+    If FileExists(NNSLocation$)=FALSE Then
+        ' Couldn't find NNS file.
+        msg1$="Distribution settings file"+chr$(13)+chr$(10)
+        msg1$=msg1+NNSLocation$+chr$(13)+chr$(10)
+        msg1$=msg1+"could not be located.  Please contact your network administrator."
+        msgbox msg1$, ebCritical Or ebOKOnly, "Norton AntiVirus Administrator"
+        Exit Sub
+    End If
+
+    '----------------------------------------------------------------------------------
+    ' Once the NNS file has been located, locate the network directory
+    ' where the NAV version is located.  If not found the program will
+    ' end.
+    '----------------------------------------------------------------------------------
+    Verbose$=readini$("Install/Update","Verbose",NNSLocation$)
+
+    If Verbose$<>"0" And Verbose$<>"1" Then Verbose$="0"
+
+    If verbose$<>"0" Then
+        Message0$="Norton AntiVirus Administrator"+chr$(13)+chr$(10)
+        Message0$=Message0$+"Copyright 1997 Symantec Corp."+chr$(13)+chr$(10)
+        Message0$=Message0$+"All Rights Reserved."+chr$(13)+chr$(10)
+        Message0$=Message0$+chr$(13)+chr$(10)
+        Message0$=Message0$+"Checking Norton AntiVirus installation."+chr$(13)+chr$(10)+"One moment please..."
+    End If
+
+    If Verbose$<>"0" Then
+        DispMsgDiag Message0$, Iconmsg$, Verbose$
+        msgopen "Norton AntiVirus Administrator...."+space$(90),0,false,false
+    End If
+
+    '---------------------------------------------------------------------------------------
+    '  Check for NNS entries that will customize the reboot:
+    '---------------------------------------------------------------------------------------
+    TmpString$=readini$("Install/Update","SilentReboot95",NNSLocation$)
+    If TmpString$="1" Then
+        SilentReboot95 = 1
+        End If
+    TmpString$=readini$("Install/Update","RebootWaitTime95",NNSLocation$)
+    If TmpString$<>"" Then
+        TmpValue = Int ( Abs ( Val (TmpString$) ) )
+        If ((TmpValue >= 0) And (TmpValue <= 600)) Then
+            RebootWaitTime95$ = LTrim$ ( Str$ ( TmpValue ) )
+            End If
+        End If
+    TmpString$=readini$("Install/Update","ForceReboot95",NNSLocation$)
+    If TmpString$="1" Then
+        ForceReboot95 = 1
+        End If
+    TmpString$=readini$("Install/Update","SilentRebootNT",NNSLocation$)
+    If TmpString$="1" Then
+        SilentRebootNT = 1
+        End If
+    TmpString$=readini$("Install/Update","RebootWaitTimeNT",NNSLocation$)
+    If TmpString$<>"" Then
+        TmpValue = Int ( Abs ( Val (TmpString$) ) )
+        If ((TmpValue >= 0) And (TmpValue <= 600)) Then
+            RebootWaitTimeNT$ = LTrim$ ( Str$ ( TmpValue ) )
+            End If
+        End If
+    TmpString$=readini$("Install/Update","ForceRebootNT",NNSLocation$)
+    If TmpString$="1" Then
+        ForceRebootNT = 1
+        End If
+    '---------------------------------------------------------------------------------------
+
+
+    '---------------------------------------------------------------------------------------
+    '  Now set the parameters to REBOOT.EXE which will be passed if we have to reboot:
+    '---------------------------------------------------------------------------------------
+    If OnWin95 Then
+
+        ' Under Windows 95, use the xxx95 settings from the NNS:
+        If SilentReboot95 = 1 Then
+            RebootParameters$ = RebootParameters$ + " /S"
+        End If
+
+        RebootParameters$ = RebootParameters$ + " /W" + RebootWaitTime95$
+
+        If ForceReboot95 = 1 Then
+            RebootParameters$ = RebootParameters$ + " /F"
+        End If
+
+    Else '' If OnWin95 Then
+
+                                        '' Under Windows NT, use the xxxNT
+                                        '' settings from the NNS:
+        If SilentRebootNT = 1 Then
+            RebootParameters$ = RebootParameters$ + " /S"
+        End If
+
+        RebootParameters$ = RebootParameters$ + " /W" + RebootWaitTimeNT$
+
+        If ForceRebootNT = 1 Then
+            RebootParameters$ = RebootParameters$ + " /F"
+        End If
+
+                                        '' On Marconi we need to provide NNS
+                                        '' file so that reboot.exe can
+                                        '' impersonate if necessary.
+        RebootParameters$ = NNSLocation$ + " " + RebootParameters$
+
+    End If '' If OnWin95 Then
+
+    '---------------------------------------------------------------------------------------
+
+
+    '---------------------------------------------------------------------------------------
+    '  From the NNS, read in ActivityLog$, LogLocation$, and AppendToLog$.
+    '---------------------------------------------------------------------------------------
+    ActivityLog$=readini$("Install/Update","ActivityLog",NNSLocation$)
+    If ActivityLog$<>"0" And ActivityLog$<>"1" And ActivityLog$<>"2" Then ActivityLog$="1"
+
+    LogLocation$=readini$("Install/Update","LogLocation",NNSLocation$)
+    If LogLocation$="" Then LogLocation$="C:\NAVLOG.TXT"
+
+    '  If the NNS can't be read to determine a value of AppendToLog, use 1 for a default.
+    '  It's less destructive than 0 (overwrite) as a default.
+    AppendToLog$=readini$("Install/Update","AppendToLog",NNSLocation$)
+    If AppendToLog$<>"0" And AppendToLog$<>"1" Then AppendToLog$="1"
+    '---------------------------------------------------------------------------------------
+
+
+    '---------------------------------------------------------------------------------------
+    '  Now that ActivityLog$, LogLocation$, and AppendToLog$ are set, turn on this variable,
+    '  which will enable writing in the log.
+    '---------------------------------------------------------------------------------------
+    ReadyToLogEvents% = 1
+    '---------------------------------------------------------------------------------------
+
+
+    '---------------------------------------------------------------------------------------
+    '  This is the first write to the Activity Log. Inside of WriteToActivityLog(),
+    '  it will initialize the log, and set LogInitialized% to 1.
+    '---------------------------------------------------------------------------------------
+    If ActivityLog$="2" Then WriteToActivityLog "Norton AntiVirus update started."
+    '---------------------------------------------------------------------------------------
+
+
+                                        '' Get the location of the files that
+                                        '' we need to check
+    If OnWin95 Then
+        SourceNavNetdir$=readini$("Install/Update","Network95",NNSLocation$)
+    Else
+        If OnWorkStation Then
+            SourceNavNetdir$=readini$("Install/Update","NetworkNTWKS",NNSLocation$)
+        Else
+            SourceNavNetdir$=readini$("Install/Update","NetworkNTSRV",NNSLocation$)
+        End If
+    End If
+
+
+    '---------------------------------------------------------------------------------------
+    ' Make sure that the nav files are in the source directory
+    '---------------------------------------------------------------------------------------
+    If SourceNavNetdir$="" Or FileExists(rtrim$(SourceNavNetdir$+"\setup.exe"))=FALSE Then
+        If Verbose$="1" Then QuickMessageBox "Source directory or files not found. Check in the NNS file for error in location."
+        WriteToActivityLog "ERROR: Source directory or files not found.  Check NNS file."
+        sleep 3000
+        GoTo Done
+     End If
+
+    Dim Buffer$()                           'Set up array for getting list of hard drives
+    Dim Netdate As Double                   'Set up variable for Network NAV file date
+    Dim Local As Double                     'Set up variable for Local NAV file date
+    Dim NetDef As Double                    'Set up variable for Network DEF file date
+    Dim LocalDef As Double                  'Set up variable for Network DEF file date
+    Dim FoundNavDir$                        'Array to hold found directories for NAV
+    Dim FoundDirNum%
+    Dim Calltype$
+    Dim bInstallNT As Boolean               'Read value from NNS file so NT installs can be turned off
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' Set variables from the NNS file:
+
+    If OnWin95 Then
+
+        NAVFile$=readini$("Install/Update","NAV95File",NNSLocation$)
+        NAVNetFile$=readini$("Install/Update","NAV95NetFile",NNSLocation$)
+
+    Else '' If OnWin95 Then
+
+                                        '' The files may be different for
+                                        '' WorkStation vs. Server based on if
+                                        '' they are using Marconi/Tesla/Roswell
+        If OnWorkStation Then
+
+           NAVFile$=readini$("Install/Update","NAVNTWKSFile",NNSLocation$)
+           NAVNetFile$=readini$("Install/Update","NAVNTWKSNetFile",NNSLocation$)
+
+        Else
+
+           NAVFile$=readini$("Install/Update","NAVNTSRVFile",NNSLocation$)
+           NAVNetFile$=readini$("Install/Update","NAVNTSRVNetFile",NNSLocation$)
+
+        End If
+
+    End If
+
+
+    If NavNetFile$="" Or FileExists(SourceNavNetdir$+"\"+NavNetFile$)=FALSE Then
+        If Verbose$ = "1" Then QuickMessageBox "Source installation files not found."
+        WriteToActivityLog "ERROR: Source installation files not found.  Check in the NNS file for error in location."
+        Sleep 2000
+        GoTo Done
+    End If
+
+    '----------------------------------------------------------------------------------
+    ' ScanAfterUpdate
+    '----------------------------------------------------------------------------------
+    ScanAfterUpdate$=readini$("Install/Update","ScanAfterUpdate",NNSLocation$)
+    If ScanAfterUpdate$<>"0" And ScanAfterUpdate$<>"1" Then ScanAfterUpdate$="0"
+
+    If OnWin95 Then
+        NAVInstall$=readini$("Install/Update","NAV95Install",NNSLocation$)
+        NAVInstall$=SourceNAVNetdir$+"\"+NAVInstall$
+    Else
+        NAVInstall$=readini$("Install/Update","NAVNTInstall",NNSLocation$)
+        NAVInstall$=SourceNAVNetdir$+"\"+NAVInstall$
+    End If
+
+    IAL$ = Basic.HomeDir$ + "\" + "IAL.EXE" + " " + NNSLocation$
+
+    '----------------------------------------------------------------------------------
+    ' bInstallNT -  read value from NNS file.  If not there then the default value is
+    '               set to do the install.  The NNS setting for turning off install
+    '               will only apply to NT, not 95.  If install is turned off but the
+    '               workstation requires it, a message will be displayed and then NAV32UP
+    '               will exit.  If no install is required, options and defs will be checked
+    '----------------------------------------------------------------------------------
+    bInstallNT = TRUE
+
+    If OnWin95 = FALSE Then
+        TmpString$ = readini$("Install/Update", "InstallOnNT", NNSLocation$)
+        If TmpString$ = "0" Then bInstallNT = FALSE
+        InstallNTMsg$ = readini$("Install/Update", "InstallOnNTMsg", NNSLocation$)
+        If InstallNTMsg$ = "" Then
+            InstallNTMsg$ = "Norton AntiVirus needs to be installed on your" + chr$(13) +chr$(10)
+            InstallNTMsg$ = InstallNTMsg$ + "system.  Please contact your network administrator."
+        End If
+        InstallNTLogMsg$ = "Norton AntiVirus needs to be installed."
+    End If
+
+    '----------------------------------------------------------------------------------
+    ' UpdateAllDefs$ - We no longer use this NNS setting.
+    '----------------------------------------------------------------------------------
+    'UpdateAllDefs$=readini$("Install/Update", "UpdateAllDefs", NNSLocation$)
+    'If UpdateAllDefs$<>"0" and UpdateAllDefs$<>"1" then UpdateAllDefs$="0"
+    '----------------------------------------------------------------------------------
+
+
+    '----------------------------------------------------------------------------------
+    ' ForceInstall$ - We no longer use this NNS setting.
+    '----------------------------------------------------------------------------------
+    'ForceInstall$=readini$("Install/Update","ForceInstall",NNSLocation$)
+    'If ForceInstall$<>"0" and ForceInstall$<>"1" then ForceInstall$="0"
+    '----------------------------------------------------------------------------------
+
+
+    '----------------------------------------------------------------------------------
+    ' Beyond here, all NNS variables have been read in.
+    '----------------------------------------------------------------------------------
+
+
+    '----------------------------------------------------------------------------------
+    ' Find current NAV95 install location
+    ' The Reg key is HKLM\SOFTWARE\Symantec\Norton AntiVirus\Install\4.0, InstallDir
+    '----------------------------------------------------------------------------------
+    RegOpenKey HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps"
+
+
+    If OnWin95 Then
+
+        RegOpenKey HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps"
+        NavDir$ = RegReadValue$( HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps", "NAV95")
+
+    Else
+
+        RegOpenKey HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps"
+        NavDir$ = RegReadValue$( HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps", "NAVNT")
+
+    End If
+
+
+    RegCloseKey HKEY_LOCAL_MACHINE
+
+'----------------------------------------------------------------------------------
+' LocalSet
+'----------------------------------------------------------------------------------
+ LocalSet:
+
+    '----------------------------------------------------------------------------------
+    ' Check for NavDir$ not being an empty string. NavDir$ contains the location of NAV
+    ' (from the Registry). If the value can't be pulled from the Registry then we
+    ' assume NAV is not installed.
+    '----------------------------------------------------------------------------------
+    If NavDir$<>""  And FileExists(NavDir$+"\"+NAVFile) Then     'Double check for existance of NAV
+        ' NAV is installed; see if it needs updating
+        Local = FileDateTime(NavDir$+"\"+NAVFile$)      'Get date of local NAV
+        Local = Local + 1                               'Add 1 day to prevent repeated rollouts.
+                                                        'when the source and dest timezones are different.
+        If FileExists(SourceNavNetDir+"\"+NAVNetFile$) Then
+            Netdate = FileDateTime(SourceNavNetDir + "\" + NAVNetFile$) 'Get date of Network NAV95
+        Else
+            If Verbose$="1" Then QuickMessageBox "Source network file "+SourceNavNetDir+"\"+NavNetFile$+" does not exist"
+            ' Installation files were not found. Log it.
+            WriteToActivityLog "ERROR: Source installation files not found.  Check in the NNS file for error in location."
+            sleep 2000
+            GoTo done
+        End If
+        If Local < Netdate Then 'If Nav is out of date or forced then install
+            If bInstallNT = FALSE Then          'don't install on NT
+                MsgClose
+                msgbox InstallNTMsg$, ebCritical Or ebOkOnly, "Norton AntiVirus Administrator"
+                WriteToActivityLog InstallNTLogMsg$
+                Exit Sub
+            End If
+            If bIALAlreadyRun = FALSE Then
+                If ActivityLog$="2" Then WriteToActivityLog "New or updated version of Norton AntiVirus required."
+                If Verbose$ <> "0" Then
+                    Message0$="Your computer requires either a new"+chr$(13)+chr$(10)
+                    Message0$=Message0$+"install or update to Norton AntiVirus."+chr$(13)+chr$(10)
+                    Message0$=Message0$+chr$(13)+chr$(10)
+                    Message0$=Message0$+"This will take a couple of minutes."+chr$(13)+chr$(10)+"Please wait..."
+                    DispMsgDiag Message0$, Iconmsg$, Verbose$
+                End If
+
+                If OnWin95 Then
+                    Value = Shell(NavInstall)
+                Else
+                    Value = Shell(IAL)
+                End If
+            Else
+                If Verbose$ = "1" Then QuickMessageBox ("Installation of Norton AntiVirus was not successful.")
+                WriteToActivityLog "ERROR: Installation of Norton AntiVirus was not successful."
+            End If
+    Exit Sub                    'Should never get here anyway
+        End If
+
+        '----------------------------------------------------------------------------------
+        ' If program is up to date then check options for update.
+        ' Check NNS file for RetainSetting variable, if set to 1 then send down
+        ' navopts.dat file
+        '----------------------------------------------------------------------------------
+
+        ' Check for newer option files:
+        RetainSettings$=readini$("Install/Update", "RetainSettings", NNSLocation$)
+        If RetainSettings$<>"0" And RetainSettings$<>"1" Then RetainSettings$="0"
+        ' MARCONI Changes
+        'Successful=3                   'tag that no changes are needed
+                                    'if we do change, change "3" to "2"
+
+        'Declare and initialize 2 boolean variables.
+        'bUpdatePerformed tells us if we need to do ActionAfterUpdating
+        'bUpdateError tells us if there was any problem copying files
+        Dim bUpdatePerformed As Boolean
+        Dim bUpdateError As Boolean
+
+        bUpdatePerformed = FALSE
+        bUpdateError = FALSE
+
+        If Successful = 1 Then            'if successful is 1 then NAVNT was just installed
+            bUpdatePerformed = TRUE       'Otherwise, no updates have been done yet
+        Else
+            Successful = 3
+        End If
+
+        If RetainSettings$="0" Then
+            ' if requested, put up msg and/or log status
+            If Verbose$="1" Then QuickMessageBox "Checking Norton AntiVirus settings."
+            If ActivityLog$="2" Then WriteToActivityLog "Checking Norton AntiVirus settings."
+
+            'get the directory for the option files
+            If OnWin95 Then
+                SourceNavNetOptsdir$=readini$("Install/Update","OptionPath95",NNSLocation$)
+                SourceNavNetOptsFile$=readini$("Install/Update","Nav95OptFile",NNSLocation$)
+            Else
+                If OnWorkStation Then
+                    SourceNavNetOptsdir$=readini$("Install/Update","OptionPathNTWKS",NNSLocation$)
+                    SourceNavNetOptsFile$=readini$("Install/Update","NavNTOptFile",NNSLocation$)
+                Else
+                    SourceNavNetOptsdir$=readini$("Install/Update","OptionPathNTSRV",NNSLocation$)
+                    SourceNavNetOptsFile$=readini$("Install/Update","NavNTOptFile",NNSLocation$)
+                End If
+            End If
+
+            If SourceNavNetOptsdir$="" Or SourceNavNetOptsFile$ = "" Or FileExists(SourceNavNetOptsdir$+"\"+SourceNavNetOptsFile$)=FALSE Then
+                If Verbose$ = "1" Then QuickMessageBox "Options files not found on the server."
+                WriteToActivityLog "ERROR: Options files not found on the server.  Check in the NNS file for error in location."
+                Sleep 2000
+                'Goto Done
+            'End if
+             Else
+                ' Initialize Local to 0, and Netdate to 1, so that CopyAllFiles will execute
+                ' even if NAVOPTS doesn't exist (#76057). (The whole point is that these two
+                ' variables will have different values to trigger the call to CopyAllFiles.)
+                Local = 0
+                Netdate = 1
+                If FileExists(NavDir$+"\"+SourceNavNetOptsFile$) Then
+                        Local=FileDateTime(NavDir+"\"+SourceNavNetOptsFile$)
+                End If
+                If FileExists(SourceNavNetOptsdir$+"\"+SourceNavNetOptsFile$) Then
+                        Netdate=FileDateTime(SourceNavNetOptsdir$+"\"+SourceNavNetOptsFile$)
+                End If
+                If Netdate <> Local Then
+                        ' Updating the options files. Log it:
+                        If Verbose$="1" Then QuickMessageBox "Updating Norton AntiVirus settings."
+                        If ActivityLog$="2" Then WriteToActivityLog "Now copying options files."
+                        If CopyAllFiles(SourceNavNetOptsdir$, Navdir$) Then
+                            Successful=2
+                            bUpdatePerformed = TRUE
+                        Else
+                            Successful = 0
+                            bUpdateError = TRUE
+                        End If
+                End If
+             End If 'SourceNavNetOptsdir$="" or SourceNavNetOptsFile$...
+        End If   ' RetainSettings$="0" then
+
+
+
+       '------------------------------------------------------------------------------------
+       '  Check the LiveUpdate host file on the workstation
+       '-------------------------------------------------------------------------------------
+
+         'get the host file name from the NNS file.  If the return string is
+         'empty, skip this section and move on to checking defs
+        LUHostFile$=readini$("Install/Update","LiveUpdateHostFile",NNSLocation$)
+        If LUHostFile$ <> "" Then
+
+           If Verbose$="1" Then QuickMessageBox "Checking LiveUpdate host file."
+           If ActivityLog$="2" Then WriteToActivityLog "Checking LiveUpdate host file."
+
+           'get the directory for the host file
+           LUHostNetDir$=readini$("Install/Update","LiveUpdateHostDir",NNSLocation$)
+
+            'get the location of LiveUpdate from the registry
+            RegOpenKey HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\SharedUsage"
+            LiveUpdateDir$ = RegReadValue$( HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\SharedUsage", "LiveUpdate1")
+            RegCloseKey HKEY_LOCAL_MACHINE
+
+            'Check for a valid directory from the registry (the reg read doesn't return an empty
+            'string if the key is not there, but returns a single (apparently variable character)
+            If Len(LiveUpdateDir$) <= 1 Then
+                If Verbose$ = "1" Then QuickMessageBox "LiveUpdate directory not found on the workstation."
+                WriteToActivityLog "ERROR: LiveUpdate directory not found on the workstation."
+                Sleep 2000
+            Else
+                'if the host file can't found on the server, then skip to def checking
+                If LUHostNetDir$="" Or FileExists(LUHostNetDir$+"\"+LUHostFile$)=FALSE Then
+                    If Verbose$ = "1" Then QuickMessageBox "LiveUpdate host file not found on the server."
+                    WriteToActivityLog "ERROR: LiveUpdate host file not found on the server.  Check in the NNS file for error in location."
+                    Sleep 2000
+                Else
+                    ' Initialize Local to 0, and Netdate to 1, so that CopyAllFiles will execute
+                    ' even if the host file doesn't exist on the workstation. (The whole point is that these
+                    ' two variables will have different values to trigger the call to CopyAllFiles.)
+                    Local = 0
+                    Netdate = 1
+                    If FileExists(LiveUpdateDir$+"\"+LUHostFile$) Then
+                        Local=FileDateTime(LiveUpdateDir$+"\"+LUHostFile$)
+                    End If
+                    Netdate=FileDateTime(LUHostNetDir$+"\"+LUHostFile$)
+                    If Netdate <> Local Then
+                            ' Updating the options files. Log it:
+                            If Verbose$="1" Then QuickMessageBox "Updating LiveUpdate host file."
+                            If ActivityLog$="2" Then WriteToActivityLog "Now copying LiveUpdate host file."
+                            If CopyAllFiles(LUHostNetDir$, LiveUpdateDir$) Then
+                                Successful=2
+                                bUpdatePerformed = TRUE
+                            Else
+                                Successful = 0
+                                bUpdateError = TRUE
+                            End If
+                    End If
+                End If  'check files on server
+            End If 'check LiveUpdateDir$
+        End If   'check if LUHostFile$ is in the NNS file
+        '-----------------------------------------------------------------------------------
+        ' end of checking/updating the LiveUpdate host file
+        '-----------------------------------------------------------------------------------
+
+        '----------------------------------------------------------------------------------
+        ' Now check to see if we need to download the latest definition files.
+        '----------------------------------------------------------------------------------
+        Dim NetDefsExist As Boolean     'used to determine if def files can be found on the server
+        Dim DefsUpdated As Boolean      'used to determine if def files were updated
+
+        NetDefsExist=TRUE
+        DefsUpdated=FALSE
+
+                                        '' Now figure out what file we are
+                                        '' supposed to be looking at to see if
+                                        '' the definitions have changed.
+        If OnWin95 Then
+
+            NAVDefFile$=readini$("Install/Update","NAVDef95",NNSLocation$)
+
+        Else
+
+                                        '' The definitions may be different
+                                        '' from WorkStation to Server due to
+                                        '' some of the new things supported in
+                                        '' Tesla/Roswell
+            If OnWorkStation Then
+                NAVDefFile$=readini$("Install/Update","NAVDefWks",NNSLocation$)
+            Else
+                NAVDefFile$=readini$("Install/Update","NAVDefSrv",NNSLocation$)
+            End If
+
+        End If
+
+                                        '' Uppercase it so we can compare it
+                                        '' later
+        NAVDefFile$ = UCase$(NAVDefFile$)
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'' 1.) Get the Source Directory for the definition files.
+
+        If OnWin95 Then
+
+            NAVDefDir$=readini$("Install/Update","NAVDefDir95",NNSLocation$)
+
+        Else
+                                        '' The definitions may be different
+                                        '' from WorkStation to Server due to
+                                        '' some of the new things supported in
+                                        '' Tesla/Roswell
+            If OnWorkStation Then
+                NAVDefDir$=readini$("Install/Update","NAVDefDirNTWKS",NNSLocation$)
+            Else
+                NAVDefDir$=readini$("Install/Update","NAVDefDirNTSRV",NNSLocation$)
+            End If
+
+        End If
+
+
+        If NAVDefDir$ <> "" Then
+
+            If NAVDefFile$ = "VIRSCAN1.DAT" Then
+
+                '2. Get the Incoming directory
+                RegOpenKey HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps"
+                IncomingDefs$ = RegReadValue$( HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps", "AVENGEDEFS")
+                RegCloseKey HKEY_LOCAL_MACHINE
+                IncomingDefs$ = IncomingDefs$ + "\incoming"
+
+                '3. Get the current definition path
+                RegOpenKey HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps"
+                CurrentDefs$ = RegReadValue$( HKEY_LOCAL_MACHINE, "SOFTWARE\Symantec\InstalledApps", "AVENGEDEFS")
+                RegCloseKey HKEY_LOCAL_MACHINE
+                Temp$ = CurrentDefs$ + "\DefInfo.dat"
+                Temp$=readini$("DefDates","CurDefs",Temp)
+                CurrentDefs$ = CurrentDefs$ + "\" + Temp$
+
+                If NavDefFile$="" Or NavDefDir$ = "" Or FileExists(NAVDefdir$+"\"+NavDefFile$)=FALSE Then
+                    NetDefsExist=FALSE
+                    If Verbose$ = "1" Then QuickMessageBox "Virus definition files not found on the server."
+                    WriteToActivityLog "ERROR: Virus definition files not found on the server.  Check in the NNS file for error in location."
+                    Sleep 2000
+               End If
+            Else '' If (VIRSCAN1.DAT) '' This means that it is VIRSCAN.DAT
+
+                                        '' Get program files directory for NAV.
+                CurrentDefs$ = NAVDir$
+                IncomingDefs$ = NAVDir$
+
+            End If
+
+            If FileExists(CurrentDefs$ +"\"+NAVDefFile$) Then        'If definition file found
+                If NetDefsExist=TRUE Then
+                    If Verbose$="1" Then
+                        QuickMessageBox "Checking Norton AntiVirus virus definition files."
+                        sleep 2000
+                    End If
+                    If ActivityLog$="2" Then WriteToActivityLog "Checking Norton AntiVirus virus definition files."
+
+                    'Get the sever date
+                    'Get the incoming date
+                    'Get the current date
+                    Successful =0
+                    If FileExists(NavDefdir$+"\"+NavDefFile$) Then
+                        Netdate=FileDateTime(NavDefdir$+"\"+NavDefFile$)
+
+                        If FileExists(IncomingDefs$+"\"+NavDefFile$) Then
+                            Local=FileDateTime(IncomingDefs$+"\"+NavDefFile$)
+                            Successful =1
+                        Else
+                            If FileExists(CurrentDefs$+"\"+NavDefFile$) Then
+                                Local=FileDateTime(CurrentDefs$+"\"+NavDefFile$)
+                                Successful =1
+                            End If
+                        End If
+                    End If
+
+                    If Successful = 1 Then
+                        If Netdate <> Local Then
+                            If Verbose$="1" Then QuickMessageBox "Updating Norton AntiVirus virus definition files."
+                            ' Log that we're copying files:
+                            If ActivityLog$="2" Then WriteToActivityLog "Now copying virus definition files."
+                            If CopyAllFiles(NavDefdir$, IncomingDefs$) Then
+                                    Successful=2
+                                    bUpdatePerformed = TRUE
+                                    DefsUpdated=TRUE
+                            Else
+                                    Successful = 0
+                                    bUpdateError = TRUE
+                            End If
+                        End If
+
+                        GoTo TheRest
+                    Else
+                        Successful = 0
+                        bUpdateError = TRUE
+                    End If
+                End If 'if NetDefsExist=TRUE
+            Else
+                GoTo TheOldElse
+            End If 'if NetDefsExist=TRUE
+        End If
+
+        NAVDefDir$=readini$("Install/Update","NAVDefDir",NNSLocation$)
+        If NAVDefDir$ <> "" Then
+            NetDefsExist=TRUE
+            DefsUpdated=FALSE
+
+            If NavDefFile$="" Or NavDefDir$ = "" Or FileExists(NAVDefdir$+"\"+NavDefFile$)=FALSE Then
+                NetDefsExist=FALSE
+                If Verbose$ = "1" Then QuickMessageBox "Virus definition files not found on the server."
+                WriteToActivityLog "ERROR: Virus definition files not found on the server.  Check in the NNS file for error in location."
+                Sleep 2000
+            End If
+            If FileExists(NavDir$ +"\"+NAVDefFile$) Then        'If definition file found
+                If NetDefsExist=TRUE Then
+                    If Verbose$="1" Then
+                        QuickMessageBox "Checking Norton AntiVirus virus definition files."
+                        sleep 2000
+                    End If
+                    If ActivityLog$="2" Then WriteToActivityLog "Checking Norton AntiVirus virus definition files."
+                    If FileExists(NavDir$+"\"+NavDefFile$) Then
+                        Local=FileDateTime(NavDir+"\"+NavDefFile$)
+                    End If
+                    If FileExists(NavDefdir$+"\"+NavDefFile$) Then
+                        Netdate=FileDateTime(NavDefdir$+"\"+NavDefFile$)
+                    End If
+                    If Netdate <> Local Then
+                        If Verbose$="1" Then QuickMessageBox "Updating Norton AntiVirus virus definition files."
+                        ' Log that we're copying files:
+                        If ActivityLog$="2" Then WriteToActivityLog "Now copying virus definition files."
+                        If CopyAllFiles(NavDefdir$, NavDir$) Then
+                                Successful=2
+                                bUpdatePerformed = TRUE
+                                DefsUpdated=TRUE
+                        Else
+                                Successful = 0
+                                bUpdateError = TRUE
+                        End If
+                    End If
+                End If 'if NetDefsExist=TRUE
+            Else
+                GoTo TheOldElse
+            End If
+        End If
+
+TheRest:
+        '----------------------------------------------------------------------------------
+        ' If Successful=2, a scan occurs only after an update; otherwise it occurs
+        ' everytime the user logs in and an install is not done (if ScanAfterUpdate is
+        ' set to TRUE).
+        '----------------------------------------------------------------------------------
+        If ScanAfterUpdate=TRUE And DefsUpdated=TRUE Then
+            NAVScan$=readini$("Install/Update","ScannerCmdLine",NNSLocation$)
+            If OnWin95 Then
+                NAVScan$="NAVW32.exe "+NAVScan$
+                ActionAfterInstalling$=readini$("Install/Update","ActionAfterUpdating95",NNSLocation$)
+            Else
+                NAVScan$="NAVWNT.exe "+NavScan$
+                ActionAfterInstalling$=readini$("Install/Update","ActionAfterUpdatingNT",NNSLocation$)
+            End If
+
+            If ActionAfterInstalling$<>"3" Then
+                Msgclose
+                sleep 2000
+                msg1$="Norton AntiVirus will now scan your system for viruses."+chr$(13)+chr$(10)
+                msg1$=msg1+"Your system will need to be be restarted"+chr$(13)+chr$(10)
+                msg1$=msg1+"before the new settings take effect."
+                msgbox msg1$, ebInformation Or ebOKOnly, "Norton AntiVirus Administrator"
+            End If
+
+            If ActivityLog$="2" Then WriteToActivityLog "Starting scan."
+            Value = Shell(NAVDir$ + "\" + NAVScan) 'Perform Scan after update
+            Exit Sub                'Should never get here
+        End If
+
+        '----------------------------------------------------------------------------------
+        ' Read NNS file to see if a restart of Windows is necessary.
+        ' (If Successful=3, then no def and options updates were required. Therefore,
+        ' a restart is not required, and we don't care what ActionAfterInstalling is.
+        '----------------------------------------------------------------------------------
+        'If Successful=3 Then GoTo done
+        If bUpdatePerformed = FALSE Then GoTo done
+
+        If OnWin95 Then
+            ActionAfterInstalling$=readini$("Install/Update","ActionAfterUpdating95",NNSLocation$)
+        Else
+            ActionAfterInstalling$=readini$("Install/Update","ActionAfterUpdatingNT",NNSLocation$)
+        End If
+        If ActionAfterInstalling$ = "" Then ActionAfterInstalling = "-1"
+
+        '----------------------------------------------------------------------------------
+        ' Since the SymBasic windows have a tendency to hide behind other windows,
+        ' find all other windows in the system and minimize them.
+        '----------------------------------------------------------------------------------
+        Dim apps$()
+        AppList apps    ' Fills apps with a list of other applications.
+
+        msgclose
+        Select Case ActionAfterInstalling$
+            Case "0"
+                sleep 2000
+                Msgbox "Norton AntiVirus has been updated.  Your system will need to be restarted before the new settings take effect.",ebExclamation Or ebOKOnly Or ebSystemModal,"Norton AntiVirus Administrator"
+
+            Case "1"
+                value=shell( basic.homedir$ + "\reboot.exe " + RebootParameters$ , 1)
+
+            Case "2"
+                sleep 2000
+                If Successful<>3 Then
+                    'Check to see whether any applications were found.
+                    If ArrayDims(apps) <> 0 Then
+                        For i = LBound(apps) To UBound(apps)
+                            AppMinimize apps(i)
+                        Next i
+                    End If
+                    ans1$="Norton Antivirus has been updated.  Your system"+chr$(13)+chr$(10)
+                    ans1$=ans1$+"needs to be restarted before the new settings take effect."
+                    Begin Dialog answer1 17,32,194,65, "Norton AntiVirus Administrator"
+                        Text 6,3,179,30, ans1$
+                        PushButton 113,42,71,14, "Cancel"
+                        PushButton 9,42,71,14, "Restart"
+                    End Dialog
+                    Dim firstanswer As answer1
+                    msgclose
+                    If Dialog(firstanswer) = 2 Then
+                        value=shell( basic.homedir$ + "\reboot.exe " + RebootParameters$ , 1)
+
+                    '--------------------------------------------------------------
+                    ' If user cancels restart then prompt then restart will be required.
+                    '--------------------------------------------------------------
+                    Else
+                        Msgclose
+                        Msgbox "Norton AntiVirus has been updated.  Your system will need to be restarted before the new settings take effect.",ebExclamation Or ebOKOnly Or ebSystemModal,"Norton AntiVirus Administrator"
+                    End If
+                End If
+            Case "3"
+                GoTo Endchanges
+            Case "4"
+                value=shell( basic.homedir$ + "\reboot.exe " + RebootParameters$ , 1)
+            Case Else
+                If verbose$ <> "0" Then
+                    Msgclose
+                    sleep 2000
+                    Msgbox "Norton AntiVirus has been updated.  Your system will need to be restarted before the new settings take effect.",ebExclamation Or ebOKOnly Or ebSystemModal,"Norton AntiVirus Administrator"
+                End If
+        End Select
+
+
+'-------------------------------------------------------------------------------------------
+' Endchanges:
+'-------------------------------------------------------------------------------------------
+Endchanges:
+
+        GoTo done   'Defs updated end program and report successful
+TheOldElse:
+        'If no VIRSCAN.DAT is found
+        If bInstallNT = FALSE Then          'don't install on NT
+            MsgClose
+            msgbox InstallNTMsg$, ebCritical Or ebOkOnly, "Norton AntiVirus Administrator"
+            WriteToActivityLog InstallNTLogMsg$
+            Exit Sub
+        End If
+        If bIALAlreadyRun = FALSE Then
+            If ActivityLog$="2" Then WriteToActivityLog "No virus definitions located on the workstation."
+            If ActivityLog$="2" Then WriteToActivityLog "New or updated version of Norton AntiVirus required."
+            If Verbose$ <> "0" Then
+                Message0$="Your computer requires either a new"+chr$(13)+chr$(10)
+                Message0$=Message0$+"install or update to Norton AntiVirus."+chr$(13)+chr$(10)
+                Message0$=Message0$+chr$(13)+chr$(10)
+                Message0$=Message0$+"This will take a couple of minutes."+chr$(13)+chr$(10)+"Please wait..."
+                Dispmsgdiag Message0$, Iconmsg$, Verbose$
+            End If
+            If OnWin95 Then
+                Value = Shell(NavInstall)       'then Install NAV95
+            Else
+                Value = Shell(IAL)
+            End If
+        Else
+            If Verbose$ = "1" Then QuickMessageBox ("Installation of Norton AntiVirus was not successful.")
+            WriteToActivityLog "ERROR: Installation of Norton AntiVirus was not successful."
+        End If
+
+        Exit Sub                'Should never get here
+    Else                            'If NAV95 is not found in the directory
+        If bInstallNT = FALSE Then          'don't install on NT
+            MsgClose
+            msgbox InstallNTMsg$, ebCritical Or ebOkOnly, "Norton AntiVirus Administrator"
+            WriteToActivityLog InstallNTLogMsg$
+            Exit Sub
+        End If
+        If bIALAlreadyRun = FALSE Then
+            If ActivityLog$="2" Then WriteToActivityLog "New or updated version of Norton AntiVirus required."
+            If Verbose$ <> "0" Then
+                Message0$="Your computer requires either a new"+chr$(13)+chr$(10)
+                Message0$=Message0$+"install or update to Norton AntiVirus."+chr$(13)+chr$(10)
+                Message0$=Message0$+chr$(13)+chr$(10)
+                Message0$=Message0$+"This will take a couple of minutes."+chr$(13)+chr$(10)+"Please wait..."
+                DispMsgDiag Message0$, Iconmsg$, Verbose$
+            End If
+
+            If OnWin95 Then
+                Value = Shell(NavInstall)           'then Install NAV95
+            Else
+                Value = Shell(IAL)
+            End If
+        Else
+            If Verbose$ = "1" Then QuickMessageBox ("Installation of Norton AntiVirus was not successful.")
+            WriteToActivityLog "ERROR: Installation of Norton AntiVirus was not successful."
+        End If
+        Exit Sub                    'Should never get here
+    End If
+
+
+'-------------------------------------------------------------------------------------------
+' Errorhandler
+'-------------------------------------------------------------------------------------------
+Errorhandler:
+    On Error Resume Next
+    If Verbose$="1" Then
+        Msgclose
+        sleep 2000
+        msg1$="An error has occurred while updating Norton AntiVirus."+chr$(13)+chr$(10)+chr$(13)+chr$(10)
+        msg1$=msg1$+"Please contact your network administrator."
+        msgbox msg1$, ebCritical Or ebOKOnly, "Norton AntiVirus Administrator"
+    End If
+    Successful=0
+    bUpdateError = TRUE
+    WriteToActivityLog "ERROR: An error has occurred while updating Norton AntiVirus."
+
+
+'-------------------------------------------------------------------------------------------
+' Done
+'-------------------------------------------------------------------------------------------
+Done:                               'End of program jump
+    If Verbose$="1" Then
+        msgclose
+        msgopen "Norton AntiVirus Administrator...."+space$(90),0,false,false
+    End If
+
+    'If there was an error copying files at some point, we want to indicate that here
+    'or we jumped to the error handler
+    If bUpdateError = TRUE Then Successful = 0
+
+    Select Case Successful
+        Case 0
+            If verbose$="1" Then QuickMessageBox "Norton AntiVirus was not updated properly."
+            If ActivityLog$="2" Then WriteToActivityLog "Norton AntiVirus NOT updated successfully."
+        Case 1
+            If verbose$="1" Then QuickMessageBox "Norton AntiVirus installed."
+            If ActivityLog$="2" Then WriteToActivityLog "Norton AntiVirus installed."
+        Case 2
+            If Verbose$="1" Then QuickMessageBox "Norton AntiVirus updated."
+            If ActivityLog$="2" Then WriteToActivityLog "Norton AntiVirus updated successfully."
+        Case 3
+            If verbose$="1" Then QuickMessageBox "No update to Norton AntiVirus was required."
+            If ActivityLog$="2" Then WriteToActivityLog "No update to Norton AntiVirus was required."
+    End Select
+    sleep 2000
+
+End Sub     ' End Main()

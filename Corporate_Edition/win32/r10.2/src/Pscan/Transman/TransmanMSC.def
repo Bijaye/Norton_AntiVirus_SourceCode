@@ -1,0 +1,134 @@
+LIBRARY         TRANSMAN
+
+EXPORTS
+
+     DllGetClassObject                PRIVATE
+     DllCanUnloadNow                  PRIVATE
+     DllRegisterServer                PRIVATE
+     DllUnregisterServer              PRIVATE
+
+     SendCOM_ALIVE                    @101
+     SendCOM_VIRUS_FOUND              @102
+     SendCOM_ADD_CONSOLE              @103
+     SendCOM_REMOVE_PROGRAM           @104
+     SendCOM_DEL_CONSOLE              @105
+     SendCOM_GET_DRIVE_LIST           @106
+     SendCOM_DIR_BLOCK                @107
+     SendCOM_LIST_KEY_BLOCK           @108
+     SendCOM_LIST_VALUE_BLOCK         @109
+     SendCOM_DEL_KEY                  @110
+     SendCOM_SET_VALUES               @111
+     SendCOM_OPEN_FILE                @112
+     SendCOM_READ_FILE                @113
+     SendCOM_WRITE_FILE               @114
+     SendCOM_CLOSE_FILE               @115
+     SendCOM_GET_SERVER_STATUS        @116
+     SendCOM_ACT_ON_FILE              @117
+     SendCOM_START_SCAN               @118
+     SendCOM_GET_SCAN_INFO            @119
+     SendCOM_GET_SCAN_INFECTIONS      @120
+     SendCOM_STOP_SCAN                @121
+     SendCOM_GET_PONG_DATA            @122
+     SendCOM_FREE_SCAN_HAN            @124
+     SendCOM_GET_VALUES               @125
+
+     FindAllLocalComputers            @126
+     InitTransman                     @127
+     MakeCBAAddrString                @128
+
+     GetVal                           @129
+     GetStr                           @131
+    _GetVal                           @132
+    _GetStr                           @133
+     PutStr                           @134
+     PutVal                           @135
+     GetData                          @136
+     PutData                          @137
+
+     AddValueToBlock                  @138
+     GetValueFromBlock                @139
+
+     DeinitTransman                   @140
+
+     FileCopyFromRemoteComputer       @141
+     FileCopyToRemoteComputer         @142
+     GetAddress                       @143
+     InvalidateAddressCacheEntry      @144
+     ClearAddressCacheEntry           @145
+     VerifyAnAddress                  @146
+     UpdateAddressCacheEntry          @147
+
+     GetValueFromEnumBlock            @148
+
+     SendCOM_LIST_PATTERNS            @149
+     SendCOM_MAKE_ACTIVE_PATTERN      @150
+
+     SendCOM_GET_ADDRESS_INFO         @153
+     SendCOM_DEL_VALUE                @156
+     SendCOM_GET_SIG_LIST             @157
+     SendCOM_EXEC_PROGRAM             @158
+     vtime                            @159
+     vctime                           @160
+     AbortFind                        @162
+     SendAPingTo                      @163
+     PingAllServers                   @164
+     PingAllChildren                  @165
+     SendSinglePing                   @166
+     SendDomainPing                   @167
+     FindAnNTServer                   @168
+     FindAnNetwareServer              @169
+     QuickFindAllLocalComputers       @170
+     FindAllNetwareServers            @171
+     FindAllNTServers                 @172
+     SendCOM_DEL_CLIENT               @173
+     LocateServer                     @175
+     MasterFileCopy                   @176
+     SendSET_FILE_DATE                @177
+     SendGET_FILE_DATE                @178
+     GetFileDate                      @179
+     SetFileDate                      @180
+
+    ResolveAddress                     @200
+    CBASendPing                        @201
+    SendCOM_READ_GROUP_SETTINGS        @203
+    SendCOM_WRITE_GROUP_SETTINGS       @204
+    LocateServerFast                   @205
+    SendCOM_GET_CHILD_ADDRESS_LIST     @206
+    SendCOM_CREATE_CLIENT_GROUP        @207
+    SendCOM_DELETE_CLIENT_GROUP        @208
+    LocateClient                       @209
+    LocateServer2                      @210
+    SendCOM_GET_SIG_TOTALVIRS          @211
+    SendCOM_READ_LOG                   @212
+    LicenseAlloc_Distribute            @213
+    LicenseAlloc_DistributeChange      @214
+    License_Distribute                 @215
+    LicenseAlloc_DistributeDelete      @216
+    LicenseAlloc_DistributeByReg       @217
+
+    RegisterGetSendInfoCallback        @220
+    SetTrustedRootsInDir               @221
+    AddTrustedRootCert                 @222
+    RemoveTrustedRootCert              @223
+    SendCOM_MAKE_SERVER_GROUP_CA_CERT  @224
+    SendCOM_ISSUE_CERT_FROM_CSR        @225
+    SendCOM_ISSUE_CERT                 @226
+    SendCOM_GET_NEW_CERT               @227
+    SendCOM_SELF_ISSUE_2ND_LEVEL_CERTS @228
+
+    SendCOM_GET_EXPANDED_THREAT_LIST   @229
+
+    SendCOM_FORWARD_LOG                @230
+    SendCOM_LOG_CLIENT_MOVE            @231
+
+    UseCurrentUserAddessCache          @232
+    
+    SendCOM_USER_ACCOUNT_ADD           @233
+    SendCOM_USER_ACCOUNT_DELETE        @234
+    SendCOM_USER_ACCOUNT_CHANGE_PWD    @235
+    SendCOM_USER_ACCOUNT_CHANGE_ROLES  @236
+    SendCOM_TEST_COMMUNICATION         @237
+
+    SendCOM_GET_ERASER_SECURITY_RISKS           @238
+    SendCOM_GET_FILTERED_NAVEX_SECURITY_RISKS   @239
+    SendCOM_GET_SIG_LIST_CAT					@240

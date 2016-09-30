@@ -1,0 +1,46 @@
+// NAVAPSCR.idl : IDL source for NAVAPSCR.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVAPSCR.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+
+	[
+		object,
+		uuid(A3090800-97AE-4528-8C6C-770F14641F15),
+		dual,
+		helpstring("IScriptableAutoProtect Interface"),
+		pointer_default(unique)
+	]
+	interface IScriptableAutoProtect : IDispatch
+	{
+		[propget, id(1), helpstring("property LoadAutoProtect")] HRESULT Loaded([out, retval] BOOL *pAPLoaded);
+		[propget, id(2), helpstring("property Enabled")] HRESULT Enabled([out, retval] BOOL *pbEnabled);
+		[propput, id(2), helpstring("property Enabled")] HRESULT Enabled([in] BOOL bEnabled);
+		[id(3), helpstring("method Load")] HRESULT Load();
+		[id(4), helpstring("Configure AP to load on startup")] HRESULT Configure([in] BOOL bStartup);
+		[propget, id(5), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+		[id(6), helpstring("method SetSAVRTPELStartMode")] HRESULT SetSAVRTPELStartMode([in] int iMode);
+	};
+[
+	uuid(586C6565-AEDF-4837-A1B2-9E98EB4BD8AD),
+	version(1.0),
+	helpstring("NAVAPSCR 1.0 Type Library")
+]
+library NAVAPSCRLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(B665012A-380B-4C69-B7FC-05FC13A4EAF8),
+		helpstring("ScriptableAutoProtect Class")
+	]
+	coclass ScriptableAutoProtect
+	{
+		[default] interface IScriptableAutoProtect;
+	};
+};

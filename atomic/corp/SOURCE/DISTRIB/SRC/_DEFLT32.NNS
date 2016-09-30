@@ -1,0 +1,117 @@
+;-------------------------------------------------------------
+;--- Norton AntiVirus Administrator: Network Settings File ---
+;-------------------------------------------------------------
+
+[Install/Update]
+
+;-------------------------------------------------------------
+;--- REQUIRED CHANGES: Network Directories -------------------
+;-------------------------------------------------------------
+Network95="\\<server>\<volume>\NavNet32\NAVUP\Nav95src"
+NetworkNTSRV="\\<server>\<volume>\NavNet32\NAVUP\NTSRVSRC"
+NetworkNTWKS="\\<server>\<volume>\NavNet32\NAVUP\NTWKSSRC"
+
+NAVDefDir95="\\<server>\<volume>\NavNet32\NAVUP\NavDef4X"
+NAVDefDirNTSRV="\\<server>\<volume>\NavNet32\NAVUP\NavDef4X"
+NAVDefDirNTWKS="\\<server>\<volume>\NavNet32\NAVUP\NavDef4X"
+
+OptionPath95="\\<server>\<volume>\NavNet32\NAVUP\Nav95opt"
+OptionPathNTSRV="\\<server>\<volume>\NavNet32\NAVUP\NTSRVOPT"
+OptionPathNTWKS="\\<server>\<volume>\NavNet32\NAVUP\NTWKSOPT"
+
+LiveUpdateHostDir="\\<server>\<volume>\NavNet32\NAVUP\LUhost"
+
+;-------------------------------------------------------------
+;--- OPTIONAL CHANGES: Install Settings ----------------------
+;-------------------------------------------------------------
+NAV95Install="SETUP -SMS -S"
+NAVNTInstall="SETUP -SMS -S -M"
+
+Verbose=1
+
+ForceRebootNT=0
+SilentRebootNT=1
+RebootWaitTimeNT=4
+
+ActivityLog=0
+LogLocation="C:\NAVLOG.TXT"
+AppendToLog=0
+
+; Impersonation
+Impersonate = 1
+ImpersonationUserName=
+ImpersonationPassword=
+ImpersonationDomain=
+ImpersonationModified=0
+
+; If InstallOnNT=0, a message is displayed if NAVNT needs
+; to be installed, but the install is not done.
+; If InstallOnNT=1, NAVNT setup is run on the workstation
+; if NAVNT needs to be installed.
+
+InstallOnNT=1
+
+; If InstallOnNT=0 and you want to display a custom message
+; when NAVNT needs to be installed, type it in below.  Otherwise
+; a default message is displayed.
+
+InstallOnNTMsg=
+
+;-------------------------------------------------------------
+;--- OPTIONAL CHANGES: Update Settings -----------------------
+;-------------------------------------------------------------
+ActionAfterUpdatingNT=3
+ActionAfterUpdating95=2
+
+ScanAfterUpdate=0
+ScannerCmdLine="/L"
+
+RetainSettings=0
+
+;-------------------------------------------------------------
+;--- Administrator Program Settings -----------
+;-------------------------------------------------------------
+
+                                        ;; Use navw32.ex$ for version 2.x
+                                        ;; Use data1.cab for versions 4.x
+NAV95File="navw32.exe"
+NAV95NetFile="data1.cab"
+;NAV95NetFile="navw32.ex$"
+
+                                        ;; Use navwnt.ex_ for version 2.x
+                                        ;; Use data1.cab for version 4.x
+NAVNTWKSFile="navwnt.exe"
+NAVNTWKSNetFILE="data1.cab"
+;NAVNTWKSNetFile="navwnt.ex_"
+
+                                        ;; Use navwnt.ex_ for version 2.x
+                                        ;; Use data1.cab for version 4.x
+NAVNTSRVFile="navwnt.exe"
+NAVNTSRVNetFile="data1.cab"
+;NAVNTSRVNetFile="navwnt.ex_"
+
+
+                                        ;; The definitions files will change
+                                        ;; from version 2.x to version 4.x.
+                                        ;; Use virscan.dat for the 2.x versions
+                                        ;; and virscan1.dat for the 4.x versions
+NAVDEF95="virscan1.dat"
+NAVDEFWKS="virscan1.dat"
+NAVDEFSRV="virscan1.dat"
+
+                                        ;; Use these settings for navdef2x
+;NAVDEF95="virscan.dat"
+;NAVDEFWKS="virscan.dat"
+;NAVDEFSRV="virscan.dat"
+
+
+NAV95OptFile="navopts.dat"
+NAVNTOptFile="navopts.dat"
+
+LiveUpdateHostFile="liveupdt.hst"
+
+[End]
+
+;-------------------------------------------------------------
+;--- End of Network Settings File ----------------------------
+;-------------------------------------------------------------

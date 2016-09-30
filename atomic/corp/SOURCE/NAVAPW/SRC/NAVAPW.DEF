@@ -1,0 +1,45 @@
+; Copyright 1994 Symantec Corporation                                  
+;****************************************************************************
+; 
+; $Header:   S:/NAVAPW.NT/VCS/NAVAPW.DEv   1.0   24 Apr 1997 21:27:54   ksackin  $  
+; 
+; Description:
+;       This file contains the definitions required for the Norton AntiVirus
+;       Auto-Protect Win32 Agent.
+; 
+;****************************************************************************
+; $Log:   S:/NAVAPW.NT/VCS/NAVAPW.DEv  $  
+;  
+;     Rev 1.0   24 Apr 1997 21:27:54   ksackin
+;  Initial revision.
+;  
+;     Rev 1.0   13 Mar 1997 15:12:24   RFULLER
+;  Initial revision
+;  
+;     Rev 1.1   22 Jan 1997 02:39:30   JMILLAR
+;  update copyright
+;  
+;     Rev 1.0   08 Nov 1996 12:13:44   DKEEFER
+;  Initial revision
+;  
+;     Rev 1.0   30 Jan 1996 15:52:42   BARRY
+;  Initial revision.
+;  
+;     Rev 1.0   30 Jan 1996 10:14:58   BARRY
+;  Initial revision.
+;****************************************************************************
+
+NAME		NAVAPW
+DESCRIPTION	'Norton AntiVirus Auto-Protect Agent.  Copyright (C) Symantec Corp. 1990-1997.'
+EXETYPE		WINDOWS
+CODE		MOVEABLE DISCARDABLE
+DATA		MOVEABLE MULTIPLE
+
+HEAPSIZE	1024
+STACKSIZE	15000
+
+EXPORTS
+        NavApCommVxDCommandThread
+        NavApCommMonitorThread 
+        NavApDoCommandForVxD        
+

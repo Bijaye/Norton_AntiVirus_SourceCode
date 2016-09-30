@@ -1,0 +1,227 @@
+////////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\TestProvider.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TestProvider.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TESTPROVIDER_DIALOG DIALOGEX 0, 0, 274, 190
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Test Event Provider (Log View) Ver 1.5"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Exit",IDCANCEL,217,7,50,14
+    PUSHBUTTON      "&Connect",IDC_CONNECT_BUTTON,217,31,50,14
+    PUSHBUTTON      "&Register",IDC_REGISTER_BUTTON,217,50,50,14
+    PUSHBUTTON      "&Unregister",IDC_UNREGISTER_BUTTON,217,68,50,14
+    EDITTEXT        IDC_TEST_VALUE_EDIT,60,57,145,12,ES_AUTOHSCROLL
+    CONTROL         "&Broadcast",IDC_BROADCAST_CHECK,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,60,75,145,10
+    EDITTEXT        IDC_EDIT_VIRUSALERT,7,90,45,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "&Virus Alert event",IDC_VIRUS_ALERT_BUTTON,57,89,64,14
+    EDITTEXT        IDC_EDIT_SCRIPTBLOCKING,149,90,45,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "&Script Blocking",IDC_SB_BUTTON,203,89,64,14
+    EDITTEXT        IDC_EDIT_VIRUSLIKE,7,105,45,12,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "Virus-&like",IDC_VIRUS_LIKE_BUTTON,58,105,64,14
+    EDITTEXT        IDC_EDIT_ERROREVENT,149,105,45,12,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "&Error event",IDC_EVENT_ERROR_BUTTON,203,105,64,14
+    EDITTEXT        IDC_EDIT_APPACTIVITY,7,121,47,12,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "&Application Activities",IDC_SCAN_BUTTON,56,121,74,14
+    DEFPUSHBUTTON   "Execute all &Five ",IDC_BUTTON_ALL,12,139,70,15
+    EDITTEXT        IDC_EDIT_FILENAME,7,159,260,12,ES_AUTOHSCROLL
+    LTEXT           "Provider Id :",IDC_STATIC,7,9,53,8
+    EDITTEXT        IDC_PROVIDER_ID_EDIT,60,7,145,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "Event Id :",IDC_STATIC,7,25,53,8
+    EDITTEXT        IDC_EVENT_ID_EDIT,60,23,145,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    LTEXT           "&Test Value",IDC_STATIC,7,60,53,8
+    LTEXT           "Cancelled Id:",IDC_STATIC,7,42,53,8
+    EDITTEXT        IDC_CANCELLED_ID_EDIT,60,39,145,12,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    CTEXT           "Enter or paste (regular or HI-ASCII/DBCS) text above to show up in Log file.",
+                    IDC_STATIC,7,172,260,8
+    DEFPUSHBUTTON   "&Automatically write to Log every 5 Secs",
+                    IDC_BUTTON_TIMER,83,139,141,15
+    DEFPUSHBUTTON   "&Stop",IDC_BUTTON_STOP,227,139,40,15
+    LTEXT           "Static",IDC_STATIC_TIMER,134,124,133,8
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,5
+ PRODUCTVERSION 1,0,0,5
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Nav Log Activity Log View Tester\0"
+            VALUE "CompanyName", "Syamantec Corporation\0"
+            VALUE "FileDescription", "NAV Activity Log View Tester\0"
+            VALUE "FileVersion", "1, 0, 0, 5\0"
+            VALUE "InternalName", "TestProvider\0"
+            VALUE "LegalCopyright", "Symantec\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "TestProvider.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "TestProvider Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 5\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TESTPROVIDER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 267
+        VERTGUIDE, 60
+        VERTGUIDE, 205
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 183
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\TestProvider.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

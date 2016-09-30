@@ -1,0 +1,662 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/realstr.stv   1.0   06 Feb 1997 20:50:30   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV Auto-Protect options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptMonitorStrings,
+//      LPVOID *        lpOptMonitorArgs,
+//
+//      CheckBoxRec     cbMonitorScanUnknown,
+//      CheckBoxRec     cbMonitorScanWhenRun,
+//      CheckBoxRec     cbMonitorScanWhenOpened,
+//      CheckBoxRec     cbMonitorScanWhenCreated,
+//      CheckBoxRec     cbMonitorRepair,
+//      CheckBoxRec     cbMonitorContinue,
+//      CheckBoxRec     cbMonitorExclude,
+//      CheckBoxRec     cbMonitorDelete,
+//      CheckBoxRec     cbMonitorStop,
+//      ComboBoxRec     cxMonitorVirusFound,
+//      RadioButtonsRec rbMonitorWhatToScan,
+//      ButtonsRec      buMonitorButtons,
+//
+//      CheckBoxRec     cbMonitorStartupLoadUponStartup
+//      CheckBoxRec     cbMonitorStartupCanBeUnloaded
+//      CheckBoxRec     cbMonitorStartupHMA
+//      CheckBoxRec     cbMonitorStartupUMBs
+//      CheckBoxRec     cbMonitorStartupEMS
+//      CheckBoxRec     cbMonitorStartupMemory
+//      CheckBoxRec     cbMonitorStartupMBR
+//      CheckBoxRec     cbMonitorStartupBootRecords
+//      RadioButtonsRec rbMonitorStartupLoadAs
+//      RadioButtonsRec rbMonitorStartupBypassKeys
+//
+//      DIALOG          dlMonitorStartup
+//
+//      CheckBoxRec     cbMonitorAdvancedFloppyAccess
+//      CheckBoxRec     cbMonitorAdvancedFloppyReboot
+//      CheckBoxRec     cbMonitorAdvancedFloppyBoth
+//
+//      ComboBoxRec     cxMonitorAdvancedFormatHard
+//      ComboBoxRec     cxMonitorAdvancedHardBoot
+//      ComboBoxRec     cxMonitorAdvancedFloppyBoot
+//      ComboBoxRec     cxMonitorAdvancedWriteEXE
+//      ComboBoxRec     cxMonitorAdvancedAttributeChange
+//
+//      DIALOG          dlMonitorAdvanced
+//
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/realstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:30   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   30 Jan 1996 16:21:04   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:54:58   BARRY
+// Initial revision.
+// 
+//    Rev 1.19   20 Jan 1995 18:52:52   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.18   28 Dec 1994 12:07:44   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.1   30 Nov 1994 17:27:04   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.17   28 Dec 1994 11:55:54   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:46   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.15   05 Aug 1993 22:19:48   BRAD
+    // Removed XMS support.
+//************************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define CX_VIRUS_FOUND_WIDTH        (28)
+#define CX_VIRUS_FOUND_LENGTH       ( 5)
+#define CX_MONITOR_ACTIVITY_WIDTH   (17)
+#define CX_MONITOR_ACTIVITY_LENGTH  ( 3)
+#define CX_UNKNOWN_FOUND_WIDTH      (30)
+#define CX_UNKNOWN_FOUND_LENGTH     ( 4)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END [];        // These externs are declared in
+extern char szOKButton [];              //  OPTSTR.CPP
+extern char szCancelButton [];
+extern char szAdvancedButton [];
+extern char szHelpButton [];
+extern ButtonsRec buProgramFiles;
+extern ButtonsRec buOkCancelHelp;
+
+
+//************************************************************************
+// STATIC VARIABLES SHARED BY MULTIPLE STRUCTURES
+//************************************************************************
+
+static char SZ_REAL_PROMPT      [] = "Prompt";
+static char SZ_REAL_REP_AUTO    [] = "Repair automatically";
+static char SZ_REAL_DEL_AUTO    [] = "Delete automatically";
+static char SZ_REAL_HALT        [] = "Halt computer";
+
+
+//------------------------------------------------------------------------
+// Auto-Protect CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszOptMonitorStrings [] =        // Strings for monitor CP dialog
+    {
+    DIALOG_LEFT,
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    " %38gScan a file when",            // BEGIN GROUP
+    "   %C1",                           // cbMonitorScanWhenRun
+    "   %C2",                           // cbMonitorScanWhenOpened
+    "   %C3",                           // cbMonitorScanWhenCreated
+    DIALOG_GROUP_END,
+
+    " %38gWhat to scan",                // BEGIN GROUP
+    "   %R4",                           // rbMonitorWhatToScan
+    "       %B5",                       // buProgramFiles
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B6",                              // buMonitorButtons
+
+    DIALOG_LEFT,
+    DIALOG_1COL,
+    " %49gHow to respond",              // BEGIN GROUP
+    "   ^When a virus is found:",
+    "   %X7",                           // cxMonitorVirusFound
+    DIALOG_EMPTY_LINE,
+                                        // Next line is bold
+    "   %3aButtons to display if prompted%1a",
+                                        // cbMonitorRepair, cbMonitorContinue...
+    "     %C8    %C9    %C10",         //  cbMonitorExclude
+    "     %C11    %C12",                // cbMonitorDelete, cbMonitorStop
+    DIALOG_GROUP_END,
+    DIALOG_END,
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect CP Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbMonitorScanWhenRun =
+    {
+    "^Run",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorScanWhenOpened =
+    {
+    "Ope^ned",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorScanWhenCreated =
+    {
+    "Cr^eated",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorRepair =
+    {
+    "Repa^ir",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorContinue =
+    {
+    "Con^tinue",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorDelete =
+    {
+    "^Delete",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStop =
+    {
+    "Sto^p",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorExclude =
+    {
+    "E^xclude",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+static char *lpszVirusFoundLabels [] =
+    {
+    SZ_REAL_PROMPT,
+    "Deny access to file",
+    SZ_REAL_REP_AUTO,
+    SZ_REAL_DEL_AUTO,
+    SZ_REAL_HALT,
+    NULL,
+    };
+
+ComboBoxRec cxMonitorVirusFound =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszVirusFoundLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_VIRUS_FOUND_WIDTH,               // Max width of entries
+    CX_VIRUS_FOUND_LENGTH,              // Length of list
+    };
+
+static char *lpszMonitorWhatToScanLabels [] =
+    {
+    "All ^files",
+    "Progra^m files only",
+    NULL,
+    };
+
+RadioButtonsRec rbMonitorWhatToScan =
+    {
+    lpszMonitorWhatToScanLabels,        // Button text
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,0,                                // Pad, gap
+    };
+
+static char *lpszMonitorButtonsLabels [] =
+    {
+    szOKButton,
+    szCancelButton,
+    szAdvancedButton,
+    " Start^up",
+    " ^Sensor ",
+    szHelpButton,
+    NULL,
+    };
+
+ButtonsRec buMonitorButtons =
+    {
+    lpszMonitorButtonsLabels,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD,
+    0,                                  // Value
+    0,0,                                // Row, col
+    0,0,                                // Pad, gap
+    };
+
+
+LPVOID lpOptMonitorArgs [] =            // Arguments to pass to control panel
+    {
+    &cbMonitorScanWhenRun,
+    &cbMonitorScanWhenOpened,
+    &cbMonitorScanWhenCreated,
+    &rbMonitorWhatToScan,
+    &buProgramFiles,
+    &buMonitorButtons,
+    &cxMonitorVirusFound,
+    &cbMonitorRepair,
+    &cbMonitorContinue,
+    &cbMonitorExclude,
+    &cbMonitorDelete,
+    &cbMonitorStop,
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect Startup Settings Dialog Strings
+//------------------------------------------------------------------------
+
+static char *lpszMonitorStartupStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %36gWhat to scan upon startup",
+    "   %C1",                            // cbMonitorStartupMemory
+    "   %C2",                            // cbMonitorStartupMBR
+    "   %C3",                            // cbMonitorStartupBootRecords
+    DIALOG_GROUP_END,
+
+    " %36gTypes of memory to use",
+    "   %C4",                            // cbMonitorStartupHMA
+    "   %C5",                            // cbMonitorStartupUMBs
+    "   %C6",                            // cbMonitorStartupEMS
+    DIALOG_GROUP_END,
+
+    " %36gBypass keys",                  // BEGIN GROUP
+    "   %R7",                            // rbMonitorStartupBypassKeys
+    DIALOG_GROUP_END,
+    "   %C8",                           // cbMonitorStartupCanBeUnloaded
+    "   %C9",                           // cbMonitorStartupCanBeUnloaded
+
+    DIALOG_NEXT_COL,
+
+    DIALOG_END
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect Startup Settings Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbMonitorStartupCanBeUnloaded =
+    {
+    "Auto-^Protect can be unloaded",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupHideIcon =
+    {
+    "Hide icon in ^windows",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupMemory =
+    {
+    "^Memory",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupMBR =
+    {
+    "Master boot ^record",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupBootRecords =
+    {
+    "^Boot records",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupHMA =
+    {
+    "H^igh memory area (HMA)",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupUMBs =
+    {
+    "^Upper memory blocks (UMBs)",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorStartupEMS =
+    {
+    "^Expanded memory (EMS)",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+static char *lpszMonitorStartupBypassKeysLabels [] =
+    {
+    "^None",
+    "Both ^shift keys",
+    "Both ^alt keys",
+    "Both ctrl ^keys",
+    NULL,
+    };
+
+RadioButtonsRec rbMonitorStartupBypassKeys =
+    {
+    lpszMonitorStartupBypassKeysLabels,
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,0,                                // Pad, gap
+    };
+
+DIALOG dlMonitorStartup =               // Monitor startup settings DIALOG
+    {
+    0,0,                                // Row, col
+    NORMAL_DIALOG_FLAGS,
+    "Auto-Protect Startup Settings",  // Title
+    lpszMonitorStartupStrings,
+    &buOkCancelHelp,                    // buttons in strings
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect Advanced Settings Dialog Strings
+//------------------------------------------------------------------------
+
+static char *lpszMonitorAdvancedStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %57gVirus-like activity monitors",// BEGIN GROUP
+                                        // cxMonitorAdvancedFormatHard
+    "   ^Low-level format of hard disk:     %X1",
+    DIALOG_EMPTY_LINE,
+                                        // cxMonitorAdvancedHardBoot
+    "   Write to hard ^disk boot records:   %X2",
+    DIALOG_EMPTY_LINE,
+                                        // cxMonitorAdvancedFloppyBoot
+    "   Write to ^floppy disk boot records: %X3",
+    DIALOG_EMPTY_LINE,
+                                        // cxMonitorAdvancedWriteEXE
+    "   Write to ^program files:            %X4",
+    DIALOG_EMPTY_LINE,
+                                        // cxMonitorAdvancedAttributeChange
+    "   Read-only ^attribute change:        %X5",
+    DIALOG_GROUP_END,
+
+    " %57gCheck floppies",              // BEGIN GROUP
+    "   %C6",                           // cbMonitorAdvancedFloppyAccess
+    "   %C7",                           // cbMonitorAdvancedFloppyReboot
+    "       %C8",                       // cbMonitorAdvancedFloppyBoth
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+                                        // NOTE: OkCancelHelp buttons appear
+                                        // here.
+    DIALOG_END
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect Advanced Settings Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbMonitorAdvancedFloppyAccess =
+    {
+    "Check floppies for ^boot viruses upon access",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorAdvancedFloppyReboot =
+    {
+    "Check floppies when ^rebooting computer",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorAdvancedFloppyBoth =
+    {
+    "^When rebooting, check both drives (A: and B:)",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+static char *lpszMonitorActivityLabels [] =
+    {
+    "Allow",
+    SZ_REAL_PROMPT,
+    "Don't allow",
+    NULL,
+    };
+
+ComboBoxRec cxMonitorAdvancedFormatHard =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszMonitorActivityLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_MONITOR_ACTIVITY_WIDTH,          // Max width of entries
+    CX_MONITOR_ACTIVITY_LENGTH,         // Length of list
+    };
+
+ComboBoxRec cxMonitorAdvancedHardBoot =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszMonitorActivityLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_MONITOR_ACTIVITY_WIDTH,          // Max width of entries
+    CX_MONITOR_ACTIVITY_LENGTH,         // Length of list
+    };
+
+ComboBoxRec cxMonitorAdvancedFloppyBoot =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszMonitorActivityLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_MONITOR_ACTIVITY_WIDTH,          // Max width of entries
+    CX_MONITOR_ACTIVITY_LENGTH,         // Length of list
+    };
+
+ComboBoxRec cxMonitorAdvancedWriteEXE =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszMonitorActivityLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_MONITOR_ACTIVITY_WIDTH,          // Max width of entries
+    CX_MONITOR_ACTIVITY_LENGTH,         // Length of list
+    };
+
+ComboBoxRec cxMonitorAdvancedAttributeChange =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszMonitorActivityLabels,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_MONITOR_ACTIVITY_WIDTH,          // Max width of entries
+    CX_MONITOR_ACTIVITY_LENGTH,         // Length of list
+    };
+
+DIALOG dlMonitorAdvanced =
+    {
+    0, 0,                               // Row, col
+    NORMAL_DIALOG_FLAGS,
+    "Auto-Protect Advanced Settings",
+    lpszMonitorAdvancedStrings,
+    &buOkCancelHelp,
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect Sensor Settings Dialog Strings
+//------------------------------------------------------------------------
+
+static LPSTR lpszMonitorSensor [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %40g",                            // BEGIN GROUP
+    "   %C1",                           // cbMonitorSensorUse;
+    "       (finds unknown viruses)",
+    DIALOG_EMPTY_LINE,
+    "   ^When an unknown virus is found:",
+    "   %X2",                           // cxMonitorSensorUnknownFound;
+    DIALOG_EMPTY_LINE,
+    "   Buttons to display if prompted",
+                                        // cbMonitorSensorRepair;
+    "     %C3    %C4",                  // cbMonitorSensorContinue;
+                                        // cbMonitorSensorDelete;
+    "     %C5    %C6",                  // cbMonitorSensorExclude;
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,                    // Buttons appear here
+    DIALOG_END
+    };
+
+
+//------------------------------------------------------------------------
+// Auto-Protect Sensor Settings Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbMonitorSensorUse =
+    {
+    "^Use virus sensor technology",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorSensorRepair =
+    {
+    "^Repair",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorSensorContinue =
+    {
+    "Co^ntinue",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorSensorDelete =
+    {
+    "^Delete",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbMonitorSensorExclude =
+    {
+    "E^xclude",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+static LPSTR lpszMonitorSensorUnknown [] =
+    {
+    SZ_REAL_PROMPT,
+    SZ_REAL_REP_AUTO,
+    SZ_REAL_DEL_AUTO,
+    SZ_REAL_HALT,
+    NULL
+    };
+
+ComboBoxRec cxMonitorSensorUnknownFound =
+    {
+    CBS_NOEDIT | USE_VALUE,
+    lpszMonitorSensorUnknown,
+    NULL,                               // Not needed, since CBS_NOEDIT
+    CX_UNKNOWN_FOUND_WIDTH,             // Max width of entries
+    CX_UNKNOWN_FOUND_LENGTH,            // Length of list
+    };
+
+DIALOG dlMonitorSensor =
+    {
+    0, 0,                               // Row, col
+    NORMAL_DIALOG_FLAGS,
+    "Auto-Protect Virus Sensor Settings",
+    lpszMonitorSensor,
+    &buOkCancelHelp,
+    };
+

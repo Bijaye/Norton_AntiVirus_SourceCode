@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Change all filenames in the directory to lowercase
+
+for dir in symkunix avenge navapi inc.core inc.avcore inc_english.avcore
+do
+  cd $dir
+  for file in *
+  do
+     mv $file `echo $file | sed -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/`
+  done
+  cd ..
+done  
+  

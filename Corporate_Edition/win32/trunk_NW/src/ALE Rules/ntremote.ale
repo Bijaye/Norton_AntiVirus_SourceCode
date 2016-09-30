@@ -1,0 +1,28 @@
+;Auto-Configuration File for Symantec Antivirus Corporate Edition NT Remote
+;created for NT Remote 06132002
+
+
+[MATCH:SECTION001]
+ApplicationDescription=Symantec Antivirus Corporate Edition NT Remote
+DisplayName=NTREMOTE0
+File:Name=ntremote.exe
+RequiredDigest=0000000000000000000000000000000000000000
+Rules=UDP-OUT
+Version:CompanyName=*symantec*
+
+[MATCH:SECTION002]
+ApplicationDescription=Symantec Antivirus Corporate Edition NT Remote
+DisplayName=NTREMOTE
+File:Name=ntremote.exe
+Rules=UDP-OUT
+Version:CompanyName=*symantec*
+
+[RULE:UDP-OUT]
+Action=ALLOW
+Category=0
+Direction=EITHER
+Protocol=UDP
+RemotePorts=38293
+RuleName=Antivirus Corporate Edition NT Remote UDP Outbound Connection
+
+

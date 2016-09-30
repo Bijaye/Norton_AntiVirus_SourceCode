@@ -1,0 +1,86 @@
+/* Copyright 1991-1996 Symantec Corporation                                  */
+/************************************************************************
+ *                                                                      *
+ * $Header:   N:/NAVC/VCS/navdirs.stv   1.3   09 Jun 1997 03:40:00   BGERHAR  $ *
+ *                                                                      *
+ * Description: Strings file for StdDlgSelect/ChangeDir().              *
+ *                                                                      *
+ * Contains:                                                            *
+ *                                                                      *
+ * See Also:                                                            *
+ *                                                                      *
+ ************************************************************************
+ * $Log:   N:/NAVC/VCS/navdirs.stv  $                                       *
+// 
+//    Rev 1.3   09 Jun 1997 03:40:00   BGERHAR
+// Remove elipsis from printf showing def and options dir
+// 
+//    Rev 1.2   06 Jun 1997 18:39:48   BGERHAR
+// Update options and def strings and logic
+// 
+//    Rev 1.1   01 Jun 1997 20:34:10   BGERHAR
+// Update definitions/options search logic
+// 
+//    Rev 1.0   06 Feb 1997 20:56:42   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   31 Dec 1996 15:22:04   MKEATIN
+// Initial revision.
+// 
+//    Rev 1.3   27 Nov 1996 10:26:40   JBELDEN
+// changed strings to character arrays.
+// 
+//    Rev 1.0   27 Nov 1996 10:13:54   JBELDEN
+// Initial revision.
+// 
+//    Rev 1.2   11 Nov 1996 17:11:32   JBELDEN
+// changed strings so they can be printed with printf();
+// 
+//    Rev 1.1   08 Nov 1996 10:24:10   JBELDEN
+// removed unused code
+// 
+//    Rev 1.0   02 Oct 1996 14:07:14   JBELDEN
+// Initial revision.
+ ************************************************************************/
+
+#include "platform.h"
+#include "stddos.h"
+
+char SZ_OPTIONS_FOUND [] =
+    {
+    "Using options from %s\n",
+    };
+
+char SZ_OPTIONS_NOT_FOUND [] =
+    {
+    "Norton AntiVirus was unable to locate its required\n" \
+    "settings files.\n" \
+    "Please make sure the product is installed correctly\n" \
+    "or use /OPT:[directory] to specify the directory\n" \
+    "where the settings are located."
+    };
+
+char SZ_INVALID_OPTIONS_FOLDER [] =
+    {
+    "Norton AntiVirus was unable to locate its required\n" \
+    "settings files in the directory specified.\n"
+    };
+
+char SZ_DEFINITIONS_FOUND [] =
+    {
+    "Using virus definitions from %s\n",
+    };
+
+char SZ_DEFINITIONS_NOT_FOUND [] =
+    {
+    "Norton AntiVirus was unable to locate its virus\n" \
+    "definitions files.\n" \
+    "Use /CFG:[directory] to specify the directory\n"
+    "where the definitions files are located."
+    };
+
+char SZ_INVALID_DEFINITIONS_FOLDER [] =
+    {
+    "Norton AntiVirus was unable to locate its virus\n" \
+    "definitions files in the directory specified.",
+    };

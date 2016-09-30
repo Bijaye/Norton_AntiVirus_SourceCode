@@ -1,0 +1,22 @@
+:: $Header:   S:/navexclu/VCS/update.btv   1.0   06 Feb 1997 20:57:58   RFULLER  $
+::
+:: Update Batch file for the NAVEXCLU source area.
+::------------------------------------------------------------------------
+: $Log:   S:/navexclu/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 20:57:58   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   20 Mar 1996 09:33:20   BARRY
+:  Initial revision.
+::------------------------------------------------------------------------
+
+::Update Batch file for the Norton AntiVirus for Windows
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+

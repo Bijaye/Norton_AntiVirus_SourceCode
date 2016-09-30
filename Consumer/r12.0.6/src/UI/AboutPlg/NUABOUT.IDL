@@ -1,0 +1,41 @@
+// NuAbout.idl : IDL source for NuAbout.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NuAbout.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "AboutProp.idl";
+
+	[
+		object,
+		uuid(8A93464C-3A3D-11d3-A2D4-005004184DF1),
+	
+		helpstring("INav2kAboutExtension Interface"),
+		pointer_default(unique)
+	]
+	interface INav2kAboutExtension : IUnknown
+	{
+	};
+
+[
+	uuid(8A934650-3A3D-11d3-A2D4-005004184DF1),
+	version(1.0),
+	helpstring("Nav2kAbout 1.0 Type Library")
+]
+library Nav2kABOUTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(8A93465D-3A3D-11d3-A2D4-005004184DF1),
+		helpstring("Nav2kAboutExtension Class")
+	]
+	coclass Nav2kAboutExtension
+	{
+		[default] interface INav2kAboutExtension;
+		interface IAboutProperties;
+	};
+};

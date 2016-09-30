@@ -1,0 +1,44 @@
+// SymCorpUI.idl : IDL source for SymCorpUI
+// This file will be processed by the MIDL tool to
+// produce the type library (SymCorpUI.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// ISYMCORPUI
+// This is the component and interface that SmcGui and the Test Harness will use
+// to instantiate the main UI in their processes.  Their integration steps:
+//      1.  Create a CLSID_SymCorpUI component
+//      2.  Get the ISymCorpUI interface from it
+//      3.  Call ShowUI
+[
+	object,
+	uuid(643CAF54-70F4-4012-8EBE-8817AE3AFF5E),
+	dual,
+	nonextensible,
+	helpstring("ISymCorpUI Interface"),
+	pointer_default(unique)
+]
+interface ISymCorpUI : IDispatch
+{
+	// Display the main UI in a new window
+	[id(1)] HRESULT ShowUI( [in] DWORD userParam );
+};
+
+[
+	uuid(5911395E-C9FE-416F-A746-0AE4189331BD),
+	version(1.0),
+	helpstring("SymCorpUI 1.0 Type Library")
+]
+library SymCorpUILib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(A4E7D4A6-C678-42AC-82F4-9F92C1DB69B8),
+		helpstring("SymCorpUI Class")
+	]
+	coclass SymCorpUI
+	{
+		[default] interface ISymCorpUI;
+	};
+};

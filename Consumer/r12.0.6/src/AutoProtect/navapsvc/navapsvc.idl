@@ -1,0 +1,65 @@
+// navapsvc.idl : IDL source for navapsvc.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (navapsvc.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+	//
+	// APEvent handler interface.  Implemented by clients.
+	//
+	[
+		object,
+		uuid(98EF6B3B-A12D-435c-ACCD-0B241662B4FB),
+		oleautomation,
+		pointer_default(unique)
+	]
+	interface INAVAPEventHandler : IUnknown
+	{
+		[helpstring("method GetSessionID")] HRESULT GetSessionID( DWORD* pdwSessionID );
+		[helpstring("method OnEvent")] HRESULT OnEvent( VARIANT vArrayData );
+		[helpstring("method OnStopped")] HRESULT OnStopped();
+		[helpstring("method OnStateChanged")] HRESULT OnStateChanged( DWORD dwEnabled );
+        [helpstring("method OnDefAuthenticationFailure")] HRESULT OnDefAuthenticationFailure( DWORD dwRetVal );
+	};
+
+	//
+	// AP Service interface.
+	//
+	[
+		object,
+		uuid(50F23616-4F03-4052-89CF-BE9CC1352B42),
+		helpstring("INAVAPService Interface"),
+		oleautomation,
+		hidden,
+		pointer_default(unique)
+	]
+	interface INAVAPService : IUnknown
+	{
+		[helpstring("method RegisterHandler")] HRESULT RegisterHandler(INAVAPEventHandler* pHandler);
+		[helpstring("method UnRegisterHandler")] HRESULT UnRegisterHandler(INAVAPEventHandler* pHandler);
+		[helpstring("method GetAutoProtectStatus")] HRESULT GetAutoProtectEnabled( BOOL * pbEnabled );
+		[helpstring("method SendCommand")] HRESULT SendCommand( BSTR pCommand, VARIANT vArrayData );
+	};
+
+[
+	uuid(F743EA98-42BD-4E2C-A221-3F7B646748C7),
+	version(1.0),
+	helpstring("navapsvc 1.0 Type Library")
+]
+library NAVAPSVCLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(142FB276-7C38-4BB4-B475-3F9233B3EFF8),
+		helpstring("NAVAPService Class")
+	]
+	coclass NAVAPService
+	{
+		[default] interface INAVAPService;
+	};
+};

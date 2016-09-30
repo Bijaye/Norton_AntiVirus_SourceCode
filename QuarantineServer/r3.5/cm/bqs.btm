@@ -1,0 +1,22 @@
+if "%@upper[%1]" == "/DBG" goto Debug
+echo Building project files (release mode) . . .
+msdev "..\Quarantine Server Build.dsw" /MAKE "ALL - Release" /OUT "make.err" /REBUILD
+if ERRORLEVEL != 0 goto BuildErr
+goto Complete
+:Debug
+echo Building project files (debug mode) . . .
+msdev "..\Quarantine Server Build.dsw" /MAKE "ALL - Debug" /OUT "make.err" /REBUILD
+if ERRORLEVEL != 0 goto BuildErr
+goto Complete
+:BuildErr
+echo See file MAKE.ERR for details
+beep 440 2
+goto AllDone
+:Complete
+echo Build successfull
+del make.err /qz
+goto AllDone
+:AllDone
+
+rem "this is a test"
+

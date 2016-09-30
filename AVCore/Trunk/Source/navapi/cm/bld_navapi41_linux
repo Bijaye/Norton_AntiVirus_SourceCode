@@ -1,0 +1,604 @@
+# Author:  Dwight Wilson
+
+# set -x
+
+P4CLIENT=navapi41_linux_cm_client
+export P4CLIENT
+
+PERFLABELBASE=cm_navapi_r4.1_linux_
+ROOTDIR=/usr/cmsource
+BASEDIR=$ROOTDIR/navapi41
+TARNAMEROOT=navapi41_linux
+RELEASEPOSTINGDIR=navapi41
+
+FULLTARNAME="$TARNAMEROOT"_$1.tar
+ERS_DIR=$BASEDIR
+
+# Test to see if they supplied a build number.
+
+if [ "$1" = "" ]
+then
+  echo
+  echo "Usage:  $MYNAME bld_num [start_date] [start_hour]"
+  echo
+  echo "Terminating..."
+  echo
+  exit
+fi
+
+# Extract the name of the calling script.
+
+MYNAME=`basename $0`
+
+# Make sure the user gives the time if they gave the date.
+# This means they are scheduling the build, not running
+# it immediately.
+
+if [ "$2" != "" -a "$3" = "" ]
+then
+  echo
+  echo "If you supply the date, please supply the time..."
+  echo
+  echo "Usage:  $MYNAME bld_num [start_date] [start_hour]"
+  echo
+  echo "Terminating..."
+  exit
+fi
+
+echo
+echo "****************************************************"
+echo "Automated Build Script for $TARNAMEROOT"
+echo "****************************************************"
+echo
+
+sleep 4
+
+STARTDATE=$2
+STARTHOUR=$3
+
+echo
+echo Build number = $1
+echo
+echo STARTDATE = $STARTDATE
+echo 
+echo STARTHOUR = $STARTHOUR
+echo
+sleep 4
+
+# If the date was specified, wait for it.
+
+if [ "$2" != "" ]
+then
+  until [ `date +'%d'` == $STARTDATE ]
+  do
+#   clear
+    echo
+    echo
+    echo "***  $MYNAME $1  ***"
+    echo
+    echo
+    echo "Waiting for date = "$STARTDATE
+    echo
+    echo "Waiting for hour = $3"
+    echo
+    echo "Current date = `date +'%d'`"
+    echo
+    echo "Current time = `date +'%H:%M:%S'`"
+    echo
+    sleep 5
+  done
+fi
+
+# If the time was specified, wait for it.
+
+if [ "$3" != "" ]
+then
+  until [ `date +'%H'` == $STARTHOUR ]
+  do
+#   clear
+    echo
+    echo
+    echo "***  $MYNAME $1  ***"
+    echo
+    echo
+    echo STARTDATE = TODAY
+    echo
+    echo "Waiting for hour = $STARTHOUR"
+    echo
+    echo "Current time = `date +'%H:%M:%S'`"
+    echo
+    sleep 5
+  done
+fi
+
+echo
+echo "The build is starting now."
+echo
+
+sleep 4
+
+echo
+echo "******************************************"
+echo "Looking for previous build environment to"
+echo "make sure it has been deleted..."
+echo "******************************************"
+echo
+
+sleep 3
+
+# Make sure the main directory exists.
+
+ if [ ! -d $BASEDIR ]
+ then
+   echo
+   echo "Base directory $BASEDIR does not exist."
+   echo
+   echo "Creating..."
+   echo
+   sleep 2
+   echo mkdir $BASEDIR
+   mkdir $BASEDIR
+   TEST_DIR=$?
+   sleep 2
+   if [ "$TEST_DIR" -gt "0" ]
+   then
+     echo
+     echo Could not create base directory $BASEDIR.
+     echo 
+     echo Aborting...
+     sleep 2
+     echo
+     exit
+   fi
+   sleep 2
+ fi
+
+ echo "cd $BASEDIR"
+ cd $BASEDIR
+
+ sleep 3
+
+if [ `ls -1 | wc -l` != "0" ]
+then
+  echo
+  ls -1
+  echo
+  echo "Previous build was found..."
+  echo
+  sleep 2
+  echo "Deleting..."
+  sleep 2
+  rm -rf *   
+fi
+
+if [ `ls -1 | wc -l` != "0" ]
+then
+  echo
+  ls -1
+  echo "Previous build was not deleted successfully...  Terminating."
+  echo
+  exit
+fi
+
+echo
+echo Previous B.E. is deleted.
+
+sleep 2
+
+
+echo
+echo Client spec:  $P4CLIENT
+echo
+sleep 2
+
+echo
+echo Here is what it looks like:
+echo
+sleep 5
+p4 client -o
+echo
+echo Done.
+echo
+sleep 5
+
+echo
+echo "******************************************"
+echo "Syncing the client spec.."
+echo "******************************************"
+echo
+
+echo p4 sync -f
+sleep 2
+p4 sync -f
+sleep 2
+
+
+echo
+echo "******************"
+echo "Labeling..."
+echo "******************"
+echo
+sleep 4
+
+p4 label -o "$PERFLABELBASE"$1 > temp.lab
+p4 label -i < temp.lab
+
+echo labelsync -l $PERFLABELBASE$1
+p4 labelsync -l $PERFLABELBASE$1
+
+echo
+echo "******************"
+echo "Labelsync complete."
+echo "******************"
+echo
+sleep 4
+
+
+echo
+echo "******************************************"
+echo "Fixing file permissions..."
+echo "******************************************"
+echo
+
+echo "chmod 775 $BASEDIR/*"
+chmod 775 $BASEDIR/*
+sleep 2
+
+echo cd $BASEDIR
+cd $BASEDIR
+
+echo
+echo "******************************************"
+echo Running tolower...
+echo "******************************************"
+echo
+sleep 2
+
+echo tolower
+sleep 2
+tolower
+sleep 2
+
+echo
+echo "**********************************************************"
+echo Building $TARNAMEROOT for debug...
+echo "**********************************************************"
+echo
+sleep 5
+
+echo makeall debug
+echo
+sleep 2
+makeall debug
+
+sleep 3
+
+echo
+echo "**********************************************************"
+echo Building $TARNAMEROOT for release...
+echo "**********************************************************"
+echo
+sleep 5
+
+echo makeall release
+echo
+sleep 2
+makeall release
+
+sleep 3
+
+
+echo
+echo "*****************************************************"
+echo "Checking the build..."
+echo "*****************************************************"
+echo
+
+# Checking for files in the build.
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+CHECKFILES="
+bin.release/apitest
+bin.release/libavenge.a
+bin.release/libnavapi.a
+bin.release/libsymkunix.a
+bin.debug/apitest
+bin.debug/libavenge.a
+bin.debug/libnavapi.a
+bin.debug/libsymkunix.a"
+
+echo
+echo "Checking files..."
+echo
+sleep 2
+
+for FILE in $CHECKFILES
+do
+ echo "Checking $FILE..."
+ if [ ! -f $BASEDIR/$FILE ]
+ then
+   echo
+   echo "*********"
+   echo "  ERROR  "
+   echo "*********"
+   echo
+   echo "File $BASEDIR/$FILE does not exist."
+   echo "Please check the build."
+   echo "Exiting..."
+   exit
+ fi
+done
+sleep 2
+
+echo
+echo "The build has no missing files!"
+echo "Continuing..."
+sleep 2
+
+echo
+echo "*****************************************************"
+echo "Posting files to cm-ftp..."
+echo "*****************************************************"
+echo
+sleep 2
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+
+  UNIQFILE="FTP_LOG_$bld_type_`date +'%m%d%H%M'`"
+
+  echo
+  echo "***********************************************************"
+  echo "FTP final binaries to cm-ftp is in progress, please wait..."
+  echo "***********************************************************"
+  echo
+  sleep 2
+  echo > $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo FTP Log for tar archive ...      >> $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo >> $BASEDIR/$UNIQFILE
+
+ftp -d -n 155.64.157.12 <<EndFTP >> $BASEDIR/$UNIQFILE
+user cm_only cmonly
+cd Installable_Builds
+mkdir $RELEASEPOSTINGDIR
+cd $RELEASEPOSTINGDIR
+mkdir $1
+cd $1
+lcd bin.release
+mkdir LibLinuxRelease
+cd LibLinuxRelease
+bin
+put apitest
+put libavenge.a
+put libnavapi.a
+put libsymkunix.a
+cd ..
+lcd ..
+mkdir LibLinuxDebug
+cd LibLinuxDebug
+lcd bin.debug
+put apitest
+put libavenge.a
+put libnavapi.a
+put libsymkunix.a
+bye
+EndFTP
+
+sleep 2
+echo
+echo "**********************************"
+echo "FTP final binaries is complete."
+echo "**********************************"
+
+
+
+
+
+echo "----------------------------------------"
+
+
+
+echo
+echo "*****************************************************"
+echo "Creating full tar archive file of build environment..."
+echo "*****************************************************"
+echo
+sleep 3
+
+echo cd $BASEDIR
+cd $BASEDIR
+
+if [ -f "$FULLTARNAME" ]
+then
+  echo
+  echo "Previous tar file found... deleting..."
+  echo
+  sleep 2
+  echo rm $FULLTARNAME
+  rm $FULLTARNAME
+  sleep 3
+fi
+
+echo
+echo "************************************************************"
+echo "Creating full b.e. tar file $FULLTARNAME..."
+echo "************************************************************"
+echo
+sleep 3
+
+echo tar -cvf $FULLTARNAME ./*
+tar -cvf $FULLTARNAME ./*
+echo
+echo "Done."
+sleep 2
+
+
+
+echo
+echo "************************************************************"
+echo "FTP'ing $FULLTARNAME to cm-archive..."
+echo "************************************************************"
+echo
+sleep 3
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+  UNIQFILE="FTP_LOG_$bld_type_`date +'%m%d%H%M'`"
+
+  echo
+  echo "**************************************************************"
+  echo "FTP $FULLTARNAME to cm-archive is in progress, please wait..."
+  echo "**************************************************************"
+  echo
+  sleep 4
+  echo > $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo FTP Log for tar archive ...      >> $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo >> $BASEDIR/$UNIQFILE
+
+ftp -d -n 155.64.140.219 <<EndFTP >> $BASEDIR/$UNIQFILE
+user anonymous dwilson@symantec.com
+bin
+put $FULLTARNAME
+bye
+EndFTP
+
+sleep 4
+echo "*****************"
+echo "FTP is complete."
+echo "*****************"
+
+echo
+echo "*****************************************************"
+echo "FTP'ing $FULLTARNAME to cm-ftp for localization..."
+echo "*****************************************************"
+echo
+sleep 3
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+  UNIQFILE="FTP_LOG_$bld_type_`date +'%m%d%H%M'`"
+
+  echo
+  echo "***********************************************************"
+  echo "FTP $FULLTARNAME to cm-ftp is in progress, please wait..."
+  echo "***********************************************************"
+  echo
+  sleep 4
+  echo > $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo FTP Log for tar archive ...      >> $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo >> $BASEDIR/$UNIQFILE
+
+ftp -d -n 155.64.157.12 <<EndFTP >> $BASEDIR/$UNIQFILE
+user cm_only cmonly
+cd build_environments
+mkdir $RELEASEPOSTINGDIR
+cd $RELEASEPOSTINGDIR
+mkdir $1
+cd $1
+bin
+put $FULLTARNAME
+bye
+EndFTP
+
+sleep 4
+echo "**************************"
+echo "FTP $FULLTARNAME is complete."
+echo "**************************"
+
+
+echo
+echo "**************************************************"
+echo "Generating Metrics for Linux..."
+echo "**************************************************"
+echo
+
+echo "Labels to be compared:"
+echo
+
+if [ $1 -gt 10 ]
+then
+  echo "  $PERFLABELBASE`expr $1 - 1`"
+  else
+  echo "  $PERFLABELBASE"0`expr $1 - 1`
+fi
+  echo "  $PERFLABELBASE"$1
+
+
+echo
+sleep 4
+cd $BASEDIR
+TOOLSDIR=/export/home/tools
+export TOOLSDIR
+
+
+if [ $1 -gt 10 ]
+then
+  python /export/home/tools/metrics.py //depot/... $PERFLABELBASE.`expr $1 - 1` $PERFLABELBASE.$1
+  else
+  python /export/home/tools/metrics.py //depot/... $PERFLABELBASE.0`expr $1 - 1` $PERFLABELBASE.$1
+fi
+
+
+echo
+echo "**************************************************"
+echo "Metrics generation complete."
+echo "**************************************************"
+echo
+
+sleep 4
+
+echo
+echo "**************************************************"
+echo "Posting Metrics on cm-ftp..."
+echo "**************************************************"
+echo
+
+sleep 3
+
+echo cd $BASEDIR/metrics
+cd $BASEDIR/metrics
+echo
+
+ftp -d -n 155.64.157.12 <<EndFTP
+user cm_only cmonly
+cd Installable_Builds
+mkdir $RELEASEPOSTINGDIR
+cd $RELEASEPOSTINGDIR
+mkdir $1
+cd $1
+mkdir metrics
+cd metrics
+ascii
+mput $PERFLABELBASE*
+bye
+EndFTP
+
+sleep 4
+echo
+echo "******************************"
+echo "FTP of Metrics is complete."
+echo "******************************"
+
+
+
+echo
+echo "**************************************************"
+echo "Build of $TARNAMEROOT $1 is complete."
+echo "**************************************************"
+echo
+
+
+
+exit
+

@@ -1,0 +1,48 @@
+:::::::::::::::::::::::::::::::::::::::::::::
+:: Build Killer
+:::::::::::::::::::::::::::::::::::::::::::::
+
+@echo off
+
+set KILLBUILD=\\ussm-cpd\ussm-cpd\Build_Environments\archives\Build_Flags\NavConsumer\killbuild
+set KILLFILE=navcon_r12.0.6_kill_devbuild.txt
+
+::::::::::::::::::::::::::::::::::::::::::::::
+:: Check to see if USSM-CPD is mapped to H:
+:: if not mount it.
+::::::::::::::::::::::::::::::::::::::::::::::
+
+:testserver
+
+iff not isdir "h:\Unreleased_Builds\NAV\" then
+    echo \\ussm-cpd was not found, attempting to map it now.
+    echo.
+    net use h: \\ussm-cpd\ussm-cpd p@sswordforCM /user:Symcorp\CM_Only
+    goto /i testserver
+else
+    echo ussm-cpd is mapped to h:.
+    delay %DELAYTIME
+endiff
+
+
+:::::::::::::::::::::::::::::::::::::::::::::
+:: Create the kill file on ussm-cpd
+:::::::::::::::::::::::::::::::::::::::::::::
+
+echo killit > %KILLBUILD%\%KILLFILE%
+
+:::::::::::::::::::::::::::::::::::::::::::::
+:: Test the file to make sure we made it
+:::::::::::::::::::::::::::::::::::::::::::::
+
+
+iff not exist "%KILLBUILD%\%KILLFILE%" then
+    echo Kill file wasn't found, retrying
+    echo.
+    goto /i testserver
+else
+    echo File created successfully. The build will be stopped shortly.
+    echo.
+endiff
+
+exit

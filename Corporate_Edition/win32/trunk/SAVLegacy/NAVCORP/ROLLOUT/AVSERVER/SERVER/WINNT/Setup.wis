@@ -1,0 +1,53 @@
+[Windows Installer Silent]
+Version=v1.50
+File=Response File
+
+;Note:	These options are only read on silent installs. 
+;	Not all options are valid for all installation types.
+;	Please refer to the Symantec Support website for option details.
+
+[Application]
+Name=Norton AntiVirus Corporate Edition
+Version=7.60
+Company=Symantec
+
+[DestinationFolder]
+;Set InstallDir = to Default to have NAV install into
+;the default directory, or set it equal to the directory
+;desired
+InstallDir=Default
+
+[ProgramOptions]
+;Set CreateIconsAndMenuItems=0 to not create any icons or 
+;start menu folders
+CreateIconsAndMenuItems=1
+;Set ScanMemoryDuringInstall=0 to not scan memory for
+;viruses during install, only used on 9x clients
+ScanMemoryDuringInstall=1
+
+[RunOptions]
+;Set RunLiveUpdateAfterInstall=1 to run LiveUpdate after
+;the install has completed (after reboot under 9x)
+RunLiveUpdateAfterInstall=0
+;Set StartAutoProtect=0 to not run AutoProtect after
+;installation is complete
+StartAutoProtect=1
+
+[SetupCompleteSuccess]
+;Set BootOption=1 to disallow a reboot after install for
+;9x clients
+BootOption=0
+;Set DisplaySilentMsg=1 to show a small dialog notifying
+;user that the silent install is taking place
+DisplaySilentMsg=0
+
+[SnapIns]
+;If ForceInstall=1 the value of the snap-in will be absolute
+;ie Notes=1 will always install the Notes snap-in. If
+;ForceInstall=0 then the value of the snap-in will be relative
+;ie Notes=1 will only install the notes snap-in if Notes is present
+ForceInstall=0
+;Set Notes=0 to never install Notes e-mail snap-in
+Notes=1
+;Set Exchange=0 to never install Exchange e-mail snap-in
+Exchange=1

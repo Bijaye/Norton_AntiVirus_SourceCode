@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Change all filenames in the directory to lowercase
+
+for dir in navvdl inc.core inc.avcore inc.avcomp
+do
+  cd $dir
+  for file in *
+  do
+     mv $file `echo $file | sed -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/`
+  done
+  cd ..
+done  
+  

@@ -1,0 +1,40 @@
+// HomePageProtectionScriptableObj.idl : IDL source for HomePageProtectionScriptableObj
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (HomePageProtectionScriptableObj.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(B7F24597-CE1B-44B3-B4CA-8DC6BE84F8D3),
+	dual,
+	nonextensible,
+	helpstring("IHPPScriptObj Interface"),
+	pointer_default(unique)
+]
+interface IHPPScriptObj : IDispatch
+{
+    [id(1), helpstring("method SetHomePage")] HRESULT SetHomePage(BSTR bszNewHomePage, VARIANT_BOOL bCurrentUser);
+	[id(2), helpstring("method ResetOptions")] HRESULT ResetOptions();
+	[id(3), helpstring("method PrepHPPForUninstall")] HRESULT PrepHPPForUninstall();
+};
+[
+	uuid(98CA8B82-7794-4E2F-857C-7A8487CDDCEB),
+	version(1.0),
+	helpstring("HPPSCR 1.0 Type Library")
+]
+library HomePageProtectionScriptableObjLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(6396182F-1DE4-4C8E-A52A-D9C5FF86095F),
+		helpstring("HPPScriptObj Class")
+	]
+	coclass HPPScriptObj
+	{
+		[default] interface IHPPScriptObj;
+	};
+};

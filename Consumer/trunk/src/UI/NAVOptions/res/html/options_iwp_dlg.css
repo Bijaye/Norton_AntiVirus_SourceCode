@@ -1,0 +1,60 @@
+/*//////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* IWP dialogs open in SymHTML windows, so we should have SymHTML-friendly buttons */
+button.iwp_dlg_bttn
+{
+	background-image: url(page_bttn_normal.png);
+	font-family:arial,Tahoma,verdana,sans-serif;
+	font-size:11px;
+	color: #3c3c3c;
+	padding: 0;
+	min-width: 91px;
+	min-height: 24px;
+	width: max-instrinsic;
+	height: max-instrinsic;
+	text-align:center;
+	vertical-align:middle;
+	transition:blend;
+}
+.iwp_dlg_bttn:hover{ BACKGROUND-IMAGE: url(page_bttn_hover.png); }
+.iwp_dlg_bttn:focus{ BACKGROUND-IMAGE: url(page_bttn_default.png); }
+.iwp_dlg_bttn:active{ BACKGROUND-IMAGE: url(page_bttn_pressed.png); }
+.iwp_dlg_bttn:hover:active{ BACKGROUND-IMAGE: url(page_bttn_pressed.png); }
+
+@media contrast-screen 
+{
+	/* The attributes for the buttons */
+	button.iwp_dlg_bttn
+	{     
+		background-image:url(theme:button-normal); 
+        color:windowtext;
+    }
+
+	.iwp_dlg_bttn:hover
+	{ 
+		BACKGROUND-IMAGE: url(theme:button-normal); 
+	}
+	
+	.iwp_dlg_bttn:focus
+	{ 
+		outline:1px dotted windowtext -4px; 
+		background-image:url(theme:button-normal);
+	}
+	
+	.iwp_dlg_bttn:active
+	{ 
+		BACKGROUND-IMAGE: url(theme:button-pressed); 
+	}
+	
+	.iwp_dlg_bttn:hover:active
+	{ 
+		BACKGROUND-IMAGE: url(theme:button-pressed); 
+	}
+}

@@ -1,0 +1,69 @@
+START COMPONENT
+  NAME = "WORKSTATION"
+  START GROUP
+    NAME = "ComponentID"
+    ID = 1
+    CLASS = "DMTF|ComponentID|1.0"
+    START ATTRIBUTE
+      NAME = "Manufacturer"
+      ID = 1
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = "Network Associates, Inc."
+    END ATTRIBUTE
+    START ATTRIBUTE
+      NAME = "Product"
+      ID = 2
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = "VirusScan NT"
+    END ATTRIBUTE
+    START ATTRIBUTE
+      NAME = "Version"
+      ID = 3
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = "4.0.2"
+    END ATTRIBUTE
+    START ATTRIBUTE
+      NAME = "Serial Number"
+      ID = 4
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = ""
+    END ATTRIBUTE
+    START ATTRIBUTE
+      NAME = "Installation"
+      ID = 5
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = "DATETIME"
+    END ATTRIBUTE
+  END GROUP
+  START GROUP
+    NAME = "InstallStatus"
+    ID = 2
+    CLASS = "MICROSOFT|JOBSTATUS|1.0"
+    START ATTRIBUTE
+      NAME = "Status"
+      ID = 1
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = "Success"
+    END ATTRIBUTE
+    START ATTRIBUTE
+      NAME = "Description"
+      ID = 2
+      ACCESS = READ-ONLY
+      STORAGE = SPECIFIC
+      TYPE = STRING(string length up to 255)
+      VALUE = "Install finished successfully"
+    END ATTRIBUTE
+  END GROUP
+END COMPONENT

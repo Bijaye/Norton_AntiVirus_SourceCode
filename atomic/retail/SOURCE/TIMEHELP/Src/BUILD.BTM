@@ -1,0 +1,11 @@
+iff "%PLATFORM" EQ ".WDA" .OR. "%PLATFORM" EQ ".WRA"  then
+    call mk timehelp %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+iff "%PLATFORM" EQ ".IRA" .OR. "%PLATFORM" EQ ".IDA"  then
+    call mk timehelp %&
+    copy 32to16.asm %proj%\src%quake%
+    if exist make.err copy build.err+make.err build.err
+endiff
+

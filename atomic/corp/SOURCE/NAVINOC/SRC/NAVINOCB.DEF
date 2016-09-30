@@ -1,0 +1,60 @@
+; Copyright 1994 Symantec, Peter Norton Product Group
+;************************************************************************
+;
+; $Header:   S:/navinoc/VCS/navinocb.dev   1.0   06 Feb 1997 20:58:08   RFULLER  $
+;
+; Description:
+;       Module definition file for NAVINOC project BANKERS target.
+;       Mirrors the navinoc.def file to an extent, but requires
+;       additional exports.
+;
+; See Also:
+;       NAVINOC.DEF
+;************************************************************************
+; $Log:   S:/navinoc/VCS/navinocb.dev  $
+;  
+;     Rev 1.0   06 Feb 1997 20:58:08   RFULLER
+;  Initial revision
+;  
+;     Rev 1.0   30 Jan 1996 15:53:06   BARRY
+;  Initial revision.
+;  
+;     Rev 1.0   30 Jan 1996 13:22:12   BARRY
+;  Initial revision.
+;  
+;     Rev 1.2   23 Jun 1995 14:16:08   KEITH
+;  Update copyright notice.
+;  
+;     Rev 1.1   01 Mar 1994 12:30:00   DALLEE
+;  RegisterFile to RegFile() to better mirror naming convention of
+;  inoculation functions.
+;  
+;     Rev 1.0   23 Feb 1994 23:07:12   DALLEE
+;  Initial revision.
+;************************************************************************
+
+LIBRARY         NAVINOC
+DESCRIPTION     'Inoculation DLL.  Copyright 1990-1995 Symantec Corporation.'
+EXETYPE         WINDOWS
+CODE            PRELOAD MOVEABLE DISCARDABLE
+DATA            PRELOAD MOVEABLE SINGLE
+HEAPSIZE        4096
+EXPORTS         WEP                  @1      RESIDENTNAME PRIVATE
+                InocInit
+                InocEnd
+                InocOpen
+                InocClose
+                InocFile
+                RememberInocFloppy
+                InocDelFile
+                IsInoculated
+                InocUninoc
+                InocRepairFile
+                BuildInocDBName
+                InoculateEnd
+                InoculateInit
+                SmartInocOpen
+                SmartInocClose
+                SmartInocGetStatus
+                RegFile
+                IsRegistered

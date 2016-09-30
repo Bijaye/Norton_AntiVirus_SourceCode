@@ -1,0 +1,75 @@
+:: $Header:   S:/navzip/VCS/build.btv   1.0   06 Feb 1997 21:06:02   RFULLER  $
+::
+:: Build file for NAVZIP project.
+::------------------------------------------------------------------------
+:: $Log:   S:/navzip/VCS/build.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 21:06:02   RFULLER
+:  Initial revision
+:  
+:     Rev 1.3   21 Nov 1996 16:53:32   MKEATIN
+:  Added the NCX platform
+:  
+:     Rev 1.2   20 Sep 1996 11:51:12   GWESTER
+:  Added DVS to list of platforms updated without debug info.
+:  
+:     Rev 1.1   19 Sep 1996 14:27:48   JALLEE
+:  Added DVX platform.  Is all this CV checking really necessary?
+:  
+:     Rev 1.0   13 Sep 1996 19:08:56   GWESTER
+:  Initial revision.
+::------------------------------------------------------------------------
+
+setlocal
+
+                                        :: If CodeView or DEBUG_ALL are active,
+                                        :: and this is DOS, DX, DVX, or DVS, 
+                                        :: temporarily disable them.
+IF %@index[.DOS.DVX.DX.DVS.NCX.,%PLATFORM] NE -1  gosub killcv
+
+call mk navzip %1
+
+                                        :: If "killcv" shut off CodeView or DEBUG_ALL,
+                                        :: turn them back on.
+IF %@index[.DOS.DVX.DX.DVS.NCX.,%PLATFORM] NE -1  gosub restorecv
+
+if exist make.err copy build.err+make.err build.err
+
+endlocal
+
+quit
+
+                                        :: Subroutine "killcv" ...
+:killcv
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+    iff not "%CV%" == "" then
+        set OLD_CV=%CV%
+	    set CV=
+            echo ** Your CV environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/DVS/NCX libraries should never be MKUPDATE'd with debug info!
+	endiff
+    iff not "%DEBUG_ALL%" == "" then
+        set OLD_DEBUG_ALL=%DEBUG_ALL%
+	    set DEBUG_ALL=
+            echo ** Your DEBUG_ALL environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/DVS/NCX libraries should never be MKUPDATE'd with debug info!
+	endiff
+return
+
+                                        :: Subroutine "restorecv" ...
+:restorecv
+    iff not "%OLD_CV%" == "" then
+        set CV=%OLD_CV%
+	    echo ** Your CV environment variable has been restored.
+	endiff
+    iff not "%OLD_DEBUG_ALL%" == "" then
+        set DEBUG_ALL=%OLD_DEBUG_ALL%
+	    echo ** Your DEBUG_ALL environment variable has been restored.
+	endiff
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+return
+
+
+

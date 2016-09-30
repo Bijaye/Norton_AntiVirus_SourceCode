@@ -1,0 +1,53 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+<head>
+    <BASE href="res://navcomui.loc">
+	<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<link rel="stylesheet" type="text/css" href="NavScan.css" />
+	<title>Norton AntiVirus</title>
+	
+	<script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+	<script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( Yes ); 
+			InitSymButton( No ); 
+		}
+	</script>		
+	
+</head>
+
+<body id="body_Confirm" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" tabindex="-1" scroll="no" onLoad="OnLoad()" style="background-image:url()">
+
+	<!--------------------------------------- Stats  Area ------------------------------------------------>
+
+	<div id = "1div" class="ActionArea" style="position:absolute; width:100%; top:35px; padding-left:24px; padding-right:60px;">
+		<div style="float:left; border:margin:0px; margin-right::80px"><img src="about32px.gif" id="info"/></div>
+		<div id = "2div" style="float:right; clear:both; margin:0px; padding:0px; margin-left:15px; margin-top:5px; width:100%"><a id="Message" style="font-weight::700"></a></div>
+	</div>
+	
+	<!--------------------------------------- Button  Area ------------------------------------------------>
+
+	<div class="buttonArea">
+		<span id = "10span" class="symButton" style="position:absolute; left:14px; margin-top:5px; margin-right:8px; margin-left:8px; width:96px; height:24px;">
+			<button id="Yes" accesskey="Y" type="SUBMIT" class="symButton" tabindex="1" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">Y</u>es</button>
+		</span>
+		
+		<span id = "11span" class="symButton" style="position:absolute; right:14px; margin-top:5px; margin-right:8px; margin-left:8px; width:96px; height:24px;">
+			<button id="No" accesskey="N" type="SUBMIT" class="symButton" tabindex="2" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">N</u>o</button>
+		</span>
+		
+	</div>
+	
+	<img id="hack" src="about.png" style="display:none;"/>
+</body>	
+</html>	

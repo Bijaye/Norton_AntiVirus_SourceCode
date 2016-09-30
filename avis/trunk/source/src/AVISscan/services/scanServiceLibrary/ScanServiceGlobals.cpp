@@ -1,0 +1,22 @@
+// ScanServiceGlobals.cpp: implementation of the ScanServiceGlobals class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "ScanServiceGlobals.h"
+
+bool ScanServiceGlobals::stopService	= false;
+
+//////////////////////////////////////////////////////////////////////
+// Construction/Destruction
+//////////////////////////////////////////////////////////////////////
+
+ScanServiceGlobals::ScanServiceGlobals()
+{
+
+}
+
+ScanServiceGlobals::~ScanServiceGlobals()
+{
+
+}

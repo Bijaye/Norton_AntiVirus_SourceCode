@@ -1,0 +1,62 @@
+#
+# AVISpolicy.prf
+# profile data for the Immune System sample acceptability policy function
+#
+
+#
+# checking the required attributes
+# if any of the attributes listed here is absent or its value is an empty
+# string then the sample will be rejected and the policy function returns
+# "missingHeaders"
+# by default the list of required attributes is empty
+#
+requiredAttributes			:	
+
+#
+# checking the content length limits
+# if the actual content length value of the sample is not within the limits
+# then the sample is rejected and the policy function returns "oversizeContent"
+# or "undersizeContent"
+# by default checkContentLengthLimits is set to "no"
+#
+checkContentLengthLimits	:	yes
+maxContentLength	  		:	5000000
+minContentLength	       	:	50
+
+#
+# checking the sample size limits
+# if the actual sample size is not within the limits then the sample 
+# is rejected and the policy function returns "oversizeSample"
+# or "undersizeSample"
+# by default checkSampleSizeLimits is set to "no"
+#
+checkSampleSizeLimits		:	yes
+maxSampleSize		       	:	10000000
+minSampleSize		       	:	50
+
+#
+# verifying sample priority
+# if the actual sample priority exceeds the maximum value
+# then the policy function sets the priority level to specified
+# maximum value
+# by default verifySamplePriority is set to "no"
+# by default maxSamplePriority is set to 1000
+#
+verifySamplePriority		:	yes
+maxSamplePriority	  		:	1000
+
+#
+# adding the date policy attribute
+# if addDatePolicyAttribute is set to "yes" then the policy function will
+# add a new sample attribute with a current timestamp
+# by default addDatePolicyAttribute is set to "no"
+#
+addDatePolicyAttribute		:	yes
+
+#
+# adding the policy version attribute
+# if addPolicyVersionAttribute is set to "yes" then the policy function will
+# add a new sample attribute with a policy version 
+# by default addPolicyVersionAttribute is set to "no"
+#
+addPolicyVersionAttribute	:	yes

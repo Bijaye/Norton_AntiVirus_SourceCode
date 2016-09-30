@@ -1,0 +1,58 @@
+/*
+  11/20/97 this VIDES2 module simulates input from a user (to exit the goats)
+*/
+
+global doInputSim: integer;
+global int28counter: integer;
+
+external rule InputSim;
+var
+newcount: integer;
+begin
+if
+        doInputSim = 0
+        -->
+                skip;   /* Let thread die, this means you can't interrupt and then restart it */
+                
+        strToInt(report_tag) = 1
+        and strToU(imm) = 0x28                  /* Checks the DOS Idle interrupt */
+        -->
+                begin
+                int28counter := int28counter+1;
+                if
+                        int28counter > 3000                 /* DOS has been idle for a long time */
+                        -->
+                                begin
+                                sendscancode(0x01);     /* Send Escape char */
+                                sendscancode(0x81);
+                                trigger off for_next InputSim
+                                end;
+                        true
+                        -->
+                                trigger off for_next InputSim
+                fi
+                end;
+        true
+        -->
+                trigger off for_next InputSim
+fi
+end;
+
+external rule StopInputSim;
+doInputSim := 0;
+
+rule StartInputSim;
+doInputSim := 1;
+
+external rule ResetInt28Counter;
+int28counter := 0;
+
+init_action;
+begin
+        /* This is used by the input simulator */
+        int28counter := 0;
+        trigger off for_current StartInputSim;
+        start_watch_int(0x28,1);
+        skip
+end.
+

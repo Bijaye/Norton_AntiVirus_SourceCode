@@ -1,0 +1,36 @@
+::
+:: $Header:   S:/cmbstr/VCS/update.btv   1.0   06 Feb 1997 20:49:56   RFULLER  $
+::
+:: Update Batch file for the Norton AntiVirus for Windows
+::
+::------------------------------------------------------------------------
+:: $Log:   S:/cmbstr/VCS/update.btv  $
+:  
+:     Rev 1.0   06 Feb 1997 20:49:56   RFULLER
+:  Initial revision
+:  
+:     Rev 1.0   30 Jan 1996 15:48:46   BARRY
+:  Initial revision.
+:  
+:     Rev 1.0   30 Jan 1996 09:55:24   BARRY
+:  Initial revision.
+:  
+:     Rev 1.3   11 Dec 1995 21:23:10   DALLEE
+:  Update for PROJVERS.
+:  
+:     Rev 1.2   25 Apr 1994 12:13:46   DALLEE
+:  Removed BANKERS/NAV global lib dir support.
+:  
+:     Rev 1.1   23 Mar 1994 17:58:16   DALLEE
+:  Update to \SOURCE\LIB.WIN\NAV and \SOURCE\LIB.WIN\BANKERS
+::------------------------------------------------------------------------
+
+if exist *.*    copy *.*    %PROJ%\LIB%PROJVERS%%PLATFORM%
+
+if exist *.lib  copy *.lib  %PROJPRE%LIB%PROJVERS%%PLATFORM%
+
+if exist *.dll  copy *.dll  %PROJPRE%BIN%PROJVERS%%PLATFORM%
+if exist *.map  copy *.map  %PROJPRE%BIN%PROJVERS%%PLATFORM%
+if exist *.sym  copy *.sym  %PROJPRE%BIN%PROJVERS%%PLATFORM%
+if exist *.exe  copy *.exe  %PROJPRE%BIN%PROJVERS%%PLATFORM%
+

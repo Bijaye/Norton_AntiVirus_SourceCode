@@ -1,0 +1,84 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+        <title>Norton Antivirus Advanced Options: Signature Exclusions</title>
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script Language="JavaScript" src="options.js"></script>
+		<script Language="JavaScript" src="options_adv_exclusions_securityrisks.js"></script>
+        <link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+    </head>
+    <BODY class="clsDetails" id="body_options_adv_exclusions_securityrisks"
+			tabIndex="-1" scroll="no"
+			onhelp="parent.CurrentPage.Help();"
+			onload="parent.CurrentPage = new AnomalyExclusionPage();">
+        <IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+            SRC="options_errorid.htm"></IFRAME>
+        <span id="ExclusionError" style="DISPLAY: none">Invalid exclusion!</span>
+		<span id="DuplicateExclusion" style="DISPLAY: none">You have already excluded this item.</span>
+		<span id="DefaultsWarning" style="DISPLAY: none">Attention:
+Restoring the exclusion list to its default settings will remove any items that
+you have added to the list. Do you want to restore page defaults now?</span>
+		<div class="optionpage_header">
+			ADVANCED OPTIONS:&nbsp;Signature Exclusions
+		</div>
+        	<form name="options_adv_exclusions_anomaly">
+        	<div class="optiongroup_header" id="Loading" style="display:none;">Loading... Please Wait.</div>
+
+			<div class="optiongroup_header" id="WhatToExclude">
+				Which known security risks to exclude from scanning
+			</div>
+			<div class="optiongroup">
+	        	<select class="NavSelBoxLarge" id="Select" name="AnomalyExclusions" size="6";
+	          		ondblclick="OnDoubleClickAnomalyList();"
+	          		onclick="enable_anomaly_buttons();"
+	          		onchange="enable_anomaly_buttons();">
+				</select>
+				<div style="width: 100%;">
+					<button id="Button1" class="stdbttn2" name="Anomaly_Create"
+						onMouseOver="ButtonMouseOver(this); return false;" 
+						onMouseOut="ButtonMouseOut(this); return false;" 
+						onMouseDown="ButtonMouseDown(this); return false;" 
+						onKeyDown="ButtonKeyDown(this);" 
+						onKeyUp="ButtonKeyUp(this);" 				
+						onFocus="ButtonFocus(this); return false;" 
+						onBlur="ButtonBlur(this); return false;" 		
+	            		onclick="add_update_anomaly_exclusion(); this.focus();" accesskey="W"
+	            		style="MARGIN-TOP:75px">
+						Ne<u>w</u>...
+	            		</button><br />
+					<button id="Button2" class="stdbttn2" name="Anomaly_Remove"
+						onMouseOver="ButtonMouseOver(this); return false;" 
+						onMouseOut="ButtonMouseOut(this); return false;" 
+						onMouseDown="ButtonMouseDown(this); return false;" 
+						onKeyDown="ButtonKeyDown(this);" 
+						onKeyUp="ButtonKeyUp(this);" 				
+						onFocus="ButtonFocus(this); return false;" 
+						onBlur="ButtonBlur(this); return false;" 		
+          				disabled onclick="remove_anomaly_exclusion();" accesskey="M">
+	                		Re<u>m</u>ove
+					</button><br />
+					<button id="Button3" class="stdbttn2"name="Anomaly_Details"
+						onMouseOver="ButtonMouseOver(this); return false;" 
+						onMouseOut="ButtonMouseOut(this); return false;" 
+						onMouseDown="ButtonMouseDown(this); return false;" 
+						onKeyDown="ButtonKeyDown(this);" 
+						onKeyUp="ButtonKeyUp(this);" 				
+						onFocus="ButtonFocus(this); return false;" 
+						onBlur="ButtonBlur(this); return false;" 	
+	        			disabled onclick="OnClickAnomalyDetails(); this.focus();" accesskey="D">
+						Risk <u>D</u>etails
+					</button>
+				</div>
+			</div>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+/*
+  11/20/97 This VIDES2 module reports behaviours that may be virus-related
+  
+        - interrupt tunneling
+        - blockmove to high memory
+*/
+
+external rule Heuristics(int21tunneled: integer);
+var
+callseg: integer;
+tunnel: integer;
+begin
+tunnel := int21tunneled;
+if
+        strToInt(report_tag) = 13       /* Tag indicates a breakpoint */
+        and strToU(imm) > 0             /* at entry point of an interrupt  */
+        and strToInt(tf) = 1            /* Trap Flag is set */
+        -->
+                begin
+                tunnel := tunnel+1;
+                callseg := readmemword(strToU(ss),rx(esp)+2);
+                if tunnel = 1 --> println(' *** ', word2h(callseg), ': Tunneling Int ', byte2h(strToU(imm))) fi;
+                if tunnel = 1001 --> begin tunnel := 1; println(' *** Tunnel 1000') end fi
+                end
+
+        /* This is already is resident.asa
+        
+        strToInt(report_tag) = 15       Tag indicates a MOVS instruction -> imm is granularity
+        and rx(ecx) > 0x100
+        and strToU(es) > 0x9000
+        -->
+                begin
+                print(' *** ', word2h(strToU(cs)), ': Moving ',rx(ecx),' bytes to High Memory');
+                println(' (',word2h(strToU(es)),':',word2h(rx(edi)),')')
+                end
+        */
+fi;
+trigger off for_next Heuristics(tunnel)
+end;
+
+init_action;
+begin
+end.

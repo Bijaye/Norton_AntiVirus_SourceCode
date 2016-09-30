@@ -1,0 +1,82 @@
+READ.ME for Norton AntiVirus Network Manager Version 3.0
+
+Welcome to Norton AntiVirus Network Manager! This document contains
+important information not included in the user documentation. 
+
+
+Local Directory to Install To - Page 6
+=========================================
+The functionality of the Network Manager is different than the manual 
+states for "Local Directory to Install To:".  These settings are 
+located in the Install/Update category option. 
+
+Use Previous Directory: Overwrites an existing version of Norton 
+AntiVirus if found on the workstation. (This option assumes the Norton 
+AntiVirus directory is in the workstation's PATH statement.)
+
+If a previous version of Norton AntiVirus is not found, the user is 
+either prompted for a location or Norton AntiVirus is installed into 
+the directory specified in the Use Default text box (depending on 
+which other option is selected.) 
+
+
+Updating Configuration Settings
+===============================
+When a workstation logs onto the network, in addition to verifying that
+the workstation is using the most recent version of Norton AntiVirus and
+virus definitions files, the Network Manager also verifies that the most
+recent configuration settings are being used. If the Norton AntiVirus
+configuration settings on the workstation do not match those in the setup
+file on the network, the workstation settings are updated, unless the
+Retain Settings When Updating option is turned on.
+
+
+Updating Virus Definitions in the NAVUPDAT Directory
+====================================================
+After installing a new set of virus definition files (VIRSCAN.DAT
+and VIRSCAN.INF), you should scan the files with the copy of
+NAV in your NAVUPDAT directory.  To do this, change to the directory
+where the NAVUPDAT files are installed and type (including the period):
+
+        NAV .
+
+This will do the following:
+
+1) Verify the integrity of the files in the NAVUPDAT directory.
+   If a problem exists, detecting it now will avoid the same 
+   errors at each workstation when NAVUPDAT runs.
+2) Generate new INSCANM.DAT, INSCANB.DAT, and INSCANF.DAT files.
+   If these files are not updated, NAVUPDAT will try to generate 
+   them when it executes on the workstation.  If a workstation 
+   does not have read/write/create/erase permission, the update will 
+   fail.  Generating them now avoids this problem and allows NAVUPDAT
+   to be run from a read-only directory.
+
+
+Forcing Logoff and LAN Manager Networks
+=======================================
+"Force Logoff If Auto-Protect Not Installed" will not function properly 
+on this network because LAN Manager restores the workstations' 
+connections after the logon script executes.
+
+
+NAVUPDAT Error Levels
+=========================
+The following DOS error levels can be returned when running the 
+NAVUPDAT program.
+
+   Error   Description
+   Level    
+
+   0       No changes were made to Norton AntiVirus on the workstation.
+   1       Program files, settings, and virus definitions were 
+           installed.
+   2       Virus definitions were updated.  Program files or settings
+           may also have been updated.
+   3       Program files and/or settings were updated.
+   4       An error occurred during execution.
+   5       Execution was halted because a virus was detected on the 
+           workstation.
+   6       Execution was aborted by the user.
+ 255       Workstation is not compatible with Norton AntiVirus.
+

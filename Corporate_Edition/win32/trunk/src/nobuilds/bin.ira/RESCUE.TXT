@@ -1,0 +1,437 @@
+=================================================================
+SYMANTEC ANTIVIRUS(TM) RESCUE DISK INSTRUCTIONS            1/11/99
+=================================================================
+
+Use this information to create a rescue disk that will
+restore computers infected by boot viruses.
+
+--------------------------------
+CONTENTS
+--------------------------------
+
+     PRINTING THIS FILE
+     CREATING A RESCUE DISK
+            Why do I need a rescue disk?
+            How many rescue disks do I need?
+            How many system disks do I need?
+     CREATING A RESCUE DISK FOR WINDOWS 95/98 COMPUTERS
+     CREATING A RESCUE DISK FOR CONNECTED COMPUTERS
+            Connected Windows NT 4.0 computers
+            Connected Windows 3.1x 
+     CREATING A RESCUE DISK FOR STANDALONE COMPUTERS
+            Standalone Windows NT 4.0 computers and
+            Windows 3.x computers         
+     TO CREATE A BOOTABLE SYSTEM DISK
+     USING A RESCUE DISK TO RECOVER AN INFECTED COMPUTER
+            Cleaning the virus
+            Restoring the computer's boot sector
+            Removing write-protection before you begin
+            To clean a boot virus
+            To restore an infected computer
+    
+
+=================================================================
+PRINTING THIS FILE
+=================================================================
+
+To print RESCUE.TXT, open this file in WordPad*, NotePad*, or
+any text editor, then click File | Print.  
+     
+=================================================================
+CREATING A RESCUE DISK
+=================================================================
+
+After you install Symantec AntiVirus(TM) Corporate Edition, we 
+recommend that you create a rescue disk to recover your computer
+if its system files are ever corrupted by a boot sector virus.
+The process of creating a rescue disk is quick and easy for
+Windows* 95/98 computers. For Windows NT* 4.0 and 
+Windows 3.1x computers, the process takes a little more time.
+
+--------------------------------
+Why do I need a rescue disk?
+--------------------------------
+
+Most boot sector viruses can damage a computer by destroying or 
+altering the master boot record, file allocation table, or other
+fundamental information on the hard disk, making it unusable.
+
+If a boot sector virus infects and damages a computer, Symantec
+AntiVirus provides a way for you to restore the original boot 
+sector and get the computer back into operation.
+
+To repair a computer damaged by a boot sector virus, you must make
+a rescue disk and a bootable system disk before the computer is 
+infected. Without a rescue disk, an infected computer could be
+unrecoverable.
+
+The rescue disk contains:
+*  A copy of the computer's boot sector and partition tables.
+*  The DOS version of Symantec AntiVirus, VSCAND.
+*  The pattern files that VSCAND uses.
+
+The bootable system disk contains:
+*  COMMAND.COM
+*  Other hidden files that make it possible to boot your damaged 
+   computer from a floppy disk while bypassing the hard disk.
+
+--------------------------------
+How many rescue disks do I need?
+--------------------------------
+You need to create a separate rescue disk for each of your 
+computers. Symantec AntiVirus copies the computer's boot sector and 
+partition tables on the rescue disk. This information is 
+computer-specific. If you have more than one computer, 
+we recommend that you label each rescue disk with a name
+that identifies the computer it belongs to.
+
+--------------------------------
+How many system disks do I need?
+--------------------------------
+You need only one system disk, even if you have several computers. 
+ 
+=================================================================
+CREATING A RESCUE DISK FOR WINDOWS 95/98 COMPUTERS
+=================================================================
+
+Symantec AntiVirus automates the process of creating a rescue
+disk for Windows 95/98 computers. Symantec AntiVirus creates
+a rescue disk that contains the necessary files for restoring a
+computer's boot sector and also creates a system boot disk
+containing files needed to boot your computer from a floppy.
+You will need two formatted, blank 1.44 MB floppy disks. 
+
+     1  Click Configure | Create Rescue Disk.
+     2  Insert a formatted, blank 1.44 MB floppy disk in the 
+        computer's floppy drive.
+     3  Select the letter of the computer's bootable hard drive
+        (usually drive C).
+     4  Select the letter of the computer's floppy drive.
+     5  (Optional) If you want to create a system boot disk,
+        check the "Also create system boot disk" option. 
+     6  Click Create.
+
+        Symantec AntiVirus will copy the rescue disk files to your
+        floppy disk.
+
+=================================================================
+CREATING A RESCUE DISK FOR CONNECTED COMPUTERS
+=================================================================
+
+These instructions describe how to make a rescue disk for a
+computer connected to a Symantec AntiVirus Server. If your computer
+is not connected to a protected server, view the instructions
+for creating a rescue disk for a standalone computer.
+
+The instructions for creating a rescue disk are different for 
+Windows 95/98 and all other computers. If you installed 
+Symantec AntiVirus on a computer running Windows 95/98,
+then you can create a rescue disk during installation, or later
+using the utilities available in Symantec AntiVirus. If you have a
+computer running Windows NT or Windows 3.1, the following instructions 
+walk you through a series of steps to help you create
+the rescue disks.
+
+You need a blank, formatted high density (1.44 MB) floppy 
+disk. A low density disk does not have enough disk space. 
+Repeat these steps for each computer you want to protect.
+
+----------------------------------
+Connected Windows NT 4.0 computers
+----------------------------------
+
+You will need 1 blank, formatted high density 1.44 MB floppy
+disk and a bootable system disk.
+
+Step A:  Copy RESCUE files to a floppy disk
+
+     1 Your system administrator should grant access to a RESCUE
+       folder on the network. (Your system administrator can find
+       instructions on how to create this folder in the 
+       administrator online help under "Creating a rescue folder.")
+     2 In Windows NT Explorer, locate the RESCUE folder.
+     3 Copy the files from the RESCUE folder to a blank formatted
+       floppy disk.
+     4 Close Windows NT Explorer.
+
+Step B:  Copy the boot sector using the VSCAND /RESCUE option
+
+     1 Turn off the computer, then insert a bootable system disk
+       into the floppy drive and boot the computer.
+     2 Remove the system disk, then insert the floppy disk with
+       the RESCUE files in your floppy disk drive.
+     3 Click Start | Run, then enter:
+       A:\VSCAND /RESCUE
+       where A: represents the letter of your floppy disk drive.
+     4 Enter the letter of the source hard disk (usually "C:").
+     5 Enter the drive letter where you want to store the boot sector
+       information. This is the letter of the
+       floppy disk drive, (usually A:). 
+       NOTE: After you've entered source and destination 
+       drives, Symantec AntiVirus copies the boot sector information
+       (in a file called BOOTPART.C) to the rescue disk.
+       DO NOT PERMANENTLY STORE THIS FILE ON THE HARD DISK AS YOUR
+       ONLY SOURCE OF BACKUP, because if your computer should
+       become infected by a boot virus, you would not be able to
+       access this information. 
+     6 Label the floppy disk SYMANTEC ANTIVIRUS RESCUE DISK, then 
+       write the computer name on the label. Store the disk
+       in a safe place for emergency use.
+ 
+----------------------------------------------------
+Connected Windows 3.1x computers
+----------------------------------------------------
+You will need 1-3 blank, formatted high density 1.44 MB floppy
+disks.
+
+Step A:  Copy RESCUE files to a floppy disk
+  
+     1 Your system administrator should give you access
+       to a RESCUE folder on the network. (Your system administrator
+       can find instructions on how to create this folder in the 
+       administrator online help under "Creating a rescue folder.")
+     2 In File Manager, locate the RESCUE folder.
+     3 Copy the files from the RESCUE folder to a blank, formatted 
+       floppy disk.
+     4 Close Windows, then close File Manager.
+
+Step B:  Copy the boot sector using the VSCAND /RESCUE option
+
+     1 Insert the floppy disk with the RESCUE files in your
+       floppy disk drive.
+     2 From Program Manager, click File | Run, then enter:
+       A:\VSCAND /RESCUE
+       where A: represents the letter of your floppy 
+       disk drive.
+     3 Enter the letter of the source hard disk (usually C:).
+     4 Enter the drive letter where you want to store the boot sector
+       information. This is the letter of the
+       floppy disk drive, (usually A:). 
+       NOTE: After you've entered source and destination 
+       drives, Symantec AntiVirus copies the boot sector information
+       (in a file called BOOTPART.C) to the rescue disk.
+       DO NOT PERMANENTLY STORE THIS FILE ON THE HARD DISK AS YOUR
+       ONLY SOURCE OF BACKUP, because if your computer should
+       become infected by a boot virus, you would not be able to
+       access this information. 
+     5 Label the floppy disk SYMANTEC ANTIVIRUS RESCUE DISK,
+       then write the computer name on the label. Store the
+       disk in a safe place for emergency use.
+
+=================================================================
+CREATING A RESCUE DISK FOR STANDALONE COMPUTERS
+=================================================================
+
+The following instructions describe how to make a rescue disk
+for a standalone computer, such as a laptop not connected to
+a network, or a home computer. 
+
+The instructions for creating a rescue disk are different for
+Windows 3.1x, Windows 95/98, and Windows NT. If you
+installed Symantec AntiVirus on a computer running Windows 95/98,
+then you can create a rescue disk during installation, or later
+using the utilities available in Symantec AntiVirus. If you have a
+computer running Windows NT or Windows 3.1x, this document will
+walk you through a series of steps to help you create the rescue
+disks. 
+
+The instructions assume a copy of Symantec AntiVirus is installed
+on your computer, and that the Symantec AntiVirus CD is available. 
+Also, you will need a blank, formatted high density (1.44 MB) 
+floppy disk. A low density disk does not have enough disk space.
+
+-------------------------------------------------------------
+Standalone Windows NT 4.0 computers and Windows 3.1x computers
+-------------------------------------------------------------
+
+Step A:  Create a RESCUE folder
+
+     In Windows Explorer, create a temporary folder on your
+     hard disk, named RESCUE (the folder should be empty):
+     C:\RESCUE
+
+Step B:  Copy files from Symantec AntiVirus CD
+
+     Using Windows Explorer, copy these files from
+     the \DOS folder on the Symantec AntiVirus CD to the RESCUE
+     folder:
+     * ENUVSCAN.DAT 
+     * VSCAND.EXE  (DOS scanner file)
+     * RESCUE.TXT (rescue disk documentation)
+     * RESCUE.BAT
+ 
+Step C:  Copy files from WILD folder
+
+     1 Using Windows Explorer, locate the WILD folder in the 
+       directory where your Symantec AntiVirus program files are
+       installed. By default, the WILD folder is found here:
+
+(Windows NT) C:\PROGRAM FILES\NAV\I2_ldvp.vdb\{recent pattern file}\WILD.
+(Windows 3.x) Locate a Windows 95/98 or Windows NT 4.0 machine and
+ copy the files from the WILD folder.
+       
+       HINT: An example of a pattern file name is VD031C01.VDB.
+       Pattern files always begin with the letters "VD" followed
+       by a sequence of letters and numbers. If there's more 
+       than one pattern file folder, compare the dates the 
+       folders were created to determine which one is most recent. 
+     2 Copy the files in the WILD folder to the RESCUE 
+       folder. These files include:
+       * NAVEX15.EXP
+       * VSCAND1.DAT
+       * VSCAND2.DAT
+       * VSCAND3.DAT
+       * VSCAND4.DAT
+     3 Close Windows Explorer.
+
+Step D:  Copy files from RESCUE folder to disk 
+
+     1 Open Windows Explorer.
+     2 Copy these files in the WILD folder to the blank
+       formatted floppy disk in your floppy disk drive:
+       * ENUVSCAN.DAT 
+       * VSCAND.EXE  (DOS scanner file)
+       * RESCUE.BAT  (RESCUE program)
+       * RESCUE.TXT  (RESCUE disk documentation)
+       * NAVEX15.EXP
+       * VSCAND1.DAT
+       * VSCAND2.DAT
+       * VSCAND3.DAT
+       * VSCAND4.DAT
+     3 Close Windows Explorer.
+
+Step E:  Copy the computer's boot sector to the floppy disk 
+     1 (Windows NT computers) Turn off the computer, then 
+       insert a bootable system disk into the floppy drive and
+       boot the computer. Remove the system disk, then insert
+       the floppy disk with the RESCUE files in your floppy 
+       disk drive.
+       (Windows 3.1x computers)Insert the floppy disk with
+       the RESCUE files in your floppy disk drive.
+     2 Click Start | Run, then enter:
+       A:\VSCAND /RESCUE
+       where A: represents the letter of your floppy disk drive.
+     3 Enter the letter of the source hard disk (usually C:).
+     4 Enter the drive letter where you want to store the backup
+       information. This is the letter of the
+       floppy disk drive, (usually A:). 
+       NOTE: After you have entered source and destination 
+       drives, Symantec AntiVirus copies the boot sector information
+       (in a file called BOOTPART.C) to the rescue disk.
+     5 Label the floppy disk SYMANTEC ANTIVIRUS RESCUE DISK,
+       then write the computer name on the label. Store the
+       disk in a safe place for emergency use.
+ 
+=================================================================
+TO CREATE A BOOTABLE SYSTEM DISK
+=================================================================
+Note that you cannot create a system disk on a Windows NT 4.0
+computer. Create a system disk on a Windows 95 or a Windows 
+3.1x computer.
+
+     1  Insert a blank, formatted disk into a computer.
+     2  At the command prompt, enter this command:
+	  SYS A:
+        where A: is the letter of the floppy drive. This creates
+        a bootable system disk.
+     3  Scan the floppy disk to verify that it is virus-free, then 
+        write-protect it.
+     4  Label the disk SYSTEM DISK.
+
+=================================================================
+USING THE RESCUE DISK TO RECOVER AN INFECTED COMPUTER
+=================================================================
+
+If you suspect your computer has been damaged by a boot
+sector virus (because you are unable to boot your computer), 
+you can use the rescue disk to clean the virus or restore
+your computer's boot sector.
+
+------------------
+Cleaning the virus
+------------------
+
+You should first attempt to scan and clean the boot sector
+virus from the computer. Cleaning removes the virus from
+the computer's boot sector and partition tables. 
+
+To clean an infected boot sector, use the system disk
+to boot the computer, then use the rescue disk you created
+to run the Symantec AntiVirus scanner, VSCAND, on the infected
+drive.
+
+VSCAND detects the virus on your computer and if the virus is
+cleanable, will prompt you to clean the computer.
+
+------------------------------------
+Restoring the computer's boot sector
+------------------------------------
+
+Some boot viruses cannot be cleaned. If this is the case,
+you can still attempt to restore the computer using the rescue
+disk. The rescue disk replaces the infected boot sector with
+a clean, uninfected boot sector stored on the rescue disk.
+
+This process destroys the virus and prevents it from 
+spreading.
+
+------------------------------------------
+Removing write-protection before you begin
+------------------------------------------
+
+If your rescue disk is write-protected, move the button
+at the corner of the floppy disk to ensure it is 
+write-enabled. Once the disk is write-enabled, 
+Symantec AntiVirus can copy, save, and edit files
+on the floppy disk. Symantec AntiVirus 
+writes a log file to the rescue disk during disk recovery.
+
+-----------------------
+To clean a boot virus
+-----------------------
+
+     You will need a bootable system disk, the rescue disk, and
+     a blank, formatted floppy disk.
+
+     1  Turn off the computer for 15 seconds, then insert
+        the system disk in the floppy disk drive.
+     2  Restart the computer.
+     3  After the computer has booted, this prompt displays:
+        A:\>
+     4  Remove the system disk from the floppy drive, then
+        insert the rescue disk.
+     5  Enter this command at the prompt:
+        VSCAND C: /P
+        where /P represents the partition, and C: is the
+        drive you want to clean. VSCAND will scan the boot 
+        partition for any boot sector viruses.
+     6  A message prompts you to clean the virus or leave
+        it alone. At the prompt, type:
+        C
+     7  If the boot sector was successfully cleaned, remove
+        the rescue disk, then restart the computer WITHOUT
+        the system disk.
+        If the computer still does not boot, or if the boot
+        virus was not successfully cleaned, follow the 
+        instructions in "To Restore an Infected Computer".
+      
+-----------------------------------------------
+To restore an infected computer (all platforms)
+-----------------------------------------------
+    
+     1 Turn off the computer for 15 seconds, then insert the 
+       system disk and restart the computer.
+     2 After the computer has booted and you are at the A: prompt,
+       remove the system disk.
+     3 Insert the rescue disk, then enter: RESCUE
+     4 Follow the prompts.
+     
+     The Symantec AntiVirus VSCAND program will copy the uninfected 
+     boot sector and partition table from the rescue disk to the
+     computer. This process overwrites the virus and makes the
+     virus unable to spread.
+    
+
+
+* Third-party brands and names are the property of their respective
+owners.

@@ -1,0 +1,23 @@
+HKCR
+{
+	Rtvscan.VirusFoundCOMCallback.1 = s 'VirusFoundCOMCallback Class'
+	{
+		CLSID = s '{E99BD5E1-FD77-4142-94DC-2BA6057951B3}'
+	}
+	Rtvscan.VirusFoundCOMCallback = s 'VirusFoundCOMCallback Class'
+	{
+		CLSID = s '{E99BD5E1-FD77-4142-94DC-2BA6057951B3}'
+		CurVer = s 'Rtvscan.VirusFoundCOMCallback.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {E99BD5E1-FD77-4142-94DC-2BA6057951B3} = s 'VirusFoundCOMCallback Class'
+		{
+			ProgID = s 'Rtvscan.VirusFoundCOMCallback.1'
+			VersionIndependentProgID = s 'Rtvscan.VirusFoundCOMCallback'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{9BDC812A-6973-438E-A2D0-19BA66D2161F}'
+		}
+	}
+}

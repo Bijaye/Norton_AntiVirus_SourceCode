@@ -1,0 +1,47 @@
+;
+; Symantec Antivirus Engine INF File
+;
+; Copyright (c) 2001, Symantec Corporation
+;
+
+[Version]
+signature = "$Windows NT$"
+Class     = "Anti-virus file system filter"
+ClassGuid = {B1D1A169-C54F-4379-81DB-BEE7D88D7454}
+Provider 	 = %Symc%
+DriverVer 	 = 11/06/2001	 ; Change for each engine release!
+CatalogFile      = SymAVEng.cat  ; A CatalogFile entry is required for a WHQL signature.
+
+[DestinationDirs]
+DefaultDestDir       = -1,.
+SymAVEng.DriverFiles = -1,.
+
+[SourceDisksNames]
+1 = %Disk1%
+
+[SourceDisksFiles]
+Navex15.sys = 1
+Naveng.sys = 1
+
+;
+; Default install sections
+;
+[DefaultInstall]
+OptionDesc = %SymAVEngerviceDesc%
+CopyFiles  = SymAVEng.DriverFiles
+
+;
+; Copy Files
+;
+[SymAvEng.DriverFiles]
+Navex15.sys
+Naveng.sys
+
+;
+; String Section
+;
+[Strings]
+Symc	     = "Symantec Corporation"
+SymAvEngDesc = "Symantec Antivirus Engines"
+Disk1        = "SymAVEng Source Media"
+

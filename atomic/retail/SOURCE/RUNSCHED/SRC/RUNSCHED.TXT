@@ -1,0 +1,14 @@
+Due to the NT security issues with the System scheduler we would not be able to run
+a regular exe application with access to all windows resources. The mechanism
+of invoking an exe(runsched) which runs another process would not work because
+- the security lear creates a shell with restricted access, thus way for
+example NT does not allow our application to use the GlobalAtom table and we
+GPF.
+
+A solution which comes to this is a simple service app which will pipe connect to the
+requester and it will execute the piped command line. The services have security
+privilege to create a process with no restriction to the windows resources.
+
+Note: this is just a remainder in a case we want to prossed in this direction and
+then we could start from were we left the above problem. The above observation and
+suggested designee is not fully complete, better ideas are welcome.

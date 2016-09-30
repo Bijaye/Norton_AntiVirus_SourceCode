@@ -1,0 +1,84 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+    <head>
+        <title id="sys_ap_title">Norton Antivirus Real-Time Protection: Auto-Protect</title>
+        <META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    </head>
+    <BODY class="clsDetails" id="body_options_rtp_ap" onhelp="parent.CurrentPage.Help();"
+        tabIndex="-1" bottomMargin="0" leftMargin="5" topMargin="5" scroll="no" onload="Load();">
+        <IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none"
+            SRC="options_errorid.htm"></IFRAME>
+        <script Language="JavaScript" src="DisplayScriptError.js"></script>
+        <script Language="JavaScript" src="options_rtp_ap.js"></script>
+        <link rel="stylesheet" type="text/css" href="nisnavoptions_style.css">
+
+        <div class="optionpage_header">
+			REAL-TIME PROTECTION:&nbsp;Auto-Protect
+	   </div>
+
+        <form name="options_rtp_ap">
+			<div class="optiongroup_header">
+				How to stay protected
+			</div>
+			<div class="optiongroup">
+				<div id="s_EnableAutoProtect" class="rf_option" >
+					<input type="checkbox"
+						id="EnableAutoProtect"
+						name="EnableAutoProtect"
+						onclick="OnEnableAPClick()"
+						onpropertychange="OnEnableAPChanged(this.checked)" accesskey="T" />
+				<span id="n1"><u>T</u>urn on Auto-Protect</span>
+				</div>
+				<div id="s_ShowAutoProtectIcon" class="rf_option" >
+					<input type="checkbox"
+						id="ShowAutoProtectIcon"
+						name="ShowAutoProtectIcon" accesskey="D" />
+				<span id="n2"><u>D</u>isplay the Auto-Protect icon in the system tray</span>
+				</div>
+				<div id="s_SystemLoad" class="rf_option">
+					<input type="checkbox"
+						id="SystemLoad"
+						name="SystemLoad" accesskey="A" />
+				<span id="n3">Load <u>A</u>uto-Protect during system startup</span>
+				</div>
+				<div id="s_EnableBloodhoundHeuristics" class="rf_option">
+					<input type="checkbox"
+						id="EnableBloodhoundHeuristics"
+						name="EnableBloodhoundHeuristics" accesskey="B" />
+				<span id="n5">Turn on <u>B</u>loodhound heuristics</span>
+				</div>
+			</div>
+			<br />
+			<div class="optiongroup_header">How to respond when a low security risk is found</div>
+			<div class="optiongroup">
+				<span id="txt_AutoRemove">(Medium-risk and high-risk items are automatically removed)</span><br />
+				<span id="s_RbAlertRemove" class="rf_option">
+					<input type="radio"
+						id="RbAlertRemove"
+						name="RbAlert" accesskey="R" />
+					<span id="n6">Automatically <u>r</u>emove low-risk items</span>
+				</span><br />
+				<span id="s_RbAlertIgnore" class="rf_option">
+					<input type="radio"
+						id="RbAlertIgnore"
+						name="RbAlert" accesskey="I" />
+					<span id="n7">Always <u>i</u>gnore low-risk items (recommended)</span>
+				</span><br />
+				<span id="s_RbAlertAsk" class="rf_option">
+					<input type="radio"
+						id="RbAlertAsk"
+						name="RbAlert" accesskey="M" />
+					<span id="n8">Ask <u>m</u>e what to do</span>
+				</span>
+			</div>
+		</form>
+    </body>
+</html>

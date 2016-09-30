@@ -1,0 +1,83 @@
+<html>
+<head>
+<meta ID="charset_opt_ed" HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso8859-1" />
+<title id="exclude_title">Norton AntiVirus</title>
+
+<IFRAME ID=Errors FRAMEBORDER="0" SCROLLING=NO HEIGHT="0" WIDTH="0" style="display:none" SRC="options_errorid.htm"></IFRAME>
+<script Language="JavaScript" src="DisplayScriptError.js"></script>
+<script language="JavaScript" src="options.js"></script>
+<script language="JavaScript" src="options_exclude_dlg.js"></script>
+<link rel="stylesheet" type="text/css" href="navstyle.css">
+</head>
+<body id="body_ed" leftmargin="0" topmargin="0" scroll="no" onHelp="Help();" onLoad="initialize_options_exclude_dlg();" TABINDEX="-1">
+<!-- The following tags are here to facilitate translation of text in JavaScript. Keep it hidden -->
+<span id="IlegalFile" style="display:none">Illegal file path specified!</span> 
+<span id="WildCardInPath" style="display:none">Wildcard characters (* and ?) are not supported in file path exclusions.</span> 
+<span id="AllPathsError" style="display:none">You cannot exclude all files from scanning (*.*). You can exclude all files in a folder (c:\excluded files) or all files with a specific extension (*.jpg).</span> 
+<span id="ExclusionError" style="display:none">Invalid exclusion!</span> 
+<span id="DuplicateExclusion" style="display:none">Duplicate exclusion!</span>
+<!-- end of JavaScript text -->
+<form name="options_exclude_dlg" onsubmit="return false">
+  <table id="t1_ed" width="445" height="180" border="0" bgcolor="#FFFFFF">
+    <tr id="t1_tr1_ed" style="background-image: url('topbg.gif'); background-repeat: no-repeat;"> 
+      <td id="t1_td1_ed" valign="top" width="100%" height="30"> 
+        <table id="t2_ed" width="100%" height="120" border="0" cellspacing="0" cellpadding="0">
+          <tr> 
+            <td id="t2_td1_ed" height="4" colspan="2">&nbsp;</td>
+          </tr>
+          <tr id="t2_tr1_ed" valign="top"> 
+            <td id="t2_td2_ed" height="12" valign="top" style="padding-bottom:1px" width="75%"> 
+              &nbsp;<font color="#333333"><label id="ItemAccessKey" for="Item" accesskey="I"> <span class="cutitleb" id="exclude_item">Item</span></label></font> 
+            </td>
+            <td id="t2_td3_ed" align="right">
+			  <a href='' onClick="Help(); return false;">
+              <span class="cuhelp" id="eclude_dlg_help">more info</span></a><span id="table2_space1">&nbsp;&nbsp;&nbsp;</span><br>
+            </td>
+          </tr>
+          <tr id="t2_tr2_ed" valign="center"> 
+            <td id="t2_td4_ed" valign="center">
+              <table id="t3_ed" height="100%" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td id="t3_td1_ed" width="75%" align="center" height="30">
+                    <input class="normal" id="Item" size="48" maxlength="256" onKeyUp="OnKey();" onKeyPress="OnKey();" onpropertychange="OnKey();">
+                    &nbsp;<button id="Browse" class="normal" onClick="return BrowseExclusions();"> 
+                      <img id="ed_openfile" src="openfile.gif" width="16" height="16">
+                    </button>
+                  </td>
+                </tr> 
+                <tr id="t3_tr1_ed" valign="top"> 
+                  <td id="t3_td2_ed" height="12" valign="top" style="padding-bottom:1px" width="87%" colspan="2"> 
+                    &nbsp; 
+                    <input type="checkbox" id="IncludeSubfolders" name="checkbox">
+                    <label id="SubFolderAccessKey" for="IncludeSubfolders" accesskey="s"> <span class="indent10" id="exclude_includesub">Include 
+                    <u>s</u>ubfolders</span> </label>
+                  </td>
+                </tr>
+              </table>
+            </td>
+            <td id="table4_td_button" valign="center">
+              <table id="t4_ed" width="100%" border="0" cellspacing="2" cellpadding="0">
+                <tr> 
+                  <td>
+                    <button id="OK" class="goldnav1" onClick="Save();"> 
+                    <label id="OKButtonAccessKey" for="OK" accesskey="o"> <span class="indent10" id="exclude_ok"> 
+                    <u>O</u>K </span> </label> </button><br>
+                  </td>
+                </tr> 
+                <tr> 
+                  <td>
+                    <button id="Cancel" class="goldnav1" onClick="location.href = 'closeme.xyz';"> 
+                    <label id="CancelButtonAccessKey" for="Cancel" accesskey="c"> <span class="indent10" id="exclude_cancel"> 
+                    <u>C</u>ancel </span> </label> </button><br>
+                  </td>
+                </tr> 
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,30 @@
+LIBRARY         NAVCORE
+DESCRIPTION     'AVAPI Interface.  Copyright (C) Symantec Corp. 1990-1993.'
+EXETYPE         WINDOWS
+CODE            PRELOAD  MOVEABLE    DISCARDABLE
+DATA            PRELOAD  MOVEABLE    SINGLE
+HEAPSIZE        4096
+EXPORTS         WEP                     @1      RESIDENTNAME PRIVATE
+                VLScanInit              @2
+                VLScanClose             @3
+                VLReleaseVirusHandle    @4
+                VLReleaseEntry          @5
+                VLRegisterVirusDB       @6
+                VLGetDBInfo             @7
+                VLScanFile              @8
+                VLScanBoot              @9
+                VLScanPart              @10
+                VLRepairItem            @11
+                VLCanRepairItem         @12
+                VLCanDeleteItem         @13
+                VLRepairFile            @14
+                VLRepairBootPart        @15
+                VLDeleteFile            @16
+                VLScanMemory            @17
+                VLVirusInfo             @18
+                VLNumVirusEntries       @19
+                VLGetVirusEntry         @20
+                VLFillListTable         @21
+                VLDeleteEntry           @22
+                VLDefInfo               @23
+

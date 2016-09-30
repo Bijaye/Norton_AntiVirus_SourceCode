@@ -1,0 +1,42 @@
+<html>
+    <head>
+		<BASE href="res://navcomui.loc">
+        <meta id="charset_ScanProg" http-equiv="Content-Type" content="text/html; charset=iso8859-1" />
+        <meta http-equiv="MSThemeCompatible" content="Yes" />
+        <link rel="stylesheet" type="text/css" href="NavScan.css" />
+            <title>Attention</title>
+            <script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+            <script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( btnContinue );
+		  	InitSymButton( btnAbort    );
+		}
+            </script>
+    </head>
+    <body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0"
+        marginwidth="0" marginheight="0" tabindex="-1" scroll="no" onLoad="OnLoad()">
+        <!-------------------------------------- Header ------------------------------------------------>
+        <h1 id="title">Attention</h1>
+        <a id="MoreInfo" href="#" tabindex="2" class="headerLink">more info</a> 
+        <!-------------------------------------- Text Discription ------------------------------------------------>
+        <div id="description" class="ConditionalActionDescription">
+        
+            Other programs rely on one or more security risk programs that you are about to remove.
+            <br><br>
+            <b>Note:</b> Copies of all removed programs are stored in Quarantine. You can restore the program from Quarantine if another program needs it in order to function.
+            <br><br>
+            Do you want to remove these security risks now?
+        
+        </div>
+        <!--------------------------------------- Button  Area ------------------------------------------------>
+        <div class="buttonArea">
+		<span id = "1span" class="symButton" style="position:absolute; right:103px; margin-top:5px; margin-right:10px; margin-left:8px; width:96px; height:24px;">
+                <button id="btnContinue" accesskey="Y" type="SUBMIT" class="symButton" tabindex="3" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">Y</u>es</button>
+            </span>
+		<span id = "2span" class="symButton" style="position:absolute; right:8px; margin-top:5px; margin-right:0px; margin-left:8px; width:96px; height:24px;">
+                <button id="btnAbort" accesskey="N" type="SUBMIT" class="symButton" tabindex="1" style="background-image:url('btn96x22set.jpg')"><u class="hotkey">N</u>o</button>
+            </span>
+        </div>
+    </body>
+</html>

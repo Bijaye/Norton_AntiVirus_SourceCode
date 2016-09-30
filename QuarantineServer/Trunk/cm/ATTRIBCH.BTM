@@ -1,0 +1,28 @@
+@echo off
+
+if "%1" NE "" goto proceed
+@echo Usage: attribchg -r (or +r)
+goto byebye
+
+:proceed
+
+attrib %1 w:\release\ams\bin\win32\*.*
+attrib %1 w:\release\ams\bin\PDS\*.*
+attrib %1 w:\release\ams\bin\NW\*.*
+attrib %1 w:\Norton_System_Center\src\install\nobuilds\*.*
+attrib %1 W:\Core_technology\ldvp_shared\src\NOBUILDS\bin.ira\serverfiles\*.*
+attrib %1 W:\tools\msvc6_sp2\redist\*.*
+attrib %1 W:\Norton_AntiVirus\QuarantineServer\Nobuilds\*.*
+attrib %1 W:\Norton_AntiVirus\QuarantineServer\Nobuilds\IcePack\*.*
+attrib %1 W:\Norton_AntiVirus\QuarantineServer\Bell\HelpFiles\AvisConsole.chm
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Country.dat
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Filter.dat
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Platform.dat
+attrib %1 W:\Release\NavAPI\BinIntelAnsiWin32Release\Navapi32.dll
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Sdflt32i.dll
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Sdpck32i.dll
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Sdsnd32i.dll
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Sdsok32i.dll
+attrib %1 W:\Norton_AntiVirus\Corporate_Edition\Win32\src\AVCore\NOBUILDS\SRC\Sdstp32i.dll
+
+:byebye

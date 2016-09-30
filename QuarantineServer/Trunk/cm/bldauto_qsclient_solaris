@@ -1,0 +1,787 @@
+# Author:  Dwight Wilson/Tim Cashin
+
+# set -x
+
+if [ "$P4PASSWD" = "" ]
+then
+  echo
+  echo "Please enter your Perforce password:"
+  read P4PASSWD
+  export P4PASSWD
+  echo Thank you.
+  echo
+  sleep 1
+  clear
+fi
+
+PERFLABELBASE=cm_qsclient_r3.3_solaris
+ROOTDIR=/export/home/cmsource
+BASEDIR=$ROOTDIR/QuarantineServer
+TARNAMEROOT=qsclient_r3.3_solaris
+RELEASEPOSTINGDIR=QuarantineServer
+TOOLSDIR=/export/home/tools
+export TOOLSDIR
+
+FULLTARNAME="$TARNAMEROOT"_$1.tar
+ERS_DIR=$BASEDIR
+
+_USERDIR=`whoami`
+
+_GENERICCLIENT=cm-generic-cmultra1_cm_client
+_PRODCLIENT=qsclient_r3.3_solaris_cm_client
+
+INIT_DIR=`pwd`
+
+# Test to see if they supplied a build number.
+
+if [ "$1" = "" ]
+then
+  echo
+  echo "Usage:  $MYNAME bld_num [start_date] [start_hour]"
+  echo
+  echo "Terminating..."
+  echo
+  exit
+fi
+
+# Extract the name of the calling script.
+
+MYNAME=`basename $0`
+
+# Make sure the user gives the time if they gave the date.
+# This means they are scheduling the build, not running
+# it immediately.
+
+if [ "$2" != "" -a "$3" = "" ]
+then
+  echo
+  echo "If you supply the date, please supply the time..."
+  echo
+  echo "Usage:  $MYNAME bld_num [start_date] [start_hour]"
+  echo
+  echo "Terminating..."
+  exit
+fi
+
+echo
+echo "****************************************************"
+echo "Automated Build Script for $TARNAMEROOT"
+echo "****************************************************"
+echo
+
+sleep 2
+
+STARTDATE=$2
+STARTHOUR=$3
+
+echo
+echo Build number = $1
+echo
+echo STARTDATE = $STARTDATE
+echo 
+echo STARTHOUR = $STARTHOUR
+echo
+sleep 2
+
+# If the date was specified, wait for it.
+
+if [ "$2" != "" ]
+then
+  until [ `date +'%d'` == $STARTDATE ]
+  do
+#   clear
+    echo
+    echo
+    echo "***  $MYNAME $1  ***"
+    echo
+    echo
+    echo "Waiting for date = "$STARTDATE
+    echo
+    echo "Waiting for hour = $3"
+    echo
+    echo "Current date = `date +'%d'`"
+    echo
+    echo "Current time = `date +'%H:%M:%S'`"
+    echo
+    sleep 10
+  done
+fi
+
+# If the time was specified, wait for it.
+
+if [ "$3" != "" ]
+then
+  until [ `date +'%H'` == $STARTHOUR ]
+  do
+#   clear
+    echo
+    echo
+    echo "***  $MYNAME $1  ***"
+    echo
+    echo
+    echo STARTDATE = TODAY
+    echo
+    echo "Waiting for hour = $STARTHOUR"
+    echo
+    echo "Current time = `date +'%H:%M:%S'`"
+    echo
+    sleep 10
+  done
+fi
+
+echo
+echo "The build is starting now."
+echo
+
+sleep 2
+
+echo
+echo Building bld_info_file...
+echo
+sleep 1
+
+bld_info_file=bldhist_info_file
+export bld_info_file
+bld_insert=qsclient.solaris
+export bld_insert
+
+echo bld_label_count=1                                 > $bld_info_file
+echo bld_label_1=\"cm_qsclient_r3.3_solaris.$1\"   >> $bld_info_file
+echo bld_build_number=$1                              >> $bld_info_file
+echo bld_zipfile=\"qsclient_r3.3_solaris_$1.tar\"  >> $bld_info_file
+echo bld_code_name=\"Kepler\"                      >> $bld_info_file
+echo bld_product=\"QServer Client Components for Solaris\" >> $bld_info_file
+echo bld_os=\"Solaris\"                               >> $bld_info_file
+echo bld_platform=\"Sparc\"                           >> $bld_info_file
+echo bld_version=\"R3.3\"                             >> $bld_info_file
+echo bld_site=\"Santa Monica\"                        >> $bld_info_file
+echo bld_builder=\"Dwight Wilson\"                    >> $bld_info_file
+
+: Starting build!
+: Set the bld_start_time variable.
+
+echo
+echo Setting the build start time variable using Python...
+echo
+sleep 1
+
+bld_start_time=`python /export/home/tools/sqltime.py`
+
+echo
+echo bld_start_time variable contains:  $bld_start_time
+echo
+sleep 1
+
+echo bld_start_time="$bld_start_time"           >> $bld_info_file
+
+sleep 2
+
+
+: Do your build
+
+echo
+echo "**********************************************"
+echo "Starting the build..."
+echo "**********************************************"
+echo
+sleep 2
+
+echo "**********************************************"
+echo "Creating a generic client spec..."
+echo "**********************************************"
+echo
+sleep 2
+
+echo cd $INIT_DIR
+cd $INIT_DIR
+
+echo Client:   $_GENERICCLIENT > generic.cli
+echo Description:      Generic client spec >> generic.cli
+echo Root:             /export/home/$_USERDIR/depot >> generic.cli
+echo Options:          allwrite clobber nocompress unlocked nomodtime normdir >> generic.cli
+echo View:             >> generic.cli
+echo "         //depot/..." //$_GENERICCLIENT/... >> generic.cli
+echo    >> generic.cli
+
+P4CLIENT=$_GENERICCLIENT
+export P4CLIENT
+
+echo "p4 client -i < generic.cli"
+p4 client -i < generic.cli
+sleep 2
+
+echo
+echo "**********************************************"
+echo "Creating product client spec from text file..."
+echo "**********************************************"
+
+p4 sync -f /export/home/$_USERDIR/Norton_AntiVirus/QuarantineServer/Trunk/cm/$_PRODCLIENT.txt
+
+echo
+echo Creating/updating the product client spec:
+echo CLIENT = $_PRODCLIENT
+echo by using the text file as input...
+echo
+sleep 2
+
+P4CLIENT=$_PRODCLIENT
+sleep 2
+echo "p4 client -i < /export/home/$_USERDIR/Norton_AntiVirus/QuarantineServer/Trunk/cm/$_PRODCLIENT.txt"
+sleep 2
+p4 client -i < /export/home/$_USERDIR/Norton_AntiVirus/QuarantineServer/Trunk/cm/$_PRODCLIENT.txt
+
+
+
+sleep 2
+
+echo
+echo The client $P4CLIENT should have been created.
+echo
+echo Here is what it looks like:
+echo
+sleep 5
+p4 client -o
+echo
+echo Done.
+echo
+sleep 5
+
+
+
+echo
+echo "******************************************"
+echo "Looking for previous build environment to"
+echo "make sure it has been deleted..."
+echo "******************************************"
+echo
+
+sleep 3
+
+# Make sure the main directory exists.
+
+ if [ ! -d $BASEDIR ]
+ then
+   echo
+   echo "Base directory $BASEDIR does not exist."
+   echo
+   echo "Creating..."
+   echo
+   sleep 2
+   echo mkdir $BASEDIR
+   mkdir $BASEDIR
+   TEST_DIR=$?
+   sleep 2
+   if [ "$TEST_DIR" -gt "0" ]
+   then
+     echo
+     echo Could not create base directory $BASEDIR.
+     echo 
+     echo Aborting...
+     sleep 2
+     echo
+     exit
+   fi
+   sleep 2
+ fi
+
+ echo "cd $BASEDIR"
+ cd $BASEDIR
+
+ sleep 3
+
+if [ `ls -1 | wc -l` != "0" ]
+then
+  echo
+  ls -1
+  echo
+  echo "Previous build was found..."
+  echo
+  sleep 2
+  echo "Deleting..."
+  sleep 2
+  rm -rf *   
+fi
+
+if [ `ls -1 | wc -l` != "0" ]
+then
+  echo
+  ls -1
+  echo "Previous build was not deleted successfully...  Terminating."
+  echo
+  exit
+fi
+
+echo
+echo Previous B.E. is deleted.
+
+sleep 2
+
+
+echo
+echo "******************************************"
+echo "Syncing the client spec.."
+echo "******************************************"
+echo
+
+echo p4 sync -f
+sleep 2
+p4 sync -f
+sleep 2
+
+
+echo
+echo "******************"
+echo "Labeling..."
+echo "******************"
+echo
+sleep 4
+
+p4 label -o $PERFLABELBASE.$1 > temp.lab
+p4 label -i < temp.lab
+
+echo labelsync -l $PERFLABELBASE.$1
+p4 labelsync -l $PERFLABELBASE.$1
+
+echo
+echo "******************"
+echo "Labelsync complete."
+echo "******************"
+echo
+sleep 4
+
+echo
+echo "******************"
+echo "Locking label..."
+echo "******************"
+echo
+sleep 4
+
+echo "python $TOOLSDIR/p4lock.py $PERFLABELBASE.$1"
+sleep 1
+python $TOOLSDIR/p4lock.py $PERFLABELBASE.$1
+sleep 2
+
+echo
+echo "**********************************************************"
+echo "Building "$TARNAMEROOT" Build # "$1
+echo "**********************************************************"
+echo
+sleep 5
+
+echo cd $BASEDIR/qscomm32
+cd $BASEDIR/qscomm32
+sleep 2
+echo
+echo make
+echo
+make -f Makefile.sol
+sleep 2
+echo
+echo cd $BASEDIR/qspak32
+cd $BASEDIR/qspak32
+sleep 2
+echo
+echo make
+echo
+make -f Makefile.sol
+sleep 2
+echo
+
+sleep 3
+
+echo
+echo "*****************************************************"
+echo "Checking the build..."
+echo "*****************************************************"
+echo
+
+# Checking for files in the build.
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+CHECKFILES="
+libqscomm.a
+libqspak.a"
+
+echo
+echo "Checking files..."
+echo
+sleep 2
+
+for FILE in $CHECKFILES
+do
+ echo "Checking $FILE..."
+ if [ ! -f $BASEDIR/$FILE ]
+ then
+   echo
+   echo "*********"
+   echo "  ERROR  "
+   echo "*********"
+   echo
+   echo "File $BASEDIR/$FILE does not exist."
+   echo "Please check the build."
+   echo
+   echo "*********"
+   echo "  ERROR  "
+   echo "*********"
+   echo
+
+: Bad build!
+
+: Set the bld_finish_time variable.
+
+   echo cd $INIT_DIR
+   cd $INIT_DIR
+
+   echo
+   echo Setting the build finish time variable using Python...
+   echo
+   sleep 1
+   bld_finish_time=`python /export/home/tools/sqltime.py`
+   echo bld_finish_time variable contains:  $bld_finish_time
+   echo
+   sleep 1
+   echo bld_finish_time="$bld_finish_time"           >> $bld_info_file
+: Execute this code on a bad build
+   echo bld_pass_fail=\"fail\"                            >> $bld_info_file
+   echo bld_comments=\"File $FILE not found\"             >> $bld_info_file
+   echo bld_milestone=\"N\"                               >> $bld_info_file
+   echo Creating the insertion record...
+   echo
+   echo python $TOOLSDIR/bldhist_driver.py create_insert $bld_insert\_$1.sql
+   sleep 2
+   python $TOOLSDIR/bldhist_driver.py create_insert $bld_insert\_$1.sql
+   echo
+   echo Adding the record to the database...
+   echo
+   echo python $TOOLSDIR/bldhist_driver.py perform_insert $bld_insert\_$1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+   python $TOOLSDIR/bldhist_driver.py perform_insert $bld_insert\_$1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+   echo "Exiting..."
+   exit
+ fi
+done
+sleep 2
+
+echo
+echo "The build has no missing files!"
+echo "Continuing..."
+sleep 2
+
+echo
+echo "*****************************************************"
+echo "Posting files to cm-ftp..."
+echo "*****************************************************"
+echo
+sleep 2
+
+echo cd $BASEDIR/what/devtools/cscmdline
+cd $BASEDIR/what/devtools/cscmdline
+
+
+  UNIQFILE="FTP_LOG_$bld_type_`date +'%m%d%H%M'`"
+
+  echo
+  echo "***********************************************************"
+  echo "FTP final binaries to cm-ftp is in progress, please wait..."
+  echo "***********************************************************"
+  echo
+  sleep 2
+  echo > $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo FTP Log for tar archive ...      >> $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo >> $BASEDIR/$UNIQFILE
+
+ftp -d -n 155.64.157.12 <<EndFTP >> $BASEDIR/$UNIQFILE
+user cm_only cmonly
+cd Unreleased_Builds
+mkdir $RELEASEPOSTINGDIR
+cd $RELEASEPOSTINGDIR
+mkdir $1
+cd $1
+mkdir solaris
+cd solaris
+bin
+put cscmdline
+asc
+put cscmdline.sol cscmdline.cfg
+EndFTP
+
+sleep 2
+echo
+echo "**********************************"
+echo "FTP final binaries is complete."
+echo "**********************************"
+
+
+
+
+
+echo
+echo "*****************************************************"
+echo "Creating full tar archive file of build environment..."
+echo "*****************************************************"
+echo
+sleep 3
+
+echo cd $BASEDIR
+cd $BASEDIR
+
+if [ -f "$FULLTARNAME" ]
+then
+  echo
+  echo "Previous tar file found... deleting..."
+  echo
+  sleep 2
+  echo rm $FULLTARNAME
+  rm $FULLTARNAME
+  sleep 3
+fi
+
+echo
+echo "************************************************************"
+echo "Creating full b.e. tar file $FULLTARNAME..."
+echo "************************************************************"
+echo
+sleep 3
+
+echo tar -cvf $FULLTARNAME ./*
+tar -cvf $FULLTARNAME ./*
+echo
+echo "Done."
+sleep 2
+
+
+
+echo
+echo "************************************************************"
+echo "FTP'ing $FULLTARNAME to cm-archive..."
+echo "************************************************************"
+echo
+sleep 3
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+  UNIQFILE="FTP_LOG_$bld_type_`date +'%m%d%H%M'`"
+
+  echo
+  echo "**************************************************************"
+  echo "FTP $FULLTARNAME to cm-archive is in progress, please wait..."
+  echo "**************************************************************"
+  echo
+  sleep 4
+  echo > $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo FTP Log for tar archive ...      >> $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo >> $BASEDIR/$UNIQFILE
+
+ftp -d -n 155.64.140.219 <<EndFTP >> $BASEDIR/$UNIQFILE
+user anonymous dwilson@symantec.com
+bin
+put $FULLTARNAME
+bye
+EndFTP
+
+sleep 4
+echo "*****************"
+echo "FTP is complete."
+echo "*****************"
+
+echo
+echo "*****************************************************"
+echo "FTP'ing $FULLTARNAME to cm-ftp for localization..."
+echo "*****************************************************"
+echo
+sleep 3
+
+echo "cd $BASEDIR"
+cd $BASEDIR
+
+  UNIQFILE="FTP_LOG_$bld_type_`date +'%m%d%H%M'`"
+
+  echo
+  echo "***********************************************************"
+  echo "FTP $FULLTARNAME to cm-ftp is in progress, please wait..."
+  echo "***********************************************************"
+  echo
+  sleep 4
+  echo > $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo FTP Log for tar archive ...      >> $BASEDIR/$UNIQFILE
+  echo //////////////////////////////////////// >> $BASEDIR/$UNIQFILE
+  echo >> $BASEDIR/$UNIQFILE
+
+ftp -d -n 155.64.157.12 <<EndFTP >> $BASEDIR/$UNIQFILE
+user cm_only cmonly
+cd build_environments
+mkdir $RELEASEPOSTINGDIR
+cd $RELEASEPOSTINGDIR
+mkdir $1
+cd $1
+bin
+put $FULLTARNAME
+bye
+EndFTP
+
+sleep 4
+echo "**************************"
+echo "FTP $FULLTARNAME is complete."
+echo "**************************"
+
+
+echo
+echo "**************************************************"
+echo "Generating Metrics for $PERFLABELBASE.$1..."
+echo "**************************************************"
+echo
+
+echo "Labels to be compared:"
+echo
+
+if [ $1 -gt 10 ]
+then
+  echo "  $PERFLABELBASE.`expr $1 - 1`"
+  else
+  echo "  $PERFLABELBASE".0`expr $1 - 1`
+fi
+  echo "  $PERFLABELBASE".$1
+
+
+echo
+sleep 4
+cd $BASEDIR
+
+
+if [ $1 -gt 10 ]
+then
+  python /export/home/tools/metrics.py //depot/... $PERFLABELBASE.`expr $1 - 1` $PERFLABELBASE.$1
+  else
+  python /export/home/tools/metrics.py //depot/... $PERFLABELBASE.0`expr $1 - 1` $PERFLABELBASE.$1
+fi
+
+
+echo
+echo "**************************************************"
+echo "Metrics generation complete."
+echo "**************************************************"
+echo
+
+sleep 4
+
+echo
+echo "**************************************************"
+echo "Posting Metrics on cm-ftp..."
+echo "**************************************************"
+echo
+
+sleep 3
+
+echo cd $BASEDIR/metrics
+cd $BASEDIR/metrics
+echo
+
+ftp -d -n 155.64.157.12 <<EndFTP
+user cm_only cmonly
+cd Unreleased_Builds
+mkdir $RELEASEPOSTINGDIR
+cd $RELEASEPOSTINGDIR
+mkdir $1
+cd $1
+mkdir metrics
+cd metrics
+ascii
+mput cm_*
+bye
+EndFTP
+
+sleep 4
+echo
+echo "******************************"
+echo "FTP of Metrics is complete."
+echo "******************************"
+
+
+: Set the bld_finish_time variable.
+
+echo cd $INIT_DIR
+cd $INIT_DIR
+
+echo
+echo Setting the build finish time variable using Python...
+echo
+sleep 1
+
+bld_finish_time=`python /export/home/tools/sqltime.py`
+
+echo
+echo bld_finish_time variable contains:  $bld_finish_time
+echo
+sleep 1
+
+echo bld_finish_time="$bld_finish_time"           >> $bld_info_file
+
+
+: Execute this code on a good build
+
+echo bld_pass_fail=\"pass\"                            >> $bld_info_file
+echo bld_comments=\"Build went smoothly, no problems\" >> $bld_info_file
+echo bld_milestone=\"N\"                               >> $bld_info_file
+
+# once you are done:
+# call the driver script with create_insert as a parameter.  
+# This tells it to create the sql insert file and names
+# it based on the second parameter
+
+echo
+echo Creating the insertion record...
+echo
+sleep 4
+
+echo python $TOOLSDIR/bldhist_driver.py create_insert $bld_insert\_$1.sql
+sleep 2
+python $TOOLSDIR/bldhist_driver.py create_insert $bld_insert\_$1.sql
+if [ "$?" != "0" ]
+then
+  echo
+  echo Insert record creation error.
+  echo
+  exit 2
+fi
+
+
+echo
+echo Adding the record to the database...
+echo
+sleep 4
+
+echo python $TOOLSDIR/bldhist_driver.py perform_insert $bld_insert\_$1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+sleep 1
+python $TOOLSDIR/bldhist_driver.py perform_insert $bld_insert\_$1.sql "-h cm-ftp.symantec.com -u dwilson -pdwilson"
+if [ "$?" != "0" ]
+then
+  echo
+  echo Perform add record error.
+  echo
+  exit 2
+fi
+
+# It is a good idea to store the .sql file and 
+# your $bld_info_file with your build archive to track 
+# down things in the future
+
+echo
+echo "**************************************************"
+echo "Build of $TARNAMEROOT $1 is complete."
+echo "**************************************************"
+echo
+ 
+echo cd $INIT_DIR
+cd $INIT_DIR
+rm bldhist_info_file
+rm *.sql
+rm generic.cli
+
+exit

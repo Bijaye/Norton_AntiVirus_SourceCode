@@ -1,0 +1,356 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+#include "..\inc\bldinfo.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "#include ""..\\inc\\bldinfo.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\AVISMonitor.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\AVISMonitor.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP  MOVEABLE PURE   "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR DISCARDABLE  16, 15
+BEGIN
+    BUTTON      ID_FILE_PRINT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU PRELOAD DISCARDABLE 
+BEGIN
+    POPUP "&Monitor"
+    BEGIN
+        MENUITEM "&Load",                       ID_MONITOR_LOAD
+        MENUITEM "&Save",                       ID_MONITOR_SAVE
+        MENUITEM "&Print",                      ID_FILE_PRINT
+        MENUITEM "P&rint Setup",                ID_FILE_PRINT_SETUP
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Actions"
+    BEGIN
+        MENUITEM "&Add",                        ID_ACTIONS_ADD
+        MENUITEM "&Remove",                     ID_ACTIONS_REMOVE
+        MENUITEM "&Start",                      ID_ACTIONS_START
+        MENUITEM "St&op",                       ID_ACTIONS_STOP
+        MENUITEM "&Edit",                       ID_ACTIONS_EDIT
+    END
+    POPUP "&Setup"
+    BEGIN
+        MENUITEM "&Options",                    ID_SETUP_OPTIONS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About AntiVirus Immune System Monitor...", ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 313, 93
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About AntiVirus Immune System Monitor"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    DEFPUSHBUTTON   "OK",IDOK,274,7,32,14,WS_GROUP
+    LTEXT           "1",IDC_ABOUT_PRODUCT_NAME,40,11,193,17
+    LTEXT           "2",IDC_ABOUT_VERSION_INFO,40,38,193,17
+    LTEXT           "3",IDC_ABOUT_COPYRIGHT_INFO,40,65,193,17
+END
+
+IDR_MAINFRAME DIALOG DISCARDABLE  0, 0, 330, 16
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "TODO: layout dialog bar ",IDC_STATIC,12,4,300,8
+END
+
+IDD_DIALOG_MODULE_INFO DIALOGEX 0, 0, 307, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "AntiVirus Immune System Module"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Module Name : ",IDC_STATIC,7,7,74,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_MODULE_NAME,93,7,148,14,ES_AUTOHSCROLL
+    RTEXT           "Module EXE File &Path :",IDC_STATIC,7,31,74,12,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_MODULE_FILE_PATH,93,31,148,12,ES_AUTOHSCROLL,
+                    WS_EX_ACCEPTFILES
+    RTEXT           "Module &Arguments :",IDC_STATIC,7,53,74,12,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_MODULE_ARGUMENTS,93,53,148,12,ES_AUTOHSCROLL,
+                    WS_EX_ACCEPTFILES
+    RTEXT           "Auto &Stop Module After ",IDC_STATIC,7,75,76,12,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_AUTO_STOP_TIME,93,75,40,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    LTEXT           "Minutes",IDC_STATIC,138,75,26,12,SS_CENTERIMAGE
+    CONTROL         "&Restart Stopped Module After",
+                    IDC_CHECK_RESTART_STOPPED_MODULE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,97,110,12
+    EDITTEXT        IDC_EDIT_RESTART_TIME,123,97,40,12,ES_AUTOHSCROLL
+    LTEXT           "Minutes",IDC_STATIC,167,97,26,12,SS_CENTERIMAGE
+    CONTROL         "Sen&d Mail after module is externally stopped",
+                    IDC_CHECK_SEND_MAIL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,117,187,12
+    DEFPUSHBUTTON   "OK",IDOK,250,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,250,24,50,14
+END
+
+IDD_DIALOG_MONITOR_SETTINGS DIALOG DISCARDABLE  0, 0, 288, 95
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "AVIS Monitor Settings"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "&Status Check Interval (minutes) : ",IDC_STATIC,7,7,113,
+                    14,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_STATUS_CHECK_INTERVAL,133,7,40,14,
+                    ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "Auto &Terminate Error Count : ",IDC_STATIC,7,31,113,14,
+                    SS_CENTERIMAGE | NOT WS_VISIBLE | WS_DISABLED
+    EDITTEXT        IDC_EDITAUTO_RESTART_ERROR_COUNT,133,31,40,14,
+                    ES_AUTOHSCROLL | ES_NUMBER | NOT WS_VISIBLE | 
+                    WS_DISABLED
+    CONTROL         "Start &programs on monitor startup",
+                    IDC_CHECK_START_ON_MONITOR_STARTUP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,58,167,10
+    CONTROL         "&Automatically restart stopped programs",
+                    IDC_CHECK_AUTO_RESTART,"Button",BS_AUTOCHECKBOX | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,78,175,10
+    DEFPUSHBUTTON   "OK",IDOK,231,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,231,24,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_DIALOG_MODULE_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 300
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_DIALOG_MONITOR_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 281
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDR_MAINFRAME           "AVIS BlueIce Executive Monitor"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    IDS_ABOUT_COPYRIGHT_INFO "Copyright © %1, IBM Corp."
+    IDS_INDICATOR_UPTIME    "System Up Time XXXX-XX:XX:XX"
+    IDS_INDICATOR_COUNTS    "Total XX, Active XX, Error XX"
+END
+
+STRINGTABLE PRELOAD DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "AVIS BlueIce Executive Monitor"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Terminate all active modules and quit the application\nExit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_ACTIONS_ADD          "Add new module\nAdd Module"
+    ID_ACTIONS_REMOVE       "Remove module\nRemove Module"
+    ID_ACTIONS_START        "Start module\nStart"
+    ID_ACTIONS_STOP         "Stop module\nStop"
+    ID_ACTIONS_MODIFY       "Modify module Information\nModify"
+    ID_SETUP_OPTIONS        "Monitor options\nOptions"
+    ID_MONITOR_LOAD         "Load module list from file saved on disk\nLoad"
+    ID_MONITOR_SAVE         "Save module list to file on disk\nSave"
+    ID_ACTIONS_COPY         "Copy module information\nCopy"
+    ID_ACTIONS_EDIT         "Edit Module information"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print module information\nPrint"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_INDICATOR_NEXT_CHECK_TIME "Check After XXX:XX:XX"
+    IDS_LSTFILE_PROLOG      "#######################################################################\n# \n# Target file: AVISMonitor.lst\n# \n# Target directory: D:\\Avis\n# \n# Target machine: Gateways and the executive machine in the analysis center\n# \n# Target application: AVISMonitor.exe\n# \n# Please refer to the 'AnalysisCenterOperations.doc' file for more\n# information on how to configure the Monitor program. The document\n# file mentioned here can be found in the 'avis200.xxx\\src\\docs'\n# subdirectory of the AVIS source tree.\n# \n#######################################################################\n"
+    IDS_CFGFILE_PROLOG      "#######################################################################\n# \n# Target file: AVISMonitor.cfg\n# \n# Target directory: D:\\avis\n# \n# Target machine: Gateways and the executive machine in the analysis center\n# \n# Target application: AVISMonitor.exe\n# \n# Please refer to the 'AnalysisCenterOperations.doc' file for more\n# information on how to configure the Monitor program. The document\n# file mentioned here can be found in the 'avis200.xxx\\src\\docs'\n# subdirectory of the AVIS source tree.\n# \n#######################################################################\n"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\AVISMonitor.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

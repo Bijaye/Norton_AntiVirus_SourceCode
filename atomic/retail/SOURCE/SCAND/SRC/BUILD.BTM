@@ -1,0 +1,79 @@
+:: $Header:   S:/SCAND/VCS/build.btv   1.2   18 Feb 1998 17:48:56   mdunn  $
+::
+:: Build file for SCAND project.
+::------------------------------------------------------------------------
+:: $Log:   S:/SCAND/VCS/build.btv  $
+:  
+:     Rev 1.2   18 Feb 1998 17:48:56   mdunn
+:  Added NCX support.
+:  
+:     Rev 1.1   06 Jun 1997 18:45:52   MKEATIN
+:  Add code to nuke CV and DEBUG_ALL.
+:  
+:     Rev 1.0   06 Feb 1997 21:08:48   RFULLER
+:  Initial revision
+:  
+:     Rev 1.1   08 Aug 1996 13:29:20   JBRENNA
+:  Ported from DOSNAV environment
+:  
+:  
+:     Rev 1.8   27 Apr 1994 18:50:24   DALLEE
+:  Removed updates of multiple targets.
+:  
+:     Rev 1.7   23 Mar 1994 22:27:38   DALLEE
+:  Make sure directory is clean for each build.
+:  
+:     Rev 1.6   18 Mar 1994 00:38:52   DALLEE
+:  Added BANKERS target.
+::------------------------------------------------------------------------
+
+                                        :: If CodeView or DEBUG_ALL are active,
+                                        :: and this is DOS, DX, DVX, or DVS, 
+                                        :: temporarily disable them.
+IF %@index[.DOS.DX.DVS.DVX.NCX.,%PLATFORM] NE -1  gosub killcv
+
+
+call mk scand %1
+if exist make.err copy build.err+make.err build.err
+
+call mk scandstr %1
+if exist make.err copy build.err+make.err build.err
+
+
+                                        :: If "killcv" shut off CodeView or DEBUG_ALL,
+                                        :: turn them back on.
+IF %@index[.DOS.DX.DVS.DVX.NCX.,%PLATFORM] NE -1  gosub restorecv
+
+quit
+
+                                        :: Subroutine "killcv" ...
+:killcv
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+    iff not "%CV%" == "" then
+        set OLD_CV=%CV%
+	    set CV=
+            echo ** Your CV environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/DVS/NCX libraries should never be MKUPDATE'd with debug info!
+	endiff
+    iff not "%DEBUG_ALL%" == "" then
+        set OLD_DEBUG_ALL=%DEBUG_ALL%
+	    set DEBUG_ALL=
+            echo ** Your DEBUG_ALL environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/DVS/NCX libraries should never be MKUPDATE'd with debug info!
+	endiff
+return
+
+                                        :: Subroutine "restorecv" ...
+:restorecv
+    iff not "%OLD_CV%" == "" then
+        set CV=%OLD_CV%
+	    echo ** Your CV environment variable has been restored.
+	endiff
+    iff not "%OLD_DEBUG_ALL%" == "" then
+        set DEBUG_ALL=%OLD_DEBUG_ALL%
+	    echo ** Your DEBUG_ALL environment variable has been restored.
+	endiff
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+return

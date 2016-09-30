@@ -1,0 +1,40 @@
+: Copyright 1995 Symantec, Peter Norton Product Group
+:************************************************************************
+:
+: $Header:   S:/NAVC/VCS/build.btv   1.3   01 Jul 1998 20:54:08   VGLOSTE  $
+:
+: Description:  This batch file builds NAVDX.EXE and NAVDXP.EXE
+:
+:************************************************************************
+: $Log:   S:/NAVC/VCS/build.btv  $
+:  
+:     Rev 1.3   01 Jul 1998 20:54:08   VGLOSTE
+:  Migrated changes made by CM to Roswell.  This allows there to be separate
+:  targets for the trialware version and the normal version.
+:  
+:     Rev 1.2   13 Aug 1997 21:25:06   TCASHIN
+:  Now run make files to create NAVDX.EXE and NAVDX.OVL.
+:  
+:     Rev 1.1   10 Jul 1997 17:43:08   MKEATIN
+:  use 'call' to call commands.
+:  
+:     Rev 1.0   10 Jul 1997 16:58:26   MKEATIN
+:  Initial revision.
+:************************************************************************
+
+iff "%TARGET%" == "NAVPRV" then
+    call mk navc %&
+    call mk navstub %&
+
+elseiff "%TARGET%" == "" then
+
+    call mk navc navc.obj navstr.obj %&
+    call mk navc
+    call mk navstub %&
+
+
+
+
+
+
+

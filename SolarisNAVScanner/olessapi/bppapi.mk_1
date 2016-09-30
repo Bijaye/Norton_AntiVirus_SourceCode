@@ -1,0 +1,18 @@
+!define BLANK ""
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\ppapi.obj : $(%os2base)\cyprus\navexeng\navex\olessapi\src\ppapi.cpp .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ *wpp386 ppapi.cpp -i=$(%wat_inst)\h;$(%wat_inst)\h\os2;..\..\..\include0;..\..\..\include1 -w4 -e25 -wcd726 -dSYM_OS2 -zq -od -d2 -5r -bt=os2 -mf
+
+$(%os2base)\cyprus\navexeng\navex\olessapi\src\ppapi.lib : $(%os2base)\cyprus\navexeng\navex\olessapi\src\ppapi.obj .AUTODEPEND
+ @$(%srcdrv)
+ cd $(%os2base)\cyprus\navexeng\navex\olessapi\src
+ %create ppapi.lb1
+!ifneq BLANK "ppapi.obj"
+ @for %i in (ppapi.obj) do @%append ppapi.lb1 +'%i'
+!endif
+!ifneq BLANK ""
+ @for %i in () do @%append ppapi.lb1 +'%i'
+!endif
+ *wlib -b -c -n -q -p=512 ppapi.lib @ppapi.lb1
+

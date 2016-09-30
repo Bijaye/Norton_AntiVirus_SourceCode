@@ -1,0 +1,179 @@
+/************************************************************************
+ *                                                                      *
+ * $Header:   N:/SYMKRNL/VCS/SYMKRNL.RCv   1.5   23 Apr 1998 11:26:46   TSmith  $ *
+ *                                                                      *
+ * Description:                                                         *
+ *                                                                      *
+ ************************************************************************
+ * $Log:   N:/SYMKRNL/VCS/SYMKRNL.RCv  $ *
+// 
+//    Rev 1.5   23 Apr 1998 11:26:46   TSmith
+// Removed obsoleted strings.
+// 
+//    Rev 1.4   21 Jan 1998 09:35:38   RPULINT
+// Added Font/Size for Simplified Chinese
+// 
+//    Rev 1.3   07 Nov 1997 10:10:20   TSMITH
+// Removed hard coded DBCS font values from DBCS.H and added them here.
+// 
+//    Rev 1.2   12 Sep 1997 09:31:20   MBROWN
+// Changed abreviation strings from K, M, and G to KB, MB, and GB. This is
+// the standard.
+//
+//    Rev 1.1   20 Mar 1996 18:36:18   YVANG
+// Added #include "dbcs.h" for DBCS enable.
+//
+//    Rev 1.0   26 Jan 1996 20:23:28   JREARDON
+// Initial revision.
+//
+//    Rev 1.8   17 Mar 1995 17:16:00   Basil
+// Added Giga strings.
+//
+//    Rev 1.7   02 Mar 1995 11:44:58   BRIANF
+// Made changes that are necessary to build custom Quake DLLs.
+//
+//    Rev 1.6   26 Jan 1995 13:59:18   HENRI
+// Added the ShowVxDError function and strings
+//
+//    Rev 1.5   28 Mar 1994 21:00:34   BRAD
+// Don't include VER.H, if WIN32
+//
+//    Rev 1.4   02 Sep 1993 23:02:32   PGRAVES
+// Removed WIN.INI section and entry names that do not need to be translated.
+//
+//    Rev 1.3   19 Aug 1993 12:30:56   MARKL
+// Added "a.m." and "p.m." to defaults.
+//
+//    Rev 1.2   30 Jun 1993 19:23:06   BRUCEH
+// Removed override of VR_FILEVERSION
+//
+//    Rev 1.1   22 Jun 1993 12:24:00   DLEVITON
+// Support for runtime DLL version checking.
+//
+//    Rev 1.0   21 Jun 1993 18:33:00   DLEVITON
+// Initial revision.
+//
+//    Rev 1.6   17 Jun 1993 23:34:52   BRAD
+// Added hour/minute/second strings.
+//
+//    Rev 1.5   10 Jun 1993 10:07:54   ED
+// Uses SYMKRNLI.H now instead of SYMPRIMI.H
+//
+//    Rev 1.4   10 Jun 1993 09:58:06   ED
+// Removed reference to INTLIDS.H.  Use SYMPRIMI.H instead.
+//
+//    Rev 1.3   07 Apr 1993 04:05:20   KEITH
+// Added a test for Mirrors so that the Windows 31 password info was
+// not included for the OS/2 build.
+//
+//    Rev 1.2   23 Mar 1993 09:20:36   DOUGN
+// Changed to use quake version stamp quake.ver
+//
+//
+//    Rev 1.1   15 Mar 1993 18:18:04   MARKL
+// Added strings (months and days of the week) that were left out!!!
+//
+//    Rev 1.0   12 Feb 1993 04:34:34   ENRIQUE
+// Initial revision.
+//
+//    Rev 1.2   08 Dec 1992 09:10:34   CRAIG
+// More strings.
+//
+//    Rev 1.1   07 Dec 1992 15:35:36   CRAIG
+// Added string table.
+//
+//    Rev 1.0   26 Aug 1992 17:03:12   ED
+// Initial revision.
+//
+//    Rev 1.0   20 Jul 1992 14:22:58   ED
+// Initial revision.
+ ************************************************************************/
+
+#include <windows.h>
+#include "dbcs.h"
+
+#ifndef QCUST                           // Skip Version info for Custom Quake
+#ifndef MIRRORS                         // Skip windows version for OS/2
+#if !defined(SYM_WIN32)
+#include <ver.h>
+#endif
+                                        // Include quake version stamp
+#define VR_FILEDESCRIPTION      "Symantec Kernel API Library\0"
+#define VR_INTERNALNAME         "SYMKRNL\0"
+#define VR_ORIGINALFILENAME     "SYMKRNL.DLL\0"
+
+#include "quake.ver"
+#endif
+#endif // QCUST
+
+#include "dialogs.h"
+#include "dialogs.dlg"
+
+#include "symkrnli.h"                    //  for string IDs
+
+STRINGTABLE LOADONCALL DISCARDABLE
+BEGIN
+        ABRVSIZ_K,              "KB"
+        ABRVSIZ_M,              "MB"
+        ABRVSIZ_G,              "GB"
+        KILOBYTE_STR,           " Kilobytes"
+        MEGABYTE_STR,           " Megabytes"
+        GIGABYTE_STR,           " Gigabytes"
+        SHORT_KILOBYTE_STR,     " KB"
+        SHORT_MEGABYTE_STR,     " MB"
+        SHORT_GIGABYTE_STR,     " GB"
+        IDS_NOTFOUND,           "Not Found"
+        IDS_UNKNOWN,            "Unknown"
+END
+
+/************************************************************************/
+STRINGTABLE LOADONCALL MOVEABLE DISCARDABLE
+    BEGIN
+        MN_JANUARY,             "January"
+        MN_FEBRUARY,            "February"
+        MN_MARCH,               "March"
+        MN_APRIL,               "April"
+        MN_MAY,                 "May"
+        MN_JUNE,                "June"
+        MN_JULY,                "July"
+        MN_AUGUST,              "August"
+        MN_SEPTEMBER,           "September"
+        MN_OCTOBER,             "October"
+        MN_NOVEMBER,            "November"
+        MN_DECEMBER,            "December"
+        WDN_SUNDAY,             "Sunday"
+        WDN_MONDAY,             "Monday"
+        WDN_TUESDAY,            "Tuesday"
+        WDN_WEDNESDAY,          "Wednesday"
+        WDN_THURSDAY,           "Thursday"
+        WDN_FRIDAY,             "Friday"
+        WDN_SATURDAY,           "Saturday"
+                                        // Preserve order of hour/minute/second
+        IDS_HOUR,               "%d hour"
+        IDS_HOURS,              "%d hours"
+        IDS_MINUTE,             "%d minute"
+        IDS_MINUTES,            "%d minutes"
+        IDS_SECOND,             "%d second"
+        IDS_SECONDS,            "%d seconds"
+    END
+
+#ifdef SYM_WIN32
+STRINGTABLE
+BEGIN
+    IDS_VXDERR_FILE_NOT_FOUND   "Could not find %s (Error %d)"
+    IDS_VXDERR_LOADER           "Could not find %s (Error %d)"
+    IDS_VXDERR_UNKNOWN          "Could not load %s (Error %d.%d)"
+    IDS_VXDERR_COULD_NOT_OPEN   "Could not open %s"
+    IDS_VXDERR_COULD_NOT_UNLOAD "Could not unload %s"
+END
+
+STRINGTABLE LOADONCALL DISCARDABLE
+BEGIN
+    IDS_DBCS_FONT_SIZE          "9"
+    IDS_DBCS_MSG_FONT_SIZE      "11"
+    IDS_DBCS_FONT_SIZE_CHINESE  "9"
+    IDS_DBCS_FONT_SIZE_KOREAN   "9"
+    IDS_DBCS_FONT_SIZE_JAPANESE "9"
+    IDS_DBCS_FONT_SIZE_SIMPLIFIED_CHINESE  "9"
+END
+#endif

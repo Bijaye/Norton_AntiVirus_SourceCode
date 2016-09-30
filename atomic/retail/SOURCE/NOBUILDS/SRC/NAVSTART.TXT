@@ -1,0 +1,57 @@
+: Copyright 1995-1996 Symantec, Peter Norton Product Group
+:*************************************************************************
+:
+: $Header:   S:/NOBUILDS/VCS/navstart.txv   1.1   25 Mar 1997 13:01:12   DALLEE  $
+:
+: Description:
+:   This file contains the list of system files to scan on startup.
+:   Use  "STARTLST.EXE navstart.txt" to write this list to the end
+:   of NAVSTART.DAT (must be in same directory as STARTLST.EXE).
+:
+: Notes:
+:   1.  Comment lines begin with ':'.
+:
+:   2.  Blank lines are ignored.
+:
+:   3.  Files should be listed one per line.
+:
+:   4.  White space is removed from the beginning and end of each line,
+:       but may be present in the middle of a filename.
+:
+:   5.  No validation of names is performed (so be careful, or if you feel
+:       like a good samaritan, add the error checking to STARTLST.C).
+:
+:   6.  At present, 3 substitutions are understood (check in NAVSTART.H):
+:           "<R"    Root directory of fixed disk boot drive.
+:           "<W"    Windows directory.
+:           "<S"    Windows system directory.
+:
+: Contains:
+:
+: See Also:
+:*************************************************************************
+: $Log:   S:/NOBUILDS/VCS/navstart.txv  $
+:
+:   Rev 1.1   25 Mar 1997 13:01:12   DALLEE
+:Changed comment prefix in archive to ":".
+:Added ":" to lines for rev 1.0's comment.
+:
+:    Rev 1.0   06 Feb 1997 21:07:50   RFULLER
+: Initial revision
+: 
+:    Rev 1.0   19 Aug 1996 18:25:16   DALLEE
+: Initial revision.
+: 
+:    Rev 1.0   28 Feb 1995 14:53:42   DALLEE
+: Initial revision.
+:*************************************************************************
+
+<R\*.EXE
+<R\*.COM
+
+<W\WIN.COM
+<W\EMM386.EXE
+
+<S\GDI.EXE
+<S\KRNL386.EXE
+<S\USER.EXE

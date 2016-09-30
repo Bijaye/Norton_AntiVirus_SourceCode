@@ -1,0 +1,13 @@
+;This script file supports and has been tested with
+;Trend OfficeScan Server Protect 5.5
+Platform=WinNT
+
+;  Run Uninstall
+runprogram=HKEY_LOCAL_MACHINE, SOFTWARE\Microsoft\Windows\CurrentVersion\UnInstall\ServerProtect Management Console, UninstallString
+SendAffirmativeToWindowWithButtonClick=Confirm Deleting A File,&Yes, 60
+SendAffirmativeToWindowWithButtonClick=Confirm Deleting A File,Ok, 60
+SendAffirmativeToWindowWithButtonClick=ServerProtect Master Uninstaller,OK, 180
+;SendAffirmativeToWindow=Confirm File Deletion,60
+
+
+

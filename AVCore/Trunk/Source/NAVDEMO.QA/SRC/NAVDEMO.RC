@@ -1,0 +1,271 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+//#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#include <windows.h>
+#include <windowsx.h>
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+//LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+NAVDEMOMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "Scan &File...",               IDM_SCAN_FILE
+        POPUP "Scan &Memory"
+        BEGIN
+            MENUITEM "&Conventional Memory",        IDM_SCAN_MEMORY_640
+            MENUITEM "C&onventional and Upper Memory", IDM_SCAN_MEMORY_UPPER
+        END
+        MENUITEM "Scan &System Areas...",       IDM_SCAN_SYSAREA
+        MENUITEM "Self &Test (CRC Check)...",   IDM_SELF_TEST
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+NAVDEMOICON             ICON    DISCARDABLE     "navdemo.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+NAVDEMO_HANDLE_INFECTION DIALOG DISCARDABLE  0, 0, 271, 72
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+CAPTION "Infected File Found"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDT_FILENAME,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,7,
+                    7,257,8
+    LTEXT           "This file is infected with a virus.  What would you like to do?",
+                    IDC_STATIC,7,27,257,8
+    PUSHBUTTON      "&Delete this file",IDB_DELETE,5,47,58,14,WS_GROUP
+    PUSHBUTTON      "&View information on this virus...",IDB_VIEWINFO,67,47,
+                    100,14
+    PUSHBUTTON      "&Take no action on this file",IDB_NOACTION,171,47,94,14
+END
+
+NAVDEMO_VIRUS_INFO DIALOG DISCARDABLE  0, 0, 280, 288
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Virus information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "&Close",IDOK,223,7,50,14
+    CONTROL         "Virus name:",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,7,7,54,8
+    CONTROL         "<virus name>",IDT_VIRINFO_VIRNAME,"Static",
+                    SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,70,7,144,8
+    CONTROL         "Found in file:",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,7,24,54,8
+    CONTROL         "<name of infected file>",IDT_VIRINFO_FILE,"Static",
+                    SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,70,24,150,8
+    CONTROL         "On physical drive:",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,7,41,54,8
+    CONTROL         "<#>     ",IDT_VIRINFO_PHYSDRIVE,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,70,41,26,8
+    CONTROL         "partition:",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,99,41,32,8
+    CONTROL         "<#>    ",IDT_VIRINFO_PARTITION,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,137,41,28,8
+    CONTROL         "Virus size:",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,7,58,54,8
+    CONTROL         "<size>",IDT_VIRINFO_SIZE,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,70,58,53,8
+    LTEXT           "This virus <can/cannot> be repaired.",
+                    IDT_VIRINFO_REPAIRABLE,7,75,147,8
+    GROUPBOX        "Virus characteristics",IDC_STATIC,7,92,266,132
+    CONTROL         "Infects files:",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,19,106,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_FILES,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,82,106,30,8
+    CONTROL         "Infects EXE files:",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,19,119,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_EXE,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,82,119,30,8
+    CONTROL         "Infects COM files:",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,19,132,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_COM,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,82,132,30,8
+    CONTROL         "Infects SYS files:",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,19,145,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_SYS,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,82,145,30,8
+    CONTROL         "Infects MBRs:",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,135,106,88,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_MBR,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,230,106,30,8
+    CONTROL         "Infects floppies:",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,135,119,88,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_FLOPPIES,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,230,119,30,8
+    CONTROL         "Infects HD boot sectors:",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,135,132,88,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_HDBOOT,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,230,132,30,8
+    LTEXT           "In the wild:",IDC_STATIC,19,169,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_INWILD,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,82,169,30,8
+    LTEXT           "Memory resident:",IDC_STATIC,19,182,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_MEMRESIDENT,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,82,182,30,8
+    LTEXT           "Size stealth:",IDC_STATIC,19,195,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_SIZESTEALTH,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,82,195,30,8
+    LTEXT           "Full stealth:",IDC_STATIC,19,208,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_FULLSTEALTH,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,82,208,30,8
+    LTEXT           "Has a trigger:",IDC_STATIC,135,169,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_TRIGGER,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,198,169,30,8
+    LTEXT           "Encrypting:",IDC_STATIC,135,182,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_ENCRYPTING,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,198,182,30,8
+    LTEXT           "Polymorphic:",IDC_STATIC,135,195,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_POLYMORPHIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,198,195,30,8
+    LTEXT           "Multipartite:",IDC_STATIC,135,208,58,8
+    CONTROL         "<yes/no>",IDT_VIRINFO_MULTIPARTITE,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,198,208,30,8
+    GROUPBOX        "Virus Description",IDC_STATIC,7,228,266,53
+    LTEXT           "",IDT_VIRINFO_DESCRIPTION,14,239,251,36,SS_NOPREFIX
+    LTEXT           "Logical drive: ",IDC_STATIC,172,41,45,8
+    CONTROL         "<#>    ",IDT_VIRINFO_LOGICAL_DRIVE,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,224,41,28,8
+END
+
+NAVDEMO_SYSAREA_PROMPT DIALOG DISCARDABLE  0, 0, 258, 89
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Scan System Area"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,201,7,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,201,24,50,14
+    CONTROL         "Scan a &single drive",IDR_ONE_DRIVE,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP,15,15,77,10
+    CONTROL         "Scan &multiple drives",IDR_MULTIPLE_DRIVES,"Button",
+                    BS_AUTORADIOBUTTON,15,42,77,10
+    LTEXT           "&Drive:",IDT_ONE_DRIVE_TAG,102,16,26,8
+    COMBOBOX        IDCB_DRIVES,133,14,48,52,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    CONTROL         "All &removable drives",IDC_ALL_REMOVABLE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,42,85,10
+    CONTROL         "All &fixed drives",IDC_ALL_FIXED,"Button",
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,102,57,85,10
+END
+
+NAVDEMO_MEMSCAN_PROGRESS DIALOG DISCARDABLE  0, 0, 187, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_VISIBLE
+CAPTION "Memory Scan in Progress"
+FONT 8, "MS Sans Serif"
+BEGIN
+    RTEXT           "",IDT_PROGRESS_PERCENT,56,28,22,8
+    LTEXT           "%    Complete",IDC_STATIC,82,28,60,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "NAVDEMO_HANDLE_INFECTION", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 264
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 65
+    END
+
+    "NAVDEMO_SYSAREA_PROMPT", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 251
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 82
+    END
+
+    "NAVDEMO_MEMSCAN_PROGRESS", DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 57
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

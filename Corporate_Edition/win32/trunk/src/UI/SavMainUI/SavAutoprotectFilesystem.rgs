@@ -1,0 +1,27 @@
+HKCR
+{
+	SavMainUI.SavAutoprotectFilesystem.1 = s 'SavAutoprotectFilesystem Class'
+	{
+		CLSID = s '{CED1DFB3-4A7D-463F-985C-DBF75C52680B}'
+	}
+	SavMainUI.SavAutoprotectFilesystem = s 'SavAutoprotectFilesystem Class'
+	{
+		CLSID = s '{CED1DFB3-4A7D-463F-985C-DBF75C52680B}'
+		CurVer = s 'SavMainUI.SavAutoprotectFilesystem.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CED1DFB3-4A7D-463F-985C-DBF75C52680B} = s 'SavAutoprotectFilesystem Class'
+		{
+			ProgID = s 'SavMainUI.SavAutoprotectFilesystem.1'
+			VersionIndependentProgID = s 'SavMainUI.SavAutoprotectFilesystem'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{72DCBB81-94A9-4499-86E5-1188FAC09630}'
+		}
+	}
+}

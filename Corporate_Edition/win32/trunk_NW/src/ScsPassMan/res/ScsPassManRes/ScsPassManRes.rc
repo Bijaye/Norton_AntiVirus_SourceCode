@@ -1,0 +1,303 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""..\\ScsPassMan.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "#include ""LocVerMsg.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "..\\magnifying glass.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ScsPassMan"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "ScsPassMan Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2004 - 2006",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
+END
+
+IDD_SCSPASSMAN_DIALOG DIALOGEX 0, 0, 331, 222
+STYLE DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "SCS Password Management Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,275,201,50,14
+    PUSHBUTTON      "< Back",ID_WIZBACK,164,201,50,14
+    PUSHBUTTON      "Next >",ID_WIZNEXT,216,201,50,14
+    CONTROL         "",IDC_PLACEHOLDER,"Static",SS_ETCHEDFRAME,0,0,331,193
+    PUSHBUTTON      "Finish",ID_WIZFINISH,275,201,50,14,NOT WS_VISIBLE | 
+                    WS_DISABLED
+END
+
+IDD_PROPPAGE_WELCOME DIALOGEX 0, 0, 329, 192
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Welcome to the Symantec Client Security Password Management Wizard",
+                    IDC_WELCOME_TEXT,119,7,203,47
+    CONTROL         130,IDC_WELCOME_BMP,"Static",SS_BITMAP,0,0,114,191
+    LTEXT           "This wizard helps you manage passwords for SCS Server Group accounts.",
+                    IDC_STATIC,120,60,174,18
+    LTEXT           "To continue, click Next.",IDC_STATIC,120,84,76,8
+END
+
+IDD_PROPPAGE_CONNECT DIALOG DISCARDABLE  0, 0, 329, 192
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Please select the Server Group you would like to manage and click Next.",
+                    IDC_CONNECT_INTRO_TEXT,119,7,161,17
+    CONTROL         130,IDC_CONNECT_BMP,"Static",SS_BITMAP,0,0,114,191
+    LTEXT           "Server Group:",IDC_CONNECT_SERVER_TEXT,134,44,46,8
+    LTEXT           "SCS Username:",IDC_CONNECT_USERNAME_TEXT,130,95,50,8,
+                    NOT WS_VISIBLE
+    LTEXT           "Admin Password:",IDC_CONNECT_PASSWORD_TEXT,124,68,56,8,
+                    NOT WS_VISIBLE
+    EDITTEXT        IDC_CONNECT_USERNAME_EDITBOX,189,92,102,14,
+                    ES_AUTOHSCROLL | NOT WS_VISIBLE
+    EDITTEXT        IDC_CONNECT_PASSWORD_EDITBOX,189,66,102,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL | NOT WS_VISIBLE
+    GROUPBOX        "Status",IDC_CONNECT_STATUS_BOX,126,144,174,42,NOT 
+                    WS_VISIBLE
+    LTEXT           "",IDC_CONNECT_STATUS_TEXT,144,156,145,20,NOT WS_VISIBLE
+    COMBOBOX        IDC_CONNECT_SERVERGROUP_COMBOBOX,189,42,102,131,
+                    CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_PROPPAGE_MANAGE DIALOG DISCARDABLE  0, 0, 329, 192
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Please select an account to change , input the passwords and click Change Password.  Click Next when you are done.",
+                    IDC_MANAGE_INTRO_TEXT,119,7,181,25
+    CONTROL         130,IDC_MANAGE_BMP,"Static",SS_BITMAP,0,0,114,191
+    EDITTEXT        IDC_MANAGE_OLDPASS_EDITBOX,189,59,102,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "Old Password:",IDC_MANAGE_OLDPASS_TEXT,133,63,47,8
+    LTEXT           "New Password:",IDC_MANAGE_NEWPASS_TEXT,130,86,50,8
+    LTEXT           "Confirm Password:",IDC_MANAGE_CONFIRMPASS_TEXT,119,110,
+                    61,9,SS_ENDELLIPSIS
+    EDITTEXT        IDC_MANAGE_NEWPASS_TEXTBOX,189,83,102,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_MANAGE_CONFIRMPASS_TEXTBOX,189,107,102,14,
+                    ES_PASSWORD | ES_AUTOHSCROLL
+    GROUPBOX        "Status",IDC_MANAGE_STATUS_BOX,126,144,174,42
+    LTEXT           "Account:",IDC_MANAGE_ACCOUNT_TEXT,150,38,30,8
+    PUSHBUTTON      "Change Password",IDC_MANAGE_CHANGE_BUTTON,228,126,68,14
+    LTEXT           "",IDC_MANAGE_STATUS_TEXT,144,156,145,20
+    EDITTEXT        IDC_MANAGE_ACCOUNT_EDITBOX,188,35,104,14,ES_AUTOHSCROLL
+END
+
+IDD_PROPPAGE_FINISH DIALOGEX 0, 0, 329, 192
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "You've completed the Password Management wizard.",
+                    IDC_FINISH_INTRO_TEXT,119,7,161,17
+    CONTROL         130,IDC_FINISH_BMP,"Static",SS_BITMAP,0,0,114,191
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Symantec Corporation\0"
+            VALUE "FileDescription", "Password Manager for Symantec Client Security\0"
+            VALUE "FileVersion", "1.0.0.1\0"
+            VALUE "InternalName", "ScsPassMan.exe\0"
+            VALUE "LegalCopyright", "Copyright 2004 - 2006 Symantec Corporation. All rights reserved.\0"
+            VALUE "OriginalFilename", "ScsPassMan.exe\0"
+            VALUE "ProductName", "Symantec Client Security\0"
+            VALUE "ProductVersion", "1.0.0.1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_SCSPASSMAN_DIALOG, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 215
+    END
+
+    IDD_PROPPAGE_WELCOME, DIALOG
+    BEGIN
+        RIGHTMARGIN, 322
+    END
+
+    IDD_PROPPAGE_CONNECT, DIALOG
+    BEGIN
+        RIGHTMARGIN, 322
+        VERTGUIDE, 180
+        VERTGUIDE, 189
+    END
+
+    IDD_PROPPAGE_MANAGE, DIALOG
+    BEGIN
+        RIGHTMARGIN, 322
+        VERTGUIDE, 180
+        VERTGUIDE, 188
+    END
+
+    IDD_PROPPAGE_FINISH, DIALOG
+    BEGIN
+        RIGHTMARGIN, 322
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SIDEBAR_256         BITMAP                  "..\\sidebar.bmp"
+IDB_NETWORK             BITMAP                  "..\\network.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ScsPassMan..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "..\ScsPassMan.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+#include "LocVerMsg.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

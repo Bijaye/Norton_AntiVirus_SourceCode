@@ -1,0 +1,205 @@
+: Copyright 1995 Symantec, Peter Norton Product Group
+:************************************************************************
+:
+: $Header:   S:/BOOTDISK/VCS/buildusa.btv   1.2   07 Dec 1998 15:12:24   MZAREMB  $
+:
+: Description:  This batch file builds the emergency disk for Roswell
+:
+:************************************************************************
+: $Log:   S:/BOOTDISK/VCS/buildusa.btv  $
+:  
+:     Rev 1.2   07 Dec 1998 15:12:24   MZAREMB
+:  NAVOPTS.DAT was not being pulled from the right place. Now fixed.
+:  
+:     Rev 1.1   07 Dec 1998 14:41:30   MZAREMB
+:  Using Atomic defs (S:\TESTDEFS\SRC) instead of the Roswell defs release area 
+:  CORE NAVDEFS).
+:  
+:     Rev 1.0   07 Dec 1998 12:16:54   MZAREMB
+:  Initial revision.
+:  
+:     Rev 1.5   12 Aug 1998 14:27:08   RCHINTA
+:  Using the full definition set instead of the wild set.
+:  
+:     Rev 1.4   10 Aug 1998 16:30:28   RCHINTA
+:  Now using DOS 6.22 system files.
+:  
+:     Rev 1.3   10 Aug 1998 11:09:34   RCHINTA
+:  Modified to create Emergency Disk 1 with Program files
+:  and Emergency Disk 2 with Virus Definitions since both
+:  sets of files no longer fit on one disk.
+:  
+:     Rev 1.2   25 Feb 1998 17:45:32   JBELDEN
+:  changed location of autoexec and navex15
+:  
+:     Rev 1.0   25 Feb 1998 16:00:18   JBELDEN
+:  Initial revision.
+:  
+:     Rev 1.10   21 Aug 1997 21:15:40   TCASHIN
+:  Can't use except(). Delete the *.err files from the floppy.
+:  
+:     Rev 1.9   21 Aug 1997 21:11:24   TCASHIN
+:  Don't copy *.err files to the floppy. And make sure that the
+:  date and time of io.sys is correct.
+:  
+:     Rev 1.8   18 Aug 1997 15:59:50   KSACKIN
+:  Now we are pulling all nobuild type files from source instead of Lib.bin, as
+:  we no longer need the lib.bin with our new setupbld'er.  Also, some of the
+:  files such as navopts.dat don't get morrored to the lib.bin directory.
+:
+:     Rev 1.7   14 Aug 1997 15:32:02   TCASHIN
+:  Added NAVDX.OVL to the emergency disk.
+:
+:     Rev 1.6   29 Jun 1997 17:48:12   KSACKIN
+:  Changed the file copy of the navex15.exp from the wild set build that we have
+:  to the actual navex15.exp because of a problem with the wild build.
+:
+:     Rev 1.5   23 Jun 1997 21:09:56   KSACKIN
+:  Changed all navopts.dat files and CORE:NavDefs files to pull from a lib.bin
+:  directory instead of a src directory.
+:
+:     Rev 1.4   20 Jun 1997 17:30:56   MKEATIN
+:  Changed NAVC to NAVDX.  Also, we now get navex15.exp from
+:  l:\source\navdefs\src\emrgnavx.exp.
+:
+:     Rev 1.3   13 Jun 1997 14:49:12   MKEATIN
+:  Changed 'virsan?.dat' to 'virscan?.dat'.
+:
+:     Rev 1.2   13 Jun 1997 14:07:26   MKEATIN
+:  Fixed a bug in geting virwild?.dat files
+:
+:     Rev 1.1   06 Jun 1997 17:32:54   MKEATIN
+:  Get the virscan?.dat files from CORE/NAVDEFS now.
+:
+:     Rev 1.0   06 Jun 1997 15:20:14   MKEATIN
+:  Initial revision.
+:************************************************************************
+
+:========================================================================
+:
+:  Get navdx.exe and it's configuration files.
+:
+:========================================================================
+copy s:\bin.dvx\navdx.exe
+copy s:\bin.dvx\navdx.ovl
+copy s:\nobuilds\lib.bin\navopts.dat
+copy s:\nobuilds\lib.bin\navstart.dat
+copy s:\nobuilds\src\exclude.dat
+copy s:\nobuilds\src\excludel.dat
+
+:========================================================================
+:
+:  Get the definition files.
+:
+:========================================================================
+copy s:\testdefs\src\virscan1.dat
+copy s:\testdefs\src\virscan2.dat
+copy s:\testdefs\src\virscan3.dat
+copy s:\testdefs\src\virscan4.dat
+copy s:\testdefs\src\navex15.exp
+copy s:\testdefs\src\virscan6.ini
+
+:========================================================================
+:
+:  Get the DOS 6.22(CompUSA) system files for our boot disk. Also, get autoexec.bat.
+:
+:========================================================================
+copy s:\bootdisk\src\command.com
+copy s:\bootdisk\src\io.sys
+copy s:\bootdisk\src\msdos.sys
+copy s:\bootdisk\src\autoexec.bat
+
+:========================================================================
+:
+:  Format the floppy and copy the system files so io.sys and msdos.sys
+:  are put in the correct locations.
+:
+:========================================================================
+format a: /V:Emergency /S /F:1.44
+
+:========================================================================
+:
+:  Changed the attributes on the system files so we can copy over them.
+:  Also, del drvspace.bin because we need the diskspace.
+:
+:========================================================================
+attrib -r -s -h  a:\*.*
+del a:\drvspace.bin
+
+:========================================================================
+:
+:  Copy our files onto the floppy and reset the attributes on the system
+:  files.
+:
+:========================================================================
+copy command.com a:
+copy io.sys a:
+copy msdos.sys a:
+copy autoexec.bat a:
+attrib +r +s +h  a:\*.sys
+attrib +r  a:\command.com
+
+:========================================================================
+:
+:  copy navdx.exe and it's configuration files onto Disk 1.
+:
+:========================================================================
+copy command.com a:
+copy navdx.exe a:
+copy navdx.ovl a:
+copy navopts.dat a:
+copy navstart.dat a:
+copy exclude.dat a:
+copy excludel.dat a:
+
+Echo off
+:Disk2
+	InKey Please insert disk 2 and Hit (Y³N)? %%__Key
+	if "%__Key%" == "Y" .OR. "%__Key%" == "y" goto SecondDisk
+	if "%__Key%" == "N" .OR. "%__Key%" == "n" goto Incomplete
+	Set __Key=
+	goto Disk2
+
+:SecondDisk
+	Set __Key=
+	iff exist a:\navdx.exe then
+		Echo **** Please remove disk 1 ****
+		goto Disk2
+	endiff
+
+	:========================================================================
+	:
+	:  Format the second disk for the definition files.
+	:
+	:========================================================================
+	format a: /V:Emergency2 /F:1.44
+
+	:========================================================================
+	:
+	:  Copy the definition files onto Disk 2.
+	:
+	:========================================================================
+	copy command.com a:
+	copy navopts.dat a:
+	copy navstart.dat a:
+	copy exclude.dat a:
+	copy excludel.dat a:
+	copy virscan1.dat a:
+	copy virscan2.dat a:
+	copy virscan3.dat a:
+	copy virscan4.dat a:
+	copy navex15.exp a:
+	copy virscan6.ini a:
+	goto Exit
+	
+:Incomplete
+	Echo **** Emergency Disk2 was not created *****
+
+:========================================================================
+:
+:  All done!
+:
+:========================================================================
+
+:exit
+	quit

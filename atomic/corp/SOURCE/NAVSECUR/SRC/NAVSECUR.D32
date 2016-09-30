@@ -1,0 +1,23 @@
+;***********************************************************************
+;*                                                                      
+;* $Header:   S:/NAVSECUR/VCS/NAVSECUR.D3v   1.1   10 Aug 1997 19:39:06   DBUCHES  $
+;*                                                                      
+;* Description:                                                         
+;*
+;*  Scanning related functions
+;*
+;***********************************************************************
+
+LIBRARY         N32SECUR
+DESCRIPTION     'Security DLL.  Copyright (C) Symantec Corp. 1990-1993.'
+SECTIONS
+    .navsec     READ WRITE SHARED
+
+EXPORTS         WEP                             @1  RESIDENTNAME PRIVATE
+                PasswordCheck                   @2
+                AskPassword                     @3
+                RemoveProtection                @4
+                DestroyPasswordWindow           @5
+                ResetPassword                   @6
+
+

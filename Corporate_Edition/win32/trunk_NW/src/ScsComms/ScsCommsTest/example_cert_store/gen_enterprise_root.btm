@@ -1,0 +1,18 @@
+rem set GUID=00112233445566778899AABBCCDDEEFF
+set GUID=f6088900f0c6ff4bbe5fa476467207a6
+
+rem convert the server group csr from DER to PEM format
+openssl req -inform DER -outform PEM -in ./cert-signing-requests/%GUID%.0.servergroupca.csr -out ./cert-signing-requests/%GUID%.0.servergroupca.csr.pem
+rem create the self-signed enterprise root cert
+openssl req -config ./certs/ca_enterprise_gen.cfg -outform PEM -out ./certs/rootca.cer -keyform PEM -keyout ./private-keys/rootca.pvk -newkey rsa -nodes -x509 -days 1825
+rem copy the new root to the roots directory
+copy /q "./certs/rootca.cer" "./roots/rootca.cer"
+rem create the enterprise root serial num files
+md .\certs\rootca
+iff %? == 0 then
+	touch /c .\certs\rootca\index.txt
+	echo 01 > .\certs\rootca\serial.dat
+endiff
+rem issue a server group ca off of the new enterprise root
+openssl ca -config ./certs/ca_enterprise_issue.cfg -name scs_servergroup_ca -in ./cert-signing-requests/%GUID%.0.servergroupca.csr.pem -out ./certs/%GUID%.0.servergroupca.cer -batch -notext
+del /S /E /T "*.old"

@@ -1,0 +1,91 @@
+: Copyright 1993-1996 Symantec Corporation                              :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/AVAPI1/VCS/build.btv   1.27   11 May 1997 22:22:40   DALLEE  $
+:                                                                       :
+: Description:                                                          :
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/AVAPI1/VCS/build.btv  $
+:  
+:     Rev 1.27   11 May 1997 22:22:40   DALLEE
+:  Removed old .VXD section which prevented last change from working for VXD
+:  
+:     Rev 1.26   11 May 1997 20:49:40   DALLEE
+:  Make NAVFAMLY for VXD and NTK now as well.
+:  
+:     Rev 1.25   11 May 1997 20:11:30   DALLEE
+:  Seems I'm full of fat fingers today. From last rev -- NAVFMALY to NAVFAMLY
+:  
+:     Rev 1.24   11 May 1997 20:10:12   DALLEE
+:  Build NAVFAMLY.MAK on DX platforms now also.
+:  
+:     Rev 1.23   01 May 1997 08:55:28   JBRENNA
+:  Add "quit" statement.
+:  
+:     Rev 1.22   29 Apr 1997 14:48:44   MKEATIN
+:  Add support for NavFamly.Btm
+:  
+:     Rev 1.21   28 Apr 1997 17:28:44   JBRENNA
+:  Convert to new CORE_* platform spec.
+:  
+:     Rev 1.20   28 Apr 1997 14:30:58   MKEATIN
+:  Actually, for the W32 platform we only need to make avapilib.mak
+:  
+:     Rev 1.19   28 Apr 1997 14:25:50   MKEATIN
+:  Don't need to make avapidll (n32cores.dll) for W32.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+
+                                        :: save environment
+setlocal
+
+Call DecPlat.Btm
+
+                                        :: If CodeView or DEBUG_ALL are active,
+                                        :: and this is DOS, DX, DVX, NCX, or 
+                                        :: DVS, temporarily disable them.
+IF %@index[.DOS.DX.DVX.NCX.DVS.,%PLATFORM] NE -1  gosub killcv
+
+
+::------------
+:: Make AVAPI1
+
+call mk avapi1 %&
+if exist make.err copy build.err+make.err build.err
+
+
+::--------------
+:: Make NAVFAMLY
+
+iff %@index[.DX.DVX.NCX,%PLATFORM%] NE -1 then
+    call mk navfamly %&
+    if exist make.err copy build.err+make.err build.err
+
+elseiff "%CORE_WIN16%" != "" .OR. "%CORE_WIN32%" != "" then
+    call mk navfamly %&
+    if exist make.err copy build.err+make.err build.err
+endiff
+
+
+quit
+
+
+:killcv
+    set OLD_CV=
+    set OLD_DEBUG_ALL=
+    iff not "%CV%" == "" then
+        set OLD_CV=%CV%
+	    set CV=
+            echo ** Your CV environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/NCX/DVS libraries should never be MKUPDATE'd with debug info!
+	endiff
+    iff not "%DEBUG_ALL%" == "" then
+        set OLD_DEBUG_ALL=%DEBUG_ALL%
+	    set DEBUG_ALL=
+            echo ** Your DEBUG_ALL environment variable has been temporarily unset because
+            echo ** DOS/DX/DVX/NCX/DVS libraries should never be MKUPDATE'd with debug info!
+	endiff
+return

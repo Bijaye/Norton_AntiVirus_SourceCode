@@ -1,0 +1,62 @@
+// Copyright 1995 Symantec Corporation
+//***************************************************************************
+//
+// $Header:   N:/NAVAPI/VCS/NAPIVxD.rcv   1.0   23 Jun 1998 02:54:36   ksackin  $
+//
+// Description:
+//      Resource file for NAVAPI library.
+//
+//***************************************************************************
+// $Log:   N:/NAVAPI/VCS/NAPIVxD.rcv  $
+// 
+//    Rev 1.0   23 Jun 1998 02:54:36   ksackin
+// Initial revision.
+//
+//    Rev 1.1   22 Jun 1998 18:01:46   ksackin
+// Added DLL OSType define for Win16/Win32.
+//
+//    Rev 1.0   22 Jun 1998 17:50:18   ksackin
+// Initial revision.
+//
+//***************************************************************************
+#include <windows.h>
+#include <napiver.h>
+
+
+//***************************************************************************
+// Version Information
+//***************************************************************************
+#define NAVAPI_FILEOS               VOS_DOS_WINDOWS32
+#define NAVAPI_ORIGINALFILENAME     "NAVAPI.VxD"
+
+VS_VERSION_INFO		VERSIONINFO
+  FILEVERSION           NAVAPI_FILEVERSION
+  PRODUCTVERSION        NAVAPI_PRODVERSION
+  FILEFLAGSMASK         0
+  FILEFLAGS             0
+  FILEOS                NAVAPI_FILEOS
+  FILETYPE              VFT_VXD
+  FILESUBTYPE           VFT2_UNKNOWN
+
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "040904E4"                    // U.S. English, Multilingual Windows
+    BEGIN
+      VALUE "CompanyName",      "Symantec Corp." "\0"
+      VALUE "FileDescription",  NAVAPI_FILEDESCRIPTION "\0"
+      VALUE "FileVersion",      NAVAPI_FILEVERSION_STRING "\0"
+      VALUE "InternalName",     NAVAPI_INTERNALNAME "\0"
+      VALUE "LegalCopyright",   NAVAPI_LEGAL_COPYRIGHT "\0"
+      VALUE "OriginalFilename", NAVAPI_ORIGINALFILENAME "\0"
+      VALUE "ProductName",      NAVAPI_PRODUCTNAME_STRING "\0"
+      VALUE "ProductVersion",   NAVAPI_PRODVERSION_STRING "\0"
+    END
+  END
+
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x409, 1252    // U.S. English, Multilingual Windows
+  END
+END
+

@@ -1,0 +1,16 @@
+REM *****************************************************************
+REM
+REM Build file for the Timer project.
+REM
+REM Projects:
+REM    TimerCLI - Client piece
+REM    TimerSRV - Server piece
+REM
+REM *****************************************************************
+
+call mk timercli %1
+if exist make.err copy build.err+make.err
+
+call mk timersrv %1
+if exist make.err copy build.err+make.err
+

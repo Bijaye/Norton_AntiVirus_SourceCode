@@ -1,0 +1,44 @@
+<html>
+<head> 
+	<BASE href="res://navcomui.loc">
+	<title>Processing...</title>
+	<meta id="charset_ScanProg" http-equiv="Content-Type" content="text/html; charset=iso8859-1" >
+	<META HTTP-EQUIV="MSThemeCompatible" CONTENT="Yes" >
+	<link rel="stylesheet" type="text/css" href="NavScan.css" >
+	
+	<script language="JavaScript" src="res://navcomui.dll/SymButton.js"></script>
+
+	<script language="javascript">
+		function OnLoad()
+		{ 
+		  	InitSymButton( Abort ); 
+		}
+	</script>		
+
+</head>
+
+<body id="body_ScanProg" bgcolor="#ffffff" text="#333333" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" scroll="no" onLoad="OnLoad()">
+
+
+  <!-------------------------------------- Header ------------------------------------------------>
+
+  <H1 id="title">Processing</H1>
+
+	<div id = "div1" style="Z-INDEX:-1; LEFT:0px; BACKGROUND-IMAGE:url(Repair_fix_bg.gif); WIDTH:100%; BACKGROUND-REPEAT:no-repeat; POSITION:absolute; TOP:30px; HEIGHT:100%"></div>
+
+	<h3 id="progress_text" style="padding:0px; padding-bottom:5px; MARGIN:75px; WIDTH:100%; POSITION:relative; TOP:125px; HEIGHT:21px;">%s</h3>
+  
+	<div id="outerprogress" style="BORDER-RIGHT:#cccccc 1px solid; BORDER-TOP:#cccccc 1px solid; MARGIN:75px; BORDER-LEFT:#cccccc 1px solid; WIDTH:100%; BORDER-BOTTOM:#cccccc 1px solid; POSITION:relative; TOP:50px; HEIGHT:21px; BACKGROUND-COLOR:#ffffff">
+		<div id="progress" style="BACKGROUND-IMAGE:url(green.jpg); WIDTH:0%; BACKGROUND-REPEAT:repeat-x; HEIGHT:100%; BACKGROUND-COLOR:#00cc33"></div>
+	</div>
+  
+  <!--------------------------------------- Button  Area ------------------------------------------------>
+  
+  <div class="buttonArea">
+	<span id="spanAbort" class="symButton" style="MARGIN-TOP:5px; RIGHT:8px; MARGIN-LEFT:8px; WIDTH:96px; MARGIN-RIGHT:0px; POSITION:absolute; HEIGHT:24px">
+		<button id="Abort" accesskey="C" type="submit" class="symButton" tabindex="2" style="BACKGROUND-IMAGE:url(btn96x22set.jpg)"><u class="hotkey">C</u>ancel</button>
+	</span>
+ </div>
+ 
+</body>
+</html>

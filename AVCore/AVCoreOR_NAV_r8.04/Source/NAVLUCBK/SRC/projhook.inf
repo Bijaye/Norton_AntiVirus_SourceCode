@@ -1,0 +1,49 @@
+;
+; $Header:   S:/NAVLUCBK/VCS/projhook.inv   1.0   12 Jan 1999 17:26:16   CEATON  $
+;
+; NavLucallback projhook.
+;
+;-------------------------------------------------------------------------
+; $Log:   S:/NAVLUCBK/VCS/projhook.inv  $
+;  
+;     Rev 1.0   12 Jan 1999 17:26:16   CEATON
+;  Initial revision.
+;  
+;     Rev 1.4   14 Dec 1998 21:35:08   BMCCORK
+;  Removed inetsdk
+;  
+;     Rev 1.3   14 Dec 1998 18:42:52   BMCCORK
+;  Added ATL30
+;  
+;     Rev 1.2   14 Dec 1998 18:40:16   BMCCORK
+;  Added ATL30
+;  
+;     Rev 1.1   14 Dec 1998 18:35:08   BMCCORK
+;  Changed to MSVC60MSDEVX86 and added LU15
+;  
+;     Rev 1.0   14 Dec 1998 16:41:52   BMCCORK
+;  Initial revision.
+;  
+;-------------------------------------------------------------------------
+
+[IRA]
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%
+set includepost=R:\MSVC60.X86\VC98\ATL\INCLUDE;R:\MSVC60.X86\VC98\ATL\SRC
+tools=MSVC60MSDEVX86;MSVC60MFCX86;LU15
+
+[IDA]
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%
+set includepost=R:\MSVC60.X86\VC98\ATL\INCLUDE;R:\MSVC60.X86\VC98\ATL\SRC
+tools=MSVC60MSDEVX86;MSVC60MFCX86;LU15
+
+[ARA]
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%
+tools=ATL30;MSVC60AXP;MSVC60MFCAXP;LU15
+
+[ADA]
+set includepre=%PROJPRE%LiveUpdateI\src;r:\avcomp\defutils\release.004\include;r:\avcomp\include\release.001
+set libpre=r:\avcomp\defutils\release.004\lib%platform%;r:\avcomp\channel\release.001\lib%platform%;r:\avcomp\patchapp\release.001\lib%platform%
+tools=ATL30;MSVC50AXP;MSVC50MFCAXP;LU15

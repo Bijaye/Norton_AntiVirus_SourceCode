@@ -1,0 +1,323 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""LocVerMsg.rc""\0"
+    "#define VR_FILEDESCRIPTION ""Heuristic Process Protection Resource\\0""\r\n"
+    "#define VR_INTERNALNAME ""HPPProtectionProviderUIRes\\0""\r\n"
+    "#define VR_ORIGINALFILENAME ""HPPProtectionProviderUIRes.DLL\\0""\r\n"
+    "#include <nav.ver>\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_HPP_RT_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 281
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+
+    IDD_HPP_BASIC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 159
+    END
+
+    IDD_HPP_BASIC_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_HPP_OPTION_PAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
+    END
+
+    IDD_HPP_ENGINE_SETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 243
+    END
+
+    IDD_HPP_NOTIFICATIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 227
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_HPP_RT_OPTIONS DIALOGEX 0, 0, 288, 111
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Heuristic protection options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,100,90,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,158,90,50,14
+    PUSHBUTTON      "Help",IDHELP,231,90,50,14
+    CONTROL         "Ena&ble heuristic process protection",IDC_ENABLE_HPP_RTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,7,160,10
+    GROUPBOX        "Heuristic Scanning",IDC_STATIC,6,20,199,61
+    PUSHBUTTON      "Advan&ced",IDC_ADVANCED,210,7,71,14
+    PUSHBUTTON      "Acti&ons",IDC_ACTIONS_BTN,210,23,71,14
+    PUSHBUTTON      "&Notifications",IDC_NOTIFY_BTN,210,39,71,14
+    PUSHBUTTON      "Excl&usions",IDC_BROWSE_EXCLUDE_FILES,210,55,71,14,WS_GROUP
+    CONTROL         "Enable continuous &scanning",IDC_HPP_CONTINIOUS_SCAN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,31,139,10
+    LTEXT           "New &proccess scan interval (seconds)",IDC_NEW_PROCCESS_TEXT,78,47,126,8
+    EDITTEXT        IDC_EDIT_HPP_NEW_PROCESS_SCAN,34,44,40,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    CONTROL         "",IDC_HPP_NEW_PROCCESS_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,74,44,11,14
+    LTEXT           "&Full proccess scan interval (seconds)",IDC_FULL_PROCCESS_TEXT,82,65,126,8
+    EDITTEXT        IDC_EDIT_HPP_FULL_PROCESS_SCAN,34,60,40,14,ES_AUTOHSCROLL | ES_NUMBER,WS_EX_RIGHT
+    CONTROL         "",IDC_HPP_FULL_PROCCESS_SPIN,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,74,60,11,14
+END
+
+IDD_HPP_BASIC DIALOGEX 0, 0, 272, 166
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Heuristic Process Protection Statistics"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,100,145,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,158,145,50,14
+    PUSHBUTTON      "Help",IDHELP,215,145,50,14
+    CONTROL         "Ena&ble heuristic Process Protection",IDC_ENABLE_HPP_RTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,7,160,10
+    GROUPBOX        "Status",IDC_STATIC,6,20,259,55
+    LTEXT           "Runtime Protection:",IDC_STATIC,15,30,72,8
+    LTEXT           "NA",IDC_HPP_RT_STATUS,117,30,117,8
+    LTEXT           "Detections:",IDC_STATIC,15,41,38,8
+    LTEXT           "0",IDC_HPP_DETECTIONS,117,41,101,8
+    LTEXT           "New process scan time:",IDC_STATIC,15,52,76,8
+    LTEXT           "0",IDC_NEW_PROC_SCAN_TIME,117,52,127,8
+    LTEXT           "Full Process scan time:",IDC_STATIC,15,63,73,8
+    LTEXT           "0",IDC_FULL_PROC_SCAN_TIME,117,63,133,8
+    GROUPBOX        "Action",IDC_STATIC,7,80,258,58
+    LTEXT           "Process detected:",IDC_STATIC,15,90,59,8
+    LTEXT           "NA",IDC_HPP_PROCESS_DETECTED,117,90,138,8
+    LTEXT           "Filename:",IDC_STATIC,15,101,32,8
+    LTEXT           "NA",IDC_HPP_FILENAME,117,101,136,8
+    LTEXT           "Action taken:",IDC_STATIC,15,112,44,8
+    LTEXT           "NA",IDC_HPP_ACTION_TAKEN,117,112,136,8
+    LTEXT           "Time:",IDC_STATIC,15,123,18,8
+    LTEXT           "NA",IDC_HPP_DETECTION_TIME,117,123,136,8
+END
+
+IDD_HPP_BASIC_PAGE DIALOGEX 0, 0, 350, 225
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Statistics"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "Ena&ble Heuristic Scan",IDC_ENABLE_HPP_PAGE_RTS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,7,160,10
+    GROUPBOX        "Status",IDC_STATIC,7,27,259,55
+    LTEXT           "Runtime Protection:",IDC_STATIC,15,37,72,8
+    LTEXT           "NA",IDC_HPP_PAGE_RT_STATUS,117,37,117,8
+    LTEXT           "Detections:",IDC_STATIC,15,48,38,8
+    LTEXT           "0",IDC_HPP_PAGE_DETECTIONS,117,48,101,8
+    LTEXT           "New process scan time:",IDC_STATIC,15,59,76,8
+    LTEXT           "0",IDC_HPP_PAGE_NEW_PROC_SCAN_TIME,117,59,127,8
+    LTEXT           "Full Process scan time:",IDC_STATIC,15,70,73,8
+    LTEXT           "0",IDC_HPP_PAGE_FULL_PROC_SCAN_TIME,117,70,133,8
+    GROUPBOX        "Action",IDC_STATIC,7,87,259,58
+    LTEXT           "Process detected:",IDC_STATIC,15,97,59,8
+    LTEXT           "NA",IDC_HPP_PAGE_PROCESS_DETECTED,117,97,138,8
+    LTEXT           "Filename:",IDC_STATIC,15,108,32,8
+    LTEXT           "NA",IDC_HPP_PAGE_FILENAME,117,108,136,8
+    LTEXT           "Action taken:",IDC_STATIC,15,119,44,8
+    LTEXT           "NA",IDC_HPP_PAGE_ACTION_TAKEN,117,119,136,8
+    LTEXT           "Time:",IDC_STATIC,15,130,18,8
+    LTEXT           "NA",IDC_HPP_PAGE_DETECTION_TIME,117,130,136,8
+END
+
+IDD_HPP_OPTION_PAGE DIALOGEX 0, 0, 350, 225
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Scan Frequency"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "At the default Symantec defined scanning frequency",IDC_HPP_OPTION_PAGE_DEFAULT_SCAN_FREQUENCY,
+                    "Button",BS_AUTORADIOBUTTON,28,40,185,10
+    CONTROL         "At a manually set frequency",IDC_HPP_OPTION_PAGE_MANUAL,
+                    "Button",BS_AUTORADIOBUTTON,28,55,106,10
+    LTEXT           "Scan processes every:",IDC_LABEL_HPP_OPTION_PAGE_SCAN_PROTECTED,51,89,74,8
+    EDITTEXT        IDC_HPP_OPTION_PAGE_SCAN_MINUTES,140,87,26,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_HPP_OPTION_PAGE_SCAN_MINUTES_SPIN,"msctls_updown32",UDS_ARROWKEYS,167,87,10,14
+    EDITTEXT        IDC_HPP_OPTION_PAGE_SCAN_SECONDS,214,87,26,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_HPP_OPTION_PAGE_SCAN_SECONDS_SPIN,"msctls_updown32",UDS_ARROWKEYS,240,87,10,14
+    CONTROL         "Scan new processes immediately",IDC_HPP_OPTION_PAGE_SCAN_NEW_IMMEDIATELY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,51,72,120,10
+    LTEXT           "minutes",IDC_LABEL_HPP_OPTION_PAGE_SCAN_PROTECTED_MIN,181,89,26,8
+    LTEXT           "seconds",IDC_LABEL_HPP_OPTION_PAGE_SCAN_PROTECTED_SEC,254,89,27,8
+    LTEXT           "How often should the heuristic process scan take place?",IDC_LABEL_HPP_OPTION_PAGE_SCAN_PROTECTED2,20,26,180,8
+END
+
+IDD_HPP_ENGINE_SETTINGS DIALOGEX 0, 0, 350, 250
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Scan Details"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Trojans and Worms",IDC_STATIC,7,7,336,90
+    CONTROL         "Scan for trojans and worms",IDC_HPP_ENGINE_SETTINGS_TROJAN_ENABLED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,19,104,10
+    LTEXT           "Action taken when a threat is detected with in the sensitivity threshold:",IDC_LABEL_HPP_ENGINE_SETTINGS_TROJAN_ACTION,27,32,230,8
+    COMBOBOX        IDC_CB_HPP_ENGINE_SETTINGS_TROJAN_ACTION,259,30,57,48,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Override the Symantec default sensitivity",IDC_HPP_ENGINE_SETTINGS_TROJAN_OVERRIDE_SENSITIVITY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,46,149,10
+    CONTROL         "",IDC_HPP_ENGINE_SETTINGS_TROJAN_SENSITIVITY,
+                    "msctls_trackbar32",TBS_AUTOTICKS | TBS_BOTH | WS_TABSTOP,30,58,135,26
+    LTEXT           "0",IDC_STATIC,38,83,8,8,WS_DISABLED
+    LTEXT           "100",IDC_STATIC,151,83,13,8,WS_DISABLED
+    GROUPBOX        "Keyloggers",IDC_STATIC,7,100,336,90
+    CONTROL         "Scan for keyloggers",IDC_HPP_ENGINE_SETTINGS_KEYLOGGERS_ENABLED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,114,79,10
+    LTEXT           "Action taken when a threat is detected with in the sensitivity threshold:",IDC_LABEL_HPP_ENGINE_SETTINGS_KEYLOGGERS,27,127,230,8
+    COMBOBOX        IDC_CB_HPP_ENGINE_SETTINGS_KEYLOGGERS_ACTION,259,125,57,46,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Override the Symantec default sensitivity",IDC_HPP_ENGINE_SETTINGS_KEYLOGGERS_OVERRIDE_SENSITIVITY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,26,140,149,10
+    CONTROL         "",IDC_HPP_ENGINE_SETTINGS_KEYLOGGERS_SENSITIVITY,
+                    "msctls_trackbar32",TBS_AUTOTICKS | TBS_BOTH | WS_TABSTOP,30,151,135,26
+    LTEXT           "0",IDC_STATIC,38,175,8,8,WS_DISABLED
+    LTEXT           "100",IDC_STATIC,151,175,13,8,WS_DISABLED
+    LTEXT           "Action taken when a commercial keylogger is detected",IDC_LABEL_HPP_ENGINE_SETTINGS_CAL_KEYLOGGER,19,207,174,8
+    COMBOBOX        IDC_CB_HPP_ENGINE_SETTINGS_CAL_KEYLOGGERS_ACTION,251,205,57,46,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Action taken when a commercial remote control application is detected",IDC_LABEL_HPP_ENGINE_SETTINGS_CAL_REMOTECONTROL,19,226,225,8
+    COMBOBOX        IDC_CB_HPP_ENGINE_SETTINGS_CAL_REMOTECONTROL_ACTION,251,223,57,46,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Commercial Applications",IDC_STATIC,7,194,336,50
+END
+
+IDD_HPP_NOTIFICATIONS DIALOGEX 0, 0, 350, 234
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Notifications"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Specify how to notify the end user.",IDC_LABEL_HPP_NOTIFICATION_HEADING,16,14,114,8
+    CONTROL         "Display the results on the client when a there is a detection",IDC_HPP_NOTIFICATIONS_DISPLAY_RESULTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,35,33,205,10
+    CONTROL         "Prompt the user before terminating a process",IDC_HPP_NOTIFICATIONS_PROMPT_TERMINATE_PROCESS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,61,52,161,10
+    CONTROL         "Prompt the user before stopping a service",IDC_HPP_NOTIFICATIONS_PROMPT_STOP_SERVICE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,61,71,151,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LOCKS               BITMAP                  "locks.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "HPPProtectionProviderUI"
+    IDS_HPP_PROTECTION_PROVIDER_DISAPLAYNAME "Proactive Threat Protection"
+    IDS_HPP_AP_PROTECTION   "Heuristic process continuous scanning"
+    IDS_HPP_PP_DESC         "Symantec's heuristic process scanning engine"
+    IDS_HPP_AP_DESC         "Symantec's Heuristic process continuous scanning settings"
+    IDS_EXTENSIONS_DESCRIPT "Enter the extensions of the file types you want to include in the scan."
+    IDS_LOCKED_OPTION       "The administrator has locked this option. It cannot be changed."
+    IDS_REALTIME_PROTECTION "Auto-Protect"
+    IDS_NEW_PROC_TIME_FORMAT "%d Seconds"
+    IDS_ENABLED             "Enabled"
+    IDS_DISABLED            "Disabled"
+    IDS_QUARANTINE          "Quarantine"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_TERMINATE           "Terminate"
+    IDS_LOG                 "Log"
+    IDS_HPPPROVIDER_DESCRIPTION 
+                            "Provides zero-day protection against unknown threats"
+    IDS_HPPPROVIDER_DEFDESCRIPTION "SKAS version: "
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "LocVerMsg.rc"
+#define VR_FILEDESCRIPTION "Heuristic Process Protection Resource\0"
+#define VR_INTERNALNAME "HPPProtectionProviderUIRes\0"
+#define VR_ORIGINALFILENAME "HPPProtectionProviderUIRes.DLL\0"
+#include <nav.ver>
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

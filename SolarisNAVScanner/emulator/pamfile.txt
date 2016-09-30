@@ -1,0 +1,77 @@
+File REPAIR.CPP:
+    if ((DWORD)PAMFileSeek(hFile,dwRepairStart, SEEK_SET) != dwRepairStart)
+    if (PAMFileRead(hFile, &wNumBundles, sizeof(WORD)) != sizeof(WORD))
+        if (PAMFileRead(hFile,&stBundle,sizeof(stBundle)) != sizeof(stBundle))
+                if (PAMFileRead(hFile,
+        if ((DWORD)PAMFileSeek(hFile, dwRepairStart, SEEK_SET) !=
+        if ((DWORD)PAMFileSeek(hFile, dwStartOff, SEEK_SET) != dwStartOff)
+        wBytesRead = PAMFileRead(hFile, byBuffer, wBytesToRead);
+    if ((DWORD)PAMFileSeek(hFile, dwStartOff, SEEK_SET) != dwStartOff)
+        wBytesWritten = PAMFileWrite(hFile, byBuffer, wBytesToWrite);
+File DATAFILE.CPP:
+    hStream = PAMFileOpen(lpDataFile,uMode);
+        PAMFileClose(hStream);
+    uBytesRead = PAMFileRead(hStream,&(lpTempInfo->sHeader),sHEADERTYPE);
+        PAMFileClose(hStream);
+        PAMFileClose(hStream);
+    dwOff = PAMFileSeek(hInfo->hHandle,hInfo->sHeader.dwTableOffset,SEEK_SET);
+        uBytes = PAMFileRead(hInfo->hHandle,&sTableEntry,sTABLETYPE);
+    PAMFileClose(hInfo->hHandle);
+File EXCLUDE.CPP:
+    if((DWORD)PAMFileSeek(hStream,dwStartOff,SEEK_SET) != dwStartOff)
+    if (PAMFileRead(hStream,&wNumProfiles,sizeof(wNumProfiles)) !=
+        if (PAMFileRead(hStream,&decrypt_rec,sizeof(decrypt_rec)) !=
+File SIGEX.CPP:
+    dwFinalOffset = PAMFileSeek(hStream,dwStartOffset,SEEK_SET);
+    uResult = PAMFileRead(hStream,&pTemp->wNumSigs,sizeof(WORD));
+        uResult = PAMFileRead(hStream,
+File CPU.CPP:
+    if (PAMFileSeek(hLocal->CPU.stream,0,SEEK_SET) != 0)
+    wBytesRead = PAMFileRead(hLocal->CPU.stream,buffer,SECTOR_SIZE);
+        if (PAMFileSeek(hLocal->CPU.stream,wIP-COM_START_OFF,SEEK_SET) !=
+        if (PAMFileRead(hLocal->CPU.stream,
+            PAMFileSeek(hLocal->CPU.stream,0,SEEK_END);
+    if (PAMFileSeek(hLocal->CPU.stream,dwOffset,SEEK_SET) != dwOffset)
+        if (PAMFileRead(hLocal->CPU.stream,&dwReloc,sizeof(DWORD)) != sizeof(DWORD))
+    dwTemp = PAMFileSeek(hLocal->CPU.stream,0,SEEK_END);
+    hLocal->CPU.ulImageSize = PAMFileSeek(hLocal->CPU.stream,0,SEEK_END);
+File PAMAPI.CPP:
+    if ((DWORD)PAMFileSeek(hFile,dwOffset,SEEK_SET) != dwOffset ||
+                PAMFileRead(hFile,pTemp->low_mem_area,LOW_MEM_SIZE) !=
+    if ((DWORD)PAMFileSeek(hFile,dwOffset,SEEK_SET) != dwOffset ||
+        PAMFileRead(hFile,&(pTemp->config_info),sizeof(PAMConfigType)) !=
+        hFile = PAMFileOpen(lpszFileName, READ_ONLY_FILE);
+                PAMFileClose(hFile);
+                PAMFileClose(hFile);
+        PAMFileClose(hFile);
+    dwFileSize = PAMFileLength(hLocal->CPU.stream);
+        PAMFileClose(hFile);
+        PAMFileClose(hFile);
+    hLocal->hRepairFile = PAMFileOpen(lpszWorkFileName,READ_WRITE_FILE);
+        PAMFileClose(hFile);
+    PAMFileClose(hLocal->hRepairFile);
+    PAMFileClose(hFile);
+File INSTR2.CPP:
+                dwOffset = PAMFileSeek(hLocal->hRepairFile, 0, SEEK_CUR);
+                dwOffset = PAMFileSeek(hLocal->hRepairFile, 0, SEEK_CUR);
+                    if (PAMFileWrite(hLocal->hRepairFile,&dwOffset,0) != 0)
+                dwOffset = PAMFileSeek(hLocal->hRepairFile,
+File SEARCH.CPP:
+    if ((DWORD)PAMFileSeek(hFile,dwOffset,SEEK_SET) != dwOffset)
+    if (PAMFileRead(hFile,pPAMG->top_set,sizeof(pPAMG->top_set)) !=
+    if (PAMFileRead(hFile,&(pPAMG->num_sigs),sizeof(pPAMG->num_sigs)) !=
+        if (sizeof(sig) != PAMFileRead(hFile,&sig,sizeof(sig)))
+File PAGE.CPP:
+        hLocal->page_global.swap_file = PAMFileOpen(szSwapFile,READ_WRITE_FILE);
+                PAMFileCreate(szSwapFile,READ_WRITE_FILE);
+            PAMFileClose(hLocal->page_global.swap_file);
+                PAMFileOpen(szSwapFile,READ_WRITE_FILE);
+        PAMFileClose(hLocal->page_global.swap_file);
+        if ((DWORD)PAMFileSeek(hLocal->hRepairFile,
+        if (PAMFileWrite(hLocal->hRepairFile, &b, sizeof(BYTE)) != sizeof(BYTE))
+            if ((DWORD)PAMFileSeek(hLocal->page_global.swap_file,
+            if (PAMFileWrite(hLocal->page_global.swap_file,
+            if ((DWORD)PAMFileSeek(hLocal->page_global.swap_file,
+                        if (PAMFileRead(hLocal->page_global.swap_file,
+                if ((DWORD)PAMFileSeek(source_file,
+                        if (PAMFileRead(source_file,

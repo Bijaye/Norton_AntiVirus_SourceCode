@@ -1,0 +1,116 @@
+/* Copyright 1993 Symantec Corporation                                  */
+/*----------------------------------------------------------------------*
+ *                                                                      *
+ * $Header:   N:/SYMRSQ/VCS/symfmt.rcv   1.1   12 Aug 1996 16:45:34   JBRENNA  $ *
+ *                                                                      *
+ * Description:                                                         *
+ *    RC for SYMFMT.DLL                                                 *
+ *                                                                      *
+ *----------------------------------------------------------------------*
+ * $Log:   N:/SYMRSQ/VCS/symfmt.rcv  $ *
+// 
+//    Rev 1.1   12 Aug 1996 16:45:34   JBRENNA
+// LuigiPlus Port:
+//   GWESTER: If we can't ship Microsoft's boot sector, we compile with the
+//     /BOOTPLAN switch. SYMRSQ32.DLL will link in F32DUMB.BIN instead of
+//     F32BOOT.BIN.
+// 
+//    Rev 1.0   07 May 1996 17:09:40   DALLEE
+// Initial revision.
+// 
+//    Rev 1.5.1.0   27 Jun 1995 18:46:16   RJACKSO
+// Branch base for version QAK8
+// 
+//    Rev 1.5   27 May 1995 17:47:46   DALLEE
+// Merge (belatedly) a leftover Quake 6 change.
+// The custom boot sector WriteBootRecord() is now looking for never made
+// its way here.
+// 
+//    Rev 1.4   12 May 1995 15:08:38   BARRY
+// Added QCUST check to allow building of symrsq.dll. (Gary W.)
+// 
+// 
+//    Rev 1.3   12 Mar 1994 18:50:24   BRAD
+// Cleaned up for WIN32
+// 
+//    Rev 1.2   01 Jul 1993 18:06:46   BASIL
+// removed extra include of quake.ver
+// 
+//    Rev 1.1   01 Jul 1993 17:56:32   BASIL
+// added version stuff
+// 
+//    Rev 1.0   17 Jun 1993 18:11:46   BASIL
+// Initial revision.
+ *----------------------------------------------------------------------*/
+
+
+#include "platform.h"
+#include "format.h"
+#include "formatst.h"                   // string ids
+#include "symfmt.stb"
+#include "ngui.h"
+#include "ndrvlist.h"
+
+
+#ifndef QCUST				//Skip version info for Quake Custom.
+#ifndef MIRRORS                         // Skip windows version for OS/2
+#if !defined(SYM_WIN32)
+#   include "ver.h"
+#endif
+                                        // Include quake version stamp
+#define VR_FILEDESCRIPTION      "Symantec Diskette Formatter\0"
+#define VR_INTERNALNAME         "SYMFMT\0"
+#define VR_ORIGINALFILENAME     "SYMFMT.DLL\0"
+
+#include "quake.ver"
+#endif
+#endif //QCUST
+
+#ifndef IDHELP
+#define IDHELP                  19999
+#endif
+
+                                        // The boot sectors are stored resources
+#ifdef BOOTPLAN                         // If we can't ship an MS boot sector ...
+F32BOOT_SECTOR  F32BOOTSECTOR LOADONCALL MOVEABLE DISCARDABLE F32DUMB.BIN
+#else                                   // If we can ...
+F32BOOT_SECTOR  F32BOOTSECTOR LOADONCALL MOVEABLE DISCARDABLE F32BOOT.BIN
+#endif
+BOOT_SECTOR     BOOTSECTOR    LOADONCALL MOVEABLE DISCARDABLE BOOTSYS.BIN
+NEC_BOOT_SECTOR NECBOOTSECTOR LOADONCALL MOVEABLE DISCARDABLE NECBOOT.BIN
+
+
+Format DIALOG 25, 25, 120, 174
+CAPTION "Format Diskette"
+FONT 8, "Helv"
+CLASS "Format"
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+BEGIN
+	LTEXT "&Diskette:", -1, 5, 5, 42, 9, WS_GROUP
+	CONTROL "", DRIVE_LIST_BOX, NDC_CLSNAME, NDL_SINGLESEL| NDL_DROPDOWNLIST| WS_TABSTOP , 5, 15, 53, 46
+	LTEXT "&Size:", -1, 5, 36, 42, 9, WS_GROUP
+	CONTROL "", SIZE_LIST_BOX, "COMBOBOX", CBS_DROPDOWNLIST | WS_TABSTOP | WS_VSCROLL, 5, 46, 53, 52
+	LTEXT "&Format Type:", -1, 5, 66, 54, 9, WS_GROUP
+	CONTROL "", FORMAT_LIST_BOX, "COMBOBOX", CBS_DROPDOWNLIST | WS_TABSTOP | WS_VSCROLL, 5, 76, 53, 53
+	CONTROL "Options", -1, "button", BS_GROUPBOX, 5, 94, 110, 70
+	CONTROL "&Make Disk Bootable", BOOTABLE_BOX, "button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 10, 106, 90, 11
+	CONTROL "Save &UnFormat Info", IMAGE_DAT_BOX, "button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 10, 120, 100, 11
+	LTEXT "&Volume Label:", -1, 10, 136, 75, 9
+	CONTROL "", VOLUME_LABEL, "edit", ES_LEFT | WS_BORDER | WS_TABSTOP, 10, 146, 82, 12
+	CONTROL "OK", IDOK, "BUTTON", WS_GROUP | WS_TABSTOP, 75, 5, 40, 14
+	PUSHBUTTON "Cancel", IDCANCEL, 75, 24, 40, 14, WS_TABSTOP
+	PUSHBUTTON "&Help", IDHELP, 75, 43, 40, 14, WS_TABSTOP
+END
+
+/* IDD_DCF_FILLBAR was moved from nfmres.dlg */
+
+IDD_DCF_FILLBAR DIALOG 25, 25, 190, 80
+CAPTION "DiskCopy or Format Diskette"
+FONT 8, "Helv"
+STYLE WS_BORDER | WS_DLGFRAME | NDLG_STYLE
+BEGIN
+	CONTROL "", DCF_ID_FILLBAR, FILLBAR_CLASSNAME, WS_CHILD, 19, 20, 152, 12
+	CONTROL "", DCF_PROGRESS_LABEL, "static", SS_LEFT | SS_NOPREFIX, 15, 6, 160, 9
+	LTEXT "", DCF_BAD_DISK_SPACE, 15, 41, 145, 8, SS_LEFT | SS_NOPREFIX | WS_GROUP
+	CONTROL "Cancel", IDCANCEL, "BUTTON", WS_GROUP, 75, 59, 40, 14
+END

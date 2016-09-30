@@ -1,0 +1,62 @@
+;; Copyright 1995 Symantec corporation
+;; Copyright 1999 IBM corporation
+;;===========================================================================
+;;
+;; Description:
+;;
+;;   Contains a PAM profile for testing Autoverv-generated ERS repairs.
+;;
+;; See Also:
+;;
+;;---------------------------------------------------------------------------
+;; Rev 1.0   26 Jan 1999 Andy Raybould
+;;    Initial revision.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Begin]
+
+[QAStatus]
+Passed
+
+[InfectSet]
+COM, EXE, DONE
+
+[OpcodeList]
+1111111111111111111111111111111111111111111111111111111111111111
+1111111111111111111111111111111111111111111111111111111111111111
+1111111111111111111111111111111111111111111111111111111111111111
+1111111111111111111111111111111111111111111111111111111111111111
+
+
+[GoodDOSSet]
+1111111111111111111111111111111111111111111111111111111111111111
+1111111111111111111111111111111111111111111111111111111111111111
+
+[BadIntSet]
+DONE
+
+[Flags]
+STOP16, CALL128, REPSCAS, REPMOVS, REPSTOS, RELOC, RUN, INVALID_INDEX_WRITE, DONE
+
+[ExeEofDist]
+0,0
+
+[MinFileSize]
+0                            ; Size of the static portion of the virus
+
+[SigStart]
+
+[QASigStatus]
+Passed
+
+
+[SigNum]
+0x2eff                          
+
+[String]
+DONE
+
+[SigEnd]
+
+[End]

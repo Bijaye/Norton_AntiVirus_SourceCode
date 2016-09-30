@@ -1,0 +1,27 @@
+// SpaAvPluginImplDll.idl : IDL source for SpaAvPluginImplDll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (SpaAvPluginImplDll.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "ProductRegCOM.idl";
+
+[
+	uuid(BB8325C0-118B-4dc1-AE72-5A47F485EF7C),
+	version(1.0),
+	helpstring("SpaAvPluginImplDll 1.0 Type Library")
+]
+library SpaAvPluginImplDllLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(C95DB47C-20CE-4fc9-8C63-4E9F05C2679E),
+		helpstring("AvLuCallback Class")
+	]
+	coclass AvLuCallback
+	{
+		[default] interface IluCallback;
+	};
+};

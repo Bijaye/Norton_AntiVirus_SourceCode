@@ -1,0 +1,424 @@
+// Copyright 1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/alerstr.stv   1.0   06 Feb 1997 20:50:32   RFULLER  $
+//
+// Description:
+//      This is the Strings file for the DOS NAV alerts options
+//      configuration dialog.
+//
+// Contains:
+//      BYTE **         lpszOptAlertStrings,
+//      LPVOID *        lpOptAlertArgs,
+//
+//      CheckBoxRec     cbAlertDisplayMessage
+//      CheckBoxRec     cbAlertAudible
+//      CheckBoxRec     cbAlertNetworkUsers
+//      CheckBoxRec     cbAlertNetworkConsole
+//      CheckBoxRec     cbAlertRemoveDialog
+//
+//      TERec           teAlertMessage
+//      TERec           teAlertNetworkUsers
+//      TERec           teAlertRemoveAfter
+//
+//      ButtonsRec      buAlertButtons
+//
+//      CheckBoxRec     cbAlertOthersKnownVirus
+//      CheckBoxRec     cbAlertOthersUnknownVirus
+//      CheckBoxRec     cbAlertOthersInocChange
+//      CheckBoxRec     cbAlertOthersVirusLike
+//      CheckBoxRec     cbAlertOthersStartEnd
+//      CheckBoxRec     cbAlertOthersVirusList
+//
+//      char            SZ_NETWORK_USERS_TITLE[]
+// See Also:
+//      OPTSTR.CPP in \ENGLISH\NAVD for variables shared among CP dialogs.
+//************************************************************************
+// $Log:   N:/cpld/VCS/alerstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:32   RFULLER
+// Initial revision
+// 
+//    Rev 1.1   07 Aug 1996 17:02:20   JBRENNA
+// Port DOSNAV changes
+// 
+// 
+//    Rev 1.25   17 Jul 1996 11:57:26   MZAREMB
+// Updated strings to remove the default "NAVBOOT" personality.
+// 
+//    Rev 1.24   13 Jun 1996 11:33:06   JALLEE
+// Fixed if > ifdef USE_NETWORKALERTS
+// 
+//    Rev 1.23   05 May 1996 12:17:30   MZAREMB
+// Initial Pegasus update: added new dialogs to differentiate between
+// startup scanner and full-featured scanner.
+// 
+//    Rev 1.22   23 Oct 1995 16:29:38   MKEATIN
+// 
+//    Rev 1.21   06 Jun 1995 14:13:16   BARRY
+// Removed unneeded string (network user title)
+// 
+//    Rev 1.20   10 Feb 1995 13:45:50   DALLEE
+// Aligned 'Activity log filename' text edit with checkboxes.
+// 
+//    Rev 1.19   20 Jan 1995 18:52:46   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.18   28 Dec 1994 12:07:40   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.2   12 Dec 1994 14:00:02   DALLEE
+    // Removed controls no longer present in NAVBOOT.EXE
+    //
+    //    Rev 1.1   30 Nov 1994 17:20:16   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.17   28 Dec 1994 11:55:50   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+//
+    //    Rev 1.0   29 Nov 1994 19:03:48   DALLEE
+    // From Nirvana
+    //
+    //    Rev 1.15   03 Sep 1993 04:31:44   DALLEE
+    // Increase selected network object buffers, since we can have
+    // server + user/group, not just a single net object.
+//************************************************************************
+
+#include "platform.h"
+#include "xapi.h"
+#include "stddos.h"
+#include "stddlg.h"
+
+#include "options.h"
+#include "netobj.h"
+
+
+//************************************************************************
+// DEFINES
+//************************************************************************
+
+#define ALERT_REMOVE_LENGTH         ( 2)
+#define ALERT_NETWORK_USER_LENGTH   (MAX_NET_OBJECTS*NAVD_SERVER_USER_LENGTH+1)
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char DIALOG_GROUP_END [];        // These externs are declared in
+extern char szOKButton [];              //  OPTSTR.CPP
+extern char szCancelButton [];
+extern char szHelpButton [];
+extern ButtonsRec buEllipses;
+extern ButtonsRec buOkCancelHelp;
+
+// This routine is located in NAVDALER.C
+UINT TEAlertNetworkUserValidate(TERec *te, UINT *c);
+
+#ifdef USE_NETWORKALERTS   //&?
+CheckBoxRec cbAlertNetworkUsers =
+    {
+    "Alert ^network users:",
+    USE_PAD | USE_VALUE,
+    0, 1,                               // Value, pad
+    };
+
+CheckBoxRec cbAlertNetworkConsole =
+    {
+    "Alert net^work console",
+    USE_PAD | USE_VALUE,
+    0, 1,                               // Value, pad
+    };
+
+CheckBoxRec cbAlertNLM =
+    {
+    "Alert Norton Anti^Virus NLM if present",
+    USE_PAD | USE_VALUE,
+    0, 1,                               // Value, pad
+    };
+
+TERec teAlertNetworkUsers =
+    {
+    0, 0,                               // Rol, col - internal use
+    36,                                 // Width of edit box
+    NULL,
+    ALERT_NETWORK_USER_LENGTH,          // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal use
+    TEAlertNetworkUserValidate,         // Validate the characters
+    TE_CONVERT_CR,                      // Flags
+    };
+
+
+//------------------------------------------------------------------------
+// Alert Others Dialog Strings
+//------------------------------------------------------------------------
+
+static char *lpszAlertOthersStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %38gAlert others when",           // BEGIN GROUP
+    "   %C1",                           // cbAlertOthersKnownVirus
+    "   %C2",                           // cbAlertOthersUnknownVirus
+    "   %C3",                           // cbAlertOthersInocChange
+    "   %C4",                           // cbAlertOthersVirusLike
+    "   %C5",                           // cbAlertOthersStartEnd
+    "   %C6",                           // cbAlertOthersVirusList
+    DIALOG_GROUP_END,
+    DIALOG_NEXT_COL,
+                                        // NOTE: buOkCancelHelp buttons
+                                        // appear here.
+    DIALOG_END
+    };
+
+
+//------------------------------------------------------------------------
+// Alert Others Dialog Controls
+//------------------------------------------------------------------------
+
+                                        // &? ***** NOTE *********
+                                        // These checkbox controls
+                                        // mirror those found in the activity
+                                        // log main CP dialog.  Combine them?
+CheckBoxRec cbAlertOthersKnownVirus =
+    {
+    "^Known virus detections",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbAlertOthersUnknownVirus =
+    {
+    "^Unknown virus detections",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbAlertOthersInocChange =
+    {
+    "^Inoculation activities",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbAlertOthersVirusLike =
+    {
+    "^Virus-Like activities",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbAlertOthersStartEnd =
+    {
+    "Completion of ^scans",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+CheckBoxRec cbAlertOthersVirusList =
+    {
+    "Virus ^list changes",
+    USE_PAD | USE_VALUE,
+    0,                                  // Value
+    1,                                  // Pad
+    };
+
+DIALOG dlAlertOthers =
+    {
+    0, 0,                               // Row, col
+    NORMAL_DIALOG_FLAGS,
+    "Alert Others",
+    lpszAlertOthersStrings,
+    &buOkCancelHelp,
+    };
+#endif  // USE_NETWORKALERTS
+
+//------------------------------------------------------------------------
+// Alert CP Dialog Strings
+//------------------------------------------------------------------------
+
+char *lpszNavOptAlertStrings [] =          // Strings for alert CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    "   %C1",                           // cbAlertDisplayMessage
+    "       %T2",                       // teAlertMessage
+
+    DIALOG_EMPTY_LINE,
+    "   %C3",                           // cbAlertAudible
+
+    DIALOG_EMPTY_LINE,
+    "   %C4",                           // cbAlertRemoveDialog...
+    "       after %T5 seconds",         // teAlertRemoveAfter
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B6",                              // buAlertButtons
+    DIALOG_EMPTY_LINE,
+    DIALOG_1COL,
+    DIALOG_LEFT,
+    " %50gAlert others",                // BEGIN GROUP
+    "   %C7",                           // cbAlertNetworkUsers
+                                        // teAlertNetworkUsers...
+    "       %T8%B9",                    //  buEllipses
+    "   %C10",                          // cbAlertNetworkConsole
+    "   %C11",                          // cbAlertNLM
+    DIALOG_GROUP_END,
+    DIALOG_END,
+    };
+
+char *lpszNavBootOptAlertStrings [] =          // Strings for alert CP dialog
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_LEFT,
+    DIALOG_2COLS,
+    "   %C1",                           // cbAlertDisplayMessage
+    "       %T2",                       // teAlertMessage
+
+    DIALOG_EMPTY_LINE,
+    "   %C3",                           // cbAlertAudible
+
+    DIALOG_EMPTY_LINE,
+    "   %C4",                           // cbAlertRemoveDialog...
+    "       after %T5 seconds",         // teAlertRemoveAfter
+
+    DIALOG_NEXT_COL,
+    DIALOG_RIGHT,
+    "%B6",                              // buAlertButtons
+    DIALOG_END,
+    };
+
+#if USE_NETWORKALERTS   //&?
+                                        // Title for browse for network users
+                                        // dialog.
+char SZ_NETWORK_USERS_TITLE [] = "Alert Network Users";
+#endif
+
+char szNavbootAudibleString[] = "^Sound audible alert";
+
+//------------------------------------------------------------------------
+// Alert CP Dialog Controls
+//------------------------------------------------------------------------
+
+CheckBoxRec cbAlertDisplayMessage =
+    {
+    "^Display alert message:",
+    USE_PAD | USE_VALUE,
+    0, 1,                               // Value, pad
+    };
+
+CheckBoxRec cbAlertAudible =
+    {
+    "^Audible alert",
+    USE_PAD | USE_VALUE,
+    0, 1,                               // Value, pad
+    };
+
+CheckBoxRec cbAlertRemoveDialog =
+    {
+    "^Remove alert dialog",
+    USE_PAD | USE_VALUE,
+    0, 1,                               // Value, pad
+    };
+
+TERec teAlertMessage =
+    {
+    0, 0,                               // Rol, col - internal use
+    32,                                 // Width of edit box
+    NULL,
+    SIZE_ALERT_MSG,                     // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal use
+    NULL,                               // No character validation for now
+    TE_CONVERT_CR,                      // Flags
+    NULL,                               // No field validation for now, either
+    };
+
+                                        // This buffer is smaller than the
+                                        // code to allocate it dynamically
+static char szAlertRemoveAfter[ALERT_REMOVE_LENGTH + 1];
+
+TERec teAlertRemoveAfter =
+    {
+    0, 0,                               // Rol, col - internal use
+    ALERT_REMOVE_LENGTH+2,              // Width of edit box
+    szAlertRemoveAfter,
+    ALERT_REMOVE_LENGTH,                // Maximum length of string
+    0, 0,                               // Insert pt., offset - internal use
+    TEDigitsOnlyFilter,                 // No character validation for now
+    TE_CONVERT_CR,                      // Flags
+    NULL,                               // No field validation for now, either
+    };
+
+static char *lpszNavAlertButtonsLabels [] =
+    {
+    szOKButton,
+    szCancelButton,
+#if USE_NETWORKALERTS   //&?
+    " O^thers ",
+#endif
+    szHelpButton,
+    NULL,
+    };
+
+static char *lpszNavBootAlertButtonsLabels [] =
+    {
+    szOKButton,
+    szCancelButton,
+    szHelpButton,
+    NULL,
+    };
+
+ButtonsRec buNavAlertButtons =
+    {
+    lpszNavAlertButtonsLabels,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD,
+    0,                                  // Value - not used
+    0, 0,                               // Row, col - internal use
+    0, 0,                               // Pad, gap
+    };
+
+ButtonsRec buNavBootAlertButtons =
+    {
+    lpszNavBootAlertButtonsLabels,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD,
+    0,                                  // Value - not used
+    0, 0,                               // Row, col - internal use
+    0, 0,                               // Pad, gap
+    };
+
+LPVOID lpNavOptAlertArgs [] =              // Arguments to pass to control panel
+    {
+    &cbAlertDisplayMessage,
+    &teAlertMessage,
+    &cbAlertAudible,
+    &cbAlertRemoveDialog,
+    &teAlertRemoveAfter,
+    &buNavAlertButtons,
+#if USE_NETWORKALERTS   //&?
+    &cbAlertNetworkUsers,
+    &teAlertNetworkUsers,
+    &buEllipses,
+    &cbAlertNetworkConsole,
+    &cbAlertNLM,
+#endif
+    };
+
+LPVOID lpNavBootOptAlertArgs [] =              // Arguments to pass to control panel
+    {
+    &cbAlertDisplayMessage,
+    &teAlertMessage,
+    &cbAlertAudible,
+    &cbAlertRemoveDialog,
+    &teAlertRemoveAfter,
+    &buNavBootAlertButtons,
+    };
+
+

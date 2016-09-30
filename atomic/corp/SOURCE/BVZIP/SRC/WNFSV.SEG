@@ -1,0 +1,392 @@
+#if 0
+#ifndef MQNOSEG
+
+// New functions should be placed in FSV_SG64
+
+#ifdef compress_c
+#pragma alloc_text (FSV_SG4, initLZW, LZWworkSize)
+#pragma alloc_text (FSV_SG23, copy_struct1, LZW)
+#pragma alloc_text (FSV_SG24, CrushWorkSize)
+#pragma alloc_text (FSV_SG32, initCrush)
+#pragma alloc_text (FSV_SG33, initRLE)
+#pragma alloc_text (FSV_SG36, RLE)
+#pragma alloc_text (FSV_SG32, Crush)
+#endif
+
+#ifdef dclzh45_c
+#pragma alloc_text (FSV_SG11, LZH_DecodeLZH45, LZH_MakeTable, LZH_ReadChLen, LZH_ReadPtLen)
+#pragma alloc_text (FSV_SG14, LZH_DecodeLZH45Init, LZH_DecodeLZH45WorkSize)
+#endif
+
+#ifdef enlzh45_c
+#pragma alloc_text (FSV_SG4, LZH_EncodeLZH45WorkSize)
+#pragma alloc_text (FSV_SG16, LZH_Child, LZH_CountLen, LZH_CountTFreq, LZH_DeleteNode)
+#pragma alloc_text (FSV_SG16, LZH_DownHeap, LZH_EncodeCh, LZH_EncodeLZH45, LZH_EncodePostn)
+#pragma alloc_text (FSV_SG16, LZH_GetNextMatch, LZH_InsertNode, LZH_MakeChild, LZH_MakeCode)
+#pragma alloc_text (FSV_SG16, LZH_MakeLen, LZH_MakeTree, LZH_Output, LZH_SendBlock)
+#pragma alloc_text (FSV_SG16, LZH_Split, LZH_WriteChLen, LZH_WritePtLen)
+#pragma alloc_text (FSV_SG35, LZH_EncodeLZH45Free, LZH_EncodeLZH45Init, LZH_InitSlide)
+#endif
+
+#ifdef expand_c
+#pragma alloc_text (FSV_SG14, expandLZWsize, initExpandLZW)
+#pragma alloc_text (FSV_SG35, copy_struct2, expandLZW)
+#pragma alloc_text (FSV_SG25, initExpandCrush)
+#pragma alloc_text (FSV_SG32, expandCrush, expandCrushSize)
+#pragma alloc_text (FSV_SG37, expandRLE)
+#pragma alloc_text (FSV_SG32, initExpandRLE)
+#endif
+
+#ifdef fatten_c
+#pragma alloc_text (FSV_SG32, fatten_size)
+#pragma alloc_text (FSV_SG33, init_fatten)
+#pragma alloc_text (FSV_SG35, fatten)
+#endif
+
+#ifdef fsv_c
+#pragma alloc_text (FSV_SG1, Fsv_GetRegisteredCount)
+#pragma alloc_text (FSV_SG5, Fsv_GetInstIdx, Fsv_Register, Fsv_Unregister)
+#pragma alloc_text (FSV_SG7, Fsv_SetWndInst)
+#pragma alloc_text (FSV_SG38, Fsv_HelpWNFSVTDied)
+#pragma alloc_text (FSV_SG34, LibMain)
+#endif
+
+#ifdef fsvbmp_c
+#pragma alloc_text (FSV_SG1, FsvBmp_GetBoxBmp, FsvBmp_GetDirBmp, FsvBmp_GetDriveBmp)
+#pragma alloc_text (FSV_SG1, FsvBmp_GetFileBmp, FsvBmp_GetFileCursor, FsvBmp_GetMiscBmp)
+#pragma alloc_text (FSV_SG6, FsvBmp_GetNoDropCursor)
+#pragma alloc_text (FSV_SG29, FsvBmp_GetDriveCursor)
+#pragma alloc_text (FSV_SG37, FsvBmp_GetDirCursor)
+#endif
+
+#ifdef fsvbufio_c
+#pragma alloc_text (FSV_SG2, FsvBufIO_AllocInitFBufInfo, FsvBufIO_fFlush, FsvBufIO_fRead)
+#pragma alloc_text (FSV_SG2, FsvBufIO_fSeek)
+#pragma alloc_text (FSV_SG4, FsvBufIO_fSeekCausesFlush, FsvBufIO_fSetEOF, FsvBufIO_fTell)
+#pragma alloc_text (FSV_SG4, FsvBufIO_fWrite)
+#pragma alloc_text (FSV_SG6, FsvBufIO_fWriteByts)
+#pragma alloc_text (FSV_SG30, FsvBufIO_fClose)
+#pragma alloc_text (FSV_SG38, FsvBufIO_fCreat, FsvBufIO_fOpen)
+#pragma alloc_text (FSV_SG31, FsvBufIO_fReadByts)
+#pragma alloc_text (FSV_SG37, FsvBufIO_fWriteLine)
+#pragma alloc_text (FSV_SG32, FsvBufIO_fReadLine)
+#endif
+
+#ifdef fsvcache_c
+#pragma alloc_text (FSV_SG1, FsvCache_EnumerateDirEntries)
+#pragma alloc_text (FSV_SG26, FsvCache_InvalidatePath, FsvCache_LetMeKnowAboutChanges)
+#pragma alloc_text (FSV_SG26, FsvCache_SetCachingAll)
+#pragma alloc_text (FSV_SG33, FsvCache_SetCaching)
+#endif
+
+#ifdef fsvdei_c
+#pragma alloc_text (FSV_SG1, DirectoryHasSubdir, EnumDirEntryCallback, ExpandDirectory)
+#pragma alloc_text (FSV_SG1, FindDirsCallback, FsvDei_AllFilesCount, FsvDei_Compare)
+#pragma alloc_text (FSV_SG1, FsvDei_CreateDirTreeFromPath, FsvDei_DestroyDirTree, FsvDei_DoSubdirsExist)
+#pragma alloc_text (FSV_SG1, FsvDei_EntryOfPath, FsvDei_FileAndDirCount, FsvDei_ListAllFiles)
+#pragma alloc_text (FSV_SG1, FsvDei_NextDir, FsvDei_NextEntryAsOptions, FsvDei_PathOfEntry)
+#pragma alloc_text (FSV_SG1, FsvDei_SetDefaultDirTree, FsvDei_UnSetDefaultDirTree)
+#pragma alloc_text (FSV_SG1, FullExpandDirectory, NextFree, TempPathOfEntry, ThreadNewBlock)
+#pragma alloc_text (FSV_SG5, ExpandDirectoryNoCache, FsvDei_EnumerateDirEntries, FsvDei_FirstSubdir)
+#pragma alloc_text (FSV_SG5, FsvDei_ListFileAndDir, FsvDei_ListSubDirectories, FsvDei_NextDirAsOptions)
+#pragma alloc_text (FSV_SG5, FsvDei_NextDirOfTree, FsvDei_SubDirectoryCount)
+#pragma alloc_text (FSV_SG6, FsvDei_CreateDirTreeNoCache)
+#pragma alloc_text (FSV_SG21, FsvDei_CreateDirTree)
+#pragma alloc_text (FSV_SG26, FsvDei_CollapseDir, FsvDei_EntryOfPathNoHit, FsvDei_EraseDirEntry)
+#pragma alloc_text (FSV_SG26, FsvDei_EventAddDrive, FsvDei_EventAddPath, FsvDei_EventDeletePath)
+#pragma alloc_text (FSV_SG26, FsvDei_FreeElement)
+#pragma alloc_text (FSV_SG25, FsvDei_DirectoryCount, FullExpandDirectoryNoCache)
+#pragma alloc_text (FSV_SG32, FsvDei_ListDirectories)
+#pragma alloc_text (FSV_SG31, FsvDei_NextEntry)
+#pragma alloc_text (FSV_SG37, FsvDei_NextEntryOfTree)
+#endif
+
+#ifdef fsvenum_c
+#pragma alloc_text (FSV_SG1, FsvIO_EnumerateDirEntries, FsvIO_FindCloseExWrap, FsvIO_FindFirstExWrap)
+#pragma alloc_text (FSV_SG1, FsvIO_FindNextExWrap, pFsvIO_EnumFiles, pFsvIO_GetNetInfo)
+#pragma alloc_text (FSV_SG2, FsvIO_DelFileEnumCB)
+#pragma alloc_text (FSV_SG37, FsvIO_GetNetStruct)
+#endif
+
+#ifdef fsvevnt_c
+#pragma alloc_text (FSV_SG2, FsvEvnt_RegisterForEvent, FsvEvnt_RegisterForEvent2)
+#pragma alloc_text (FSV_SG5, FsvEvnt_ClearQueue, FsvEvnt_DoDriveEventCheck, FsvEvnt_HandleFileSysChange)
+#pragma alloc_text (FSV_SG5, FsvEvnt_TimerCallback, FsvEvnt_UnQFileSysChange, FsvEvnt_UnregisterEvent)
+#pragma alloc_text (FSV_SG8, FsvEvnt_EnableEvents, FsvEvnt_GetTHH)
+#pragma alloc_text (FSV_SG14, FsvEvnt_EnableRegistration)
+#pragma alloc_text (FSV_SG26, pFsvEvnt_Callback)
+#pragma alloc_text (FSV_SG38, FsvEvnt_EnableFileCDR, FsvEvnt_GetSetFileCdr, FsvEvnt_InstallFileCDR)
+#pragma alloc_text (FSV_SG38, FsvEvnt_PutBackPrev, FsvEvnt_TriggerAnEvent)
+#pragma alloc_text (FSV_SG32, FsvEvnt_GetQueue)
+#endif
+
+#ifdef fsvio_c
+#pragma alloc_text (FSV_SG1, FsvIO_GetDriveList, FsvIO_GetDriveType, FsvIO_HugeMemCopy)
+#pragma alloc_text (FSV_SG1, FsvIO_IsMediaRemovable, FsvIO_Read)
+#pragma alloc_text (FSV_SG2, FsvIO_ChangeCurrentDir, FsvIO_GetCurrentDir, FsvIO_GetDriveLabel)
+#pragma alloc_text (FSV_SG2, FsvIO_GetTrueDriveLabel, FsvIO_IsDriveRemovable, FsvIO_Seek)
+#pragma alloc_text (FSV_SG3, CleanupFormatStruct, FsvIO_BuildRootDirs, FsvIO_CreateFatFromDisk)
+#pragma alloc_text (FSV_SG3, FsvIO_FormatTrack, FsvIO_GetDiskFormat, FsvIO_GetDriveFormat)
+#pragma alloc_text (FSV_SG3, FsvIO_GetFATEntry, FsvIO_GetStrtDirClustr, FsvIO_GetUsableClusters)
+#pragma alloc_text (FSV_SG3, FsvIO_InitFormatProgress, FsvIO_Is12BitFat, FsvIO_IsValidCluster)
+#pragma alloc_text (FSV_SG3, FsvIO_MaxFATEntry, FsvIO_ReadBlock, FsvIO_RestoreDriveFormat)
+#pragma alloc_text (FSV_SG3, FsvIO_RootDirSctr, FsvIO_SetDriveFormat, FsvIO_SetFATEntry)
+#pragma alloc_text (FSV_SG3, FsvIO_WriteBlock, FsvIO_WriteBootSector, FsvIO_WriteFat)
+#pragma alloc_text (FSV_SG5, FsvIO_DirExists, FsvIO_FileExists, FsvIO_GetCurrentDrive)
+#pragma alloc_text (FSV_SG5, FsvIO_GetDirEntry, FsvIO_GetDoubleSpaceVersionNumber)
+#pragma alloc_text (FSV_SG5, FsvIO_IsDoubleSpace, FsvIO_IsDriveReady, FsvIO_IsDriveSubstituted)
+#pragma alloc_text (FSV_SG6, FsvIO_CleanupFormatProgress)
+#pragma alloc_text (FSV_SG8, FsvIO_RenameDir, FsvIO_RenameFile, FsvIO_WipeFile, FsvIO_WipePass)
+#pragma alloc_text (FSV_SG14, FsvIO_Write)
+#pragma alloc_text (FSV_SG22, FsvIO_TrueName)
+#pragma alloc_text (FSV_SG26, FsvIO_GetDeviceHeader, FsvIO_IsDrive, FsvIO_IsSmartDrvLoaded)
+#pragma alloc_text (FSV_SG26, FsvIO_SmartDrvGetDeviceHeader)
+#pragma alloc_text (FSV_SG27, FsvIO_GetFileSysType)
+#pragma alloc_text (FSV_SG38, BufferSizeForDrive, CopyFileWithDta, FsvIO_CopyFile)
+#pragma alloc_text (FSV_SG38, FsvIO_CreateFile, FsvIO_DeleteFile, FsvIO_FastGetDiskFreeSpace)
+#pragma alloc_text (FSV_SG38, FsvIO_GetFileAttributes, FsvIO_MakeDir, FsvIO_MoveFile)
+#pragma alloc_text (FSV_SG38, FsvIO_OpenFile, FsvIO_SetDriveLabel, FsvIO_SetFileAttributes)
+#pragma alloc_text (FSV_SG38, FsvIO_WriteBytes, PrivateSourceFileError)
+#pragma alloc_text (FSV_SG24, FsvIO_DiffTextFiles, FsvIO_ExtendedErr)
+#pragma alloc_text (FSV_SG25, FsvIO_ConvertAbsIOErrorToFSVError, FsvIO_GetCapacityFormat)
+#pragma alloc_text (FSV_SG25, FsvIO_ReadByts)
+#pragma alloc_text (FSV_SG28, FsvIO_ReadFAT)
+#pragma alloc_text (FSV_SG29, FsvIO_ChangeCurrentDrive, FsvIO_CreateEmptyFat, FsvUtil_AbsoluteSectorToRWB)
+#pragma alloc_text (FSV_SG31, FsvIO_RemoveDir, FsvWipeDirEntry)
+#pragma alloc_text (FSV_SG33, FsvIO_Tell)
+#pragma alloc_text (FSV_SG36, FsvIO_DestroyDiffTextFiles)
+#pragma alloc_text (FSV_SG37, FsvIO_GetTempPath, FsvIO_ResetFloppyDrive)
+#pragma alloc_text (FSV_SG33, FsvIO_DoSubDirsExist, FsvIO_IsDirEmpty)
+#endif
+
+#ifdef fsvmksys_c
+#pragma alloc_text (FSV_SG5, CreateDirEntPtr, DestroyDirEntPtr, FlushDirEntPtr, FsvIO_MakeSystemDisk)
+#pragma alloc_text (FSV_SG5, FsvMkSys_CopyCommandCom, PatchBootSector, PositionDirEntPtr)
+#pragma alloc_text (FSV_SG5, PrepForDirectDirEntPtr, PrepForDosDirEntPtr)
+#pragma alloc_text (FSV_SG33, FindBlankDirEntPtr, WriteDirectoryEntry)
+#endif
+
+#ifdef fsvutil_c
+#pragma alloc_text (FSV_SG1, FsvUtil_AddBackSlashChk, FsvUtil_CompressDate, FsvUtil_ConvrtDrvLtr2ID)
+#pragma alloc_text (FSV_SG1, FsvUtil_ConvrtID2DrvLtr, FsvUtil_DoesFileMatchMask, FsvUtil_ExpandDate)
+#pragma alloc_text (FSV_SG1, FsvUtil_ExpandTime, FsvUtil_fmemset, FsvUtil_GetBkTaskHWND)
+#pragma alloc_text (FSV_SG1, FsvUtil_GetDirectoryType, FsvUtil_GetNetworkUserName)
+#pragma alloc_text (FSV_SG1, FsvUtil_IsExtDocument, FsvUtil_IsExtExecutable)
+#pragma alloc_text (FSV_SG1, FsvUtil_IsZipFile)
+#pragma alloc_text (FSV_SG2, FsvUtil_ContainsWildCardChs, FsvUtil_FreeExeTable, FsvUtil_FreeExtTable)
+#pragma alloc_text (FSV_SG2, FsvUtil_Get2ndNetDrvHandle, FsvUtil_GetNetworkDriverHandle)
+#pragma alloc_text (FSV_SG2, FsvUtil_GetNovellDllHandle, FsvUtil_GetPathMask, FsvUtil_IsNovellNetwork)
+#pragma alloc_text (FSV_SG2, FsvUtil_LoadArcTable, FsvUtil_LoadExeTable, FsvUtil_LoadExtTable)
+#pragma alloc_text (FSV_SG2, FsvUtil_ValidateFileMask, FsvUtil_ValidateFullFileName)
+#pragma alloc_text (FSV_SG2, FsvUtil_ValidatePathFileMask)
+#pragma alloc_text (FSV_SG3, FsvUtil_SetTimer)
+#pragma alloc_text (FSV_SG3, pFsvUtil_SetTimer)
+#pragma alloc_text (FSV_SG5, FsvUtil_CreateMultipleDirs, FsvUtil_ExpandFullPath, FsvUtil_KillTimer)
+#pragma alloc_text (FSV_SG5, FsvUtil_TimerProc, pFsvUtil_KillTimer)
+#pragma alloc_text (FSV_SG6, FsvUtil_GetDocumentString)
+#pragma alloc_text (FSV_SG7, Fsv_GetTaskFromInstance, FsvUtil_CompressTime)
+#pragma alloc_text (FSV_SG8, FsvUtil_CleanOwnerName, FsvUtil_CondensePath, FsvUtil_FreeArcTable)
+#pragma alloc_text (FSV_SG8, FsvUtil_GetExt, FsvUtil_IsWorkgroup, FsvUtil_RemoveBackSlashChk)
+#pragma alloc_text (FSV_SG21, FsvUtil_AllocCopyDirEntryStruct, FsvUtil_DoesFileMatchFullMask)
+#pragma alloc_text (FSV_SG22, FsvUtil_GetShareName)
+#pragma alloc_text (FSV_SG26, FsvUtil_CreateDestName, FsvUtil_RemoveLeadingTrailingChs)
+#pragma alloc_text (FSV_SG27, FsvUtil_FreeDirEntryStruct, FsvUtil_MaskIsAllFiles)
+#pragma alloc_text (FSV_SG34, FsvUtil_GetProgramString, FsvUtil_NetSetDefaultDrive)
+#pragma alloc_text (FSV_SG35, FsvUtil_GetArchiveString)
+#pragma alloc_text (FSV_SG38, FsvUtil_GetTempFileName, FsvUtil_ValidateFileName)
+#pragma alloc_text (FSV_SG24, Fsv_FindFirstTask, FsvUtil_ReduceFileMask)
+#pragma alloc_text (FSV_SG28, FsvUtil_RestoreConnection)
+#pragma alloc_text (FSV_SG29, FsvUtil_AddExtChk)
+#pragma alloc_text (FSV_SG32, FsvUtil_GetOwnerNameFromID)
+#pragma alloc_text (FSV_SG31, FsvUtil_GetEnv)
+#pragma alloc_text (FSV_SG34, FsvUtil_GetOwnerNames, FsvUtil_MergeStr, FsvUtil_ShellSort)
+#pragma alloc_text (FSV_SG64, FsvUtil_Zip2Exe, FsvUtil_MakeSFXZip, FsvUtil_Exe2Zip)
+#endif
+
+#ifdef lzhutil_c
+#pragma alloc_text (FSV_SG11, LZHUtil_FillBuf, LZHUtil_GetBits, LZHUtil_SetupGetBits)
+#pragma alloc_text (FSV_SG14, LZHUtil_InitGetBits)
+#pragma alloc_text (FSV_SG16, LZHUtil_PutBits, LZHUtil_SetupPutBits)
+#pragma alloc_text (FSV_SG35, LZHUtil_InitPutBits)
+#endif
+
+#ifdef pmemlist_c
+#pragma alloc_text (FSV_SG1, ListBFind, ListLFind)
+#pragma alloc_text (FSV_SG4, FreeAll)
+#pragma alloc_text (FSV_SG5, Mem_DestroyHeap)
+#pragma alloc_text (FSV_SG32, ListDeleteMultiple)
+#pragma alloc_text (FSV_SG33, expandd, ListInsertMultiple, Mem_SubReallocHeap)
+#pragma alloc_text (FSV_SG37, Mem_SubCallocHeap)
+#endif
+
+#ifdef udeng_c
+#pragma alloc_text (FSV_SG2, UDeng_ConvrtEnumOptnsToFileAttrs, UDEng_CopyDOSEntry2FSVEntry)
+#pragma alloc_text (FSV_SG2, UDEng_CopyNOVELLEntry2FSVEntry, UDEng_DeInitUndInfo, UDEng_EnumCluster)
+#pragma alloc_text (FSV_SG2, UDEng_EnumDeletedFiles, UDEng_EnumNovelllNetEntries, UDEng_InitDrvInfo)
+#pragma alloc_text (FSV_SG2, UDEng_InitUndInfo, UDEng_InSentryList, UDEng_IsEntryWiped)
+#pragma alloc_text (FSV_SG2, UDEng_IsRecoverFactorDesired)
+#pragma alloc_text (FSV_SG3, UDEng_AllocFATBufChk, UDEng_Clstr2RelFATSctr, UDEng_Clstr2RelSctr)
+#pragma alloc_text (FSV_SG3, UDEng_DoesDelEntryHaveADOSDirEntry, UDEng_DOSDelFileOrDirAndWipeDirEntry)
+#pragma alloc_text (FSV_SG3, UDEng_EnumDOSEntries, UDEng_EvalClusterChain, UDEng_EvalDOSDirctry)
+#pragma alloc_text (FSV_SG3, UDeng_FlushDOSBuffersChk, UDEng_GetFATEntry, UDEng_GetFlag)
+#pragma alloc_text (FSV_SG3, UDEng_GetNxtClustr, UDEng_IsValidCluster, UDEng_lmemcmpi)
+#pragma alloc_text (FSV_SG3, UDEng_MakeFATEntryResident, UDEng_ModifyDOSDirEntry, UDEng_PurgeDOSFileOrDir)
+#pragma alloc_text (FSV_SG3, UDEng_SetFATEntry, UDEng_SetFlag, UDEng_UndelDOSFileOrDir)
+#pragma alloc_text (FSV_SG3, UDEng_WriteFAT)
+#pragma alloc_text (FSV_SG8, UDEng_DeleteFileWipeEntry)
+#pragma alloc_text (FSV_SG16, UDEng_EnumSentryEntries, UDEng_OpenSentryFile)
+#pragma alloc_text (FSV_SG27, UDEng_EnumTrckrEntries, UDEng_OpenTrckrFile)
+#pragma alloc_text (FSV_SG38, UDEng_PurgeAllSentryEnries, UDEng_PurgeFile, UDEng_UndeleteFile)
+#pragma alloc_text (FSV_SG28, UDEng_EnumSentryFilesCallBack, UDEng_IsNetworkPrivlegesErr)
+#pragma alloc_text (FSV_SG28, UDEng_MakeTempName, UDEng_PurgeNovellFile, UDEng_UndelNovellFile)
+#pragma alloc_text (FSV_SG31, UDEng_CopyFSVEntry2DOSEntry, UDeng_CopySentryRec2UndelEntry)
+#pragma alloc_text (FSV_SG31, UDeng_CopyTrckrRec2UndelEntry, UDEng_CountTrckrClusters)
+#pragma alloc_text (FSV_SG31, UDEng_CreateDOSDirEntry, UDEng_DeleteDirWipeEntry, UDEng_DeleteSentryRec)
+#pragma alloc_text (FSV_SG31, UDEng_EvalTrckrClstrChain, UDEng_ExtractFileName, UDEng_FreeTrckrRecs)
+#pragma alloc_text (FSV_SG31, UDEng_GetFreeCluster, UDEng_GetNextSentryRec, UDEng_GetNextTrckrRec)
+#pragma alloc_text (FSV_SG31, UDEng_GetNxtTrckrClstr, UDEng_GetSentryHiddenName, UDEng_GetStrtTrckrClstr)
+#pragma alloc_text (FSV_SG31, UDEng_InDOSList, UDEng_PurgeSentryDir, UDEng_PurgeSentryEntry)
+#pragma alloc_text (FSV_SG31, UDEng_PurgeSentryFileOrDir, UDEng_PurgeTrackerDir, UDEng_ReadSentryRec)
+#pragma alloc_text (FSV_SG31, UDEng_ReadTrckrRec, UDEng_SetNetWarePurgeAttr, UDEng_UndelSentryFile)
+#pragma alloc_text (FSV_SG31, UDEng_UpdateOldestEntryChk, UDEng_WriteSentryRec, UDEng_WriteTrckrRec)
+#pragma alloc_text (FSV_SG37, UDeng_FlushDOSBuffers)
+#pragma alloc_text (FSV_SG32, UDEng_RelSctr2Clstr)
+#endif
+
+#ifdef udeng1_c
+#pragma alloc_text (FSV_SG1, UDEng_TempClose)
+#pragma alloc_text (FSV_SG3, ClusterWalk)
+#pragma alloc_text (FSV_SG6, UDEng_LSeek)
+#pragma alloc_text (FSV_SG8, UDEng_Close, UDEng_DeInitDelReadDataInfo, UDEng_InitDelReadDataInfo)
+#pragma alloc_text (FSV_SG8, UDEng_Open, UDEng_OpenDOSP)
+#pragma alloc_text (FSV_SG12, UDEng_ReOpen)
+#pragma alloc_text (FSV_SG27, ClusterBeginWalk, UDEng_ReadBytes, UDEng_ReadDOSP)
+#pragma alloc_text (FSV_SG31, UDEng_OpenSentryP)
+#pragma alloc_text (FSV_SG37, UDEng_OpenNovellP)
+#endif
+
+#ifdef unarc_c
+#pragma alloc_text (FSV_SG25, uncrunch_size)
+#pragma alloc_text (FSV_SG29, init_expand_huffman)
+#pragma alloc_text (FSV_SG33, expand_huffman_size)
+#pragma alloc_text (FSV_SG31, add_code, copy_struct3, expand_huffman, init_uncrunch)
+#pragma alloc_text (FSV_SG31, uncrunch)
+#endif
+
+#ifdef unshrink_c
+#pragma alloc_text (FSV_SG24, initUnshrink)
+#pragma alloc_text (FSV_SG29, unshrinkSize)
+#pragma alloc_text (FSV_SG33, copy_struct4, unshrink)
+#endif
+
+#ifdef utility_c
+#pragma alloc_text (FSV_SG4, crc)
+#pragma alloc_text (FSV_SG37, xorBlock)
+#endif
+
+#ifdef wnzip_c
+#pragma alloc_text (FSV_SG2, Zip_ConvertOtherPlatformFileName, Zip_fArchiveAdvance)
+#pragma alloc_text (FSV_SG2, Zip_fArchiveReadByts, Zip_fReadByts, Zip_InitCompFileRec)
+#pragma alloc_text (FSV_SG2, Zip_InsCompFileRec, Zip_ReadZipDir, Zip_ReadZipHeader)
+#pragma alloc_text (FSV_SG2, ZipAddFile)
+#pragma alloc_text (FSV_SG4, Zip_CalcEndInfoByts, Zip_CalcOldComprssdFileByts, Zip_CompressFile)
+#pragma alloc_text (FSV_SG4, Zip_CopyDataBlk, Zip_DeInitCompressExpandChk, Zip_EncryptZipFile)
+#pragma alloc_text (FSV_SG4, Zip_fArchiveRead, Zip_fArchiveSeek, Zip_fArchiveWrt, Zip_FilterFile)
+#pragma alloc_text (FSV_SG4, Zip_FreeComprssdInfoRecs, Zip_FreeComprssdRec, Zip_FreeDirInfo)
+#pragma alloc_text (FSV_SG4, Zip_GrowthCheck, Zip_MemWrite, Zip_PutInNthDiskChk, Zip_SelectPckTyp)
+#pragma alloc_text (FSV_SG4, Zip_SetSharedData, Zip_WriteArchiveEnd, Zip_WriteArcPakHeadr)
+#pragma alloc_text (FSV_SG4, Zip_WriteCntrlHeadr, Zip_WriteFileHeadr, Zip_WriteZipEnd)
+#pragma alloc_text (FSV_SG4, Zip_WriteZipHeadr, Zip_WriteZipPath, ZipPack, ZipReadFile)
+#pragma alloc_text (FSV_SG6, Zip_CalcLHAByteChkSum, Zip_Unfiltered, Zip_WriteArcPakDataBlk)
+#pragma alloc_text (FSV_SG6, Zip_WriteArcPakDataStr, Zip_WriteArcPakEnd, Zip_WriteArcPakPath)
+#pragma alloc_text (FSV_SG6, Zip_WriteLHAHeadr)
+#pragma alloc_text (FSV_SG8, Zip_CloseTempFile, Zip_Compress2Pass, Zip_CreateTempFile)
+#pragma alloc_text (FSV_SG8, Zip_MoveSpecialDataToEnd, Zip_VerifyPckTyp)
+#pragma alloc_text (FSV_SG14, Zip_DecryptSetup, Zip_EncryptSetup, Zip_EnDeCryptByts)
+#pragma alloc_text (FSV_SG14, Zip_fFlushBuf, Zip_InitExpand, Zip_UpdateKeys, Zip_VerifyArchv)
+#pragma alloc_text (FSV_SG14, Zip_VerifyFileHeadr)
+#pragma alloc_text (FSV_SG22, Zip_ReadArcPakDir, Zip_ReadArcPakHeader)
+#pragma alloc_text (FSV_SG30, Zip_BuildInternalDir, Zip_CloseChk, Zip_CopyPrivateCompInto2PublicStruct)
+#pragma alloc_text (FSV_SG30, Zip_FreeHandle, Zip_GetDirInfo, Zip_GetNewHandle, Zip_InitArchiveDir)
+#pragma alloc_text (FSV_SG30, Zip_InitHandleRec, Zip_IsFileInArchive, Zip_ReOpenChk)
+#pragma alloc_text (FSV_SG30, Zip_ScanForFileInDirTable, Zip_TransOpenOptns, ZipClose)
+#pragma alloc_text (FSV_SG30, ZipCreate, ZipExtractFile, ZipGetAllFileInfo, ZipGetFileInfo)
+#pragma alloc_text (FSV_SG30, ZipGetInfo, ZipIsMultiDiskZipFile, ZipOpen, ZipReOpen)
+#pragma alloc_text (FSV_SG30, ZipReplaceFile, ZipTempClose)
+#pragma alloc_text (FSV_SG35, Zip_CalcLZHHeadrSiz, Zip_ReadLHAFile, Zip_ReadLHAFileHeader)
+#pragma alloc_text (FSV_SG25, Zip_DoesDiskHaveSpecialLabel)
+#pragma alloc_text (FSV_SG29, Zip_CreateDataBlk, Zip_DelCompFileRec, Zip_fArchiveSetEOF)
+#pragma alloc_text (FSV_SG29, Zip_IsCompMethComptbl, Zip_MoveFileToEnd, Zip_RenameCompFile)
+#pragma alloc_text (FSV_SG29, Zip_SetFileInfo, Zip_XFerCompFile, ZipAddDirEntry, ZipDeleteFile)
+#pragma alloc_text (FSV_SG29, ZipSetFileInfo, ZipSetInfo, ZipXferFile)
+#pragma alloc_text (FSV_SG36, Zip_PListCompare)
+#pragma alloc_text (FSV_SG37, Zip_CalcTrailrByts, Zip_ExpRLEWrppr)
+#pragma alloc_text (FSV_SG32, Zip_CreateNextArchiveFile, Zip_WriteSpecialLabel)
+#pragma alloc_text (FSV_SG33, Zip_ReadArcPakRecord)
+#endif
+
+#ifdef z_shrink_c
+#pragma alloc_text (FSV_SG24, copy_struct5, shrink)
+#pragma alloc_text (FSV_SG28, initShrink)
+#pragma alloc_text (FSV_SG32, shrinkSize)
+#endif
+
+#ifdef zip2xcom_c
+#pragma alloc_text (FSV_SG4, Zip2x_CompressFree, Zip2x_CompressWorkSize)
+#pragma alloc_text (FSV_SG7, HuffBuildCodes, HuffCalcHead, HuffCalcSize, PackLengths)
+#pragma alloc_text (FSV_SG7, SFBuildCodes, SortCmp, Zip2x_Compress)
+#pragma alloc_text (FSV_SG38, Zip2x_CompressInit)
+#pragma alloc_text (FSV_SG24, UnStackCodes)
+#pragma alloc_text (FSV_SG36, ComputeVar, StackCodes)
+#endif
+
+#ifdef zip2xexp_c
+#pragma alloc_text (FSV_SG4, HuffFreeDynamicTrees)
+#pragma alloc_text (FSV_SG7, HuffBuildDynamicTrees, HuffBuildFixedTrees, HuffBuildTree)
+#pragma alloc_text (FSV_SG7, HuffFreeFixedTrees, Zip2x_Expand, Zip2x_ExpandFree, Zip2x_ExpandInit)
+#pragma alloc_text (FSV_SG14, Zip2x_ExpandWorkSize)
+#endif
+
+#ifdef zip2xio_c
+#pragma alloc_text (FSV_SG7, BitRead, BitReadInit, BitReadSetup, BitWrite, BitWriteSetup)
+#pragma alloc_text (FSV_SG7, BufReadSetup, BufWriteInit, BufWriteSetup)
+#pragma alloc_text (FSV_SG38, BitWriteInit, BufReadInit)
+#pragma alloc_text (FSV_SG24, BitReadBytes, BitWriteBytes)
+#pragma alloc_text (FSV_SG37, BufWriteStr)
+#endif
+
+//
+// Fixed segments here.
+//
+#ifdef fsv_c
+#pragma alloc_text(FSV_FIX01,WEP)
+#endif
+
+#ifdef pmemlist_c
+#pragma alloc_text(FSV_FIX01,ListMalloc)
+#pragma alloc_text(FSV_FIX01,ListInsert)
+#pragma alloc_text(FSV_FIX01,ListDelete)
+#pragma alloc_text(FSV_FIX01,ListFree)
+#pragma alloc_text(FSV_FIX01,ListRealloc)
+#pragma alloc_text(FSV_FIX01,Mem_SubMallocHeap)
+#pragma alloc_text(FSV_FIX01,Mem_SubFreeHeap)
+#pragma alloc_text(FSV_FIX01,newmemp)
+#pragma alloc_text(FSV_FIX01,SubAlloc)
+#pragma alloc_text(FSV_FIX01,NewSeg)
+#pragma alloc_text(FSV_FIX01,heapavail)
+#pragma alloc_text(FSV_FIX01,SubFree)
+#pragma alloc_text(FSV_FIX01,deletemem)
+#pragma alloc_text(FSV_FIX01,SegFree)
+#pragma alloc_text(FSV_FIX01,linkseg)
+#pragma alloc_text(FSV_FIX01,SegAlloc)
+#pragma alloc_text(FSV_FIX01,Mem_IsAllocSizeOK)
+#pragma alloc_text(FSV_FIX01,NewGlobalD)
+#pragma alloc_text(FSV_FIX01,FreeGlobal)
+#endif
+
+#ifdef fsvevnt_c
+#pragma alloc_text(FSV_FIX01,FsvEvnt_FileSysChange)
+#endif
+
+#endif
+#endif

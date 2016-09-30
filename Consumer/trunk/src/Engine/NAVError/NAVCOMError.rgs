@@ -1,0 +1,26 @@
+HKCR
+{
+	NAVError.NAVCOMError.1 = s 'NAVCOMError Class'
+	{
+		CLSID = s '{917E992D-B4F9-433A-BCFE-3AEC0370A765}'
+	}
+	NAVError.NAVCOMError = s 'NAVCOMError Class'
+	{
+		CLSID = s '{917E992D-B4F9-433A-BCFE-3AEC0370A765}'
+		CurVer = s 'NAVError.NAVCOMError.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {917E992D-B4F9-433A-BCFE-3AEC0370A765} = s 'NAVCOMError Class'
+		{
+			ProgID = s 'NAVError.NAVCOMError.1'
+			VersionIndependentProgID = s 'NAVError.NAVCOMError'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{D0FB5093-C2F0-4280-AAC9-3C35C6980FD8}'
+		}
+	}
+}

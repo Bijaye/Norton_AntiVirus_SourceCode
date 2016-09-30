@@ -1,0 +1,105 @@
+# Copyright 1996 Symantec, Peter Norton Product Group
+#
+# Makefile   :  Builds the N32DEMO application
+#
+# Description:  This file is used to create a sample application to
+#               demonstrate the use of the virus scanning API and th
+#               virus definition API.
+#
+# Usage:        NMAKE -fmakefile.32           - Builds 32-bit N32DEMO
+#
+#               NMAKE -fmakefile.32 CLEAN     - Deletes .exe, .map,
+#                                               .obj, and .res files
+# 
+# Environment:  The sample applications were built using Microsoft Developers
+#               Version 4.2.
+#
+#               The directory containing the compiler, resource compiler,
+#               and linker must be set in the CLPATH variable in the options
+#               section below.
+#
+#               The search paths for header files and libraries can
+#               be specified in the options section below.
+#
+#               The N32DEMO program installs the dirus definition files. This
+#               is normally done is a separate install program. It is done
+#               here strictly for demonstration purposes. The files are 
+#               uninstalled when the program terminates.
+#
+#               The virus definition files are installed from a VIRUSDEF directory
+#               directory immediately below the N32DEMO source directory.
+#
+
+
+############################################################################
+#
+#
+#       32-Bit Options
+#
+#
+############################################################################
+
+C_FLAGS = -WX -Gys /MT -Od
+C_DEFS  = -D_WINDOWS -D_X86_
+LIBS    = NAVSDK32.LIB NAVDEF32.LIB
+SYSLIBS = LIBCMT.LIB OLDNAMES.LIB KERNEL32.LIB USER32.LIB GDI32.LIB COMDLG32.LIB SHELL32.LIB WINMM.LIB ADVAPI32.LIB WINSPOOL.LIB MSVCRT.LIB
+LFLAGS  = -PDB:NONE -DEFAULTLIB:$(LIBS) -NODEFAULTLIB:$(SYSLIBS) -SUBSYSTEM:windows,4.0 -debugtype:both -debug:full -out:N32DEMO.EXE -map:n32demo.map
+RFLAGS1 = -r -fonavdemo.res
+INC     = c:\msdev\include
+LIBPATH = c:\msdev\lib
+CLPATH  = c:\msdev\bin
+
+
+############################################################################
+#
+#
+#       Compiler Options
+#
+#
+############################################################################
+
+C_COMMON = -nologo -c -W3 -J -Zpe -Z7
+CFLAGS   = $(C_FLAGS) $(C_DEFS) $(C_COMMON)
+
+
+############################################################################
+#
+#
+#       32-Bit N32Demo Build
+#
+#
+############################################################################
+
+n32demo : n32demo.exe
+
+n32demo.exe: navdemo.obj navdwnd.obj navdemo.def
+        set lib=$(LIBPATH)
+        set link=$(LFLAGS)
+        $(CLPATH)\rc $(RFLAGS1) navdemo.rc
+        $(CLPATH)\link navdemo.obj navdwnd.obj navdemo.res
+
+navdemo.obj: navdemo.cpp navdemo.def        
+        set include=$(INC)
+        set cl=$(CFLAGS)
+        $(CLPATH)\cl /Fonavdemo.obj navdemo.cpp
+
+navdwnd.obj: navdwnd.cpp navdemo.def        
+        set include=$(INC)
+        set cl=$(CFLAGS)
+        $(CLPATH)\cl /Fonavdwnd.obj navdwnd.cpp
+
+
+############################################################################
+#
+#
+#       Cleanup
+#
+#
+############################################################################
+
+clean:
+        -del n32demo.map
+        -del n32demo.exe
+        -del navdemo.obj
+        -del navdemo.res
+        -del navdwnd.obj

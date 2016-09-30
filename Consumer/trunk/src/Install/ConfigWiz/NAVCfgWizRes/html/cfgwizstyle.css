@@ -1,0 +1,197 @@
+/*//////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+///////////////////////////////////////////////////////////////////////////////////////////////*/
+
+table, body, 
+td, p 			{ background-color:#FFFFFF; font-size:12px; font-family:Arial, Helvetica, Sans-Serif; color: #333333; font-style:normal; font-variant:normal; font-weight:normal }
+p				{ margin-top: 0px; margin-bottom: 0px }
+.bottomLine		{ border-bottom:1px solid #6C6C6C; height: 35px }
+.activeTask		{ color: green; font-weight: bold }
+.aheadline		{ FONT-SIZE: 14px }
+.atitle			{ FONT-SIZE: 20px; LETTER-SPACING: 0.03em; TEXT-INDENT: 9px }
+.helplink			{ text-decoration: underline; color: Blue; cursor:hand; }
+.helplink2		{ text-decoration: underline; color: Blue; cursor:hand; background-image: none; font-size: 12px; font-family:Verdana, Arial, Helvetica, Sans-Serif; height: 23px; background-repeat:no-repeat; padding-left:0px; padding-right:0px; border:0px; cursor: hand; margin-left:0px; margin-right:0px; background-color:Transparent; text-align:right}
+.inactiveTask		{ color: red; font-weight: bold }
+.inputField		{ font-size:12px; font-family:Arial, Helvetica, Sans-Serif; width: 240; margin-top: 2; margin-bottom: 2; margin-left: 5 }
+.navigation		{ font-size:13px; font-family:Arial, Helvetica, Sans-Serif; color: #355690; font-weight:bold; background-color:white }
+.rbLeft			{ margin-left: -3 }
+.required			{ font-weight: bold }
+.rmCategory		{ COLOR: #355690; FONT-SIZE: 13px; FONT-WEIGHT: bold; TEXT-INDENT: 6px }
+.subdate			{ FONT-SIZE: 14px; FONT-WEIGHT: bold }
+.subdateerr		{ FONT-SIZE: 14px; FONT-WEIGHT: bold; color: red}
+.subtitle			{ font-size:12px; font-weight: bold; font-family:Arial, Helvetica, Sans-Serif; color: #333333; }
+.title			{ font-size:20px; font-family:Arial, Helvetica, Sans-Serif; font-weight:bold; color: #333333; margin-top: 8px }
+.titler			{ font-size:20px; font-family:Arial, Helvetica, Sans-Serif; font-weight:bold; color: red; margin-top: 8px }
+.chkArea		{ position: absolute; left: 50px; top: 450px;width:305px}
+
+            
+.bodyTop
+{
+	BORDER-BOTTOM: 1PX SOLID #E2C659;
+}
+
+
+
+.next
+{
+	background-image: url(bttn_normal.png);
+	background-repeat:no-repeat;
+	padding-left:5px;
+	padding-right:5px;
+	width: 105px;
+	height: 24px;
+	text-align:center;
+	margin:5px;
+	vertical-align:middle;
+	white-space:nowrap;
+	min-width:auto;
+	color: #3c3c3c;
+	cursor: hand;
+	font-size: 11px; 
+	font-family: Arial, Helvetica, Sans-Serif;
+	text-decoration: none;
+	border: none;
+}
+
+.next_hover
+{
+	background-image: url(bttn_hover.png);
+	background-repeat:no-repeat;
+	padding-left:5px;
+	padding-right:5px;
+	width: 105px;
+	height: 24px;
+	text-align:center;
+	margin:5px;
+	vertical-align:middle;
+	white-space:nowrap;
+	min-width:auto;
+	color: #3c3c3c;
+	cursor: hand;
+	font-size: 11px; 
+	font-family: Arial, Helvetica, Sans-Serif;
+	text-decoration: none;
+	border: none;
+}
+
+.next_pressed
+{
+	background-image: url(bttn_pressed.png);
+	background-repeat:no-repeat;
+	padding-left:5px;
+	padding-right:5px;
+	width: 105px;
+	height: 24px;
+	text-align:center;
+	margin:5px;
+	vertical-align:middle;
+	white-space:nowrap;
+	min-width:auto;
+	color: #3c3c3c;
+	cursor: hand;
+	font-size: 11px; 
+	font-family: Arial, Helvetica, Sans-Serif;
+	text-decoration: none;
+	border: none;
+}
+
+.next_focused
+{
+	background-image: url(bttn_default.png);
+	background-repeat:no-repeat;
+	padding-left:5px;
+	padding-right:5px;
+	width: 105px;
+	height: 24px;
+	text-align:center;
+	margin:5px;
+	vertical-align:middle;
+	white-space:nowrap;
+	min-width:auto;
+	color: #3c3c3c;
+	cursor: hand;
+	font-size: 11px; 
+	font-family: Arial, Helvetica, Sans-Serif;
+	text-decoration: none;
+	border: none;
+}
+
+.next_dis
+{
+	background-image: url(bttn_disabled.png);
+	background-repeat:no-repeat;
+	padding-left:5px;
+	padding-right:5px;
+	width: 105px;
+	height: 24px;
+	text-align:center;
+	margin:5px;
+	vertical-align:middle;
+	white-space:nowrap;
+	min-width:auto;
+	color: #8c8c8c;
+	cursor: hand;
+	font-size: 11px; 
+	font-family: Arial, Helvetica, Sans-Serif;
+	text-decoration: none;
+	border: none;
+	
+	padding-bottom: 3px;
+}
+
+.skip
+{ 
+	background-image: url(bttn_normal_wide.png);
+	background-repeat:no-repeat;
+	padding-left:5px;
+	padding-right:5px;
+	width: 140px;
+	height: 24px;
+	text-align:center;
+	margin:5px;
+	vertical-align:middle;
+	white-space:nowrap;
+	min-width:auto;
+	color: #3c3c3c;
+	cursor: hand;
+	font-size: 11px; 
+	font-family: Arial, Helvetica, Sans-Serif;
+	text-decoration: none;
+	border: none;
+
+	padding-top: 3px;
+}
+
+#oem_text_div
+{
+	color: #5B5B5B; 
+	font-size: 12px;
+}
+
+#bullet_text_div
+{
+	color: #5B5B5B; 
+	font-size: 17px;
+}
+
+#p_ClickNext
+{
+	color: #5B5B5B; 
+	font-size: 13px
+}
+
+#TryDiePageTitle
+{
+	margin-left: 30px;
+	margin-bottom: 100px;
+}
+
+#TryDiePageMsg
+{
+	width: 760px;
+}

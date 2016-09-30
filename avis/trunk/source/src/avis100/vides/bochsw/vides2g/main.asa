@@ -1,0 +1,81 @@
+/*
+  11/20/97 main rule of the VIDES2 expert system
+*/
+
+uses handle;
+uses resident;
+uses heuristic;
+uses execonprompt;
+uses inputsim;
+uses utils;
+uses fcb;
+uses bootmultipart;
+uses companion;
+
+/* This rule waits for the first exec before we start to take a serious look at what's happening */
+rule waitStartCondition;
+var
+int21seg, int21ofs: integer;
+begin
+if
+        strToInt(report_tag) = 1
+        and strToU(imm) = 0x21
+        and rh(eax) = 0x4B
+        -->
+                begin
+                /* Memory areas */
+                mem_attach_marker(4 * 0x08,4,2);
+                mem_attach_marker(4 * 0x1C,4,2);
+                mem_attach_marker(4 * 0x13,4,2);
+                mem_attach_marker(4 * 0x21,4,2);
+                
+                /* Interrupt 21h entry point */
+                int21seg := readmemword(0,0x86);
+                int21ofs := readmemword(0,0x84);
+                mem_attach_marker(int21seg*0x10+int21ofs, 2, 2);
+                start_watch_mem;
+                
+                /* Setting the breakpoint at the entry point of interrupt 21h */
+                println('Setting breakpoint at ', word2h(int21seg),':',word2h(int21ofs));
+                setbrkpt(int21seg, int21ofs, 0x21);
+                start_watch_brkpt;
+
+                /* Run the threads */
+                trigger off for_current DetectHandle;
+                trigger off for_current ExecOnPrompt(0,0);
+                trigger off for_current InputSim(0);
+                trigger off for_current ResDetect(-1,0);
+                trigger off for_current Heuristics(0);
+                trigger off for_current FCBOpen;
+                /*trigger off for_current DetectCompanion;*/
+                
+                /*trigger off for_current TraceCalls;*/
+                /*trigger off for_current TraceBreakPoints;*/
+                /*trigger off for_current Trace21Calls;*/
+                /*trigger off for_current TraceMOVS;*/
+                skip
+                end;
+        true
+        -->
+                trigger off for_next waitStartCondition
+fi
+end;
+
+init_action;
+begin
+        /* Start condition */
+        start_watch_func(0x21,0x4B,1); /* Exec */
+        
+        /* Trigger instructions */
+        toggle_watch_ins(0,0xCD); /* watch INT */
+        toggle_watch_ins(0,0xCF); /* watch IRET */
+        toggle_watch_ins(0,0xCA); /* RETF imm */
+        toggle_watch_ins(0,0xCB); /* RETF */
+        /*toggle_watch_ins(0,0x9A);*/ /* CALL FAR xxxx:xxxx */
+        /*toggle_watch_ins(0xFF,0x03);*/ /* CALL FAR [...] */
+        toggle_watch_ins(0,0xA4); /* MOVSB */
+        toggle_watch_ins(0,0xA5); /* MOVSW */
+
+        /* Let's Go */
+        trigger off for_next waitStartCondition
+end.

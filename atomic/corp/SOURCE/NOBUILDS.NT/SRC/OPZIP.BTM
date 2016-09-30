@@ -1,0 +1,165 @@
+@ECHO OFF
+
+@REM --------------------------------------------------------------------------
+@REM Batch file to create the online purchase version self extracting zip files
+@REM
+@REM The process of this file is as follows:
+@REM
+@REM 1 - Copies all the files to the %PROJPRE%\FINAL directory.
+@REM 2 - Stamps the files with the time and date hard-coded below.
+@REM 3 - Zips the files into one zip called _ZIPNAME
+@REM 4 - Runs the WINZIPSE.EXE program from the NOBUILDS area to create the
+@REM     self-extracting executable called _EXENAME.
+@REM 5 - Stamps the resulting executable with the hard-coded date and time
+@REM     below.
+@REM --------------------------------------------------------------------------
+
+SET _SOURCE_FILES=P:\NORTON\NAV\NAVNT\GRYPHON\RELEASE\NAVNT
+SET _ZIPNAME=NAVNT2.ZIP
+SET _EXENAME=NAVNT2.EXE
+SET _SOURCE_DATE=11/01/96
+SET _SOURCE_TIME=02:00a
+
+PUSHD
+
+@ECHO Current file dates will be set to %_SOURCE_DATE% %_SOURCE_TIME%
+CHOICE /C:YN Is this correct?
+IF ERRORLEVEL 2 GOTO BATCHEND
+@ECHO.
+
+IFF "%PROJPRE%" == "" THEN
+    GOTO noprojerr
+ENDIFF
+
+IFF NOT EXIST %PROJPRE%FINAL\NUL THEN
+    GOTO nofinalerr
+ENDIFF
+
+@REM --------------------------------------------------------------------------
+@REM Copy the files over to the final directory
+@REM --------------------------------------------------------------------------
+
+COPY %PROJPRE%NOBUILDS\SRC\filelist.txt %PROJPRE%FINAL
+
+FOR %a IN (@%PROJPRE%FINAL\filelist.txt) DO GOSUB copysub
+
+@REM The following files are just used for the self-extracting portion
+@REM and are not put into the zip file, nor installed
+
+COPY %LANGPRE%WINZINST\SRC\DIALOGOP.TXT %PROJPRE%FINAL
+COPY %LANGPRE%WINZINST\SRC\ABOUT.TXT %PROJPRE%FINAL
+COPY %LANGPRE%WINZINST\SRC\NAVW.ICO %PROJPRE%FINAL
+
+
+@REM --------------------------------------------------------------------------
+@REM Set the current drive/directory to the final area
+@REM --------------------------------------------------------------------------
+
+%_PROJPRE%
+CD %PROJPRE%FINAL
+
+@REM --------------------------------------------------------------------------
+@REM Make sure the files all got copied
+@REM --------------------------------------------------------------------------
+
+FOR %a IN (@%PROJPRE%FINAL\filelist.txt) DO IF NOT EXIST %a GOTO missfileerr
+
+
+@REM --------------------------------------------------------------------------
+@REM Time and date stamp the files
+@REM --------------------------------------------------------------------------
+
+rem SET _SOURCE_CMD=FD /D:%_SOURCE_DATE% /T:%_SOURCE_TIME%
+
+rem FOR %a IN (@filelist.txt) DO %_SOURCE_CMD% %a
+
+@REM --------------------------------------------------------------------------
+@REM Zip up the files
+@REM --------------------------------------------------------------------------
+
+IFF EXIST %_ZIPNAME% THEN
+    DEL %_ZIPNAME%
+ENDIFF
+
+@rem Zip all files at once
+pkzip -ex %_ZIPNAME% @filelist.txt
+
+
+@REM --------------------------------------------------------------------------
+@REM Create the self-extracting zip
+@REM --------------------------------------------------------------------------
+
+%PROJPRE%NOBUILDS\SRC\WINZIPSE.EXE -SETUP -Inavw.ico -win32 -Tdialogop.txt -Aabout.txt %_ZIPNAME% -Y  -LE -C SETUP.EXE
+@REM @ECHO.
+@REM @ECHO When WINZIPSE has finished,
+
+@REM --------------------------------------------------------------------------
+@REM Stamp the date/time for the self-extracting zip
+@REM --------------------------------------------------------------------------
+
+FD /D:%_SOURCE_DATE /T:%_SOURCE_TIME %_EXENAME%
+@ECHO zipfile %_EXENAME% created successfully
+@ECHO.
+GOTO BATCHEND
+
+@REM Subroutine to copy the files from the various locations
+
+:copysub
+IFF EXIST %_SOURCE_FILES%\%a THEN
+    COPY %_SOURCE_FILES%\%a %PROJPRE%FINAL
+ELSEIFF EXIST %FAMILYPRE%\NOBUILDS\SRC%FAMILYVERS%\%a THEN
+    COPY %FAMILYPRE%\NOBUILDS\SRC%FAMILYVERS%\%a %PROJPRE%FINAL
+ELSEIFF EXIST %FAMILYPRE%\BIN%FAMILYVERS%.W32\%a THEN
+         COPY %FAMILYPRE%\BIN%FAMILYVERS%.W32\%a %PROJPRE%FINAL
+ELSEIFF EXIST %FAMILYPRE%\BIN%FAMILYVERS%.WIN\%a THEN
+         COPY %FAMILYPRE%\BIN%FAMILYVERS%.WIN\%a %PROJPRE%FINAL
+ELSEIFF EXIST %PROJPRE%BIN.W32\%a THEN
+    COPY %PROJPRE%BIN.W32\%a %PROJPRE%FINAL
+ELSEIFF EXIST %PROJPRE%BIN.WIN\%a THEN
+    COPY %PROJPRE%BIN.WIN\%a %PROJPRE%FINAL
+ELSEIFF EXIST %PROJPRE%BIN.DOS\%a THEN
+    COPY %PROJPRE%BIN.DOS\%a %PROJPRE%FINAL
+ELSEIFF EXIST %PROJPRE%BIN.VXD\%a THEN
+    COPY %PROJPRE%BIN.VXD\%a %PROJPRE%FINAL
+ELSEIFF EXIST %PROJPRE%WINZINST\SRC\%a THEN
+    COPY %PROJPRE%WINZINST\SRC\%a %PROJPRE%FINAL
+ELSEIFF EXIST %PROJPRE%NOBUILDS\SRC\%a THEN
+    COPY %PROJPRE%NOBUILDS\SRC\%a %PROJPRE%FINAL
+ELSEIFF EXIST L:\SOURCE\BIN%QUAKE%.W32\%a THEN
+    COPY L:\SOURCE\BIN%QUAKE%.W32\%a %PROJPRE%FINAL
+ELSEIFF EXIST L:\SOURCE\BIN%QUAKE%.VXD\%a THEN
+    COPY L:\SOURCE\BIN%QUAKE%.VXD\%a %PROJPRE%FINAL
+ENDIFF
+
+RETURN
+
+
+:noprojerr
+ECHO.
+ECHO You must use env to set the gryphon product before using this batchfile
+ECHO.
+GOTO BATCHEND
+
+:nofinalerr
+ECHO.
+ECHO Error - %PROJPRE%FINAL directory does not exist
+ECHO.
+GOTO BATCHEND
+
+:missfileerr
+ECHO.
+ECHO Not all files were copied.  Terminating...
+ECHO.
+GOTO BATCHEND
+
+:batchend
+POPD
+SET _SOURCE_DATE=
+SET _SOURCE_TIME=
+SET _SOURCE_CMD=
+SET _SOURCE_FILES=
+SET _ZIPNAME=
+SET _EXENAME=
+
+
+

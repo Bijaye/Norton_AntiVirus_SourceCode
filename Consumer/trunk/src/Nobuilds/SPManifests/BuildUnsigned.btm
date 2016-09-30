@@ -1,0 +1,32 @@
+@echo off
+
+rem ---------------------------------------------------------------------------------------------
+rem BuildUnsigned.btm - build manifest baselines from config files and merge module/msi projects
+rem Run this script from a clean sync, then run FixNames.btm and edit/tweak the resulting manifests
+rem Then Run BuildSigned.btm to make the .spm and .grd files
+rem ---------------------------------------------------------------------------------------------
+
+
+
+set wsmpath=..\..\Install\MSI
+set configpath=ConfigFiles
+set manifestpath=Unsigned
+set tidy=tools\tidy.exe
+set grep=tools\grep.exe
+set msitosymprotect=..\..\..\SDKs\SymProtect\ntu.x86.vc71.Release\bin.nonredist\MsiToSymProtect.exe
+set regexp=-e "\<filename\>%SHGetFolderPath.*CSIDL_PROGRAM_FILES_COMMON.\\Symantec Shared\\SPManifests" -e "\<filename\>%registry.*HKEY_LOCAL_MACHINE\\Software\\Symantec\\InstalledApps\\NAV" -e "\<filename\>%SHGetFolderPath.*CSIDL_COMMON_APPDATA.\\Symantec\\Norton AntiVirus\\Tasks"
+
+set wsm=AP AutoProtectDrivers CfgWizRes DefAlert IMScan IWP IWPLUCBK MainUI NAVError NAVEvent navlucbk NPFMonitor OfficeAV OPScan Options PatchInst Scanners SCSSCommon SNLog Symevent
+set wsi=IWP NAV Parent Short SYMLT
+
+for i in (%wsm) do del %manifestpath\%i.xml
+for i in (%wsm) do %msitosymprotect /msi %wsmpath\%i.wsm /config %configpath%\%iConfig.xml /manifest %manifestpath\%i.xml
+for i in (%wsm) do %grep -v -i -U %regexp %manifestpath\%i.xml > %manifestpath\~~temp_%i.xml
+for i in (%wsm) do move %manifestpath\~~temp_%i.xml %manifestpath\%i.xml
+for i in (%wsm) do %tidy -xml -m -wrap 10000 -q %manifestpath\%i.xml
+
+for i in (%wsi) do del %manifestpath\%i.xml
+for i in (%wsi) do %msitosymprotect /msi %wsmpath\%i.wsi /config %configpath\%iConfig.xml /manifest %manifestpath\%i.xml
+for i in (%wsi) do %grep -v -i -U %regexp %manifestpath\%i.xml > %manifestpath\~~temp_%i.xml
+for i in (%wsi) do move %manifestpath\~~temp_%i.xml %manifestpath\%i.xml
+for i in (%wsi) do %tidy -xml -m -wrap 10000 -q %manifestpath\%i.xml

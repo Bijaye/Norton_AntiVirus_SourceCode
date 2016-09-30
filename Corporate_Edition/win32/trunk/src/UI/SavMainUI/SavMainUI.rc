@@ -1,0 +1,642 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "1 TYPELIB ""SavMainUI.tlb""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "InternalName", "SavMainUI.dll"
+            VALUE "OriginalFilename", "SavMainUI.dll"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+IDR_SAVMAINUI           REGISTRY                "SavMainUI.rgs"
+IDR_SAVPROTECTIONPROVIDER REGISTRY                "SavProtectionProvider.rgs"
+IDR_SAVAUTOPROTECTFILESYSTEM REGISTRY                "SavAutoprotectFilesystem.rgs"
+IDR_SAVAUTOPROTECTINTERNETEMAIL REGISTRY                "SavAutoprotectInternetEmail.rgs"
+IDR_SAVAUTOPROTECTNOTES REGISTRY                "SavAutoprotectNotes.rgs"
+IDR_SAVAUTOPROTECTEXCHANGE REGISTRY                "SavAutoprotectExchange.rgs"
+IDR_CONFIGUREABLESCANCOLLECTION REGISTRY                "ConfigureableScanCollection.rgs"
+IDR_SAVCONFIGUREABLESCAN REGISTRY                "SavConfigureableScan.rgs"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_FUTZERIFIC DIALOGEX 0, 0, 299, 206
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LDVPUICTRL1,
+                    "{536604C2-B82E-11D1-8252-00A0C95C0756}",WS_TABSTOP,7,7,285,151
+    DEFPUSHBUTTON   "OK",IDOK,7,185,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,71,185,50,14
+END
+
+IDD_CONFIGPAGE_FILESYSTEMAP DIALOGEX 0, 0, 272, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Realtime file protection"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_LDVPUICTRL,"{536604C2-B82E-11D1-8252-00A0C95C0756}",WS_TABSTOP,7,7,258,216
+END
+
+IDD_CONFIGPAGE_EXCHANGEAP DIALOGEX 0, 0, 272, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Exchange protection"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_EXCHNGUICTRL,
+                    "{FF1C1AB8-C27D-11D1-8263-00A0C95C0756}",WS_TABSTOP,7,7,258,216
+END
+
+IDD_CONFIGPAGE_NOTESAP DIALOGEX 0, 0, 272, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Notes protection"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_LOTNOTESUICTRL,
+                    "{2707AAC5-C268-11D1-8263-00A0C95C0756}",WS_TABSTOP,7,7,258,216
+END
+
+IDD_CONFIGPAGE_IMAILAP DIALOGEX 0, 0, 272, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Internet e-mail protection"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_INETMAILUICTRL,
+                    "{72E2440E-EBEA-49E6-A185-1BE03F723E28}",WS_TABSTOP,7,7,258,216
+END
+
+IDD_CONFIGPAGE_GENERAL DIALOGEX 0, 0, 272, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_VISIBLE | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "History Purge",IDC_STATIC,7,7,258,59
+    LTEXT           "&Delete after:",IDC_STATIC,15,49,42,8
+    EDITTEXT        IDC_GENERAL_PURGETIME,59,46,37,14,ES_NUMBER
+    CONTROL         "",IDC_GENERAL_PURGESPINNER,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_HOTTRACK,85,46,11,14
+    COMBOBOX        IDC_GENERAL_PURGETIMEUNIT,110,48,55,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    ICON            IDI_HISTORYPURGE,IDC_STATIC,15,16,20,20
+    LTEXT           "Select the time period to determine how long Risk History, Scan History, and Event Log entries are kept.",IDC_STATIC,63,16,195,28
+    GROUPBOX        "Scheduled Virus Definition Updates",IDC_STATIC,7,75,258,99
+    ICON            IDI_SCHEDULE,IDC_STATIC,14,84,20,20
+    LTEXT           "Set the schedule for automatic virus definition updates via LiveUpdate.",IDC_STATIC,63,86,195,28
+    CONTROL         "&Enable automatic updates",IDC_GENERAL_ENABLESCHEDULEDLU,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,118,99,10
+    LTEXT           "Sample text goes here",IDC_GENERAL_SCHEDULEDESCRIPTION,26,132,177,29,WS_BORDER
+    PUSHBUTTON      "&Schedule...",IDC_GENERAL_SCHEDULE,153,114,50,14
+END
+
+IDD_GENERAL_VIRUSDEFUPDATESCHEDULE DIALOGEX 0, 0, 271, 142
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Virus Definitios Update Schedule"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    ICON            IDI_SCHEDULE,ID_STATIC,7,7,20,20
+    LTEXT           "Select how often and when you want the definitions update to occur.",IDC_STATIC,35,7,171,20
+    DEFPUSHBUTTON   "OK",IDOK,214,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,214,24,50,14
+    CTEXT           "Virus Definitions Update Schedule",IDC_STATIC,7,29,200,12,SS_NOPREFIX | SS_CENTERIMAGE,WS_EX_STATICEDGE
+    CONTROL         "",IDC_SCHEDULE,"{2E76B2C3-C603-11D1-826C-00A0C95C0756}",WS_TABSTOP,7,46,240,89
+END
+
+IDD_SCANS_CONFIGPAGE_FILES DIALOGEX 0, 0, 263, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "What to scan"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_SCANS_CONFIGPAGE_FILES_SELECTOR,
+                    "{91581CB1-0E7B-11D1-9D93-00A0C95C1762}",NOT WS_VISIBLE,7,7,249,209
+    LTEXT           "",IDC_SCANS_CONFIGPAGE_FILES_TYPETITLE,7,7,249,12,NOT WS_VISIBLE
+    LTEXT           "",IDC_SCANS_CONFIGPAGE_FILES_TYPEDESCRIPTION,7,19,249,197,NOT WS_VISIBLE
+END
+
+IDD_SCANS_CONFIGPAGE_OPTIONS DIALOGEX 0, 0, 263, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Options"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_SCANS_CONFIGPAGE_OPTIONS_OPTIONSCTRL,
+                    "{536604C2-B82E-11D1-8252-00A0C95C0756}",WS_TABSTOP,7,7,249,209
+END
+
+IDD_SCANS_CONFIGPAGE_SCHEDULE DIALOGEX 0, 0, 263, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+EXSTYLE WS_EX_CONTROLPARENT
+CAPTION "Schedule"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    ICON            IDI_SCHEDULE,IDC_SCANS_CONFIGPAGE_SCHEDULE_GRAPHIC,7,4,20,20
+    LTEXT           "Select how often and when you want the scan to occur.",IDC_STATIC,7,31,249,16
+    LTEXT           "Schedule control",IDC_SCANS_CONFIGPAGE_SCHEDULE_SCHEDULECTRL,7,54,249,162,WS_TABSTOP
+END
+
+IDD_SCANS_CONFIGPAGE_NAME DIALOGEX 0, 0, 263, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "General"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "Na&me:",IDC_STATIC,7,7,64,8
+    EDITTEXT        IDC_SCANS_CONFIGPAGE_NAME_NAME,7,21,249,14,ES_AUTOHSCROLL
+    LTEXT           "&Description:",IDC_STATIC,7,53,59,8
+    EDITTEXT        IDC_SCANS_CONFIGPAGE_NAME_DESCRIPTION,7,65,249,48,ES_MULTILINE | WS_VSCROLL
+    LTEXT           "Run scan:",IDC_STATIC,7,126,58,8
+    EDITTEXT        IDD_SCANS_CONFIGPAGE_NAME_WHENRUN,83,126,173,12,ES_AUTOHSCROLL | ES_READONLY
+END
+
+IDD_SCANS_CONFIGPAGE_WHENRUN DIALOGEX 0, 0, 263, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Startup"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "On Demand",IDC_SCANS_CONFIGPAGE_WHENRUN_ONDEMAND,"Button",BS_AUTORADIOBUTTON,7,23,145,12
+    CONTROL         "At Specified Times",IDC_SCANS_CONFIGPAGE_WHENRUN_SCHEDULED,
+                    "Button",BS_AUTORADIOBUTTON,7,66,145,12
+    CONTROL         "At Startup",IDC_SCANS_CONFIGPAGE_WHENRUN_STARTUP,"Button",BS_AUTORADIOBUTTON,7,112,145,12
+    LTEXT           "When should this scan run?",IDC_STATIC,7,7,91,8
+    LTEXT           "Run this scan when the system boots up or when a new user logs in.",IDC_SCANS_CONFIGPAGE_WHENRUN_STARTUP_DESCRIPTION,7,124,249,16,NOT WS_GROUP
+    LTEXT           "Run this scan periodically on days and at times you specify.",IDC_SCANS_CONFIGPAGE_WHENRUN_SCHEDULED_DESCRIPTION,7,78,249,16,NOT WS_GROUP
+    LTEXT           "Do not run this scan automatically - run it only when instructed to do so.",IDC_SCANS_CONFIGPAGE_WHENRUN_ONDEMAND_DESCRIPTION,7,35,249,16,NOT WS_GROUP
+END
+
+IDD_SCANS_CONFIGPAGE_WHATTOSCAN DIALOGEX 0, 0, 263, 223
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "What to scan"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    LTEXT           "What should this scan scan?",IDC_STATIC,6,7,93,8
+    CONTROL         "Quick",IDC_SCANS_CONFIGPAGE_WHATTOSCAN_QUICK,"Button",BS_AUTORADIOBUTTON,7,50,54,12
+    CONTROL         "Full",IDC_SCANS_CONFIGPAGE_WHATTOSCAN_FULL,"Button",BS_AUTORADIOBUTTON,7,139,55,12
+    CONTROL         "Custom",IDC_SCANS_CONFIGPAGE_WHATTOSCAN_CUSTOM,"Button",BS_AUTORADIOBUTTON,7,23,62,12
+    LTEXT           "Quickscan description goes here (too long for dialog RC)",IDC_SCANS_CONFIGPAGE_WHATTOSCAN_QUICK_DESCRIPTION,7,62,249,70,NOT WS_GROUP
+    LTEXT           "Scans this entire computer for viruses and security risks such as adware and spyware.\n\nUse this scan to look in the boot sector, in programs loaded into memory, and in all of the files and folders.  A password may be required to scan network drives.",IDC_SCANS_CONFIGPAGE_WHATTOSCAN_FULL_DESCRIPTION,7,151,249,56,NOT WS_GROUP
+    LTEXT           "Scan only files and directories you specify.",IDC_SCANS_CONFIGPAGE_WHATTOSCAN_CUSTOM_DESCRIPTION,7,35,249,8,NOT WS_GROUP
+END
+
+IDD_GLOBAL_EXCEPTION_HANDLING DIALOGEX 0, 0, 401, 337
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Global Exception Handling"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,176,313,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,237,313,50,14
+    PUSHBUTTON      "Help",IDHELP,306,312,50,14
+    CONTROL         "",IDC_ADMIN_GE_LIST,"SysListView32",LVS_REPORT | LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,55,45,300,120
+    PUSHBUTTON		"Add",IDC_GEH_ADD,171,177,50,14
+    PUSHBUTTON      "Edit",IDC_GEH_EDIT,226,178,50,14
+    PUSHBUTTON      "Delete",IDC_GEH_DELETE,290,178,50,14
+END
+
+IDD_KNOWN_RISK_SELECTION DIALOGEX 0, 0, 300, 242
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Security Risks"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CONTROL         "",IDC_AVAILABLE_PVID_LIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,29,286,166
+    LTEXT           "Select the security risks that you want to configure. You can sort the table by clicking on the column headings.",IDC_THREATCAT_AVAILABLE_THREATS_STATIC,7,7,286,16
+    DEFPUSHBUTTON   "OK",IDOK,179,217,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,241,217,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_FUTZERIFIC, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 292
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 199
+    END
+
+    IDD_CONFIGPAGE_FILESYSTEMAP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+
+    IDD_CONFIGPAGE_EXCHANGEAP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+
+    IDD_CONFIGPAGE_NOTESAP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+
+    IDD_CONFIGPAGE_IMAILAP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+
+    IDD_CONFIGPAGE_GENERAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 265
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 223
+    END
+
+    IDD_GENERAL_VIRUSDEFUPDATESCHEDULE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 264
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 135
+    END
+
+    IDD_SCANS_CONFIGPAGE_FILES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        TOPMARGIN, 7
+    END
+
+    IDD_SCANS_CONFIGPAGE_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_SCANS_CONFIGPAGE_SCHEDULE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_SCANS_CONFIGPAGE_NAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_SCANS_CONFIGPAGE_WHENRUN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_SCANS_CONFIGPAGE_WHATTOSCAN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 256
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_FUTZERIFIC DLGINIT
+BEGIN
+    IDC_LDVPUICTRL1, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x2c3c, 0x0000, 0x1952, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+IDD_CONFIGPAGE_FILESYSTEMAP DLGINIT
+BEGIN
+    IDC_LDVPUICTRL, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x27ff, 0x0000, 0x2447, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+IDD_CONFIGPAGE_EXCHANGEAP DLGINIT
+BEGIN
+    IDC_EXCHNGUICTRL, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x27ff, 0x0000, 0x2447, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+IDD_CONFIGPAGE_NOTESAP DLGINIT
+BEGIN
+    IDC_LOTNOTESUICTRL, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x27ff, 0x0000, 0x2447, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+IDD_CONFIGPAGE_IMAILAP DLGINIT
+BEGIN
+    IDC_INETMAILUICTRL, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x27ff, 0x0000, 0x2447, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+IDD_GENERAL_VIRUSDEFUPDATESCHEDULE DLGINIT
+BEGIN
+    IDC_SCHEDULE, 0x376, 20, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x2535, 0x0000, 0x0efc, 0x0000, 0x0000, 
+0x0000, 
+    0
+END
+
+IDD_SCANS_CONFIGPAGE_FILES DLGINIT
+BEGIN
+    IDC_SCANS_CONFIGPAGE_FILES_SELECTOR, 0x376, 76, 0
+0x0000, 0x0000, 0x0710, 0x0000, 0x094d, 0x0000, 0x043d, 0x0000, 0x0013, 
+0x6570, 0x3d63, 0x0003, 0x0002, 0x0000, 0x0003, 0x0001, 0x0000, 0x0003, 
+0x0100, 0x0000, 0x0003, 0x0000, 0x0000, 0x0003, 0x0000, 0x0000, 0x0003, 
+0x0000, 0x0000, 0x0003, 0x0000, 0x1000, 0x0003, 0x0000, 0x0000, 0x0003, 
+0x0000, 0x0000, 
+    0
+END
+
+IDD_SCANS_CONFIGPAGE_OPTIONS DLGINIT
+BEGIN
+    IDC_SCANS_CONFIGPAGE_OPTIONS_OPTIONSCTRL, 0x376, 32, 0
+0x0000, 0x0000, 0x0000, 0x0001, 0x240d, 0x0000, 0x2290, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 0x0000, 0x0000, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_HISTORYPURGE        ICON                    "history.ico"
+IDI_SCHEDULE            ICON                    "schedule.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_GEH_PROTECHTYPES MENU 
+BEGIN
+    POPUP ""
+    BEGIN
+        POPUP "Security Risks"
+        BEGIN
+            MENUITEM "Known Risks",                 ID_GEH_SECRISKS_KNOWN
+            MENUITEM "Files",                       ID_GEH_SECRISKS_FILES
+            MENUITEM "Directories",                 ID_GEH_SECRISKS_DIRECTORIES
+            MENUITEM "Extensions",                  ID_GEH_SECRISKS_EXTENSIONS
+        END
+        POPUP "Heuristic Protection"
+        BEGIN
+            MENUITEM "Processes to detect",         ID_GEH_HUERISTICPROT_FORCEDDET
+            MENUITEM "Detected Processes",          ID_GEH_HUERISTICPROT_PROCESSES
+        END
+        MENUITEM "Tamper Protection",           ID_GEH_TAMPERPROTECTION
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SPLASHGRAPHIC       BITMAP                  "SplashGraphic.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "SavMainUI"
+    IDS_GENERAL_PURGE_DAYS  "Days"
+    IDS_GENERAL_PURGE_MONTHS "Months"
+    IDS_GENERAL_PURGE_YEARS "Years"
+    IDS_DAYNAME_MONDAY      "Monday"
+    IDS_DAYNAME_TUESDAY     "Tuesday"
+    IDS_DAYNAME_WEDNESDAY   "Wednesday"
+    IDS_DAYNAME_THURSDAY    "Thursday"
+    IDS_DAYNAME_FRIDAY      "Friday"
+    IDS_DAYNAME_SATURDAY    "Saturday"
+    IDS_DAYNAME_SUNDAY      "Sunday"
+    IDS_DEFUPDATEFORMAT_DAILY_RANDOM 
+                            "Update virus definitions every day within %1!lu! minutes of %2!s!"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DEFUPDATEFORMAT_DAILY "Update virus definitions every day at %1!s!"
+    IDS_DEFUPDATEFORMAT_WEEKLY_RANDOM_DAYMINUTES 
+                            "Update virus definitions on a random day between %1!s! and %2!s! within %3!lu! minutes of %4!s!"
+    IDS_DEFUPDATEFORMAT_WEEKLY_RANDOM_DAY 
+                            "Upate virus definitions at %1!s! on a random day between %2!s! and %3!s!"
+    IDS_DEFUPDATEFORMAT_WEEKLY_RANDOM_MINUTES 
+                            "Update virus definitions every %1!s! within %2!lu! minutes of %3!s!"
+    IDS_DEFUPDATEFORMAT_WEEKLY "Update virus definitions every %1!s! at %2!s!"
+    IDS_DEFUPDATEFORMAT_MONTHLY_RANDOM_DAYMINUTES 
+                            "Update virus definitions within %1!lu! days of day %2!lu! within %3!lu! minutes of %4!s!"
+    IDS_DEFUPDATEFORMAT_MONTHLY_RANDOM_DAY 
+                            "Update virus definitions every month within %1!lu! days of day %2!lu! at %3!s!"
+    IDS_DEFUPDATEFORMAT_MONTHLY_RANDOM_MINUTES 
+                            "Update virus definitions on day %1!lu! of every month within %2!lu! minutes of %3!s!"
+    IDS_DEFUPDATEFORMAT_MONTHLY 
+                            "Update virus definitions on day %1!ld! of every month at %2!s!"
+    IDS_AP_EXCHANGE_DISPLAYNAME "Exchange"
+    IDS_AP_EXCHANGE_DESCRIPTION 
+                            "Protects Microsoft Outlook and Exchange e-mail"
+    IDS_AP_IMAIL_DISPLAYNAME "Internet e-mail"
+    IDS_AP_IMAIL_DESCRIPTION "Protects SMTP and POP3 Internet e-mail"
+    IDS_AP_NOTES_DISPLAYNAME "Notes"
+    IDS_AP_NOTES_DESCRIPTION "Protects Lotus Notes e-mail and other documents"
+    IDS_AP_FILESYSTEM_DISPLAYNAME "File"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_AP_FILESYSTEM_DESCRIPTION "Protects files"
+    IDS_SAVPROVIDER_NAME    "AntiVirus and AntiSpyware Protection"
+    IDS_SAVPROVIDER_DESCRIPTION 
+                            "Protects against viruses, trojan horses, and spyware"
+    IDS_SAVPROVIDER_DEFSDESCRIPTION "Definitions:"
+    IDS_SCAN_QUICKSCAN_TITLE "Quick Scan"
+    IDS_SCAN_FULLSCAN_TITLE "Full Scan"
+    IDS_SCANS_CONFIGPAGE_FILES_QUICK_DESCRIPTION 
+                            "Scans memory and other common infection locations on this computer for viruses and security risks, such as adware and spyware, that are actively infecting this computer.\n\nUse this scan to find risks quickly.  If this scan finds a virus or security risk, Symantec recommends that you follow up with a full scan."
+    IDS_SCANS_CONFIGPAGE_NAME_WHEN_ONDEMAND "On demand"
+    IDS_SCANS_CONFIGPAGE_NAME_WHEN_SCHEDULED "Periodically as scheduled"
+    IDS_SCANS_CONFIGPAGE_NAME_WHEN_STARTUP "At system startup"
+    IDS_SCANS_CONFIGPAGE_FILES_QUICK_TITLE "Quick scan"
+    IDS_SCANS_CONFIGPAGE_FILES_FULL_TITLE "Full scan"
+    IDS_SCANS_CONFIGPAGE_FILES_FULL_DESCRIPTION 
+                            "Scans this entire computer for viruses and security risks such as adware and spyware.\n\nUse this scan to look in the boot sector, in programs loaded into memory, and in all of the files and folders.  A password may be required to scan network drives."
+    IDS_SCAN_DEFAULTNAMETEMPLATE "New scan %1!d!"
+    IDS_SCAN_STATUSTITLETEMPLATE "Symantec AntiVirus - %1!s!"
+    IDD_SCANS_CONFIGPAGE_WHENRUN_TITLEFONT "*,1.35"
+END
+
+STRINGTABLE 
+BEGIN
+    IDD_SCANS_CONFIGPAGE_WHATTOSCAN_TITLEFONT "*,1.35"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_THREATNAME_NAME "Security Risk"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_THREATNAME_WIDTH "150"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_FIRSTACTION_NAME "First Action"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_FIRSTACTION_WIDTH "100"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_SECONDACTION_NAME "If First Action Fails"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_SECONDACTION_WIDTH "125"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_OVERALLRATING_NAME "Overall Rating"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_OVERALLRATING_WIDTH "100"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_PRIVACYRATING_NAME 
+                            "Privacy Impact Rating"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_PRIVACYRATING_WIDTH "100"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_PERFORMANCERATING_NAME 
+                            "Performance Impact Rating"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_PERFORMANCERATING_WIDTH "100"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_STEALTHRATING_NAME "Stealth Rating"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_STEALTHRATING_WIDTH "100"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_REMOVALRATING_NAME "Removal Rating"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_REMOVALRATING_WIDTH "100"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_DEPENDENT_NAME "Dependent Program"
+    IDS_THREATCAT_TAB_EXCLUSION_COLUMN_DEPENDENT_WIDTH "100"
+END
+
+
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+1 TYPELIB "SavMainUI.tlb"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

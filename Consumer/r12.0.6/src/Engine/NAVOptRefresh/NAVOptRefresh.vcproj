@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="gb2312"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="NAVOptRefresh"
+	ProjectGUID="{E913088D-EC8F-438D-AE39-C9E9146DFA54}"
+	RootNamespace="NAVOptRefresh"
+	SccProjectName="Perforce Project"
+	SccAuxPath=""
+	SccLocalPath="..\.."
+	SccProvider="MSSCCI:Perforce SCM">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug Licensed NAV SuiteChild|Win32"
+			OutputDirectory="Debug Licensed NAV SuiteChild"
+			IntermediateDirectory="Debug Licensed NAV SuiteChild"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\SDKs\SymNetDrv\NISDrvCommon;..\..\..\SDKs\SymNetDrv\INCLUDE;..\..\..\Nobuilds\msvc7\VC7\PlatformSDK\Include;..\..\..\Nobuilds\msvc7\VC7\Include;..\..\..\Nobuilds\msvc7\VC7\atlmfc\include;..\..\include;..\..\IWP\IWP;..\..\..\SDKs\EventManager\Helper;..\..\..\SDKs\EventManager\INCLUDE;..\..\..\SDKs\CommonClient\include\ccSettings;..\..\..\SDKs\CommonClient\include\CCLIB;..\..\..\SDKs\CommonClient\include;..\..\..\SDKs\Norton_Internet_Security\Shared_Components\include;..\..\..\SDKs\SIMON_Interfaces\include;..\..\..\SDKs\StahlSoft\Include;&quot;..\..\..\SDKs\CCPD-LicensingTechnologies\Crypto\Include&quot;;..\..\..\SDKs\Licensing\CLT\include;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\SuiteChild\LicensingObject;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\XTreamLok;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include\SuiteChild\LicensingObject;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\include\CLT;..\..\include\V2Authorization\Symantec\SuiteChild\NAV\Licensed;..\..\include\V2Authorization\Symantec\SuiteChild\NAV;..\..\..\SDKs\AutoProtect\include;..\..\..\nobuilds\livesubscribe\include;..\..\..\SDKs\InstallToolBox\include;..\..\..\SDKs\CommonClient\include\ccVerifyTrust;..\..\..\SDKs\Licensing\CLT\include\;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\include\prodinfo;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\Console;..\..\..\SDKs\NSC\Source\LicensingInclude;..\..\..\SDKs\NSC\InterfaceHeaders;..\..\..\SDKs\NSC\Source\nsclib"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;NAVOPTREFRESH_EXPORTS;CLT_DIGISIG_ENABLE"
+				IgnoreStandardIncludePath="TRUE"
+				BasicRuntimeChecks="0"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Debug/NAVOptRefresh.pch"
+				AssemblerListingLocation=".\Debug/"
+				ObjectFile=".\Debug/"
+				ProgramDataBaseFileName=".\Debug/"
+				BrowseInformation="1"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="4"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="odbc32.lib odbccp32.lib NAVToolBox.lib navopt32.lib"
+				OutputFile="$(OutDir)/NAVOptRF.dll"
+				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="..\..\lib.ida;..\..\..\SDKs\SymNetDrv\LIB.IDA;..\..\..\SDKs\CommonClient\LIB\lib.ida;..\..\..\SDKs\CryptOptions\LIB.IDA;..\..\..\SDKs\Licensing\Lib.ida;&quot;..\..\..\SDKs\Crypto-C\lib\intel_ia32&quot;;&quot;..\..\..\SDKs\Crypto-C\Cert-C\lib\windows\win32\msvc60\debug_mt&quot;;..\..\..\Nobuilds\msvc7\VC7\PlatformSDK\lib;..\..\..\Nobuilds\msvc7\VC7\lib;..\..\..\Nobuilds\msvc7\VC7\atlmfc\lib"
+				ModuleDefinitionFile=".\NAVOptRefresh.def"
+				DelayLoadDLLs="advapi32.dll;ccL40D.dll;shell32.dll;shlwapi.dll;ws2_32.dll;version.dll;userenv.dll;"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="$(OutDir)/$(TargetName).map"
+				ImportLibrary=".\Debug/NAVOptRF.lib"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				AdditionalIncludeDirectories=".\;..\..\..\Nobuilds\PlatSDK\include;..\..\..\Nobuilds\msvc7\Vc7\include;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\&quot;;..\..\include;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include&quot;;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\include\CLT;"
+				MkTypLibCompatible="FALSE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Debug/NAVOptRefresh.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="echo copy  &quot;$(TargetPath)&quot;  &quot;..\..\BIN.IdA\*.*&quot;
+copy  &quot;$(TargetPath)&quot;  &quot;..\..\BIN.IdA\*.*&quot;
+echo copy  &quot;$(TargetDir)$(TargetName).pdb&quot;  &quot;..\..\BIN.IdA\*.*&quot;
+copy  &quot;$(TargetDir)$(TargetName).pdb&quot;  &quot;..\..\BIN.IdA\*.*&quot;
+echo copy  &quot;$(TargetDir)$(TargetName).map&quot;  &quot;..\..\BIN.IdA\*.*&quot;
+copy  &quot;$(TargetDir)$(TargetName).map&quot;  &quot;..\..\BIN.IdA\*.*&quot;
+
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="..\..\..\Nobuilds\msvc7\VC7\PlatformSDK\Include;..\..\..\Nobuilds\msvc7\VC7\Include;..\..\..\Nobuilds\msvc7\VC7\atlmfc\include;..\..\include;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\XTreamLok\LicensingObject&quot;;..\..\include\V2Authorization\Symantec\SuiteChild\NAV\Licensed"
+				IgnoreStandardIncludePath="TRUE"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release Licensed NAV SuiteChild|Win32"
+			OutputDirectory="Release Licensed NAV SuiteChild"
+			IntermediateDirectory="Release Licensed NAV SuiteChild"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="1"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\..\..\SDKs\SymNetDrv\NISDrvCommon;..\..\..\SDKs\SymNetDrv\INCLUDE;..\..\..\Nobuilds\msvc7\VC7\PlatformSDK\Include;..\..\..\Nobuilds\msvc7\VC7\Include;..\..\..\Nobuilds\msvc7\VC7\atlmfc\include;..\..\include;..\..\IWP\IWP;..\..\..\SDKs\EventManager\Helper;..\..\..\SDKs\EventManager\INCLUDE;..\..\..\SDKs\CommonClient\include\ccSettings;..\..\..\SDKs\CommonClient\include\CCLIB;..\..\..\SDKs\CommonClient\include;..\..\..\SDKs\Norton_Internet_Security\Shared_Components\include;..\..\..\SDKs\SIMON_Interfaces\include;..\..\..\SDKs\StahlSoft\Include;&quot;..\..\..\SDKs\CCPD-LicensingTechnologies\Crypto\Include&quot;;..\..\..\SDKs\Licensing\CLT\include;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\SuiteChild\LicensingObject;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\XTreamLok;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include\SuiteChild\LicensingObject;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\include\CLT;..\..\include\V2Authorization\Symantec\SuiteChild\NAV\Licensed;..\..\include\V2Authorization\Symantec\SuiteChild\NAV;..\..\..\SDKs\AutoProtect\include;..\..\..\nobuilds\livesubscribe\include;..\..\..\SDKs\InstallToolBox\include;..\..\..\SDKs\CommonClient\include\ccVerifyTrust;..\..\..\SDKs\Licensing\CLT\include\;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\include\prodinfo;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\Console;..\..\..\SDKs\NSC\Source\LicensingInclude;..\..\..\SDKs\NSC\InterfaceHeaders;..\..\..\SDKs\NSC\Source\nsclib"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;NAVOPTREFRESH_EXPORTS;CLT_DIGISIG_ENABLE"
+				IgnoreStandardIncludePath="TRUE"
+				StringPooling="TRUE"
+				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="TRUE"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile=".\Release/NAVOptRefresh.pch"
+				AssemblerListingLocation=".\Release/"
+				ObjectFile=".\Release/"
+				ProgramDataBaseFileName=".\Release/"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="3"
+				CompileAs="0"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="odbc32.lib odbccp32.lib NAVToolBox.lib navopt32.lib"
+				OutputFile="$(OutDir)/NAVOptRF.dll"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories="..\..\lib.ira;..\..\..\SDKs\SymNetDrv\LIB.IRA;..\..\..\SDKs\CommonClient\LIB\lib.ira;..\..\..\SDKs\CryptOptions\LIB.IRA;..\..\..\SDKs\Licensing\Lib.ira;&quot;..\..\..\SDKs\Crypto-C\lib\intel_ia32&quot;;&quot;..\..\..\SDKs\Crypto-C\Cert-C\lib\windows\win32\msvc60\release_mt&quot;;..\..\..\Nobuilds\msvc7\VC7\PlatformSDK\lib;..\..\..\Nobuilds\msvc7\VC7\lib;..\..\..\Nobuilds\msvc7\VC7\atlmfc\lib"
+				ModuleDefinitionFile=".\NAVOptRefresh.def"
+				DelayLoadDLLs="advapi32.dll;ccL40.dll;shell32.dll;shlwapi.dll;ws2_32.dll;version.dll;userenv.dll;"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="$(OutDir)/$(TargetName).map"
+				ImportLibrary=".\Release/NAVOptRF.lib"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				AdditionalIncludeDirectories=".\;..\..\..\Nobuilds\PlatSDK\include;..\..\..\Nobuilds\msvc7\Vc7\include;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include&quot;;..\..\include"
+				MkTypLibCompatible="FALSE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName=".\Release/NAVOptRefresh.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="echo copy  &quot;$(TargetPath)&quot;  &quot;..\..\BIN.IrA\*.*&quot;
+copy  &quot;$(TargetPath)&quot;  &quot;..\..\BIN.IrA\*.*&quot;
+echo copy &quot;$(OutDir)\$(TargetName).pdb&quot; &quot;..\..\BIN.IrA\*.*&quot;
+copy &quot;$(OutDir)\$(TargetName).pdb&quot; &quot;..\..\BIN.IrA\*.*&quot;
+echo copy &quot;$(OutDir)\$(TargetName).map&quot; &quot;..\..\BIN.IrA\*.*&quot;
+copy &quot;$(OutDir)\$(TargetName).map&quot; &quot;..\..\BIN.IrA\*.*&quot;
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="..\..\include;..\..\..\Nobuilds\msvc7\VC7\PlatformSDK\Include;..\..\..\Nobuilds\msvc7\VC7\Include;..\..\..\Nobuilds\msvc7\VC7\atlmfc\include;..\..\include\V2Authorization\Symantec\SuiteChild\NAV\Licensed"
+				IgnoreStandardIncludePath="TRUE"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat">
+			<File
+				RelativePath="BusinessRules.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\CommonClient\include\ccSettings\ccSettingsManagerHelper.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\CommonClient\include\ccLib\ccSymDelayLoader.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\CommonClient\include\ccWebWnd.idl">
+				<FileConfiguration
+					Name="Debug Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateTypeLibrary="FALSE"
+						TypeLibraryName=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateTypeLibrary="FALSE"
+						TypeLibraryName=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\include\IWPSettingsLoader.cpp">
+			</File>
+			<File
+				RelativePath="..\..\Ui\NAVLicense\NAVLicense.idl">
+				<FileConfiguration
+					Name="Debug Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						AdditionalIncludeDirectories=""
+						GenerateTypeLibrary="FALSE"
+						TypeLibraryName=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateTypeLibrary="FALSE"
+						TypeLibraryName=""/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\NAVOptionRefresh.cpp">
+			</File>
+			<File
+				RelativePath=".\NAVOptionRefreshEngine.cpp">
+			</File>
+			<File
+				RelativePath=".\NavOptionRefreshThread.cpp">
+			</File>
+			<File
+				RelativePath=".\NAVOptRefresh.cpp">
+			</File>
+			<File
+				RelativePath=".\NAVOptRefresh.def">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\ProdInfo\NotificationHelper.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\Nsc\Source\nsclib\nscLibCFeatureGUIDsCollection.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\Nsc\Source\LicensingInclude\nscModuleNames.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include\pepClientBase.cpp">
+				<FileConfiguration
+					Name="Debug Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\Plugin.cpp">
+			</File>
+			<File
+				RelativePath=".\StdAfx.cpp">
+				<FileConfiguration
+					Name="Debug Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\..\sdks\commonclient\include\SymScriptSafe.idl">
+				<FileConfiguration
+					Name="Debug Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateTypeLibrary="FALSE"
+						TypeLibraryName=""
+						HeaderFileName=".\symscriptsafe_h.h"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						GenerateTypeLibrary="FALSE"
+						TypeLibraryName=""
+						HeaderFileName=".\symscriptsafe_h.h"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl">
+			<File
+				RelativePath="BusinessRules.h">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\StahlSoft\Include\EventHelper.h">
+			</File>
+			<File
+				RelativePath=".\NAVOptionRefresh.h">
+			</File>
+			<File
+				RelativePath=".\NAVOptionRefreshEngine.h">
+			</File>
+			<File
+				RelativePath=".\NavOptionRefreshThread.h">
+			</File>
+			<File
+				RelativePath="..\..\include\NAVOptRefresh.h">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\ProdInfo\NotificationHelper.h">
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include\pepClientBase.h">
+			</File>
+			<File
+				RelativePath=".\Plugin.h">
+			</File>
+			<File
+				RelativePath="resource.h">
+			</File>
+			<File
+				RelativePath=".\StdAfx.h">
+			</File>
+			<File
+				RelativePath="..\..\include\V2Authorization\Symantec\SuiteChild\NAV\SuiteOwner.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe">
+			<File
+				RelativePath=".\NAVOptRefresh.rc">
+				<FileConfiguration
+					Name="Debug Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories=""/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release Licensed NAV SuiteChild|Win32">
+					<Tool
+						Name="VCResourceCompilerTool"
+						AdditionalIncludeDirectories=""/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\ReadMe.txt">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

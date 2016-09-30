@@ -1,0 +1,12 @@
+LIBRARY         NAVWZIP
+DESCRIPTION     'NAV ZIP Scanner Module, Copyright 1990-1995 Symantec Corporation.'
+EXETYPE         WINDOWS
+CODE            PRELOAD MOVEABLE DISCARDABLE
+DATA            PRELOAD MOVEABLE SINGLE
+HEAPSIZE        4096
+SEGMENTS        EVATTR PRELOAD MOVABLE DISCARDABLE
+EXPORTS         WEP                  @1      RESIDENTNAME PRIVATE
+                ZipInit
+                ZipCleanup
+                ZipProcessFile
+                IsCompressedExtension

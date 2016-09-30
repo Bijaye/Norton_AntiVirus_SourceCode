@@ -1,0 +1,97 @@
+REGEDIT4
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\InstalledApps]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT]
+"CurrentVersion"=hex: 02, 00, 01
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Install]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus Scanner\Install\4.0]
+"InstallDir"="%s" ~SIWSUBST, TARGET
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Norton AntiVirus NT\Install\4.0]
+"InstallDir"="%s" ~SIWSUBST, TARGET
+"Extensions"="%s" ~SIWSUBST, TARGET2
+"SharedComponents"="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage]
+"Location1"="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symevent.sys]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET5
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\s32stat.dll]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\infodesk.cnt]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\infodesk.dll]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\infodesk.hlp]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symgloss.hlp]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\symantec.cnt]
+"NAVNT"="%s" ~SIWSUBST, TARGET
+@="%s" ~SIWSUBST, TARGET3
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\NAVAP]
+"Type"  = dword:01
+"Start" = dword:03
+"ErrorControl" = dword:01
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\NAVEX]
+"Type"  = dword:01
+"Start" = dword:03
+"ErrorControl" = dword:01
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\SymEvent]
+"Type"  = dword:01
+"Start" = dword:03
+"ErrorControl" = dword:01
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\EventLog\Application\NAV Alert]
+"TypesSupported"        = dword:07
+"CategoryCount"         = dword:02
+"EventMessageFile"      = "%s\alertsvc.exe" ~SIWSUBST, TARGET
+"CategoryMessageFile"   = "%s\alertsvc.exe" ~SIWSUBST, TARGET
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\EventLog\Application\NAV Auto-Protect]
+"TypesSupported"        = dword:07
+"CategoryCount"         = dword:02
+"EventMessageFile"      = "%s\navapsvc.exe" ~SIWSUBST, TARGET
+"CategoryMessageFile"   = "%s\navapsvc.exe" ~SIWSUBST, TARGET
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\EventLog\System\NAVAP]
+"EventMessageFile" ="%s\navap.sys" ~SIWSUBST, TARGET5
+"TypesSupported"  = dword:07
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\EventLog\Application\NAV Scanner]
+"TypesSupported"  = dword:07
+"CategoryCount"   = dword:02
+"EventMessageFile"    = "%s\s32aloge.dll" ~SIWSUBST, TARGET
+"CategoryMessageFile" = "%s\s32aloge.dll" ~SIWSUBST, TARGET
+
+[HKEY_CLASSES_ROOT\.vir]
+@="virfile"
+
+[HKEY_CLASSES_ROOT\virfile]
+@="Virus Infected File"
+
+[HKEY_CLASSES_ROOT\virfile\DefaultIcon]
+@="%s\navwnt.exe,-103" ~SIWSUBST, TARGET
+
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanmanServer\Parameters]
+"CachedOpenLimit"   = dword:00

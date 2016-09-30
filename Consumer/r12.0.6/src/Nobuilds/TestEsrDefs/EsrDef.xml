@@ -1,0 +1,806 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EraserData InterpreterVersion="1.0" SequenceNumber="1" Date="2004-08-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation=".\ccEraserDefSchema.xsd">
+<Anomaly ID="B730CE36-6E64-46a7-B87A-387FA3BDB7EF">
+		<AnomalyData>
+			<Name>Boot Execute</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set" OS="NT">
+				<KeyName>%HKEY_LOCAL_MACHINE%\System\CurrentControlSet\Control\Session Manager</KeyName>
+				<ValueName>BootExecute</ValueName>
+				<ValueType>REG_MULTI_SZ</ValueType>
+				<Value>autocheck autochk *</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\System\CurrentControlSet\Control\Session Manager</KeyName>
+				<ValueName>BootExecute</ValueName>
+				<ScanCommandOption>MultiParseSpace</ScanCommandOption>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotEqual" OS="NT">
+				<KeyName>%HKEY_LOCAL_MACHINE%\System\CurrentControlSet\Control\Session Manager</KeyName>
+				<ValueName>BootExecute</ValueName>
+				<ValueType>REG_MULTI_SZ</ValueType>
+				<Value>autocheck autochk *</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="9CE37212-3099-42B6-969E-C1679CD13803">
+		<AnomalyData>
+			<Name>Userinit</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows NT\CurrentVersion\Winlogon</KeyName>
+				<ValueName>Userinit</ValueName>
+				<ValueType>REG_SZ</ValueType>
+				<Value>%SYSTEM%\userinit.exe</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows NT\CurrentVersion\Winlogon</KeyName>
+				<ValueName>Userinit</ValueName>
+				<ScanCommandOption>Multi</ScanCommandOption>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="F545C02A-BE59-48B3-98BE-7696CE81ECAB">
+		<AnomalyData>
+			<Name>BAT extension</Name>
+			<Category>ClientCompliancy</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.bat</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.bat</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>batfile</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="NotEqualNoCase">
+				<KeyName>%HKEY_CLASSES_ROOT%\.bat</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>batfile</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="5FC0BC47-C10D-494C-8463-61463D771032">
+		<AnomalyData>
+			<Name>BAT handler</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\batfile\shell\open\command</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\batfile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_CLASSES_ROOT%\batfile\shell\open\command</KeyName>
+				<ValueName/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotEqual">
+				<KeyName>%HKEY_CLASSES_ROOT%\batfile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="2CBA8C4D-CA7A-4AE2-9709-B3DBAD2A2EFF">
+		<AnomalyData>
+			<Name>CMD extension</Name>
+			<Category>ClientCompliancy</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.cmd</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.cmd</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>cmdfile</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="NotEqualNoCase">
+				<KeyName>%HKEY_CLASSES_ROOT%\.cmd</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>cmdfile</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="7FE268AF-A551-49EF-805D-05110DBECCDE">
+		<AnomalyData>
+			<Name>CMD handler</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\cmdfile\shell\open\command</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\cmdfile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_CLASSES_ROOT%\cmdfile\shell\open\command</KeyName>
+				<ValueName/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotEqual">
+				<KeyName>%HKEY_CLASSES_ROOT%\cmdfile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="4E234346-CA63-4624-80CA-B5E442614BA5">
+		<AnomalyData>
+			<Name>COM extension</Name>
+			<Category>ClientCompliancy</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.com</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.com</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>comfile</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="NotEqualNoCase">
+				<KeyName>%HKEY_CLASSES_ROOT%\.com</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>comfile</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="8C7BD8E9-86B5-460B-90CB-C549FE33ED9D">
+		<AnomalyData>
+			<Name>COM handler</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\comfile\shell\open\command</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\comfile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_CLASSES_ROOT%\comfile\shell\open\command</KeyName>
+				<ValueName/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotEqual">
+				<KeyName>%HKEY_CLASSES_ROOT%\comfile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="F2427D90-20E9-40DA-9A54-A1E8833A24DE">
+		<AnomalyData>
+			<Name>EXE extension</Name>
+			<Category>ClientCompliancy</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.exe</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.exe</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>exefile</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="NotEqualNoCase">
+				<KeyName>%HKEY_CLASSES_ROOT%\.exe</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>exefile</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="E54E50B4-7F38-40ED-BF21-85DC4143F2E1">
+		<AnomalyData>
+			<Name>EXE handler</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\exefile\shell\open\command</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\exefile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_CLASSES_ROOT%\exefile\shell\open\command</KeyName>
+				<ValueName/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotEqual">
+				<KeyName>%HKEY_CLASSES_ROOT%\exefile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="CD07E0A9-5843-447B-90EF-E002B8CE7B0B">
+		<AnomalyData>
+			<Name>PIF extension</Name>
+			<Category>ClientCompliancy</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.pif</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\.pif</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>piffile</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="NotEqualNoCase">
+				<KeyName>%HKEY_CLASSES_ROOT%\.pif</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>piffile</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="47EB5D80-961C-4DA4-9815-80EC5200C4CB">
+		<AnomalyData>
+			<Name>PIF handler</Name>
+			<Category>GenericLoadPoint</Category>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\piffile\shell\open\command</KeyName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set">
+				<KeyName>%HKEY_CLASSES_ROOT%\piffile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_CLASSES_ROOT%\piffile\shell\open\command</KeyName>
+				<ValueName/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotEqual">
+				<KeyName>%HKEY_CLASSES_ROOT%\piffile\shell\open\command</KeyName>
+				<ValueName/>
+				<ValueType>REG_SZ</ValueType>
+				<Value>"%1" %*</Value>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="3E064898-DCE8-4926-8E5F-438FDD82D579">
+		<AnomalyData>
+			<Name>Generic Load Point</Name>
+			<Category>GenericLoadPoint</Category>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\RunOnce</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\RunOnceEx</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\RunServices</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows NT\CurrentVersion\Windows</KeyName>
+				<ValueName>AppInit_DLLs</ValueName>
+				<ScanCommandOption>Multi</ScanCommandOption>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\System\CurrentControlSet\Control\Session Manager</KeyName>
+				<ValueName>PendingFileRenameOperations</ValueName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Mirabilis\ICQ\Agent\Apps\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_CLASSES_ROOT%\Software\Mirabilis\ICQ\Agent\Apps\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\RunOnce</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\RunServices</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows NT\CurrentVersion\Windows</KeyName>
+				<ValueName>load</ValueName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\ShellServiceObjectDelayLoad</KeyName>
+				<CLSIDRef/>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects</KeyName>
+				<CLSIDRef/>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\SharedTaskScheduler</KeyName>
+				<CLSIDRef/>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Policies\Microsoft\Windows\System\Scripts\Logon</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Policies\System\Shell</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\Policies\System\Shell</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Policies\Microsoft\Windows\System\Scripts\Logon</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Shell</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows NT\CurrentVersion\Windows\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_ALL_USERS%\Control Panel\Desktop</KeyName>
+				<ValueName>SCRNSAVE.EXE</ValueName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Internet Explorer\Toolbar</KeyName>
+				<CLSIDRef/>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan" OS="NT">
+				<KeyName>%HKEY_ALL_USERS%\Software\Microsoft\Windows NT\CurrentVersion\Windows</KeyName>
+				<ValueName>run</ValueName>
+				<RemoveReference/>
+			</DetectionAction>
+			<!--                             -->
+			<!-- these are for Win9X systems -->
+			<!--                             -->
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_USER%\Software\Software\Microsoft\Windows\CurrentVersion\Run</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_USER%\Software\Software\Microsoft\Windows\CurrentVersion\RunOnce</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_USER%\Software\Software\Microsoft\Windows\CurrentVersion\RunServices</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_USER%\Software\Software\Microsoft\Windows\CurrentVersion\RunServicesOnce</KeyName>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan">
+				<KeyName>%HKEY_USER%\Software\Software\Microsoft\Windows NT\CurrentVersion\Windows</KeyName>
+				<ValueName>load</ValueName>
+				<RemoveReference/>
+			</DetectionAction>
+			<!--                              -->
+			<!-- possible .bat and .ini files -->
+			<!--                              -->
+			<DetectionAction Type="Batch" Operation="Scan" OS="NT">
+				<Path>%SYSTEM%\autoexec.nt</Path>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="INI" Operation="Scan" OS="ME">
+				<Path>%WINDOWS%\win.ini</Path>
+				<ValueName>run</ValueName>
+				<SectionName>windows</SectionName>
+				<ScanCommandOption>MultiParseSpace</ScanCommandOption>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="INI" Operation="Scan" OS="98">
+				<Path>%WINDOWS%\win.ini</Path>
+				<ValueName>run</ValueName>
+				<SectionName>windows</SectionName>
+				<ScanCommandOption>Multi</ScanCommandOption>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="INI" Operation="Scan" OS="ME">
+				<Path>%WINDOWS%\win.ini</Path>
+				<ValueName>load</ValueName>
+				<SectionName>windows</SectionName>
+				<ScanCommandOption>MultiParseSpace</ScanCommandOption>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="INI" Operation="Scan" OS="98">
+				<Path>%WINDOWS%\win.ini</Path>
+				<ValueName>load</ValueName>
+				<SectionName>windows</SectionName>
+				<ScanCommandOption>Multi</ScanCommandOption>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="INI" Operation="Scan">
+				<Path>%WINDOWS%\wininit.ini</Path>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Batch" Operation="Scan">
+				<Path>%SYSTEMROOT%\winstart.bat</Path>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Batch" Operation="Scan">
+				<Path>%WINDOWS%\winstart.bat</Path>
+				<RemoveReference/>
+			</DetectionAction>
+			<DetectionAction Type="Batch" Operation="Scan">
+				<Path>%SYSTEMROOT%\autoexec.bat</Path>
+				<RemoveReference/>
+			</DetectionAction>
+			<!--                              -->
+			<!-- Startups -->
+			<!--                              -->
+			<DetectionAction Type="Startup" Operation="Scan">
+				<RemoveReference/>
+			</DetectionAction>
+			<!--                                                                 -->
+			<!-- Scan all running Processes, which includes all running srevices -->
+			<!--                                                                 -->
+			<DetectionAction Type="Process" Operation="Scan">
+				<Path>*</Path>
+				<RemoveReference/>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="D9E1D499-FFF2-44cb-A267-6D215C0AA39E">
+		<AnomalyData>
+			<Name>ShellLoadPoint</Name>
+			<Category>GenericLoadPoint</Category>
+			<!--                                                                 -->
+			<!-- Win9x and NT shell                                                     -->
+			<!--                                                                 -->
+			<RemediationAction Type="INI" Operation="Set" OS="9x">
+				<Path>%WINDOWS%\system.ini</Path>
+				<ValueName>shell</ValueName>
+				<Value>Explorer.exe</Value>
+				<SectionName>boot</SectionName>
+			</RemediationAction>
+			<RemediationAction Type="Registry" Operation="Set" OS="NT">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows NT\CurrentVersion\Winlogon</KeyName>
+				<ValueName>Shell</ValueName>
+				<ValueType>REG_SZ</ValueType>
+				<Value>Explorer.exe</Value>
+			</RemediationAction>
+			<DetectionAction Type="INI" Operation="NotPresent" OS="9x">
+				<Path>%WINDOWS%\system.ini</Path>
+				<ValueName>shell</ValueName>
+				<SectionName>boot</SectionName>
+			</DetectionAction>
+			<DetectionAction Type="INI" Operation="Scan" OS="9x">
+				<Path>%WINDOWS%\system.ini</Path>
+				<ValueName>shell</ValueName>
+				<SectionName>boot</SectionName>
+				<AlternateSearchPath>WinDir</AlternateSearchPath>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan" OS="NT">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows NT\CurrentVersion\Winlogon</KeyName>
+				<ValueName>Shell</ValueName>
+			</DetectionAction>
+			<DetectionAction Type="Registry" Operation="NotPresent" OS="NT">
+				<KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows NT\CurrentVersion\Winlogon</KeyName>
+				<ValueName>Shell</ValueName>
+			</DetectionAction>
+		</AnomalyData>
+	</Anomaly>
+	<Anomaly ID="37359F12-028C-43DE-80F5-65EF28F9A404" VID="37337"><AnomalyData><Name>Spyware.QuickSearch</Name><Category>SpyWare</Category>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\QuickSearch</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\QuickSearch</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{3C368C4A-827F-4f25-9C52-371BDF049912}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\QuickSearch.DeskSearchBand</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\QuickSearch.DeskSearchBand.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{D9855DA1-8BA7-4F08-B138-874AE7A2D2D2}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{B7620AF8-B460-455a-946F-16F8BF52A9AD}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{82315A18-6CFB-44a7-BDFD-90E36537C252}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\QuickSearch.SearchBand</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\QuickSearch.SearchBand.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{141A9A62-342F-4154-A456-D29917E80B45}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{B7620AF8-B460-455a-946F-16F8BF52A9AD}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\QuickSearch Toolbar</KeyName></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\QuickSearch\*.*</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{82315A18-6CFB-44a7-BDFD-90E36537C252}</KeyName></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{82315A18-6CFB-44a7-BDFD-90E36537C252}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{3C368C4A-827F-4f25-9C52-371BDF049912}</KeyName></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="455B5023-9D09-43C1-AD5C-40FCC291AD9C" VID="11373">
+		<AnomalyData><Name>Adware.Sa</Name><Category>Adware</Category>
+			<RemediationAction Type="Process" Operation="Suspend"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{4BCF322B-9621-4e90-9678-F1424EB7584E}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\CLSID\{4BCF322B-9621-4e90-9678-F1424EB7584E}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\Interface\{D47BD4DE-B880-4610-8A8B-C173DEC4272F}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\TypeLib\{85A886B2-29BB-4189-8046-A66733B242E9}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{7B55BB05-0B4D-44FD-81A6-B136188F5DEB}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\CLSID\{7B55BB05-0B4D-44FD-81A6-B136188F5DEB}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\Interface\{18E6C36A-C45F-4B60-A1A4-5C0BB16D4CC2}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\TypeLib\{00A322E2-7D50-4DBA-BEA4-5C8078D47269}</KeyName></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Scan"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{4BCF322B-9621-4e90-9678-F1424EB7584E}</KeyName>
+				<CLSIDRef/><RemoveReference/></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\CLSID\{4BCF322B-9621-4e90-9678-F1424EB7584E}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\Interface\{D47BD4DE-B880-4610-8A8B-C173DEC4272F}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\TypeLib\{85A886B2-29BB-4189-8046-A66733B242E9}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{7B55BB05-0B4D-44FD-81A6-B136188F5DEB}</KeyName>
+				<CLSIDRef/><RemoveReference/></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\CLSID\{7B55BB05-0B4D-44FD-81A6-B136188F5DEB}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\Interface\{18E6C36A-C45F-4B60-A1A4-5C0BB16D4CC2}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Classes\TypeLib\{00A322E2-7D50-4DBA-BEA4-5C8078D47269}</KeyName></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%WINDOWS%\questmod.dll</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%WINDOWS%\questmod-1.dll</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%WINDOWS%\udpmod-1.dll</Path></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="307456CC-B120-4B5F-A416-5AA0CCD63767" VID="39459"><AnomalyData><Name>Adware.MoeMoney</Name><Category>Adware</Category>
+			<RemediationAction Type="Process" Operation="Terminate" OS="2K"><Path>%SYSTEM%\wjview.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate" OS="9x"><Path>%WINDOWS%\wjview.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate" OS="XP"><Path>%SYSTEM%\javaw.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\EbatesMoeMoneyMaker.exe</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>EbatesMoeMoneyMaker</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Microsoft\Internet Explorer\Extensions\{7F241C00-DAB6-11d5-AAA8-0001028DF1BC}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\ebatesver2.xml</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Microsoft\Internet Explorer\MenuExt\Ebates</KeyName></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\ApplicationData\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\Applications\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\System\Code\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\System\Html\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\System\Images\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\System\MTemp\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\System\System\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\System\Temp\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\*.*</Path></RemediationAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\EbatesMoeMoneyMaker\EbatesMoeMoneyMaker.exe</Path></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="2A06CD32-4A4B-4EB0-B475-FD0C8EBBB750" VID="22316"><AnomalyData><Name>Adware.Istbar</Name><Category>Adware</Category>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\SOFTWARE\ISTbar</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Microsoft\Internet Explorer\Toolbar\WebBrowser</KeyName><ValueName>{5F1ABCDB-A875-46C1-8345-B72A4567E486}</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Pugi.PugiObj.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Pugi.PugiObj</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Internet Explorer\Toolbar</KeyName><ValueName>{5F1ABCDB-A875-46c1-8345-B72A4567E486}</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{5F1ABCDB-A875-46c1-8345-B72A4567E486}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{6D3F5DE4-E980-4407-A10F-9AC771ABAAE6}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{7B9A715E-9D87-4C21-BF9E-F914F2FA953F}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\ISTbarISTbar</KeyName></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{5F1ABCDB-A875-46c1-8345-B72A4567E486}</KeyName></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="D404A142-BB02-48FF-82B0-7476C7254754" VID="39451"><AnomalyData><Name>Adware.Exactbar</Name><Category>Adware</Category>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>exactupdate.exe</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>GUID</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>CheckInIntervalInHours</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>Force</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>CheckinServerPath</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>CheckinServerName</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>CheckinServerPort</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>CheckinTime</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>ForceToolbar</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>ToolbarFirstTime</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>ToolbarFirstActivity</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName><ValueName>404Page</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\eXact</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName><ValueName>InstallDir</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName><ValueName>PARTNER</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName><ValueName>BRANDING</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName><ValueName>CheckinServerName</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName><ValueName>CheckinServerPath</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName><ValueName>CheckinServerPort</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\eXact</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{F9765480-72D1-11D4-A75A-004F49045A87}\InprocServer32</KeyName><ValueName>ThreadingModel</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{F9765480-72D1-11D4-A75A-004F49045A87}\InprocServer32</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{F9765480-72D1-11D4-A75A-004F49045A87}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{224530A0-C9CB-4AEE-9C0F-54AC1B533211}\InprocServer32</KeyName><ValueName>ThreadingModel</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{224530A0-C9CB-4AEE-9C0F-54AC1B533211}\InprocServer32</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{224530A0-C9CB-4AEE-9C0F-54AC1B533211}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved</KeyName><ValueName>{F9765480-72D1-11D4-A75A-004F49045A87}</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Internet Explorer\Toolbar</KeyName><ValueName>{224530A0-C9CB-4AEE-9C0F-54AC1B533211}</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{F9765480-72D1-11D4-A75A-004F49045A87}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved</KeyName><ValueName>{224530A0-C9CB-4AEE-9C0F-54AC1B533211}</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Microsoft\Internet Explorer\Toolbar\WebBrowser</KeyName><ValueName>{224530A0-C9CB-4AEE-9C0F-54AC1B533211}</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\eXact Search Bar</KeyName><ValueName>DisplayName</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\eXact Search Bar</KeyName><ValueName>UninstallString</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\eXact Search Bar</KeyName></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\eXact\*.*</Path></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{224530A0-C9CB-4AEE-9C0F-54AC1B533211}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{F9765480-72D1-11D4-A75A-004F49045A87}</KeyName></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="B3E12976-DA11-4046-B9F2-BBBD2B273177" VID="26493"><AnomalyData><Name>Adware.Delfin</Name><Category>Adware</Category>
+			<RemediationAction Type="File" Operation="Delete"><Path>%WINDOWS%\system32\pgtools\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILESCOMMON%\dpi\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILESCOMMON%\remove_tools.html</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%SYSTEMROOT%\Documents and Settings\All Users\Application Data\tatss\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%SYSTEMROOT%\Documents and Settings\All Users\Application Data\Dpi\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%WINDOWS%\inf\iskeysdk.pnf</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>Dpi</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>Tat</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{41700749-A109-4254-AF13-BE54011E8783}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{D0070620-1E72-42E7-A14C-3A255AD31839}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{2A7DB8D1-43BE-4AD3-A81E-9BB8C9D00073}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{2BB15D36-43BE-4743-A3A0-3308F4B1A610}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{A8BD9566-9895-4FA3-918D-A51D4CD15865}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\VCCPGDATAACCESS.PgDataAccessCtrl.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Dpi</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Tat</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Tat</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\PgTools</KeyName></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{A8BD9566-9895-4FA3-918D-A51D4CD15865}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{D0070620-1E72-42E7-A14C-3A255AD31839}</KeyName></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%WINDOWS%\SYSTEM32\pgtools\tatss.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILESCOMMON%\dpi\Dpi.exe</Path></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{2BB15D36-43BE-4743-A3A0-3308F4B1A610}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{2A7DB8D1-43BE-4AD3-A81E-9BB8C9D00073}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{41700749-A109-4254-AF13-BE54011E8783}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>Tat</ValueName><RemoveReference/></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>Dpi</ValueName><RemoveReference/></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%SYSTEMROOT%\keys.ini</Path></DetectionAction>
+			<DetectionAction Type="Process" Operation="Scan"><Path>%PROGRAMFILESCOMMON%\dpi\Dpi.exe</Path><RemoveReference/></DetectionAction>
+			<DetectionAction Type="Process" Operation="Scan"><Path>%WINDOWS%\system32\pgtools\tatss.exe</Path><RemoveReference/></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="618C6DBE-8FDE-4AE7-B3A3-694F35184373" VID="31123"><AnomalyData><Name>Adware.DailyToolbar</Name><Category>Adware</Category>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\AppID\{951B3138-AE8E-4676-A05A-250A5F111631}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\AppID\DailyToolbar.DLL</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\DailyToolbar.IEBand</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\DailyToolbar.IEBand.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{8333C319-0669-4893-A418-F56D9249FCA6}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{38E0F7DD-1468-4DBE-A3EA-BAAFA10D4964}\</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\DailyToolbar.SysMgr</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\DailyToolbar.SysMgr.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{58F9B276-E1CC-458e-8159-21CBC021874B}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{951B3138-AE8E-4676-A05A-250A5F111631}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{10195311-E434-47A9-ADBA-48839E3F7E4E}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{B2C9DD5F-8267-46E4-B49A-5D4479A4171C}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{ABAFA0B4-F78D-42E5-8C31-1A441D01C1DF}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\DailyToolbar</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\NIX Solutions\DailyToolbar</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\DailyToolbar</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\CLASSES\IEToolbar.AffiliateCtl</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\CLASSES\IEToolbar.AffiliateCtl.1</KeyName></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{8333C319-0669-4893-A418-F56D9249FCA6}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{58F9B276-E1CC-458e-8159-21CBC021874B}</KeyName></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{8333C319-0669-4893-A418-F56D9249FCA6}</KeyName></DetectionAction>
+		</AnomalyData></Anomaly>
+	<Anomaly ID="1C48C19A-5095-4F0C-A52D-D2A8635A0789" VID="39449"><AnomalyData><Name>Adware.Cydoor</Name><Category>Adware</Category>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Cydoor</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Cydoor Services</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Cydoor</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\AdSupport_291</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Cydoor Services</KeyName></RemediationAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%SYSTEM%\cd_clint.dll</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%SYSTEM%\cd_load.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%SYSTEM%\cd_htm.dll</Path></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="DAABA342-83CC-4FC3-A1D4-839AA2C990ED" VID="36945"><AnomalyData><Name>Adware.BroadcastPC.B</Name><Category>Adware</Category>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\RVP\bpc.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\BTV\bpc.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\RVP\btv.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\BTV\btv.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\RVP\tvm.exe</Path></RemediationAction>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\BTV\tvm.exe</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\BTV\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILES%\RVP\*.*</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILESCOMMON%\Java\breg.exe</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILESCOMMON%\Java\breg.cfg</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>BTV</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>RVP</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>Breg</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\RunOnce</KeyName><ValueName>BtvC</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\BTV</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\RVP</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\BTV</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\RVP</KeyName></RemediationAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILESCOMMON%\Java\breg.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\BTV\tvm.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\RVP\tvm.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\BTV\btv.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\RVP\btv.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\BTV\bpc.exe</Path></DetectionAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%PROGRAMFILES%\RVP\bpc.exe</Path></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="15FA69BB-136F-4121-99F3-A45C517A03BC" VID="33963"><AnomalyData><Name>Adware.BookedSpace</Name><Category>Adware</Category>
+			<RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>bxxs5</ValueName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{0DC5CD7C-F653-4417-AA43-D457BE3A9622}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{05080E6B-A88A-4CFD-8C3D-9B2557670B6E}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\AppID\{0DC5CD7C-F653-4417-AA43-D457BE3A9622}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\AppID\BookedSpace.DLL</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\BookedSpace.Extension.5</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\BookedSpace.Extension</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{0019C3E2-DD48-4A6D-ABCD-8D32436323D9}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Bookedspace</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects\{0019C3E2-DD48-4A6D-ABCD-8D32436323D9}</KeyName></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%WINDOWS%\bxxs5.dll</Path></RemediationAction>
+			<RemediationAction Type="File" Operation="Delete"><Path>%WINDOWS%\bsx32.ini</Path></RemediationAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%WINDOWS%\bxxs5.dll</Path></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{0019C3E2-DD48-4A6D-ABCD-8D32436323D9}</KeyName></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="267C0832-5221-43F7-BA13-741C086CCCD3" VID="40134"><AnomalyData><Name>Adware.AdRoar</Name><Category>Adware</Category>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\AdRoar.Band.1</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\AdRoar.Band</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{BDF6CE3D-F5C5-4462-9814-3C8EAC330CA8}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\TypeLib\{ACE8D3BA-7742-44C4-920D-FD25BD1E8245}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\Interface\{91D91D21-8008-429D-821C-7266AAC84A9F}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\explorer\Browser Helper Objects\{BDF6CE3D-F5C5-4462-9814-3C8EAC330CA8}</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Internet Explorer\Toolbar</KeyName><ValueName>{BDF6CE3D-F5C5-4462-9814-3C8EAC330CA8}</ValueName></RemediationAction>
+			<DetectionAction Type="Registry" Operation="Present"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{BDF6CE3D-F5C5-4462-9814-3C8EAC330CA8}</KeyName></DetectionAction>
+		</AnomalyData></Anomaly><Anomaly ID="D46F12C-6C62-4F5A-A81C-3D43E33EAF3D" VID="39598"><AnomalyData><Name>Adware.180Search</Name><Category>Adware</Category>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\msbb</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\msbb</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\180solutions</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\180solutions</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\msbb</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\nCase</KeyName></RemediationAction>
+			<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>msbb</ValueName></RemediationAction>
+			<DetectionAction Type="File" Operation="Scan"><Path>%SYSTEM%\msbb.exe</Path></DetectionAction>
+			<DetectionAction Type="Registry" Operation="Scan"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Run</KeyName><ValueName>msbb</ValueName><RemoveReference/></DetectionAction>
+			<DetectionAction Type="Process" Operation="Scan"><Path>msbb.exe</Path><RemoveReference/></DetectionAction>
+		</AnomalyData></Anomaly>
+<Anomaly ID="E7DE9D2F-AF1F-43AD-9304-F2688BC60887" VID="36947"><AnomalyData><Name>Adware.Huntbar.B</Name><Category>Adware</Category><RemediationAction Type="Process" Operation="Terminate"><Path>%PROGRAMFILES%\Internet Explorer\iexplore.exe</Path></RemediationAction>
+
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{8A05273A-2EA5-42DE-AA75-59EA7D9D50D7}</KeyName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\MSIETS\MSIETS_1</KeyName><ValueName>ToolID</ValueName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\MSIETS\MSIETS_1</KeyName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Internet Explorer\Toolbar</KeyName><ValueName>{8A05273A-2EA5-42DE-AA75-59EA7D9D50D7}</ValueName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Internet Explorer\Search</KeyName><ValueName>CustomizeSearch</ValueName><ValueType>REG_SZ</ValueType><Value>http://ie.search.msn.com/{SUB_RFC1766}/srcasst/srchcust.htm</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Internet Explorer\Search</KeyName><ValueName>SearchAssistant</ValueName><ValueType>REG_SZ</ValueType><Value>http://ie.search.msn.com/{SUB_RFC1766}/srcasst/srchcust.htm</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Internet Explorer\Main</KeyName><ValueName>Search Page</ValueName><ValueType>REG_SZ</ValueType><Value>http://www.microsoft.com/isapi/redir.dll?prd=ie&amp;ar=iesearch</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_LOCAL_MACHINE%\SOFTWARE\Microsoft\Internet Explorer\Main</KeyName><ValueName>Start Page</ValueName><ValueType>REG_SZ</ValueType><Value>http://www.microsoft.com/isapi/redir.dll?prd=ie&amp;ar=iesearch</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_CURRENT_USER%\SOFTWARE\Microsoft\Internet Explorer\Search</KeyName><ValueName>CustomizeSearch</ValueName><ValueType>REG_SZ</ValueType><Value>http://ie.search.msn.com/{SUB_RFC1766}/srcasst/srchcust.htm</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_CURRENT_USER%\SOFTWARE\Microsoft\Internet Explorer\Search</KeyName><ValueName>SearchAssistant</ValueName><ValueType>REG_SZ</ValueType><Value>http://ie.search.msn.com/{SUB_RFC1766}/srcasst/srchcust.htm</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_CURRENT_USER%\SOFTWARE\Microsoft\Internet Explorer\Main</KeyName><ValueName>Search Page</ValueName><ValueType>REG_SZ</ValueType><Value>http://www.microsoft.com/isapi/redir.dll?prd=ie&amp;ar=iesearch</Value></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Set"><KeyName>%HKEY_CURRENT_USER%\SOFTWARE\Microsoft\Internet Explorer\Main</KeyName><ValueName>Start Page</ValueName><ValueType>REG_SZ</ValueType><Value>http://www.microsoft.com/isapi/redir.dll?prd=ie&amp;ar=iesearch</Value></RemediationAction>
+		
+		
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CURRENT_USER%\Software\Microsoft\Internet Explorer\MenuExt\Power Search</KeyName><ValueName>Contexts</ValueName></RemediationAction>
+
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_CLASSES_ROOT%\CLSID\{0A68C5A2-64AE-4415-88A2-6542304A4745}</KeyName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Components\C3D2CDB9A41E452EA544AB5033418FCB</KeyName><ValueName>CA2E4A17C7EE67447B98D93D8144E0D0</ValueName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Installer\Folders</KeyName><ValueName>C:\Program Files\Common Files\MSIETS\</ValueName></RemediationAction>
+
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Installer\UserData\S-1-5-18\Products\CA2E4A17C7EE67447B98D93D8144E0D0</KeyName></RemediationAction>
+
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Uninstall\{71A4E2AC-EE7C-4476-B789-9DD318440E0D}</KeyName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Microsoft\Windows\CurrentVersion\Installer\UpgradeCodes\53E709BA426171644AFC9A3F08B933A7</KeyName><ValueName>CA2E4A17C7EE67447B98D93D8144E0D0</ValueName></RemediationAction>
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Classes\Installer\UpgradeCodes\53E709BA426171644AFC9A3F08B933A7</KeyName><ValueName>CA2E4A17C7EE67447B98D93D8144E0D0</ValueName></RemediationAction>
+
+		<RemediationAction Type="Registry" Operation="Delete"><KeyName>%HKEY_LOCAL_MACHINE%\Software\Classes\Installer\Products\CA2E4A17C7EE67447B98D93D8144E0D0</KeyName></RemediationAction>
+		<RemediationAction Type="File" Operation="Delete"><Path>%PROGRAMFILESCOMMON%\MSIETS\msiets.dll</Path></RemediationAction>
+		
+		
+		</AnomalyData></Anomaly>
+</EraserData>

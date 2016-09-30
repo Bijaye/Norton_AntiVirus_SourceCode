@@ -1,0 +1,436 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif\r\n"
+    "#include ""NavLU2.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "NavLU.ico"
+IDI_SCHEDULE            ICON    DISCARDABLE     "schedule.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_SCHEDULE DIALOGEX 0, 0, 280, 207
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTEXTHELP
+CAPTION "Scheduled LiveUpdate"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    ICON            IDI_SCHEDULE,IDC_STATIC,13,7,20,20,SS_REALSIZEIMAGE
+    LTEXT           "You have successfully completed a LiveUpdate session.",
+                    IDC_STATIC,52,14,221,9,NOT WS_GROUP
+    LTEXT           "To schedule an automatic LiveUpdate session, review the settings below and click ""OK"".",
+                    IDC_STATIC,7,33,266,17,NOT WS_GROUP
+    LTEXT           "(You can use the random values below for the date and time, or enter your own.)",
+                    IDC_STATIC,7,52,266,17,NOT WS_GROUP
+    GROUPBOX        "Scheduling",IDC_SCHEDULE_GRPBOX,7,72,266,93
+    LTEXT           "&Run LiveUpdate on the",IDC_SCHED1_TXT,17,89,75,8,NOT
+                    WS_GROUP
+    COMBOBOX        IDC_DAY1_CMB,95,86,31,100,CBS_DROPDOWNLIST | WS_VSCROLL |
+                    WS_GROUP | WS_TABSTOP
+    LTEXT           "day of each month at",IDC_AT1_TXT,131,89,77,8,NOT
+                    WS_GROUP
+    EDITTEXT        IDC_TIME1_EDT,206,87,46,12,WS_GROUP
+    LTEXT           "and on the",IDC_SCHED2_TXT,56,103,36,8,WS_DISABLED |
+                    NOT WS_GROUP
+    COMBOBOX        IDC_DAY2_CMB,95,100,31,100,CBS_DROPDOWNLIST |
+                    WS_DISABLED | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    LTEXT           "day of each month at",IDC_AT2_TXT,131,103,74,8,
+                    WS_DISABLED | NOT WS_GROUP
+    EDITTEXT        IDC_TIME2_EDT,206,101,46,12,WS_DISABLED | WS_GROUP
+    CONTROL         "Schedule LiveUpdate &twice per month",IDC_BIMONTHLY,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,17,121,
+                    239,8
+    CONTROL         "Rand&omly schedule update (between 9 p.m. and 6 a.m.)",
+                    IDC_NIGHTS_OK_CHK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    17,135,239,8
+    CONTROL         "&Notify me before running LiveUpdate",
+                    IDC_PROMPT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,149,
+                    239,8
+    CONTROL         "&Don't ask me to schedule LiveUpdate again",
+                    IDC_NO_SHOW_AGAIN_CHK,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,13,170,239,10
+    DEFPUSHBUTTON   "OK",IDOK,53,186,50,14,WS_GROUP
+    PUSHBUTTON      "&Cancel",IDCANCEL,110,186,50,14
+    PUSHBUTTON      "&Help",IDC_HELP_BTN,167,186,50,14
+END
+
+CG_IDD_PROGRESS DIALOG DISCARDABLE  0, 0, 204, 138
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Progress1",CG_IDC_PROGDLG_PROGRESS,"msctls_progress32",
+                    WS_BORDER,12,24,154,13
+    LTEXT           " 0 %",CG_IDC_PROGDLG_PERCENT,172,26,20,10
+    LTEXT           "Please wait. Virus protection files are being updated.\n\nAfter LiveUpdate completes operation, your computer will have the most current protection against viruses.",
+                    IDC_STATIC,12,51,180,65
+END
+
+IDD_NOLUSETTINGS DIALOG DISCARDABLE  0, 0, 202, 98
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "LiveUpdate Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,143,78,50,14
+    LTEXT           "LiveUpdate properties cannot be modified in the current configuration.\n\nIf changes to LiveUpdate properties are needed, please see your system administrator or re-install Norton AntiVirus.",
+                    IDC_STATIC,38,10,159,60
+    ICON            IDR_MAINFRAME,IDC_STATIC,9,8,20,20,SS_REALSIZEIMAGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE
+BEGIN
+    IDD_SCHEDULE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 273
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
+    END
+
+    CG_IDD_PROGRESS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 197
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_NOLUSETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 195
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 91
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SCHEDULE DLGINIT
+BEGIN
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7331, 0x0074,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x6e32, 0x0064,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7233, 0x0064,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7434, 0x0068,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7435, 0x0068,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7436, 0x0068,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7437, 0x0068,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7438, 0x0068,
+    IDC_DAY1_CMB, 0x403, 4, 0
+0x7439, 0x0068,
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3031, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3131, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3231, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3331, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3431, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3531, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3631, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3731, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3831, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3931, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3032, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3132, 0x7473, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3232, 0x646e, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3332, 0x6472, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3432, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3532, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3632, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3732, 0x6874, "\000"
+    IDC_DAY1_CMB, 0x403, 5, 0
+0x3832, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7331, 0x0074,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x6e32, 0x0064,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7233, 0x0064,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7434, 0x0068,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7435, 0x0068,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7436, 0x0068,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7437, 0x0068,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7438, 0x0068,
+    IDC_DAY2_CMB, 0x403, 4, 0
+0x7439, 0x0068,
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3031, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3131, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3231, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3331, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3431, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3531, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3631, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3731, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3831, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3931, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3032, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3132, 0x7473, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3232, 0x646e, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3332, 0x6472, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3432, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3532, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3632, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3732, 0x6874, "\000"
+    IDC_DAY2_CMB, 0x403, 5, 0
+0x3832, 0x6874, "\000"
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_NON_TRANSLATING_RANGE "1-9"
+    IDS_CMDLINE_OPT_INTERNALRETRY "InternalRetry"
+    IDS_CMDLINE_OPT_PRETENDHOSTBUSY "PretendHostBusy"
+    IDS_CMDLINE_OPT_PRETENDSUCCESSREBOOT "PretendSuccessReboot"
+    IDS_CMDLINE_OPT_SILENT  "Silent"
+    IDS_CMDLINE_OPT_SAGERUN "SageRun"
+    IDS_CMDLINE_OPT_SETUP   "Setup"
+    IDS_CMDLINE_OPT_SAGESET "SageSet"
+    IDS_WELCOME_TITLE       "Virus Protection Update"
+    IDS_CAPTION             "LiveUpdate"
+    IDS_WELCOME_TEXT1       "To prevent newly discovered viruses from infecting your computer, update your virus protection at least once every month.\n\nLiveUpdate ensures that you have the most current virus definition files, which Norton AntiVirus uses to detect and eliminate viruses. In addition, LiveUpdate makes sure your installed Norton AntiVirus program is up-to-date."
+    IDS_WELCOME_NUM_VIRUSES " The current definitions protect you from %u viruses."
+    IDS_WELCOME_TEXT2       "According to your computer's system date (%s), your virus definition files are more than one month old. You should update your virus definition files now."
+    IDS_WELCOME_TEXT3       "Click Next to update your virus protection automatically."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_FINISH1_TITLE       "Virus Protection Updated"
+    IDS_FINISH2_TITLE       "Virus Protection Not Updated"
+    IDS_FINISH3_TITLE       "Update Not Necessary"
+    IDS_FINISH4_TITLE       "Transfer Completed"
+    IDS_FINISH_SUCCESS1     "Your virus protection files have been updated successfully to protect your computer against all newly discovered viruses.\n\n"
+    IDS_FINISH_SUCCESS2     "\n\nYou must restart your computer so that Norton AntiVirus Auto-Protect can use the new protection files."
+    IDS_FINISH_NOTHINGNEW   "Norton AntiVirus has determined that no update is necessary. You already have the most recent virus definition files."
+    IDS_FINISH_HOSTBUSY     "Your virus protection files have not been updated. Norton AntiVirus was unable to connect due to heavy traffic.\n\nPlease try again in a few minutes."
+    IDS_FINISH_USERCANCEL   "Your virus protection files have not been updated. The online connection was canceled before completion.\n\nPlease try again."
+    IDS_FINISH_FILEINUSE    "All files have been transferred successfully to your computer.  However, because one or more of these files are currently in use, you must restart your computer. You will also need to run LiveUpdate again to complete the update."
+    IDS_FINISH_ERROR        "Your virus protection files have not been updated. Norton AntiVirus was unable to connect.\n\nVerify that your online connections are operational and try again."
+    IDS_FINISH_MORE_VIRUS   "Norton AntiVirus now detects %u known viruses, an increase of %d virus since your last update."
+    IDS_FINISH_MORE_VIRUSES "Norton AntiVirus now detects %u known viruses, an increase of %d viruses since your last update."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_FINISH_NUM_VIRUSES  "Norton AntiVirus now detects %u known viruses."
+    IDS_ERR_ALREADY_RUNNING "LiveUpdate is already running."
+    IDS_ERR_NO_CMDLINES     "The Norton AntiVirus product was unable to determine which\n LiveUpdate packages to request. Please reinstall your\n Norton AntiVirus product to correct this problem."
+    IDS_ERR_NO_CMDLINES_TITLE "Norton AntiVirus LiveUpdate Error"
+    IDS_ERR_SCHED_TIME1_INVALID
+                            "The 1st scheduled time is invalid.\nPlease re-enter with a valid time."
+    IDS_ERR_SCHED_TIME2_INVALID
+                            "The 2nd scheduled time is invalid.\nPlease re-enter with a valid time."
+    IDS_SCHEDLU_FAILED      "LiveUpdate could not run unattended. Click the LiveUpdate button in the Norton AntiVirus main window to see where the problem occurs."
+    IDS_SCHEDLU_FAILED_TITLE "Scheduled LiveUpdate Error"
+    IDS_SCHEDLU_TITLE       "Scheduled LiveUpdate"
+    IDS_SCHEDLU_PROMPT      "LiveUpdate is scheduled to run at this time.\n\nDo you want to run LiveUpdate?"
+    IDS_SCHEDLU_BUSY        "LiveUpdate was unable to complete the connection. Do you want to try again now?"
+    IDS_SCHEDLU_REBOOT      "You must restart your computer before you can use the update.\n\nDo you want to restart now?"
+    IDS_SCHEDLU_REBOOT_FAILED
+                            "One or more applications refused to shutdown.\nPlease restart your system manually."
+    IDS_NPS_EVENT_NAME      "Run LiveUpdate (for Norton AntiVirus)"
+    IDS_NPS_DESCRIPTION     "Run LiveUpdate (for Norton AntiVirus)"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_CMDLINE_OPT_SCHEDULED "scheduled"
+    IDS_CMDLINE_OPT_PROMPT  "prompt"
+    IDS_MAIN_WND_TITLE      "LiveUpdate"
+    IDS_NPS_STARTUP_NAME    "Norton Program Scheduler"
+    IDS_LAUNCH_NPS          "In order to schedule LiveUpdate, the Scheduler needs to load at Windows startup.\n\nDo you want to load the Scheduler at startup?"
+    IDS_ERR_PATCH_FAILED    "Norton AntiVirus failed to install the Micro Definition update.\nPlease run LiveUpdate again. The full virus definition set will be\ninstalled."
+    IDS_ERR_PATCH_FAILED_TITLE "Norton AntiVirus MicroDef Error"
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_WELCOME_TITLE_PATCHES "Program Update Check"
+    IDS_WELCOME_TEXT_PATCHES
+                            "In addition to virus definition files updates, Symantec occasionally distributes Norton AntiVirus program updates.\n\nLiveUpdate connects to a Symantec site to determine if an update is available for your installed version of Norton AntiVirus. If a program update is available, it will be automatically downloaded and installed on your computer.\n\nClick Next to update your program files automatically."
+    IDS_FINISH1_TITLE_PATCHES "Program Updates Completed"
+    IDS_FINISH2_TITLE_PATCHES "Program Not Updated"
+    IDS_FINISH3_TITLE_PATCHES "Program Updates Current"
+    IDS_FINISH4_TITLE_PATCHES "Transfer Completed"
+    IDS_FINISH_SUCCESS1_PATCHES
+                            "Your Norton AntiVirus program files have been transferred successfully."
+    IDS_FINISH_SUCCESS2_PATCHES
+                            "\n\nYou must restart your computer to complete the update."
+    IDS_FINISH_NOTHINGNEW_PATCHES
+                            "Norton AntiVirus has determined that no update is necessary. You already have the most recent program files."
+    IDS_FINISH_HOSTBUSY_PATCHES
+                            "Your Norton AntiVirus program files have not been updated. LiveUpdate was unable to connect due to heavy traffic.\n\nPlease try again in a few minutes."
+    IDS_FINISH_USERCANCEL_PATCHES
+                            "Your Norton AntiVirus program files have not been updated. The online connection was canceled before completion.\n\nPlease try again."
+    IDS_FINISH_FILEINUSE_PATCHES
+                            "All files have been transferred successfully to your computer. However, because one or more of these files are currently in use, you must restart your computer. You will also need to run LiveUpdate again to complete the update."
+    IDS_FINISH_ERROR_PATCHES
+                            "Your Norton AntiVirus program files have not been updated. LiveUpdate was unable to connect.\n\nVerify that your online connections are operational and try again."
+    IDS_FINISH_ERROR_MICRODEF
+                            "Your virus protection files have not been updated. An error occured while updating the virus definition files.\n\nPlease try again."
+END
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    CG_IDS_PROGRESS_CAPTION "Updating Virus Protection Files"
+    IDS_NTLOGERROR_LUFAILURE "A LiveUpdate task could not be completed due to a general failure."
+    IDS_NTLOGERROR_COMMTIMEOUT "A LiveUpdate task could not be completed due to a communications timeout."
+    IDS_NTLOGERROR_REBOOTERR "A LiveUpdate task could not be completed due to a reboot error."
+    IDS_NTLOGERROR_ALREADYRUNNING "A LiveUpdate task could not be completed due to a previous instance of LiveUpdate already running."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif
+#include "NavLU2.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

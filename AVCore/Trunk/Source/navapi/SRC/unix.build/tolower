@@ -1,0 +1,20 @@
+#!/bin/sh
+# Shell script to change all filenames in the NAVAPI directories to lowercase.
+# Run this before running the makeall script.
+
+for dir in symkunix avenge navapi inc.core inc.avcore inc_english.avcore
+do
+  cd $dir
+  for file in *
+  do
+    lowerfile=`echo $file | sed -e y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/`
+    if [ $file != $lowerfile ]; then
+      echo moving $file to $lowerfile
+      mv $file $lowerfile
+    else
+      echo skipping $file
+    fi
+  done
+  cd ..
+done  
+  

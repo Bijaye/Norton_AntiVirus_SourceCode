@@ -1,0 +1,79 @@
+// NAVCfgWizDll.idl : IDL source for CfgWizDll.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVCfgWizDll.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+#include "olectl.h"
+import "CCfgWiz.idl";
+import "naverror.idl";
+
+
+//TODO: ReGUID for each product
+
+[
+    object,
+    uuid(1023F86B-47E7-42c8-ADC9-CE3968176B1C),
+    dual,
+    helpstring("INAVCCfgWizSubMgr Interface"),
+    pointer_default(unique)
+]
+interface INAVCCfgWizSubMgr : ICCfgWizMgr
+{
+	[propget, id(31), helpstring("property Rescue")] HRESULT Rescue([out, retval] VARIANT_BOOL *pVal);
+	[propget, id(32), helpstring("property DefinitionAlert")] HRESULT DefinitionAlert([out, retval] VARIANT_BOOL *pVal);
+	[propget, id(33), helpstring("property FullSystemScan")] HRESULT FullSystemScan([out, retval] VARIANT_BOOL *pVal);
+	
+	[propget, id(34), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+    [id(20), helpstring("property Test")] HRESULT Test();
+	[id(38), helpstring("method RemoveDefAlertDelay")] HRESULT RemoveDefAlertDelay();
+	[id(39), helpstring("method EnableIMScan")] HRESULT EnableIMScan();
+	[id(41), helpstring("method LaunchRescue")] HRESULT LaunchRescue();
+	[id(42), helpstring("method LaunchSystemScan")] HRESULT LaunchSystemScan();
+	[id(43), helpstring("method LaunchLiveReg")] HRESULT LaunchLiveReg(VARIANT_BOOL bUIMode);
+	[id(44), helpstring("method SetSSARunKey")] HRESULT SetSSARunKey();
+	[propget, id(61), helpstring("property TotalBrandingStrings")] HRESULT TotalBrandingText([out, retval] LONG* pVal);
+	[id(62), helpstring("method GetBrandingString")] HRESULT GetBrandingText([in] LONG nTextId, [out,retval] BSTR* pbstrText);
+    [propget, id(63), helpstring("property ShowBrandingLogo")] HRESULT ShowBrandingLogo([out, retval] VARIANT_BOOL* pVal);
+	[propget, id(65), helpstring("property EnableAsyncScan")] HRESULT EnableAsyncScan([out, retval] VARIANT_BOOL* pVal);
+	[propget, id(70), helpstring("property StartIWP")] HRESULT StartIWP([out, retval] VARIANT_BOOL* pVal);
+	[propget, id(71), helpstring("property IWPInstalled")] HRESULT IWPInstalled([out, retval] VARIANT_BOOL* pVal);
+	[id(72), helpstring("method StartSymTDI")] HRESULT StartSymTDI();
+	[propget, id(73), helpstring("property AgreedToEULA")] HRESULT AgreedToEULA([out, retval] VARIANT_BOOL* pVal);
+	[propput, id(73), helpstring("property AgreedToEULA")] HRESULT AgreedToEULA([in] VARIANT_BOOL bVal);
+	[propget, id(78), helpstring("Norton AntiVirus installation path")] HRESULT NortonAntiVirusPath([out, retval] BSTR *NortonAntiVirusPath);
+	[id(79), helpstring("method AutoStartLCService")] HRESULT AutoStartLCService(void);
+	[propget, id(81), helpstring("property AutoLiveUpdate")] HRESULT AutoLiveUpdate([out, retval] VARIANT_BOOL *pVal);
+	[propget, id(82), helpstring("property AutoLiveUpdateMode")] HRESULT AutoLiveUpdateMode([out, retval] long *pVal);
+    [id(83), helpstring("method WaitForLicenseData")] HRESULT WaitForLicenseData([out,retval] VARIANT_BOOL* pVal);
+    [id(84), helpstring("method RunBackGroundTasks")] HRESULT RunBackGroundTasks([out,retval] VARIANT_BOOL* pVal);
+    [propget, id(86), helpstring("property IsAggregateProduct")] HRESULT IsAggregateProduct([out, retval] VARIANT_BOOL *pVal);
+	[id(87), helpstring("method SignalPreCfgwizUI")] HRESULT SignalPreCfgwizUI();
+	[propget, id(89), helpstring("property bDefaultValueForDisableWD")] HRESULT bDefaultValueForDisableWD([out, retval] VARIANT_BOOL* pVal);
+	[propput, id(89), helpstring("property bDefaultValueForDisableWD")] HRESULT bDefaultValueForDisableWD([in] VARIANT_BOOL newVal);
+
+	[propget, id(91), helpstring("property bShowDisableWDCheckBox")] HRESULT bShowDisableWDCheckBox([out, retval] VARIANT_BOOL* pVal);
+	[propput, id(91), helpstring("property bShowDisableWDCheckBox")] HRESULT bShowDisableWDCheckBox([in] VARIANT_BOOL newVal);
+};
+
+[
+	uuid(D935DFEC-4546-4119-94D5-91807C7BB363),
+	version(1.0),
+	helpstring("NAVCfgWizDll 1.0 Type Library")
+]
+library NAVCFGWIZDLLLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(333EDEFF-6F69-484d-B6BC-6150ABC7EB80),
+		helpstring("NAVCfgWizMgr Class")
+	]
+	coclass NAVCfgWizMgr
+	{
+		[default] interface INAVCCfgWizSubMgr;
+	};
+};

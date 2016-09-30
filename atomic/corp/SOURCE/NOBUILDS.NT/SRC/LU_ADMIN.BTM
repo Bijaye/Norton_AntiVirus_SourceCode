@@ -1,0 +1,242 @@
+::
+:: $Header:   S:/NOBUILDS.NT/VCS/lu_admin.btv   1.1   10 May 1997 02:59:18   KSACKIN  $
+::
+:: file for building the self-extracting administration piece
+::
+::------------------------------------------------------------------------
+::
+:: $Log:   S:/NOBUILDS.NT/VCS/lu_admin.btv  $
+:  
+:     Rev 1.1   10 May 1997 02:59:18   KSACKIN
+:  Updated batch file to pull all LUADMIN files from the %FAMILYPRE% location
+:  instead of the %PROJPRE%.  This project now resides in AVCORE.
+:
+:     Rev 1.0   25 Apr 1997 11:37:28   ksackin
+:  Initial revision.
+:
+:     Rev 1.0   13 Mar 1997 15:17:22   RFULLER
+:  Initial revision
+:
+:     Rev 1.2   13 Feb 1997 16:02:36   ksackin
+:  Now stamping all files within the self extracting executable, as well as
+:  the executable itself.
+:
+:     Rev 1.1   29 Jan 1997 21:40:00   TSmith
+:  Remarked out lines that created LUHOST subdirectory.
+:
+:     Rev 1.0   27 Jan 1997 15:46:32   TSmith
+:  Initial revision.
+:
+:     Rev 1.3   20 Dec 1996 01:09:16   GWESTER
+:  Fixed a typo.
+:
+:     Rev 1.2   19 Dec 1996 21:48:52   GWESTER
+:  Fixed so that the zip won't include the .INP file.
+:
+:     Rev 1.1   19 Dec 1996 20:30:20   GWESTER
+:  Changed name of self-extracting zip to LUAU.EXE .
+:
+:     Rev 1.0   18 Dec 1996 10:55:50   jmillar
+:  Initial revision.
+:
+::
+::------------------------------------------------------------------------
+
+@ECHO OFF
+
+REM --------------------------------------------------------------------------
+REM Batch file to create the trial version self extracting zip files
+REM
+REM The process of this file is as follows:
+REM
+REM 1 - Copies all the files to the %PROJPRE%\LUADMIN\LIB.W32 directory.
+REM 2 - Zips the files into one zip called _ZIPNAME
+REM 3 - Runs the WINZIPSE.EXE program from to create the
+REM     self-extracting executable called _EXENAME.
+REM 4 - Stamps the resulting executable with the current date and hard-coded
+REM     below.
+REM --------------------------------------------------------------------------
+
+SET _SOURCE_FILES=%FAMILYPRE%\LUADMIN\SRC
+SET _ZIPNAME=LUAU.ZIP
+SET _EXENAME=LUAU.EXE
+SET _SOURCE_DATE=02/21/97
+SET _SOURCE_TIME=02:01a
+
+PUSHD
+
+IFF "%PROJPRE%" == "" THEN
+    GOTO noprojerr
+ENDIFF
+
+IFF NOT EXIST %FAMILYPRE%\LUADMIN\LIB.IRA\NUL THEN
+    MD %FAMILYPRE%\LUADMIN\LIB.IRA
+ENDIFF
+
+IFF "%_DOS%" == "NT" THEN
+    MSGBOX YESNO "Confirmation" The date/time on the self-extracting executable will be set to %_SOURCE_DATE% %_SOURCE_TIME%. Is this correct?
+    IF %_? != 10 GOTO BATCHEND
+ELSE
+    @ECHO The date/time on the self-extracting executable will be set to %_SOURCE_DATE% %_SOURCE_TIME%
+    CHOICE /C:YN Is this correct?
+    IF ERRORLEVEL 2 GOTO BATCHEND
+    @ECHO.
+ENDIFF
+
+REM --------------------------------------------------------------------------
+REM Set the current drive/directory to the assembly area
+REM --------------------------------------------------------------------------
+
+REM %FAMILYPRE%
+CDD %FAMILYPRE%\LUADMIN\LIB.IRA
+
+REM --------------------------------------------------------------------------
+REM Create an 'LUHOST' subdirectory
+REM --------------------------------------------------------------------------
+
+REM IFF NOT ISDIR %FAMILYPRE%LUADMIN\LIB.IRA\LUHOST THEN
+REM     MD %FAMILYPRE%LUADMIN\LIB.IRA\LUHOST
+REM ENDIFF
+
+FOR %a IN (@%PROJPRE%NOBUILDS.NT\SRC\LUA_FILS.TXT) DO GOSUB copysub
+
+REM --------------------------------------------------------------------------
+REM Make sure the files all got copied
+REM --------------------------------------------------------------------------
+
+FOR %a IN (@%PROJPRE%NOBUILDS.NT\SRC\LUA_FILS.TXT) DO IF NOT EXIST %a GOTO missfileerr
+
+REM --------------------------------------------------------------------------
+REM Move the host files (.HST) to the LUHOST subdirectory
+REM --------------------------------------------------------------------------
+
+REM FOR %f in (*.HST) DO MOVE %f .\LUHOST
+
+REM --------------------------------------------------------------------------
+REM clean up residue from the last run
+REM --------------------------------------------------------------------------
+
+IFF EXIST %_EXENAME% THEN
+    DEL %_EXENAME%
+ENDIFF
+
+IFF EXIST %FAMILYPRE%\LUADMIN\LIB.IRA\LU_ADMIN.INP THEN
+    del %FAMILYPRE%\LUADMIN\LIB.IRA\LU_ADMIN.INP
+ENDIFF
+
+REM --------------------------------------------------------------------------
+REM Zip up the files
+REM --------------------------------------------------------------------------
+
+IFF EXIST %_ZIPNAME% THEN
+    DEL %_ZIPNAME%
+ENDIFF
+
+@REM --------------------------------------------------------------------------
+@REM Time and date stamp the files within the zip
+@REM --------------------------------------------------------------------------
+
+SET _SOURCE_CMD=FD /D:%_SOURCE_DATE% /T:%_SOURCE_TIME%
+FOR %a IN (@%PROJPRE%NOBUILDS\SRC\LUA_FILS.TXT) DO %_SOURCE_CMD% %a
+
+
+REM --------------------------------------------------------------------------
+REM Zip all files at once, including all subdirectories
+REM --------------------------------------------------------------------------
+
+REM pkzip -prex %_ZIPNAME% *.*
+pkzip -ex %_ZIPNAME% *.*
+
+REM --------------------------------------------------------------------------
+REM The following files are just used for the self-extracting portion
+REM and are not put into the zip file, nor installed
+REM --------------------------------------------------------------------------
+
+REM COPY %PROJPRE%NOBUILDS\SRC\LU_ADMIN.INP
+
+REM --------------------------------------------------------------------------
+REM Create the self-extracting zip
+REM --------------------------------------------------------------------------
+
+WINZIPSE.EXE %_ZIPNAME% @%PROJPRE%NOBUILDS.NT\SRC\LU_ADMIN.INP
+
+REM @ECHO.
+REM @ECHO When WINZIPSE has finished,
+
+REM --------------------------------------------------------------------------
+REM Stamp the date/time for the self-extracting zip
+REM --------------------------------------------------------------------------
+
+FD /D:%_SOURCE_DATE /T:%_SOURCE_TIME %_EXENAME%
+@ECHO zipfile %_EXENAME% created successfully
+@ECHO.
+
+REM --------------------------------------------------------------------------
+REM and post up in the real world for install.
+REM --------------------------------------------------------------------------
+
+COPY %_EXENAME% %FAMILYPRE%\BIN.DOS
+
+GOTO BATCHEND
+
+REM --------------------------------------------------------------------------
+REM Subroutine to copy the files from the various locations
+REM --------------------------------------------------------------------------
+
+:copysub
+
+IFF EXIST %_SOURCE_FILES%\%a THEN
+    COPY %_SOURCE_FILES%\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %FAMILYPRE%\NOBUILDS\SRC%FAMILYVERS%\%a THEN
+    COPY %FAMILYPRE%\NOBUILDS\SRC%FAMILYVERS%\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %FAMILYPRE%\BIN%FAMILYVERS%.IRA\%a THEN
+         COPY %FAMILYPRE%\BIN%FAMILYVERS%.IRA\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %FAMILYPRE%\BIN%FAMILYVERS%.WIN\%a THEN
+         COPY %FAMILYPRE%\BIN%FAMILYVERS%.WIN\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %PROJPRE%BIN.IRA\%a THEN
+    COPY %PROJPRE%BIN.IRA\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %PROJPRE%BIN.WIN\%a THEN
+    COPY %PROJPRE%BIN.WIN\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %PROJPRE%BIN.DOS\%a THEN
+    COPY %PROJPRE%BIN.DOS\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %PROJPRE%BIN.VXD\%a THEN
+ELSEIFF EXIST %PROJPRE%WINZINST\SRC\%a THEN
+    COPY %PROJPRE%WINZINST\SRC\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST %PROJPRE%NOBUILDS\SRC\%a THEN
+    COPY %PROJPRE%NOBUILDS\SRC\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST L:\SOURCE\BIN%QUAKE%.IRA\%a THEN
+    COPY L:\SOURCE\BIN%QUAKE%.IRA\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ELSEIFF EXIST L:\SOURCE\BIN%QUAKE%.VXD\%a THEN
+    COPY L:\SOURCE\BIN%QUAKE%.VXD\%a %FAMILYPRE%\LUADMIN\LIB.IRA
+ENDIFF
+
+RETURN
+
+
+:noprojerr
+ECHO.
+ECHO You must use env to set the MARCONI product before using this batchfile
+ECHO.
+GOTO BATCHEND
+
+:nofinalerr
+ECHO.
+ECHO Error - %PROJPRE%NAVNET32 directory does not exist
+ECHO.
+GOTO BATCHEND
+
+:missfileerr
+ECHO.
+ECHO Not all files were copied.  File %a is missing. Terminating...
+ECHO.
+GOTO BATCHEND
+
+:batchend
+POPD
+SET _SOURCE_DATE=
+SET _SOURCE_TIME=
+SET _SOURCE_CMD=
+SET _SOURCE_FILES=
+SET _ZIPNAME=
+SET _EXENAME=
+

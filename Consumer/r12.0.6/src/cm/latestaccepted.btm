@@ -1,0 +1,47 @@
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: This script will copy a build from USSM-CPD to the
+:: LATEST_ACCEPTED folder for that project
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+@echo off
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: vars
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+set bldnum=%1
+set BUILDPATH=H:\Unreleased_Builds\NAV\r12.0.6\%bldnum%
+set TMPPATH=H:\Unreleased_Builds\NAV\r12.0.6\!LATEST_ACCEPTED\!COPY_IN_PROGRESS
+set LATESTPATH=H:\Unreleased_Builds\NAV\r12.0.6\!LATEST_ACCEPTED\%bldnum%
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Check to see if USSM-CPD is mapped to H:, if not mount it
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:testserver
+
+iff not isdir "h:\Unreleased_Builds\NAV\" then
+    echo \\ussm-cpd was not found, attempting to map it now.
+    echo.
+    net use h: \\ussm-cpd\ussm-cpd p@sswordforCM /user:Symcorp\CM_Only
+    goto /i testserver
+else
+    echo ussm-cpd is mapped to h:.
+    delay %DELAYTIME
+endiff
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Copy the files from %BUILDPATH% to %LATESTPATH%
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+xcopy /E /I /H /R /Y %BUILDPATH% %TMPPATH%
+
+move %TMPPATH% %LATESTPATH%
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Script complete, exit
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo The files have been copied to the latest accepted folder
+
+exit

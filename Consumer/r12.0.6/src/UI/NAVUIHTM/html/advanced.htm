@@ -1,0 +1,57 @@
+<html>
+    <head>
+		<title>NAV Advanced Tools</title>
+		<meta http-equiv="Content-Language" content="en-us">
+		<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		<meta http-equiv="MSThemeCompatible" content="Yes" />
+		<link rel="stylesheet" type="text/css" href="nav2005.css">
+		
+		<iframe id="resErr" src="navErrors.htm" class="hidden" name="NAV_Errors"></iframe>
+		
+		<script language="JavaScript" src="DisplayScriptError.js"></script>
+		<script Language="JavaScript" src="launcher.js"></script>
+	</head>
+
+    <body id="oBody" class="navPanelBody" scroll="no" onload="OnLoad()">
+		<!-- Main table. Helps to keep the panel layout in the editor -->
+		<table id="tableNAVAdvancedToolsPanel" width="418" height="320" cellSpacing="0" cellPadding="0" border="0">
+			<tr>
+				<!-- Title -->
+				<td class="navPanelTitleTD" height="28" id="adv_td1">
+					<span id="advancedPanelTitle" class="navPanelTitle">Advanced Tools</span>
+				</td>
+			</tr>    
+			<tr>
+				<td valign="top" id="adv_td2">
+					<table id="tableAdvancedTools" width="100%" height="100%" cellSpacing="0" cellPadding="0" border="0">
+						<tr>
+							<td height="40" valign="top" style="padding-top: 8px" id="avd_td3">
+								<span>&nbsp</span>
+							</td>
+						</tr>
+						<tr>
+							<td valign="top" class="navListBox" height="111" id="adv_td4">
+								<table id="tableTasks" width="100%" cellSpacing="0" cellPadding="0" border="0" bgcolor="#FFFFFF">
+									<tr onclick="OnItemFocus(this)">
+										<td align="center" width="55" height="55" id="adv_1"><img border="0" onclick="LaunchTask(this, taskUnErase)" style="cursor:hand" src="unerase.gif" width="32" height="32" id="adv_img1"></td>
+										<td><a id="launchUnErase" class="navTask" onclick="LaunchTask(this, taskUnErase); return false" onfocus="OnItemFocus(this)" href="#">UnErase Wizard</a><br>Recover your erased files</td>
+									</tr>
+									<tr>
+										<td class="navItemSeparator" colSpan="2" id="adv_5"><img height="1" alt="" src="spacer.gif" width="1" border="0" id = "adv_img3"></td>
+									</tr>
+									<tr onclick="OnItemFocus(this)">
+										<td align="center" width="55" height="55" id="adv_2"><img border="0" onclick="LaunchTask(this, taskWipeInfo)" style="cursor:hand" src="wipeinfo.gif" width="32" height="32" id="adv_img2"></td>
+										<td><a id="launchWipeInfo" class="navTask" onclick="LaunchTask(this, taskWipeInfo); return false" onfocus="OnItemFocus(this)" href="#">Wipe Info</a><br>Wipe data from your computer</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+					</table> <!-- tableAdvancedTools -->
+				</td>
+			</tr>
+		</table> <!-- tableNAVAdvancedToolsPanel -->
+    </body>
+</html>

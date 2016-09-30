@@ -1,0 +1,508 @@
+import "objidl.idl";
+import "oaidl.idl";
+import "wtypes.idl";
+
+// CATID_ProtectionProvider
+// The component category that all protection provider components must implement
+cpp_quote("#ifndef CATID_ProtectionProvider_Defined")
+cpp_quote("    // {5713D82F-7C60-410a-9144-FE4D0329DF7B}")
+cpp_quote("    static const GUID CATID_ProtectionProvider = { 0x5713d82f, 0x7c60, 0x410a, { 0x91, 0x44, 0xfe, 0x4d, 0x3, 0x29, 0xdf, 0x7b } };")
+cpp_quote("    #define CATID_ProtectionProvider_Defined")
+cpp_quote("#endif // CATID_ProtectionProvider_Defined")
+
+// FORWARD DECLARATIONS
+interface IProtection;
+interface IProtection_Container;
+interface IProtection_ConfigureableScan_Container;
+interface IExceptionItem_Container;
+
+// IPROTECTION_PROVIDER
+// Represents a kind of protection, such as antivirus or firewall.  This object is the "root node" for all configuration
+// and interaction with it through this sytem - it all starts here.  There are three basic types of protection technology:
+//      Configureable Scans                 An AV/spyware scan of the system
+//      Simple Scans                        A scan with no options (e.g., a memory scan)
+//      Autoprotects                        Continual protection technologies, like Filesystem AP or the Firewall
+// IProtection_Provider objects must implement the IProtection interface to permit access to service-level functions that
+// affect all of the forms of protection exposed by that object.  For example, the IProtection interface of SAV would control
+// service start and stop.  If this is set to OFF, it would obviously disable all AutoProtects exposed by SAV as well.
+// Clients get access to autoprotects through the Autoprotects property of the protection provider.
+[
+    object,
+    uuid(979920CF-81B8-4c1a-988F-15355AE8AD64),
+    helpstring("IProtection_Provider Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_Provider : IDispatch
+{
+    // An ID that is constant over time (never changes once assigned)
+    [propget, id(1), helpstring("property ID")] HRESULT ID( [out, retval] GUID* id );
+    // Sets *bitmapHandle equal to a bitmap handle to use for the splash graphic.  Caller owns bitmap.
+    [propget, id(2), helpstring("property SplashGraphic")] HRESULT SplashGraphic( [out, retval] HGDIOBJ* bitmapHandle );
+    // Unlike Autoprotects, a protection provider component may be present on a system that does not have that technology
+    // installed.  This property is TRUE if the technology is installed, and thus this component is fully usable, or FALSE
+    // if the technology is not present and consequently this component is rather useless.
+    // TRUE if this protection technology is installed on the system, else false
+    [propget, id(3), helpstring("property Installed")] HRESULT Installed( [out, retval] VARIANT_BOOL* isInstalled );
+    // Each form of continual protection supported on this system should be represented by an IProtection object exposed in
+    // this collection - those not installed would not be listed.  For example, a SAV 10.1 system with FileSystem AP and
+    // Internet E-mail AP would return a collection of 2 IProtections.  Autoprotects are always listed, even if they are OFF.
+    [propget, id(4), helpstring("property Autoprotects")] HRESULT Autoprotects( [out, retval] IProtection_Container** autoprotects );
+    // Returns the primary autoprotect that represents the majority of the protection provided by this provider
+    // For example - for SAV, this is filesystem AP
+    [propget, id(5), helpstring("property PrimaryAutoprotect")] HRESULT PrimaryAutoprotect( [out, retval] IProtection** primaryAutoprotect );
+
+    // Each configureable scan that exists on this system should be represented by an IProtection_ConfigureableScan object
+    // exposed in this collection.
+    [propget, id(6), helpstring("property ConfigureableScans")] HRESULT ConfigureableScans( [out, retval] IProtection_ConfigureableScan_Container** scans );
+    
+    // Each admin (managed) exception that exists is represented by an object in this collection.  These are read-only
+    // exceptions that cannot be modified on the client - any attempt to change them should result in an error.
+    // Not that this collection should be of type(s) that are appropriate to this protection provider.  The generic
+    // IExceptionItem interface is merely for display purposes.
+    [propget, id(7), helpstring("property AdministrativeExceptions")] HRESULT AdministrativeExceptions( [out, retval] IExceptionItem_Container** exceptions );
+    // Each locally defined exception is represented by an object in this collection, and is fully modifiable.  Unlike previous
+    // containers, these are fully standalone and there can be multiple instances.  This is to allow the caller to do things
+    // like making a copy of this container, letting the user modify that at well, and then doing a single assignment to
+    // reflect all those changes or discarding them if they click cancel.
+    [propget, id(8), helpstring("property LocalExceptions")] HRESULT LocalExceptions( [out, retval] IExceptionItem_Container** exceptions );
+    [propput, id(8), helpstring("property LocalExceptions")] HRESULT LocalExceptions( [in] IExceptionItem_Container* exceptions );
+}
+
+// IPROTECTION_DEFINITIONINFO
+// Definition information for a protection provider
+[
+    object,
+    uuid(888B91C3-9CC9-42e2-A085-0633B463FC13),
+    helpstring("IProtection_DefinitionInfo Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_DefinitionInfo : IDispatch
+{
+    // Defs must be dated, numbered, or may be both (where date takes precedence).
+    // Sets *defsDate equal to the date/time for this defset.
+    // Returns S_FALSE if defs not dated
+    [propget, id(1)] HRESULT Date( [out, retval] SYSTEMTIME* defsDate );
+    // Sets *revisionNo equal to the revision number for this defset
+    // Returns S_FALSE if defs not dated
+    [propget, id(2)] HRESULT RevisionNo( [out, retval] unsigned int* revisionNo );
+    // Sets *shortDescription equal to a short description of what these defs are
+    [propget, id(3)] HRESULT ShortDescription( [out, retval] BSTR* shortDescription );
+
+}
+
+// IPROTECTION
+// A form of protection running on the system.
+[
+    object,
+    uuid(EAA6B14E-CA51-4dab-8049-96B243BD7F6E),
+    helpstring("IProtection Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection : IDispatch
+{
+    typedef enum {ProtectionStatus_On, ProtectionStatus_Off, ProtectionStatus_Error} ProtectionStatus;
+
+    // Fixed identifier unique among AP's exposed by this provider that never changes across rev's
+    [propget, id(1), helpstring("property ID")] HRESULT ID( [out, retval] GUID* id );
+    [propget, id(2), helpstring("property DisplayName")] HRESULT DisplayName( [out, retval] BSTR* shortName );
+    [propget, id(3), helpstring("property Description")] HRESULT Description( [out, retval] BSTR* userDescription );
+    [propget, id(4), helpstring("property ProtectionStatus")] HRESULT ProtectionStatus( [out, retval] ProtectionStatus *currStatus );
+    [propget, id(5), helpstring("property ProtectionStatusDescription")] HRESULT ProtectionStatusDescription( [out, retval] BSTR* statusDescription );
+    // Returns TRUE only if protection status cannot currently be changed - for example, RTVScan is shutdown and NAVAP
+    // is currently ON.  The configuration can be changed, but the NAVAP protection status won't change until RTVscan is
+    // running again.
+    [propget, id(6), helpstring("property ProtectionStatusReadOnly")] HRESULT ProtectionStatusReadOnly( [out, retval] VARIANT_BOOL* isReadOnly );
+    [propget, id(7), helpstring("property ProtectionConfiguration")] HRESULT ProtectionConfiguration( [out, retval] VARIANT_BOOL* protectionEnabled );
+    [propput, id(7), helpstring("property ProtectionConfiguration")] HRESULT ProtectionConfiguration( [in] VARIANT_BOOL newStatus );
+
+    // Show configuration UI for this protection
+    [id(9)] HRESULT ShowConfigureUI( [in] HWND parentWindowHandle );
+    // Show logs for this protection
+    [id(10)] HRESULT ShowLogUI( [in] HWND parentWindowHandle );
+}
+
+// IENUMPROTECTION
+// Collection support for IProtection
+[
+    object,
+    uuid(E4866660-DB82-4233-99A2-03F25C895214),
+    helpstring("IEnumProtection Interface"),
+    pointer_default(unique),
+    local,
+    nonextensible
+]
+interface IEnumProtection : IUnknown
+{
+    [local]
+    HRESULT Next( [in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IProtection** protection, [out] ULONG* pCeltFetched );
+    [call_as(Next)]
+    HRESULT RemoteNext( [in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IProtection** protection, [out] ULONG* pCeltFetched );
+    HRESULT Skip( [in] ULONG celt );
+    HRESULT Reset();
+    HRESULT Clone( [out] IEnumProtection** ppEnum );
+}
+
+// IPROTECTION_CONTAINER
+// Collection support for IProtection
+[
+    object,
+    uuid(4DD8D82B-432C-40ef-9788-853452C20168),
+    helpstring("IProtection_Container Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_Container : IDispatch
+{
+    [helpstring("method ProtectionCount"), propget, id(1)] HRESULT ProtectionCount([out] long *noItems );
+    [helpstring("method Item"), propget, id(DISPID_VALUE)] HRESULT Item( [in] GUID itemID, [out, retval] IProtection** protection );
+    [helpstring("method _NewEnum"), propget, id(DISPID_NEWENUM)] HRESULT _NewEnum( [out, retval] IEnumProtection** enumerator );
+}
+
+// IPROTECTION_SCAN_CALLBACK
+// Used by the object implementing IProtection_Scan to report status back to the UI
+[
+    object,
+    uuid(3CE447DF-10EC-4852-ACDA-617BFC495716),
+    helpstring("IProtection_Scan_Callback Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_Scan_Callback : IUnknown
+{
+    HRESULT ScanStarting( [in] void* callbackParam );
+    HRESULT StatusUpdate( [in] BSTR overallProgressText, [in] unsigned int overallPercentage, [in] BSTR actionProgressText, [in] unsigned int actionPercentage );
+    HRESULT ScanEnding( [in] VARIANT_BOOL userStop, [in] void* callbackParam );
+}
+
+// IPROTECTION_SCAN
+// Used to launch a scan.  This is implemented by two kinds of objects:
+//      Protection Providers    Optional                                Exposes the simple scan functionality.
+//      Configureable Scans     Required for OnDemandScan objects       Allows the scans to be started and stopped.
+[
+    object,
+    uuid(F672352D-267F-4e95-BD6F-9EB0D5791963),
+    helpstring("IProtection_Scan Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_Scan : IDispatch
+{
+    // Asynchronously runs the scan.  If callback is NULL, displays a GUI showing scan status and results.  Otherwise,
+    // no GUI is shown and status is reported via callback.
+    [id(1)] HRESULT DoScan( [in] HWND parentWindow, [in] IProtection_Scan_Callback* userCallback, [in] void* userCallbackParam );
+    // Stops the scan in progress.  Must be called on the same instance of the object as DoScan was called on.
+    [id(2)] HRESULT StopScan();
+}
+
+// IPROTECTION_CONFIGUREABLESCAN
+// Configureable scans.  These also must implement IProtection_Scan so the scan can be started.
+// Configureable scan objects that are scheduled must also implement IProtection_ConfigureableScan_Scheduled.
+[
+    object,
+    uuid(587162BB-EB25-423c-BE97-EFE38BB0A2AE),
+    helpstring("IProtection_ConfigureableScan Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_ConfigureableScan : IDispatch
+{
+    typedef enum {StartType_OnDemand, StartType_Scheduled, StartType_Startup} StartType;
+
+    [helpstring("property ID"), propget, id(1)] HRESULT ID( [out, retval] GUID* scanID );
+    [helpstring("property Name"), propget, id(2)] HRESULT Name( [out, retval] BSTR *nameBuffer );
+    [helpstring("property Name"), propput, id(2)] HRESULT Name( [in] BSTR newName );
+    [helpstring("property ReadOnly"), propget, id(3)] HRESULT ReadOnly( [out, retval] VARIANT_BOOL* isReadOnly );
+    [helpstring("property StartType"), propget, id(4)] HRESULT StartType( [out, retval] StartType* typeOfScan );
+    [helpstring("property Description"), propget, id(5)] HRESULT Description( [out, retval] BSTR* description );
+    [helpstring("property Description"), propput, id(5)] HRESULT Description( [in] BSTR description );
+    [helpstring("property LastRunTime"), propget, id(6)] HRESULT LastRunTime( [out, retval] SYSTEMTIME* lastRunTime );
+    // TRUE if this scan is currently running, else FALSE
+    [helpstring("property IsRunning"), propget, id(7)] HRESULT IsRunning( [out, retval] VARIANT_BOOL* isRunning );
+
+    [id(8)] HRESULT ShowConfigureUI( [in] HWND parentWindow );
+    [id(9)] HRESULT ShowLogUI( [in] HWND parentWindow );
+    [id(10)] HRESULT RunScan( [in] HWND parentWindow );
+}
+
+// IPROTECTION_CONFIGUREABLESCAN_SCHEDULED
+// Scheduled scans.
+[
+    object,
+    uuid(002E704B-6E16-40ea-AEBA-E858BCA82B89),
+    helpstring("IProtection_ConfigureableScan_Scheduled Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_ConfigureableScan_Scheduled : IDispatch
+{
+    typedef enum {RepetitionType_None, RepetitionType_Daily, RepetitionType_Weekly, RepetitionType_Monthly} RepetitionType;
+    
+    [helpstring("property RepeatType"), propget, id(1)] HRESULT RepeatType( [out, retval] RepetitionType* type );
+    [helpstring("property RepetitionDay"), propget, id(2)] HRESULT RepetitionDay( [out, retval] unsigned int* day );
+    // StartTime is the time only, no date, for when the scan starts
+    [helpstring("property StartTime"), propget, id(3)] HRESULT StartTime( [out, retval] SYSTEMTIME* startTime );
+    // Scheduled scans may be enabled or disabled - return which
+    [helpstring("property Enabled"), propget, id(4)] HRESULT Enabled( [out, retval] VARIANT_BOOL* isEnabled );
+
+    // Sets *nextRunTimeStart equal to the start of the next time this scan will run.
+    // If scan windows are supported, also sets *supportsWindows to true and *nextRunTime to the end of the window
+    [id(5)] HRESULT GetNextRunTime( [out] SYSTEMTIME* nextRunTimeStart, [out] VARIANT_BOOL* supportsWindows, [out] unsigned int* scanWindowRunHours );
+}
+
+// IENUMPROTECTION_CONFIGUREABLESCAN
+// Collection support for IProtection_ConfigureableScan
+[
+    object,
+    uuid(D76F0CF0-AB6C-4604-8B1B-5CC305D5C289),
+    helpstring("IEnumProtection_ConfigureableScan Interface"),
+    pointer_default(unique),
+    local,
+    nonextensible
+]
+interface IEnumProtection_ConfigureableScan : IUnknown
+{
+    [local]
+    HRESULT Next( [in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IProtection_ConfigureableScan**, [out] ULONG * pCeltFetched );
+    [call_as(Next)]
+    HRESULT RemoteNext( [in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IProtection_ConfigureableScan**, [out] ULONG * pCeltFetched );
+    HRESULT Skip( [in] ULONG celt );
+    HRESULT Reset();
+    HRESULT Clone( [out] IEnumProtection_ConfigureableScan** ppEnum );
+}
+
+// IPROTECTION_CONFIGUREABLESCAN_CONTAINER
+// Collection support for IProtection_ConfigureableScan.  This is a persistent, modifiable collection.  Callers have limited
+// ability to create new scans - internal configuration options can only be changed via the the ShowConfigureUI at the moment.
+[
+    object,
+    uuid(2843A4DD-917F-4322-B5AA-5A262CAE143D),
+    helpstring("IProtection_ConfigureableScan_Container Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IProtection_ConfigureableScan_Container : IDispatch
+{
+    [helpstring("method Item"), propget, id(DISPID_VALUE)] HRESULT Item( [in] GUID id, [out] IProtection_ConfigureableScan** scan );
+    [helpstring("method _NewEnum"), propget, id(DISPID_NEWENUM)] HRESULT _NewEnum( [out] IEnumProtection_ConfigureableScan** enumerator );
+    [helpstring("method Count"), propget, id(1)] HRESULT Count( [out] long *noItems );
+    // Deletes a scan from the collection
+    [helpstring("method Delete"), id(2)] HRESULT Delete( [in] GUID id );
+    // Shows the UI for creating a new scan, adds it to the collection, and sets *newScan equal to the new scan
+    // Returns S_OK on success, S_FALSE if no user cancelled, else the error code of the failure
+    [helpstring("method Add"), id(3)] HRESULT ShowAddWizard( [in] HWND parentWindow, [out, retval] IProtection_ConfigureableScan** newScan );
+}
+
+// IExceptionItem
+// A form of protection running on the system.
+[
+    object,
+    uuid(D2907E54-8B4C-46d8-BC3D-F526CC7424CA),
+    helpstring("IExceptionItem Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IExceptionItem : IDispatch
+{
+    // Returns a unique ID for this item.  This Id never changes
+    [propget, id(1), helpstring("property ID")] HRESULT ID( [out, retval] GUID* id );
+    [propget, id(2), helpstring("property DisplayName")] HRESULT DisplayName( [out, retval] BSTR* shortName );
+    [propput, id(2), helpstring("property DisplayName")] HRESULT DisplayName( [in] BSTR* newShortName );
+    [propget, id(3), helpstring("property Description")] HRESULT Description( [out, retval] BSTR* userDescription );
+    [propput, id(3), helpstring("property Description")] HRESULT Description( [in] BSTR newUserDescription );
+    [propget, id(4), helpstring("property CreationDate")] HRESULT ProtectionStatus( [out, retval] SYSTEMTIME* creationDate );
+
+    // The following 2 UI methods are preliminary and may well change since the Exclusions UI is still to be determined
+    // Show configuration UI for this protection
+    [id(5)] HRESULT ShowConfigurePopupUI( [in] HWND parentWindowHandle );
+    // Show configuration UI for this protection.  wizard is a CPropertySheet*, firstPage is a CPropertyPage**.
+    [id(6)] HRESULT GetConfigureTabUI( void* wizard, void** firstPage );
+    // Makes a copy of this exclusion item
+    [id(7)] HRESULT Clone( [out, retval] IExceptionItem** newItem );
+}
+
+// IENUMEXCLUSIONITEM
+// Collection support for IExceptionItem
+[
+    object,
+    uuid(60DE224A-7E3F-43c5-810A-54B24A074ACE),
+    helpstring("IEnumExceptionItem Interface"),
+    pointer_default(unique),
+    local,
+    nonextensible
+]
+interface IEnumExceptionItem : IUnknown
+{
+    [local]
+    HRESULT Next( [in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IExceptionItem**, [out] ULONG * pCeltFetched );
+    [call_as(Next)]
+    HRESULT RemoteNext( [in] ULONG celt, [out, size_is(celt), length_is(*pCeltFetched)] IExceptionItem**, [out] ULONG * pCeltFetched );
+    HRESULT Skip( [in] ULONG celt );
+    HRESULT Reset();
+    HRESULT Clone( [out] IEnumExceptionItem** ppEnum );
+}
+
+// IEXCEPTIONITEM_CONTAINER
+// Collection support for IExceptionItem.  This is a persistent, fully modifiable collection.  Callers may create new exception
+// items independant of the collection, add/remove these to/from the collection, copy collections, etc.
+[
+    object,
+    uuid(D8FCDFBA-61FD-4bb4-86B0-9C0EF84AB75B),
+    helpstring("IExceptionItem_Container Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface IExceptionItem_Container : IDispatch
+{
+    [helpstring("method Item"), propget, id(DISPID_VALUE)] HRESULT Item( [in] GUID id, [out] IExceptionItem** exceptionItem );
+    [helpstring("method _NewEnum"), propget, id(DISPID_NEWENUM)] HRESULT _NewEnum( [out] IEnumExceptionItem** enumerator );
+    [helpstring("method ExceptionCount"), propget, id(1)] HRESULT ExceptionCount( [out] long *noItems );
+
+    // Delets an exception from the collection
+    [helpstring("method Delete"), id(2)] HRESULT Delete( [in] GUID id );
+    // Adds an exception item to the collection.
+    [helpstring("method Add"), id(3)] HRESULT Add( IExceptionItem* newItem );
+    // Makes this collection equal to the specified collection - all items are copied over.
+    [helpstring("method Assign"), id(4)] HRESULT Assign( IExceptionItem_Container* sourceCollection );
+}
+
+
+// PROTECTIONPROVIDER TYPE LIBRARY
+[
+    uuid(7F1806A6-1864-4697-A06B-E36F41D75DEF), 
+    helpstring("ProtectionProvider Type Library"), 
+    lcid(0x0409), 
+    version(1.0)
+]
+library ProtectionProviderLib
+{
+    importlib("stdole32.tlb");
+    importlib("stdole2.tlb");
+
+    interface IProtection_Provider;
+    interface IProtection;
+    interface IProtection_DefinitionInfo;
+    interface IEnumProtection;
+    interface IProtection_Container;
+    interface IProtection_Scan_Callback;
+    interface IProtection_Scan;
+    interface IProtection_ConfigureableScan;
+    interface IProtection_ConfigureableScan_Scheduled;
+    interface IEnumProtection_ConfigureableScan;
+    interface IProtection_ConfigureableScan_Container;
+    interface IExceptionItem;
+    interface IEnumExceptionItem;
+    interface IExceptionItem_Container;   
+};
+
+
+// ICmcFirewallControl implemented by the firewall protection provider
+[
+    object,
+    uuid(D8FCD44A-B1FD-abb4-8660-9C0EF889B752),
+    helpstring("ICmcFirewallControl Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface ICmcFirewallControl : IDispatch
+{
+	typedef enum {OM_NOT_DEFINED, OM_CLIENTCONTROLLED, OM_POWERFULL_USER, OM_SERVER_CONTROLLED} OMState;
+
+	[id(1), helpstring("method BlockTraffic")] 					HRESULT BlockTraffic();
+	[id(2), helpstring("method AllowTraffic")]					HRESULT AllowTraffic();
+	[id(3), helpstring("method TestSystemSecurity")]				HRESULT TestSystemSecurity();
+	[propget, id(4), helpstring("property OperationalMode")] 			HRESULT OperationalMode([out, retval] OMState* operationalModeState);		
+	[propget, id(5), helpstring("property IDSProfileSerialNumber")] 		HRESULT IDSProfileSerialNumber([out, retval] BSTR* sNumber);
+	[propget, id(6), helpstring("property IDSProtectionDescription")] 		HRESULT IDSProtectionDescription([out, retval] BSTR* sDescription);
+	[propget, id(7), helpstring("property IDSProtectionStatus")] 			HRESULT IDSProtectionStatus([out, retval] ProtectionStatus *currStatus);
+	[propget, id(8), helpstring("property IDSProtectionStatusDescription")] 	HRESULT IDSProtectionStatusDescription([out, retval] BSTR* sDescription);	
+
+	[propget, id(9),  helpstring("property BlockTrafficConfigEnabled")] 		HRESULT BlockTrafficConfigEnabled([out, retval] VARIANT_BOOL* isEnabled);	
+	[propget, id(10), helpstring("property AllowTrafficConfigEnabled")] 		HRESULT AllowTrafficConfigEnabled([out, retval] VARIANT_BOOL* isEnabled);	
+	[propget, id(11), helpstring("property TestSystemSecurityConfigEnabled")] 	HRESULT TestSystemSecurityConfigEnabled([out, retval] VARIANT_BOOL* isEnabled);
+}
+
+// INacManagement interface that describes NAC management commands
+[
+    object,
+    uuid(D8ACFFFA-B1FD-adb4-8660-6C9EF889B754),
+    helpstring("INacManagement Interface"),
+    pointer_default(unique),
+    local,
+    dual,
+    nonextensible
+]
+interface INacManagement : IDispatch
+{
+	typedef enum {ESTATUS_NOT_DEFINED=0, ESTATUS_ALLOWED=1, ESTATUS_QUARANTINED=2} EConnectionStatus;
+
+	[propget, id(1), helpstring("property EnforcerConnectionStatus")] 				HRESULT EnforcerConnectionStatus([out, retval] EConnectionStatus* eConnected);
+	[propget, id(2), helpstring("property EnforcerConnectionStatusDescription")] 	HRESULT EnforcerConnectionStatusDescription([out, retval] BSTR* sDescription);
+	[propget, id(3), helpstring("property EnforcerIPsUpdated")] 					HRESULT EnforcerIPsUpdated([out, retval] VARIANT_BOOL *bUpdated);
+	[propget, id(4), helpstring("property EnforcerIPs")] 							HRESULT EnforcerIPs([out, retval] VARIANT *pIpList);
+	[propget, id(5), helpstring("property ProductDescription")] 					HRESULT ProductDescription([out, retval] BSTR *sDescription);
+	[propget, id(6), helpstring("property ProductVersion")] 						HRESULT ProductVersion([out, retval] BSTR *sVersion);
+	[propget, id(7), helpstring("property Installed")] 								HRESULT Installed([out, retval] VARIANT_BOOL *isInstalled);
+	[id(8), 		 helpstring("method   ReauthenticateCommand")] 					HRESULT ReauthenticateCommand();
+}
+
+
+
+// Create optional helper data types for users.  This is a little tricky due to conflicting namespace handling by the
+// DevStudio wizards.  Applications implementing these interfaces will reference typenames without namespace qualifiers - 
+// DevStudio auto-adds ProtectionProvider.h in the relevant headers.  Applications *using* these interfaces will #import
+// them instead and so expose them through the ProtectionProviderLib namespace.  To C++,
+// IProtectionProvider != ProtectionProviderLib::IProtectionProvider, so one will be broken.  The solution is to
+// implement them here in both forms and leave it up to the client to select which type of symbols to export.
+// On a side-note:  what we really want here is cpp_quote that is exported to the TLH, but Microsoft doesn't have that facility.
+// 
+// To use these types, defined one of the following symbols before including ProtectionProvider.h:
+//      PROTECTIONPROVIDER_HELPERTYPES_WITHNAMESPACE  -   clients #importing ProtectionProvider.lib (qualifying all type
+//                                                          names with the ProtectionProviderLib namespace)
+//      PROTECTIONPROVIDER_HELPERTYPES_NONAMESPACE    -   clients only #including ProtectionProvider.h (no namespace
+//                                                          qualifier for type names)
+cpp_quote("// Define helper types - we must temporarilly \"un-extern\" things")
+cpp_quote("#ifdef __cplusplus")
+cpp_quote("}")
+cpp_quote("    #include <list>")
+cpp_quote("    #ifdef PROTECTIONPROVIDER_HELPERTYPES_NONAMESPACE")
+cpp_quote("        typedef std::list<IProtection_Provider*>         ProtectionProviderList;")
+cpp_quote("        typedef std::list<IProtection*>                  ProtectionList;")
+cpp_quote("    #endif")
+cpp_quote("    #ifdef PROTECTIONPROVIDER_HELPERTYPES_WITHNAMESPACE")
+cpp_quote("        namespace ProtectionProviderLib")
+cpp_quote("        {")
+cpp_quote("            typedef std::list<ProtectionProviderLib::IProtection_Provider*>      ProtectionProviderList;")
+cpp_quote("            typedef std::list<ProtectionProviderLib::IProtection*>               ProtectionList;")
+cpp_quote("        }")
+cpp_quote("    #endif")
+cpp_quote("    // Re-extern things")
+cpp_quote("extern \"C\" {")
+cpp_quote("#endif //__cplusplus")
+

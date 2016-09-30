@@ -1,0 +1,496 @@
+// Copyright 1992-1993 Symantec, Peter Norton Product Group
+//***********************************************************************
+//
+// $Header:   N:/cpld/VCS/adminstr.stv   1.0   06 Feb 1997 20:50:28   RFULLER  $
+//
+// Description:
+//  This is the strings for the DOS NET CPL program
+//
+// See Also:
+//***********************************************************************
+// $Log:   N:/cpld/VCS/adminstr.stv  $
+// 
+//    Rev 1.0   06 Feb 1997 20:50:28   RFULLER
+// Initial revision
+// 
+//    Rev 1.0   30 Jan 1996 16:21:02   BARRY
+// Initial revision.
+// 
+//    Rev 1.0   30 Jan 1996 14:54:56   BARRY
+// Initial revision.
+// 
+//    Rev 1.26   20 Jan 1995 18:52:44   DALLEE
+// Lower case strings to match Windows UI.
+// 
+//    Rev 1.25   29 Dec 1994 12:50:46   DALLEE
+// Include navopts.h for old MAX_PATH_SIZE define.
+// 
+//    Rev 1.24   28 Dec 1994 12:07:48   DALLEE
+// Latest NAVBOOT revision.
+// 
+    //    Rev 1.2   09 Dec 1994 19:32:22   DALLEE
+    // Paths for NAVOPTS.DAT strings to old 144 bytes.
+    //
+    //    Rev 1.1   30 Nov 1994 17:17:58   DALLEE
+    // CVT1 script.
+    //
+//    Rev 1.23   28 Dec 1994 11:55:58   DALLEE
+// Basis for NAVBOOT code from NAV v3.05.
+// First (.DX) port to trunk is previous version labeled "PRENAVBOOT".
+// 
+    //    Rev 1.0   29 Nov 1994 19:03:44   DALLEE
+    // From Nirvana
+    // From Nirvana r1.21
+//***********************************************************************
+
+#include "platform.h"
+#include "stddos.h"
+#include "stddlg.h"
+#include "navopts.h"
+
+
+//************************************************************************
+// EXTERNAL VARIABLES
+//************************************************************************
+
+extern char         DIALOG_GROUP_END [];
+extern char         szOKButton [];
+extern char         szCancelButton [];
+extern char         szHelpButton [];
+extern ButtonsRec   buOkCancelHelp;
+extern ButtonsRec   buEllipses;
+
+
+//***********************************************************************
+// EXTERNAL FUNCTIONS
+//***********************************************************************
+extern UINT PathValidate(TERec *te ,UINT *c);
+
+
+//************************************************************************
+char SZ_SELECT_NET_DIR[]        = "Select Network Directory to Install From";
+char SZ_SELECT_BEFORE[]         = "Command to Execute Before Install/Update";
+char SZ_SELECT_AFTER[]          = "Command to Execute After Install/Update";
+char SZ_PROGRAM_EXTS[]          = "*.com *.exe *.bat *.btm"; // DONT CHANGE
+
+
+//************************************************************************
+                                        //------------------------------
+                                        // Dialog template for Install/Update
+                                        // CP dialog
+                                        //------------------------------
+char *lpszOptInstallStrings [] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " ^Network directory to install from:",
+    " %T1%B2",
+
+    " %38gLocal directory to install to:",
+    "   %C3",
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    "   %R4",
+    DIALOG_NEXT_COL,
+    DIALOG_EMPTY_LINE,
+    "%T5",
+    DIALOG_1COL,
+    DIALOG_GROUP_END,
+
+    " %38gModify AUTOEXEC.BAT",
+    "   %C6",
+    "   %C7",
+    DIALOG_GROUP_END,
+    DIALOG_EMPTY_LINE,
+
+    DIALOG_NEXT_COL,
+    "%B8",                              // buInstallButtons
+
+    DIALOG_1COL,
+    " Au^to-Protect:",
+    " %X9",
+    DIALOG_EMPTY_LINE,
+
+    " %C10",
+    " %C11",
+    " %C12",
+    DIALOG_END
+    };
+
+
+static char *lpszSystemMonitorLabels [] =
+    {
+    "Don't install",
+    "Install in CONFIG.SYS",
+    "Install in AUTOEXEC.BAT",
+    NULL
+    };
+ComboBoxRec cxSystemMonitor =
+    {
+    CBS_NOEDIT,                 /* flags                                */
+    lpszSystemMonitorLabels,    // Button text
+    NULL,                       // Not needed, if CBS_NOEDIT
+    36,                         /* Width of combo box.                  */
+    3,                          /* Height of combo box.                 */
+    0,
+    };
+
+CheckBoxRec cbRunNAV =
+    {
+    "Run NA^V.EXE",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbAddToPath =
+    {
+    "^Add NAV directory to path",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbRetainSettings =
+    {
+    "^Retain settings when updating",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbLogoffIfNoMonitor =
+    {
+    "^Force logoff if Auto-Protect not installed",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbConfirmAllPrompts =
+    {
+    "Confir^m all prompts",
+    USE_PAD,
+    0,
+    1
+    };
+
+CheckBoxRec cbUsePreviousLocalDir =
+    {
+    "U^se previous directory",          // Rest of sentence in template above
+    USE_PAD,
+    0,
+    1
+    };
+char *navLocalDirRadioStr[] =
+    {
+    "^Prompt",
+    "Use ^default:",
+    NULL
+    };
+
+RadioButtonsRec rbLocalDir =
+    {
+    navLocalDirRadioStr,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,0,                                // Pad, gap
+    };
+
+TERec teNetworkDir =
+    {
+    0, 0,
+    30 + 2,
+    NULL,                               // Allocated dynamically
+    MAX_PATH_SIZE,
+    0,
+    0,
+    PathValidate,
+    0
+    };
+
+TERec teLocalDir =
+    {
+    0, 0,
+    15 + 2,
+    NULL,                               // Allocated dynamically
+    MAX_PATH_SIZE,
+    0,
+    0,
+    PathValidate,
+    0
+    };
+
+static char *lpszInstallButtonsLabels [] =
+    {
+    szOKButton,
+    szCancelButton,
+    " ^Before ",
+    "  ^User  ",
+    " ^Windows",
+    szHelpButton,
+    NULL,
+    };
+
+ButtonsRec buInstallButtons =
+    {
+    lpszInstallButtonsLabels,
+    ARRANGE_VERTICAL | SHOW_HOT_KEYS | USE_PAD,
+    0,                                  // Value - not used
+    0,0,                                // Row, col
+    0,0,                                // Pad, gap
+    };
+
+LPVOID lpOptInstallArgs [] =            // Arguments to pass to control panel
+    {
+    &teNetworkDir,
+    &buEllipses,
+    &cbUsePreviousLocalDir,
+    &rbLocalDir,
+    &teLocalDir,
+    &cbRunNAV,
+    &cbAddToPath,
+    &buInstallButtons,
+    &cxSystemMonitor,
+    &cbRetainSettings,
+    &cbLogoffIfNoMonitor,
+    &cbConfirmAllPrompts
+    };
+                                        //------------------------------
+                                        // Windows Dlg
+                                        //------------------------------
+static char *navNetWindowsDlgStrings[] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %C1",
+    " %C2",
+    " %C3",
+    DIALOG_EMPTY_LINE,
+
+    DIALOG_NEXT_COL,
+    DIALOG_END
+    };
+
+CheckBoxRec cbInstallWindowsNAV =
+    {
+    "Install NAV for ^windows",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbLoadWindowsDrivers =
+    {
+    "Load windows ^drivers",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbCreateWindowsGroup =
+    {
+    "Create windows ^group",
+    USE_PAD,
+    0,
+    1
+    };
+
+DIALOG dlgWindows =
+    {
+    0, 0,
+    NORMAL_DIALOG_FLAGS,
+    "Windows",
+    navNetWindowsDlgStrings,
+    &buOkCancelHelp,
+    };
+
+                                        //------------------------------
+                                        // User Registration Dlg
+                                        //------------------------------
+static char *navNetUserDlgStrings[] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %48gCompany",
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    "   %R1",
+    DIALOG_NEXT_COL,
+    DIALOG_EMPTY_LINE,
+    "%T2",
+    DIALOG_GROUP_END,
+
+    DIALOG_1COL,
+    "   %C3",
+
+    DIALOG_NEXT_COL,
+    DIALOG_END
+    };
+
+CheckBoxRec cbPromptForName =
+    {
+    "Prompt for ^name",
+    USE_PAD,
+    0,
+    1
+    };
+
+char *navCompanyRadioStr[] =
+    {
+    "^Prompt",
+    "Use ^default:",
+    NULL
+    };
+
+RadioButtonsRec rbCompany =
+    {
+    navCompanyRadioStr,
+    USE_PAD,
+    0,                                  // Value - not used
+    1,0,                                // Pad, gap
+    };
+
+TERec teCompany =
+    {
+    0, 0,
+    24 + 2,
+    NULL,                               // Allocated dynamically
+    SYM_MAX_USER_INFO,
+    0,
+    0,
+    NULL,
+    0
+    };
+
+DIALOG dlgUserReg =
+    {
+    0, 0,
+    NORMAL_DIALOG_FLAGS,
+    "User Registration",
+    navNetUserDlgStrings,
+    &buOkCancelHelp
+    };
+
+                                        //------------------------------
+                                        // Before/After Dlg
+                                        //------------------------------
+static char *navNetBeforeDlgStrings[] =
+    {
+    DIALOG_EMPTY_LINE,
+    DIALOG_2COLS,
+    DIALOG_LEFT,
+    " %50gBefore installing/updating",
+    "   %C1",
+    "   %C2",
+    "   %C3",
+    "   %C4",
+    DIALOG_EMPTY_LINE,
+    "   Command to execute ^before install/update: ",
+    "   %T5%B6",
+    "   %C7",
+    DIALOG_GROUP_END,
+    " %50gAfter installing/updating",
+    "   Ac^tion: %X8",
+    DIALOG_EMPTY_LINE,
+    "   Command to execute ^after install/update: ",
+    "   %T9%B10",
+    "   %C11",
+    DIALOG_GROUP_END,
+
+    DIALOG_NEXT_COL,
+    DIALOG_END
+    };
+
+CheckBoxRec cbScanMemory =
+    {
+    "Scan ^memory",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbScanHardDisk =
+    {
+    "Scan hard disk ^system areas",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbScanProgramFiles =
+    {
+    "Scan ^program files",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbScanAlways =
+    {
+    "Scan al^ways",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbBeforeCommandAlways =
+    {
+    "^Execute command always",
+    USE_PAD,
+    0,
+    1
+    };
+CheckBoxRec cbAfterCommandAlways =
+    {
+    "E^xecute command always",
+    USE_PAD,
+    0,
+    1
+    };
+static char *szNetUpdateCmbStrings[] =
+    {
+    "Don't reboot",
+    "Reboot",
+    "Prompt to reboot",
+    NULL
+    };
+
+ComboBoxRec cxActionAfterInstalling =
+    {
+    CBS_NOEDIT,                 /* flags                                */
+    szNetUpdateCmbStrings,      /* list of strings                      */
+    NULL,                       // Not needed, if CBS_NOEDIT
+    35,                         /* Width of combo box.                  */
+    3,                          /* Height of combo box.                 */
+    0,
+    };
+
+
+TERec teBeforeCommand =
+    {
+    0,0,
+    38 + 2,
+    NULL,                               // Allocated dynamically
+    MAX_PATH_SIZE,
+    0,
+    0,
+    PathValidate,
+    0
+    };
+
+
+TERec teAfterCommand =
+    {
+    0,0,
+    38 + 2,
+    NULL,                               // Allocated dynamically
+    MAX_PATH_SIZE,
+    0,
+    0,
+    PathValidate,
+    0
+    };
+
+DIALOG dlgBefore =
+    {
+    0, 0,
+    NORMAL_DIALOG_FLAGS,
+    "Before and After Installing/Updating",
+    navNetBeforeDlgStrings,
+    &buOkCancelHelp
+    };
+

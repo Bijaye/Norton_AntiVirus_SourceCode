@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title> X-CUSTOMER ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1> X-Customer Attributes</H1>
+The proprietary X-Customer attributes are included in all messages from customers to gateways. They identify the customer making the request, and are used for authorization and tracking:<BR><BR>
+
+<a href="#Email"><B>X-Customer-Contact-Email</b></a>: individual contact informationemail address<BR>
+<a href="#Name"><B>X-Customer-Contact-Name</b></a>: individual contact name<BR>
+<a href="#Telephone"><B>X-Customer-Contact-Telephone</b></a>: individual contact telephone number<BR>
+<a href="#Credentials"><B>X-Customer-Credentials</b></a>: customer authentication information<BR>
+<a href="#Name"><B>X-Customer-Name</b></a>: registered name of customer<BR>
+<a href="#Identifier"><B>X-Customer-Identifier</b></a>: customer service class and identifier<BR>
+
+<P><a name="#Email"></a>
+<B>X-Customer-Contact-Email</b><BR>
+This attribute gives individual contact information. The value is a text string of at most 255 characters giving names, telephone numbers, and email addresses that the technical support staff can use to contact the individual who submitted a sample, if necessary.</P>
+<P>For example, the contact information for the author is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Customer-Contact-Email: pring@watson.ibm.com</P>
+
+<P><a name="#Name"></a>
+<B>X-Customer-Contact-Name</b><BR>
+This attribute gives individual contact information. The value is a text string of at most 255 characters giving the full name of an individual the technical support staff can contact, if necessary.</P>
+<P>For example, the contact information for the author is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Customer-Contact-Name: Edward Pring</P>
+
+<P><a name="#Telephone"></a>
+<B>X-Customer-Contact-Telephone</b><BR>
+This attribute gives individual contact information. The value is a text string of at most 255 characters giving the email address of an individual the technical support staff can contact, if necessary. </P>
+<P>For example, the contact information for the author is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Customer-Contact-Telephone: 1-914-784-6285</P>
+
+<P><a name="#Credentials"></a>
+<B>X-Customer-Credentials</b><BR>This attribute transports customer credentials from a customer client to a gateway. The value of this attribute is a binary string of at most 127 bytes encoded as a hexadecimal string of at most 254 characters in the range "0..9A..F". </P>
+<P>The value is obtained by a client when a product is installed or at some later time before a sample is submitted. The value may be encrypted, and must be treated as an opaque string by components that do not have access to the encryption key.</P>
+<P>The value is used by a gateway when a sample is received. If the value is encrypted, it is decrypted using a secret shared with the installation program or network service that produced it. The decrypted value is used to authenticate the customer's identity, determine whether the customer is entitled to submit samples, limit the number of samples the customer can submit, and prioritize samples that are accepted for analysis.</P>
+<P>For example, the customer credentials for the author are:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Customer-Credentials: 0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF.</P>
+
+<P><a name="#Name"></a>
+<B>X-Customer-Name</b><BR>
+This attribute gives the registered name of the customer. The value is a text string of at most 255 characters giving the name of the person and organization that purchased the product or subscribed to the service. </P>
+<P>For example, the customer name for the author is:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Customer-Name:Steve White, IBM T.J.Watson Laboratory</P>
+
+<P><a name="#"></a>
+<B>X-Customer-Identifier</b><BR>
+This attribute specifies the customer's service class and identification number. The value is a text string of at most 63 characters.</P>
+<P>The value is a token indicating the service class and a text string that specifies the identification number. The value is assigned when a customer installs a product or subscribes to a network service. A client may obtain the value from an installation program or some network service such as Symantec's "Venice" project. The attribute may be included by the client when a sample is submitted, or added to a sample by the gateway after the customer's credentials have been decrypted.subscribes to a service plan.</P>
+<P>The service class is indicated by one of these text tokens:
+<table>
+  <tr>
+    <td valign=top width="93">&nbsp;&nbsp;&nbsp;&nbsp;<b>gold</b></td>
+    <td width="136">for the gold service plan</td>
+  </tr>
+  <tr>
+    <td valign=top width="93">&nbsp;&nbsp;&nbsp;&nbsp;<b>platinum</b></td>
+    <td width="136">for the platinum service plan</td>
+  </tr>
+</table>
+<P>For example, the customer identifier for the author is:might be:</P>
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Customer-Identifier: 123456-ABCDEFgold 0123456789ABCDEFGHIJ</P>
+
+
+</BODY>
+</HTML>

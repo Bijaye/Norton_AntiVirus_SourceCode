@@ -1,0 +1,24 @@
+HKCR
+{
+	VPScann.VPScann.1 = s 'VPScann Class'
+	{
+		CLSID = s '{150C8EB1-BDDF-11D1-82D7-00A0C9749EEF}'
+	}
+	VPScann.VPScann = s 'VPScann Class'
+	{
+		CurVer = s 'VPScann.VPScann.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {150C8EB1-BDDF-11D1-82D7-00A0C9749EEF} = s 'VPScann Class'
+		{
+			ProgID = s 'VPScann.VPScann.1'
+			VersionIndependentProgID = s 'VPScann.VPScann'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+		}
+	}
+}

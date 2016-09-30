@@ -1,0 +1,62 @@
+;-------------------------------------------------------------------------
+; $Header:   M:/SOURCE/NAVAPW/VCS/projhook.inv   1.5   12 Jan 1999 12:03:10   HKIM  $
+;-------------------------------------------------------------------------
+; $Log:   M:/SOURCE/NAVAPW/VCS/projhook.inv  $
+;  
+;     Rev 1.5   12 Jan 1999 12:03:10   HKIM
+;  Changed Coresdk from 008 to 009
+;  
+;     Rev 1.4   14 Jul 1998 14:10:54   mdunn
+;  Added CORESDK.008 to trial targets.
+;-------------------------------------------------------------------------
+
+[IRA]
+deftarget=navwnt
+
+[IDA]
+deftarget=navwnt
+
+[ARA]
+deftarget=navwnt
+
+[ADA]
+deftarget=navwnt
+
+[IRA_NAVWNT]
+tools=msvc50x86;win95ddk
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.IRU
+
+[IRA_NAVWNTPR]
+tools=msvc50x86;win95ddk;CORESDK.009
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.IRU
+
+[IDA_NAVWNT]
+tools=msvc50x86;win95ddk
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.IDU
+
+[IDA_NAVWNTPR]
+tools=msvc50x86;win95ddk;CORESDK.009
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.IDU
+
+[ARA_NAVWNT]
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.ARU
+
+[ARA_NAVWNTPR]
+tools=MSVC50AXP;MSVC50MFCAXP;CORESDK.009
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.ARU
+
+[ADA_NAVWNT]
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.ADU
+
+[ADA_NAVWNTPR]
+tools=MSVC50AXP;MSVC50MFCAXP;CORESDK.009
+set includepost=%projpre%NAVXUTIL\src%PROJVERS%
+set libpre=%projpre%LIB.ADU
+

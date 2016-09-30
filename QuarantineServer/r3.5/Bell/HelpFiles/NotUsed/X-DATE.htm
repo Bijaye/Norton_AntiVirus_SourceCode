@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<link rel="stylesheet" href="btn_help.css" type="text/css">
+<Title>X-DATE ATTRIBUTES</Title>
+</HEAD>
+<BODY>
+<H1>X-Date Attributes</H1>
+The proprietary X-Date attributes are included in all messages, as appropriate. They record the date and time of significant events in the processing of samples or signatures. They include, but are not limited to:<BR><BR>
+<a href="#Accessed"><B>X-Date-Accessed</b></a>: when file was last accessed<BR>
+<a href="#Analyzed"><B>X-Date-Analyzed</b></a>: when sample was analyzed<BR>
+<a href="#Blessed"><B>X-Date-Blessed</b></a>: when signatures were blessed<BR>
+<a href="#Captured"><B>X-Date-Captured</b></a>: when sample was captured<BR>
+<a href="#Created"><B>X-Date-Created</b></a>: when file was created<BR>
+<a href="#Distributed"><B>X-Date-Distributed</b></a>: when signatures were scheduled for delivery<BR>
+<a href="#Finished"><B>X-Date-Finished</b></a>: when sample analysis was finished<BR>
+<a href="#Forwarded"><B>X-Date-Forwarded</b></a>: when sample was forwarded to Quarantine<BR>
+<a href="#Installed"><B>X-Date-Installed</b></a>: when signatures have been installed<BR>
+<a href="#Modified"><B>X-Date-Modified</b></a>: when file was modified<BR>
+<a href="#Produced"><B>X-Date-Produced</b></a>: when signatures were produced in the back office<BR>
+<a href="#Published"><B>X-Date-Published</b></a>: when signatures were producedpublished on the Internet<BR>
+<a href="#Submitted"><B>X-Date-Submitted</b></a>: when sample was submitted for analysis
+
+<P>The value specifies the time and date of an event according to the sender's system clock, expressed as Greenwich Mean Time (GMT) in the format defined in RFC 1945 and RFC 822. </P>
+<P>For example, the value of this attribute for this document is:</P>
+
+<P>&nbsp;&nbsp;&nbsp;&nbsp; X-Date-Created: Tue, 27 Jan 1998 14:32:45 GMT</P>
+<P>When a message reception begins, the difference between the sender's and receiver's clocks is calculated by comparing the value of the Date attribute received with the local clock. The values of all X-Date attributes are adjusted before they are stored to compensate for the calculated clock skew, so that the timestamp values stored are relative to the local clock.</P>
+
+
+<P><a name="Accessed"></a>
+<B>X-Date-Accessed</b><BR>
+This attribute is included when a message contains a sample or a signature set. The value is the date and time that the file in the message content was last accessed. </P>
+
+<P><a name="Analyzed"></a>
+<B>X-Date-Analyzed</b><BR>
+This attribute is included with status about a sample. The value is the date and time when the sample was analyzed.</P>
+<P><B>X-Date-Blessed</b>: This attribute is included when the message refers to a signature set that has been blessed. The value is the date and time when the signatures were published on the Internet. When this attribute is included in a message, the signatures have been fully tested and supercede all previous signatures.</P>
+
+<P><a name="Captured"></a>
+<B>X-Date-Captured</b><BR>
+This attribute is included when a message contains a sample. The value is the date and time when the sample was originally captured.</P>
+
+<P><a name="Created"></a>
+<B>X-Date-Created</b><BR>
+This attribute is included when a message contains a sample or a signature set. The value is the date and time that the file in the message content was created. </P>
+
+<P><a name="Distributed"></a>
+<B>X-Date-Distributed</b><BR>
+This attribute is included when the message refers a to signature set that has been scheduled for delivery to an infected workstation. The value is the date and time that the delivery was scheduled.</P>
+
+<P><a name="Finished"></a>
+<B>X-Date-Finished</b><BR>
+This attribute is included with status about a sample. The value is the date and time when analysis of the sample was finished. When this attribute is included in a message, the status attributes in the message are final.</P>
+
+<P><a name="Forwarded"></a>
+<B>X-Date-Forwarded</b><BR>
+This attribute is included when a message refers to a sample that has been forwarded to Quarantine. The value is the date and time when the sample was quarantined.</P>
+
+<P><a name="Installed"></a>
+<B>X-Date-Installed</b><BR>
+This attribute is included when the message refers a to signature set that has been installed on an infected workstation. The value is the date and time that the signatures were installed.</P>
+
+<P><a name="Modified"></a>
+<B>X-Date-Modified</b><BR>
+This attribute is included when a message contains a sample or a signature set. The value is the date and time that the file in the message content was last modified. </P>
+
+<P><a name="Produced"></a>
+<B>X-Date-Produced</b><BR>
+This attribute is included when the message contains a signature set. The value is the date and time when the signatures were produced in the back office.</P>
+
+<P><a name="Published"></a>
+<B>X-Date-Published</b><BR>
+This attribute is included when the message contains a signature set. The value is the date and time when the signatures were published on the Internet.</P>
+
+<P><a name="Submitted"></a>
+<B>X-Date-Submitted</b><BR>
+This attribute is included when a message refers to a sample that has been submitted for analysis. The value is the date and time when the sample was sent to an Internet gateway.</P>
+
+
+</BODY>
+</HTML>

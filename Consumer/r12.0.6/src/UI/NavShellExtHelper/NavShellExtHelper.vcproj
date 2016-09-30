@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="NavShellExtHelper"
+	ProjectGUID="{F9D96C7C-50D3-48A2-87BB-53B61CBA8AEB}"
+	Keyword="AtlProj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="1"
+			UseOfATL="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\SDKs\StahlSoft\Include;..\..\..\SDKs\CommonClient\include\ccLib;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\CLT;..\..\..\src\Include;..\..\..\SDKs\CommonClient\include;..\..\..\SDKs\CommonClient\include\ccVerifyTrust;..\..\..\SDKs\SIMON_Interfaces\include;&quot;..\..\..\SDKs\CCPD-LicensingTechnologies\Crypto\Include&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\Legacy&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include&quot;;..\..\..\SDKs\InstallToolBox\INCLUDE;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include&quot;;..\..\..\SDKs\CommonClient\include\ccSettings;&quot;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include&quot;;..\..\..\SDKs\Licensing\CLT\include"
+				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SYM_WIN;SYM_WIN32;DEBUG_NAVSCH"
+				IgnoreStandardIncludePath="FALSE"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="3"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="navtoolbox.lib navopt32.lib comctl32.lib ShFolder.Lib urlmon.lib"
+				OutputFile="$(OutDir)/NavShcom.exe"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\Lib.ida;..\..\..\AVCORE\source\lib.ida;..\..\..\SDKs\CommonClient\LIB\lib.ida;..\..\..\sdks\Licensing\lib.ida;..\..\..\sdks\CryptOptions\lib.ida;..\..\..\Nobuilds\PlatSDK\lib;..\..\..\Nobuilds\msvc7\VC7\lib;..\..\..\Nobuilds\msvc7\Vc7\atlmfc\lib"
+				DelayLoadDLLs="advapi32.dll;ccL40D.dll;shell32.dll;shlwapi.dll;ws2_32.dll;version.dll;userenv.dll;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/NavShellExtHelper.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(IntDir)/NavShellExtHelper.tlb"
+				HeaderFileName="NavShellExtHelper.h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="NavShellExtHelper_i.c"
+				ProxyFileName="NavShellExtHelper_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copying Debug NavShellExtHelper"
+				CommandLine="copy Debug\NavShcom.exe ..\..\BIN.IDA\
+copy Debug\NavShellExtHelper.pdb ..\..\BIN.IDA\
+copy Debug\NavShellExtHelper.tlb ..\..\Include\
+copy NavShellExtHelper.h ..\..\Include\
+copy NavShellExtHelper_i.c ..\..\Include\
+copy NavShellExtHelper_p.c ..\..\Include\
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;;..\..\Include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="1"
+			UseOfATL="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\SDKs\StahlSoft\Include;..\..\..\SDKs\CommonClient\include\ccLib;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\CLT;..\..\..\src\Include;..\..\..\SDKs\CommonClient\include;..\..\..\SDKs\CommonClient\include\ccVerifyTrust;..\..\..\SDKs\SIMON_Interfaces\include;&quot;..\..\..\SDKs\CCPD-LicensingTechnologies\Crypto\Include&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\Legacy&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include&quot;;..\..\..\SDKs\InstallToolBox\INCLUDE;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include&quot;;..\..\..\SDKs\CommonClient\include\ccSettings;&quot;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include&quot;;..\..\..\SDKs\Licensing\CLT\include"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SYM_WIN;SYM_WIN32"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="3"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="navtoolbox.lib navopt32.lib comctl32.lib ShFolder.Lib urlmon.lib"
+				OutputFile="$(OutDir)/NavShcom.exe"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\Lib.ira;..\..\AVCORE\source\lib.ira;..\..\..\SDKs\CommonClient\LIB\lib.ira;..\..\..\sdks\Licensing\lib.ira;..\..\..\sdks\CryptOptions\lib.ira;..\..\..\Nobuilds\PlatSDK\lib;..\..\..\Nobuilds\msvc7\VC7\lib;..\..\..\Nobuilds\msvc7\Vc7\atlmfc\lib"
+				DelayLoadDLLs="advapi32.dll;ccL40.dll;shell32.dll;shlwapi.dll;ws2_32.dll;version.dll;userenv.dll;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/NavShellExtHelper.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(IntDir)/NavShellExtHelper.tlb"
+				HeaderFileName="NavShellExtHelper.h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="NavShellExtHelper_i.c"
+				ProxyFileName="NavShellExtHelper_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copying Release NavShellExtHelper"
+				CommandLine="copy Release\NavShcom.exe ..\..\BIN.IRA\
+copy Release\NavShellExtHelper.pdb ..\..\BIN.IRA\
+copy Release\NavShellExtHelper.tlb ..\..\Include\
+copy NavShellExtHelper.h ..\..\Include\
+copy NavShellExtHelper_i.c ..\..\Include\
+copy NavShellExtHelper_p.c ..\..\Include\
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;;..\..\Include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="DebugAmd64|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			UseOfATL="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\..\SDKs\StahlSoft\Include;..\..\..\SDKs\CommonClient\include\ccLib;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\CLT;..\..\..\src\Include;..\..\..\SDKs\CommonClient\include;..\..\..\SDKs\CommonClient\include\ccVerifyTrust;..\..\..\SDKs\SIMON_Interfaces\include;&quot;..\..\..\SDKs\CCPD-LicensingTechnologies\Crypto\Include&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\Legacy&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include&quot;;..\..\..\SDKs\InstallToolBox\INCLUDE;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include&quot;;..\..\..\SDKs\CommonClient\include\ccSettings;&quot;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include&quot;;..\..\..\SDKs\Licensing\CLT\include"
+				PreprocessorDefinitions="_DEBUG;WIN32;_WINDOWS;_USRDLL;SYM_WIN;SYM_WIN32"
+				IgnoreStandardIncludePath="FALSE"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="3"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalOptions="/MACHINE:AMD64"
+				OutputFile="$(OutDir)/NavShcom.exe"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\nobuilds\PlatSDK03SP1RC2\LIB\amd64&quot;;&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\Nobuilds\SDK64AMD64\ATLMFC\LIB\amd64&quot;;&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\Nobuilds\SDK64AMD64\LIB\amd64&quot;;&quot;F:\cpd-arajure3\Perforce\Nav11.5.6\Norton_AntiVirus\Consumer\nobuilds\PlatSDK03SP1RC2\lib\amd64\mfc&quot;"
+				DelayLoadDLLs=""
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/NavShellExtHelper.lib"
+				TargetMachine="0"/>
+			<Tool
+				Name="VCMIDLTool"
+				AdditionalOptions="/env amd64"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="0"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(IntDir)/NavShellExtHelper.tlb"
+				HeaderFileName="NavShellExtHelper.h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="NavShellExtHelper_i.c"
+				ProxyFileName="NavShellExtHelper_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copying DebugAmd64 NavShellExtHelper"
+				CommandLine="copy DebugAmd64\NavShcom.exe ..\..\BIN.IDX\
+copy DebugAmd64\NavShellExtHelper.pdb ..\..\BIN.IDX\
+copy DebugAmd64\NavShellExtHelper.tlb ..\..\Include\
+copy NavShellExtHelper.h ..\..\Include\amd64\
+copy NavShellExtHelper_i.c ..\..\Include\amd64\
+copy NavShellExtHelper_p.c ..\..\Include\amd64\
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				Description="Copying DebugAmd64 NavShellExtHelper files"
+				CommandLine="copy DebugAmd64\NavShellExtHelper.tlb ..\..\Include\
+copy NavShellExtHelper.h ..\..\Include\amd64\
+copy NavShellExtHelper_i.c ..\..\Include\amd64\
+copy NavShellExtHelper_p.c ..\..\Include\amd64\
+"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;;..\..\Include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="ReleaseAmd64|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="1"
+			UseOfATL="1"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\SDKs\StahlSoft\Include;..\..\..\SDKs\CommonClient\include\ccLib;..\..\..\SDKs\Licensing\Shareable_Code\ComponentPEP\Include\CLT;..\..\..\src\Include;..\..\..\SDKs\CommonClient\include;..\..\..\SDKs\CommonClient\include\ccVerifyTrust;..\..\..\SDKs\SIMON_Interfaces\include;&quot;..\..\..\SDKs\CCPD-LicensingTechnologies\Crypto\Include&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include\Legacy&quot;;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Licensing\Include&quot;;..\..\..\SDKs\InstallToolBox\INCLUDE;&quot;..\..\..\SDKs\Licensing\Shareable_Code\Subscription\Include&quot;;..\..\..\SDKs\CommonClient\include\ccSettings;&quot;..\..\..\SDKs\Licensing\Shareable_Code\cltPEPImpl\Include&quot;;..\..\..\SDKs\Licensing\CLT\include"
+				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_USRDLL;SYM_WIN;SYM_WIN32"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="3"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalDependencies="navtoolbox.lib navopt32.lib comctl32.lib ShFolder.Lib urlmon.lib"
+				OutputFile="$(OutDir)/NavShcom.exe"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\Lib.ira;..\..\AVCORE\source\lib.ira;..\..\..\SDKs\CommonClient\LIB\lib.ira;..\..\..\sdks\Licensing\lib.ira;..\..\..\sdks\CryptOptions\lib.ira;..\..\..\Nobuilds\PlatSDK\lib;..\..\..\Nobuilds\msvc7\VC7\lib;..\..\..\Nobuilds\msvc7\Vc7\atlmfc\lib"
+				DelayLoadDLLs="advapi32.dll;ccL35.dll;shell32.dll;shlwapi.dll;ws2_32.dll;version.dll;userenv.dll;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/NavShellExtHelper.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="NDEBUG"
+				MkTypLibCompatible="FALSE"
+				TargetEnvironment="1"
+				GenerateStublessProxies="TRUE"
+				TypeLibraryName="$(IntDir)/NavShellExtHelper.tlb"
+				HeaderFileName="NavShellExtHelper.h"
+				DLLDataFileName=""
+				InterfaceIdentifierFileName="NavShellExtHelper_i.c"
+				ProxyFileName="NavShellExtHelper_p.c"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copying ReleaseAmd64 NavShellExtHelper"
+				CommandLine="copy ReleaseAmd64\NavShcom.exe ..\..\BIN.IRX\
+copy NavShellExtHelper.h ..\..\Include\amd64\
+copy NavShellExtHelper_i.c ..\..\Include\amd64\
+copy NavShellExtHelper_p.c ..\..\Include\amd64\
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"
+				Description="Copying ReleaseAmd64 NavShellExtHelper files"
+				CommandLine="copy ReleaseAmd64\NavShellExtHelper.tlb ..\..\Include\
+copy NavShellExtHelper.h ..\..\Include\amd64\
+copy NavShellExtHelper_i.c ..\..\Include\amd64\
+copy NavShellExtHelper_p.c ..\..\Include\amd64\
+"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"
+				AdditionalIncludeDirectories="&quot;$(IntDir)&quot;;..\..\Include"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="..\..\..\SDKs\CommonClient\include\ccSettings\ccSettingsManagerHelper.cpp">
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\..\SDKs\CommonClient\include\ccLib\ccSymDelayLoader.cpp">
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\IEContextMenuHelper.cpp">
+			</File>
+			<File
+				RelativePath=".\IEToolBandHelper.cpp">
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\NavHelper.cpp">
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\NavShellExtHelper.cpp">
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\NavShellExtHelper.idl">
+				<FileConfiguration
+					Name="DebugAmd64|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						TargetEnvironment="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32">
+					<Tool
+						Name="VCMIDLTool"
+						AdditionalOptions="/env amd64"
+						TargetEnvironment="0"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\stdafx.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\IEContextMenuHelper.h">
+			</File>
+			<File
+				RelativePath=".\IEToolBandHelper.h">
+			</File>
+			<File
+				RelativePath=".\NavHelper.h">
+			</File>
+			<File
+				RelativePath=".\NavShellExtHelper.h">
+			</File>
+			<File
+				RelativePath=".\Resource.h">
+			</File>
+			<File
+				RelativePath=".\stdafx.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<File
+				RelativePath=".\IEContextMenuHelper.rgs">
+			</File>
+			<File
+				RelativePath=".\IEToolBandHelper.rgs">
+			</File>
+			<File
+				RelativePath=".\NavHelper.rgs">
+			</File>
+			<File
+				RelativePath=".\NavShellExtHelper.rc">
+			</File>
+			<File
+				RelativePath=".\NavShellExtHelper.rgs">
+			</File>
+		</Filter>
+		<Filter
+			Name="Generated Files"
+			SourceControlFiles="FALSE">
+			<File
+				RelativePath=".\NavShellExtHelper_i.c">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="ReleaseAmd64|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\ReadMe.txt">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

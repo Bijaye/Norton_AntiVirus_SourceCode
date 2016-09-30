@@ -1,0 +1,54 @@
+// qscon.idl : IDL source for qscon.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (qscon.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// 
+// Interface for result item data items.  Used by exentsions to us.
+// 
+[
+	uuid(A25EB152-E8FA-11d2-A44E-00105AA739C9)
+]
+interface IQCResultItem : IUnknown
+{
+	HRESULT GetItemIDs( [out] ULONG*  ulCount,
+						[out] ULONG** ulItemArray );
+
+	HRESULT GetQserverItem( [in] ULONG ulItemID,
+							[out] IUnknown** pItem  );
+
+};
+
+
+[
+	uuid(26140C78-B554-11D2-8F45-3078302C2030),
+	version(1.0),
+	helpstring("qscon 1.0 Type Library")
+]
+library QSCONLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	
+	[
+		uuid(26140C85-B554-11D2-8F45-3078302C2030),
+		helpstring("QSConsole Class")
+	]
+	coclass QSConsole
+	{
+		[default] interface IUnknown;
+	}
+	[
+		uuid(26140C86-B554-11D2-8F45-3078302C2030),
+		helpstring("QSConsole Class About")
+	]
+	coclass QSConsoleAbout
+	{
+		[default] interface IUnknown;
+	}
+};
+

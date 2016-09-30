@@ -1,0 +1,57 @@
+/*
+  11/20/97 this VIDES2 module contains various rules to help debug the expert system
+*/
+
+rule TraceBreakPoints;
+begin
+if
+        strToInt(report_tag) = 13
+        and rh(eax) > 0x3C and rh(eax) < 0x44 and (rh(eax) != 0x40 or rl(ebx) != 1)
+        and strToInt(rettick) > strToInt(calltick)
+        -->
+        begin
+        println('BP Call ',word2h(readmemword(strToU(ss),rx(esp)+2)),' AX=',word2h(rx(eax)),' BX=',word2h(rx(ebx)),' CX=',word2h(rx(ecx)),' DX=',word2h(rx(edx)));
+        println('   Ret  ',word2h(strToU(retcs)),' AX=',word2h(rx(reteax)),' BX=',word2h(rx(retebx)),' CX=',word2h(rx(retecx)),' DX=',word2h(rx(retedx)))
+        end
+fi;
+trigger off for_next TraceBreakPoints
+end;
+
+rule TraceCalls;
+begin
+if
+        strToInt(report_tag) = 14
+        -->
+        println(word2h(strToU(cs)),':',word2h(rx(eip)),' : CALL FAR ',word2h(strToU(retcs)),':',word2h(rx(reteip)))
+fi;
+trigger off for_next TraceCalls
+end;
+
+/*external*/ rule Trace21Calls;
+begin
+if
+        strToInt(report_tag) = 1
+        and strToInt(imm) = 0x21
+        and strToInt(rettick) = strToInt(calltick)
+        /*and rh(eax) > 0x3C and rh(eax) < 0x4E and rh(eax) != 0x3E and rh(eax)!=0x47 and (rh(eax) != 0x40 or rl(ebx) != 1)*/
+        -->
+        println('C Int 21h   ',word2h(strToU(cs)),' AX=',word2h(rx(eax)),' BX=',word2h(rx(ebx)),' CX=',word2h(rx(ecx)),' DX=',word2h(rx(edx)))
+fi;
+trigger off for_next Trace21Calls
+end;
+
+rule TraceMOVS;
+begin
+if
+        strToInt(report_tag) = 15
+        -->
+        println('MOVS at ',word2h(strToU(cs)),':',word2h(rx(eip)),' from ',word2h(strToU(ds)),':',word2h(rx(esi)),' to ',word2h(strToU(es)),':',word2h(rx(edi)),' (CX=',word2h(rx(ecx)),')')
+fi;
+trigger off for_next TraceMOVS
+end;
+
+init_action;
+begin
+        /*start_watch_int(0x21,1);*/
+        /*start_watch_func(0x21,9,1);*/
+end.

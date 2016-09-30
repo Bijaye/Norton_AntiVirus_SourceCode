@@ -1,0 +1,46 @@
+[BUILD ORDER]
+CORE
+AVCORE
+
+[Global Data]
+client=navapi_r41_p4bldit_windows_cm_client
+stamp=navapi41_win32_cm.xx
+build-path=c:\bld_area\navapi41
+quake-to-use=c:\bld_area\navapi41\core
+sync-path=c:\bld_area\navapi41
+vcsys=perforce
+nef=
+targets=
+
+[CORE Data]
+root-path=//depot/core/trunk/...
+family=
+nef=
+targets=
+build-type=1
+
+[AVCORE Data]
+root-path=//depot/Norton_Antivirus/avcore/trunk/...
+family=
+nef=
+targets=
+build-type=1
+
+[CORE Projects]
+INC
+INCLUDE
+NOBUILDS                            WRA WDA
+SYMKRNL           IRA IDA           WRA WDA DVX NLM
+NAVDEFS
+DOSVMM                              DVX
+DOSIO                               DVX
+DOSUI                               DVX
+DOSTOOL                             DVX
+STRINGS                             DVX
+
+[AVCORE Projects]
+INCLUDE           IRA
+AVENGE            IRA IDA           WRA WDA DVX NLM
+NAVAPI.QA
+NAVAPIST.QA       IRA IDA           WRA WDA DVX NLM
+NAVAPI            IRA IDA IRAV IDAV WRA WDA DVX NLM

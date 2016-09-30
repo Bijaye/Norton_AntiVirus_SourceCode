@@ -1,0 +1,7 @@
+;This script file supports and has been tested with
+;Trend Micro OfficeScan Corporate Edition 5.5 client for NT
+Platform=WinNT
+runprogram=HKEY_LOCAL_MACHINE, SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OfficeScanNT, UninstallString
+;The following line must be edited to include the uninstall password.  Remove "PASSWORD" and replace with the OfficeScan admin password
+SendTextToEditWindow=Uninstall OfficeScan Client, PASSWORD, 60
+SendAffirmativeToWindowWithButtonClick=Uninstall OfficeScan Client, &OK, 60

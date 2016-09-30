@@ -1,0 +1,1 @@
+This is a tool intended for tech support that will allow them to directly interact with the WSC WMI repository, enable/restore WSC, and enable/disable ICF, among other things.

@@ -1,0 +1,193 @@
+: Search and replace for:
+:   Dates stamps. For example, 08-01-95
+:   MONYR.TXT files. For example, aug95.txt
+
+@echo off
+cls
+if "%1" == "" goto help
+
+iff isdir s:\builds then
+        echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+        echo บ                This can only be executed from a build area.                 บ
+        echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+        goto end
+endiff
+
+echo Building .ZIP to path:  %1
+be ask "        Proceed (Y/N):  " YyNn
+if errorlevel 3 goto end
+
+DATE 07-24-96
+TIME 00:00:00
+
+cls
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ  Copying Files...                                                           บ
+echo บ                        ... Pausing on errors ...                            บ
+echo บ                                                      ...Otherwise, chill!   บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+echo Transferring main NAV update files...
+echo.
+
+copy s:\english\virscan.inf\src\aug96.txt %1aug96.TXT
+if not exist %1aug96.txt pause
+
+copy s:\english\virscan.inf\src\readme.zip %1update.txt
+if not exist %1update.txt pause
+
+copy s:\source\bin.dos\virscan.dat %1virscan.dat
+if not exist %1virscan.dat pause
+
+copy s:\source\pam.dat\lib.dos\virscan2.dat %1virscan2.dat
+if not exist %1virscan2.dat pause
+
+copy s:\SOURCE\VIRSCAN.INF\lib.dos\virscan.inf %1virscan.inf
+if not exist %1virscan.inf pause
+
+copy s:\english\virscan.inf\src\virspec.txt %1virspec.txt
+if not exist %1virspec.txt pause
+
+copy s:\source\nobuilds\src\virscanm.dat %1virscanm.dat
+if not exist %1virscanm.dat pause
+
+echo.
+echo Transferring NAVEX update files...
+
+copy s:\source\navex\lib.dos\navex.dat %1navex.dat
+if not exist %1navex.dat pause
+
+copy s:\source\navex\lib.nlm\navex.nlm %1navex.nlm
+if not exist %1navex.nlm pause
+
+copy s:\source\navex\lib.vxd\navex.vxd %1navex.vxd
+if not exist %1navex.vxd pause
+
+copy s:\source\navex\lib.win\navex16.dll %1navex16.dll
+if not exist %1navex16.dll pause
+
+copy s:\source\navex\lib.w32\navex32.dll %1navex32.dll
+if not exist %1navex32.dll pause
+
+copy s:\source\navex\lib.dx\navex.exp %1navex.exp
+if not exist %1navex.exp pause
+
+
+echo.
+echo Transferring External DAT files...
+
+copy s:\source\virscan.dat\src\virspaa.dat %1virspaa.dat
+if not exist %1virspaa.dat pause
+
+copy s:\source\virscan.dat\src\virspbb.dat %1virspbb.dat
+if not exist %1virspbb.dat pause
+
+copy s:\source\virscan.dat\src\virspbu.dat %1virspbu.dat
+if not exist %1virspbu.dat pause
+
+copy s:\source\virscan.dat\src\virspby.dat %1virspby.dat
+if not exist %1virspby.dat pause
+
+copy s:\source\virscan.dat\src\virspcb.dat %1virspcb.dat
+if not exist %1virspcb.dat pause
+
+copy s:\source\virscan.dat\src\virspcr.dat %1virspcr.dat
+if not exist %1virspcr.dat pause
+
+copy s:\source\virscan.dat\src\virspdb.dat %1virspdb.dat
+if not exist %1virspdb.dat pause
+
+copy s:\source\virscan.dat\src\virspdh.dat %1virspdh.dat
+if not exist %1virspdh.dat pause
+
+copy s:\source\virscan.dat\src\virspem.dat %1virspem.dat
+if not exist %1virspem.dat pause
+
+copy s:\source\virscan.dat\src\virspet.dat %1virspet.dat
+if not exist %1virspet.dat pause
+
+copy s:\source\virscan.dat\src\virspfz.dat %1virspfz.dat
+if not exist %1virspfz.dat pause
+
+copy s:\source\virscan.dat\src\virspgz.dat %1virspgz.dat
+if not exist %1virspfz.dat pause
+
+copy s:\source\virscan.dat\src\virspja.dat %1virspja.dat
+if not exist %1virspja.dat pause
+
+copy s:\source\virscan.dat\src\virsplr.dat %1virsplr.dat
+if not exist %1virsplr.dat pause
+
+copy s:\source\virscan.dat\src\virspna.dat %1virspna.dat
+if not exist %1virspna.dat pause
+
+copy s:\source\virscan.dat\src\virspnq.dat %1virspnq.dat
+if not exist %1virspnq.dat pause
+
+copy s:\source\virscan.dat\src\virspnr.dat %1virspnr.dat
+if not exist %1virspnr.dat pause
+
+copy s:\source\virscan.dat\src\virspuk.dat %1virspuk.dat
+if not exist %1virspuk.dat pause
+
+copy s:\source\virscan.dat\src\virspsf.dat %1virspsf.dat
+if not exist %1virspsf.dat pause
+
+rem copy s:\source\virscan.dat\src\virspns.dat %1special\virspns.dat
+rem if not exist %1special\virspns.dat pause
+rem REMOVED -- NOT INVOKED BY NAV 3.07-
+
+copy s:\source\virscan.dat\src\virsppc.dat %1virsppc.dat
+if not exist %1virsppc.dat pause
+
+copy s:\source\virscan.dat\src\virsppp.dat %1virsppp.dat
+if not exist %1virsppp.dat pause
+
+copy s:\source\virscan.dat\src\virspr0.dat %1virspr0.dat
+if not exist %1virspr0.dat pause
+
+copy s:\source\virscan.dat\src\virsprm.dat %1virsprm.dat
+if not exist %1virsprm.dat pause
+
+copy s:\source\virscan.dat\src\virspsm.dat %1virspsm.dat
+if not exist %1virspsm.dat pause
+
+copy s:\source\virscan.dat\src\virspur.dat %1virspur.dat
+if not exist %1virspur.dat pause
+
+copy s:\source\virscan.dat\src\virspwd.dat %1virspwd.dat
+if not exist %1virspwd.dat pause
+
+copy s:\source\virscan.dat\src\virspww.dat %1virspww.dat
+if not exist %1virspww.dat pause
+
+copy s:\source\virscan.dat\src\virspya.dat %1virspya.dat
+if not exist %1virspya.dat pause
+
+copy s:\source\virscan.dat\src\virspza.dat %1virspza.dat
+if not exist %1virspza.dat pause
+
+echo.
+echo Transfer complete.  One moment please...Zipping files
+
+fd %1*.* /d07-24-96 /t0:00:00 /s
+
+s:\source\nobuilds\src\pkzip -! -ex %1`08NAV96.zip` %1*.*
+s:\source\nobuilds\src\pkzip %1`08NAV96.ZIP` -z < s:\english\virscan.inf\src\ZIPSIG.TXT
+zip2exe %1`08NAV96.ZIP` %1
+
+cls
+fd %1*.zip /d07-24-96 /t0:00:00 /s
+goto end
+
+:help
+text
+Usage: BUILDZIP.BTM <drive:\dest\>
+ NOTE: Remember the trailing backslash!
+endtext
+
+:end
+echo ษอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออป
+echo บ                                 Finished!                                   บ
+echo ศอออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออออผ
+
+

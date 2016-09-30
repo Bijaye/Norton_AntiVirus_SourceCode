@@ -1,0 +1,104 @@
+::::::::::::::::
+:: Auto metrics generation
+::::::::::::::::
+
+::::::::::::::::
+:: P4 Variables
+::::::::::::::::
+
+set P4PORT=perforce.symantec.com:1666
+set P4CLIENT=navconsumer_r14.2_cm_client
+
+::::::::::::::::
+:: Script Variables
+::::::::::::::::
+
+set BUILD_DRIVE=C:
+set INIT_DIR=\depot\Norton_Antivirus\Consumer\trunk\src\cm
+set BUILDBASEDIR=\bld_area\navcon_r14.2
+set BUILDFLAGDIR=\Build_Flags\NavConsumer\cmbuild
+set LASTSUCCESSNUMFILE=r14.2_cmbuild_last_success_bldnum.txt
+set LABELBASE=navconsumer_r14.2
+set TERMINATIONCMD=exit
+set TOOLSDIR=R:\cm
+
+::::::::::::::::
+:: Get Build Num
+::::::::::::::::
+
+echo.
+echo Getting last successful build number.
+echo.
+delay %DELAYTIME
+iff not isdir "j:%BUILDFLAGDIR" then
+    echo Can't find the %BUILDFLAGDIR directory.
+    echo.
+    %TERMINATIONCMD
+endiff
+
+iff not exist "j:%BUILDFLAGDIR\%LASTSUCCESSNUMFILE" then
+    echo Can't find the %BUILDFLAGDIR\%LASTSUCCESSNUMFILE file.
+    echo.
+    %TERMINATIONCMD
+endiff
+
+set BLDNUMFILEHANDLE=%@FILEOPEN[j:%BUILDFLAGDIR\%LASTSUCCESSNUMFILE,read]
+set LAST_BUILD_NUM=%@FILEREAD[%BLDNUMFILEHANDLE]
+echo LAST_BUILD_NUM = %LAST_BUILD_NUM
+echo.
+delay %DELAYTIME
+
+rem Closing file...
+set BLDCLOSEHANDLE=%@FILECLOSE[%BLDNUMFILEHANDLE]
+set BLDNUM=%LAST_BUILD_NUM%
+
+echo.
+echo ***************************************************************
+echo Creating metrics for %PRODNAME build %BLDNUM ...
+echo ***************************************************************
+echo.
+
+echo cd %INIT_DIR
+cd %INIT_DIR
+echo.
+
+iff not isdir %BUILDBASEDIR\metrics then
+  echo Creating %BUILDBASEDIR\metrics directory
+  echo.
+  mkdir %BUILDBASEDIR\metrics
+endiff
+
+iff not isdir \build then
+  echo Creating \build directory
+  echo.
+  mkdir \build
+endiff  
+
+echo python R:\cm\metrics.py //depot/Norton_AntiVirus/Consumer/... %LABELBASE.%@EVAL[%BLDNUM-1] %LABELBASE.%BLDNUM
+echo.
+delay %DELAYTIME
+python R:\cm\metrics.py //depot/Norton_AntiVirus/Consumer/... %LABELBASE.%@EVAL[%BLDNUM-1] %LABELBASE.%BLDNUM
+echo.
+echo copy \build\%LABELBASE* %BUILD_DRIVE%%BUILDBASEDIR\metrics
+copy \build\%LABELBASE* %BUILD_DRIVE%%BUILDBASEDIR\metrics
+echo.
+
+echo.
+echo ***************************************************************
+echo Posting metrics on the server...
+echo ***************************************************************
+echo.
+%DELAYTIME
+
+if not isdir h:\Unreleased_Builds\NAV\r14.2\%BLDNUM\metrics md /s h:\Unreleased_Builds\NAV\r14.2\%BLDNUM\metrics
+
+echo move \build\%LABELBASE* h:\Unreleased_Builds\NAV\r14.2\%BLDNUM\metrics
+move \build\%LABELBASE* h:\Unreleased_Builds\NAV\r14.2\%BLDNUM\metrics
+echo.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+:: Metrics complete, creating metrics.txt file
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+echo Complete > h:\Unreleased_Builds\NAV\r14.2\%BLDNUM\metrics.txt
+echo.

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SymProtect-Manifest xmlns="urn:SymProtect-Manifest" version="1.0">
+    <configuration>
+        <client-info>
+            <name>Symantec Client Security</name>
+            <version>3.0</version>
+        </client-info>
+    </configuration>
+    <protected-resources>
+        <protected-paths>
+			<!-- General --> 
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\Common Client Data%</path>
+            <path>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\VirusDefs</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\Common Client Decomposers%</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\Help%</path>
+            <path>%registry:HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage\LiveUpdate%</path>
+
+			<!-- SAV --> 
+            <path>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SSC</path>
+            <path>%SHGetFolderPath:CSIDL_COMMON_APPDATA%\Symantec\Symantec AntiVirus Corporate Edition\7.5</path>
+
+			<!-- AMS --> 
+            <path>%SHGetFolderPath:CSIDL_SYSTEM%\CBA</path>
+
+			<!-- Exclusions for SAV --> 
+            <xpath>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\SAVRT</xpath>
+            <xpath>%SHGetFolderPath:CSIDL_COMMON_APPDATA%\Symantec\Symantec AntiVirus Corporate Edition\7.5\APTemp</xpath>
+        </protected-paths>
+
+        <protected-files>
+			<!-- SAV --> 
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\navlogon.dll</filename>
+            <filename>%registry:HKEY_LOCAL_MACHINE\SOFTWARE\Lotus\Notes\Path%\nlnvp.dll</filename>
+
+			<!-- AMS --> 
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\cba.dll</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\msgsys.dll</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\nts.dll</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\pds.dll</filename>
+
+			<!-- Common Client --> 
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccEmlPxy.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\DefUtDCD.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccErrDsp.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccEvtMgr.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccL35.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccLgView.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\Help\ccLgView.chm</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\Help\LUALL.CHM</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccAlert.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccApp.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccInst.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccProSub.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccProd.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccPwd.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccPwdSvc.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccScan.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ecmldr32.DLL</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccDec.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccSetEvt.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccSetMgr.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccSet.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccVrTrst.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccWebWnd.dll</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SNDSrvc.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\Validate.dat</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\Default.rul</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SNDInst.exe</filename>
+			<filename>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SNDunin.dll</filename>
+
+			<!-- SymNet --> 
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symdns.sys</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symdns.vxd</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symfw.sys</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symfw.vxd</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symids.sys</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symids.vxd</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symndis.sys</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symndis.vxd</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\SymRedir.cat</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\SymRedir.dll</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\SymRedir.inf</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symredrv.sys</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symredrv.vxd</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symtdi.sys</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\symtdi.vxd</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\SymNeti.dll</filename>
+            <filename>%SHGetFolderPath:CSIDL_SYSTEM%\drivers\SymNeti2.dll</filename>
+            
+        </protected-files>
+
+        <protected-registry-keys>
+			<!-- General --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Common Client</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\InstalledApps</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\LiveUpdate</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Shared Technology</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedDefs</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SharedUsage</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NAVENG</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NAVEX15</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\LiveUpdate</regkey>
+			
+			<!-- SAV --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Intel\LANDesk</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Symantec AntiVirus</regkey>
+			<regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Notify\NavLogon</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Symantec AntiVirus</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\DefWatch</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\NSCTOP</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SAVRT</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SAVRTPEL</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Symantec AntiVirus</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Defwatch</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Exchange\Client\Extensions</regkey>
+
+			<!-- AMS --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Intel Alert Handler</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Intel Alert Originator</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Intel File Transfer</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Intel PDS</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Intel Alert Handler</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Intel Alert Originator</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Intel AMS II</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Intel File Transfer Service</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\Intel PDS Service</regkey>
+
+			<!-- Common Client --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\ccEvtMgr</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\ccPwdSvc</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\ccSetMgr</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\SymEvent</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\ccEvtMgr</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Eventlog\Application\ccSetMgr</regkey>
+
+			<!-- SymEvent, SymNetDrv --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\Symevent</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Symantec\SymNetDrv</regkey>
+
+			<!-- cliproxy.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{E381F1E0-910E-11D1-AB1E-00A0C90F8F6F}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TypeLib\{E381F1A0-910E-11D1-AB1E-00A0C90F8F6F}</regkey>
+
+			<!-- cliscan.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{E381F1D0-910E-11D1-AB1E-00A0C90F8F6F}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TypeLib\{E381F1F0-910E-11D1-AB1E-00A0C90F8F6F}</regkey>
+
+			<!-- transman.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{E381F1C0-910E-11D1-AB1E-00A0C90F8F6F}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TypeLib\{E381F1B0-910E-11D1-AB1E-00A0C90F8F6F}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\transman.objects</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\transman.objects.1</regkey>
+
+			<!-- SLICWrap.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{0BB44D3E-B674-4306-9CAB-D3CC213BDE63}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{1B6EF842-4C73-4D4E-8631-9AE019A6837D}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TypeLib\{65203BA4-7DAB-4C0F-957E-BC1B7749CEF7}</regkey>
+
+			<!-- scandlgs.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{4DEF8DD1-C4D1-11D1-82DA-00A0C9749EEF}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\LANDesk.VirusProtect.ScanDlgs</regkey>
+            
+			<!-- webshell.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{43943CCA-883C-11D1-83A4-00A0C9749EEF}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{91581CB1-0E7B-11D1-9D93-00A0C95C1762}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TypeLib\{FAD5CC54-0E68-11D1-9D91-00A0C95C1762}</regkey>
+
+			<!-- vpshell2.dll --> 
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\CLSID\{BDA77241-42F6-11D0-85E2-00AA001FE28C}</regkey>
+            <regkey subtree="true">HKEY_LOCAL_MACHINE\SOFTWARE\Classes\TypeLib\{6F952B50-BCEE-11D1-82D6-00A0C9749EEF}</regkey>
+
+			<!-- Exclusions for SAV (Setup32) --> 
+            <xregkey>HKEY_LOCAL_MACHINE\SOFTWARE\Intel\LANDesk\VirusProtect6\CurrentVersion\RemoteUpgrade</xregkey>
+        </protected-registry-keys>
+
+        <protected-processes>
+			<!-- SAV --> 
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\vpc32.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\rtvscan.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\defwatch.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\dwhwizrd.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\ldvpreg.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\luawrap.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\savroam.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\symclnup.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\vpdn_lu.exe</process>
+            <process>%registry:HKEY_LOCAL_MACHINE\Software\Symantec\InstalledApps\SAVCE%\vptray.exe</process>
+
+			<!-- AMS --> 
+            <process>%SHGetFolderPath:CSIDL_SYSTEM%\CBA\pds.exe</process>
+            <process>%SHGetFolderPath:CSIDL_SYSTEM%\CBA\xfr.exe</process>
+
+			<!-- Common Client --> 
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccApp.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccSetMgr.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccEvtMgr.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccLgView.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\ccPwdSvc.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\Nmain.exe</process>
+
+			<!-- SymEvent, SymNetDrv --> 
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SNDSrvc.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\SNDInst.exe</process>
+            <process>%SHGetFolderPath:CSIDL_PROGRAM_FILES_COMMON%\Symantec Shared\sevinst.exe</process>
+        </protected-processes>
+
+		<protected-named-objects>
+			<!-- ** SAV ** --> 
+			<!-- ScsComms/RTVScan Local Process Communication --> 
+			<named-object object-type="EVENT">Global\LDVP_LPC_SEM</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_SEM</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_0</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_0</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_1</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_1</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_2</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_2</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_3</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_3</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_4</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_4</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_5</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_5</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_6</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_6</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_7</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_7</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_8</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_8</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_9</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_9</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_10</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_10</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_11</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_11</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_12</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_12</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_13</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_13</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_14</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_14</named-object>
+			<named-object object-type="EVENT">Global\LDVP_LPC_15</named-object>
+			<named-object object-type="EVENT">LDVP_LPC_15</named-object>
+
+			<!-- IMail --> 
+			<named-object object-type="EVENT">SAVCE_IEM_Options</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event0</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event1</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event2</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event3</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event4</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event5</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event6</named-object>
+			<named-object object-type="EVENT">SAVCE_IEM_Event7</named-object>
+
+			<!-- DefUtils --> 
+			<named-object object-type="EVENT">HawkingCheckDefs</named-object>
+
+			<!-- Miscellaneous --> 
+			<named-object object-type="EVENT">LDVP_DMI_SCANNING_EVENT</named-object>
+			<named-object object-type="EVENT">LDVPTRAY</named-object>
+			<named-object object-type="EVENT">LDVP_DOMAIN_BUILD_EVENT</named-object>
+			<named-object object-type="EVENT">{7B04DD43-5001-41a8-9F2C-055840C7F9C0}_LICENSE_CHANGED</named-object>
+
+			<!-- RTVScan --> 
+			<named-object object-type="MUTEX">AdminForcedLiveUpdateThread_Mutex</named-object>
+			<named-object object-type="MUTEX">APEnablerThread_Mutex</named-object>
+			<named-object object-type="MUTEX">PscanClientMutex</named-object>
+			<named-object object-type="MUTEX">LDVPNTLogMutex</named-object>
+			<named-object object-type="MUTEX">LDVP_QS_FWD</named-object>
+			<named-object object-type="MUTEX">PscanServiceMutex</named-object>
+			<named-object object-type="MUTEX">Global\SAV_SER</named-object>
+			<named-object object-type="MUTEX">ccEvtMgr_Running</named-object>
+
+			<!-- ScsComms/RTVScan Local Procedure Call --> 
+			<named-object object-type="MUTEX">Global\LDVP_LPC_LOCK</named-object>
+			<named-object object-type="MUTEX">LDVP_LPC_LOCK</named-object>
+			
+			<!-- IMail --> 
+			<named-object object-type="MUTEX">SAVCE_IEM_Mutex</named-object>
+
+			<!-- Miscellaneous --> 
+			<named-object object-type="MUTEX">DefWatchWizardMutex</named-object>
+			<named-object object-type="MUTEX">PreventSecondClientInstance</named-object>
+			<named-object object-type="MUTEX">VPDN_LU Is Running</named-object>
+			<named-object object-type="MUTEX">SYM_DIS_CDSTART</named-object>
+			<named-object object-type="MUTEX">LDVP_INSERTSERVER_MUTEX</named-object>
+			<named-object object-type="MUTEX">Global\OEMConfigWizardMutex</named-object>
+			<named-object object-type="MUTEX">Global\OEMConfigWizardCallingMutex</named-object>
+			<named-object object-type="MUTEX">I1_LDVP Load VDB</named-object>
+			<named-object object-type="MUTEX">{7B04DD43-5001-41a8-9F2C-055840C7F9C0}_LICENSE_MUTEX_GUARD</named-object>
+		</protected-named-objects>        
+    </protected-resources>
+</SymProtect-Manifest>

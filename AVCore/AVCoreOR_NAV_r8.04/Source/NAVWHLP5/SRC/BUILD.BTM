@@ -1,0 +1,26 @@
+: Copyright 1993-1998 Symantec Corporation                              :
+:-----------------------------------------------------------------------:
+:                                                                       :
+: $Header:   S:/NAVWHLP5/VCS/build.btv   1.2   08 Oct 1998 12:12:36   eanders  $
+:                                                                       :
+:-----------------------------------------------------------------------:
+: $Log:   S:/NAVWHLP5/VCS/build.btv  $
+:  
+:     Rev 1.2   08 Oct 1998 12:12:36   eanders
+:  build.btm -> S:\NAVWHLP5\VCS\build.btv
+:  added supp9x nd suppnt
+:  
+:     Rev 1.1   03 Jun 1998 18:11:40   mdunn
+:  Added call to SUPPORT.MAK
+:  
+:     Rev 1.0   20 May 1998 14:32:00   mdunn
+:  Initial revision.
+:-----------------------------------------------------------------------:
+
+@echo off
+
+    call mk navnthlp %1
+    if exist make.err copy build.err+make.err build.err
+
+    call mk navwhlp %1
+    if exist make.err copy build.err+make.err build.err

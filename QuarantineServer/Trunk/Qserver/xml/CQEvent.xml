@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NabooProductData>
+	<Version>1.1</Version>
+	<Author>Terry Marles</Author>
+	<Revision>1.00</Revision>
+	<RevDate>18 April 2001</RevDate>
+	<!-- Central Quarantine Event Classes -->
+	<Application>
+	<!--
+		<DisplayName LangId="101">Symantec Central Quarantine</DisplayName>
+		<DisplayName LangId="102">Symantec Central Quarantine FRENCH</DisplayName>
+		-->
+		<DataDefinition>
+			<!--
+                * create the event class for Central Quarantine Events
+                * derive it from the predefined SES_CLASS_BASE.
+		   *  Used for general Quarantine Events  
+            -->
+			<EventClassDefinitions>
+				<EventClass Name="symc_quarantine_class" Id="25001" Parent="201" RptId="25900">
+					<Member Name="hostname" Type="symc_info">
+						<DisplayInfo StringId="25400" Filter="All"/>
+					</Member>
+					<Member Name="error_message" Type="symc_info">
+						<DisplayInfo StringId="25401" Filter="All"/>
+					</Member>
+					<!--
+		                * This type should be symc_varstr, but there is a bug in the dbInstaller.  this is a tempory work around
+		            -->
+					<Member Name="default_message" Type="symc_info">
+						<DisplayInfo StringId="25402" Filter="All"/>
+					</Member>
+					<DisplayName LangId="101">Central Quarantine </DisplayName>
+					<DisplayName LangId="102">Central Quarantine FRENCH</DisplayName>
+				</EventClass>
+			</EventClassDefinitions>
+			<!--
+                * create the events that would apply to the event class 
+                * created above
+            -->
+			<EventDefinitions>
+				<Event Id="25100" EventClassId="25001">
+					<DisplayName LangId="101">Quarantine Diskspace Low</DisplayName>
+					<DisplayName LangId="102">Quarantine Diskspace Low FRENCH</DisplayName>
+				</Event>
+				<Event Id="25101" EventClassId="25001">
+					<DisplayName LangId="101">Quarantine sample number exceeds quota</DisplayName>
+					<DisplayName LangId="102">Quarantine sample number exceeds quota FRENCH</DisplayName>
+				</Event>
+				<Event Id="25102" EventClassId="25001">
+					<DisplayName LangId="101">New non-certified definitions arrived</DisplayName>
+					<DisplayName LangId="102">New non-certified definitions arrived FRENCH</DisplayName>
+				</Event>
+				<Event Id="25103" EventClassId="25001">
+					<DisplayName LangId="101">New certified definitions arrived</DisplayName>
+					<DisplayName LangId="102">New certified definitions arrived FRENCH</DisplayName>
+				</Event>
+				<Event Id="25104" EventClassId="25001">
+					<DisplayName LangId="101">Cannot connect to Quarantine Scanner service</DisplayName>
+					<DisplayName LangId="102">Cannot connect to Quarantine Scanner service FRENCH</DisplayName>
+				</Event>
+				<Event Id="25105" EventClassId="25001">
+					<DisplayName LangId="101">Unable to access definition directory</DisplayName>
+					<DisplayName LangId="102">Unable to access definition directory FRENCH</DisplayName>
+				</Event>
+				<Event Id="25106" EventClassId="25001">
+					<DisplayName LangId="101">Cannot install definitions on target machines</DisplayName>
+					<DisplayName LangId="102">Cannot install definitions on target machines FRENCH</DisplayName>
+				</Event>
+				<Event Id="25107" EventClassId="25001">
+					<DisplayName LangId="101">DefCast Error</DisplayName>
+					<DisplayName LangId="102">DefCast Error FRENCH</DisplayName>
+				</Event>
+				<Event Id="25108" EventClassId="25001">
+					<DisplayName LangId="101">Unable to Connect to gateway</DisplayName>
+					<DisplayName LangId="102">Unable to Connect to gateway FRENCH</DisplayName>
+				</Event>
+			</EventDefinitions>
+			<ViewDefinitions>
+				<!--
+                * create a detail view for the event class created above
+                * NOTE: a.event_guid is refered in the additionalwhere clause, since 
+                * event_guid is added to all event tables by default
+                -->
+				<!--
+                * Also need to pick up the parent event class fields
+                -->
+				<View Name="symc_quarantine_view">
+					<EvtClass Name="symc_quarantine_class" Alias="a">
+						<ViewItem Name="hostname"/>
+						<ViewItem Name="error_message"/>
+						<ViewItem Name="default_message"/>
+					</EvtClass>
+					<AdditionalWhere>
+                        AND base.event_guid = a.event_guid
+                    </AdditionalWhere>
+				</View>
+			</ViewDefinitions>
+			<ReportDefinitions>
+				<!--
+                * create the default report (25900)
+                -->
+				<Report Id="25900" LangId="101" AppId="25" Detail="0" Type="view" Name="Central Quarantine events">
+					<Select>
+						<Field DisplayName="Name" MapTo="event_name"/>
+						<Field DisplayName="Application" MapTo="app_name"/>
+						<Field DisplayName="Date" MapTo="event_dt"/>
+						<Field DisplayName="Severity" MapTo="severity_name"/>
+						<Field DisplayName="Machine" MapTo="machine"/>
+						<Field DisplayName="IP" MapTo="machine_ip"/>
+						<Field DisplayName="User" MapTo="user_name"/>
+						<Field DisplayName="Hostname" MapTo="hostname"/>
+						<Field DisplayName="Error Message" MapTo="error_message"/>
+						<Field DisplayName="Info" MapTo="default_message"/>
+						<From Name="symc_quarantine_view"/>
+						<Where Condition="lang_id = 101"/>
+					</Select>
+				</Report>
+				<Report Id="25900" LangId="102" AppId="25" Detail="0" Type="view" Name="Central Quarantine events">
+					<Select>
+						<Field DisplayName="Name FRENCH" MapTo="event_name"/>
+						<Field DisplayName="Application FRENCH" MapTo="app_name"/>
+						<Field DisplayName="Date FRENCH" MapTo="event_dt"/>
+						<Field DisplayName="Severity FRENCH" MapTo="severity_name"/>
+						<Field DisplayName="Date FRENCH" MapTo="event_dt"/>
+						<Field DisplayName="Machine FRENCH" MapTo="machine"/>
+						<Field DisplayName="IP" MapTo="machine_ip"/>
+						<Field DisplayName="User FRENCH" MapTo="user_name"/>
+						<Field DisplayName="Hostname FRENCH" MapTo="hostname"/>
+						<Field DisplayName="Error Message FRENCH" MapTo="error_message"/>
+						<Field DisplayName="Info FRENCH" MapTo="default_message"/>
+						<From Name="symc_quarantine_view"/>
+						<Where Condition="lang_id = 102"/>
+					</Select>
+				</Report>
+			</ReportDefinitions>
+			<StringDefinitions>
+				<!--
+                * create the strings for the quarantine event class fields.
+                -->
+				<String LangId="101" StringId="25400">HostName</String>
+				<String LangId="102" StringId="25400">HostName FRENCH</String>
+				<String LangId="101" StringId="25401">Error Message</String>
+				<String LangId="102" StringId="25401">Error Message FRENCH</String>
+				<String LangId="101" StringId="25402">Default Message</String>
+				<String LangId="102" StringId="25402">Default Message FRENCH</String>
+			</StringDefinitions>
+		</DataDefinition>
+		<DataDefinition>
+			<!--
+                * create the event class for Central Quarantine Sample Events
+                * derive it from the predefined SES_CLASS_QUARANTINE
+		   *  Used for general Quarantine Events  
+            -->
+			<EventClassDefinitions>
+				<EventClass Name="symc_quarantine_sample_class" Id="25002" Parent="25001" RptId="25901">
+					<Member Name="platform" Type="symc_info">
+						<DisplayInfo StringId="25510" Filter="All"/>
+					</Member>
+					<Member Name="filename" Type="symc_info">
+						<DisplayInfo StringId="25511" Filter="All"/>
+					</Member>
+					<Member Name="virus_name" Type="symc_info">
+						<DisplayInfo StringId="25512" Filter="All"/>
+					</Member>
+					<Member Name="defs_needed" Type="symc_info">
+						<DisplayInfo StringId="25513" Filter="All"/>
+					</Member>
+					<Member Name="status" Type="symc_info">
+						<DisplayInfo StringId="25514" Filter="All"/>
+					</Member>
+					<Member Name="age" Type="symc_info">
+						<DisplayInfo StringId="25515" Filter="All"/>
+					</Member>
+					<!--
+		                * This type should be symc_varstr, but there is a bug in the dbInstaller.  this is a tempory work around
+		            -->
+					<Member Name="note" Type="symc_info">
+						<DisplayInfo StringId="25516" Filter="All"/>
+					</Member>
+					<DisplayName LangId="101">Central Quarantine Sample</DisplayName>
+					<DisplayName LangId="102">Central Quarantine Sample FRENCH</DisplayName>
+				</EventClass>
+			</EventClassDefinitions>
+			<!--
+                * create the events that would apply to the event class 
+                * created above
+            -->
+			<EventDefinitions>
+				<Event Id="25150" EventClassId="25002">
+					<DisplayName LangId="101">Sample: new definitions held for delivery</DisplayName>
+					<DisplayName LangId="102">Sample: new definitions held for delivery FRENCH</DisplayName>
+				</Event>
+				<Event Id="25151" EventClassId="25002">
+					<DisplayName LangId="101">Sample: too long with Quarantined status</DisplayName>
+					<DisplayName LangId="102">Sample: too long with Quarantined status FRENCH</DisplayName>
+				</Event>
+				<Event Id="25152" EventClassId="25002">
+					<DisplayName LangId="101">Sample: too long with Submitted status</DisplayName>
+					<DisplayName LangId="102">Sample: too long with Submitted status FRENCH</DisplayName>
+				</Event>
+				<Event Id="25153" EventClassId="25002">
+					<DisplayName LangId="101">Sample: too long with Released status</DisplayName>
+					<DisplayName LangId="102">Sample: too long with Released status FRENCH</DisplayName>
+				</Event>
+				<Event Id="25154" EventClassId="25002">
+					<DisplayName LangId="101">Sample: too long with Needed status</DisplayName>
+					<DisplayName LangId="102">Sample: too long with Needed status FRENCH</DisplayName>
+				</Event>
+				<Event Id="25155" EventClassId="25002">
+					<DisplayName LangId="101">Sample: too long with Distributed status</DisplayName>
+					<DisplayName LangId="102">Sample: too long with Distributed status FRENCH</DisplayName>
+				</Event>
+				<Event Id="25156" EventClassId="25002">
+					<DisplayName LangId="101">Sample: too long without installing new defs</DisplayName>
+					<DisplayName LangId="102">Sample: too long without installing new defs FRENCH</DisplayName>
+				</Event>
+				<!--
+	                * These two event names are found in the icepacktokens dll, but I cannot find their event ids currently
+				We will leave them commented out for now.  terry m
+				
+					<Event Id="25157" EventClassId="25002">
+						<DisplayName LangId="101">Sample: held for manual submission</DisplayName>
+						<DisplayName LangId="102">Sample: held for manual submission FRENCH</DisplayName>
+					</Event>
+					<Event Id="25158" EventClassId="25002">
+						<DisplayName LangId="101">Sample: needs attention from Tech Support</DisplayName>
+						<DisplayName LangId="102">Sample: needs attention from Tech Support FRENCH</DisplayName>
+					</Event>
+		            -->
+				<Event Id="25159" EventClassId="25002">
+					<DisplayName LangId="101">Installed</DisplayName>
+					<DisplayName LangId="102">Installed FRENCH</DisplayName>
+				</Event>
+				<Event Id="25160" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Abandoned</DisplayName>
+					<DisplayName LangId="102">IcePack Abandoned FRENCH</DisplayName>
+				</Event>
+				<Event Id="25161" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Content</DisplayName>
+					<DisplayName LangId="102">IcePack Content FRENCH</DisplayName>
+				</Event>
+				<Event Id="25162" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Crumbled</DisplayName>
+					<DisplayName LangId="102">IcePack Crumbled FRENCH</DisplayName>
+				</Event>
+				<Event Id="25163" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Declined</DisplayName>
+					<DisplayName LangId="102">IcePack Declined FRENCH</DisplayName>
+				</Event>
+				<Event Id="25164" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Internal</DisplayName>
+					<DisplayName LangId="102">IcePack Internal FRENCH</DisplayName>
+				</Event>
+				<Event Id="25165" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Lost</DisplayName>
+					<DisplayName LangId="102">IcePack Lost FRENCH</DisplayName>
+				</Event>
+				<Event Id="25166" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Malformed</DisplayName>
+					<DisplayName LangId="102">IcePack Malformed FRENCH</DisplayName>
+				</Event>
+				<Event Id="25167" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Missing</DisplayName>
+					<DisplayName LangId="102">IcePack Missing FRENCH</DisplayName>
+				</Event>
+				<Event Id="25168" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Overrun</DisplayName>
+					<DisplayName LangId="102">IcePack Overrun FRENCH</DisplayName>
+				</Event>
+				<Event Id="25169" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Sample</DisplayName>
+					<DisplayName LangId="102">IcePack Sample FRENCH</DisplayName>
+				</Event>
+				<Event Id="25170" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Superceded</DisplayName>
+					<DisplayName LangId="102">IcePack Superceded FRENCH</DisplayName>
+				</Event>
+				<Event Id="25171" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Type</DisplayName>
+					<DisplayName LangId="102">IcePack Type FRENCH</DisplayName>
+				</Event>
+				<Event Id="25172" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Unavailable</DisplayName>
+					<DisplayName LangId="102">IcePack Unavailable FRENCH</DisplayName>
+				</Event>
+				<Event Id="25173" EventClassId="25002">
+					<DisplayName LangId="101">IcePack UnderRun</DisplayName>
+					<DisplayName LangId="102">IcePack UnderRun FRENCH</DisplayName>
+				</Event>
+				<Event Id="25174" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Unpackage</DisplayName>
+					<DisplayName LangId="102">IcePack Unpackage FRENCH</DisplayName>
+				</Event>
+				<Event Id="25175" EventClassId="25002">
+					<DisplayName LangId="101">IcePack Unpublish</DisplayName>
+					<DisplayName LangId="102">IcePack Unpublish FRENCH</DisplayName>
+				</Event>
+				<Event Id="25176" EventClassId="25002">
+					<DisplayName LangId="101">Repaired</DisplayName>
+					<DisplayName LangId="102">Repaired FRENCH</DisplayName>
+				</Event>
+				<Event Id="25177" EventClassId="25002">
+					<DisplayName LangId="101">Quarantine Server:  Processed Sample</DisplayName>
+					<DisplayName LangId="102">Quarantine Server:  Processed Sample FRENCH</DisplayName>
+				</Event>
+				<Event Id="25178" EventClassId="25002">
+					<DisplayName LangId="101">Quarantine Server:  Sample rejected</DisplayName>
+					<DisplayName LangId="102">Quarantine Server:  Sample rejected FRENCH</DisplayName>
+				</Event>
+			</EventDefinitions>
+			<ViewDefinitions>
+				<!--
+                * create a detail view for the event class created above
+                * NOTE: a.event_guid is refered in the additionalwhere clause, since 
+                * event_guid is added to all event tables by default
+                -->
+				<!--
+                * Also need to pick up the parent event class fields
+                -->
+				<View Name="symc_quarantine_sample_view">
+					<EvtClass Name="symc_quarantine_sample_class" Alias="a">
+						<ViewItem Name="platform"/>
+						<ViewItem Name="filename"/>
+						<ViewItem Name="virus_name"/>
+						<ViewItem Name="defs_needed"/>
+						<ViewItem Name="status"/>
+						<ViewItem Name="age"/>
+						<ViewItem Name="note"/>
+					</EvtClass>
+					<EvtClass Name="symc_quarantine_class" Alias="b">
+						<ViewItem Name="hostname"/>
+						<ViewItem Name="error_message"/>
+						<ViewItem Name="default_message"/>
+					</EvtClass>
+					<AdditionalWhere>
+	                        		AND a.event_guid = base.event_guid
+		                        AND b.event_guid = base.event_guid
+	              		</AdditionalWhere>
+				</View>
+			</ViewDefinitions>
+			<ReportDefinitions>
+				<!--
+                * create the default report (25900)
+                -->
+				<Report Id="25901" LangId="101" AppId="25" Detail="0" Type="view" Name="Central Quarantine Sample events">
+					<Select>
+						<Field DisplayName="Name" MapTo="event_name"/>
+						<Field DisplayName="Application" MapTo="app_name"/>
+						<Field DisplayName="Date" MapTo="event_dt"/>
+						<Field DisplayName="Severity" MapTo="severity_name"/>
+						<Field DisplayName="Date" MapTo="event_dt"/>
+						<Field DisplayName="Machine" MapTo="machine"/>
+						<Field DisplayName="IP" MapTo="machine_ip"/>
+						<Field DisplayName="User" MapTo="user_name"/>
+						<Field DisplayName="Hostname" MapTo="hostname"/>
+						<Field DisplayName="Platform" MapTo="platform"/>
+						<Field DisplayName="Status" MapTo="status"/>
+						<Field DisplayName="Virus Filename" MapTo="virus_name"/>
+						<Field DisplayName="Definitions Needed" MapTo="defs_needed"/>
+						<Field DisplayName="Age" MapTo="age"/>
+						<Field DisplayName="Error Message" MapTo="error_message"/>
+						<Field DisplayName="Info" MapTo="default_message"/>
+						<From Name="symc_quarantine_sample_view"/>
+						<Where Condition="lang_id = 101"/>
+					</Select>
+				</Report>
+				<Report Id="25901" LangId="102" AppId="25" Detail="0" Type="view" Name="Central Quarantine Sample events">
+					<Select>
+						<Field DisplayName="Name FRENCH" MapTo="event_name"/>
+						<Field DisplayName="Application FRENCH" MapTo="app_name"/>
+						<Field DisplayName="Date FRENCH" MapTo="event_dt"/>
+						<Field DisplayName="Severity FRENCH" MapTo="severity_name"/>
+						<Field DisplayName="Date FRENCH" MapTo="event_dt"/>
+						<Field DisplayName="Machine FRENCH" MapTo="machine"/>
+						<Field DisplayName="IP" MapTo="machine_ip"/>
+						<Field DisplayName="User FRENCH" MapTo="user_name"/>
+						<Field DisplayName="Hostname FRENCH" MapTo="hostname"/>
+						<Field DisplayName="Platform FRENCH" MapTo="platform"/>
+						<Field DisplayName="Status FRENCH" MapTo="status"/>
+						<Field DisplayName="Virus Filename FRENCH" MapTo="virus_name"/>
+						<Field DisplayName="Definitions Needed FRENCH" MapTo="defs_needed"/>
+						<Field DisplayName="Age FRENCH" MapTo="age"/>
+						<Field DisplayName="Error Message FRENCH" MapTo="error_message"/>
+						<Field DisplayName="Info FRENCH" MapTo="default_message"/>
+						<From Name="symc_quarantine_sample_view"/>
+						<Where Condition="lang_id = 102"/>
+					</Select>
+				</Report>
+				<Report Id="25902" LangId="101" AppId="25" Detail="0" Type="chart" Name="Quarantine Submission Report">
+					<Select>
+						<Field DisplayName="Event Name" MapTo="event_name"/>
+						<Field DisplayName="Count" MapTo="count(*)"/>
+						<From Name="symc_quarantine_sample_view"/>
+						<Where Condition="lang_id = 101 and event_id = 25177 and ( datediff(d, event_dt, getdate() ) &lt; 30 )"/>
+						<Group By="event_name"/>
+						<Order By="count(*) desc"/>
+					</Select>
+				</Report>
+			</ReportDefinitions>
+			<StringDefinitions>
+				<!--
+                * create the strings for the quarantine event class fields.
+                -->
+				<String LangId="101" StringId="25410">Platform</String>
+				<String LangId="102" StringId="25410">Platform FRENCH</String>
+				<String LangId="101" StringId="25411">Infected Filename</String>
+				<String LangId="102" StringId="25411">Infected Filename FRENCH</String>
+				<String LangId="101" StringId="25412">Virus Name</String>
+				<String LangId="102" StringId="25412">Virus Name FRENCH</String>
+				<String LangId="101" StringId="25413">Definitions Needed</String>
+				<String LangId="102" StringId="25413">Definitions Needed FRENCH</String>
+				<String LangId="101" StringId="25414">Status</String>
+				<String LangId="102" StringId="25414">Status FRENCH</String>
+				<String LangId="101" StringId="25415">Sample Age</String>
+				<String LangId="102" StringId="25415">Sample Age FRENCH</String>
+				<String LangId="101" StringId="25416">Notes</String>
+				<String LangId="102" StringId="25416">Notes FRENCH</String>
+			</StringDefinitions>
+		</DataDefinition>
+	</Application>
+</NabooProductData>

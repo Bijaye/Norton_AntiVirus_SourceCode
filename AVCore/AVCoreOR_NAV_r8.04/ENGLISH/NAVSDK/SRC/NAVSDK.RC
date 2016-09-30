@@ -1,0 +1,41 @@
+// Copyright 1995 Symantec Corporation                                  
+//***************************************************************************
+// 
+// $Header:   N:/NAVSDK/VCS/NAVSDK.RCv   1.0   02 Dec 1997 14:45:04   DALLEE  $ 
+// 
+// Description: 
+//      Resource file for NAVSDK library.
+// 
+//***************************************************************************
+// $Log:   N:/NAVSDK/VCS/NAVSDK.RCv  $ 
+// 
+//    Rev 1.0   02 Dec 1997 14:45:04   DALLEE
+// Initial revision.
+// 
+//    Rev 1.0   02 Dec 1997 09:16:00   DALLEE
+// Initial revision.
+//***************************************************************************
+// From NEWVIR-NAVSDK NAVSDK.rcv r1.1
+// 
+//    Rev 1.1   02 Apr 1996 17:38:04   TCASHIN
+// Added more version info for 2.0
+//***************************************************************************
+
+#include <windows.h>
+#include <SdkVer.h>
+
+#define VR_FILEDESCRIPTION      "Norton AntiVirus SDK Technology"
+#define VR_INTERNALNAME         "NAVSDK"
+#ifdef NAVSDKR
+#define VR_ORIGINALFILENAME     "NAVSDR32.DLL"
+#else
+#define VR_ORIGINALFILENAME     "NAVSDK32.DLL"
+#endif
+#define VR_PRODVERION           NAVSDK_VERSION_MAJOR, NAVSDK_VERSION_MINOR, NAVSDK_VERSION_INLINE, NAVSDK_BUILD_NUMBER
+#define VR_PRODUCTVERSIONSTRING	NAVSDK_PRODUCT_VERSION
+#define VR_FILEVERSION          NAVSDK_VERSION_MAJOR, NAVSDK_VERSION_MINOR, NAVSDK_VERSION_INLINE, NAVSDK_BUILD_NUMBER
+#define VR_FILEVERSIONSTRING	NAVSDK_PRODUCT_VERSION
+
+#include "vlib.ver"
+
+rcinclude symkrnl.rc

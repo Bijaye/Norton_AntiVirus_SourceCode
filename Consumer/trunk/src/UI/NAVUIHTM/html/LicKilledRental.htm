@@ -1,0 +1,105 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
+<html>
+	<head>
+		<title>Symantec</title>
+		<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link name="cssDefault" rel="StyleSheet" type="text/css" href="alert.css">
+		<iframe id="resErr" frameborder="0" scrolling="no" height="0" width="0" style="display:none" src="navErrors.htm"></iframe>
+		<script src="res://DefAlert.dll/DisplayScriptError.js" language="javascript"></script>
+		<script src="res://DefAlert.dll/SymAlertStatic.js" language="javascript"></script>
+		<script src="res://DefAlert.dll/Alert.js" language="javascript"></script>
+	</head>
+	<body id="body-alert" OnLoad="LicensingCancelledOnLoad()" scroll="no">
+		<!-- title section-->
+		<div id="title-section">Service Cancelled</div>
+		<!-- separator-->
+		<div id="separator-top" class="separator"></div>
+		<!-- headline table -->
+		<div id="headline-section">
+			<table id="headline-table">
+				<tr id="tr1">
+					<td id="td1"><img id="imgIcon" src="x.gif" width="60" height="104" border="0" alt="Warning"></td>
+					<td id="td2"><img id="imgSpacer" src="spacer.gif" width="20" height="1"></td>
+					<td id="td3" class="aHeadline">
+					</td>
+					<td>
+						<table id="headline-text-table">
+							<tr id="tr2">
+								<td id="td4" class="aHeadline">
+									<span id="reasonToCancel"><span id="rsnProductName">%s</span> is not active because <span id="rsnNotAMember" style="display:none">you have cancelled the service.</span><span id="rsnVendorCancelledService" style="display:none"><span id="rsnVendorCancelledService_VendorName">%s</span> has cancelled your service.</span><span id="rsnUserCancelledService" style="display:none">you have cancelled the service.</span><span id="rsnServiceOnHold" style="display:none">your service has been put on hold by <span id="rsnServiceOnHold_VendorName">%s</span>.</span><span id="rsnServiceTransferred" style="display:none">you have transferred your service to another computer.</span><span id="rsnServiceDiscontinued" style="display:none"><span id="rsnServiceDiscontinued_VendorName">%s</span> has discontinued this service.</span></span>
+								</td>
+							</tr>
+							<tr id="tr3">
+								<td id="td5"><div id="headline-separator"></div></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<!-- details table -->
+		<div id="details-section">
+			What do you want to do?
+		</div>
+		<!-- selection -->
+		<div id="selection-section">
+		<table id="selection-table">
+			<!-- shim row-->
+			<tr id="tr2_shim">
+				<td><img id="Img1" src="spacer.gif" width="20" height="1"></td>
+				<td><img id="Img2" src="spacer.gif" width="335" height="1"></td>
+				<td><img id="Img3" src="spacer.gif" width="10" height="1"></td>
+			</tr>
+			<!-- Upsell option -->
+			<tr id="optUpsell" style="display:none">
+				<td><input type="radio" name="decision" id="btnUpsell" value="Upsell"></td>
+				<td><label id="lblUpsell" for="btnUpsell" accesskey="r"><u>R</u>eview my options for purchasing security software.</label></td>
+				<td><img id="Img4" src="spacer.gif" width="10" height="1"></td>
+			</tr>			
+			<!-- Contact vendor option -->
+			<tr id="optContactVendor" style="display:none">
+				<td><input type="radio" name="decision" id="btnContactVendor" value="ContactVendor"></td>
+				<td><label id="lblContactVendor" for="btnContactVendor" accesskey="t">Con<u>t</u>act <span id="optContactVendor_VendorName">%s</span> to get more information.</label></td>
+				<td></td>
+			</tr>
+			<!-- Reactivate service option -->
+			<tr id="optReactivate" style="display:none">
+				<td><input type="radio" name="decision" id="btnReactivate" value="Reactivate"></td>
+				<td>
+					<label id="lblReactivate" for="btnReactivate" accesskey="a">
+						<span id="optReactivateOnResolved" >Re<u>a</u>ctivate the service - I've resolved the issue.</span>
+						<span id="optReactivateOnTransfer" style="display:none">Re<u>a</u>ctivate the service on this computer.</span>
+						<span id="optReactivateOnResubscribe" style="display:none">Re<u>a</u>ctivate the service - I have resubscribed.</span>
+					</label>
+				</td>
+				<td></td>
+			</tr>
+			<!-- Uninstall option -->
+			<tr id="optUninstall" style="display:none">
+				<td><input type="radio" name="decision" id="btnUninstall" value="Uninstall"></td>
+				<td><label id="lblUninstall" for="btnUninstall" accesskey="u"><u>U</u>ninstall <span id="optUninstallProductName">%s</span>.</label></td>
+				<td></td>
+			</tr>
+			</table>
+		</div>
+		<!-- separator-->
+		<div id="separator-bottom" class="separator"></div>
+		<!-- OK button-->
+		<div id="two-button-section">
+			<button tabindex="1" class="aButton" id="btnOK" onclick="LicensingCancelledOnClickOK()" name="button"
+				accesskey="o" type="button"><u>O</u>K</button>
+			<img id="table2_spacerimg121" src="spacer.gif" width="22" alt="">
+			<button tabindex="1" class="aButton" id="btnCancel" onclick="OnClose()" name="button"
+				accesskey="c" type="button"><u>C</u>ancel</button>
+		</div>
+	</body>
+</html>

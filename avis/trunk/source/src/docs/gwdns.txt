@@ -1,0 +1,347 @@
+                  DNS requirements for Immune System Gateways
+                           IBM/Symantec confidential
+                 Ian Whalley, <inw@us.ibm.com>, +1-914-784-7808
+                                   2000-03-17
+
+
+          +----------------------------------------------------------+
+          | Note: All DNS name to IP address mappings are correct at |
+          | the time of writing.  However, they are used as examples |
+          | only, and may (of course) change.  Readers should not be |
+          | unduly alarmed if this occurs.                           |
+          +----------------------------------------------------------+
+
+
+             Quick Start Guide to Immune System Gateway DNS records
+
+  The example beneath assumes the following:
+
+   * Two Immune System gateway arrays, each consisting of 
+     seven machines;
+   * The first will created in the domain 'gw01.dis.symantec.com',
+     the second in 'gw02.dis.symantec.com'.
+
+  Thus, the entries in the forward mapping file will look like this:
+
+    gw01entry01.gw01.dis.symantec.com.     IN    A     X.X.X.1
+    gw01inside01.gw01.dis.symantec.com.    IN    A     X.X.X.2
+    gw01data01.gw01.dis.symantec.com.      IN    A     X.X.X.3
+    gw01sample01.gw01.dis.symantec.com.    IN    A     X.X.X.4
+    gw01def01.gw01.dis.symantec.com.       IN    A     X.X.X.5
+    gw01def02.gw01.dis.symantec.com.       IN    A     X.X.X.6
+    gw01def03.gw01.dis.symantec.com.       IN    A     X.X.X.7
+
+    gw02entry01.gw02.dis.symantec.com.     IN    A     Y.Y.Y.1
+    gw02inside01.gw02.dis.symantec.com.    IN    A     Y.Y.Y.2
+    gw02data01.gw02.dis.symantec.com.      IN    A     Y.Y.Y.3
+    gw02sample01.gw02.dis.symantec.com.    IN    A     Y.Y.Y.4
+    gw02def01.gw02.dis.symantec.com.       IN    A     Y.Y.Y.5
+    gw02def02.gw02.dis.symantec.com.       IN    A     Y.Y.Y.6
+    gw02def03.gw02.dis.symantec.com.       IN    A     Y.Y.Y.7
+
+  And the entries in the reverse mapping files will look like this:
+
+    X.X.X.1.in-addr.arpa    IN   PTR  gw01entry01.gw01.dis.symantec.com.
+    X.X.X.2.in-addr.arpa    IN   PTR  gw01inside01.gw01.dis.symantec.com.
+    X.X.X.3.in-addr.arpa    IN   PTR  gw01data01.gw01.dis.symantec.com.
+    X.X.X.4.in-addr.arpa    IN   PTR  gw01sample01.gw01.dis.symantec.com.
+    X.X.X.5.in-addr.arpa    IN   PTR  gw01def01.gw01.dis.symantec.com.
+    X.X.X.6.in-addr.arpa    IN   PTR  gw01def02.gw01.dis.symantec.com.
+    X.X.X.7.in-addr.arpa    IN   PTR  gw01def03.gw01.dis.symantec.com.
+
+    Y.Y.Y.1.in-addr.arpa    IN   PTR  gw02entry01.gw02.dis.symantec.com.
+    Y.Y.Y.2.in-addr.arpa    IN   PTR  gw02inside01.gw02.dis.symantec.com.
+    Y.Y.Y.3.in-addr.arpa    IN   PTR  gw02data01.gw02.dis.symantec.com.
+    Y.Y.Y.4.in-addr.arpa    IN   PTR  gw02sample01.gw02.dis.symantec.com.
+    Y.Y.Y.5.in-addr.arpa    IN   PTR  gw02def01.gw02.dis.symantec.com.
+    Y.Y.Y.6.in-addr.arpa    IN   PTR  gw02def02.gw02.dis.symantec.com.
+    Y.Y.Y.7.in-addr.arpa    IN   PTR  gw02def03.gw02.dis.symantec.com.
+
+  [These records are shown in their unabbreviated form for clarity.
+   One could, of course, set an origin, and then be able to use shorter
+   forms throughout the rest of the file.  The reader is referred to
+   the cricket book for more information.]
+
+  Finally, the round robin record (in the forward mapping file) will
+  look like this:
+
+    gateways.dis.symantec.com.              IN    A     X.X.X.1
+    gateways.dis.symantec.com.              IN    A     Y.Y.Y.1
+
+  Of course, there is no reverse mapping entry for the round robin record.
+
+
+             Detailed information on Immune System DNS requirements
+
+Introduction
+
+  As the reader will be aware, a major part of the functionality of the Immune
+  System is provided by so-called 'gateways'.  Gateways form the bridge between
+  the customer site, and the back office systems (in the form of the Analysis
+  Centre, and manual processing within SARC).  A component of the Immune System
+  software (known either as the Immune System Interface Agent [ISIA] or as
+  IcePack) runs on the Quarantine Server machines within the client's
+  organisation -- it is this component which talks to the Immune System
+  gateways.
+
+  Conversations between the Interface Agent and the gateways are protected by
+  SSL, which provides both encryption (to protect data in transit from sniffing)
+  and authentication (to provide an assurance that the Interface Agent is
+  talking to a genuine gateway, as opposed to one controlled by a hacker and
+  introduced to the Active Network via DNS poisoning or numerous similar attacks
+  outside the scope of this document).
+
+  It is this need for strong authentication which makes the requirement for the
+  gateways' DNS entries to be strictly, and absolutely, correct.  The Immune
+  System makes no demands on the DNS administrator which are outside the scope
+  of standard DNS administration; however, in the case of the Immune System, it
+  is more important for the administrator to correctly configure the DNS than it
+  is in the case of (for example) Symantec's web and LiveUpdate servers.
+
+  The purpose of this document is to provide basic instructions to the
+  administrator (on how the DNS should be configured) and to the tester (on how
+  to test that configuration).  It is assumed that the administrator has a
+  working knowledge of DNS, and the tester has a basic knowledge.
+
+
+DNS Basics
+
+  DNS (Domain Name System) is the often described as the Internet's telephone
+  directory.  This description is only partially accurate.  Like a telephone
+  directory, DNS provides a mapping of names (www.bbc.co.uk) to numbers
+  (38.160.150.31) -- this mapping is called the 'forward mapping'.  Unlike a
+  telephone directory, DNS also provides a mapping of numbers (38.160.150.31) to
+  names (www.bbc.co.uk) -- this mapping (called the 'reverse mapping') is not a
+  property of any widely-available telephone directory of which the author is
+  aware.
+
+  In the case of a web or LiveUpdate server, it is possible for the
+  administrator to get away with only providing the forward mapping, not the
+  reverse mapping.  A good example of a case where this is the case is
+  dropbox.symantec.com, which resolves (via the forward mapping) to
+  198.6.49.231.  Unfortunately, there is no corresponding reverse mapping,
+  connecting 198.6.49.231 back to dropbox.symantec.com.  Nonetheless,
+  dropbox works fine as an FTP server -- however, it would not be suitable
+  for use as an Immune System gateway.
+
+  In the case of gateway machines, it is not possible for the DNS administrator
+  to get away with not providing the reverse mapping.  Such an omission would
+  cause clients to be unable to connect to gateway machines, and thus a complete
+  loss of service to customers.
+
+
+SSL primer
+
+  In order to provide authentication, SSL utilises 'certificates'.  These are
+  purchased from Verisign on a per machine basis (not per gateway -- for a seven
+  machine gateway array, you will require one certificate for each machine
+  running a web server -- usually six).  Certificates have the machine's DNS
+  name stamped into them, and can only be use on a machine with the correct DNS
+  name.
+
+  It is important, therefore, that not only is DNS configured correctly, but
+  also that the individual machines in the gateway arrays be configured with the
+  correct DNS name at the operating system level.
+
+  When the Interface Agent contacts a gateway, an SSL handshake sequence is
+  performed.  As part of that sequence, the client checks to see that the server
+  has a certificate which matches the DNS name which the client used to open the
+  connection.  This is the authentication step.  The Interface Agent will
+  terminate the conversation prior to the transaction if the names do not match.
+
+
+Basic Immune System DNS and SSL certificate requirements
+
+  Some of these requirements have been alluded to above; they will be restated,
+  clarified, and enhanced here.
+
+   * All machines in all arrays must have unique names.
+   * It is required that all machines in all gateways have valid reverse
+     DNS entries.  That is to say, it must be possible to go from the IP
+     number to the DNS name.
+   * It is required that all machines have the correct DNS name configured
+     at the operating system level.
+   * It is required that all machines running a web server have a valid
+     SSL certificate which matches the correct DNS name.
+
+  For example, consider the following set of mappings:
+
+    entry.gateways.dis.symantec.com
+       |               ^
+       |               |
+       +-> 10.10.10.1 -+
+
+  This diagram shows a valid mapping for the entry point machine of a single
+  gateway array.  Corresponding mappings must exist for other machines in the
+  gateway array.  In the case of gateways consisting of only one machine, this
+  mapping must exist for that machine.
+
+
+Testing Basic Immune System DNS configuration
+
+  A tool has been produced to assist with validation of DNS records for Immune
+  System gateway machines.  This tool, called GWDNS.PL, should be used
+  after the DNS administrator has installed the appropriate set of records on
+  the DNS server.
+
+  GWDNS.PL has its own, self-contained, perldoc documentation -- the tester
+  should read those instructions before proceeding.  The tester will require a
+  Windows NT or Windows 2000 computer 
+
+  To validate the DNS records, the tester should do the following:
+
+   * Make a list of the names of all gateway machines.  This includes
+     all machines in all arrays, and all single-machine gateways.
+   * Run GWDNS.PL, using this list as an argument.  For example,
+     here the author ran gwdns.pl against all machines in a test
+     gateway array [DNS names have been truncated for space]:
+
+      C:\gw> gwdns.pl entry.iceberg sample1.iceberg definition1.iceberg
+                      definition2.iceberg definition3.iceberg inside.iceberg
+
+      Commencing DNS tests on 'entry.iceberg'.
+        SUCCESS : entry.iceberg : Primary name     : entry.iceberg
+        SUCCESS : entry.iceberg : IP address       : 9.2.70.17
+          SUCCESS : 9.2.70.17 : Primary name     : entry.iceberg
+          SUCCESS : 9.2.70.17 : Resolves back to : entry.iceberg
+
+      Commencing DNS tests on 'sample1.iceberg'.
+        SUCCESS : sample1.iceberg : Primary name     : sample1.iceberg
+        SUCCESS : sample1.iceberg : IP address       : 9.2.70.20
+          SUCCESS : 9.2.70.20 : Primary name     : sample1.iceberg
+          SUCCESS : 9.2.70.20 : Resolves back to : sample1.iceberg
+
+      Commencing DNS tests on 'definition1.iceberg'.
+        SUCCESS : definition1.iceberg : Primary name     : definition1.iceberg
+        SUCCESS : definition1.iceberg : IP address       : 9.2.70.21
+          SUCCESS : 9.2.70.21 : Primary name     : definition1.iceberg
+          SUCCESS : 9.2.70.21 : Resolves back to : definition1.iceberg
+
+      Commencing DNS tests on 'definition2.iceberg'.
+        SUCCESS : definition2.iceberg : Primary name     : definition2.iceberg
+        SUCCESS : definition2.iceberg : IP address       : 9.2.70.22
+          SUCCESS : 9.2.70.22 : Primary name     : definition2.iceberg
+          SUCCESS : 9.2.70.22 : Resolves back to : definition2.iceberg
+
+      Commencing DNS tests on 'definition3.iceberg'.
+        SUCCESS : definition3.iceberg : Primary name     : definition3.iceberg
+        SUCCESS : definition3.iceberg : IP address       : 9.2.70.23
+          SUCCESS : 9.2.70.23 : Primary name     : definition3.iceberg
+          SUCCESS : 9.2.70.23 : Resolves back to : definition3.iceberg
+
+      Commencing DNS tests on 'inside.iceberg'.
+        SUCCESS : inside.iceberg : Primary name     : inside.iceberg
+        SUCCESS : inside.iceberg : IP address       : 9.2.70.18
+          SUCCESS : 9.2.70.18 : Primary name     : inside.iceberg
+          SUCCESS : 9.2.70.18 : Resolves back to : inside.iceberg
+
+     The above output from GWDNS.PL indicates a successful run against a list of
+     DNS names -- all names and numbers resolved correctly.
+
+  If, in the GWDNS.PL test[s] shown above, any output lines are prefixed with
+  'FAILED' instead of 'SUCCESS', the DNS configuration is inadequate.
+
+  The tester should note that GWDNS.PL does not contact the gateways in any way.
+  It simply uses DNS to obtain name and number information.  A successful test
+  with GWDNS.PL does not mean that the tested machines will work as Immune
+  System gateways, that the machines are correctly configured, or even that the
+  gateway machines exist in any physical sense.
+
+
+Round robin
+
+  Like some telephone directories, DNS allows a single name to map to multiple
+  addresses.  For example, the DNS name www.symantec.com resolves to six
+  separate IP addresses -- 216.35.137.202, 208.226.167.17, 208.226.167.22,
+  208.226.167.23, 216.35.137.200, and 216.35.137.201 (in no particular order).
+
+  Furthermore, when a DNS server encounters this type of record, it will return
+  the addresses in a different order each time.  This in turn affects which IP
+  address the client will attempt to contact.  Usually, the client will contact
+  the first address in the list of addresses it gets back, and so if the server
+  returns the list in a different order each time, the effect is that of
+  primitive load-balancing, and even more primitive fail-over.
+
+  This type of record (a name mapping to more than on IP address) is referred to
+  as a 'round robin' record.
+
+  The Immune System allows (but IBM does not necessarily recommend) Symantec to
+  use a round robin record to spread the load between multiple gateways.  If
+  round robin is used, the DNS administrator must ensure that all the IP
+  addresses have valid reverse mappings.
+
+
+Round robin Immune System DNS and SSL certification requirements
+
+  In addition to the requirements outlined above, in the case of
+  a round robin configuration, the following additional item is
+  required:
+
+   * The name chosen for the round robin record must be a unique name,
+     not the same as the name of any other machine.
+   * Each IP address to which the round robin name maps must, in turn,
+     resolve to a machine name which has only one IP address associated
+     with it.
+
+  For example, consider the following set of mappings:
+
+   anotherentry.gateways.dis.symantec.com
+      |
+      +-> 10.10.10.1 -> entry.east.gateways.dis.symantec.com -+
+      |        ^                                              |
+      |        |                                              |
+      |        +----------------------------------------------+
+      |
+      +-> 10.10.20.1 -> entry.west.gateways.dis.symantec.com -+
+               ^                                              |
+               |                                              |
+               +----------------------------------------------+
+
+  This diagram shows a valid configuration for a round robin gateway setup.
+  'entry.gateways.dis.symantec.com' is a round robin DNS entry for the two IP
+  addresses shown.  When a reverse lookup is performed on the two addresses, two
+  new machine names are obtained.  When a forward lookup is done on each of
+  these machine names, the correct IP address is returned for each.  This
+  configuration is valid, as each individual entry point machine has a
+  self-contained, valid, set of DNS records.  The round robin entry serves only
+  to switch clients between the two available entry point machines.
+
+
+Testing round robin Immune System DNS configuration
+
+  In addition to tests outlined in the previous 'Testing...' section, 
+
+   * Make another list of all the round robin names that will be used,
+     and use GWDNS.PL to test these.  For example, here the author ran GWDNS.PL
+     against a test round robin name [again, DNS names have been truncated for
+     space]:
+
+      C:\gw> gwdns.pl avis
+
+      Commencing DNS tests on 'avis'.
+        SUCCESS : avis : Primary name     : avis
+        SUCCESS : avis : IP address       : 9.2.70.29
+          SUCCESS : 9.2.70.29 : Primary name     : navajo
+            SUCCESS : navajo : Primary name     : navajo
+            SUCCESS : navajo : Resolves back to : 9.2.70.29
+        SUCCESS : avis : IP address       : 9.2.70.17
+          SUCCESS : 9.2.70.17 : Primary name     : entry.iceberg
+            SUCCESS : entry.iceberg : Primary name     : entry.iceberg
+            SUCCESS : entry.iceberg : Resolves back to : 9.2.70.17
+
+     The about output from GWDNS.PL indicates a successful run against a single
+     round robin name.  In this case, 'avis' resolves to two IP numbers (one of
+     which is the entry-point machine in the gateway array used in the previous
+     example), and both of those IP numbers resolve correctly.
+
+  As with the previous test[s] -- if, in the GWDNS.PL test[s] shown above, any
+  output lines are prefixed with 'FAILED' instead of 'SUCCESS', the DNS
+  configuration is inadequate.
+
+
+Conclusion
+
+  Correct configuration of DNS records for Immune System gateway machines
+  requires nothing which is out of the ordinary for a well-maintained DNS
+  configuration database.  However, it requires more careful attention to
+  correctness and detail than conventional server types.

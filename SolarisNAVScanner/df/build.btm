@@ -1,0 +1,23 @@
+: Copyright 1998 Symantec Corporation                                   :
+:-----------------------------------------------------------------------:
+: $Header:   S:/DF/VCS/build.btv   1.0   18 Dec 1998 17:53:34   DCHI  $
+:
+: Build file for:
+:   DF.LIB
+:------------------------------------------------------------------------
+: $Log:   S:/DF/VCS/build.btv  $
+:  
+:     Rev 1.0   18 Dec 1998 17:53:34   DCHI
+:  Initial revision.
+:  
+:------------------------------------------------------------------------
+
+iff "%PLATFORM" NE ".OS2" then
+
+call mk df %1
+if exist make.err copy build.err+make.err build.err
+
+else
+    wmake /f s:df.wmk /L build.err
+endiff
+

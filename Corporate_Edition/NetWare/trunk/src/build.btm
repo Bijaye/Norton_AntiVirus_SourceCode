@@ -1,0 +1,322 @@
+@echo off
+rem SavCorp NetWare projects build script.
+rem By David Luxford, 2003 August 14
+rem
+rem Parameters:
+rem	  (Release | Debug)		  - Configuration to build.
+rem	  [Clean]				  - Clean only.
+rem	  [Incremental]			  - Do not clean and force rebuild all.  For developer use only.
+rem	  [ClientSpecRoot]		  - If specified, CLIENTROOT to use
+rem	  [CodeWarriorDir]		  - If specified, location of MetroWerks CodeWarrior.	 ClientSpecRoot must also
+rem										 be specified to specify this.  If incorrect, script will next attempt
+rem										 to find CodeWarrior using the CodeWarriorRoot variable.
+rem	  [NovellNDKDir]			  - If specified, location of Novell NDK.	 ClientSpecRoot and CodeWarriorDir must also
+rem										 be specified to specify this.  If incorrect, script will next attempt
+rem										 to find CodeWarrior using the NovellNDKroot variable.
+rem
+rem Return values (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem	  0 - Success building and in all post build processing
+rem	  2 - Build failed while in process
+rem	  3 - No 4DOS
+rem	  4 - 4DOS too old
+rem	  5 - One or more build numbers not specified
+rem	  6 - CLIENTROOT not set
+rem	  7 - CLIENTROOT invalid
+rem	  8 - CodeWarrior not found
+rem	  9 - Novell NDK variable not found
+rem
+rem Configuration variables (see CONFIG.BTM for descriptions):
+rem	  BUILDVERBOSE
+rem	  CLIENTROOT
+rem	  BUILDTOOLCODEWARRIOR
+rem	  BUILDTOOLNOVELLNDK
+
+:ValidateEnvironment
+if %BUILDVERBOSE% = 1 echo on
+if %BUILDVERBOSE% = 1 echo `!=*>` Starting:	"%_BATCHNAME" on %_DATE at %_TIME
+rem ** Ensure we are running under a sufficient version of 4DOS/4NT
+set returnVal=1
+if "%@eval[2 + 2]%" = "4" goto InitCheck4DOSVersion
+goto ErrorNo4DOS
+:InitCheck4DOSVersion
+if %_4Ver% LT 3.02 goto ErrorOld4DOS
+
+rem ** Parse command line
+set buildDebug=0
+set cleanOnly=0
+set incrementalBuild=0
+set userClientRoot=
+set CodeWarriorRoot=bad-dir
+set NovellNDKroot=bad-dir
+if "%@upper[%1]" = "DEBUG" set buildDebug=1
+iff "%@upper[%2]" = "INCREMENTAL" then
+	 set incrementalBuild=1
+	 if "%3" != "" set userClientRoot=%@FULL[%3]
+	 if "%4" != "" set CodeWarriorRoot=%@FULL[%4]
+	 if "%5" != "" set NovellNDKroot=%@FULL[%5]
+elseiff "%@upper[%2]" = "CLEAN" then
+	set cleanOnly=1
+
+	iff %buildDebug% == 1 then
+		set buildConfig=debug
+		set buildConfigLicensed=debugLic
+		set buildConfigScaleabilityTest=debugScalability
+	else
+		set buildConfig=release
+		set buildConfigLicensed=releaseLic
+		set buildConfigScaleabilityTest=releaseScalability
+	endiff
+	
+	goto CLEAN
+else
+	 if "%2" != "" set userClientRoot=%@FULL[%2]
+	 if "%3" != "" set CodeWarriorRoot=%@FULL[%3]
+	 if "%4" != "" set NovellNDKroot=%@FULL[%4]
+endiff
+
+rem ** Initialize configuration variables
+call "..\..\Build\config.btm"
+rem ** Ignore CONFIG failures since we do our own variable validation
+if not isdir "%CodeWarriorRoot%" set CodeWarriorRoot=%BUILDTOOLCODEWARRIOR%
+if not isdir "%CodeWarriorRoot%" goto ErrorCodeWarriorInvalid
+if not isdir "%NovellNDKroot%" set NovellNDKroot=%BUILDTOOLNOVELLNDK%
+if not isdir "%NovellNDKroot%" goto ErrorNovellNDKinvalid
+setlocal
+iff DEFINED userClientRoot then
+	 iff isdir "%userClientRoot%" then
+		  set CLIENTROOT=%@FULL[%userClientRoot%]
+	 else
+		  goto ErrorBadClientRoot
+	 endiff
+endiff
+if "%CLIENTROOT%" = "" goto ErrorNoClientRoot
+if not isdir "%CLIENTROOT%" goto ErrorBadClientRoot
+
+:Initialize
+rem ** Initialize
+cdd "%@PATH["%_BATCHNAME"]"
+rem If errorlevel has been manually set in the environment, it will not receive command return values
+set errorlevel=
+set returnVal=2
+set buildConfig=release
+set buildConfigLicensed=releaseLic
+set buildConfigScaleabilityTest=releaseScalability
+set debug=
+iff %buildDebug% == 1 then
+	 set buildConfig=debug
+	 set buildConfigLicensed=debugLic
+     set buildConfigScaleabilityTest=debugScalability
+	 set debug=1
+endiff
+set netwareSourceRoot=%CLIENTROOT%\Norton_Antivirus\Corporate_Edition\Netware\src
+rem set BinTarget=%netwareSourceRoot%\bin.nlm
+set BinTarget=%netwareSourceRoot%\Release.nlm
+iff %buildDebug% == 1 then
+	set BinTarget=%netwareSourceRoot%\Debug.nlm
+endiff
+set BinTargetLicensed=%BinTarget%\Lic
+set BinTargetScaleabilityTest=%BinTarget%\Scalability
+set BinTarget=%BinTarget%\nlm
+
+rem ** Configure for CodeWarrior build, driven by make utility from the previous Watcom build.
+set PATH=%CodeWarriorRoot%\Other_Metrowerks_tools\Command_Line_Tools;%CLIENTROOT%\tools\WATCOM11\BINNT;%PATH%
+iff %incrementalBuild% != 1 then
+	 set MAKE_FLAGS=/a /e /ms
+else
+	 set MAKE_FLAGS=/e /ms
+endiff
+set COMPILER_DIR=%@SFN[%CodeWarriorRoot%]\Other_Metrowerks_Tools\Command_Line_Tools
+set COMPILER_DIR_ROOT=%@SFN[%CodeWarriorRoot%]
+set COMPILER_NOVELL_SUPPORT=%@SFN[%CodeWarriorRoot%]\Novell~1\Metrowerks_Support
+set METROWERKS_DIR=%@SFN[%CodeWarriorRoot%]\Novell_Support\Metrowerks_Support
+set NOVELLNDK=%@SFN[%NovellNDKroot%]\nwsdk
+set NETWARE_NDK_DIR=%@SFN[%NovellNDKroot%]\LibC
+set LM_LICENSE_FILE=%CodeWarriorRoot%\Other_Metrowerks_Tools\Command_Line_Tools\license.dat
+set LIC=
+
+:CLEAN
+echo.
+echo * Clearing stale binaries...
+if %incrementalBuild% == 1 goto StartBuild
+if exist ScsComms\%buildConfig%\*.*                        del /qxzy ScsComms\%buildConfig% > nul
+if exist RTVScan\%buildConfig%\*.*                         del /qxzy RTVScan\%buildConfig% > nul
+if exist RTVScan\%buildConfigLicensed%\*.*                 del /qxzy RTVScan\%buildConfigLicensed% > nul
+if exist RTVScan\%buildConfigScaleabilityTest%\*.*         del /qxzy RTVScan\%buildConfigScaleabilityTest% > nul
+if exist VPStart\%buildConfig%\*.*                         del /qxzy VPStart\%buildConfig% > nul
+if exist VPReg\%buildConfig%\*.*                           del /qxzy VPReg\%buildConfig% > nul
+if exist VPRegEdt\%buildConfig%\*.*                        del /qxzy VPRegEdt\%buildConfig% > nul
+if exist NAV_Glue\%buildConfig%\*.*                        del /qxzy NAV_Glue\%buildConfig% > nul
+if exist QsFwd\%buildConfig%\*.*                           del /qxzy QsFwd\%buildConfig% > nul
+
+iff %cleanOnly% == 1 then
+	echo.
+	echo ===																 ===
+	echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+	echo ===																 ===
+	set returnVal=0
+	goto RealEnd
+endiff
+
+:StartBuild
+if not exist ScsComms\%buildConfig%                        mkdir /s ScsComms\%buildConfig%
+if not exist RTVScan\%buildConfig%                         mkdir /s RTVScan\%buildConfig%
+if not exist RTVScan\%buildConfigLicensed%                 mkdir /s RTVScan\%buildConfigLicensed%
+if not exist RTVScan\%buildConfigScaleabilityTest%         mkdir /s RTVScan\%buildConfigScaleabilityTest%
+if not exist VPStart\%buildConfig%                         mkdir /s VPStart\%buildConfig%
+if not exist VPReg\%buildConfig%                           mkdir /s VPReg\%buildConfig%
+if not exist VPRegEdt\%buildConfig%                        mkdir /s VPRegEdt\%buildConfig%
+if not exist NAV_Glue\%buildConfig%                        mkdir /s NAV_Glue\%buildConfig%
+if not exist QsFwd\%buildConfig%                           mkdir /s QsFwd\%buildConfig%
+
+echo.
+echo * Compiling messages...
+pushd
+cdd "%CLIENTROOT%\Norton_Antivirus\Corporate_Edition\Common\src\MakeMsgs"
+attrib -r "%CLIENTROOT%\Norton_Antivirus\Corporate_Edition\Common\src\pscan\netware\rtvscan.msg" /q /e
+makemsgs h e
+if %errorlevel% != 0 goto BuildFailed
+cdd "%CLIENTROOT%\Norton_Antivirus\Corporate_Edition\Common\src\PScan"
+mc msgs.mc
+if %errorlevel% != 0 goto BuildFailed
+popd
+
+echo.
+echo * Building projects...
+echo.
+echo ** Building ScsComms...
+cdd "%netwareSourceRoot%\ScsComms"
+wmake %MAKE_FLAGS -f ScsComms.mak
+if %errorlevel% != 0 goto BuildFailed
+echo.
+echo ** Building RTVScan Unlicensed...
+cdd "%netwareSourceRoot%\rtvscan"
+wmake %MAKE_FLAGS -f RTVScan.mak
+if %errorlevel% != 0 goto BuildFailed
+echo.
+echo ** Building RTVScan Licensed...
+cdd "%netwareSourceRoot%\rtvscan"
+set LIC=YES
+wmake %MAKE_FLAGS -f RTVScan.mak
+if %errorlevel% != 0 goto BuildFailed
+set LIC=
+echo.
+echo ** Building RTVScan Scaleability test...
+cdd "%netwareSourceRoot%\rtvscan"
+set RTVSCAN_SCALEABILITY_TEST=YES
+wmake %MAKE_FLAGS -f RTVScan.mak
+if %errorlevel% != 0 goto BuildFailed
+set RTVSCAN_SCALEABILITY_TEST=
+echo.
+echo ** Building VPStart...
+cdd "%netwareSourceRoot%\vpstart"
+wmake %MAKE_FLAGS -f VPStart.mak
+if %errorlevel% != 0 goto BuildFailed
+echo.
+echo ** Building VPReg...
+cdd "%netwareSourceRoot%\vpreg"
+wmake %MAKE_FLAGS -f VPReg.mak
+if %errorlevel% != 0 goto BuildFailed
+echo.
+echo ** Building VPRegEdt...
+cdd "%netwareSourceRoot%\VPRegEdt"
+wmake %MAKE_FLAGS -f VPRegEdt.mak
+if %errorlevel% != 0 goto BuildFailed
+echo.
+echo ** Building NAV_Glue...
+cdd "%netwareSourceRoot%\NAV_Glue"
+wmake %MAKE_FLAGS -f i2_ldvp.mak
+if %errorlevel% != 0 goto BuildFailed
+echo.
+echo ** Building QsFwd...
+cdd "%netwareSourceRoot%\QSFwd"
+wmake %MAKE_FLAGS -f QSFwd.mak
+if %errorlevel% != 0 goto BuildFailed
+
+echo.
+echo * Copying NLMs to bin.nlm...
+if     exist %BinTarget%\*.*                               del /qxzy %BinTarget% >nul
+if not exist %BinTarget%                                   mkdir /s  %BinTarget%
+if     exist %BinTargetLicensed%\*.*                       del /qxzy %BinTargetLicensed% >nul
+if not exist %BinTargetLicensed%                           mkdir /s  %BinTargetLicensed%
+if     exist %BinTargetScaleabilityTest%\*.*               del /qxzy %BinTargetScaleabilityTest% >nul
+if not exist %BinTargetScaleabilityTest%                   mkdir /s  %BinTargetScaleabilityTest%
+
+copy /q "..\..\..\Common\src\Pscan\NetWare\rtvscan.msg"              "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\ScsComms\%buildConfig%\ScsComms.nlm"                     "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\RTVScan\%buildConfig%\rtvscan.nlm"                       "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\RTVScan\%buildConfigLicensed%\rtvscan.nlm"               "%BinTargetLicensed%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\RTVScan\%buildConfigScaleabilityTest%\rtvscan.nlm"       "%BinTargetScaleabilityTest%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\VPStart\%buildConfig%\VPStart.nlm"                       "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\VPReg\%buildConfig%\VPReg.nlm"                           "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\VPRegEdt\%buildConfig%\VPRegEdt.nlm"                     "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\Nav_Glue\%buildConfig%\I2_LDVP.nlm"                      "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "..\QsFwd\%buildConfig%\QSFwd.nlm"                           "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+copy /q "%CLIENTROOT%\Release\ECOM\BinNLM\ECOMLODR.NLM"              "%BinTarget%"
+if %errorlevel% != 0 goto BuildFailed
+
+echo.
+echo ===																 ===
+echo `!=*>` OK:  %@FILENAME[%_BATCHNAME] completed with NO ERRORS DETECTED `<*=!`
+echo ===																 ===
+set returnVal=0
+goto RealEnd
+
+
+:BuildFailed
+set returnVal=2
+echo ===																 ===
+echo `!=*>` FAILED:	Code %returnVal%:	 Error detected! `<*=!`
+echo `!=*>` INFO:	 At failure, errorlevel is %errorlevel%, internal errorlevel is %_?, system lasterror is %_SYSERR
+echo ===																 ===
+goto RealEnd
+
+:ErrorNo4DOS
+set returnVal=3
+echo `!=*>` FAILED:	Code %returnVal%:	 4DOS not detected!	The 4DOS shell is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorOld4DOS
+set returnVal=4
+echo `!=*>` FAILED:	Code %returnVal%:	 4DOS too old!	 Version 3.02B or later is required to run this script. `<*=!`
+goto RealEnd
+
+:ErrorConfig
+set returnVal=5
+echo `!=*>` FAILED:	Code %returnVal%:	 CONFIG failed!  Unable to build. `<*=!`
+goto RealEnd
+
+:ErrorNoClientRoot
+set returnVal=6
+echo `!=*>` FAILED:	Code %returnVal%:	 CLIENTROOT variable not set! `<*=!`
+goto RealEnd
+
+:ErrorBadClientRoot
+set returnVal=7
+echo `!=*>` FAILED:	Code %returnVal%:	 CLIENTROOT variable invalid! `<*=!`
+goto RealEnd
+
+:ErrorCodeWarriorInvalid
+set returnVal=8
+echo `!=*>` FAILED:	Code %returnVal%:	 BUILDTOOLCODEWARRIOR variable not set or invalid! `<*=!`
+goto RealEnd
+
+:ErrorNovellNDKinvalid
+set returnVal=9
+echo `!=*>` FAILED:	Code %returnVal%:	 BUILDTOOLNOVELLNDK variable not set! `<*=!`
+goto RealEnd
+
+:RealEnd
+rem * Return status to calling script and restore environment
+if %BUILDVERBOSE% = 1 echo `!=*>` Ending:	 "%_BATCHNAME" on %_DATE at %_TIME
+quit %returnVal%

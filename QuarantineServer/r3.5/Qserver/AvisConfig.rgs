@@ -1,0 +1,23 @@
+HKCR
+{
+	Qserver.AvisConfig.1 = s 'AvisConfig Class'
+	{
+		CLSID = s '{CE428CB0-C217-11d3-8104-00C04F1BD5CA}'
+	}
+	Qserver.AvisConfig = s 'AvisConfig Class'
+	{
+		CLSID = s '{CE428CB0-C217-11d3-8104-00C04F1BD5CA}'
+		CurVer = s 'Qserver.AvisConfig.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {CE428CB0-C217-11d3-8104-00C04F1BD5CA} = s 'AvisConfig Class'
+		{
+			ProgID = s 'Qserver.AvisConfig.1'
+			VersionIndependentProgID = s 'Qserver.AvisConfig'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '{C60B0154-894B-11D2-8E5F-2A0712000000}'
+			'TypeLib' = s '{C60B0153-894B-11D2-8E5F-2A0712000000}'
+		}
+	}
+}

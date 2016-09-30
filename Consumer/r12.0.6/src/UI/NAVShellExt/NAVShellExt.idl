@@ -1,0 +1,48 @@
+// NAVShellExt.idl : IDL source for NAVShellExt.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVShellExt.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+
+[
+	uuid(2292E927-BD89-40DE-999A-4E72CE0EAA4F),
+	version(1.0),
+	helpstring("NAVShellExt 1.0 Type Library")
+]
+library NAVSHELLEXTLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(42CDD1BF-3FFB-4238-8AD1-7859DF00B1D6),
+		helpstring("IEToolBand Class")
+	]
+	coclass IEToolBand
+	{
+		[default] interface IUnknown;
+	};
+	[
+		uuid(5345A4D5-41EB-4A2F-9616-CE1D4F6C35B2),
+		helpstring("IEContextMenu Class")
+	]
+	coclass IEContextMenu
+	{
+		[default] interface IUnknown;
+	};
+
+
+	[
+		uuid(BDF3E430-B101-42AD-A544-FADC6B084872),
+		helpstring("CNavExtBho Class")
+	]
+	coclass CNavExtBho
+	{
+		[default] interface IUnknown;
+	};
+
+};

@@ -1,0 +1,131 @@
+@echo off
+
+subst s: /d
+subst t: /d
+call env torito
+net use s: /delete
+rem net use t: /delete
+subst s: %root%..\..\consumer
+rem subst t: %root%..\..\consumer\avcore
+
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then 
+ 	   set root=%root%\
+	endiff
+
+
+rem initialize some variables
+SET name=gSymkrnl
+SET Debug="FALSE"
+SET ErrLog=%root%..\cm\NAV_ERR.log
+SET MasterLog=%root%..\cm\NAV_BLD.log
+SET NukeDir=%workdir%\%name%\
+
+>> %ErrLog
+call md %NukeDir
+
+rem look for paramters we accept
+shift 1
+rem look for what type of build we are doing
+
+iff %0==/DEBUG then
+  SET Debug="TRUE"
+endiff
+rem set the place where the results.txt will go.
+shift 1
+  SET ResPath=%0%\
+  SET ResPath=%ResPath%Results.txt
+
+
+iff %Debug =="TRUE" then
+ goto builddebug
+endiff
+
+
+rem ///////////////////////////////////////////////////////////////
+rem build the release version
+:release
+	
+	SET a= -BEGINING %name Release Build at %_time
+	echo %a << %MasterLog
+	
+	rem unremark any of the following to have the platform built on release
+rem	SET type=%name IRA
+rem		gosub build
+rem SET type=%name IRAV
+rem		gosub build
+rem	SET type=%name IRUK
+rem		gosub build
+rem	SET type=%name IRU
+rem		gosub build
+	SET type=%name DVX
+		gosub build
+rem	SET type=%name DOS
+rem		gosub build
+rem	SET type=%name NCX	
+	
+	SET a= -FINISHED %name Release Build at %_time
+	echo %a << %MasterLog
+	echo %a << %ResPath
+	
+	QUIT 1
+	
+
+
+rem ///////////////////////////////////////////////////////////////
+rem build the release version
+:builddebug
+	
+	SET a= -BEGINING %name Debug Build at %_time
+	echo %a << %MasterLog
+
+	rem unremark any of the following to have the platform built on debug
+rem	SET type=%name IDA
+rem		gosub build
+rem SET type=%name IDAV
+rem		gosub build
+rem	SET type=%name IDU
+rem		gosub build
+rem	SET type=%name IDUK
+rem		gosub build
+		
+	SET a= -FINISHED %name Debug Build at %_time
+	echo %a << %MasterLog
+	echo %a << %ResPath
+	
+	QUIT 1
+
+
+
+rem ////////////////////////////////////////////////////
+rem BUILDING SUBROUTINE
+:build
+	
+	rem nuke the contents %workdir%\SCAND for this build.
+	call del /zqy %NukeDir
+	SET a=  -Beinging build of %type at %_time
+	echo %a >> %MasterLog
+	SET command=PROJ %type
+	echo %command
+	call %command
+	call mkupdate -a
+	iff %? == 1 then
+	 SET a= ERROR in making build of %type at %_time
+	 echo %a >> %ErrLog
+	 quit 0
+	endiff
+	SET a= -Finished release build of %type at %_time
+	echo %a >> %MasterLog
+	
+	SET a= -FINISHED %type Build at %_time
+	echo %a << %MasterLog
+	echo %a << %ResPath
+	
+	RETURN

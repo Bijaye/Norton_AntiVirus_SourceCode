@@ -1,0 +1,30 @@
+::------------------------------------------------------------------------
+::
+:: $Header:   S:/N32BEHAV/VCS/UPDATE.BTv   1.1   23 May 1997 15:14:52   DBUCHES  $
+::
+::      This batch file updates the project area based on the TARGET 
+::      setting.  The TARGET is set up as part of BPROJ and the project's
+::      personalized PROJHOOK.
+::------------------------------------------------------------------------
+:: $Log:   S:/N32BEHAV/VCS/UPDATE.BTv  $
+:  
+:     Rev 1.1   23 May 1997 15:14:52   DBUCHES
+:  Create target dir.
+:  
+:     Rev 1.0   23 May 1997 15:10:42   DBUCHES
+:  Initial revision.
+:  
+:     Rev 1.0   23 May 1997 14:28:28   DBUCHES
+:  Initial revision.
+:  
+::------------------------------------------------------------------------
+
+copy *.* %PROJ%\LIB%PROJVERS%%PLATFORM%\%TARGET%\*.*
+
+: create target directory.
+if NOT exist %PROJPRE%\BIN%PROJVERS%%PLATFORM%\%TARGET% md %PROJPRE%\BIN%PROJVERS%%PLATFORM%\%TARGET%
+
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\%TARGET%\*.dll
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*

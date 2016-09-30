@@ -1,0 +1,206 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "Resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "Resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include <winver.h>\r\n"
+    "#include ""nav.ver""\r\n"
+    "#include ""LocVerMsg.rc""\r\n"
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_TRAY_ON             ICON                    "..\\..\\tray_on.ico"
+IDI_TRAY_OFF            ICON                    "..\\..\\tray_off.ico"
+IDI_TRAY_WARN           ICON                    "..\\..\\tray_war.ico"
+IDI_TRAY_ON_YELLOW      ICON                    "..\\..\\tray_on_yellow.ico"
+IDI_TRAY_OFF_YELLOW     ICON                    "..\\..\\tray_off_yellow.ico"
+IDI_VBN_FILE            ICON                    "..\\..\\VBNFile.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_POPUP MENU 
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Open &Symantec AntiVirus...", ID_DF_OPEN
+        MENUITEM "&Enable Auto-Protect",        ID_DF_REALTIME, CHECKED
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_OUTDATED_PATTERN DIALOG  0, 0, 186, 95
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Old Virus Definition File"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "",IDC_MESSAGE,7,7,172,41
+    CONTROL         "&Don't remind me again until after next update.",
+                    IDC_DONT_REMIND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,
+                    50,172,19
+    PUSHBUTTON      "&Close",IDNO,91,74,40,14
+    PUSHBUTTON      "&Help",IDHELP,139,74,40,14
+END
+
+IDD_POPUPBUBBLE DIALOGEX 0, 0, 181, 27
+STYLE DS_SYSMODAL | DS_SETFONT | DS_MODALFRAME | DS_SETFOREGROUND | 
+    DS_3DLOOK | WS_POPUP
+EXSTYLE WS_EX_CLIENTEDGE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+END
+
+IDD_MISSING_PATTERN DIALOG  0, 0, 209, 115
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Missing Virus Definitions"
+FONT 8, "MS Sans Serif"
+BEGIN
+    LTEXT           "Missing virus definitions.",IDC_MISSING_DEF_MSG,7,7,194,
+                    79
+    PUSHBUTTON      "&Close",IDNO,162,93,40,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_OUTDATED_PATTERN, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 94
+    END
+
+    IDD_MISSING_PATTERN, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 94
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_APP_TITLE           "Symantec AntiVirus"
+    IDS_OPEN_CLIENT         "Open Symantec AntiVirus Client"
+    IDS_OPEN_SERVER         "Open Symantec AntiVirus Server"
+    IDS_SHUTDOWNWARNING     "Symantec AntiVirus found a disk in the floppy drive. In order to decrease the risk of being infected with a boot sector virus, remove the floppy before you shut down the computer."
+    IDS_SCANFOUNDRISKS      "Symantec AntiVirus detected risks while you were logged out. You may need to open the Symantec AntiVirus Risk History window to view and take action on the risks."
+    IDS_ERROR_TOGGLINGAP    "Symantec AntiVirus cannot enable or disable Auto-Protect. You may need to provide Symantec AntiVirus with administrator privileges."
+    IDS_TITLE_TOGGLINGAP    "Auto-Protect"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_OUTDATED_PATTERN    "The virus definition file used is more than %d days old. Updating to a new virus definition file will help catch the most recent viruses."
+    IDS_MISSING_PATTERN     "Symantec AntiVirus has determined that the virus definitions are missing on this computer. This computer will remain unprotected from viruses until virus definitions are downloaded to this computer.  A common cause of this problem is the absence of Internet or network connectivity. Please contact your system administrator on how to update your virus definitions file."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LAPTOP_SHUTDOWNWARNING 
+                            "Symantec AntiVirus found a disk in the floppy drive. In order to decrease the risk of being infected with a boot sector virus, remove the floppy before you shut down the computer.\n\nLAPTOP USERS: If a floppy drive was disconnected from your laptop, reconnect it, remove any floppy, and select OK."
+    IDS_APP_ENABLE          "Auto-Protect is Enabled"
+    IDS_APP_DISABLE         "Auto-Protect is Disabled"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_PROCESS_IN_NONUSER_CONTEXT 
+                            "Please launch the Symantec AntiVirus UI from the Start Menu because VPTray is not in the context of a user."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_REMEDIATION_REBOOT_WARNING
+                            "Symantec AntiVirus must reboot again to complete remediation tasks."
+    IDS_REBOOT              "Reboot"
+    IDS_REBOOT_LATER        "Later"
+	IDS_REBOOT_CONFIRM      "The system will now be restarted.  Reboot now?"
+    IDS_REMEDIATION_FAILURE "Symantec AntiVirus could not complete remediation tasks."
+	IDS_OK                  "Ok"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include <winver.h>
+#include "nav.ver"
+#include "LocVerMsg.rc"
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

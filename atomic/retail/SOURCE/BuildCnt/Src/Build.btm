@@ -1,0 +1,14 @@
+@echo off
+if "%TARGET" == "FULL" goto FULL
+if "%TARGET" == "PARTIAL" goto PARTIAL
+echo ********* ERROR ***********
+echo      Invalid Target!
+echo ***************************
+quit 255
+:FULL
+copy %PROJ%\SRC\partvorg.h %PROJ%\LIB%PLATFORM%\partialv.h
+echo Partial version number set to " " for a Full build.
+quit
+:PARTIAL
+%PROJ%\SRC\BuildInc.exe
+quit

@@ -1,0 +1,26 @@
+/////////////////////////////////////////////////////////////////////
+// Taps.IDL
+//
+// Copyright 1992-1996 Symantec, Peter Norton Product Group
+/////////////////////////////////////////////////////////////////////
+//
+// Defines our interface for talking with NAVAP Service
+// (No more named pipes!!!)
+//
+/////////////////////////////////////////////////////////////////////
+
+[ uuid (93226ee0-dfd1-11cf-9449-0020afd42bed),
+  version(1.0)
+]
+interface TalkAPService
+{
+
+/////////////////////////////////////////////////////////////////////
+// Functions for sending a packet to the AP Service and getting the
+// return value
+
+unsigned long NAVAPService_SendCommand(
+   [in] unsigned long dwSize,
+   [in, size_is(dwSize)] byte * pPacket);
+
+}

@@ -1,0 +1,48 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+; This file modified for Atomic/Maxwell.
+
+[OPTIONS]
+ERRORLOG=navw32.log
+LCID=0x409 0x0 0x0 ; English (United States)
+REPORT=Yes
+CONTENTS=NAVW_INFO_ABOUT_NAV
+TITLE=Norton AntiVirus for Windows 95/98
+CNT=NAVW32.CNT
+COPYRIGHT=Copr. (c) 1994-98 Symantec Corp.
+HLP=.\navw32.hlp
+
+[FILES]
+Navhbtn.rtf
+Navchelp.rtf
+Navintro.rtf
+Navtask.rtf
+Navopts.rtf
+Navdic.rtf
+
+[MAP]
+#include .\Navwhlp5.h
+
+[WINDOWS]
+; MAIN
+MAIN="Norton AntiVirus",,25604,(r15269887),(r8454143)
+TASK="Norton AntiVirus Task",,26116,(r15269887),(r8454143),f2
+TERM="",,0,(r14876671),(r8454143),f2
+
+[CONFIG]
+BrowseButtons()
+
+[CONFIG-TASK]
+; TASK
+CB("SYMHLP_EXIT","E&xit","Exit()")
+
+[EXCLUDE]
+NODEC95
+NODECNT
+
+[INCLUDE]
+INOCULATION
+NAV95
+NODEC
+PASSWORD
+VLA

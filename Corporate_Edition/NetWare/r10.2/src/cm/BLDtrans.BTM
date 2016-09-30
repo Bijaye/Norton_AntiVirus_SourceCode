@@ -1,0 +1,122 @@
+@if .%DBGBAT == . echo off
+rem ******************************************
+rem BldXwing.btm branched 9/18/2000 by Helen Kim
+rem *****************************************
+rem Modified for CodeWarrior build 2/26/2003 by Tiffer jenkins
+rem Modified for Kepler CodeWarrior build 6/05/2003 by Gary Figgins
+
+echo.
+echo --------------------
+echo Starting SAVCE build
+echo --------------------
+echo.
+echo.
+
+pushd
+
+: ---------------------------------------------------------------------------
+: Save environment
+: ---------------------------------------------------------------------------
+set O_PATH=%PATH
+set O_DEBUG=%DEBUG
+set O_CM_DIR=%CM_DIR
+set O_BLD_LOG=%BLD_LOG
+set O_CW_LICENSE_FILE=%LM_LICENSE_FILE
+
+: ---------------------------------------------------------------------------
+: Set environment
+: ---------------------------------------------------------------------------
+: Path is only used to get wmake.exe
+set PATH=R:\CW83PDK5\Other_Metrowerks_tools\Command_Line_Tools;%PATH%
+set DEBUG=
+set CM_DIR=%_CWD
+set BLD_LOG=%_CWD\build.err
+set LM_LICENSE_FILE=.
+: Clear the build log
+> %BLD_LOG
+
+
+:
+: Build transman
+: -------------
+pushd
+cd ..\transman
+set projname=transman
+set wkdir=%_CWD
+set ret=0
+echo    Building %projname
+echo.
+echo    Building %projname >> %BLD_LOG
+echo. >> %BLD_LOG
+if not isdir .\release md .\release
+if not isdir .\debug md .\debug
+
+wmake /a /e -f transman.mak >> %BLD_LOG
+
+set ret=%?
+popd
+if %ret != 0 goto errexit
+echo.
+echo. >> %BLD_LOG
+
+: ---------------------------------------------------------------------------
+: Finished. Cleanup and leave.
+: ---------------------------------------------------------------------------
+goto cleanup
+
+: ---------------------------------------------------------------------------
+: Handle errors
+: ---------------------------------------------------------------------------
+
+:errexit
+set ErrorFileName=%_CWD\ERRNLM%_day.%_hour
+
+echo "            " > %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo Netware error %_day %_hour >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+echo "            " >> %ErrorFileName
+
+type %BLD_LOG >> %ErrorFileName
+start notepad %ErrorFileName
+
+echo.
+echo ****************************
+echo Build error in %projname.mak
+echo (%wkdir)
+echo ****************************
+echo.
+
+echo. >> %BLD_LOG
+echo **************************** >> %BLD_LOG
+echo Build error in %projname.mak >> %BLD_LOG
+echo (%wkdir)                     >> %BLD_LOG
+echo **************************** >> %BLD_LOG
+echo. >> %BLD_LOG
+
+
+: ---------------------------------------------------------------------------
+: Cleanup and restore environment vars
+: ---------------------------------------------------------------------------
+
+:cleanup
+
+set PATH=%O_PATH
+set DEBUG=%O_DEBUG
+set CM_DIR=%O_CM_DIR
+set BLD_LOG=%O_BLD_LOG
+set LM_LICENSE_FILE=%O_CW_LICENSE_FILE
+
+set O_PATH=
+set O_DEBUG=
+set O_CM_DIR=
+set O_BLD_LOG=
+set wkdir=
+set projname=
+set O_CW_LICENSE_FILE=
+popd
+quit %ret

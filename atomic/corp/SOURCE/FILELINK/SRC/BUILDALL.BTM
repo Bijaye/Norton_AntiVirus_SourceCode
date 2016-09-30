@@ -1,0 +1,53 @@
+: $Header:   S:/FILELINK/VCS/BUILDALL.BTv   1.0   17 Mar 1998 19:45:14   SEDWARD  $
+:------------------------------------------------------------------------
+: $Log:   S:/FILELINK/VCS/BUILDALL.BTv  $
+:  
+:     Rev 1.0   17 Mar 1998 19:45:14   SEDWARD
+:  Initial revision.
+:  
+:     Rev 1.2   27 Jan 1998 13:04:22   KSACKIN
+:  Updated the project name to be %projname so that it could be used in any
+:  project.
+:
+:     Rev 1.1   27 Jan 1998 13:00:36   KSACKIN
+:  Updated to include UNICODE platforms.
+:
+:     Rev 1.0   27 Jan 1998 12:53:56   KSACKIN
+:  Initial revision.
+:
+:     Rev 1.0   02 Dec 1997 10:39:36   DSACKIN
+:
+:     Rev 1.0   02 Jul 1997 12:35:26   TSmith
+:  Initial revision.
+:
+:     Rev 1.0   20 Jun 1997 11:36:46   TSmith
+:  Initial revision.
+:------------------------------------------------------------------------
+@echo off
+                                        :: Set flag so BUILD.BTM doesn't
+                                        :: complain about updating only
+                                        :: one target.
+set __UpdateAll=TRUE
+
+                                        :: Build each target for each platform.
+for %__Plat in (IDA IRA IDU IRU) do gosub Build_It
+
+                                        :: Cleanup and exit.
+:Done
+if "%__UpdateAll" != "" unset __UpdateAll
+if "%__Plat" != "" unset __Plat
+quit
+
+
+                                        :: This subroutine is called for each
+                                        :: target.
+:Build_It
+
+call proj %projname% %__Plat
+call mkupdate %&
+
+                                        :: Exit on failed update.
+if exist *.* goto Done
+
+return
+

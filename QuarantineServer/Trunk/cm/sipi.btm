@@ -1,0 +1,39 @@
+pushd
+
+cd ..\..\..\release\SESA
+
+if exist .\SIPI.qs call del /s /y /x /z SIPI.qs
+call MD SIPI.qs
+
+cd sipi
+
+if not exist .\SIP call MD SIP
+cd SIP
+
+if not exist .\eventsink call MD eventsink
+if not exist .\help call MD help
+if not exist .\pix call MD pix
+if not exist .\war call MD war
+if not exist .\productInfo MD productinfo
+
+cd ..\..
+
+xcopy /e /k /r /q .\SIPI\*.*  .\SIPI.qs\
+
+cd SIPI.qs
+cd SIP
+cd pix
+set build_err=..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\build.err
+call ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\copybin ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\XML\CentralQuarantine_1_0_pi.xml
+call ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\copybin ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\XML\CentralQuarantine_1_0_ep.xml
+cd ..\productInfo
+call ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\cm\copybin ..\..\..\..\..\Norton_AntiVirus\QuarantineServer\XML\ProductInfo.properties
+
+cd ..\..
+
+java -jar ..\AppSupport\lib\java\3dparty\ant.jar
+set bret=%?
+if %? != %bret% set ret=%bret
+
+
+popd

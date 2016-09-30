@@ -1,0 +1,23 @@
+HKCR
+{
+	NavShellExtEx.NavHelper.1 = s 'NavHelper Class'
+	{
+		CLSID = s '{AF24674E-2204-438D-8092-E3424E2399D8}'
+	}
+	NavShellExtEx.NavHelper = s 'NavHelper Class'
+	{
+		CLSID = s '{AF24674E-2204-438D-8092-E3424E2399D8}'
+		CurVer = s 'NavShellExtEx.NavHelper.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {AF24674E-2204-438D-8092-E3424E2399D8} = s 'NavHelper Class'
+		{
+			ProgID = s 'NavShellExtEx.NavHelper.1'
+			VersionIndependentProgID = s 'NavShellExtEx.NavHelper'
+			LocalServer32 = s '%MODULE%'
+			val AppID = s '%APPID%'
+			'TypeLib' = s '{0BD5CEA9-55C0-4FA7-A7BA-8E90B6CC01D5}'
+		}
+	}
+}

@@ -1,0 +1,313 @@
+echo on
+set ReturnVal=0
+
+rem /////////////////////////////////////////////////////////////
+rem Get the path to the batch file and use as the root for all
+rem other relative paths
+rem
+	set root=%@path[%_batchname%]%
+	echo ROOT = %root%
+	rem If the last character in root is not a '\', then append one.
+	iff %@SUBSTR[%root%,%@EVAL[%@LEN[%root%]-1],1] NE \ then
+ 	   set root=%root%\
+	endiff
+
+rem // these are set in the setbuildnumbers.btm below
+rem set CCBUILD=NOTSET
+rem set CCERASERBUILD=NOTSET
+rem set SPBUILD=NOTSET
+rem set SPYWAREPLUSBUILD=NOTSET
+rem set AVBUILD=PERFORCE
+rem set CONSUMERUIBUILD=PERFORCE
+
+set USEFTP=NOTSET
+set CLEAR=0
+set CLOBBER=
+set MINIMUM=0
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem look for parameters we recognize
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+    do param = 1 to 127
+        shift 1
+        iff "%0"=="" then
+             shift -%param%
+             goto continue
+        endiff
+
+        set this_param=%@upper[%0]
+
+        iff "%this_param"=="/USEFTP" then
+            shift 1
+            set USEFTP=%0
+        elseiff "%this_param"=="/FTPUSER" then
+            shift 1
+            set FTPUSER=%0
+        elseiff "%this_param"=="/FTPPSWD" then
+            shift 1
+            set FTPPSWD=%0
+	elseiff "%this_param"=="/CLR" then
+	    set CLOBBER=_clobber
+            set CLEAR=1
+	elseiff "%this_param"=="/MIN" then
+	    set MINIMUM=1
+        endiff
+    enddo
+    shift -127
+
+:continue
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem setup remote paths
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+call %root%SetBuildNumbers.btm
+if %errorlevel% != 0 Goto Error
+
+set CCPATH=%CCPATH%
+set CCERASERPATH=%CCERASERPATH%
+set SPPATH=%SPPATH%
+set SPYWAREPLUSPATH=%SPYWAREPLUSPATH%\SDK
+set CONSUMERUIPATH=%CONSUMERUIPATH%
+set AVPATH=%AVPATH%
+set APPCOREPATH=%APPCOREPATH%
+
+set CCPATH_FTP=%CCPATH_FTP%
+set CCERASERPATH_FTP=%CCERASERPATH_FTP%
+set SPPATH_FTP=%SPPATH_FTP%
+set SPYWAREPLUSPATH_FTP=%SPYWAREPLUSPATH_FTP%\SDK
+set CONSUMERUIPATH_FTP=%CONSUMERUIPATH_FTP%\SDK
+set AVPATH_FTP=%AVPATH_FTP%
+set APPCOREPATH_FTP=%APPCOREPATH_FTP%
+
+set ccUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%CCPATH_FTP%]
+set cceraserUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%CCERASERPATH_FTP%]
+set spUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%SPPATH_FTP%]
+set SpyWarePlusUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%SPYWAREPLUSPATH_FTP%]
+set AVUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%AVPATH_FTP%]
+set ConsumerUIUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%CONSUMERUIPATH_FTP%]
+set AppCoreUrl=ftp://ussm-cpd.corp.symantec.com/%@replace[\,/,%APPCOREPATH_FTP%]
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem setup local paths
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+
+set localincludepath=%root%..\include
+set localCCSDKPath=%root%..\..\SDKs\CommonClient
+set localERASERSDKPath=%root%..\..\SDKs\ERASER
+set localsppath=%root%..\..\SDKs\SymProtect
+set localSpyWarePlusPath=%root%..\..\SDKs\SpyWarePlus
+set localAVPath=%root%..\..\SDKs\AVComponent
+set localConsumerUIPath=%root%..\..\SDKs\ConsumerUI
+set localAppCore_SDKpath=%root%..\..\SDKs\AppCore
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Copy SymProtect/Behavior Blocking
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+
+iff "%SPBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localsppath%\include
+    	rd /s /q %localsppath%\manifest
+    	rd /s /q %localsppath%\MergeModules
+    	rd /s /q %localsppath%\MSI
+    	rd /s /q %localsppath%\Samples
+    endiff
+
+	call "xcopy_or_ftp%CLOBBER%.btm" "%sppath%\include" "%localsppath%\include" %USEFTP% "%SPURL%"
+	if %errorlevel% GE 8 Goto Error
+
+    iff "%MINIMUM%" ne "1" then
+	call "xcopy_or_ftp%CLOBBER%.btm" "%sppath%\manifest" "%localsppath%\manifest" %USEFTP% "%SPURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%sppath%\MergeModules" "%localsppath%\MergeModules" %USEFTP% "%SPURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%sppath%\MSI" "%localsppath%\MSI" %USEFTP% "%SPURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%sppath%\Samples" "%localsppath%\Samples" %USEFTP% "%SPURL%"
+	if %errorlevel% GE 8 Goto Error
+    endiff
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy CC files
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+
+iff "%CCBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localCCSDKPath%\include
+    	rd /s /q %localCCSDKPath%\LIB
+    	rd /s /q %localCCSDKPath%\BIN
+    	rd /s /q %localCCSDKPath%\MergeModules
+    endiff
+
+ 	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\include" "%localCCSDKPath%\include" %USEFTP% "%CCURL%/include"
+	if %errorlevel% GE 8 Goto Error
+ 	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\LIB" "%localCCSDKPath%\LIB" %USEFTP% "%CCURL%/LIB"
+	if %errorlevel% GE 8 Goto Error
+
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\nobuilds" "%root%..\..\Nobuilds\PlatSDK\include\atl" %USEFTP% "%CCURL%/LIB" "atlbase.h"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\nobuilds" "%root%..\..\Nobuilds\PlatSDK\src\mfc" %USEFTP% "%CCURL%/LIB" "atlbase.h"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\nobuilds" "%root%..\..\Nobuilds\msvc7\Vc7\atlmfc\include" %USEFTP% "%CCURL%/LIB" "atlbase.h"
+	if %errorlevel% GE 8 Goto Error
+
+    iff "%MINIMUM%" ne "1" then
+ 	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\BIN\bin.iru" "%localCCSDKPath%\BIN" %USEFTP% "%CCURL%/BIN/bin.iru"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\BIN\bin.ira" "%localCCSDKPath%\BIN\bin.ira" %USEFTP% "%CCURL%/BIN/bin.ira"
+	if %errorlevel% GE 8 Goto Error
+ 	call "xcopy_or_ftp%CLOBBER%.btm" "%ccpath%\MergeModules" "%localCCSDKPath%\MergeModules" %USEFTP% "%CCURL%/MergeModules"
+	if %errorlevel% GE 8 Goto Error
+    endiff
+endiff
+
+Iff "%CCERASERBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localERASERSDKPath%\include
+    	rd /s /q %localERASERSDKPath%\bin
+    endiff
+
+	call "xcopy_or_ftp%CLOBBER%.btm" "%cceraserpath%\include" "%localERASERSDKPath%\include" %USEFTP% "%CCERASERURL%/include"
+	if %errorlevel% GE 8 Goto Error
+
+    iff "%MINIMUM%" ne "1" then
+	call "xcopy_or_ftp%CLOBBER%.btm" "%cceraserpath%\bin\i386.release" "%localERASERSDKPath%\BIN\bin.iru" %USEFTP% "%CCERASERURL%/ntu.x86.Release/bin.redist"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%cceraserpath%\bin\i386.debug" "%localERASERSDKPath%\BIN\bin.idu" %USEFTP% "%CCERASERURL%/ntu.x86.Debug/bin.redist"
+	if %errorlevel% GE 8 Goto Error
+    endiff
+endiff
+
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy SpyWare+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+
+iff "%SPYWAREPLUSBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localSpyWarePlusPath%\Include
+    	rd /s /q %localSpyWarePlusPath%\Install
+    	rd /s /q %localSpyWarePlusPath%\Nobuilds
+    endiff
+
+	call "xcopy_or_ftp%CLOBBER%.btm" "%SpyWarePlusPath%\Include" "%localSpyWarePlusPath%\Include" %USEFTP% "%SPYWAREPLUSURL%"
+	if %errorlevel% GE 8 Goto Error
+
+    iff "%MINIMUM%" ne "1" then
+	call "xcopy_or_ftp%CLOBBER%.btm" "%SpyWarePlusPath%\Install" "%localSpyWarePlusPath%\Install" %USEFTP% "%SPYWAREPLUSURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%SpyWarePlusPath%\Nobuilds" "%localSpyWarePlusPath%\Nobuilds" %USEFTP% "%SPYWAREPLUSURL%"
+	if %errorlevel% GE 8 Goto Error
+    endiff
+endiff
+
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem xcopy AVComponent
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+
+iff "%AVBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localAVPath%\Include
+    	rd /s /q %localAVPath%\bin.ira
+    	rd /s /q %localAVPath%\bin.iru
+    	rd /s /q %localAVPath%\bin.ida
+    	rd /s /q %localAVPath%\bin.idu
+    	rd /s /q %localAVPath%\MSI
+    	rd /s /q %localAVPath%\MSM
+    endiff
+
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\Include" "%localAVPath%\Include" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+
+    iff "%MINIMUM%" ne "1" then
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\bin.ida" "%localAVPath%\bin.ida" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\bin.idu" "%localAVPath%\bin.idu" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\bin.ira" "%localAVPath%\bin.ira" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\bin.iru" "%localAVPath%\bin.iru" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\MSI" "%localAVPath%\MSI" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%AVPath%\MSM" "%localAVPath%\MSM" %USEFTP% "%AVURL%"
+	if %errorlevel% GE 8 Goto Error
+    endiff
+endiff
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+rem Copy ConsumerUI
+rem -------------------------------------------------------
+rem -------------------------------------------------------
+
+iff "%CONSUMERUIBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localConsumerUIPath%\include
+    	rd /s /q %localConsumerUIPath%\MSI
+    	rd /s /q %localConsumerUIPath%\MSM
+    endiff
+	
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ConsumerUIPath%\SDK\include" "%localConsumerUIPath%\include" %USEFTP% "%ConsumerUIURL%/SDK"
+	if %errorlevel% GE 8 Goto Error
+
+    iff "%MINIMUM%" ne "1" then
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ConsumerUIPath%\SDK\MSI" "%localConsumerUIPath%\MSI" %USEFTP% "%ConsumerUIURL%/SDK"
+	if %errorlevel% GE 8 Goto Error
+	call "xcopy_or_ftp%CLOBBER%.btm" "%ConsumerUIPath%\SDK\MSM" "%localConsumerUIPath%\MSM" %USEFTP% "%ConsumerUIURL%/SDK"
+	if %errorlevel% GE 8 Goto Error	
+    endiff
+endiff
+
+iff "%APPCOREBUILD%" ne "PERFORCE" then
+
+    iff "%CLEAR%"=="1" then
+    	rd /s /q %localAppCore_SDKpath%
+    endiff
+	
+	call "xcopy_or_ftp%CLOBBER%.btm" "%APPCOREPATH%\include" "%localAppCore_SDKpath%\include" %USEFTP% "%ConsumerUIURL%/SDK"
+	if %errorlevel% GE 8 Goto Error
+   
+	call "xcopy_or_ftp%CLOBBER%.btm" "%APPCOREPATH%\MSI" "%localAppCore_SDKpath%\MSI" %USEFTP% "%ConsumerUIURL%/SDK"
+	if %errorlevel% GE 8 Goto Error
+endiff
+
+:End
+    echo **************  CCSYNC All Good  ***************
+    echo on
+
+:RealEnd
+    Quit %ReturnVal%
+
+:Error
+    echo **************  CCSYNC FAILURE  ***************
+    echo %errorlevel%
+    echo off
+    if errorlevel == 0 echo Successful copy
+    if errorlevel == 1 echo No files to copy
+    if errorlevel == 2 echo Terminated by user (Ctrl+C)
+    if errorlevel == 4 echo Init error (bad parameter, etc.)
+    if errorlevel == 5 echo File write error
+    echo on
+    Set ReturnVal=1
+    Goto RealEnd

@@ -1,0 +1,42 @@
+// SymObjectSync.idl : IDL source for SymObjectSync.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (SymObjectSync.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(93CA8AFB-7B94-4406-8F97-1868AC0306BD),
+		dual,
+		helpstring("ISymSyncEvent Interface"),
+		pointer_default(unique)
+	]
+	interface ISymSyncEvent : IDispatch
+	{
+		[id(1), helpstring("method InitializeEvent")] HRESULT InitializeEvent([in] BOOL bManualReset,[in]BOOL bInitialState,[in]BSTR name);
+		[id(2), helpstring("method SetEvent")] HRESULT SetEvent([out,retval]BOOL* pReturn);
+		[id(3), helpstring("method ResetEvent")] HRESULT ResetEvent([out,retval]BOOL* pReturn);
+		[id(4), helpstring("method Wait")] HRESULT Wait([in]long timeoutInMilliSeconds,[in]BOOL bWaitWithMessageLoop,[out,retval]long* pReturn);
+	};
+
+[
+	uuid(85EE816D-2AFC-4F17-9CCF-6F29839117E8),
+	version(1.0),
+	helpstring("SymObjectSync 1.0 Type Library")
+]
+library SYMOBJECTSYNCLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(20504A63-FF87-458C-B2FD-F7A8C041220A),
+		helpstring("SymSyncEvent Class")
+	]
+	coclass SymSyncEvent
+	{
+		[default] interface ISymSyncEvent;
+	};
+};

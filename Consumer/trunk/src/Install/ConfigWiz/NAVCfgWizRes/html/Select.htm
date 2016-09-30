@@ -1,0 +1,75 @@
+<!--////////////////////
+//
+// PROPRIETARY / CONFIDENTIAL.
+// Use of this product is subject to license terms.
+// Copyright © 2006 Symantec Corporation.
+// All rights reserved.
+//
+//////////////////////////////////////////////////////////////////////////////////////////////-->
+
+<html>
+	<head>
+		<META id="charset_subinfo" http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<link rel="stylesheet" type="text/css" href="cfgwizstyle.css">
+	</head>
+	<BODY id="body_select" text="#333333" leftMargin="0" topMargin="0" scroll="no" onload="OnLoad()" onunload="OnUnload()" style="BACKGROUND-REPEAT: no-repeat;">
+	<IFRAME ID="Errors" FRAMEBORDER="0" SCROLLING="no" HEIGHT="0" WIDTH="0" style="DISPLAY:none" SRC="errors.htm"></IFRAME>
+		<script Language="JavaScript" src="DisplayScriptError.js"></script>
+		<div id="helpLinkDiv" height="30" align="right" valign="top" float="right">
+			<span id="txtHelpLink" style="DISPLAY:none; CURSOR:hand; COLOR:blue; TEXT-DECORATION:underline" onclick="OnHelp()" tabindex="4">
+						What is a ?</span>&nbsp;&nbsp;&nbsp;&nbsp;
+		</div>
+		<div id="buttonDiv" style="PADDING-RIGHT:30px; PADDING-BOTTOM:30px; BACKGROUND-REPEAT:no-repeat;">
+			<button onClick="OnSkipButton()" 
+				onMouseOver="ButtonMouseOver(this); return false;" 
+				onMouseOut="ButtonMouseOut(this); return false;" 
+				onMouseDown="ButtonMouseDown(this); return false;" 
+				onKeyDown="ButtonKeyDown(this);" 
+				onKeyUp="ButtonKeyUp(this);" 				
+				onFocus="ButtonFocus(this); return false;" 
+				onBlur="ButtonBlur(this); return false;" 
+				id="SkipButton" class="next" style="float: right; " accesskey="l" tabindex="3">
+				Activate <U>L</U>ater
+			</button>
+			<button onClick="OnNextButton()" 
+				onMouseOver="ButtonMouseOver(this); return false;" 
+				onMouseOut="ButtonMouseOut(this); return false;" 
+				onMouseDown="ButtonMouseDown(this); return false;" 
+				onKeyDown="ButtonKeyDown(this);" 
+				onKeyUp="ButtonKeyUp(this);" 				
+				onFocus="ButtonFocus(this); return false;" 
+				onBlur="ButtonBlur(this); return false;" 
+				id="NextButton" class="next" disabled="true" accesskey="n" style="float:right" tabindex="2">
+				<u>N</u>ext
+			</button>
+			<button onClick="OnBackButton()" 
+				onMouseOver="ButtonMouseOver(this); return false;" 
+				onMouseOut="ButtonMouseOut(this); return false;" 
+				onMouseDown="ButtonMouseDown(this); return false;" 
+				onKeyDown="ButtonKeyDown(this);" 
+				onKeyUp="ButtonKeyUp(this);" 				
+				onFocus="ButtonFocus(this); return false;" 
+				onBlur="ButtonBlur(this); return false;" 
+				id="BackButton" class="next" accesskey="b" style="float:right" tabindex="1"">
+				<u>B</u>ack
+			</button>
+		</div>
+		<!-- Buttons Text -->
+		<span id="ASkipBtnText" style="DISPLAY: none">Activate <U>L</U>ater</span>
+		<span id="FinBtnText" style="DISPLAY: none"><U>F</U>inish</span>
+		<span id="NxtBtnText" style="DISPLAY: none"><U>N</U>ext</span>
+		<!-- Buttons HotKey values -->
+		<span id="ASkipHotKey" style="DISPLAY: none">L</span>
+		<span id="FinHotKey" style="DISPLAY: none">F</span>
+		<span id="NxtHotKey" style="DISPLAY: none">N</span>
+		<!-- Supernag strings -->
+		<span id="strActLaterGrace1" style="DISPLAY: none">You have chosen to skip activation. Successful activation should <br>take less than a minute.  You must activate your product <br>within</span>
+		<span id="strActLaterGrace2" style="DISPLAY: none">day(s) or it will stop working.<br><br> Would you like to activate now?</span>
+		<span id="strActLaterNoGrace" style="DISPLAY: none">You have chosen to skip activation.  Successful activation should<br>take less than a minute.  Your product will not work until you activate it.<br><br>Would you like to activate now?</span>
+		<!-- Warning text for cancel button -->
+		<span id="CancelWarning" style="DISPLAY: none">Are you sure you want to exit? %s will not be completely configured until you complete the process.</span>
+		<span id="WizardName" style="DISPLAY: none">%s Information Wizard</span>
+		<script src="Buttons.js" language="JavaScript" ></script>
+		<script src="select.js" language="JavaScript"></script>
+ 	</BODY>
+</html>

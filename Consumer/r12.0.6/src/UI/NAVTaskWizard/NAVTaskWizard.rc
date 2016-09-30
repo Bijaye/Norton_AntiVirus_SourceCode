@@ -1,0 +1,380 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""NAVVer.h""\r\n"
+    "#include ""filever.h""\r\n"
+    "#include ""verinc.rc""\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SCAN_FOLDER_CHECKBOXES BITMAP                  "res\\scan_fol.bmp"
+IDB_WIZ256_0            BITMAP                  "res\\Wz256_0.bmp"
+IDB_WIZ256_3            BITMAP                  "res\\Wz256_3.bmp"
+IDB_WIZ256_2            BITMAP                  "res\\Wz256_2.bmp"
+IDB_SCANITEM_IMGLIST    BITMAP                  "res\\scan_img.bmp"
+IDB_WIZ16_0             BITMAP                  "res\\wiz16_0.bmp"
+IDB_WIZ16_2             BITMAP                  "res\\wiz16_2.bmp"
+IDB_WIZ16_3             BITMAP                  "res\\wiz16_3.bmp"
+IDB_DRIVE_LIST_CHECKBOXES BITMAP                  "res\\drivelistchecks.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_NAV_BAG_BIG         ICON                    "res\\navbaglg.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TW_INTRO DIALOGEX 0, 0, 287, 145
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "Welcome to the %s Scan Wizard.  This wizard will help you to scan files and folders on your computer, and to save the scan so you can repeat it later.",
+                    IDC_STATIC_TW_INTRO,81,0,206,32
+    LTEXT           "To begin creating a scan, click Next.",IDC_STATIC,81,41,
+                    205,20
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+END
+
+IDD_TW_SAVEEDITEDTASK DIALOGEX 0, 0, 287, 145
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "You have finished editing the scan.  Click Finish to save the scan.",
+                    IDC_STATIC,81,1,199,24
+    LTEXT           "Click Back if you want to change the scan.",IDC_STATIC,
+                    81,33,184,16
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+END
+
+IDD_TW_SAVETASK DIALOGEX 0, 0, 287, 145
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+    LTEXT           "Enter a name for this scan.  This name appears in the list of scans.",
+                    IDC_STATIC,81,0,199,16
+    LTEXT           "&Scan name:",IDC_STATIC,81,23,199,8
+    EDITTEXT        IDC_TASK_NAME,91,39,156,14,ES_AUTOHSCROLL
+    LTEXT           "Click Finish to save the scan.",IDC_STATIC,81,129,184,
+                    16
+END
+
+IDD_TW_SELECTITEMS DIALOGEX 0, 0, 287, 145
+STYLE DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Norton AntiVirus Scan Wizard"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "%s can scan any number of files and folders.  Use the buttons below to select the items you want to scan and then click Next.",
+                    IDC_STATIC_SELECTITEMS_INTO,81,0,205,24
+    LTEXT           "Items to scan:",IDC_STATIC,81,30,205,8
+    CONTROL         "List2",IDC_ITEMLIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_TABSTOP,81,46,206,55
+    PUSHBUTTON      "Add &folders",IDC_SCAN_FOLDER,164,107,58,14
+    PUSHBUTTON      "Add fil&es",IDC_SCAN_FILE,229,107,58,14
+    PUSHBUTTON      "&Remove",IDC_REMOVE,229,130,58,14
+    LTEXT           "To remove an item from the scan, select it and click Remove.",
+                    IDC_STATIC,81,129,132,16
+    CONTROL         "",IDC_PICTURE,"Button",BS_OWNERDRAW | WS_DISABLED | 
+                    WS_GROUP,0,0,74,145
+END
+
+IDD_SELECT_SCAN_FOLDERS DIALOGEX 0, 0, 220, 186
+STYLE DS_3DLOOK | DS_FIXEDSYS | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU | WS_THICKFRAME
+CAPTION "Scan Folders"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "Check the box next to each folder you want to scan, and then click Scan.",
+                    IDC_TREE_HEADER,7,7,206,16
+    CONTROL         "Tree1",IDC_FOLDER_TREE,"SysTreeView32",TVS_HASBUTTONS | 
+                    TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_GROUP | 
+                    WS_TABSTOP,7,30,206,127
+    DEFPUSHBUTTON   "&Scan",IDC_SCAN,109,165,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,163,165,50,14,WS_GROUP
+END
+
+IDD_SELECT_SCAN_DRIVES DIALOG FIXED IMPURE  0, 0, 220, 126
+STYLE DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Scan Drives"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    LTEXT           "Check the box next to each drive you want to scan, and then click Scan.",
+                    IDC_TREE_HEADER,7,7,206,16
+    CONTROL         "List1",IDC_DRIVE_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_SHAREIMAGELISTS | LVS_NOCOLUMNHEADER | 
+                    WS_BORDER | WS_GROUP | WS_TABSTOP,7,30,206,65
+    DEFPUSHBUTTON   "&Scan",IDC_SCAN,109,105,50,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,163,105,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_TW_SAVEEDITEDTASK, DIALOG
+    BEGIN
+        VERTGUIDE, 81
+    END
+
+    IDD_SELECT_SCAN_DRIVES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 213
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 119
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_RCLK_SYSSTATUS_NO_ITEM MENU 
+BEGIN
+    POPUP "Bygones"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+        MENUITEM SEPARATOR
+        MENUITEM "<placeholder>",               ID_SHOW_HIDE_INFO
+    END
+END
+
+IDR_RCLK_SYSTEM_STATUS MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+        MENUITEM SEPARATOR
+        MENUITEM "&Details About This Item",    ID_DETAILS
+        MENUITEM "<placeholder>",               ID_SHOW_HIDE_INFO
+    END
+END
+
+IDR_RCLK_REPORTS MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+        MENUITEM SEPARATOR
+        MENUITEM "&Open This Report",           IDC_OPEN_REPORT
+    END
+END
+
+IDR_RCLK_REPORTS_NO_ITEM MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+    END
+END
+
+IDR_RCLK_BUILTIN_SCAN MENU 
+BEGIN
+    POPUP "Buffy"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+        MENUITEM SEPARATOR
+        MENUITEM "&Run Scan Now",               IDC_RUN_SCAN
+        MENUITEM "&Schedule This Scan...",      ID_SCHEDULE_SCAN
+        MENUITEM SEPARATOR
+        POPUP "&View"
+        BEGIN
+            MENUITEM "&All Tasks",                  ID_VIEW_ALL_TASKS
+            MENUITEM "&Built-in Tasks",             ID_VIEW_BUILTINS
+            MENUITEM "&Custom Tasks",               ID_VIEW_USERTASKS
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Properties",                 IDC_TASK_PROPERTIES
+    END
+END
+
+IDR_RCLK_NO_SCAN_TASK MENU 
+BEGIN
+    POPUP "Popup"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+        MENUITEM SEPARATOR
+        POPUP "&View"
+        BEGIN
+            MENUITEM "&All Tasks",                  ID_VIEW_ALL_TASKS
+            MENUITEM "&Built-in Tasks",             ID_VIEW_BUILTINS
+            MENUITEM "&Custom Tasks",               ID_VIEW_USERTASKS
+        END
+    END
+END
+
+IDR_RCLK_USER_SCAN MENU 
+BEGIN
+    POPUP "Blowie"
+    BEGIN
+        MENUITEM "&What's This?",               ID_WHATS_THIS
+        MENUITEM SEPARATOR
+        MENUITEM "&Run Scan Now",               IDC_RUN_SCAN
+        MENUITEM SEPARATOR
+        MENUITEM "&Edit This Scan...",          ID_EDIT_TASK
+        MENUITEM "&Delete This Scan\tDel",      IDC_DELETE_TASK
+        MENUITEM "Re&name This Scan\tF2",       ID_RENAME_TASK
+        MENUITEM "&Schedule This Scan...",      ID_SCHEDULE_SCAN
+        MENUITEM SEPARATOR
+        POPUP "&View"
+        BEGIN
+            MENUITEM "&All Tasks",                  ID_VIEW_ALL_TASKS
+            MENUITEM "&Built-in Tasks",             ID_VIEW_BUILTINS
+            MENUITEM "&Custom Tasks",               ID_VIEW_USERTASKS
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "&Properties",                 IDC_TASK_PROPERTIES
+    END
+END
+
+IDR_TASK_BTN_DROPDOWN MENU 
+BEGIN
+    POPUP "Sugar"
+    BEGIN
+        MENUITEM "&Edit Scan...",               ID_EDIT_TASK
+        MENUITEM "&Delete Scan\tDel",           IDC_DELETE_TASK
+        MENUITEM "&Rename Scan\tF2",            ID_RENAME_TASK
+        MENUITEM "&Schedule Scan...",           ID_SCHEDULE_SCAN
+        MENUITEM SEPARATOR
+        POPUP "&View"
+        BEGIN
+            MENUITEM "&All Tasks",                  ID_VIEW_ALL_TASKS
+            MENUITEM "&Built-in Tasks",             ID_VIEW_BUILTINS
+            MENUITEM "&Custom Tasks",               ID_VIEW_USERTASKS
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Scan &Properties",            IDC_TASK_PROPERTIES
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_FOLDERS_SELECTED "Please select one or more folders.  Select a folder by checking the box next to the folder icon."
+    IDS_TITLE               "%s Scan Wizard"
+    IDS_ALL_FILES_FILTER    "All Files ( *.* )|*.*|"
+    IDS_SCAN_FILES          "Scan Files"
+    IDS_NO_ITEMS_IN_LIST    "There are no items to show in this view."
+END
+
+STRINGTABLE 
+BEGIN
+    IDP_SCAN_TASK_EXISTS    "A scan with that name already exists. Do you want to replace the existing scan with this new one?"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NAV                 "Norton AntiVirus"
+    IDS_ENTER_TASK_NAME     "Please enter a name for the new scan."
+    IDS_ILLEGAL_CHAR_IN_NAME 
+                            "A scan name cannot contain any of the following characters:\n\\ / : * ? "" < > | .'\n\nPlease choose another name."
+END
+
+STRINGTABLE 
+BEGIN
+    IDP_TASKWIZ_ERROR_SAVING_TASK 
+                            "Unable to save the scan.  You may be out of disk space, or you may not have write access to the drive."
+    IDP_NO_REMOVABLE_DRIVES "No removable drives were found on the computer."
+    IDP_NO_FLOPPY_DRIVES    "No floppy drives were found on the computer."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SELECT_ADD_FOLDERS  "Check the box next to each folder you want to scan, and then click Add."
+    IDS_ADD_FOLDERS_BTN_TEXT "&Add"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_NO_ITEMS_IN_TASK    "There are no items currently in the scan task.  Please select at least one item."
+    IDS_DRIVE_ITEM_DESCRIPTION "%c: drive"
+    IDS_FOLDER_AND_SUBS_ITEM_DESCRIPTION "%s (and subfolders)"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "NAVVer.h"
+#include "filever.h"
+#include "verinc.rc"
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

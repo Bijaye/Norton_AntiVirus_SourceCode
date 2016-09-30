@@ -1,0 +1,43 @@
+#-----------------------------------------------------------------------
+# IBM Immune System Hawthorne Build Control File
+# IBM Research
+# Robert B. King & Glenn Stubbs
+# Developed October 1, 1998
+# Last Revised February 3, 1999
+#-----------------------------------------------------------------------
+
+# List of relevant build machines for this file
+BUILD         MACHINES       testbld
+
+# Define languages that need to be built and packaged
+BUILD         LANG           ea
+
+# Define build type and items to copy to LAN 
+BUILD         BUILDTYPE      product develop
+BUILD         XCOPY          product develop
+BUILD         XCOPY_src      source
+
+# Local build drive customizations
+BUILD         LOCALDRIVE     d
+BUILD         NETWORKDRIVE   r
+
+# Other configuration data
+BUILD         SPIN           1
+
+#######################################################################################
+########### Builds ####################################################################
+#######################################################################################
+
+# NT Build Machine 15 (MS VC++ 5.0)
+#testbld       ORDER              bldcode.w32 XCOPY DONE
+#testbld       BUILDOS            w32
+#testbld       bldcode.w32.DRIVE  LOCALDRIVE
+#testbld       bldcode.w32        -env v532 -env v53s -env v5nt -env v5ns
+#testbld       DONE               vc5
+
+# NT Build Machine 16 (MS VC++ 6.0)
+testbld       ORDER              XCOPY_src bldcode.w32 XCOPY DONE
+testbld       BUILDOS            w32
+testbld       bldcode.w32.DRIVE  LOCALDRIVE
+testbld       bldcode.w32        -noenv v532 -noenv v53s -noenv v5nt -noenv v5ns
+testbld       DONE               w32

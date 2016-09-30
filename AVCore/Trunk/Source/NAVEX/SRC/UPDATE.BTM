@@ -1,0 +1,139 @@
+::
+:: $Header:   S:/NAVEX/VCS/update.btv   1.14   22 Jul 1997 15:30:44   mdunn  $
+::
+:: Update file for NAVEX.  Required because of non-standard extensions.
+:: (NAVEX.DAT must go to S:\BIN.DOS)
+::------------------------------------------------------------------------
+:: $Log:   S:/NAVEX/VCS/update.btv  $
+:  
+:     Rev 1.14   22 Jul 1997 15:30:44   mdunn
+:  Added a line to copy navexgn.lib (an addition for Gryphon NEC).
+:  
+:     Rev 1.13   08 May 1997 14:31:04   CNACHEN
+:  Added support for NAVEX15.  Set "NAVEX15" environment variable to something
+:  before using BUILD.BTM/UPDATE.BTM.
+:  
+:  
+:     Rev 1.12   26 Feb 1997 12:55:08   jmillar
+:  Minor changes.  Nothing substantial.
+:
+:     Rev 1.11   27 Aug 1996 02:38:06   jmillar
+:  add rebase of NT drivers (SYS) to strip debug information
+:  copy SYD and DBG files up to the server
+:
+:     Rev 1.10   20 Aug 1996 19:01:12   jmillar
+:  fix problem with %% in front of d - this was a silent error before because
+:  we didn't need it to actually do the copy.
+:
+:     Rev 1.9   13 Aug 1996 11:56:00   RFULLER
+:  Changed %QUAKE% to %PROJVERS% as it should be.
+:
+:     Rev 1.8   13 Aug 1996 11:27:58   jmillar
+:  copy lib's to the 'trunk' of newvir
+:
+:     Rev 1.7   13 Aug 1996 11:23:30   jmillar
+:  copy navex32 and navex (ntk) to all branches
+:
+:     Rev 1.6   13 May 1996 19:27:48   RJACKSO
+:  Added *.sys to copy list.
+:
+:     Rev 1.5   13 Feb 1996 18:17:06   MKEATIN
+:  copy 'exp' files also (DX platform)
+:
+:     Rev 1.4   01 Dec 1995 14:48:52   RJACKSO
+:  Added GOTO END statement
+:
+:     Rev 1.3   01 Dec 1995 14:15:16   RJACKSO
+:  Added commands to copy NAVEX16.LIB to branch libs
+:
+:     Rev 1.2   20 Nov 1995 18:03:58   MLELE
+:  Removed WSTRIP and NUKEDBUG that were put in for NLMs. I've moved
+:  the "Nuke debug" within BUILD.BTM.
+:
+:     Rev 1.1   14 Nov 1995 16:12:42   MLELE
+:  Modified to save *.NLM as *.DBG and NUKEDBUG the NLMs. Also copies the DBG
+:  files to target.
+:
+:     Rev 1.0   17 Oct 1995 16:23:24   DALLEE
+:  Initial revision.
+::------------------------------------------------------------------------
+
+::
+:: make a backup copy of the NT drivers, and then strip the debug information
+::
+
+if "%NAVEX15" NE "" goto :Do15
+
+if exist navex.sys copy *.sys *.syd
+if exist navex.sys R:\NT40SDK.B2\mstools\bin\i386\rebase -b 0x10000 -x . navex.sys
+
+copy *.* %PROJ%\LIB%PLATFORM%\*.*
+
+rem Copy NAVEX16.LIB to each branch include directory.
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G) gosub CopyToBranch
+
+
+if exist *.dat copy *.dat %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.exp copy *.exp %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.nlm copy *.nlm %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dbg copy *.dbg %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.vxd copy *.vxd %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sys copy *.sys %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.syd copy *.syd %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+
+goto :end
+
+:CopyToBranch
+
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex16.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex32.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+
+:: Addition for Gryphon NEC.  See navexntl.cpp for an explanation.
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navexgn.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+
+return
+
+:END
+goto :end15
+
+:Do15
+
+if exist navex15.sys copy *.sys *.syd
+if exist navex15.sys R:\NT40SDK.B2\mstools\bin\i386\rebase -b 0x10000 -x . navex15.sys
+
+copy *.* %PROJ%\LIB%PLATFORM%\*.*
+
+rem Copy NAVEX16a.LIB to each branch include directory.
+for %d in (2 3 4 5 6 7 8 9 A B C D E F G) gosub CopyToBranch
+
+
+if exist *.dat copy *.dat %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.exp copy *.exp %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.nlm copy *.nlm %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dbg copy *.dbg %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.vxd copy *.vxd %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.dll copy *.dll %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.map copy *.map %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sym copy *.sym %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.sys copy *.sys %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.syd copy *.syd %PROJPRE%\BIN%PROJVERS%%PLATFORM%\*.*
+if exist *.lib copy *.lib %PROJPRE%\LIB%PROJVERS%%PLATFORM%\*.*
+
+goto :end15
+
+:CopyToBranch
+
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex16a.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex32a.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+if isdir %PROJPRE%\LIBQAK%d%PLATFORM%  copy navex15.lib %PROJPRE%\LIBQAK%d%PLATFORM%\
+
+return
+
+:END15
+
+

@@ -1,0 +1,52 @@
+:: Copyright 1997 Symantec, Peter Norton Product Group
+::************************************************************************
+::
+:: $Header:   S:/INCLUDE/VCS/build.btv   1.3   26 Jun 1998 16:23:12   mdunn  $
+::
+:: Description:
+::      Copy includes from everywhere else (kludge)
+::
+::************************************************************************
+:: $Log:   S:/INCLUDE/VCS/build.btv  $
+:  
+:     Rev 1.3   26 Jun 1998 16:23:12   mdunn
+:  Now grabbing navwhlp5.h from NAVWHLP5 for Atomic.  Also tried to make
+:  things more readable.
+:  
+:     Rev 1.2   22 May 1998 12:16:00   mdunn
+:  Now copying the NAVWHLP.H file from the NAVWHLP5 project, for Atomic, and
+:  put in some comments to try and explain the whole mess with the
+:  NAVWHLP.H file.  Also changed all SRC references to SRC%PROJVERS%
+:  
+:     Rev 1.1   05 Aug 1997 09:51:42   JBRENNA
+:  Update to pull from %PROJPRE% instead of %FAMILYPRE%.
+:  
+:     Rev 1.0   05 Aug 1997 09:48:40   JBRENNA
+:  Initial revision.
+:  
+::************************************************************************
+
+: Get header for help ID's
+
+: What's going on here is that the header files need to be in the NAVWHLP
+: or NAVWHLP5 projects so the help compiler can use them.  But for the
+: rest of the product to use the headers, they have to be in the 
+: INCLUDE directory.  So the headers are checked in to NAVWHLP(5) and
+: then copied to INCLUDE.
+
+attrib -r %PROJ%\SRC%PROJVERS%\NAVWHLP.H
+attrib -r %PROJ%\SRC%PROJVERS%\NAVWHLP5.H
+
+:: NAVWHLP has an F branch
+iff exist %PROJPRE%NAVWHLP\SRC%PROJVERS%\NAVWHLP.H then
+    copy %PROJPRE%NAVWHLP\SRC%PROJVERS%\NAVWHLP.H %PROJ%\SRC%PROJVERS%\
+endiff
+
+:: NAVWHLP5 is not branched, so no %PROJVERS%
+iff exist %PROJPRE%NAVWHLP5\SRC\NAVWHLP5.H then
+    copy %PROJPRE%NAVWHLP5\SRC\NAVWHLP5.H %PROJ%\SRC%PROJVERS%\
+endiff
+
+attrib +r %PROJ%\SRC%PROJVERS%\NAVWHLP.H
+attrib +r %PROJ%\SRC%PROJVERS%\NAVWHLP5.H
+

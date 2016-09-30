@@ -1,0 +1,95 @@
+#
+# $Header:   S:\navex\vcs\nav.imv   1.0   18 Oct 1995 14:30:14   cnachen  $ */
+#
+#       This file MUST be the same as nav.exp
+#
+#       NAV functions imported from NAV.NLM
+#       These NLM's include the sympager, nav31dll, nav40dll
+#
+#       They use common utility functions, and rather than
+#       incur the overhead of creating a separate NLM with the
+#       utility routines, and since the main NLM is always loaded,
+#       everybody imports the routines from the main nlm
+#
+
+# thread management routines
+
+ NAVhGetThreadId,
+ NAVwSleepThread,
+ NAVwWakenThread,
+ NAVDelayThread,
+ NAVhGetThreadGroupId,
+
+# error/log routines
+
+ NAVLogError,
+
+# string management routines
+
+# STRINGTBLINIT,
+# STRINGTBLTERMINATE,
+ NAVNLMLOADSTRING,
+ NAVhGetStrTable,
+
+# symkrnl
+
+ NAVFastStringPrint,
+
+# encrypt/decrypt
+
+# NAVDECRYPT
+NAVIMPORT1,
+
+# stack check
+
+# __CHK,
+
+# memory management
+
+NAVMemAllocPtr, NAVMemReAllocPtr, NAVMemFreePtr,
+
+# O/S routines
+
+# GetSymbolValue
+
+# cache routines
+
+ NAVCheckFileStatus,
+ NAVSetFileStatus,
+ NAVUnCacheFile,
+ NAVGlobhThreadId,
+ NAVhLogThreadId,
+
+# scanner thread group id
+
+ NAVhScanThread,
+
+# mac global flags
+
+NAVnMacBusy,
+
+# server O/S loader type
+
+NAVwOSLoaderType,
+
+# command line switches
+
+NAVNLMSWITCHESGET,
+
+# platform
+
+NAVSetConsoleFocus, NAVRestoreFocus, NAVEmptyTypeAhead,
+
+# strings
+
+NAVszCantUnload, NAVbyDontUnload, NAVszSystemConsoleName,
+
+#GETFINELINEARTIME
+NAVIMPORT2,
+
+# CheckOnJustRenamedList
+NAVImport3
+
+# unadvertised O/S routines
+
+#StartSleepNotAllowed,EndSleepNotAllowed

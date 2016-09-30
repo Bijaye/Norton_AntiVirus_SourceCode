@@ -1,0 +1,245 @@
+// NAVTasks.idl : IDL source for NAVTasks.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (NAVTasks.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+import "naverror.idl";
+
+[
+	uuid(7C1B9D8B-2B5F-41B2-95F7-DE2C5BD594EC),
+	version(1.0),
+	helpstring("Symantec.Norton.AntiVirus.NAVTasks 1.0 Type Library")
+]
+library NAVTASKSLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.EScheduled Enumaration")
+	] enum EScheduled
+	{ EScheduled_na = -1
+	, EScheduled_no
+	, EScheduled_yes
+	, EScheduled_disabled
+	,
+	} EScheduled;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.ESFLDO Enumaration (Show Folder List Dialog Options)")
+	] enum ESFLDO
+	{ ESFLDO_na
+	, ESFLDO_Scan
+	, ESFLDO_IncludeFiles
+	, 
+	} ESFLDO;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.EScanTask_DISPIDs Enumaration")
+	] enum EScanTask_DISPIDs
+	{ EScanTask_TaskName = 500
+	, EScanTask_TaskType
+	, EScanTask_Scheduled
+	, EScanTask_CreationTime
+	, EScanTask_LastModificationTime
+	, EScanTask_LastRunTime
+	// Methods
+	, EScanTask_Scan     = 1000
+	, EScanTask_Schedule
+	, EScanTask_Load
+	, EScanTask_Save
+	, EScanTask_Edit
+	, EScanTask_ScanAndWait
+	, 
+	} EScanTask_DISPIDs;
+
+	typedef
+	[
+		helpstring("Symantec.Norton.AntiVirus.EScanTasks_DISPIDs Enumaration")
+	] enum EScanTasks_DISPIDs
+	{ EScanTasks_Add = 500
+	, EScanTasks_Create
+	, EScanTasks_Remove
+	, EScanTasks_Count
+	, 
+	} EScanTasks_DISPIDs;
+
+	[
+		uuid(70684E8F-8F2D-4238-8824-98299692ADCB),
+		helpstring("Symantec.Norton.AntiVirus._INAVScanTasksEvents Interface")
+	]
+	dispinterface _INAVScanTasksEvents
+	{
+		properties:
+		methods:
+	};
+
+	[
+		object,
+		uuid(842579DF-0E8C-4823-80DC-3D149B5E7F21),
+		dual,
+		helpstring("Symantec.Norton.AntiVirus.IScheduler Interface"),
+		pointer_default(unique)
+	]
+	interface IScheduler : IDispatch
+	{
+		[propget, id(1), helpstring("property Running")]
+		HRESULT Running([out, retval] BOOL *pbRunning);
+		[propput, id(1), helpstring("property Running")]
+		HRESULT Running([in] BOOL bStart);
+		[propget, id(2), helpstring("property Installed")]
+		HRESULT Installed([out, retval] BOOL *pbInstalled);
+		[propget, id(5), helpstring("property RunAtStartup")]
+		HRESULT RunAtStartup([out, retval] BOOL *pbRunAtStartup);
+		[propput, id(5), helpstring("property RunAtStartup")]
+		HRESULT RunAtStartup([in] BOOL bRunAtStartup);
+		[propget, id(6), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+	};
+
+	[
+		object,
+		uuid(5D4FDD4B-FC61-4246-9BF9-487F57A38DBF),
+		dual,
+		helpstring("Symantec.Norton.AntiVirus.INAVScanTask Interface"),
+		pointer_default(unique)
+	]
+	interface INAVScanTask : IDispatch
+	{
+		// Properties
+		[propput, id(EScanTask_TaskName), helpstring("Task Name")]
+		HRESULT TaskName([in] BSTR TaskName);
+		[propget, id(EScanTask_TaskName), helpstring("Task Name")]
+		HRESULT TaskName([out, retval] BSTR *TaskName);
+		[propget, id(EScanTask_TaskType), helpstring("Image to use when displaying in a list")]
+		HRESULT TaskType([out, retval] long *TaskType);
+		[propget, id(EScanTask_Scheduled), helpstring("Show as scheduled")]
+		HRESULT Scheduled([out, retval] EScheduled *Scheduled);
+		[propget, id(EScanTask_LastRunTime), helpstring("Time the scan task was last run")]
+		HRESULT LastRunTime([out, retval] DATE *LastRunTime);
+		// Methods
+		[id(EScanTask_Scan), helpstring("Run the scan task")]
+		HRESULT Scan(void);
+		[id(EScanTask_Schedule), helpstring("Schedule this task")]
+		HRESULT Schedule([in] BOOL* pbWeekly);
+		[id(EScanTask_Load), helpstring("Load scan task")]
+		HRESULT Load(void);
+		[id(EScanTask_Save), helpstring("Save the scan task to disk")]
+		HRESULT Save(void);
+		[id(EScanTask_Edit), helpstring("Edit scan task properties")]
+		HRESULT Edit(void);
+		[propget, id(1), helpstring("property TaskPath")] HRESULT TaskPath([out, retval] BSTR *pVal);
+		[propget, id(2), helpstring("property CanEdit")] HRESULT CanEdit([out, retval] BOOL *pVal);
+		[propget, id(3), helpstring("property CanSchedule")] HRESULT CanSchedule([out, retval] BOOL *pVal);
+		[id(4), helpstring("method DeleteSchedule")] HRESULT DeleteSchedule();
+		[propget, id(5), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+		[id(EScanTask_ScanAndWait), helpstring("Run the scan task and wait for completion")]
+		HRESULT ScanAndWait(void);
+	};
+
+	[
+		object,
+		uuid(5D4FDD4A-FC61-4246-9BF9-487F57A38DBF),
+		helpstring("Symantec.Norton.AntiVirus.INAVScanTaskCust Interface"),
+		pointer_default(unique)
+	]
+	interface INAVScanTaskCust : IUnknown
+	{
+		// Properties
+		[propget, helpstring("The CScanTask class")]
+		HRESULT ScanTask([out, retval] VARIANT *ScanTask);
+	};
+
+	[
+		object,
+		uuid(4E13A0A3-EEAC-4CCD-941A-257F2F81C17F),
+		dual,
+		helpstring("Symantec.Norton.AntiVirus.INAVScanTasks Interface"),
+		pointer_default(unique)
+	]
+	interface INAVScanTasks : IDispatch
+	{
+		// Properties
+		[propget, id(DISPID_NEWENUM), helpstring("Enumarator")]
+		HRESULT _NewEnum([out, retval] IUnknown** ppUnk);
+		[propget, id(DISPID_VALUE), helpstring("Get a scan task")]
+		HRESULT Item([in] VARIANT Index, [out, retval] INAVScanTask** Item);
+		[propget, id(EScanTasks_Count), helpstring("Nuber of scan tasks in the collection")]
+		HRESULT Count([out, retval] long *Count);
+		// Methods
+		[id(EScanTasks_Add), helpstring("Add an existing scan task to the collection")]
+		HRESULT Add([in] INAVScanTask* ScanTask);
+		[id(EScanTasks_Create), helpstring("Create a new scan task (returns the scan task that was just add)")]
+		HRESULT Create([out, retval] INAVScanTask** Item);
+		[id(EScanTasks_Remove), helpstring("Remove from the collection")]
+		HRESULT Remove([in] VARIANT Item);
+		[id(1), helpstring("method DeleteAll")] HRESULT DeleteAll();
+		[id(2), helpstring("method ScheduleMyComputer")] HRESULT ScheduleMyComputer();
+		[id(3), helpstring("method ScanMyComputer")] HRESULT ScanMyComputer();
+		[id(4), helpstring("method Delete")] HRESULT Delete(VARIANT vItem);
+		[propget, id(5), helpstring("property MyComputer")] HRESULT MyComputer([out, retval] INAVScanTask **ppMyComputer);
+		[id(6), helpstring("method ValidateName")] HRESULT ValidateName(BSTR* pbstrTaskName);
+		[propget, id(7), helpstring("property TaskIndex")] HRESULT TaskIndex(BSTR* pbstrTaskName, [out, retval] long *pVal);
+		[propget, id(8), helpstring("property NAVError")] HRESULT NAVError([out, retval] INAVCOMError* *pVal);
+        [id(9), helpstring("method FullOrQuickScan")] HRESULT FullOrQuickScan();
+        [id(10), helpstring("method QuickScan")] HRESULT QuickScan();
+		[id(11), helpstring("method ScanMyComputerAndWait")] HRESULT ScanMyComputerAndWait();
+	};
+	[
+		object,
+		uuid(4DEE3F82-0AB1-4913-B616-9020F6DDFAF2),
+		helpstring("Symantec.Norton.AntiVirus.INAVTasksDlgs Interface"),
+		pointer_default(unique)
+	]
+	interface INAVTasksDlgs : IUnknown
+	{
+		[helpstring("Show Folder List Dialog")]
+		HRESULT ShowFolderListDlg(HWND hWnd, VARIANT ScanTask, ESFLDO EShowFolderListDlgOptions);
+		[helpstring("Show Drive List Dialog")]
+		HRESULT ShowDriveListDlg(VARIANT ScanTask);
+		[helpstring("Show File List Dialog")]
+		HRESULT ShowFileListDlg(VARIANT ScanTask);
+	};
+
+	[
+		uuid(4334A24F-43D2-4AAD-9780-FB21E7C4A0EF),
+		helpstring("Symantec.Norton.AntiVirus.NAVScanTask Class")
+	]
+	coclass NAVScanTask
+	{
+		[default] interface INAVScanTask;
+	};
+
+	[
+		uuid(C52E6FB0-C980-47E3-A4C9-CA34981758E7),
+		helpstring("Symantec.Norton.AntiVirus.NAVScanTasks Class")
+	]
+	coclass NAVScanTasks
+	{
+		[default] interface INAVScanTasks;
+		[default, source] dispinterface _INAVScanTasksEvents;
+	};
+
+	[
+		uuid(CA51130B-37FC-48F9-8B0B-BED3404E45F9),
+		helpstring("Symantec.Norton.AntiVirus.Scheduler Class")
+	]
+	coclass Scheduler
+	{
+		[default] interface IScheduler;
+	};
+
+	[
+		uuid(9CBCB8E3-BBA1-46F6-9E34-C92614F44A4F),
+		helpstring("Symantec.Norton.AntiVirus.TasksDlgs Class")
+	]
+	coclass NAVTasksDlgs
+	{
+		[default] interface INAVTasksDlgs;
+	};
+};

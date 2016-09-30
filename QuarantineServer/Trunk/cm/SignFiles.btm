@@ -1,0 +1,233 @@
+@echo off
+rem
+rem Code signing batch file
+rem
+rem A directory containing executable files to be signed passed to this batch file. A subdirectory
+rem named unsigned is created and each file is copied to it prior to signing.
+rem
+rem The extension of each file in the directory is checked against a list of extensions to be signed
+rem (see signedextensionlist).
+rem
+rem If the build is not a CM build, a message is printed and the success is returned (so dev builds 
+rem don't fail).
+rem
+rem Each file is then signed using facilities on the tools volume.
+rem
+rem
+rem Parameters:
+rem
+rem     buildnum   - %1 CM Build number
+rem     binarypath - %2 Directory containing binaries to sign
+rem     nicename   - %3 String to be passed to the signing tool
+rem                     (default is "Symantec AntiVirus Corporate Edition 9.0 Build #%1")
+rem
+rem Return values: (these are also returned in the returnVal environmental variable,
+rem in case the caller is TEE'ing the output of this batch file):
+rem
+rem     0 - Success (and not CM build)
+rem     1 - no build number
+rem     2 - no directory
+rem     3 - Failed to sign
+rem
+rem Uses:
+rem     
+rem     TBD
+rem     
+
+echo Starting the signing step .... | tee /a "%_cwd\signfile-log.txt"
+
+rem -----------------------
+rem Validate the parameters
+rem -----------------------
+if "%1" == "" goto ERROR_BLDNUM
+if "%2" == "" goto ERROR_DIR
+
+echo Signing files in directory %2 | tee /a "%_cwd\signfile-log.txt"
+
+rem -------------------------------
+rem Initialize batch file variables
+rem -------------------------------
+set signedextensionlist="bla exe dll cpl ocx sys vxd cab"
+set returnVal=0
+set default_nicename="Symantec AntiVirus Corporate Edition 9.0 Build #%1"
+set buildnum=%1
+set binarypath=%2
+set nicename=%3
+set UNSIGNEDBACKUPDIR=%binarypath%\Unsigned
+
+
+gosub CountParams
+if %numparams% lt 4 set nicename="%default_nicename%"
+
+
+rem -----------------------
+rem Initialize CM variables
+rem -----------------------
+set sign=c:\depot\tools\cm\verisign\dopswd_sign.bat
+
+
+rem -------------------------------
+rem Clean up the unsigned directory
+rem -------------------------------
+echo Cleaning up old copies of unsigned files | tee /a "%_cwd\signfile-log.txt"
+if exist "%UNSIGNEDBACKUPDIR%" del /qyxe "%UNSIGNEDBACKUPDIR"\*.*
+if exist "%UNSIGNEDBACKUPDIR%" rd /s "%UNSIGNEDBACKUPDIR"
+
+
+rem ----------------
+rem set up find info
+rem ----------------
+set filename=%@findfirst[%binarypath%\*.*, -D]%
+
+
+rem -----------------------
+rem Loop throught the files
+rem -----------------------
+
+do while %@len[%filename%]% != 0   
+   
+   rem -----------------------------------
+   rem See if the file type is one to sign
+   rem -----------------------------------
+   gosub CheckFileType
+
+   rem ----------------------------------------
+   rem Copy this file to the unsigned directory
+   rem ----------------------------------------
+   if "%signthisfile%" ge "0" gosub CopyUnSigned
+   
+   rem -------------
+   rem Sign the file
+   rem -------------
+   if "%signthisfile%" ge "0" gosub SignFile
+
+   rem ---------------------
+   rem Did the signing fail?
+   rem ---------------------
+   rem 
+   rem TODO: If signing fails, call findclose and return 3
+   rem
+   rem       Placeholder only. Verify with CM that
+   rem       this will work.
+   rem
+   if %errorlevel% != 0 goto ERROR_SIGNING_FILE
+
+   rem -----------------
+   rem Get the next file
+   rem -----------------
+   :nextfile
+   set filename=%@findnext[NULL,-D]%
+   if %@len[%filename%]% == 0 set doneflag=%@findclose[]%
+
+enddo
+
+
+rem --------------------------------------------
+rem Add a signing succeeded msg to the log file.
+rem --------------------------------------------
+
+echo Finished signing binaries | tee /a "%_cwd\signfile-log.txt"
+quit 0
+
+
+rem ----------------------
+rem Error: no build number
+rem ----------------------
+:ERROR_BLDNUM
+
+   echo You must specify the build number | tee /a "%_cwd\signfile-log.txt"
+
+quit 1
+
+
+rem -------------------
+rem Error: no directory
+rem -------------------
+:ERROR_DIR
+
+   echo You must specify a directory containing binary files | tee /a "%_cwd\signfile-log.txt"
+
+quit 2
+
+
+rem ---------------------
+rem Error: not a CM build
+rem ---------------------
+:ERROR_NOT_CM
+
+   echo This is not a CM build. No files will be signed. | tee /a "%_cwd\signfile-log.txt"
+
+quit 0
+
+
+rem -------------------------------
+rem Error: problem signing the file
+rem -------------------------------
+:ERROR_SIGNING_FILE
+
+   echo Error signing file %filename%. | tee /a "%_cwd\signfile-log.txt"
+   set doneflag=%@findclose[]%
+
+quit 3
+
+
+rem -----------------------
+rem Call code signing tools
+rem -----------------------
+:SignFile
+
+   echo Signing %filename% | tee /a "%_cwd\signfile-log.txt"
+   
+   rem ---------------------------------------
+   rem TODO: coordinate with CM before calling
+   rem       the signing batch files!!!!!
+   rem ---------------------------------------
+   rem
+   rem	if %CMbuild% == 1 call %sign% %filename% %nicename%
+	call %sign% %filename% %nicename%
+   rem
+
+return
+
+
+rem -----------------------------------
+rem Create an unsigned copy of the file
+rem -----------------------------------
+:CopyUnSigned
+
+   echo Saving unsigned copy of %filename% | tee /a "%_cwd\signfile-log.txt"
+   if not exist "%UNSIGNEDBACKUPDIR%" md /s "%UNSIGNEDBACKUPDIR"
+   copy /q "%filename%" "%UNSIGNEDBACKUPDIR%"
+
+return
+
+
+rem -----------------------------------------------
+rem Check that the file type is one we want to sign
+rem -----------------------------------------------
+:CheckFileType
+
+   echo Checking %filename% | tee /a "%_cwd\signfile-log.txt"
+   set fextn=%@ext["%filename%"]%
+   set signthisfile=0
+   set signthisfile=%@index[%signedextensionlist%, %fextn%]%
+      
+return
+
+
+rem ------------------------------
+rem Count the number of parameters
+rem ------------------------------
+:CountParams
+
+   set numparams=0
+
+   do while "%0" != ""
+   shift 1
+   set numparams=%@inc[%numparams%]%
+   enddo
+
+   shift -%numparams%
+
+return
+

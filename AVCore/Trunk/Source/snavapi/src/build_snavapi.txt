@@ -1,0 +1,53 @@
+Build instructions for snavapi for different platforms.
+
+
+First, create a temporary clientspec for Perforce based the clientspec "snavapi",
+with the root renamed to a directory on your machine. Switch to the clientspec
+you created, and sync all files onto your machine.
+
+NOTE: You may need to copy some source files from the following location into
+your build directory/path:
+
+//depot/core/trunk/Source/INCLUDE/SRC/
+
+
+Win32:
+1. install 4nt and set it up for the standard env/proj build system
+2. run in a 4nt window the command "env avcore"
+3. run "proj snavapi"
+4. choose "ida" for debug or "ira" for release
+5. cd to the snavapi source directory (example: "c:\perf\snavapi")
+6. copy the version of navapi32.dll, navapi.vxd, and navapi.h you are testing
+   from the release directory (example:
+   "c:\perf\navapi\version41\latest\BinIntelAnsiWin32Release") into snavapi
+   source directory (example: "c:\perf\snavapi")
+7. run "mk"
+8. snavapi can now be run by typing "snavapi32"
+
+If using VC, you will need the following files:
+1. Under //depot/core/NAVAPI.09C/source/INCLUDE/src/
+   	platform.h
+	PLATWIN.h
+	symvxd.h
+	dbcs_str.h
+
+2. Under //depot/Release/navapi/version41/latest/
+	navapi.h   &
+        /LibIntelAnsiWin32Debug/NAVAPI32.lib
+
+NLM:
+1. currently, snavapi cannot be run on unix. Use stscan to test under unix.
+   Stscan can be found under Perforce at 
+   "//depot/Norton_Antivirus/AVCore/Trunk/Source/NAVAPIST.QA/SRC/".
+
+
+Solaris:
+1. install P4 and set the clientspec to the one you created
+2. cd to the snavapi source directory
+   (example: "/export/home/thwang/perf/snavapi")
+3. copy the version of libavenge.a, libnavapi.a, libsymkunix.a, navapi.h you
+   are testing from the release directory (example:
+   "/export/home/thwang/perf/navapi/version41/latest/LibSolarisRelease")
+   into snavapi source directory (example: "/export/home/thwang/perf/snavapi")
+4. run "make -f sol.mak"
+5. snavapi can now be run by typing "snavapi32"
