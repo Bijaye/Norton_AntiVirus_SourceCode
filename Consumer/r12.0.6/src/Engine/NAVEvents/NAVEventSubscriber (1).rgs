@@ -1,0 +1,26 @@
+HKCR
+{
+	NAVEvents.NAVEventSubscriber.1 = s 'NAVEventSubscriber Class'
+	{
+		CLSID = s '{7849AB10-3468-4C64-912E-00AF4B8DCB6E}'
+	}
+	NAVEvents.NAVEventSubscriber = s 'NAVEventSubscriber Class'
+	{
+		CLSID = s '{7849AB10-3468-4C64-912E-00AF4B8DCB6E}'
+		CurVer = s 'NAVEvents.NAVEventSubscriber.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {7849AB10-3468-4C64-912E-00AF4B8DCB6E} = s 'NAVEventSubscriber Class'
+		{
+			ProgID = s 'NAVEvents.NAVEventSubscriber.1'
+			VersionIndependentProgID = s 'NAVEvents.NAVEventSubscriber'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Both'
+			}
+			'TypeLib' = s '{3ABF9055-667E-4FDF-ADDA-2622E8677CBC}'
+		}
+	}
+}
